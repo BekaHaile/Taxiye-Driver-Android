@@ -422,7 +422,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				@Override
 				public void onClick(View v) {
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					uploadfile(getActivity(), holder.id);
+					uploadfile(activity, holder.id);
 					coloum = 0;
 
 				}
@@ -475,7 +475,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											uploadfile(getActivity(), rejectionId);
+											uploadfile(activity, rejectionId);
 											coloum = 0;
 										}
 									},
@@ -486,7 +486,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										}
 									}, true, true);
 						} else {
-							uploadfile(getActivity(), holder.id);
+							uploadfile(activity, holder.id);
 							coloum = 0;
 						}
 					} catch (Exception e) {
@@ -511,7 +511,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											uploadfile(getActivity(), rejectionId);
+											uploadfile(activity, rejectionId);
 											coloum = 1;
 										}
 									},
@@ -522,7 +522,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										}
 									}, true, true);
 						} else {
-							uploadfile(getActivity(), holder.id);
+							uploadfile(activity, holder.id);
 							coloum = 1;
 						}
 					} catch (Exception e) {
@@ -610,63 +610,72 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		}
 	}
 
-	public void uploadfile(final Activity activity, int index) {
+	public void uploadfile(final DriverDocumentActivity activity, int index) {
 
-		try {
-			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-			dialog.setContentView(R.layout.dialog_upload_document);
+		DocumentListFragment.this.index = index;
+		String cameraText = getResources().getString(R.string.upload)+" "+docs.get(index).docType
+				+""+getResources().getString(R.string.image);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
-			new ASSL(activity, frameLayout, 1134, 720, true);
-
-			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-			layoutParams.dimAmount = 0.6f;
-			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(true);
-			dialog.setCanceledOnTouchOutside(true);
-
-			LinearLayout LayoutCamera, LayoutGallery;
-
-			LayoutCamera = (LinearLayout) dialog.findViewById(R.id.LayoutCamera);
-			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
-
-			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
-
-			DocumentListFragment.this.index = index;
-
-			LayoutGallery.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					chooseImageFromGallery();
-					dialog.dismiss();
-				}
-
-			});
-			LayoutCamera.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					chooseImageFromCamera();
-					dialog.dismiss();
-				}
-			});
-
-			btnCancel.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-
-					dialog.dismiss();
-				}
-			});
+		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
+		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
+				activity.getRelativeLayoutContainer(), cameraText, "bottom");
 
 
-			dialog.show();
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+//			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+//			dialog.setContentView(R.layout.dialog_upload_document);
+//
+//			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
+//			new ASSL(activity, frameLayout, 1134, 720, true);
+//
+//			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+//			layoutParams.dimAmount = 0.6f;
+//			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//			dialog.setCancelable(true);
+//			dialog.setCanceledOnTouchOutside(true);
+//
+//			LinearLayout LayoutCamera, LayoutGallery;
+//
+//			LayoutCamera = (LinearLayout) dialog.findViewById(R.id.LayoutCamera);
+//			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
+//
+//			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+//			btnCancel.setTypeface(Data.latoRegular(activity));
+//
+//
+//
+//			LayoutGallery.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View view) {
+//					chooseImageFromGallery();
+//					dialog.dismiss();
+//				}
+//
+//			});
+//			LayoutCamera.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					chooseImageFromCamera();
+//					dialog.dismiss();
+//				}
+//			});
+//
+//			btnCancel.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//
+//					dialog.dismiss();
+//				}
+//			});
+//
+//
+//			dialog.show();
+//
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
@@ -783,7 +792,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+//				Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 			}
 		});
 	}

@@ -108,7 +108,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
 		titleAutoSide.setTypeface(Data.latoRegular(activity));
 
-		titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+		titleAutoSide.setText(topMessage);
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
 		acceptImage.setOnClickListener(this);
@@ -331,28 +331,36 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 			surfaceDestroyed(surfaceHolder);
 		}
 		activity.openGalleryFragment();
+		activity.getSupportFragmentManager().popBackStackImmediate();
 	}
 
 	public void performBackPressed() {
 
 
-		if(auditCmeraOption ==1){
-			activity.getTransactionUtils().openSubmitAuditFragment(activity,
-					activity.getRelativeLayoutContainer(), auditType);
-		} else {
-			DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
-					getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							deleteCurrentAudit();
-						}
-					}, new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-
-						}
-					}, true, false);
+		if (surfaceHolder.getSurface() != null) {
+			surfaceDestroyed(surfaceHolder);
 		}
+		activity.relativeLayoutContainer.setVisibility(View.GONE);
+		activity.getSupportFragmentManager().popBackStackImmediate();
+
+
+//		if(auditCmeraOption ==1){
+//			activity.getTransactionUtils().openSubmitAuditFragment(activity,
+//					activity.getRelativeLayoutContainer(), auditType);
+//		} else {
+//			DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
+//					getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
+//						@Override
+//						public void onClick(View v) {
+//							deleteCurrentAudit();
+//						}
+//					}, new View.OnClickListener() {
+//						@Override
+//						public void onClick(View v) {
+//
+//						}
+//					}, true, false);
+//		}
 
 	}
 
