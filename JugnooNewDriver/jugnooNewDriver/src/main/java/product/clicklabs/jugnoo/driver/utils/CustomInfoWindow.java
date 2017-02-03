@@ -45,7 +45,7 @@ public class CustomInfoWindow implements InfoWindowAdapter {
 		TextView snippet = (TextView) view.findViewById(R.id.snippet);
 		snippet.setText("" + snippetStr);
 
-//		title.setOnClickListener(new View.OnClickListener() {
+//		counterTime.setOnClickListener(new View.OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
 //				Utils.openCallIntent(, Data.userData.driverSupportNumber);

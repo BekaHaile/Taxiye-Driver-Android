@@ -84,12 +84,12 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
-//		title.getPaint().setShader(textShader);
+//		counterTime.getPaint().setShader(textShader);
 
 		try {
 			Intent intent = getIntent();
 			url = intent.getStringExtra("extras");
-			title.setText(intent.getStringExtra("title"));
+			title.setText(intent.getStringExtra("counterTime"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

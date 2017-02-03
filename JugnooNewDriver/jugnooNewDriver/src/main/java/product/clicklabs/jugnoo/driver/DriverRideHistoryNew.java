@@ -107,7 +107,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
-//		title.getPaint().setShader(textShader);
+//		counterTime.getPaint().setShader(textShader);
 
 		title.setText(getResources().getString(R.string.ride_history_cap));
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);

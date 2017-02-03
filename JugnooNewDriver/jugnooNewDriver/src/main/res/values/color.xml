@@ -170,6 +170,6 @@
     <color name="theme_color_start">#FC644F</color>
     <color name="theme_color_end">#FF9339</color>
 
-
+    <color name="dialog_brown">#474747</color>
 
 </resources>

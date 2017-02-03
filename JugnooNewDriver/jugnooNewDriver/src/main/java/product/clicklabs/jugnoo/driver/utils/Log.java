@@ -5,6 +5,8 @@ import android.os.Environment;
 import java.io.File;
 import java.io.FileWriter;
 
+import product.clicklabs.jugnoo.driver.BuildConfig;
+
 /**
  * Custom log class overrides Android Log
  * @author shankar
@@ -12,14 +14,14 @@ import java.io.FileWriter;
  */
 public class Log {
 	
-	public static boolean PRINT = false; 											// true for printing and false for not
+//	public static boolean PRINT = false; 											// true for printing and false for not
 	private static final boolean WRITE_TO_FILE = false; 									// true for writing log to file and false for not
 	private static final boolean WRITE_TO_FILE_IN = false; 									// true for writing log to file and false for not 
 	
 	public Log(){}
 
 	public static void i(String tag, String message){
-		if(PRINT){
+		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.i(tag, message);
 			if(WRITE_TO_FILE){
 				writeLogToFile(APP_NAME, tag + "<>" + message);
@@ -28,7 +30,7 @@ public class Log {
 	}
 
 	public static void d(String tag, String message){
-		if(PRINT){
+		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.d(tag, message);
 			if(WRITE_TO_FILE){
 				writeLogToFile(APP_NAME, tag + "<>" + message);
@@ -37,7 +39,7 @@ public class Log {
 	}
 	
 	public static void e(String tag, String message){
-		if(PRINT){
+		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.e(tag, message);
 			if(WRITE_TO_FILE){
 				writeLogToFile(APP_NAME, tag + "<>" + message);
@@ -46,7 +48,7 @@ public class Log {
 	}
 	
 	public static void v(String tag, String message){
-		if(PRINT){
+		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.v(tag, message);
 			if(WRITE_TO_FILE){
 				writeLogToFile(APP_NAME, tag + "<>" + message);
@@ -55,7 +57,7 @@ public class Log {
 	}
 	
 	public static void w(String tag, String message){
-		if(PRINT){
+		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.w(tag, message);
 			if(WRITE_TO_FILE){
 				writeLogToFile(APP_NAME, tag + "<>" + message);

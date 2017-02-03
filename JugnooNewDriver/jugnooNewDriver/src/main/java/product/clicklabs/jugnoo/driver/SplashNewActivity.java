@@ -304,22 +304,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-//				startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
-//				finish();
-//				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//				FlurryEventLogger.event(LOGIN);
-
-				try {
-					if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
-							&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
-						fetchMessages();
-					} else{
+//				if(BuildConfig.DEBUG_MODE) {
+//					startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
+//					finish();
+//					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//				} else {
+					try {
+						if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
+								&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
+							fetchMessages();
+						} else{
+							changeUIState(State.LOGIN);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 						changeUIState(State.LOGIN);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					changeUIState(State.LOGIN);
-				}
+//				}
 			}
 		});
 
@@ -1608,7 +1609,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	
 	public static boolean checkIfUpdate(JSONObject jObj, Activity activity) throws Exception{
 //		"popup": {
-//	        "title": "Update Version",
+//	        "counterTime": "Update Version",
 //	        "text": "Update app with new version!",
 //	        "cur_version": 116,			// could be used for local check
 //	        "is_force": 1				// 1 for forced, 0 for not forced
@@ -1616,7 +1617,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		if(!jObj.isNull("popup")){
 			try{
 				JSONObject jupdatePopupInfo = jObj.getJSONObject("popup"); 
-				String title = jupdatePopupInfo.getString("title");
+				String title = jupdatePopupInfo.getString("counterTime");
 				String text = jupdatePopupInfo.getString("text");
 				int currentVersion = jupdatePopupInfo.getInt("cur_version");
 				int isForce = jupdatePopupInfo.getInt("is_force");
