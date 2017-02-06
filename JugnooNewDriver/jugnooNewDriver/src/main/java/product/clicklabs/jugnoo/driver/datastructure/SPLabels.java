@@ -18,7 +18,7 @@ public class SPLabels {
             START_TIME = "start_time",
     		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
-    DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
+    		DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
 
     public static final String
@@ -96,7 +96,9 @@ public class SPLabels {
 	public static final String SET_AUDIT_STATUS = "set_audit_status";
     public static final String GET_USL_STATUS = "get_usl_status";
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
+	public static final String DIGITAL_SIGNATURE_POPUP_STATUS = "digital_signature_popup_status";
 	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
+	public static final String SET_DIGITAL_SIGNATURE_POPUP_STRING = "set_digital_signature_popup_string";
 
     public static final String ACCEPT_RIDE_VIA_PUSH = "accept_ride_via_push";
 	public static final String LAST_DESTINATION ="last_destination";

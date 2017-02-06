@@ -776,6 +776,7 @@ public class GpsDistanceCalculator {
 		return state;
 	}
 
+
 	LocationListener GSMlistener = new LocationListener() {
 
 		@Override

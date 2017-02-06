@@ -761,6 +761,12 @@
 	<string name="pool_stop">Pool Stop</string>
 	<string name="battery_low">बैटरी स्तर कम है। एक पावर के स्रोत में प्लगइन करें।</string>
 	<string name="alter_phone_number">Alternate Phone Number</string>
+	<string name="reset">Reset</string>
+	<string name="unable_to_capture_signature">unable to capture signature</string>
+	<string name="clear">Clear</string>
+	<string name="type_your_name">Type your name</string>
+	<string name="i_accept_abv"><![CDATA[ACCEPT T &amp; C]]></string>
+	<string name="your_sig_here">YOUR SIGNATURE HERE</string>
 	<string name="delivery_start">Delivery Start</string>
 	<string name="delivery_stop">Delivery Stop</string>
 	<string name="delivery_end">Delivery End</string>
@@ -773,6 +779,10 @@
 	<string name="please_start_customer_delivery">Start %s\'s delivery</string>
 	<string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
 	<string name="select_merchant">Select Merchant</string>
+	<string name="estimated_fare">(Estimated Fare)</string>
+	<string name="provide_sign_msg">Please provide signature before submit</string>
+	<string name="pls_type_name">Please type your name before submit</string>
+	<string name="looking_for_customer_app">Looking for Customer App</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

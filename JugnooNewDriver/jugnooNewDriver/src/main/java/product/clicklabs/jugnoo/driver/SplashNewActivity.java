@@ -133,14 +133,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	private State state = State.SPLASH_LS;
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
-	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
+	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn, buttonRegister;
 
 	static boolean loginDataFetched = false;
 
 	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt, vehicleNumEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
-	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, buttonRegister, textViewRegDriver;
+	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, textViewRegDriver, textViewCustomerApp;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
@@ -232,8 +232,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
-		buttonRegister = (TextView) findViewById(R.id.buttonRegister);
+		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		textViewCustomerApp= (TextView) findViewById(R.id.textViewCustomerApp);
+		textViewCustomerApp.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		textViewRegDriver = (TextView) findViewById(R.id.textViewRegDriver);
 		textViewRegDriver.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -290,7 +293,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
 			if ("".equalsIgnoreCase(accPair.first)) {
-				getCityAsync();
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getCityAsync();
+					}
+				}, 1000);
+
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
@@ -377,6 +386,18 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					changeUIState(State.SIGNUP);
 				}  else {
 					DialogPopup.alertPopup(SplashNewActivity.this, "", Data.CHECK_INTERNET_MSG);
+				}
+			}
+		});
+
+		textViewCustomerApp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final String appPackageName = "product.clicklabs.jugnoo"; // getPackageName() from Context or Activity object
+				try {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+				} catch (android.content.ActivityNotFoundException anfe) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
 				}
 			}
 		});
@@ -529,7 +550,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
 				} else {
-					if ("".equalsIgnoreCase(autoNum)) {
+					if (!"".equalsIgnoreCase(autoNum)) {
 						vehicleNumEt.requestFocus();
 						vehicleNumEt.setError("Please enter vehicle number");
 					} else {
@@ -1451,11 +1472,32 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								}
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										String resp;
+										try {
+											resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+										} catch (Exception e) {
+											e.printStackTrace();
+											resp = Constants.SERVER_TIMEOUT;
+										}
+
+										if(resp.contains(Constants.SERVER_TIMEOUT)){
+											loginDataFetched = false;
+											DialogPopup.alertPopup(activity, "", message);
+										}
+										else{
+											noNetFirstTime = false;
+											noNetSecondTime = false;
+											loginDataFetched = true;
+											DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
+										}
+
 										JSONParser.parsePushyInterval(activity, jObj);
 										Utils.deleteMFile();
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
+
+										DialogPopup.dismissLoadingDialog();
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();
@@ -2341,7 +2383,17 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private void getCityAsync(){
 		DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
-		RestClient.getApiServices().getCityRetro("auyq38yr9fsdjfw38", new Callback<CityResponse>() {
+
+		if (Data.locationFetcher != null) {
+			Data.latitude = Data.locationFetcher.getLatitude();
+			Data.longitude = Data.locationFetcher.getLongitude();
+		}
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("latitude", "" + Data.latitude);
+		params.put("longitude", "" + Data.longitude);
+
+		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
 				try {
@@ -2357,6 +2409,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						newCities.clear();
 						vehicleTypes.addAll(res.getVehicleTypes());
 						newCities.addAll(res.getCities());
+						for(int i=0; i< res.getCities().size(); i++){
+							if(res.getCities().get(i).getCityName().equalsIgnoreCase(res.getCurrentCity())){
+								selectCitySp.setSelection(i);
+								break;
+							}
+						}
+
 //						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
 //						intent.putExtra("cityResponse", cityResponse);
 //						startActivity(intent);
@@ -2549,7 +2608,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				break;
 
 			case SIGNUP:
-				getCityAsync();
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getCityAsync();
+					}
+				}, 1000);
 				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);

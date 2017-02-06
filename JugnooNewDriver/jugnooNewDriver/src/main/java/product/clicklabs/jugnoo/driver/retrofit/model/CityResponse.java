@@ -18,13 +18,15 @@ public class CityResponse implements Serializable {
 	@SerializedName("flag")
 	@Expose
 	private Integer flag;
-
 	@SerializedName("cities")
 	@Expose
 	private List<City> cities = new ArrayList<City>();
 	@SerializedName("vehicle_types")
 	@Expose
 	private List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+	@SerializedName("current_city")
+	@Expose
+	private String currentCity;
 
 	/**
 	 * @return The flag
@@ -40,6 +42,19 @@ public class CityResponse implements Serializable {
 		this.flag = flag;
 	}
 
+	/**
+	 * @return The currentCity
+	 */
+	public String getCurrentCity() {
+		return currentCity;
+	}
+
+	/**
+	 * @param currentCity The currentCity
+	 */
+	public void setCurrentCity(String currentCity) {
+		this.currentCity = currentCity;
+	}
 
 	/**
 	 *

@@ -468,6 +468,12 @@ public interface APIServices {
 							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
 
+	@Multipart
+	@POST("/upload_signature_document")
+	void uploadSignatureToServer(@Part("image") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
+
 	@FormUrlEncoded
 	@POST("/delete_document")
 	void deleteImage(@FieldMap Map<String, String> params,
@@ -475,7 +481,8 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_all_cities")
-	void getCityRetro(@Field("password") String password,
+	void getCityRetro(@FieldMap Map<String, String> params,
+					  @Field("password") String password,
 					  Callback<CityResponse> callback);
 
 	@FormUrlEncoded
