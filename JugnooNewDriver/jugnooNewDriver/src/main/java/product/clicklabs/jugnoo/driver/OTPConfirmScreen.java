@@ -121,8 +121,8 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
         btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
         btnOtpViaCall = (ImageView) findViewById(R.id.btnOtpViaCall);
-        textViewCounter = (TextView) findViewById(R.id.textViewCounter);
-        textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
+//        textViewCounter = (TextView) findViewById(R.id.textViewCounter);
+//        textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
 
 //		((TextView) findViewById(R.id.textViewBtnOtpViaCall)).setTypeface(Data.latoRegular(this));
         textViewOr = (TextView) findViewById(R.id.textViewOr);

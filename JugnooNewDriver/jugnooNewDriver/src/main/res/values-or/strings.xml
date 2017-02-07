@@ -727,6 +727,8 @@
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app">Looking for Customer App</string>
     <string name="image">image</string>
+    <string name="auto_detect_otp_failed">Automatic detection of OTP Failed</string>
+    <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
