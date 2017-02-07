@@ -8,8 +8,8 @@
 
 
 
-	 <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--Live-->
-	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
+	 <!--<string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> &lt;!&ndash;Live&ndash;&gt;-->
+	 <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev
 	<!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General&ndash;&gt;-->
 
 
@@ -772,6 +772,11 @@
 	<string name="provide_sign_msg">Please provide signature before submit</string>
 	<string name="pls_type_name">Please type your name before submit</string>
 	<string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
+	<string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
+	<string name="tutorial_tap_ok">Tap \'OK\'</string>
+	<string name="tutorial_wait_for_customer">Wait for customer...</string>
+	<string name="tutorial_your_location">The blue dot shows your current location</string>
+	<string name="start_training">Start Traning</string>
 
 
 	<string-array name="CountryCodes" >

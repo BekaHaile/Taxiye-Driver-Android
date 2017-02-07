@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +35,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,9 +149,11 @@ import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
-import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.tutorial.Crouton;
+import product.clicklabs.jugnoo.driver.tutorial.TourDialog;
+import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -185,7 +187,7 @@ import retrofit.mime.TypedByteArray;
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
 		GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
 		FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents,
-		ViewPager.OnPageChangeListener{
+		ViewPager.OnPageChangeListener, View.OnClickListener {
 
 
 	private final String TAG = HomeActivity.class.getSimpleName();
@@ -419,6 +421,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private boolean rideCancelledByCustomer = false;
 	private String cancelationMessage = "";
 
+
 	private CustomerInfo getOpenedCustomerInfo(){
 		return openedCustomerInfo;
 	}
@@ -437,8 +440,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	DialogPopup endDelivery = new DialogPopup();
 
 
-//	Button distanceReset2;
+//	Driver tutorial views
+	private RelativeLayout tourLayout;
+	private ImageView tourCrossBtn ;
+	private TextView tourTextView;
+	private boolean tour = true;
+	private View customView;
 
+	private RelativeLayout relativeLayoutTour;
+	private TextView textViewTour;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -623,6 +633,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			menuBtn.setVisibility(View.VISIBLE);
+
+
+			// Tutorial Layout
+			tourLayout = (RelativeLayout) findViewById(R.id.tour_layout);
+			tourTextView = (TextView) findViewById(R.id.tour_textView);
+			tourTextView.setTypeface(Data.latoRegular(this));
+			tourCrossBtn = (ImageView) findViewById(R.id.cross_tour);
+			tourCrossBtn.setOnClickListener(this);
+
+
+			relativeLayoutTour = (RelativeLayout) findViewById(R.id.tour_layout);
+			textViewTour = (TextView) findViewById(R.id.callUsText);
+			textViewTour.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewTour.setText(getResources().getText(R.string.start_training));
+
+			relativeLayoutTour.setOnClickListener(this);
 
 
 			//Map Layout
@@ -968,11 +994,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onDrawerOpened(View drawerView) {
 					setPannelVisibility(true);
+					if(tour) {
+						tourLayout.setVisibility(View.GONE);
+
+						try {
+							// Inflate any custom view
+							if(customView == null) {
+                                customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+                            }
+							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+							textView.setText(getString(R.string.tutorial_accept_ride));
+							Crouton.cancelAllCroutons();
+							Crouton.show(HomeActivity.this, customView);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 
 				@Override
 				public void onDrawerClosed(View drawerView) {
-
+					if(tour) {
+						tourLayout.setVisibility(View.VISIBLE);
+						Crouton.cancelAllCroutons();
+					}
 				}
 
 				@Override
@@ -1885,14 +1930,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}, 300);
 
 
-
-
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
 				auditRL.setVisibility(View.VISIBLE);
 			} else {
 				auditRL.setVisibility(View.GONE);
 			}
 
+
+			// TODO: 2/7/17 Change default value
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TOUR_STATUS, 1) == 1){
+				relativeLayoutTour.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutTour.setVisibility(View.GONE);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2622,7 +2672,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
-					showDialogFromBackground(message);
+					showDialogFromBackgroundWithListener(message);
+					if (Data.userData != null && 1 == Data.userData.autosAvailable) {
+						try {
+							// Inflate any custom view
+							if(customView == null) {
+								customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+							}
+							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+							textView.setText(getString(R.string.tutorial_tap_ok));
+							Crouton.cancelAllCroutons();
+							Crouton.show(HomeActivity.this, customView);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2706,6 +2770,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
 				DialogPopup.alertPopup(HomeActivity.this, "", message);
+			}
+		});
+	}
+
+	public void showDialogFromBackgroundWithListener(final String message) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopupWithListener(HomeActivity.this, "", message, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						try {
+							if(tour) {
+								Crouton.cancelAllCroutons();
+								handleTourView(tour, getString(R.string.tutorial_wait_for_customer));
+								createTourNotification();
+							}
+							drawerLayout.closeDrawer(GravityCompat.START);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 	}
@@ -4143,7 +4231,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			unregisterReceiver(broadcastReceiverLowBattery);
 			unregisterReceiver(broadcastReceiverIsCharging);
 			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
-
+			Crouton.cancelAllCroutons();
 			System.gc();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4280,6 +4368,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 
 	}
+
+
 
 
 	class ViewHolderDriverRequest {
@@ -4532,10 +4622,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.YES, null);
-						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-						acceptRequestFunc(customerInfo1);
-						FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
+//						if(RideType == tourType) {
+//
+//						} else {
+							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.YES, null);
+							CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+							acceptRequestFunc(customerInfo1);
+							FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
+//						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -5122,7 +5216,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	double enteredMeterFare = 0;
 
-	//TODO End ride
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 							   int flagDistanceTravelled, final CustomerInfo customerInfo) {
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -8857,5 +8950,126 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void changeCustomerState(boolean state){
 		sortCustomerState = state;
 	}
+
+
+	// Tour operation start here.
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()) {
+			case R.id.cross_tour:
+				tourLayout.setVisibility(View.GONE);
+				break;
+			case R.id.relativeLayoutTour:
+				drawerLayout.closeDrawer(GravityCompat.START);
+				getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				break;
+		}
+	}
+
+	private void handleTourView(boolean flag, String tourText) {
+		if(flag) {
+			tourLayout.setVisibility(View.VISIBLE);
+			tourTextView.setText(tourText);
+		} else {
+			tourLayout.setVisibility(View.GONE);
+		}
+	}
+
+	TourResponseModel tourResponseModel;
+	private void createTourNotification() {
+		handleTourView(tour, getString(R.string.tutorial_your_location));
+		try {
+			new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+					handleTourView(tour, getString(R.string.tutorial_wait_for_customer));
+                }
+            }, 2000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if(tourResponseModel != null) {
+						GCMIntentService gcmIntentService = new GCMIntentService();
+						gcmIntentService.createDemoRequest(tourResponseModel);
+					}
+				}
+			}, 5000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+	}
+
+
+	private void getTourDataFromServer(final Activity activity, final LatLng latLng) {
+
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put("drop_latitude", String.valueOf(latLng.latitude));
+				params.put("drop_longitude", String.valueOf(latLng.longitude));
+
+				RestClient.getApiServices().getTourData(params, new Callback<TourResponseModel>() {
+					@Override
+					public void success(TourResponseModel tourData, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							Log.e("Shared rides jsonString", "=" + jsonString);
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.getInt("flag");
+							String message = jObj.getString("message");
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								}
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
+								tourResponseModel = tourData;
+
+							} else {
+								DialogPopup.dismissLoadingDialog();
+								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+											if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+												relativeLayoutContainer.setVisibility(View.GONE);
+												getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+											}
+										}
+									}
+								});
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+					}
+				});
+
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
+		}
+	}
+
 
 }

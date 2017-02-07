@@ -94,6 +94,7 @@ public class SPLabels {
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 	public static final String SET_AUDIT_STATUS = "set_audit_status";
+    public static final String SET_TOUR_STATUS = "set_driver_tutorial_status";
     public static final String GET_USL_STATUS = "get_usl_status";
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
 	public static final String DIGITAL_SIGNATURE_POPUP_STATUS = "digital_signature_popup_status";

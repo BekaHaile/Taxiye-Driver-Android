@@ -4,162 +4,205 @@
     android:layout_width="720px"
     android:layout_height="1134px">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical"
-        android:splitMotionEvents="false">
-
-
-
-
-        <com.sothree.slidinguppanel.SlidingUpPanelLayout
-            android:id="@+id/slidingLayout"
-            xmlns:sothree="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:gravity="bottom"
-            sothree:umanoOverlay="true"
-            sothree:umanoFadeColor="@color/transparent"
-            sothree:umanoPanelHeight="140px"
-            sothree:umanoShadowHeight="0px"
-            android:layout_below="@+id/topRlOuter">
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <!-- map layout -->
-                <RelativeLayout
-                    android:id="@+id/mapLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:splitMotionEvents="false"
-                    android:visibility="gone">
-
-                    <fragment
-                        android:id="@+id/map"
-                        class="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
-
-
-                </RelativeLayout>
-
-
-                <!-- initial layout-->
-                <include layout="@layout/layout_driver_initial"/>
-
-            </RelativeLayout>
-
-            <include layout="@layout/layout_home_sliding_menu"/>
-
-        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
-
-        <!-- request accept layout-->
-        <include layout="@layout/layout_driver_request_accept"/>
-
-        <!-- engaged layout-->
-        <include layout="@layout/layout_driver_engaged"/>
-
-        <!-- end ride review layout -->
-        <include layout="@layout/layout_driver_end"/>
-
+        >
         <!-- top bar layout-->
         <include layout="@layout/layout_home_top_bar"/>
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutBanner"
-            android:layout_width="wrap_content"
+            android:id="@+id/tour_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5px"
-            android:layout_marginRight="5px"
-            android:visibility="visible"
-            android:layout_marginTop="130px">
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutLastRideEarning"
-                android:layout_width="match_parent"
-                android:layout_height="135px"
-                android:layout_marginLeft="10px"
-                android:layout_marginRight="10px"
-                android:background="@drawable/background_white_rounded_orange_bordered"
+            android:orientation="horizontal"
+            android:background="@color/red_status"
+            android:layout_below="@+id/topBar"
+            >
+            <TextView
+                android:id="@+id/tour_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:visibility="gone">
+                android:padding="26px"
+                android:layout_toLeftOf="@+id/cross_tour"
+                android:layout_alignParentLeft="true"
+                />
 
-                <TextView
-                    android:id="@+id/textViewDriverEarningOnScreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32px"
-                    android:text="@string/last_trip_earning"
-                    android:textSize="28px"/>
-
-                <TextView
-                    android:id="@+id/textViewDriverEarningOnScreenDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewDriverEarningOnScreen"
-                    android:layout_marginLeft="32px"
-                    android:text="@string/NA"
-                    android:textSize="24px"/>
-
-                <TextView
-                    android:id="@+id/textViewDriverEarningOnScreenValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="26px"
-                    android:text="@string/NA"
-                    android:textColor="@color/new_orange"
-                    android:textSize="44px"/>
-
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/cross_tour"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18px"
+                android:layout_centerVertical="true"
+                />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/driverInformationBtn"
-            android:layout_width="80px"
-            android:layout_height="80px"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/relativeLayoutBanner"
-            android:layout_marginRight="36px"
-            android:layout_marginTop="24px"
-            android:visibility="gone"
-            android:background="@drawable/icon_i"
-            android:tag="mwar"/>
-
-        <ListView
-            android:id="@+id/driverRideRequestsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/topRlOuter"
-            android:divider="@color/transparent"
-            android:splitMotionEvents="false"
-            android:visibility="gone"
-            />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="6px"
-            android:layout_below="@+id/topRlOuter"
-            android:background="@drawable/shadow_down"/>
-
         <RelativeLayout
-            android:id="@+id/relativeLayoutContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:visibility="gone"
-            >
+            android:orientation="vertical"
+            android:splitMotionEvents="false">
+
+
+
+
+            <com.sothree.slidinguppanel.SlidingUpPanelLayout
+                android:id="@+id/slidingLayout"
+                xmlns:sothree="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:gravity="bottom"
+                sothree:umanoOverlay="true"
+                sothree:umanoFadeColor="@color/transparent"
+                sothree:umanoPanelHeight="140px"
+                sothree:umanoShadowHeight="0px"
+                android:layout_below="@+id/topRlOuter">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <!-- map layout -->
+                    <RelativeLayout
+                        android:id="@+id/mapLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:splitMotionEvents="false"
+                        android:visibility="gone">
+
+                        <fragment
+                            android:id="@+id/map"
+                            class="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"/>
+
+
+                    </RelativeLayout>
+
+
+                    <!-- initial layout-->
+                    <include layout="@layout/layout_driver_initial"/>
+
+                </RelativeLayout>
+
+                <include layout="@layout/layout_home_sliding_menu"/>
+
+            </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+            <!-- request accept layout-->
+            <include layout="@layout/layout_driver_request_accept"/>
+
+            <!-- engaged layout-->
+            <include layout="@layout/layout_driver_engaged"/>
+
+            <!-- end ride review layout -->
+            <include layout="@layout/layout_driver_end"/>
+
+            <!--&lt;!&ndash; top bar layout&ndash;&gt;-->
+            <!--<include layout="@layout/layout_home_top_bar"/>-->
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5px"
+                android:layout_marginRight="5px"
+                android:visibility="visible"
+                android:layout_marginTop="130px">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutLastRideEarning"
+                    android:layout_width="match_parent"
+                    android:layout_height="135px"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginRight="10px"
+                    android:background="@drawable/background_white_rounded_orange_bordered"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textViewDriverEarningOnScreen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32px"
+                        android:text="@string/last_trip_earning"
+                        android:textSize="28px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDriverEarningOnScreenDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewDriverEarningOnScreen"
+                        android:layout_marginLeft="32px"
+                        android:text="@string/NA"
+                        android:textSize="24px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDriverEarningOnScreenValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="26px"
+                        android:text="@string/NA"
+                        android:textColor="@color/new_orange"
+                        android:textSize="44px"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/driverInformationBtn"
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/relativeLayoutBanner"
+                android:layout_marginRight="36px"
+                android:layout_marginTop="24px"
+                android:visibility="gone"
+                android:background="@drawable/icon_i"
+                android:tag="mwar"/>
+
+            <ListView
+                android:id="@+id/driverRideRequestsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topRlOuter"
+                android:divider="@color/transparent"
+                android:splitMotionEvents="false"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="6px"
+                android:layout_below="@+id/topRlOuter"
+                android:background="@drawable/shadow_down"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="gone"
+                >
+            </RelativeLayout>
+
+
         </RelativeLayout>
 
+    </LinearLayout>
 
-    </RelativeLayout>
 
     <!-- menu layout -->
     <include layout="@layout/layout_driver_menu"/>
