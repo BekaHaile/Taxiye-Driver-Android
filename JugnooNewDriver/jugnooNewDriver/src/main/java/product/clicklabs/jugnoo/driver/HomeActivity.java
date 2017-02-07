@@ -2022,7 +2022,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_DAILY);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+					intent.putExtra("counterTime", String.valueOf(infoTileResponse.getTitle()));
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2068,7 +2068,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_PROFILE);
 				} else if (infoTileResponse.getDeepIndex() == 10) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+					intent.putExtra("counterTime", String.valueOf(infoTileResponse.getTitle()));
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2085,7 +2085,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (ActivityNotFoundException e) {
 						// Chrome is not installed
 						Intent intent1 = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-						intent1.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+						intent1.putExtra("counterTime", String.valueOf(infoTileResponse.getTitle()));
 						intent1.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 						HomeActivity.this.startActivity(intent1);
 						HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);

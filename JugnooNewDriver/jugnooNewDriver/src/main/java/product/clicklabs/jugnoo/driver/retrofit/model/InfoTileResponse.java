@@ -61,7 +61,7 @@ public class InfoTileResponse {
 
 	public class Tile {
 
-		@SerializedName("title")
+		@SerializedName("counterTime")
 		@Expose
 		private String title;
 		@SerializedName("text_view_1")
@@ -92,7 +92,7 @@ public class InfoTileResponse {
 		/**
 		 *
 		 * @return
-		 * The title
+		 * The counterTime
 		 */
 		public String getTitle() {
 			return title;
@@ -101,7 +101,7 @@ public class InfoTileResponse {
 		/**
 		 *
 		 * @param title
-		 * The title
+		 * The counterTime
 		 */
 		public void setTitle(String title) {
 			this.title = title;

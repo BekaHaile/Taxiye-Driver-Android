@@ -154,7 +154,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
-//		title.getPaint().setShader(textShader);
+//		counterTime.getPaint().setShader(textShader);
 		linearLayoutTo = (LinearLayout) findViewById(R.id.linearLayoutTo);
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
 		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
