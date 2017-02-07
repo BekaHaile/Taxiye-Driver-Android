@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/linearLayoutRoot"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="1134px"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="145px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/titleAutoSide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutProgressBar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="22px"
+            android:gravity="center"
+            android:text="@string/auto_from_front"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/customCamera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="845px"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/surfaceView"
+            android:background="@color/black">
+
+            <Button
+                android:id="@+id/captureImage"
+                android:layout_width="86px"
+                android:layout_height="86px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/click_picture"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/buttonGallery"
+                android:layout_width="72px"
+                android:layout_height="72px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50px"
+                android:textSize="40px"
+                android:background="@drawable/photogallery_icon"
+                android:textColor="@color/white"
+                android:visibility="visible"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutConfirmImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="94px"
+                android:layout_marginLeft="14px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"/>
+
+
+            <Button
+                android:id="@+id/rejectImage"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/self_audit_cross"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/acceptImage"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/self_audit_tick"
+                android:visibility="visible"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

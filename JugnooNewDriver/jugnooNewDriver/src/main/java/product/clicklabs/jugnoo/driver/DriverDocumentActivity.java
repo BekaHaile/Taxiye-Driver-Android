@@ -2,20 +2,28 @@ package product.clicklabs.jugnoo.driver;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.kbeanie.imagechooser.api.ChosenImage;
+
 import org.json.JSONObject;
 
+import java.io.File;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfEnrollmentCameraFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -29,7 +37,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	Button backBtn, submitButton;
 
-	RelativeLayout relativeLayoutRides;
+	public RelativeLayout relativeLayoutRides, relativeLayoutContainer;
 	String accessToken;
 
 	DocumentListFragment documentListFragment;
@@ -46,6 +54,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		backBtn = (Button) findViewById(R.id.backBtn);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
+		relativeLayoutContainer = (RelativeLayout) findViewById(R.id.relativeLayoutContainer);
 		documentListFragment = new DocumentListFragment();
 
 		Bundle bundle = new Bundle();
@@ -90,6 +99,17 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		super.onBackPressed();
 	}
 
+	public RelativeLayout getRelativeLayoutContainer(){
+		return relativeLayoutContainer;
+	}
+
+	private TransactionUtils transactionUtils;
+	public TransactionUtils getTransactionUtils(){
+		if(transactionUtils == null){
+			transactionUtils = new TransactionUtils();
+		}
+		return transactionUtils;
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -104,6 +124,41 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+	}
+
+
+	private DocumentListFragment getSignatureFragment() {
+		return (DocumentListFragment) getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName());
+	}
+
+	private SelfEnrollmentCameraFragment getSelfEnrollmentCameraFragment(){
+		return  (SelfEnrollmentCameraFragment) getSupportFragmentManager().findFragmentByTag(SelfEnrollmentCameraFragment.class.getName());
+	}
+
+	public void ServerInterface(File f){
+		if(getSignatureFragment() != null) {
+
+			if (getSelfEnrollmentCameraFragment() != null) {
+//				getSupportFragmentManager().beginTransaction().remove(getSelfEnrollmentCameraFragment()).commit();
+//				super.onBackPressed();
+				relativeLayoutContainer.setVisibility(View.GONE);
+				Log.e("fragment count", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+			}
+			getSignatureFragment().uploadToServer(f);
+		}
+	}
+
+	public void openGalleryFragment(){
+		if(getSignatureFragment() != null) {
+
+			if (getSelfEnrollmentCameraFragment() != null) {
+//				getSupportFragmentManager().beginTransaction().remove(getSelfEnrollmentCameraFragment()).commit();
+//				super.onBackPressed();
+				relativeLayoutContainer.setVisibility(View.GONE);
+				Log.e("fragment count", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+			}
+			getSignatureFragment().chooseImageFromGallery();
+		}
 	}
 
 	private void docSubmission() {

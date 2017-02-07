@@ -753,6 +753,7 @@
     <string name="provide_sign_msg">Please provide signature before submit</string>
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app">Looking for Customer App</string>
+    <string name="image">image</string>
 
 
     <string-array name="CountryCodes" >
