@@ -896,7 +896,7 @@ public class GCMIntentService extends IntentService {
 
 	}
 
-	public void createDemoRequest(TourResponseModel message) {
+	public void createDemoRequest(Context context, TourResponseModel message) {
 		try {
 			 {
 
@@ -973,11 +973,11 @@ public class GCMIntentService extends IntentService {
 								DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 								DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 								if (dryDistance >= 1000) {
-									distanceDry = decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
+									distanceDry = decimalFormat.format(dryDistance / 1000) + context.getResources().getString(R.string.km_away);
 								} else {
-									distanceDry = decimalFormatNoDecimal.format(dryDistance) + " " + getResources().getString(R.string.m_away);
+									distanceDry = ""+decimalFormatNoDecimal.format(dryDistance) + " " + context.getResources().getString(R.string.m_away);
 								}
-							} catch (Resources.NotFoundException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
 							}
 
@@ -995,26 +995,26 @@ public class GCMIntentService extends IntentService {
 										new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
 								Data.addCustomerInfo(customerInfo);
 
-								startRing(this, engagementId, changeRing);
+								startRing(context, engagementId, changeRing);
 
 								if (jObj.getPenaliseDriverTimeout() == 1) {
-									startTimeoutAlarm(this);
+									startTimeoutAlarm(context);
 								}
-								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
 								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-								notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
 										referenceId, userId, perfectRide,
 										isPooled, isDelivery, isDeliveryPool);
 								HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 
 								Log.e("referenceId", "=" + referenceId);
 							} else {
-								notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
 										referenceId, userId, perfectRide,
 										isPooled, isDelivery, isDeliveryPool);
-								startRing(this, engagementId, changeRing);
+								startRing(context, engagementId, changeRing);
 
-								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
 								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 							}
 						}
@@ -1023,15 +1023,15 @@ public class GCMIntentService extends IntentService {
 							if (jObj.getWakeUpLockEnabled() == 1) {
 								if (HomeActivity.activity != null) {
 									if (!HomeActivity.activity.hasWindowFocus()) {
-										Intent newIntent = new Intent(this, HomeActivity.class);
+										Intent newIntent = new Intent(context, HomeActivity.class);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										startActivity(newIntent);
+										context.startActivity(newIntent);
 									}
 								} else {
-									Intent homeScreen = new Intent(this, SplashNewActivity.class);
+									Intent homeScreen = new Intent(context, SplashNewActivity.class);
 									homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									startActivity(homeScreen);
+									context.startActivity(homeScreen);
 								}
 							}
 						} catch (Exception e) {

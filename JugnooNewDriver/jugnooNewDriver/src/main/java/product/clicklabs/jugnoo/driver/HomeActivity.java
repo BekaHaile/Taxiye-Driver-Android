@@ -35,7 +35,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,8 +150,9 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
 import product.clicklabs.jugnoo.driver.tutorial.Crouton;
-import product.clicklabs.jugnoo.driver.tutorial.TourDialog;
+import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -444,7 +444,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private RelativeLayout tourLayout;
 	private ImageView tourCrossBtn ;
 	private TextView tourTextView;
-	private boolean tour = true;
+	private boolean isTourFlag, isTourBtnClicked;
 	private View customView;
 
 	private RelativeLayout relativeLayoutTour;
@@ -637,14 +637,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			// Tutorial Layout
 			tourLayout = (RelativeLayout) findViewById(R.id.tour_layout);
+			tourLayout.setVisibility(View.GONE);
 			tourTextView = (TextView) findViewById(R.id.tour_textView);
 			tourTextView.setTypeface(Data.latoRegular(this));
 			tourCrossBtn = (ImageView) findViewById(R.id.cross_tour);
 			tourCrossBtn.setOnClickListener(this);
 
 
-			relativeLayoutTour = (RelativeLayout) findViewById(R.id.tour_layout);
-			textViewTour = (TextView) findViewById(R.id.callUsText);
+			relativeLayoutTour = (RelativeLayout) findViewById(R.id.relativeLayoutTour);
+			textViewTour = (TextView) findViewById(R.id.textViewTour);
 			textViewTour.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewTour.setText(getResources().getText(R.string.start_training));
 
@@ -838,6 +839,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
 			reviewSkipBtn.setTypeface(Data.latoRegular(this));
+			reviewSkipBtn.setVisibility(View.GONE);
 
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
@@ -994,30 +996,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onDrawerOpened(View drawerView) {
 					setPannelVisibility(true);
-					if(tour) {
-						tourLayout.setVisibility(View.GONE);
-
-						try {
-							// Inflate any custom view
-							if(customView == null) {
-                                customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
-                            }
-							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
-							textView.setText(getString(R.string.tutorial_accept_ride));
-							Crouton.cancelAllCroutons();
-							Crouton.show(HomeActivity.this, customView);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
+//					if(isTourFlag) {
+//						tourLayout.setVisibility(View.GONE);
+//
+//						try {
+//							// Inflate any custom view
+//							if(customView == null) {
+//                                customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+//                            }
+//							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+//							textView.setText(getString(R.string.tutorial_accept_ride));
+//							Crouton.cancelAllCroutons();
+//							Crouton.show(HomeActivity.this, customView);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//					}
 				}
 
 				@Override
 				public void onDrawerClosed(View drawerView) {
-					if(tour) {
+					Crouton.cancelAllCroutons();
+					if(isTourFlag && Data.userData.autosAvailable == 1) {
 						tourLayout.setVisibility(View.VISIBLE);
-						Crouton.cancelAllCroutons();
 					}
+
 				}
 
 				@Override
@@ -1187,6 +1190,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					drawerLayout.closeDrawer(GravityCompat.START);
+					Crouton.cancelAllCroutons();
 				}
 			});
 
@@ -1198,6 +1202,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
 					drawerLayout.closeDrawer(GravityCompat.START);
+					Crouton.cancelAllCroutons();
 //					relativeLayoutContainer.setVisibility(View.VISIBLE);
 //					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -1471,9 +1476,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 													if (displacement <= DRIVER_START_RIDE_CHECK_METERS || actualDispalcement <= DRIVER_START_RIDE_CHECK_METERS) {
 														buildAlertMessageNoGps();
-														GCMIntentService.clearNotifications(activity);
-														driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
-														FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+														if(isTourFlag) {
+															driverScreenMode = DriverScreenMode.D_START_RIDE;
+															Data.setCustomerState(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()),
+																	driverScreenMode);
+															switchDriverScreen(driverScreenMode);
+															handleTourView(isTourFlag, getString(R.string.tutorial_tap_to_start_ride));
+														} else {
+															GCMIntentService.clearNotifications(activity);
+															driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
+															FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+														}
 													} else {
 														DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
 													}
@@ -1510,16 +1523,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
-						intent.putExtra(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-						startActivity(intent);
-						overridePendingTransition(R.anim.right_in, R.anim.right_out);
-						if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
-							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CANCEL, null);
-							FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
-						} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
-							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CANCEL, null);
-							FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+						if(isTourFlag) {
+							handleCancelRideSuccess(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), "");
+							handleTourView(false, "");
+						} else {
+							Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+							intent.putExtra(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
+							startActivity(intent);
+							overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+								MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CANCEL, null);
+								FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
+							} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+								MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CANCEL, null);
+								FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+							}
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -1544,8 +1562,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
-					updateWalletBalance(Data.getCurrentCustomerInfo());
+//					if(isTourFlag) {
+//						endRidePopup(HomeActivity.this, customerInfo);
+//					} else {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
+						updateWalletBalance(Data.getCurrentCustomerInfo());
+//					}
 				}
 			});
 
@@ -1614,6 +1636,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
+						handleTourView(false, "");
 						MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+FirebaseEvents.SUBMIT,null);
 						final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 						if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
@@ -1693,7 +1716,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int rating = (int) ratingBarFeedback.getRating();
 							rating = Math.abs(rating);
 							if (0 == rating) {
-								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.please_give_customer));
+								try {
+									MyApplication.getInstance().logEvent(FirebaseEvents.RATING + "_" + FirebaseEvents.SKIP,null);
+									saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
+									MeteringService.clearNotifications(HomeActivity.this);
+									Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
+
+									driverScreenMode = DriverScreenMode.D_INITIAL;
+									switchDriverScreen(driverScreenMode);
+									FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+									perfectRideStateRestore();
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							} else {
 								MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+rating,null);
 								saveCustomerRideDataInSP(customerInfo);
@@ -1922,6 +1957,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 										overridePendingTransition(R.anim.right_in, R.anim.right_out);
 //										overridePendingTransition(R.anim.left_in, R.anim.left_out);
+										Crouton.cancelAllCroutons();
 									}
 								});
 					}
@@ -1940,7 +1976,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			// TODO: 2/7/17 Change default value
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TOUR_STATUS, 1) == 1){
 				relativeLayoutTour.setVisibility(View.VISIBLE);
+//				tourLayout.setVisibility(View.VISIBLE);
+//				isTourFlag = true;
 			} else {
+//				isTourFlag = false;
+//				tourLayout.setVisibility(View.GONE);
 				relativeLayoutTour.setVisibility(View.GONE);
 			}
 
@@ -2672,8 +2712,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
-					showDialogFromBackgroundWithListener(message);
-					if (Data.userData != null && 1 == Data.userData.autosAvailable) {
+					if(isTourFlag) {
+						showDialogFromBackgroundWithListener(message);
+					} else {
+						showDialogFromBackground(message);
+					}
+					if(isTourFlag && Data.userData.autosAvailable == 1) {
 						try {
 							// Inflate any custom view
 							if(customView == null) {
@@ -2783,12 +2827,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					@Override
 					public void onClick(View v) {
 						try {
-							if(tour) {
+//							if(isTourFlag && isTourBtnClicked && Data.userData.autosAvailable == 1) {
+//								//isTourBtnClicked = false;
+//								Crouton.cancelAllCroutons();
+//								handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
+//								createTourNotification();
+//							}
+							if(isTourFlag && isTourBtnClicked && Data.userData.autosAvailable == 1) {
+								isTourBtnClicked = false;
 								Crouton.cancelAllCroutons();
-								handleTourView(tour, getString(R.string.tutorial_wait_for_customer));
+								handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
 								createTourNotification();
+							} else if(isTourFlag && isTourBtnClicked) {
+								isTourBtnClicked = false;
 							}
 							drawerLayout.closeDrawer(GravityCompat.START);
+							Crouton.cancelAllCroutons();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -3236,7 +3290,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					linearLayoutMeterFare.setVisibility(View.GONE);
 					relativeLayoutRateCustomer.setVisibility(View.VISIBLE);
 					ratingBarFeedback.setVisibility(View.VISIBLE);
-					reviewSkipBtn.setVisibility(View.VISIBLE);
+					reviewSkipBtn.setVisibility(View.GONE);
 					ratingBarFeedback.setRating(0);
 
 					try {
@@ -3774,7 +3828,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
-
+					if(isTourFlag) {
+						handleTourView(true, getString(R.string.tutorial_tap_done_finish));
+					}
 					break;
 
 
@@ -4622,14 +4678,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-//						if(RideType == tourType) {
-//
-//						} else {
+						if(isTourFlag) {
+							setTourOperation(2);
+						} else {
 							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.YES, null);
 							CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 							acceptRequestFunc(customerInfo1);
 							FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
-//						}
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -4642,10 +4698,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.NO, null);
-						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-						rejectRequestFuncCall(customerInfo1);
-						FlurryEventLogger.event(RIDE_CANCELLED);
+						if(isTourFlag) {
+							setTourOperation(1);
+						} else {
+							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + holder.id + "_" + FirebaseEvents.NO, null);
+							CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+							rejectRequestFuncCall(customerInfo1);
+							FlurryEventLogger.event(RIDE_CANCELLED);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -5779,7 +5839,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put("paid_in_cash", String.valueOf(finalToPay));
 
 			DialogPopup.dismissLoadingDialog();
-			Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
+			if(!isTourFlag) {
+				Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
+			}
 			try {
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "url = " + url + " params = " + params);
 			} catch (Exception e) {
@@ -6280,10 +6342,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								|| displacement <= DRIVER_START_RIDE_CHECK_METERS
 								|| actualDisplacement <= DRIVER_START_RIDE_CHECK_METERS) {
 							buildAlertMessageNoGps();
+							if(isTourFlag) {
+								setTourOperation(3);
+							} else {
+								GCMIntentService.clearNotifications(activity);
 
-							GCMIntentService.clearNotifications(activity);
-
-							driverStartRideAsync(activity, driverAtPickupLatLng, customerInfo);
+								driverStartRideAsync(activity, driverAtPickupLatLng, customerInfo);
+							}
 
 
 							FlurryEventLogger.event(START_RIDE_CONFIRMED);
@@ -6306,11 +6371,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+FirebaseEvents.CONFIRM_NO,null);
 					dialog.dismiss();
 					FlurryEventLogger.event(START_RIDE_NOT_CONFIRMED);
+					if(isTourFlag) {
+						handleTourView(isTourFlag, getString(R.string.tutorial_tap_to_start_ride));
+					}
 				}
 
 			});
 
 			dialog.show();
+			if(isTourFlag) {
+				handleTourView(isTourFlag, getString(R.string.tutorial_tap_ok));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -6384,11 +6455,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE+"_"+FirebaseEvents.CONFIRM_NO, null);
 						dialogEndRidePopup.dismiss();
 						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
+						if(isTourFlag){
+							handleTourView(isTourFlag, getString(R.string.tutorial_tap_end_ride));
+						}
 					}
 
 				});
 
 				dialogEndRidePopup.show();
+				if(isTourFlag) {
+					handleTourView(true, getString(R.string.tutorial_tap_ok_endride));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -7489,8 +7566,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				GCMIntentService.clearNotifications(activity);
-				driverMarkArriveRideAsync(activity, latLng, Data.getCustomerInfo(String.valueOf(engagementId)));
+				if(!isTourFlag) {
+					GCMIntentService.clearNotifications(activity);
+					driverMarkArriveRideAsync(activity, latLng, Data.getCustomerInfo(String.valueOf(engagementId)));
+				}
 			}
 		});
 	}
@@ -8958,11 +9037,73 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.cross_tour:
-				tourLayout.setVisibility(View.GONE);
+				handleTourView(false, "");
 				break;
 			case R.id.relativeLayoutTour:
-				drawerLayout.closeDrawer(GravityCompat.START);
-				getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				if (Data.userData.autosAvailable == 1) {
+					isTourFlag = true;
+					drawerLayout.closeDrawer(GravityCompat.START);
+					Crouton.cancelAllCroutons();
+					handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
+					createTourNotification();
+				} else {
+					Toast.makeText(HomeActivity.this, ""+getString(R.string.tutorial_accept_ride), Toast.LENGTH_SHORT).show();
+//					try{
+//						isTourBtnClicked = true;
+//						new Handler().postDelayed(new Runnable() {
+//							@Override
+//							public void run() {
+//								if(isTourBtnClicked) {
+//									isTourBtnClicked = false;
+//									isTourFlag = false;
+//									Crouton.cancelAllCroutons();
+//								}
+//							}
+//						}, 4000);
+//					} catch(Exception e){
+//
+//					}
+				}
+//				isTourFlag = true;
+//				if (Data.userData.autosAvailable == 1) {
+//					drawerLayout.closeDrawer(GravityCompat.START);
+//					Crouton.cancelAllCroutons();
+//					handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
+//					createTourNotification();
+//				} else {
+//					try {
+//						isTourBtnClicked = true;
+//						// Inflate any custom view
+//						if(customView == null) {
+//							customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+//						}
+//						RelativeLayout layout = (RelativeLayout) customView.findViewById(R.id.tour_layout);
+//						layout.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								isTourBtnClicked = false;
+//								handleTourView(false, "");
+//							}
+//						});
+//
+//						ImageView imageView = (ImageView) customView.findViewById(R.id.cross_tour);
+//						imageView.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								Crouton.cancelAllCroutons();
+//								isTourBtnClicked = false;
+//								isTourFlag = false;
+//								handleTourView(false, "");
+//							}
+//						});
+//						TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+//						textView.setText(getString(R.string.tutorial_accept_ride));
+//						Crouton.cancelAllCroutons();
+//						Crouton.show(HomeActivity.this, customView);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
 				break;
 		}
 	}
@@ -8973,33 +9114,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourTextView.setText(tourText);
 		} else {
 			tourLayout.setVisibility(View.GONE);
+			Crouton.cancelAllCroutons();
+			// TODO: 2/7/17 Clear screens and mode to first screen
+			//isTourBtnClicked = false;
+			isTourFlag = false;
 		}
 	}
 
 	TourResponseModel tourResponseModel;
 	private void createTourNotification() {
-		handleTourView(tour, getString(R.string.tutorial_your_location));
-		try {
-			new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-					handleTourView(tour, getString(R.string.tutorial_wait_for_customer));
-                }
-            }, 2000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		try {
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					if(tourResponseModel != null) {
-						GCMIntentService gcmIntentService = new GCMIntentService();
-						gcmIntentService.createDemoRequest(tourResponseModel);
-					}
+					getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				}
-			}, 5000);
+			}, 8000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -9007,7 +9137,119 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
+	private void setTourOperation(int status) {
+		switch(status) {
+			case 1:
+				Data.removeCustomerInfo(tourResponseModel.responses.requestResponse.getEngagementId(), EngagementStatus.REQUESTED.getOrdinal());
+				try {
+					if (perfectRideMarker != null) {
+						perfectRideMarker.remove();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+						EngagementStatus.REQUESTED.getOrdinal()));
+				if(gcmIntentService == null) {
+					gcmIntentService = new GenrateTourPush(HomeActivity.this);
+				}
+				gcmIntentService.stopRing(true, HomeActivity.this);
+				try {
+					if (map != null) {
+                        map.clear();
+                    }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				handleTourView(false, "");
+				isTourFlag = false;
+				break;
+			case 2:
 
+				Gson gson = new Gson();
+				String jsonString = gson.toJson(tourResponseModel.responses.acceptResponse, AcceptResponse.class);
+				Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
+				Prefs.with(activity).save(Constants.DRIVER_RIDE_EARNING, "");
+				Prefs.with(activity).save(Constants.DRIVER_RIDE_DATE, "");
+				acceptRideSucess(jsonString,
+						String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()),
+						String.valueOf(tourResponseModel.responses.userData.userId));
+				if(gcmIntentService == null) {
+					gcmIntentService = new GenrateTourPush(HomeActivity.this);
+				}
+				gcmIntentService.stopRing(true, HomeActivity.this);
+
+				handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+
+//				Data.nextPickupLatLng = new LatLng(tourResponseModel.responses.acceptResponse.pickupLatitude, tourResponseModel.responses.acceptResponse.pickupLongitude);
+//				Data.nextCustomerName = tourResponseModel.responses.userData.userName;
+//				createPerfectRideMarker();
+//				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+//				driverPerfectRidePassengerName.setText(Data.nextCustomerName);
+//				perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
+//				driverPassengerInfoRl.setVisibility(View.VISIBLE);
+//				driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+//						EngagementStatus.REQUESTED.getOrdinal()));
+
+				//handleTourView(true, "");
+				break;
+			case 3:
+				double dropLatitude = 0, dropLongitude = 0;
+				try {
+
+						dropLatitude = tourResponseModel.responses.acceptResponse.opDropLatitude;
+						dropLongitude = tourResponseModel.responses.acceptResponse.opDropLongitude;
+						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");
+
+
+//					customerInfo.setDropAddress(jObj.getString(KEY_DROP_ADDRESS));
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+//				if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
+//					customerInfo.setDropLatLng(null);
+//				} else {
+//					customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
+//				}
+
+
+
+
+//				if (customerInfo.getIsDelivery() == 1) {
+//					customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
+//					Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
+//				}
+
+				initializeStartRideVariables();
+
+//				if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
+//						|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
+//					Prefs.with(activity).save(Constants.SP_START_LATITUDE, String.valueOf(driverAtPickupLatLng.latitude));
+//					Prefs.with(activity).save(Constants.SP_START_LONGITUDE, String.valueOf(driverAtPickupLatLng.longitude));
+//				}
+
+
+				driverScreenMode = DriverScreenMode.D_IN_RIDE;
+				Data.setCustomerState(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), driverScreenMode);
+//				saveCustomerRideDataInSP(customerInfo);
+
+				switchDriverScreen(driverScreenMode);
+
+				new DriverTimeoutCheck().clearCount(activity);
+				Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, tourResponseModel.responses.acceptResponse.userData.phoneNo);
+
+				handleTourView(isTourFlag, getString(R.string.tutorial_tap_end_ride));
+
+				break;
+			case 4:
+
+				break;
+		}
+	}
+
+	GenrateTourPush gcmIntentService;
 	private void getTourDataFromServer(final Activity activity, final LatLng latLng) {
 
 		try {
@@ -9015,8 +9257,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-				params.put("drop_latitude", String.valueOf(latLng.latitude));
-				params.put("drop_longitude", String.valueOf(latLng.longitude));
+				params.put("latitude", String.valueOf(latLng.latitude));
+				params.put("longitude", String.valueOf(latLng.longitude));
 
 				RestClient.getApiServices().getTourData(params, new Callback<TourResponseModel>() {
 					@Override
@@ -9035,7 +9277,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								tourResponseModel = tourData;
-
+								if(gcmIntentService == null) {
+									gcmIntentService = new GenrateTourPush(HomeActivity.this);
+								}
+								gcmIntentService.createDemoRequest(tourResponseModel);
+								handleTourView(isTourFlag, getString(R.string.tutorial_customer_requesting_ride));
 							} else {
 								DialogPopup.dismissLoadingDialog();
 								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener() {
