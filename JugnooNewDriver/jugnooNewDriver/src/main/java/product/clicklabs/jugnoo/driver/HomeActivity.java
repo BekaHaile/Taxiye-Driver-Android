@@ -9116,6 +9116,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourLayout.setVisibility(View.GONE);
 			Crouton.cancelAllCroutons();
 			// TODO: 2/7/17 Clear screens and mode to first screen
+			reviewSkipBtn.performLongClick()
 			//isTourBtnClicked = false;
 			isTourFlag = false;
 		}
