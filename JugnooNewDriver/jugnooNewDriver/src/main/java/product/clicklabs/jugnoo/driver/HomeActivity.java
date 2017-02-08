@@ -9036,25 +9036,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				handleTourView(false, "");
 				break;
 			case R.id.relativeLayoutTour:
-				if (Data.userData.autosAvailable == 1) {
-					isTourFlag = true;
-					drawerLayout.closeDrawer(GravityCompat.START);
-					Crouton.cancelAllCroutons();
-					handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
-					createTourNotification();
-				} else {
-					try{
-						isTourBtnClicked = true;
-						try {
-							croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
-						} catch(Exception e){
-
-						}
+				if(!isTourFlag) {
+					if (Data.userData.autosAvailable == 1) {
+						isTourFlag = true;
+						drawerLayout.closeDrawer(GravityCompat.START);
 						Crouton.cancelAllCroutons();
-						Crouton.show(HomeActivity.this, customView);
+						handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
+						createTourNotification();
+					} else {
+						try {
+							isTourBtnClicked = true;
+							try {
+								croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
+							} catch (Exception e) {
 
-					} catch(Exception e){
-						isTourBtnClicked = false;
+							}
+							Crouton.cancelAllCroutons();
+							Crouton.show(HomeActivity.this, customView);
+
+						} catch (Exception e) {
+							isTourBtnClicked = false;
+						}
 					}
 				}
 				break;
@@ -9066,13 +9068,61 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourLayout.setVisibility(View.VISIBLE);
 			tourTextView.setText(tourText);
 		} else {
+			// TODO: 2/7/17 Clear screens and mode to first screen
+			try {
+				if (driverScreenMode == DriverScreenMode.D_ARRIVED) {
+                    driverCancelRideBtn.performClick();
+                } else if(driverScreenMode == DriverScreenMode.D_START_RIDE) {
+                    driverCancelRideBtn.performClick();
+                } else if(driverScreenMode == DriverScreenMode.D_IN_RIDE) {
+					if(endRideGPSCorrection(Data.getCurrentCustomerInfo())) {
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										tutorialChangeState();
+									}
+								}, 1000);
+							}
+						});
+					} else {
+						return;
+					}
+                } else if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
+                    reviewSkipBtn.performLongClick();
+                } else {
+                    reviewSkipBtn.performLongClick();
+                }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			isTourFlag = false;
 			tourLayout.setVisibility(View.GONE);
 			Crouton.cancelAllCroutons();
-			// TODO: 2/7/17 Clear screens and mode to first screen
-			reviewSkipBtn.performLongClick();
-
 		}
+	}
+
+	private void tutorialChangeState() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RATING + "_" + FirebaseEvents.SKIP,null);
+					saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
+					MeteringService.clearNotifications(HomeActivity.this);
+					Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
+
+					driverScreenMode = DriverScreenMode.D_INITIAL;
+					switchDriverScreen(driverScreenMode);
+					FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+					perfectRideStateRestore();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	TourResponseModel tourResponseModel;
@@ -9226,6 +9276,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					public void failure(RetrofitError error) {
 						DialogPopup.dismissLoadingDialog();
 						handleTourView(false, "");
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 					}
 				});
 
@@ -9240,6 +9291,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	private void tourCompleteApi() {
+
+	}
 
 
 
