@@ -532,7 +532,7 @@
         </receiver>
 
         <service
-            android:name=".tutorial.UpdateDriverStatus"
+            android:name=".tutorial.ExtendStopTimeService"
             android:enabled="true"/>
 
         <!--<service-->

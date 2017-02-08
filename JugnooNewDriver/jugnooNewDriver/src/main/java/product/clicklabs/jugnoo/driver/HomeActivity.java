@@ -153,9 +153,11 @@ import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
 import product.clicklabs.jugnoo.driver.tutorial.Crouton;
+import product.clicklabs.jugnoo.driver.tutorial.ExtendStopTimeService;
 import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateDriverStatus;
+import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -1988,17 +1990,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			// TODO: 2/7/17 Change default value
-//			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TOUR_STATUS, 1) == 1){
+//			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 1) == 1){
 				relativeLayoutTour.setVisibility(View.VISIBLE);
 //			} else {
 //				relativeLayoutTour.setVisibility(View.GONE);
 //			}
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1) != -1
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0
 					&& !TextUtils.isEmpty(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""))) {
 				tourCompleteApi(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""),
 						String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
 
+				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+			} else if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0) {
+				tourCompleteApi("2", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
 				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
 			}
 
@@ -4311,12 +4316,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			unregisterReceiver(broadcastReceiverIsCharging);
 			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 			if(isTourFlag) {
-				Intent intent = new Intent(HomeActivity.this, UpdateDriverStatus.class);
+				Intent intent = new Intent(HomeActivity.this, ExtendStopTimeService.class);
 				intent.putExtra("access_token", Data.userData.accessToken);
 				String status = "2";
 				if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
 					status = "3";
 				}
+				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
 				intent.putExtra("status", status);
 				intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
 				startService(intent);
@@ -9164,9 +9170,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			// TODO: 2/7/17 Clear screens and mode to first screen
 			try {
 				if (driverScreenMode == DriverScreenMode.D_ARRIVED) {
-                    driverCancelRideBtn.performClick();
+                    //driverCancelRideBtn.performClick();
                 } else if(driverScreenMode == DriverScreenMode.D_START_RIDE) {
-                    driverCancelRideBtn.performClick();
+                    //driverCancelRideBtn.performClick();
                 } else if(driverScreenMode == DriverScreenMode.D_IN_RIDE) {
 					if(endRideGPSCorrection(Data.getCurrentCustomerInfo())) {
 						runOnUiThread(new Runnable() {
@@ -9186,7 +9192,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 } else if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
                     reviewSkipBtn.performLongClick();
                 } else if(driverScreenMode == DriverScreenMode.D_INITIAL) {
-					setTourOperation(1);
+					//setTourOperation(1);
 				} else {
                     reviewSkipBtn.performLongClick();
                 }
@@ -9409,9 +9415,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("status", status);
 				params.put("training_id", trainingId);
 
-				RestClient.getApiServices().updateDriverStatus(params, new Callback<TourResponseModel>() {
+				RestClient.getApiServices().updateDriverStatus(params, new Callback<UpdateTourStatusModel>() {
 					@Override
-					public void success(TourResponseModel tourData, Response response) {
+					public void success(UpdateTourStatusModel statusModel, Response response) {
 						try {
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							Log.e("Shared rides jsonString", "=" + jsonString);

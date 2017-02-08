@@ -112,7 +112,7 @@ public class SPLabels {
     public static final String DELIVERY_IN_PROGRESS = "delivery_in_progress";
 	public static final String CHAT_SIZE = "chat_size";
 
-    public static final String SET_TOUR_STATUS = "set_driver_tutorial_status";
+    public static final String IS_TUTORIAL_SHOWN = "set_driver_tutorial_status";
     public static final String SET_TRAINING_ID = "training_id";
     public static final String SET_DRIVER_TOUR_STATUS = "tour_status";
 

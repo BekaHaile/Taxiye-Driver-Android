@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.tutorial;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class UpdateDriverStatus extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try{
+            showToast("MyService is handling intent.");
             String accessToken = intent.getStringExtra("access_token");
             String status = intent.getStringExtra("status");
             String trainingId = intent.getStringExtra("training_id");
@@ -37,12 +40,20 @@ public class UpdateDriverStatus extends IntentService {
             params.put("training_id", trainingId);
 
             Response response = RestClient.getApiServices().updateDriverStatus(params);
-            for(int i=0;i<50;i++) {
-                Log.v("Log", "***\n*****\n******\n********");
-            }
+
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void showToast(String message) {
+        final String msg = message;
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }
