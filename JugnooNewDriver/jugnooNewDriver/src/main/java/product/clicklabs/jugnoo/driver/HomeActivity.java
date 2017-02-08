@@ -1462,11 +1462,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					try {
 						firebaseScreenEvent(FirebaseEvents.YES);
 						if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
-							DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
+							DialogPopup.alertPopupTrainingTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CONFIRM_YES, null);
+											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CONFIRM_YES, null);
 											if (myLocation != null) {
 												try {
 													LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -1476,7 +1476,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 													if (displacement <= DRIVER_START_RIDE_CHECK_METERS || actualDispalcement <= DRIVER_START_RIDE_CHECK_METERS) {
 														buildAlertMessageNoGps();
-														if(isTourFlag) {
+														if (isTourFlag) {
 															driverScreenMode = DriverScreenMode.D_START_RIDE;
 															Data.setCustomerState(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()),
 																	driverScreenMode);
@@ -1501,10 +1501,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CONFIRM_NO, null);
+											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CONFIRM_NO, null);
 											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 										}
-									}, false, false);
+									}, false, false, isTourFlag, getString(R.string.tutorial_tap_to_start_ride),
+									new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											handleTourView(false, "");
+										}
+									});
 							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
 						}
 						else{
@@ -6297,7 +6303,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-			dialog.setContentView(R.layout.dialog_custom_two_buttons);
+			dialog.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
 			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
@@ -6314,14 +6320,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
+			RelativeLayout tour_layout = (RelativeLayout) dialog.findViewById(R.id.tour_layout);
+			TextView tour_textView = (TextView) dialog.findViewById(R.id.tour_textView);
+			tour_textView.setTypeface(Data.latoRegular(activity));
+			ImageView cross_tour = (ImageView) dialog.findViewById(R.id.cross_tour);
+
 			if(customerInfo.getIsDelivery()==1){
 				textMessage.setText(getResources().getString(R.string.start_delivery_text));
 			}else{
 				textMessage.setText(getResources().getString(R.string.start_ride_text));
 			}
 
-
-
+			if(isTourFlag){
+				tour_layout.setVisibility(View.VISIBLE);
+			} else {
+				tour_layout.setVisibility(View.GONE);
+			}
+			tour_textView.setText(getResources().getString(R.string.tutorial_tap_ok));
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
 			btnOk.setTypeface(Data.latoRegular(activity));
@@ -6378,6 +6393,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			});
 
+			cross_tour.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					handleTourView(false, "");
+				}
+			});
+
 			dialog.show();
 			if(isTourFlag) {
 				handleTourView(isTourFlag, getString(R.string.tutorial_tap_ok));
@@ -6395,7 +6417,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (dialogEndRidePopup == null || !dialogEndRidePopup.isShowing()) {
 				dialogEndRidePopup = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
 				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons);
+				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
 				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
@@ -6413,6 +6435,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				textMessage.setTypeface(Data.latoRegular(activity));
 				walletBalanceUpdatePopup = false;
 
+				RelativeLayout tour_layout = (RelativeLayout) dialogEndRidePopup.findViewById(R.id.tour_layout);
+				TextView tour_textView = (TextView) dialogEndRidePopup.findViewById(R.id.tour_textView);
+				tour_textView.setTypeface(Data.latoRegular(activity));
+				ImageView cross_tour = (ImageView) dialogEndRidePopup.findViewById(R.id.cross_tour);
+
+				if(isTourFlag){
+					tour_layout.setVisibility(View.VISIBLE);
+				} else {
+					tour_layout.setVisibility(View.GONE);
+				}
+				tour_textView.setText(getResources().getString(R.string.tutorial_tap_ok));
 
 				textMessage.setText(getResources().getString(R.string.end_ride_text));
 
@@ -6460,6 +6493,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
+				});
+
+				cross_tour.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						handleTourView(false, "");
+					}
 				});
 
 				dialogEndRidePopup.show();
@@ -9116,7 +9156,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourLayout.setVisibility(View.GONE);
 			Crouton.cancelAllCroutons();
 			// TODO: 2/7/17 Clear screens and mode to first screen
-			reviewSkipBtn.performLongClick()
+			reviewSkipBtn.performLongClick();
 			//isTourBtnClicked = false;
 			isTourFlag = false;
 		}

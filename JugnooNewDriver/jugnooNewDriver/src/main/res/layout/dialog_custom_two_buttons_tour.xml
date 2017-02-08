@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/rv"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="720px"
+             android:layout_height="1134px"
+             android:orientation="vertical"
+             android:splitMotionEvents="false">
+
+    <RelativeLayout
+        android:id="@+id/tour_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/red_status"
+        android:layout_below="@+id/topBar"
+        android:visibility="gone"
+    >
+        <TextView
+            android:id="@+id/tour_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32px"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:padding="26px"
+            android:layout_toLeftOf="@+id/cross_tour"
+            android:layout_alignParentLeft="true"
+        />
+
+        <ImageView
+            android:id="@+id/cross_tour"
+            android:layout_width="36px"
+            android:layout_height="36px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18px"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_cross_et_pressed"
+        />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/innerRl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="80px"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0px"
+            android:splitMotionEvents="false"
+
+            >
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:text="@string/alert"
+                android:textColor="@color/text_color"
+                android:textSize="50px"
+                android:visibility="gone"
+                android:layout_marginTop="40px"
+
+                />
+
+
+            <TextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:gravity="center"
+                android:text="@string/message"
+                android:lineSpacingExtra="10px"
+                android:maxHeight="800px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:textColor="@color/black"
+                android:textSize="34px"
+
+                />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="40px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
+                android:layout_marginBottom="25px"
+                android:layout_gravity="center"
+                android:splitMotionEvents="false"
+                >
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnOk"
+                    android:layout_width="220px"
+                    android:layout_height="83px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="280px"
+                    android:background="@drawable/new_orange_btn_selector_rounded"
+                    android:text="@string/ok"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnCancel"
+                    android:layout_width="220px"
+                    android:layout_height="83px"
+                    android:layout_marginLeft="28px"
+                    android:padding="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    android:text="@string/cancel"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>
