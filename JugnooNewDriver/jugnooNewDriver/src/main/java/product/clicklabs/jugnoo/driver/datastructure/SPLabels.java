@@ -94,7 +94,7 @@ public class SPLabels {
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 	public static final String SET_AUDIT_STATUS = "set_audit_status";
-    public static final String SET_TOUR_STATUS = "set_driver_tutorial_status";
+
     public static final String GET_USL_STATUS = "get_usl_status";
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
 	public static final String DIGITAL_SIGNATURE_POPUP_STATUS = "digital_signature_popup_status";
@@ -111,6 +111,10 @@ public class SPLabels {
     public static final String CHAT_ENABLED = "chat_enabled";
     public static final String DELIVERY_IN_PROGRESS = "delivery_in_progress";
 	public static final String CHAT_SIZE = "chat_size";
+
+    public static final String SET_TOUR_STATUS = "set_driver_tutorial_status";
+    public static final String SET_TRAINING_ID = "training_id";
+    public static final String SET_DRIVER_TOUR_STATUS = "tour_status";
 
 
 }

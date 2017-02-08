@@ -793,7 +793,7 @@
 	<string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
 	<string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
 	<string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
-	<string name="tutorial_tap_done_finish">Tap DONE to finish</string>
+	<string name="tutorial_tap_done_finish">Tap \'DONE\' to finish</string>
 	<string name="tutorial_tap_arrived_if_at_pickup">Tap \'Arrived\' if you are at the pickup location</string>
 
 	<string-array name="CountryCodes" >

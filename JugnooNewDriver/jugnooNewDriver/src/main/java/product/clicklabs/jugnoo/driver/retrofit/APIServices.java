@@ -573,4 +573,13 @@ public interface APIServices {
 	void getTourData(@FieldMap Map<String, String> params,
 						  Callback<TourResponseModel> callback);
 
+	@FormUrlEncoded
+	@POST("/update_simulation_status")
+	Response updateDriverStatus(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/update_simulation_status")
+	void updateDriverStatus(@FieldMap Map<String, String> params,
+					 Callback<TourResponseModel> callback);
+
 }
