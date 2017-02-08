@@ -446,9 +446,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private TextView tourTextView;
 	private boolean isTourFlag, isTourBtnClicked;
 	private View customView;
-
+	private GenrateTourPush gcmIntentService;
 	private RelativeLayout relativeLayoutTour;
 	private TextView textViewTour;
+	private TextView croutonTourTextView;
+	private ImageView crossTourImageView;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -643,14 +646,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourCrossBtn = (ImageView) findViewById(R.id.cross_tour);
 			tourCrossBtn.setOnClickListener(this);
 
-
 			relativeLayoutTour = (RelativeLayout) findViewById(R.id.relativeLayoutTour);
 			textViewTour = (TextView) findViewById(R.id.textViewTour);
 			textViewTour.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewTour.setText(getResources().getText(R.string.start_training));
 
 			relativeLayoutTour.setOnClickListener(this);
+			// Inflate any custom view
 
+			customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+
+			RelativeLayout layout = (RelativeLayout) customView.findViewById(R.id.tour_layout);
+			layout.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
+
+			crossTourImageView = (ImageView) customView.findViewById(R.id.cross_tour);
+			crossTourImageView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Crouton.cancelAllCroutons();
+					isTourBtnClicked = false;
+					isTourFlag = false;
+					handleTourView(false, "");
+				}
+			});
+			croutonTourTextView = (TextView) customView.findViewById(R.id.tour_textView);
+			croutonTourTextView.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			//Map Layout
 			mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
@@ -996,30 +1021,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onDrawerOpened(View drawerView) {
 					setPannelVisibility(true);
-//					if(isTourFlag) {
-//						tourLayout.setVisibility(View.GONE);
-//
-//						try {
-//							// Inflate any custom view
-//							if(customView == null) {
-//                                customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
-//                            }
-//							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
-//							textView.setText(getString(R.string.tutorial_accept_ride));
-//							Crouton.cancelAllCroutons();
-//							Crouton.show(HomeActivity.this, customView);
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//					}
 				}
 
 				@Override
 				public void onDrawerClosed(View drawerView) {
-					Crouton.cancelAllCroutons();
-					if(isTourFlag && Data.userData.autosAvailable == 1) {
-						tourLayout.setVisibility(View.VISIBLE);
-					}
 
 				}
 
@@ -1106,6 +1111,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							changeJugnooON(1, false, true);
 							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + DELIVERY + "_off", null);
 						}
+						// TODO: 2/8/17 if driver click on delivery then turn off tour
+						handleTourView(false, "");
 						FlurryEventLogger.event(DELIVERY_ON_OFF);
 					}
 				}
@@ -1190,7 +1197,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					drawerLayout.closeDrawer(GravityCompat.START);
-					Crouton.cancelAllCroutons();
+//					Crouton.cancelAllCroutons();
 				}
 			});
 
@@ -1202,8 +1209,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
 					drawerLayout.closeDrawer(GravityCompat.START);
-					Crouton.cancelAllCroutons();
-//					relativeLayoutContainer.setVisibility(View.VISIBLE);
 //					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -1562,12 +1567,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-//					if(isTourFlag) {
-//						endRidePopup(HomeActivity.this, customerInfo);
-//					} else {
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
-						updateWalletBalance(Data.getCurrentCustomerInfo());
-//					}
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
+					updateWalletBalance(Data.getCurrentCustomerInfo());
+
 				}
 			});
 
@@ -1957,7 +1959,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 										overridePendingTransition(R.anim.right_in, R.anim.right_out);
 //										overridePendingTransition(R.anim.left_in, R.anim.left_out);
-										Crouton.cancelAllCroutons();
 									}
 								});
 					}
@@ -1972,15 +1973,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				auditRL.setVisibility(View.GONE);
 			}
 
-
 			// TODO: 2/7/17 Change default value
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TOUR_STATUS, 1) == 1){
 				relativeLayoutTour.setVisibility(View.VISIBLE);
-//				tourLayout.setVisibility(View.VISIBLE);
-//				isTourFlag = true;
 			} else {
-//				isTourFlag = false;
-//				tourLayout.setVisibility(View.GONE);
 				relativeLayoutTour.setVisibility(View.GONE);
 			}
 
@@ -2657,6 +2653,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void switchJugnooOnThroughServer(final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing,
 											final boolean toggleDelivery) {
+		if(isTourBtnClicked) {
+			isTourBtnClicked = false;
+			isTourFlag = true;
+		}
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -2717,20 +2717,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else {
 						showDialogFromBackground(message);
 					}
-					if(isTourFlag && Data.userData.autosAvailable == 1) {
-						try {
-							// Inflate any custom view
-							if(customView == null) {
-								customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
-							}
-							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
-							textView.setText(getString(R.string.tutorial_tap_ok));
-							Crouton.cancelAllCroutons();
-							Crouton.show(HomeActivity.this, customView);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
+//					if(isTourFlag && Data.userData.autosAvailable == 1) {
+//						try {
+//							// Inflate any custom view
+//							if(customView == null) {
+//								customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+//							}
+//							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+//							textView.setText(getString(R.string.tutorial_tap_ok));
+//							Crouton.cancelAllCroutons();
+//							Crouton.show(HomeActivity.this, customView);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//					}
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -2823,23 +2823,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
+				if(croutonTourTextView != null)
+					croutonTourTextView.setText(getString(R.string.tutorial_tap_ok));
 				DialogPopup.alertPopupWithListener(HomeActivity.this, "", message, new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						try {
-//							if(isTourFlag && isTourBtnClicked && Data.userData.autosAvailable == 1) {
-//								//isTourBtnClicked = false;
-//								Crouton.cancelAllCroutons();
-//								handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
-//								createTourNotification();
-//							}
-							if(isTourFlag && isTourBtnClicked && Data.userData.autosAvailable == 1) {
+							if(isTourFlag && Data.userData.autosAvailable == 1) {
 								isTourBtnClicked = false;
-								Crouton.cancelAllCroutons();
+								//Crouton.cancelAllCroutons();
 								handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
 								createTourNotification();
-							} else if(isTourFlag && isTourBtnClicked) {
-								isTourBtnClicked = false;
+							} else {
+								handleTourView(false, "");
 							}
 							drawerLayout.closeDrawer(GravityCompat.START);
 							Crouton.cancelAllCroutons();
@@ -4287,7 +4283,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			unregisterReceiver(broadcastReceiverLowBattery);
 			unregisterReceiver(broadcastReceiverIsCharging);
 			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
-			Crouton.cancelAllCroutons();
+//			Crouton.cancelAllCroutons();
 			System.gc();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -9047,22 +9043,51 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
 					createTourNotification();
 				} else {
-					Toast.makeText(HomeActivity.this, ""+getString(R.string.tutorial_accept_ride), Toast.LENGTH_SHORT).show();
-//					try{
-//						isTourBtnClicked = true;
+//					Toast.makeText(HomeActivity.this, ""+getString(R.string.tutorial_accept_ride), Toast.LENGTH_SHORT).show();
+					try{
+						isTourBtnClicked = true;
 //						new Handler().postDelayed(new Runnable() {
 //							@Override
 //							public void run() {
 //								if(isTourBtnClicked) {
 //									isTourBtnClicked = false;
-//									isTourFlag = false;
-//									Crouton.cancelAllCroutons();
 //								}
 //							}
-//						}, 4000);
-//					} catch(Exception e){
+//						}, 10000);
+
+//						// Inflate any custom view
+//						if(customView == null) {
+//							customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
+//						}
+//						RelativeLayout layout = (RelativeLayout) customView.findViewById(R.id.tour_layout);
+//						layout.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								isTourBtnClicked = false;
+//								handleTourView(false, "");
+//							}
+//						});
 //
-//					}
+//						ImageView imageView = (ImageView) customView.findViewById(R.id.cross_tour);
+//						imageView.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								Crouton.cancelAllCroutons();
+//								isTourBtnClicked = false;
+//								isTourFlag = false;
+//								handleTourView(false, "");
+//							}
+//						});
+//						TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
+						try {
+							croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
+						} catch(Exception e){}
+						Crouton.cancelAllCroutons();
+						Crouton.show(HomeActivity.this, customView);
+
+					} catch(Exception e){
+						isTourBtnClicked = false;
+					}
 				}
 //				isTourFlag = true;
 //				if (Data.userData.autosAvailable == 1) {
@@ -9116,7 +9141,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourLayout.setVisibility(View.GONE);
 			Crouton.cancelAllCroutons();
 			// TODO: 2/7/17 Clear screens and mode to first screen
-			reviewSkipBtn.performLongClick()
+			reviewSkipBtn.performLongClick();
 			//isTourBtnClicked = false;
 			isTourFlag = false;
 		}
@@ -9128,9 +9153,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+					if(isTourFlag) {
+						getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+					} else {
+						handleTourView(false, "");
+					}
 				}
-			}, 8000);
+			}, 5000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -9182,17 +9211,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
 
-//				Data.nextPickupLatLng = new LatLng(tourResponseModel.responses.acceptResponse.pickupLatitude, tourResponseModel.responses.acceptResponse.pickupLongitude);
-//				Data.nextCustomerName = tourResponseModel.responses.userData.userName;
-//				createPerfectRideMarker();
-//				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
-//				driverPerfectRidePassengerName.setText(Data.nextCustomerName);
-//				perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
-//				driverPassengerInfoRl.setVisibility(View.VISIBLE);
-//				driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
-//						EngagementStatus.REQUESTED.getOrdinal()));
-
-				//handleTourView(true, "");
 				break;
 			case 3:
 				double dropLatitude = 0, dropLongitude = 0;
@@ -9203,38 +9221,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");
 
 
-//					customerInfo.setDropAddress(jObj.getString(KEY_DROP_ADDRESS));
-
 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-//				if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-//					customerInfo.setDropLatLng(null);
-//				} else {
-//					customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
-//				}
-
-
-
-
-//				if (customerInfo.getIsDelivery() == 1) {
-//					customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
-//					Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
-//				}
 
 				initializeStartRideVariables();
-
-//				if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
-//						|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
-//					Prefs.with(activity).save(Constants.SP_START_LATITUDE, String.valueOf(driverAtPickupLatLng.latitude));
-//					Prefs.with(activity).save(Constants.SP_START_LONGITUDE, String.valueOf(driverAtPickupLatLng.longitude));
-//				}
 
 
 				driverScreenMode = DriverScreenMode.D_IN_RIDE;
 				Data.setCustomerState(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), driverScreenMode);
-//				saveCustomerRideDataInSP(customerInfo);
 
 				switchDriverScreen(driverScreenMode);
 
@@ -9250,9 +9246,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	GenrateTourPush gcmIntentService;
-	private void getTourDataFromServer(final Activity activity, final LatLng latLng) {
 
+	private void getTourDataFromServer(final Activity activity, final LatLng latLng) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
@@ -9272,18 +9267,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.getInt("flag");
 							String message = jObj.getString("message");
 							if (!jObj.isNull("error")) {
+								handleTourView(false, "");
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 									HomeActivity.logoutUser(activity);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
-								tourResponseModel = tourData;
-								if(gcmIntentService == null) {
-									gcmIntentService = new GenrateTourPush(HomeActivity.this);
+								if(isTourFlag) {
+									tourResponseModel = tourData;
+									if (gcmIntentService == null) {
+										gcmIntentService = new GenrateTourPush(HomeActivity.this);
+									}
+									gcmIntentService.createDemoRequest(tourResponseModel);
+									handleTourView(isTourFlag, getString(R.string.tutorial_customer_requesting_ride));
+								} else {
+									handleTourView(false, getString(R.string.tutorial_customer_requesting_ride));
 								}
-								gcmIntentService.createDemoRequest(tourResponseModel);
-								handleTourView(isTourFlag, getString(R.string.tutorial_customer_requesting_ride));
 							} else {
+								handleTourView(false, "");
 								DialogPopup.dismissLoadingDialog();
 								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener() {
 									@Override
@@ -9299,6 +9300,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();
+							handleTourView(false, "");
 						}
 						DialogPopup.dismissLoadingDialog();
 					}
@@ -9306,17 +9308,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					@Override
 					public void failure(RetrofitError error) {
 						DialogPopup.dismissLoadingDialog();
+						handleTourView(false, "");
 					}
 				});
 
 			} else {
+				handleTourView(false, "");
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
+			handleTourView(false, "");
 			e.printStackTrace();
 			DialogPopup.dismissLoadingDialog();
 		}
 	}
+
+
 
 
 }
