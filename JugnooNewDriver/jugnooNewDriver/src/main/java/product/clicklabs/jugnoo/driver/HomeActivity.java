@@ -1506,10 +1506,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
+											handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
 											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CONFIRM_NO, null);
 											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 										}
-									}, false, false, isTourFlag, getString(R.string.tutorial_tap_to_start_ride),
+									}, false, false, isTourFlag, getString(R.string.tutorial_tap_ok),
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
@@ -1517,6 +1518,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										}
 									});
 							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
+							if (isTourFlag) {
+								handleTourView(isTourFlag, getString(R.string.tutorial_tap_ok));
+							}
 						}
 						else{
 							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
@@ -2829,13 +2833,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
-				if(croutonTourTextView != null)
-					croutonTourTextView.setText(getString(R.string.tutorial_tap_ok));
-				DialogPopup.alertPopupWithListener(HomeActivity.this, "", message, new OnClickListener() {
+				Crouton.cancelAllCroutons();
+				DialogPopup.alertPopupWithListenerTopBar(HomeActivity.this, "", message, new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						try {
-							if(isTourFlag && Data.userData.autosAvailable == 1) {
+							if (isTourFlag && Data.userData.autosAvailable == 1) {
 								isTourBtnClicked = false;
 								//Crouton.cancelAllCroutons();
 								handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
@@ -2844,12 +2847,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								handleTourView(false, "");
 							}
 							drawerLayout.closeDrawer(GravityCompat.START);
-							Crouton.cancelAllCroutons();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
-				});
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						handleTourView(false, "");
+					}
+				}, isTourFlag, getString(R.string.tutorial_tap_ok));
 			}
 		});
 	}

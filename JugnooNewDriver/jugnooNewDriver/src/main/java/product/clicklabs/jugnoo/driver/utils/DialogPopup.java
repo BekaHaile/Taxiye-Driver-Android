@@ -136,8 +136,11 @@ public class DialogPopup {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void alertPopupWithListener(Activity activity, String title, String message, final View.OnClickListener onClickListener) {
+		alertPopupWithListenerTopBar(activity, title, message, onClickListener, onClickListener, false, "");
+	}
+	public static void alertPopupWithListenerTopBar(Activity activity, String title, String message, final View.OnClickListener onClickListener,
+													final View.OnClickListener clickListener, boolean isTourEnable, String tourText) {
 		try {
 			dismissAlertPopup();
 			if("".equalsIgnoreCase(title)){
@@ -168,7 +171,26 @@ public class DialogPopup {
 			textMessage.setText(message);
 			
 			textHead.setVisibility(View.GONE);
-			
+
+			RelativeLayout tourLayoutView = (RelativeLayout) dialog.findViewById(R.id.tour_layout);
+			TextView tourTextView = (TextView) dialog.findViewById(R.id.tour_textView);
+			tourTextView.setTypeface(Data.latoRegular(activity));
+			tourTextView.setText(tourText);
+			ImageView crossTour = (ImageView) dialog.findViewById(R.id.cross_tour);
+
+			if(isTourEnable) {
+				tourLayoutView.setVisibility(View.VISIBLE);
+			} else {
+				tourLayoutView.setVisibility(View.GONE);
+			}
+
+			crossTour.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					clickListener.onClick(v);
+				}
+			});
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			
 			btnOk.setOnClickListener(new View.OnClickListener() {
