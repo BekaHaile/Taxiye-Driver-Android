@@ -1519,7 +1519,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 															FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
 														}
 													} else {
-														DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+//														if(isTourFlag) {
+															DialogPopup.alertPopupWithListenerTopBar(HomeActivity.this, "", getResources().getString(R.string.present_near_customer_location),
+																	new OnClickListener() {
+																@Override
+																public void onClick(View v) {
+																	handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+																}
+															}, new OnClickListener() {
+																@Override
+																public void onClick(View v) {
+																	driverCancelRideBtn.performClick();
+																}
+															}, isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
+//														} else {
+//															DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+//														}
 													}
 												} catch (Exception e) {
 													e.printStackTrace();
@@ -9248,16 +9263,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TourResponseModel tourResponseModel;
 	private void createTourNotification() {
 		try {
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					if(isTourFlag && Data.userData.autosAvailable == 1) {
-						getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-					} else {
-						handleTourView(false, "");
-					}
-				}
-			}, 5000);
+			getTourDataFromServer(HomeActivity.this, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -9366,11 +9372,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								if(isTourFlag) {
 									tourResponseModel = tourData;
-									if (gcmIntentService == null) {
-										gcmIntentService = new GenrateTourPush(HomeActivity.this);
+									try {
+										new Handler().postDelayed(new Runnable() {
+											@Override
+											public void run() {
+												if(isTourFlag && Data.userData.autosAvailable == 1) {
+													if (gcmIntentService == null) {
+														gcmIntentService = new GenrateTourPush(HomeActivity.this);
+													}
+													gcmIntentService.createDemoRequest(tourResponseModel);
+													handleTourView(isTourFlag, getString(R.string.tutorial_customer_requesting_ride));
+												} else {
+													handleTourView(false, "");
+												}
+											}
+										}, 5000);
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
-									gcmIntentService.createDemoRequest(tourResponseModel);
-									handleTourView(isTourFlag, getString(R.string.tutorial_customer_requesting_ride));
 								} else {
 									handleTourView(false, getString(R.string.tutorial_customer_requesting_ride));
 								}
