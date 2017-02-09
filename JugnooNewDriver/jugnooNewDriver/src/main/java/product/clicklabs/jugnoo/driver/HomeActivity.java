@@ -153,10 +153,9 @@ import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
 import product.clicklabs.jugnoo.driver.tutorial.Crouton;
-import product.clicklabs.jugnoo.driver.tutorial.ExtendStopTimeService;
+import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
-import product.clicklabs.jugnoo.driver.tutorial.UpdateDriverStatus;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -4299,22 +4298,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	@Override
 	public void onDestroy() {
-		Toast.makeText(this, "finishing", Toast.LENGTH_SHORT).show();
 		try {
-			if(isTourFlag) {
-                Intent intent = new Intent(HomeActivity.this, ExtendStopTimeService.class);
-                intent.putExtra("access_token", Data.userData.accessToken);
+			if(isTourFlag && tourResponseModel != null) {
+                Intent intent = new Intent(HomeActivity.this, UpdateTutStatusService.class);
+//                intent.putExtra("access_token", Data.userData.accessToken);
                 String status = "2";
                 if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
                     status = "3";
                 }
-                Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
-                intent.putExtra("status", status);
-                intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+                Prefs.with(activity).save(SPLabels.PREF_TRAINING_ACCESS_TOKEN, Data.userData.accessToken);
+				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
+				Prefs.with(activity).save(SPLabels.PREF_TRAINING_ID, String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+//                intent.putExtra("status", status);
+//                intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
                 startService(intent);
 
-				//Toast.makeText(HomeActivity.this, Data.userData.accessToken+"\n"+ status +"\n"+String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()) ,Toast.LENGTH_SHORT).show();
-            }
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

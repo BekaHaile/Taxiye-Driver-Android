@@ -532,7 +532,7 @@
         </receiver>
 
         <service
-            android:name=".tutorial.ExtendStopTimeService"
+            android:name=".tutorial.UpdateTutStatusService"
             android:enabled="true"/>
 
         <!--<service-->
