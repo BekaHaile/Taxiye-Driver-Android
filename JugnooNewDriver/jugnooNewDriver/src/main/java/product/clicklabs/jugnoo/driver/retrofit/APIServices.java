@@ -27,6 +27,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
+import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -566,5 +568,19 @@ public interface APIServices {
 	@POST("/update_drop_latlng")
 	void updateDropLatLng(@FieldMap Map<String, String> params,
 						   Callback<InfoTileResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_simulated_data")
+	void getTourData(@FieldMap Map<String, String> params,
+						  Callback<TourResponseModel> callback);
+
+	@FormUrlEncoded
+	@POST("/update_simulation_status")
+	Response updateDriverStatus(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/update_simulation_status")
+	void updateDriverStatus(@FieldMap Map<String, String> params,
+					 Callback<UpdateTourStatusModel> callback);
 
 }

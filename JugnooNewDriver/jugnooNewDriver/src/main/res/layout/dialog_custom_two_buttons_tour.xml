@@ -4,8 +4,7 @@
              android:layout_width="720px"
              android:layout_height="1134px"
              android:orientation="vertical"
-             android:splitMotionEvents="false"
-    >
+             android:splitMotionEvents="false">
 
     <RelativeLayout
         android:id="@+id/tour_layout"
@@ -14,8 +13,8 @@
         android:orientation="horizontal"
         android:background="@color/red_status"
         android:layout_below="@+id/topBar"
-        android:visibility="gone"
-        >
+        android:visibility="visible"
+    >
         <TextView
             android:id="@+id/tour_textView"
             android:layout_width="wrap_content"
@@ -27,25 +26,27 @@
             android:padding="26px"
             android:layout_toLeftOf="@+id/cross_tour"
             android:layout_alignParentLeft="true"
-            />
+        />
 
         <ImageView
             android:id="@+id/cross_tour"
-            android:layout_width="36px"
-            android:layout_height="36px"
+            android:layout_width="50px"
+            android:layout_height="50px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="18px"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_cross_et_pressed"
-            />
+            android:padding="8px"
+            android:src="@drawable/ic_tutorial_cross"
+        />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="620px"
+        android:id="@+id/innerRl"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="30px"
+        android:layout_margin="80px"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
         >
@@ -56,7 +57,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="1px"
+            android:padding="0px"
             android:splitMotionEvents="false"
 
             >
@@ -68,13 +69,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="@string/title"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:padding="20px"
-                android:textColor="@color/blue_btn"
+                android:text="@string/alert"
+                android:textColor="@color/text_color"
                 android:textSize="50px"
                 android:visibility="gone"
+                android:layout_marginTop="40px"
 
                 />
 
@@ -84,38 +85,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/message"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="40px"
                 android:gravity="center"
+                android:text="@string/message"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:padding="20px"
                 android:textColor="@color/black"
                 android:textSize="34px"
 
                 />
 
-
-            <Button
-                android:id="@+id/btnOk"
-                android:layout_width="400px"
-                android:layout_height="83px"
-                android:layout_marginBottom="32px"
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30px"
-                android:background="@drawable/new_orange_btn_selector_rounded"
-                android:singleLine="true"
-                android:padding="3px"
-                android:text="@string/ok"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                />
+                android:layout_marginTop="40px"
+                android:layout_marginLeft="15px"
+                android:layout_marginRight="15px"
+                android:layout_marginBottom="25px"
+                android:layout_gravity="center"
+                android:splitMotionEvents="false"
+                >
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnOk"
+                    android:layout_width="220px"
+                    android:layout_height="83px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="280px"
+                    android:background="@drawable/new_orange_btn_selector_rounded"
+                    android:text="@string/ok"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnCancel"
+                    android:layout_width="220px"
+                    android:layout_height="83px"
+                    android:layout_marginLeft="28px"
+                    android:padding="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    android:text="@string/cancel"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+            </RelativeLayout>
 
 
         </LinearLayout>
+
     </RelativeLayout>
 
 </FrameLayout>
