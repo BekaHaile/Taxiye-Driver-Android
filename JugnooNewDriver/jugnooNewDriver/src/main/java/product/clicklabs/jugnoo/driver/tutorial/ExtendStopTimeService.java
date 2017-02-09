@@ -9,10 +9,21 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+
+import static product.clicklabs.jugnoo.driver.Data.context;
 
 
 /**
@@ -35,22 +46,46 @@ public final class ExtendStopTimeService extends Service {
         Log.d(TAG, "onStartCommand() Extend Stop Time Service ");
         //ExtendingStopTimeAlarm.setAlarm(this);
 
-//        showToast("MyService is handling intent.");
-        String accessToken = intent.getStringExtra("access_token");
-        String status = intent.getStringExtra("status");
-        String trainingId = intent.getStringExtra("training_id");
+        try {
+            String accessToken = intent.getStringExtra("access_token");
+            String status = intent.getStringExtra("status");
+            String trainingId = intent.getStringExtra("training_id");
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("access_token", accessToken);
-        params.put("status", status);
-        params.put("training_id", trainingId);
-
-        new UpdateDriveTourStatus(this, accessToken, status, trainingId).execute("");
-
-        //Response response = RestClient.getApiServices().updateDriverStatus(params);
+            HashMap<String, String> params = new HashMap<>();
+            params.put("access_token", accessToken);
+            params.put("status", status);
+            params.put("training_id", trainingId);
 
 
-        stopSelf();
+            Log.i(TAG, "params before api=" + params);
+
+            RestClient.getApiServices().updateDriverStatus(params, new Callback<UpdateTourStatusModel>() {
+                @Override
+                public void success(UpdateTourStatusModel statusModel, Response response) {
+                    try {
+                        String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+                        JSONObject jObj = new JSONObject(responseStr);
+                        int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_FAILED.getOrdinal());
+                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                            Prefs.with(context).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    stopSelf();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    stopSelf();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            stopSelf();
+        }
+
+
         return START_STICKY;
     }
 
@@ -58,31 +93,11 @@ public final class ExtendStopTimeService extends Service {
     @Override
     public void onDestroy() {
         isRunning = false;
-        //ExtendingStopTimeAlarm.cancelAlarm(this);
-//        showToast("onDestroy() called  Extend stop time with.");
         Log.d(TAG, "onDestroy() called  Extend stop time with: " + "");
         super.onDestroy();
 
 
     }
-
-    public void showToast(String message) {
-        final String msg = message;
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-//    @Override
-//    public void onTaskRemoved(Intent rootIntent) {
-//        isRunning = false;
-//        //ExtendingStopTimeAlarm.cancelAlarm(this);
-//        stopSelf();
-//        Log.d(TAG, "onTaskRemoved() called with: " + "rootIntent = [" + rootIntent + "]");
-//    }
 
 
 }

@@ -995,6 +995,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}));
 
 
+			try {
+				// TODO: 2/7/17 Change default value
+//			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 1) == 1){
+				relativeLayoutTour.setVisibility(View.VISIBLE);
+//			} else {
+//				relativeLayoutTour.setVisibility(View.GONE);
+//			}
+
+				if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0
+                        && !TextUtils.isEmpty(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""))) {
+                    tourCompleteApi(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""),
+                            String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
+
+                    Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+                } else if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0) {
+                    tourCompleteApi("2", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
+                    Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+                }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			//Top bar events
 			menuBtn.setOnClickListener(new OnClickListener() {
 
@@ -1989,23 +2011,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				auditRL.setVisibility(View.GONE);
 			}
 
-			// TODO: 2/7/17 Change default value
-//			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 1) == 1){
-				relativeLayoutTour.setVisibility(View.VISIBLE);
-//			} else {
-//				relativeLayoutTour.setVisibility(View.GONE);
-//			}
-
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0
-					&& !TextUtils.isEmpty(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""))) {
-				tourCompleteApi(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""),
-						String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
-
-				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
-			} else if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0) {
-				tourCompleteApi("2", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
-				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
-			}
 
 
 		} catch (Exception e) {
@@ -4292,9 +4297,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-
 	@Override
 	public void onDestroy() {
+		Toast.makeText(this, "finishing", Toast.LENGTH_SHORT).show();
+		try {
+			if(isTourFlag) {
+                Intent intent = new Intent(HomeActivity.this, ExtendStopTimeService.class);
+                intent.putExtra("access_token", Data.userData.accessToken);
+                String status = "2";
+                if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
+                    status = "3";
+                }
+                Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
+                intent.putExtra("status", status);
+                intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+                startService(intent);
+
+				//Toast.makeText(HomeActivity.this, Data.userData.accessToken+"\n"+ status +"\n"+String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()) ,Toast.LENGTH_SHORT).show();
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			cancelTimerPathRerouting();
 
@@ -4315,18 +4338,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			unregisterReceiver(broadcastReceiverLowBattery);
 			unregisterReceiver(broadcastReceiverIsCharging);
 			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
-			if(isTourFlag) {
-				Intent intent = new Intent(HomeActivity.this, ExtendStopTimeService.class);
-				intent.putExtra("access_token", Data.userData.accessToken);
-				String status = "2";
-				if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
-					status = "3";
-				}
-				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
-				intent.putExtra("status", status);
-				intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
-				startService(intent);
-			}
 
 			System.gc();
 		} catch (Exception e) {
