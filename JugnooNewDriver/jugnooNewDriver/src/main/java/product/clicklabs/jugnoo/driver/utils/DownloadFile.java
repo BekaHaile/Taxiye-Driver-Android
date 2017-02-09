@@ -19,7 +19,7 @@ public class DownloadFile {
 		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
 		//Set whether this download may proceed over a roaming connection.
 		request.setAllowedOverRoaming(false);
-		//Set the counterTime of this download, to be displayed in notifications (if enabled).
+		//Set the title of this download, to be displayed in notifications (if enabled).
 		request.setTitle("My Data Download");
 		//Set a description of this download, to be displayed in notifications (if enabled)
 		request.setDescription("Android Data download using DownloadManager.");

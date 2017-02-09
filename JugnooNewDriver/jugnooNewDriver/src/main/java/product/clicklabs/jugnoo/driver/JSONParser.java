@@ -102,7 +102,7 @@ public class JSONParser implements Constants {
 	public static CouponInfo parseCouponInfo(JSONObject jObj) {
 		try {
 			JSONObject couponObject = jObj.getJSONObject("coupon");
-			CouponInfo couponInfo = new CouponInfo(couponObject.getString("counterTime"),
+			CouponInfo couponInfo = new CouponInfo(couponObject.getString("title"),
 					couponObject.getString("subtitle"),
 					couponObject.getString("description"),
 					couponObject.getDouble("discount_percentage"),
@@ -124,7 +124,7 @@ public class JSONParser implements Constants {
 	public static PromoInfo parsePromoInfo(JSONObject jObj) {
 		try {
 			JSONObject jPromoObject = jObj.getJSONObject("promotion");
-			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("counterTime"),
+			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"),
 					jPromoObject.getInt("promo_type"),
 					jPromoObject.getInt("benefit_type"),
 					jPromoObject.getDouble("discount_percentage"),

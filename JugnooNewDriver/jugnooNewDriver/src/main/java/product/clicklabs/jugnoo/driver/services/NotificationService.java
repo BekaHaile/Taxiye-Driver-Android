@@ -51,7 +51,7 @@ public class NotificationService extends NotificationListenerService {
 			int id = sbn.getId();
 			String ticker = sbn.getNotification().tickerText.toString();
 			Bundle extras = sbn.getNotification().extras;
-			String title = extras.getString("android.counterTime");
+			String title = extras.getString("android.title");
 			String text = extras.getCharSequence("android.text").toString();
 
 			Log.i("Package", pack);
@@ -76,7 +76,7 @@ public class NotificationService extends NotificationListenerService {
 					try {
 						obj.put("id", notificationList.get(i).getNotificationId());
 						obj.put("package_name", notificationList.get(i).getNotificationPackage());
-						obj.put("counterTime", notificationList.get(i).getTitle());
+						obj.put("title", notificationList.get(i).getTitle());
 						obj.put("text", notificationList.get(i).getMessage());
 					} catch (Exception e) {
 						e.printStackTrace();

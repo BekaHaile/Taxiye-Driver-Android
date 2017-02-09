@@ -130,9 +130,10 @@ public class TransactionUtils {
 
 	public void openSelfEnrollmentCameraFragment1(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
 			activity.getSupportFragmentManager().beginTransaction()
+//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 					.replace(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
 							SelfEnrollmentCameraFragment.class.getName())
-					.addToBackStack(SelfAuditCameraFragment.class.getName())
+					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
 							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
@@ -141,12 +142,12 @@ public class TransactionUtils {
 	public void openSelfEnrollmentCameraFragment(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
 		if(getSelfEnrollmentCameraFragment(activity) == null) {
 			activity.getSupportFragmentManager().beginTransaction()
-					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 					.add(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
 							SelfEnrollmentCameraFragment.class.getName())
 					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commit();
 		}
 	}

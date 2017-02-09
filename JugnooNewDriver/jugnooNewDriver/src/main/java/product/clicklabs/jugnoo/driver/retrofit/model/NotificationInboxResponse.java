@@ -72,7 +72,7 @@ public class NotificationInboxResponse {
         @SerializedName("timePushArrived")
         @Expose
         private String timePushArrived;
-        @SerializedName("counterTime")
+        @SerializedName("title")
         @Expose
         private String title;
         @SerializedName("message")

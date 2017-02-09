@@ -128,7 +128,7 @@ public interface Constants {
     String KEY_DELIVERY_CANCEL_REASONS = "delivery_cancel_reasons";
     String KEY_ID = "id";
     String KEY_NAME = "name";
-    String KEY_TITLE = "counterTime";
+    String KEY_TITLE = "title";
     String KEY_PERFECT_RIDE = "perfect_ride";
     String KEY_END_TIME = "end_time";
     String KEY_DELIVERY_ENABLED = "delivery_enabled";

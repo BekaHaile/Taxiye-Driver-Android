@@ -229,7 +229,7 @@
             android:layout_marginTop="52px"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:splitMotionEvents="false"
             >
 
@@ -270,5 +270,13 @@
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutFake"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/black">
+    </RelativeLayout>
 
 </RelativeLayout>

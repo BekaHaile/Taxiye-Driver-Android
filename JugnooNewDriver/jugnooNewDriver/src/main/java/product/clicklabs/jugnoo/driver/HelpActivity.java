@@ -337,7 +337,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	public void performBackPressed(){
 		/*if(helpExpandedRl.getVisibility() == View.VISIBLE){
 			helpExpandedRl.setVisibility(View.GONE);
-			counterTime.setText(getResources().getString(R.string.help));
+			title.setText(getResources().getString(R.string.help));
 		}
 		else{*/
 			finish();

@@ -58,7 +58,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     EditText editTextOTP;
     Button buttonVerify, backBtn, btnLogin;
 
-    RelativeLayout relative;
+    RelativeLayout relative, relativeLayoutFake;
     ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber, btnOtpViaCall;
     LinearLayout layoutResendOtp, btnReGenerateOtp;
     String knowlarityMissedCallNumber = "";
@@ -104,6 +104,8 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         textViewTitle.setTypeface(Data.latoRegular(this));
 
+        relativeLayoutFake = (RelativeLayout) findViewById(R.id.relativeLayoutFake);
+		relativeLayoutFake.setVisibility(View.GONE);
         phoneNoEt = (TextView) findViewById(R.id.phoneNoEt);
         phoneNoEt.setTypeface(Data.latoRegular(this));
         editTextOTP = (EditText) findViewById(R.id.otpEt);
@@ -306,6 +308,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     protected void onResume() {
         super.onResume();
         try {
+			relativeLayoutFake.setVisibility(View.GONE);
             if (Data.locationFetcher == null) {
                 Data.locationFetcher = new LocationFetcher(this, 1000, 1);
             }
@@ -388,6 +391,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                         JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
                                         Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
                                         intent.putExtra("access_token", jObj.getString("access_token"));
+										relativeLayoutFake.setVisibility(View.VISIBLE);
                                         startActivity(intent);
                                     } else {
                                         DialogPopup.alertPopup(activity, "", message);

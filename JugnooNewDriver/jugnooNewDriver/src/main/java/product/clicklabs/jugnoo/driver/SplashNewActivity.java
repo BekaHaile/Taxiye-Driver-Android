@@ -1651,7 +1651,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	
 	public static boolean checkIfUpdate(JSONObject jObj, Activity activity) throws Exception{
 //		"popup": {
-//	        "counterTime": "Update Version",
+//	        "title": "Update Version",
 //	        "text": "Update app with new version!",
 //	        "cur_version": 116,			// could be used for local check
 //	        "is_force": 1				// 1 for forced, 0 for not forced
@@ -1659,7 +1659,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		if(!jObj.isNull("popup")){
 			try{
 				JSONObject jupdatePopupInfo = jObj.getJSONObject("popup"); 
-				String title = jupdatePopupInfo.getString("counterTime");
+				String title = jupdatePopupInfo.getString("title");
 				String text = jupdatePopupInfo.getString("text");
 				int currentVersion = jupdatePopupInfo.getInt("cur_version");
 				int isForce = jupdatePopupInfo.getInt("is_force");

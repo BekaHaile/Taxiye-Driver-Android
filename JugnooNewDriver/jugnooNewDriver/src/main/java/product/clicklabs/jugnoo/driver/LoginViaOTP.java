@@ -56,7 +56,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
     LinearLayout otpETextLLayout, layoutResendOtp, mainLinear, btnReGenerateOtp;
     private ImageView btnOtpViaCall;
-    RelativeLayout relative;
+    RelativeLayout relative, relativeLayoutFake;
     EditText otpEt;
     Button loginViaOtp, btnLogin;
     ImageView imageViewChangePhoneNumber;
@@ -119,6 +119,8 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
         mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
         btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
+        relativeLayoutFake = (RelativeLayout) findViewById(R.id.relativeLayoutFake);
+        relativeLayoutFake.setVisibility(View.GONE);
 
         btnOtpViaCall = (ImageView) findViewById(R.id.btnOtpViaCall);
 
@@ -492,6 +494,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                 Intent intent = new Intent(LoginViaOTP.this, DriverDocumentActivity.class);
                                 intent.putExtra("access_token", jObj.getString("access_token"));
                                 Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
+								relativeLayoutFake.setVisibility(View.VISIBLE);
                                 startActivity(intent);
                             } else {
                                 DialogPopup.alertPopup(activity, "", message);
@@ -542,6 +545,16 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         performbackPressed();
         super.onBackPressed();
     }
+
+	@Override
+	protected void onResume(){
+		super.onResume();
+		try {
+			relativeLayoutFake.setVisibility(View.GONE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     @Override
     protected void onDestroy() {
