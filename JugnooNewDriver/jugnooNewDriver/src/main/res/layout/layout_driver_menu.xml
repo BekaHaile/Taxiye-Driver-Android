@@ -389,7 +389,7 @@
                     android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/super_driver_v2"
+                    android:src="@drawable/ic_tutorial_icon"
                     android:tag="mwar"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw

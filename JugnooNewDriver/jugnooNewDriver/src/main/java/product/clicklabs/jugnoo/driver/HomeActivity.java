@@ -186,6 +186,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
+import static product.clicklabs.jugnoo.driver.Data.context;
+
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
 		GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -995,22 +997,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			try {
-				// TODO: 2/7/17 Change default value
-//			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 1) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
 				relativeLayoutTour.setVisibility(View.VISIBLE);
-//			} else {
-//				relativeLayoutTour.setVisibility(View.GONE);
-//			}
+			} else {
+				relativeLayoutTour.setVisibility(View.GONE);
+			}
 
 				if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0
                         && !TextUtils.isEmpty(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""))) {
                     tourCompleteApi(Prefs.with(HomeActivity.this).getString(SPLabels.SET_DRIVER_TOUR_STATUS, ""),
                             String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
 
-                    Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+					Prefs.with(activity).save(SPLabels.PREF_TRAINING_ACCESS_TOKEN, "");
+					Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+					Prefs.with(activity).save(SPLabels.PREF_TRAINING_ID, "");
                 } else if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, 0) != 0) {
                     tourCompleteApi("2", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_TRAINING_ID, -1)));
-                    Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+					Prefs.with(activity).save(SPLabels.PREF_TRAINING_ACCESS_TOKEN, "");
+					Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
+					Prefs.with(activity).save(SPLabels.PREF_TRAINING_ID, "");
                 }
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1536,7 +1541,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										@Override
 										public void onClick(View v) {
 //											handleTourView(false, "");
-											tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+											tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), 2);
 										}
 									});
 							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
@@ -4301,7 +4306,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if(isTourFlag && tourResponseModel != null) {
                 Intent intent = new Intent(HomeActivity.this, UpdateTutStatusService.class);
-//                intent.putExtra("access_token", Data.userData.accessToken);
                 String status = "2";
                 if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
                     status = "3";
@@ -4309,8 +4313,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 Prefs.with(activity).save(SPLabels.PREF_TRAINING_ACCESS_TOKEN, Data.userData.accessToken);
 				Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
 				Prefs.with(activity).save(SPLabels.PREF_TRAINING_ID, String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
-//                intent.putExtra("status", status);
-//                intent.putExtra("training_id", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
                 startService(intent);
 
 			}
@@ -6443,7 +6445,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View view) {
 //					handleTourView(false, "");
-					tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+					dialog.dismiss();
+					tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), 2);
 				}
 			});
 
@@ -9131,8 +9134,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			case R.id.cross_tour:
 				try {
 					if(tourResponseModel != null && tourResponseModel.responses.requestResponse.getEngagementId() != null) {
-						if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
+						if (driverScreenMode == DriverScreenMode.D_ARRIVED) {
+							driverCancelRideBtn.performClick();
+						} else if(driverScreenMode == DriverScreenMode.D_START_RIDE) {
+							driverCancelRideBtn.performClick();
+						} else if(driverScreenMode == DriverScreenMode.D_RIDE_END) {
 							tourCompleteApi("3", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
+						} else if(driverScreenMode == DriverScreenMode.D_INITIAL) {
+							tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), 1);
 						} else {
 							tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()));
 						}
@@ -9441,12 +9450,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									HomeActivity.logoutUser(activity);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
-								handleTourView(false, "");
 								if(ridePushCancel == 1) {
 									setTourOperation(1);
 								} else if(ridePushCancel == 2) {
 									handleCancelRideSuccess(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), "");
 								}
+								handleTourView(false, "");
+								tourResponseModel = null;
 							} else {
 								Prefs.with(activity).save(SPLabels.SET_DRIVER_TOUR_STATUS, status);
 								handleTourView(false, "");
