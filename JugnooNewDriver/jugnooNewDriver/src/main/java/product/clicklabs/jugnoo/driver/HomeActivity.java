@@ -940,7 +940,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					try {
-						if(DriverScreenMode.D_INITIAL == driverScreenMode ) {
+						if(DriverScreenMode.D_INITIAL == driverScreenMode && infoTileResponses.size() > 0 ) {
 							slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 						}
 					} catch (Exception e) {
