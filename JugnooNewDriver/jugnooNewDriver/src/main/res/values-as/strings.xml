@@ -743,6 +743,7 @@
     <string name="tutorial_tap_done_finish">Tap \'DONE\' to finish</string>
     <string name="tutorial_tap_arrived_if_at_pickup">Tap \'Arrived\' if you are at the pickup location</string>
     <string name="tutorial_driver_to_pickup_point">Drive to the pickup point.</string>
+    <string name="tutorial_tap_yes">Tap \'YES\'</string>
 
 
     <string-array name="CountryCodes" >

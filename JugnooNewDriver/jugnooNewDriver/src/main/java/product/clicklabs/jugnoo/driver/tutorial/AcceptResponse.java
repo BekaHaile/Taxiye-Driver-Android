@@ -28,10 +28,10 @@ public class AcceptResponse {
     public String dropAddress;
     @SerializedName("op_drop_latitude")
     @Expose
-    public Integer opDropLatitude;
+    public Double opDropLatitude;
     @SerializedName("op_drop_longitude")
     @Expose
-    public Integer opDropLongitude;
+    public Double opDropLongitude;
     @SerializedName("current_latitude")
     @Expose
     public Double currentLatitude;

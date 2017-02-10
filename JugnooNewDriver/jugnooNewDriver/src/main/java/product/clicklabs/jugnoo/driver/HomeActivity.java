@@ -1551,7 +1551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CONFIRM_NO, null);
 											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 										}
-									}, false, false, isTourFlag, getString(R.string.tutorial_tap_ok),
+									}, false, false, isTourFlag, getString(R.string.tutorial_tap_yes),
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
@@ -1606,12 +1606,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutEnterDestination.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					relativeLayoutContainer.setVisibility(View.VISIBLE);
-					placeSearchListFragment = new PlaceSearchListFragment(HomeActivity.this, mGoogleApiClient);
-					getSupportFragmentManager().beginTransaction()
-							.add(R.id.relativeLayoutContainer, placeSearchListFragment, PlaceSearchListFragment.class.getName())
-							.addToBackStack(PlaceSearchListFragment.class.getName())
-							.commit();
+					if (!isTourFlag) {
+						relativeLayoutContainer.setVisibility(View.VISIBLE);
+						placeSearchListFragment = new PlaceSearchListFragment(HomeActivity.this, mGoogleApiClient);
+						getSupportFragmentManager().beginTransaction()
+								.add(R.id.relativeLayoutContainer, placeSearchListFragment, PlaceSearchListFragment.class.getName())
+								.addToBackStack(PlaceSearchListFragment.class.getName())
+								.commit();
+					}
 				}
 			});
 
@@ -8107,6 +8109,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				RestClient.getApiServices().updateWalletBalance(params, getCallbackUpdateWalletBalance(customerInfo));
 				walletBalanceUpdatePopup = true;
 				startWalletUpdateTimeout(customerInfo);
+			} else {
+				DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -9322,6 +9326,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				try {
 					dropLatitude = tourResponseModel.responses.acceptResponse.opDropLatitude;
 					dropLongitude = tourResponseModel.responses.acceptResponse.opDropLongitude;
+					CustomerInfo newCustomerInfo = Data.getCurrentCustomerInfo();
+					newCustomerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
+					newCustomerInfo.setDropAddress(tourResponseModel.responses.acceptResponse.dropAddress);
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -9501,7 +9508,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				});
 
 			} else {
-				handleTourView(false, "");
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {

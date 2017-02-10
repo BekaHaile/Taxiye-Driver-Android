@@ -96,7 +96,7 @@ public class OtpDialog {
 
             Window dialogWindow = alertDialog.getWindow();
             WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
-            layoutParams.dimAmount = 0.6f;
+            layoutParams.dimAmount = 0.7f;
 
             dialogWindow.getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 
