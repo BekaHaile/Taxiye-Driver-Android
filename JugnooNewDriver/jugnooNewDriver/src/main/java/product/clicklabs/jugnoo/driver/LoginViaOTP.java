@@ -58,9 +58,9 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     private ImageView btnOtpViaCall;
     RelativeLayout relative, relativeLayoutFake;
     EditText otpEt;
-    Button loginViaOtp, btnLogin;
+    Button loginViaOtp, btnLogin, backBtn;
     ImageView imageViewChangePhoneNumber;
-    TextView textViewOr, textViewOtpNumber;
+    TextView textViewOr, textViewOtpNumber, textviewLogin;
     String selectedLanguage = "";
     int languagePrefStatus;
     Configuration conf;
@@ -125,6 +125,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         btnOtpViaCall = (ImageView) findViewById(R.id.btnOtpViaCall);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
+		backBtn = (Button) findViewById(R.id.backBtn);
         btnLogin.setTypeface(Data.latoRegular(getApplicationContext()));
 
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
@@ -136,6 +137,9 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         textViewOtpNumber.setTypeface(Data.latoRegular(getApplicationContext()));
         textViewOr = (TextView) findViewById(R.id.textViewOr);
         textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		textviewLogin = (TextView) findViewById(R.id.textviewLogin);
+		textviewLogin.setTypeface(Data.latoRegular(getApplicationContext()));
 
         selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 
@@ -172,6 +176,13 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             }
         });
 
+
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				performbackPressed();
+			}
+		});
 
         imageViewChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override

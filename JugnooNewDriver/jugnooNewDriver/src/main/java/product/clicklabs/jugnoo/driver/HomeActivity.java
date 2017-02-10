@@ -1561,7 +1561,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									});
 							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
 							if (isTourFlag) {
-								handleTourView(isTourFlag, getString(R.string.tutorial_tap_ok));
+								handleTourView(isTourFlag, getString(R.string.tutorial_tap_yes));
 							}
 						}
 						else{
@@ -1650,18 +1650,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
 					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-					if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
-						getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
-					} else if(customerInfo.getIsDelivery() ==1){
-						if(anyDeliveriesUnchecked(customerInfo)){
-							getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
-									getRelativeLayoutContainer(), customerInfo.getEngagementId(),
-									DeliveryStatus.PENDING);
-						} else{
-							getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
-									getRelativeLayoutContainer(), customerInfo.getEngagementId(),
-									DeliveryStatus.COMPLETED);
+					try {
+						if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
+							getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
+						} else if(customerInfo.getIsDelivery() ==1){
+							if(anyDeliveriesUnchecked(customerInfo)){
+								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+										DeliveryStatus.PENDING);
+							} else{
+								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+										DeliveryStatus.COMPLETED);
+							}
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 				}
@@ -5455,27 +5459,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		Log.i("end_ride params =", "=" + params);
 
 		String url = PendingCall.END_RIDE.getPath();
-		if(customerInfo.getIsDelivery() == 1){
-			url = PendingCall.END_DELIVERY.getPath();
-		}
-
-		if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
-			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
-					totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
-		} else {
-			if(customerInfo.getIsDelivery() == 1) {
-				if(customerInfo.getIsDeliveryPool() ==1){
-					params.put(KEY_RIDE_TYPE, "4");
-				} else {
-					params.put(KEY_RIDE_TYPE, "3");
-				}
-				RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
-			} else{
-				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
+		try {
+			if(customerInfo.getIsDelivery() == 1){
+				url = PendingCall.END_DELIVERY.getPath();
 			}
+
+			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
+				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
+						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
+						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
+			} else {
+				if(customerInfo.getIsDelivery() == 1) {
+					if(customerInfo.getIsDeliveryPool() ==1){
+						params.put(KEY_RIDE_TYPE, "4");
+					} else {
+						params.put(KEY_RIDE_TYPE, "3");
+					}
+					RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+							eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
+				} else{
+					RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+							eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -6277,18 +6285,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		markerOptions.title(String.valueOf(customerInfo.getEngagementId()));
 		markerOptions.snippet("");
 		markerOptions.position(latLng);
-		if(customerInfo.getIsDelivery() == 1){
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
-		}
-		else if(customerInfo.getIsPooled() == 1){
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.setBitmapColor(CustomMapMarkerCreator
-							.createCustomMarkerBitmap(HomeActivity.this, assl, 30f, 72f, R.drawable.ic_pool_marker),
-							customerInfo.getColor(), activity.getResources().getColor(R.color.new_orange))));
-		}
-		else{
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+		try {
+			if(customerInfo.getIsDelivery() == 1){
+				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
+			}
+			else if(customerInfo.getIsPooled() == 1){
+				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.setBitmapColor(CustomMapMarkerCreator
+								.createCustomMarkerBitmap(HomeActivity.this, assl, 30f, 72f, R.drawable.ic_pool_marker),
+								customerInfo.getColor(), activity.getResources().getColor(R.color.new_orange))));
+			}
+			else{
+				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+			}
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
 		}
 		return map.addMarker(markerOptions);
 	}
@@ -9042,43 +9054,47 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void setDeliveryState(JSONObject jsonObject, CustomerInfo customerInfo){
 
-		if(jsonObject != null && customerInfo !=null) {
-			int flag = jsonObject.optInt("status", 0);
-			if (flag == EndDeliveryStatus.RETURN.getOrdinal()) {
-				try {
-					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
-					deliveryInfoTabs.notifyDatasetchange(true);
+		try {
+			if(jsonObject != null && customerInfo !=null) {
+				int flag = jsonObject.optInt("status", 0);
+				if (flag == EndDeliveryStatus.RETURN.getOrdinal()) {
+					try {
+						JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
+						deliveryInfoTabs.notifyDatasetchange(true);
 
 
-					if(customerInfo.getIsDeliveryPool()==1) {
-						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
-						if (customerEnfagementInfos1.size() > 1) {
-							if (customerInfo.engagementId == customerEnfagementInfos1.get(0).getEngagementId()) {
-								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(1).getEngagementId()));
-							} else {
-								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(0).getEngagementId()));
+						if(customerInfo.getIsDeliveryPool()==1) {
+							ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+							if (customerEnfagementInfos1.size() > 1) {
+								if (customerInfo.engagementId == customerEnfagementInfos1.get(0).getEngagementId()) {
+									Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(1).getEngagementId()));
+								} else {
+									Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(0).getEngagementId()));
+								}
+								changeCustomerState(false);
+								driverScreenMode = DriverScreenMode.D_IN_RIDE;
+								switchDriverScreen(driverScreenMode);
 							}
-							changeCustomerState(false);
-							driverScreenMode = DriverScreenMode.D_IN_RIDE;
-							switchDriverScreen(driverScreenMode);
+							setAttachedDeliveryPoolMarkers(true);
+						} else {
+							setDeliveryMarkers();
 						}
-						setAttachedDeliveryPoolMarkers(true);
-					} else {
-						setDeliveryMarkers();
-					}
 
-				} catch (Exception e) {
-					e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (flag == EndDeliveryStatus.END.getOrdinal()) {
+					endRideGPSCorrection(customerInfo);
+					deliveryInfoTabs.notifyDatasetchange(true);
+				} else {
+					deliveryInfoTabs.notifyDatasetchange(true);
 				}
-			} else if (flag == EndDeliveryStatus.END.getOrdinal()) {
+			} else if(jsonObject == null && customerInfo !=null){
 				endRideGPSCorrection(customerInfo);
 				deliveryInfoTabs.notifyDatasetchange(true);
-			} else {
-				deliveryInfoTabs.notifyDatasetchange(true);
 			}
-		} else if(jsonObject == null && customerInfo !=null){
-			endRideGPSCorrection(customerInfo);
-			deliveryInfoTabs.notifyDatasetchange(true);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
