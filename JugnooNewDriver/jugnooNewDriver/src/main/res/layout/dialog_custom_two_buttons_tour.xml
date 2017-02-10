@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:background="@color/red_status"
         android:layout_below="@+id/topBar"
-        android:visibility="visible"
+        android:visibility="gone"
     >
         <TextView
             android:id="@+id/tour_textView"
