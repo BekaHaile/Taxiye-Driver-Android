@@ -171,6 +171,8 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             @Override
             public void onClick(View v) {
                 if ((Utils.validPhoneNumber(phoneNo))) {
+					otpEt.setText("");
+					otpEt.setError(null);
                     generateOTP(phoneNo);
                 }
             }
