@@ -7698,6 +7698,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 	}
 
+
+	@Override
+	public void notifyArrivedButton(final boolean arrived, final int engagementId) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(engagementId))) {
+					if (arrived) {
+						buttonMarkArrived.setText(getResources().getString(R.string.arrived));
+						buttonMarkArrived.setEnabled(true);
+						buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
+						if(isTourFlag){
+							handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+						}
+					} else {
+						buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
+						buttonMarkArrived.setEnabled(false);
+						buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
+						if(isTourFlag){
+							handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
+						}
+					}
+				}
+			}
+		});
+	}
+
 	@Override
 	public void showStartRidePopup(){
 		 runOnUiThread(new Runnable() {
@@ -9334,7 +9361,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				gcmIntentService.stopRing(true, HomeActivity.this);
 
-				handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+				handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
 
 				break;
 			case 3:

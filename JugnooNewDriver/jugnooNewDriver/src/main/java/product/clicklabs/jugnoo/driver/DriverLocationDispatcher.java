@@ -234,6 +234,13 @@ public class DriverLocationDispatcher {
 								Log.writePathLogToFile(engagementSPData.getEngagementId() + "m", "arrived sucessful");
 							}
 							break;
+						} else if(distance < 600d){
+							if(HomeActivity.appInterruptHandler != null){
+								HomeActivity.appInterruptHandler.notifyArrivedButton(true, engagementSPData.getEngagementId());
+							}
+						} else {
+							if(HomeActivity.appInterruptHandler != null){
+								HomeActivity.appInterruptHandler.notifyArrivedButton(false, engagementSPData.getEngagementId());							}
 						}
 					}
 				} catch (Exception e) {
