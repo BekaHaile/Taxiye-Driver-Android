@@ -812,7 +812,7 @@
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
-    <string name="start_training">Start Traning</string>
+    <string name="start_training">Start Training</string>
     <string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\\nTap \'Accept\'.</string>
     <string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
     <string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
