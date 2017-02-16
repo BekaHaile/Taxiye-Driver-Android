@@ -1504,8 +1504,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 													double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
+													double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
 
-													if (displacement <= DRIVER_START_RIDE_CHECK_METERS || actualDispalcement <= DRIVER_START_RIDE_CHECK_METERS) {
+													if (displacement <= arrivingDistance || actualDispalcement <= arrivingDistance) {
 														buildAlertMessageNoGps();
 														if (isTourFlag) {
 															driverScreenMode = DriverScreenMode.D_START_RIDE;
@@ -7703,22 +7704,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(engagementId))) {
-					if (arrived) {
-						buttonMarkArrived.setText(getResources().getString(R.string.arrived));
-						buttonMarkArrived.setEnabled(true);
-						buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
-						if(isTourFlag){
-							handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
-						}
-					} else {
-						buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
-						buttonMarkArrived.setEnabled(false);
-						buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
-						if(isTourFlag){
-							handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
+				try {
+					if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(engagementId))) {
+						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+						double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
+						double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
+						if (arrived || actualDispalcement < arrivingDistance) {
+							buttonMarkArrived.setText(getResources().getString(R.string.arrived));
+							buttonMarkArrived.setEnabled(true);
+							buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
+							if(isTourFlag){
+								handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+							}
+						} else {
+							buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
+							buttonMarkArrived.setEnabled(false);
+							buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
+							if(isTourFlag){
+								handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
+							}
 						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
