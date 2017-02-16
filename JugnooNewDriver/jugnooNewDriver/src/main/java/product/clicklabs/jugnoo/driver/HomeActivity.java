@@ -741,7 +741,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverStartRideBtn.setText(getStringText(R.string.start_ride));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
 			buttonMarkArrived.setTypeface(Data.latoRegular(this));
-			buttonMarkArrived.setText(getStringText(R.string.arrived));
+//			buttonMarkArrived.setText(getStringText(R.string.arrived));
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
 			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverCancelRideBtn.setText(getStringText(R.string.cancel));
@@ -3621,8 +3621,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
-					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
-							getResources().getColor(R.color.new_orange));
+//					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
+//							getResources().getColor(R.color.new_orange));
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
