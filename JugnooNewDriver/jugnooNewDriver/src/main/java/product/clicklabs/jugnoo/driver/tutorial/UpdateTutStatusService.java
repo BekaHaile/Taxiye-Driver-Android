@@ -14,7 +14,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -73,6 +75,7 @@ public final class UpdateTutStatusService extends Service {
                                 Prefs.with(context).save(SPLabels.PREF_TRAINING_ACCESS_TOKEN, "");
                                 Prefs.with(context).save(SPLabels.SET_DRIVER_TOUR_STATUS, "");
                                 Prefs.with(context).save(SPLabels.PREF_TRAINING_ID, "");
+                                Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
