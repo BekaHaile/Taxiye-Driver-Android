@@ -110,7 +110,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         phoneNoEt.setTypeface(Data.latoRegular(this));
         editTextOTP = (EditText) findViewById(R.id.otpEt);
         editTextOTP.setTypeface(Data.latoRegular(this));
-
+        editTextOTP.setCursorVisible(true);
         buttonVerify = (Button) findViewById(R.id.verifyOtp);
         buttonVerify.setTypeface(Data.latoRegular(this));
 
@@ -654,7 +654,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         dialog = builder.build();
         dialog.show();
         customCountDownTimer.start();
-
+        editTextOTP.setCursorVisible(false);
     }
 
 
@@ -666,6 +666,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
     @Override
     public void swictchLayout() {
+		editTextOTP.setCursorVisible(true);
         if (TextUtils.isEmpty(knowlarityMissedCallNumber)) {
             btnOtpViaCall.setVisibility(View.GONE);
             textViewOr.setVisibility(View.GONE);

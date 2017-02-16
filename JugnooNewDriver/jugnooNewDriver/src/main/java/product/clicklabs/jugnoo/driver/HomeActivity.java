@@ -5578,6 +5578,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(), totalHaversineDistanceInKm);
 
 					driverScreenMode = DriverScreenMode.D_RIDE_END;
+
 					Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 					switchDriverScreen(driverScreenMode);
 
@@ -6664,8 +6665,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (locationToUse != null) {
 
 					GCMIntentService.clearNotifications(activity);
-
-
 
 					rideTimeChronometer.stop();
 
@@ -9264,7 +9263,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									public void run() {
 										tutorialChangeState();
 									}
-								}, 1000);
+								}, 200);
 							}
 						});
 					} else {
@@ -9277,6 +9276,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} else {
                     reviewSkipBtn.performLongClick();
                 }
+				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -9370,6 +9370,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					dropLatitude = tourResponseModel.responses.acceptResponse.opDropLatitude;
 					dropLongitude = tourResponseModel.responses.acceptResponse.opDropLongitude;
 					CustomerInfo newCustomerInfo = Data.getCurrentCustomerInfo();
+					saveCustomerRideDataInSP(newCustomerInfo);
 					newCustomerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 					newCustomerInfo.setDropAddress(tourResponseModel.responses.acceptResponse.dropAddress);
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");

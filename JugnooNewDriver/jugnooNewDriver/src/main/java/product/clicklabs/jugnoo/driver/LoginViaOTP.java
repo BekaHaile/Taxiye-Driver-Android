@@ -114,6 +114,8 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         otpEt = (EditText) findViewById(R.id.otpEt);
         otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
         otpEt.setEnabled(false);
+		otpEt.setFocusable(true);
+		otpEt.setCursorVisible(true);
         layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
         otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 
@@ -389,6 +391,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                         // Dismiss dialog if shown after read otp from sms
                         if(dialog != null && dialog.isShown()) {
                             dialog.dismiss();
+							otpEt.setCursorVisible(true);
                             customCountDownTimer.cancel();
                         }
                     }
@@ -622,6 +625,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                         otpExist = true;
                                         if(dialog != null && dialog.isShown()) {
                                             dialog.dismiss();
+											otpEt.setCursorVisible(true);
                                             customCountDownTimer.cancel();
                                         }
                                         break;
@@ -655,6 +659,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             otpExist = false;
             if(dialog != null && dialog.isShown()) {
                 dialog.dismiss();
+				otpEt.setCursorVisible(true);
                 customCountDownTimer.cancel();
             }
             return;
@@ -682,7 +687,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         dialog = builder.build();
         dialog.show();
         customCountDownTimer.start();
-
+        otpEt.setCursorVisible(false);
     }
 
 
@@ -696,6 +701,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     @Override
     public void swictchLayout() {
         btnReGenerateOtp.setVisibility(View.VISIBLE);
+        otpEt.setCursorVisible(true);
         if(TextUtils.isEmpty(knowlarityMissedCallNumber)){
             layoutResendOtp.setVisibility(View.GONE);
         }else {
