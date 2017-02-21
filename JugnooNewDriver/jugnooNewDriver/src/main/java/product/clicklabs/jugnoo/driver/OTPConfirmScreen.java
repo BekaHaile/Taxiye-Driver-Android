@@ -636,7 +636,11 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
     private void otpDetectionPopup() {
         if (customCountDownTimer == null) {
-            customCountDownTimer = new CustomCountDownTimer(30000, 5, this);
+			if(BuildConfig.DEBUG_MODE){
+				customCountDownTimer = new CustomCountDownTimer(3000, 5, this);
+			}else {
+				customCountDownTimer = new CustomCountDownTimer(30000, 5, this);
+			}
         }
 
         OtpDialog.Builder builder = new OtpDialog.Builder(OTPConfirmScreen.this)

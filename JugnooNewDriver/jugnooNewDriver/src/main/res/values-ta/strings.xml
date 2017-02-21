@@ -826,6 +826,9 @@
     <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
     <string name="tutorial_tap_yes">Tap \'YES\'</string>
     <string name="upload_later">Upload Later</string>
+    <string name="training_confirmation_text">You would receive no customer requests during
+        training. Are you sure you want to start?
+    </string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

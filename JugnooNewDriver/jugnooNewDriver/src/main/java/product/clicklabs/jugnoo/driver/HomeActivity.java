@@ -9212,27 +9212,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				break;
 			case R.id.relativeLayoutTour:
 				if(!isTourFlag) {
-					if (Data.userData.autosAvailable == 1) {
-						isTourFlag = true;
-						drawerLayout.closeDrawer(GravityCompat.START);
-						Crouton.cancelAllCroutons();
-						handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
-						createTourNotification();
-					} else {
-						try {
-							isTourBtnClicked = true;
-							try {
-								croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
-							} catch (Exception e) {
+					DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "",
+							getResources().getString(R.string.training_confirmation_text),
+							getResources().getString(R.string.ok), getResources().getString(R.string.cancel),
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									if (Data.userData.autosAvailable == 1) {
+										isTourFlag = true;
+										drawerLayout.closeDrawer(GravityCompat.START);
+										Crouton.cancelAllCroutons();
+										handleTourView(isTourFlag, getString(R.string.tutorial_your_location) + "\n" + getString(R.string.tutorial_wait_for_customer));
+										createTourNotification();
+									} else {
+										try {
+											isTourBtnClicked = true;
+											try {
+												croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
+											} catch (Exception e) {
 
-							}
-							Crouton.cancelAllCroutons();
-							Crouton.show(HomeActivity.this, customView);
+											}
+											Crouton.cancelAllCroutons();
+											Crouton.show(HomeActivity.this, customView);
 
-						} catch (Exception e) {
-							isTourBtnClicked = false;
-						}
-					}
+										} catch (Exception e) {
+											isTourBtnClicked = false;
+										}
+									}
+								}
+							},
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+
+								}
+							}, false, false);
 				}
 				break;
 		}
