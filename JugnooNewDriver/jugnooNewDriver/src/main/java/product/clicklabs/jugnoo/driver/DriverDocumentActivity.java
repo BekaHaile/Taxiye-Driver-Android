@@ -53,6 +53,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	DocumentListFragment documentListFragment;
 	static boolean loginDataFetched = false;
 	Bundle bundleHomePush= new Bundle();
+	boolean inSideApp = false;
+	int requirement;
 
 
 	@Override
@@ -72,7 +74,12 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 		Bundle bundle = new Bundle();
 		accessToken = getIntent().getExtras().getString("access_token");
+		if(getIntent().getExtras().getBoolean("in_side")){
+			inSideApp = true;
+		}
+		requirement  = getIntent().getExtras().getInt("doc_required");
 		bundle.putString("access_token", accessToken);
+		bundle.putInt("doc_required", requirement);
 		documentListFragment.setArguments(bundle);
 		loginDataFetched = false;
 		getSupportFragmentManager().beginTransaction()
@@ -87,7 +94,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 			}
 		});
 		backBtn.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				performbackPressed();
@@ -104,12 +110,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
-		startActivity(intent);
-		finish();
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		super.onBackPressed();
+		performbackPressed();
 	}
 
 	public RelativeLayout getRelativeLayoutContainer(){
@@ -132,9 +133,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
-		JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
-		startActivity(intent);
+		if(!inSideApp) {
+			JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
+			Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
+			startActivity(intent);
+		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
@@ -179,7 +182,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 			DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 
-			RestClient.getApiServices().docSubmission(accessToken, new Callback<DocRequirementResponse>() {
+			RestClient.getApiServices().docSubmission(accessToken, String.valueOf(requirement), new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
@@ -194,14 +197,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
 
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									accessTokenLogin(DriverDocumentActivity.this, accessToken);
+									if(!inSideApp) {
+										accessTokenLogin(DriverDocumentActivity.this, accessToken);
+									}
 
 									DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-											startActivity(new Intent(DriverDocumentActivity.this, SplashNewActivity.class));
-											finish();
+											performbackPressed();
 										}
 									});
 								} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
@@ -370,6 +373,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 									Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
 									intent.putExtra("access_token",jObj.getString("access_token"));
+									intent.putExtra("in_side", false);
+									intent.putExtra("doc_required", 3);
 									startActivity(intent);
 								}  else{
 									DialogPopup.alertPopup(activity, "", message);

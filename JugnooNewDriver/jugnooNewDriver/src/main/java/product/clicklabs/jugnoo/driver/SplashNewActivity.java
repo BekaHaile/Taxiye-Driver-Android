@@ -1507,6 +1507,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 									Intent intent = new Intent(SplashNewActivity.this, DriverDocumentActivity.class);
 									intent.putExtra("access_token",jObj.getString("access_token"));
+									intent.putExtra("in_side", false);
+									intent.putExtra("doc_required", 3);
 									startActivity(intent);
 								}  else{
 									DialogPopup.alertPopup(activity, "", message);

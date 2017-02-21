@@ -452,8 +452,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private boolean isTourFlag, isTourBtnClicked;
 	private View customView;
 	private GenrateTourPush gcmIntentService;
-	private RelativeLayout relativeLayoutTour;
-	private TextView textViewTour;
+	private RelativeLayout relativeLayoutTour, relativeLayoutDocs;
+	private TextView textViewTour, textViewDoc;
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 
@@ -655,6 +655,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewTour = (TextView) findViewById(R.id.textViewTour);
 			textViewTour.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewTour.setText(getResources().getText(R.string.start_training));
+
+			relativeLayoutDocs = (RelativeLayout) findViewById(R.id.relativeLayoutDocs);
+			textViewDoc = (TextView) findViewById(R.id.textViewDoc);
+			textViewDoc.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			relativeLayoutTour.setOnClickListener(this);
 			// Inflate any custom view
@@ -1236,6 +1240,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					drawerLayout.closeDrawer(GravityCompat.START);
 //					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
+			relativeLayoutDocs.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
+					intent.putExtra("access_token",Data.userData.accessToken);
+					intent.putExtra("in_side", true);
+					intent.putExtra("doc_required", 0);
+					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
@@ -2768,6 +2784,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 							resetSharedPrefs();
+						} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+							Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
+							intent.putExtra("access_token",Data.userData.accessToken);
+							intent.putExtra("in_side", true);
+							intent.putExtra("doc_required", 1);
+							startActivity(intent);
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);

@@ -69,6 +69,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
+	int requirement;
 	int imgPixel;
 
 
@@ -117,6 +118,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		progressBar.setVisibility(View.GONE);
 
 		accessToken = getArguments().getString("access_token");
+		requirement = getArguments().getInt("doc_required");
 		getDocsAsync(getActivity());
 
 		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
@@ -548,7 +550,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	public void getDocsAsync(final Activity activity) {
 		try {
 			progressBar.setVisibility(View.VISIBLE);
-			RestClient.getApiServices().docRequest(accessToken, new Callback<DocRequirementResponse>() {
+			String isRequired = String.valueOf(requirement);
+			RestClient.getApiServices().docRequest(accessToken, isRequired, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {

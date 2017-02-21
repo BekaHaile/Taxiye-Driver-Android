@@ -462,6 +462,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/fetch_required_docs")
 	void docRequest(@Field("access_token") String accessToken,
+					@Field("login_documents") String isRequired,
 					Callback<DocRequirementResponse> callback);
 
 	@Multipart
@@ -496,6 +497,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/verify_document_status")
 	void docSubmission(@Field("access_token") String accessToken,
+					   @Field("login_documents") String requirement,
 					Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded

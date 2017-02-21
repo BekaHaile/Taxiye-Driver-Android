@@ -391,6 +391,8 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                         JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
                                         Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
                                         intent.putExtra("access_token", jObj.getString("access_token"));
+                                        intent.putExtra("in_side", false);
+										intent.putExtra("doc_required", 3);
 										relativeLayoutFake.setVisibility(View.VISIBLE);
                                         startActivity(intent);
                                     } else {
