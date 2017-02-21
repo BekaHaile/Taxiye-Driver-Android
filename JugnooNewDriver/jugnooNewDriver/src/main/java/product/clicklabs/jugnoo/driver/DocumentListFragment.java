@@ -240,7 +240,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
 
-			if (docInfo.docRequirement == 1) {
+			if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {

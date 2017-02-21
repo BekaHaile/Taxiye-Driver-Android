@@ -55,6 +55,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	Bundle bundleHomePush= new Bundle();
 	boolean inSideApp = false;
 	int requirement;
+	public static int temp = 0;
 
 
 	@Override
@@ -208,7 +209,25 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 										}
 									});
 								} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+
+									if (inSideApp) {
+										DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", message,
+												getResources().getString(R.string.upload_later), getResources().getString(R.string.cancel),
+												new View.OnClickListener() {
+													@Override
+													public void onClick(View v) {
+														performbackPressed();
+													}
+												},
+												new View.OnClickListener() {
+													@Override
+													public void onClick(View v) {
+
+													}
+												}, false, false);
+									} else {
+										DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+									}
 								} else if (ApiResponseFlags.UPLOAD_DOCUMENT_REFRESH.getOrdinal() == flag) {
 									try {
 										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
