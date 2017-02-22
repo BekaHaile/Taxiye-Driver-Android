@@ -1247,10 +1247,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutDocs.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
-					intent.putExtra("access_token",Data.userData.accessToken);
-					intent.putExtra("in_side", true);
-					intent.putExtra("doc_required", 0);
+					Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -2818,6 +2815,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								intent.putExtra("in_side", true);
 								intent.putExtra("doc_required", 0);
 								startActivity(intent);
+								overridePendingTransition(R.anim.right_in, R.anim.right_out);
 							} else {
 								showDialogFromBackground(message);
 							}

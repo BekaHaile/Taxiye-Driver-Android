@@ -832,6 +832,7 @@
     <string name="request_autos">Request for AUTOS will be sent to you now.</string>
     <string name="later">Later</string>
     <string name="upload_now">Upload Now</string>
+    <string name="driver_resources">Driver Resources</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
