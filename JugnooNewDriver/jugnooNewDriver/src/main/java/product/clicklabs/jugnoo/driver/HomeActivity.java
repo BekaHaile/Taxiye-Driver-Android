@@ -2738,92 +2738,105 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 			}
 		});
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					HashMap<String, String> params = new HashMap<String, String>();
+		if(isTourFlag){
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					if (toggleDelivery) {
+						Data.userData.setDeliveryAvailable(jugnooOnFlag);
+					} else {
+						Data.userData.autosAvailable = jugnooOnFlag;
+					}
+					changeJugnooONUIAndInitService();
+					if (jugnooOnFlag == 1) {
+						AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+					} else {
+						Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
+						intent1.putExtra("task_id", "2");
+						HomeActivity.this.startService(intent1);
+					}
+					nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
+					resetSharedPrefs();
+					if (jugnooOnFlag == 1) {
+						showDialogFromBackgroundWithListener(getResources().getString(R.string.request_autos));
+					}
+					dismissLoadingFromBackground();
+				}
+			}).start();
+		} else {
 
-					params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-					params.put("business_id", "1");
-					if(toggleDelivery){
-						params.put(KEY_DELIVERY_FLAG, "" + jugnooOnFlag);
-						if(Data.userData.autosAvailable == 1 && jugnooOnFlag == 0 && myLocation != null) {
-							params.put(KEY_LATITUDE, "" + myLocation.getLatitude());
-							params.put(KEY_LONGITUDE, "" + myLocation.getLongitude());
-						} else{
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						HashMap<String, String> params = new HashMap<String, String>();
+
+						params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+						params.put("business_id", "1");
+						if (toggleDelivery) {
+							params.put(KEY_DELIVERY_FLAG, "" + jugnooOnFlag);
+							if (Data.userData.autosAvailable == 1 && jugnooOnFlag == 0 && myLocation != null) {
+								params.put(KEY_LATITUDE, "" + myLocation.getLatitude());
+								params.put(KEY_LONGITUDE, "" + myLocation.getLongitude());
+							} else {
+								params.put(KEY_LATITUDE, "" + latLng.latitude);
+								params.put(KEY_LONGITUDE, "" + latLng.longitude);
+							}
+						} else {
+							params.put(KEY_FLAG, "" + jugnooOnFlag);
 							params.put(KEY_LATITUDE, "" + latLng.latitude);
 							params.put(KEY_LONGITUDE, "" + latLng.longitude);
 						}
-					} else {
-						params.put(KEY_FLAG, "" + jugnooOnFlag);
-						params.put(KEY_LATITUDE, "" + latLng.latitude);
-						params.put(KEY_LONGITUDE, "" + latLng.longitude);
-					}
 
-					Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
-					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+						Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
+						String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
-					JSONObject jObj = new JSONObject(result);
-
-					if (jObj.has(KEY_FLAG)) {
-						int flag = jObj.getInt(KEY_FLAG);
-						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-							if(toggleDelivery){
-								Data.userData.setDeliveryAvailable(jugnooOnFlag);
+						JSONObject jObj = new JSONObject(result);
+						String message = JSONParser.getServerMessage(jObj);
+						if (jObj.has(KEY_FLAG)) {
+							int flag = jObj.getInt(KEY_FLAG);
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								if (toggleDelivery) {
+									Data.userData.setDeliveryAvailable(jugnooOnFlag);
+								} else {
+									Data.userData.autosAvailable = jugnooOnFlag;
+								}
+								changeJugnooONUIAndInitService();
+								if (jugnooOnFlag == 1) {
+									AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+								} else {
+									Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
+									intent1.putExtra("task_id", "2");
+									HomeActivity.this.startService(intent1);
+								}
+								nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
+								resetSharedPrefs();
+								showDialogFromBackground(message);
+							} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+								Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
+								intent.putExtra("access_token", Data.userData.accessToken);
+								intent.putExtra("in_side", true);
+								intent.putExtra("doc_required", 1);
+								startActivity(intent);
 							} else {
-								Data.userData.autosAvailable = jugnooOnFlag;
+								showDialogFromBackground(message);
 							}
-							changeJugnooONUIAndInitService();
-							if (jugnooOnFlag == 1) {
-								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
-							} else{
-								Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
-								intent1.putExtra("task_id", "2");
-								HomeActivity.this.startService(intent1);
-							}
-							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
-							resetSharedPrefs();
-						} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
-							Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
-							intent.putExtra("access_token",Data.userData.accessToken);
-							intent.putExtra("in_side", true);
-							intent.putExtra("doc_required", 1);
-							startActivity(intent);
+						} else {
+							showDialogFromBackground(message);
 						}
-					}
-					String message = JSONParser.getServerMessage(jObj);
-					if(isTourFlag) {
-						showDialogFromBackgroundWithListener(message);
-					} else {
-						showDialogFromBackground(message);
-					}
-//					if(isTourFlag && Data.userData.autosAvailable == 1) {
-//						try {
-//							// Inflate any custom view
-//							if(customView == null) {
-//								customView = getLayoutInflater().inflate(R.layout.dialog_tour, null); // Display the view just by calling "show"
-//							}
-//							TextView textView = (TextView) customView.findViewById(R.id.tour_textView);
-//							textView.setText(getString(R.string.tutorial_tap_ok));
-//							Crouton.cancelAllCroutons();
-//							Crouton.show(HomeActivity.this, customView);
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//					}
 
-				} catch (Exception e) {
-					e.printStackTrace();
-					showDialogFromBackground(Data.SERVER_ERROR_MSG);
-				}
-				dismissLoadingFromBackground();
+					} catch (Exception e) {
+						e.printStackTrace();
+						showDialogFromBackground(Data.SERVER_ERROR_MSG);
+					}
+					dismissLoadingFromBackground();
 
-				if (jugnooOnFlag == 1 && enableSharing && Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 0) {
-					toggleSharingMode(1, false, toggleDelivery);
+					if (jugnooOnFlag == 1 && enableSharing && Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 0) {
+						toggleSharingMode(1, false, toggleDelivery);
+					}
 				}
-			}
-		}).start();
+			}).start();
+		}
 	}
 
 	private void nudgeJugnooOnOff(double latitude, double longitude){
@@ -9289,9 +9302,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			isTourFlag = false;
-			tourLayout.setVisibility(View.GONE);
-			Crouton.cancelAllCroutons();
+			Log.e("isTourFlag", String.valueOf(isTourFlag));
+			changeJugnooON(0, false, false);
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					isTourFlag = false;
+					tourLayout.setVisibility(View.GONE);
+					Crouton.cancelAllCroutons();
+				}
+			}, 500);
 		}
 	}
 
@@ -9350,7 +9370,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-					isTourFlag = false;
+					//isTourFlag = false;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -9528,11 +9548,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									HomeActivity.logoutUser(activity);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
+								Log.e("isTourFlag1", String.valueOf(isTourFlag));
 								if(ridePushCancel == 1) {
 									setTourOperation(1);
 								} else if(ridePushCancel == 2) {
 									handleCancelRideSuccess(String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), "");
 								}
+								Log.e("isTourFlag2", String.valueOf(isTourFlag));
 								handleTourView(false, "");
 								tourResponseModel = null;
 							} else {

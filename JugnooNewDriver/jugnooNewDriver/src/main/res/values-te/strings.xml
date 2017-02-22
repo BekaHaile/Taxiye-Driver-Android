@@ -801,6 +801,7 @@
     <string name="training_confirmation_text">You would receive no customer requests during
         training. Are you sure you want to start?
     </string>
+    <string name="request_autos">Request for AUTOS will be sent to you now.</string>
 
 
     <string-array name="CountryCodes" >
