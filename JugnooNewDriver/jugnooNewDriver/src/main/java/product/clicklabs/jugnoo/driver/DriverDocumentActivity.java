@@ -56,7 +56,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	boolean inSideApp = false;
 	int requirement;
 	public static int temp = 0;
-
+	DialogPopup dialogLogin = new DialogPopup();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -200,19 +200,20 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
+										dialogLogin.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+									} else {
+										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												performbackPressed();
+											}
+										});
 									}
-
-									DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											performbackPressed();
-										}
-									});
 								} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
 
 									if (inSideApp) {
 										DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", message,
-												getResources().getString(R.string.upload_later), getResources().getString(R.string.cancel),
+												getResources().getString(R.string.later), getResources().getString(R.string.upload_now),
 												new View.OnClickListener() {
 													@Override
 													public void onClick(View v) {
@@ -273,8 +274,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		conf = getResources().getConfiguration();
 		if (!"".equalsIgnoreCase(accessToken)){
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
-				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				if(Data.locationFetcher != null){
 					Data.latitude = Data.locationFetcher.getLatitude();
@@ -384,6 +383,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 
 										DialogPopup.dismissLoadingDialog();
+
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();
@@ -450,6 +450,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				intent.putExtras(bundleHomePush);
 			startActivity(intent);
 			ActivityCompat.finishAffinity(this);
+			dialogLogin.dismissLoadingDialog();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 //		else if(hasFocus && loginFailed){

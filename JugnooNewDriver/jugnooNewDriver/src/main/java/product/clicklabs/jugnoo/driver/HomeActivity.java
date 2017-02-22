@@ -2816,7 +2816,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
 								intent.putExtra("access_token", Data.userData.accessToken);
 								intent.putExtra("in_side", true);
-								intent.putExtra("doc_required", 1);
+								intent.putExtra("doc_required", 0);
 								startActivity(intent);
 							} else {
 								showDialogFromBackground(message);

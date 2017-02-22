@@ -149,6 +149,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
 		RelativeLayout relative, relativeLayoutImageStatus;
+		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
 		int id;
 	}
@@ -202,6 +203,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.deleteImage2.setTag(holder);
 
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
+				holder.rideHistoryItem = (LinearLayout) convertView.findViewById(R.id.rideHistoryItem);
 
 				holder.addImageLayout.setTag(holder);
 
@@ -253,6 +255,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			holder.addImageLayout.setVisibility(View.VISIBLE);
 			holder.addImageLayout2.setVisibility(View.VISIBLE);
+			holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white);
 
 			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
@@ -271,6 +274,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
+			} else {
+				holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {

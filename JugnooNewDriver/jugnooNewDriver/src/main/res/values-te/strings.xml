@@ -802,6 +802,8 @@
         training. Are you sure you want to start?
     </string>
     <string name="request_autos">Request for AUTOS will be sent to you now.</string>
+    <string name="later">Later</string>
+    <string name="upload_now">Upload Now</string>
 
 
     <string-array name="CountryCodes" >
