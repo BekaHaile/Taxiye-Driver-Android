@@ -1,0 +1,136 @@
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in /Users/anshul1235/Desktop/data/adt-bundle-mac-x86_64-20140321/sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontwarn android.support.**
+-verbose
+-dontwarn android.content.Context
+-dontwarn com.google.android.gms.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn java.beans.**
+-dontwarn javax.security.**
+-dontwarn com.google.common.**
+-dontwarn retrofit.**
+-dontwarn okio.**
+-dontwarn com.flurry.**
+-keep class com.google.inject.** { *; }
+-keep class org.apache.http.** { *; }
+-keep class org.apache.james.mime4j.** { *; }
+-keep class javax.inject.** { *; }
+-keep class retrofit.** { *; }
+-dontwarn rx.**
+-keep class com.example.testobfuscation.** { *; }
+-keepattributes Signature
+-keep class sun.misc.Unsafe { *; }
+-dontoptimize
+-dontpreverify
+
+
+-keepattributes *Annotation*
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class com.google.vending.licensing.ILicensingService
+-keep public class com.android.vending.licensing.ILicensingService
+-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.app.Fragment
+
+-keep class com.google.android.gms.** { *; }
+-keep class com.github.castorflex.smoothprogressbar.** { *; }
+
+-keep class com.flurry.** { *; }
+-keep class com.google.ads.conversiontracking.** { *; }
+-keep class com.squareup.picasso.** { *; }
+-keep class com.crashlytics.sdk.android.** { *; }
+
+-keep class com.facebook.android.** { *; }
+-keep class com.google.code.gson.** { *; }
+-keep class io.branch.sdk.android.** { *; }
+-keep class com.android.support.** { *; }
+-keep class com.squareup.retrofit.** { *; }
+-keep class com.squareup.okhttp.** { *; }
+-keep class com.sothree.slidinguppanel.** { *; }
+-keep class sun.misc.Unsafe { *; }
+
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
+
+# For CleverTap SDK
+-dontwarn com.clevertap.android.sdk.**
+
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+ -keepclassmembers public class * extends android.view.View {
+  void set*(***);
+  *** get*();
+ }
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keepclassmembers class **.R$* {
+  public static <fields>;
+}
+-keepclassmembers enum * { *; }
+
+# for fabric
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+# for butterknife
+-dontwarn butterknife.internal.**
+-keep class **$$ViewInjector { *; }
+-keepnames class * { @butterknife.InjectView *;}
+-dontwarn butterknife.Views$InjectViewProcessor
+-dontwarn com.gc.materialdesign.views.**
+-keep class **$$ViewBinder { *; }
+
+-dontwarn org.apache.**
+-keep public class com.jugnoo.pay.models.** { *; }
+-keep public class in.org.npci.commonlibrary.** { *; }
+-keep public class com.yesbank.** { *; }
+-keep public class org.npci.upi.security.services.** { *; }
+-keep public class org.apache.xml.security.** { *; }
