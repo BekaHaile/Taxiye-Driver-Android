@@ -115,6 +115,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		captureImage.setOnClickListener(this);
 		rejectImage.setOnClickListener(this);
 		backBtn.setOnClickListener(this);
+		linearLayoutroot.setOnClickListener(this);
 		buttonGallery.setOnClickListener(this);
 		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -420,7 +421,6 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		}
 	}
 
-
 	public void acceptImage(){
 		try {
 			refreshCamera();
@@ -440,10 +440,12 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 					newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
 				}
 			}
+			capturedImage.recycle();
 
 			File f = null;
 			if (newBitmap != null) {
-				f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
+				int temp = activity.temp++;
+				f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,temp);
 			}
 
 //			uploadPicToServer(frontImage, auditType, 0);

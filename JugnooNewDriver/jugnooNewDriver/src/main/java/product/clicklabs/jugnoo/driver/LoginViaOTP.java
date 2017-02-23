@@ -509,6 +509,8 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                 JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
                                 Intent intent = new Intent(LoginViaOTP.this, DriverDocumentActivity.class);
                                 intent.putExtra("access_token", jObj.getString("access_token"));
+                                intent.putExtra("in_side", false);
+								intent.putExtra("doc_required", 3);
                                 Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 								relativeLayoutFake.setVisibility(View.VISIBLE);
                                 startActivity(intent);
@@ -666,7 +668,11 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         }
 
         if(customCountDownTimer == null) {
-            customCountDownTimer = new CustomCountDownTimer(30000, 5, this);
+			if(BuildConfig.DEBUG_MODE){
+				customCountDownTimer = new CustomCountDownTimer(3000, 5, this);
+			}else {
+				customCountDownTimer = new CustomCountDownTimer(30000, 5, this);
+			}
         }
 
         OtpDialog.Builder builder = new OtpDialog.Builder(LoginViaOTP.this)

@@ -124,7 +124,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ImageView jugnooTextImg, jugnooTextImg2;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
-	boolean secondtime = false;
+	boolean secondtime = false, refreshApp = false;
 	Spinner spinner;
 	String selectedLanguage;
 	int languagePrefStatus, registerViaTooken = RegisterOption.ONLY_TOOKAN.getOrdinal();
@@ -791,7 +791,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			
 			@Override
 			public void onClick(View v) {
-				if(!loginDataFetched){
+				if(!loginDataFetched && refreshApp){
 					noNetFirstTime = false;
 					noNetSecondTime = false;
 					getDeviceToken();
@@ -1507,6 +1507,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 									Intent intent = new Intent(SplashNewActivity.this, DriverDocumentActivity.class);
 									intent.putExtra("access_token",jObj.getString("access_token"));
+									intent.putExtra("in_side", false);
+									intent.putExtra("doc_required", 3);
 									startActivity(intent);
 								}  else{
 									DialogPopup.alertPopup(activity, "", message);
@@ -2547,7 +2549,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.VISIBLE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.VISIBLE);
-
+				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 				textViewRegDriver.setVisibility(View.GONE);
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2565,7 +2567,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.VISIBLE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-
+				refreshApp = false;
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2579,7 +2581,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.GONE);
-
+				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2594,6 +2596,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			case LOGIN:
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
+				refreshApp = false;
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.GONE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
@@ -2615,6 +2618,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						getCityAsync();
 					}
 				}, 1000);
+				refreshApp = false;
 				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);

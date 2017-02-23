@@ -69,6 +69,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
+	int requirement;
 	int imgPixel;
 
 
@@ -117,6 +118,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		progressBar.setVisibility(View.GONE);
 
 		accessToken = getArguments().getString("access_token");
+		requirement = getArguments().getInt("doc_required");
 		getDocsAsync(getActivity());
 
 		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
@@ -147,6 +149,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
 		RelativeLayout relative, relativeLayoutImageStatus;
+		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
 		int id;
 	}
@@ -200,6 +203,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.deleteImage2.setTag(holder);
 
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
+				holder.rideHistoryItem = (LinearLayout) convertView.findViewById(R.id.rideHistoryItem);
 
 				holder.addImageLayout.setTag(holder);
 
@@ -238,7 +242,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
 
-			if (docInfo.docRequirement == 1) {
+			if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {
@@ -251,6 +255,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			holder.addImageLayout.setVisibility(View.VISIBLE);
 			holder.addImageLayout2.setVisibility(View.VISIBLE);
+			holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white);
 
 			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
@@ -269,6 +274,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
+			} else {
+				if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
+					holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				}
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
@@ -548,7 +557,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	public void getDocsAsync(final Activity activity) {
 		try {
 			progressBar.setVisibility(View.VISIBLE);
-			RestClient.getApiServices().docRequest(accessToken, new Callback<DocRequirementResponse>() {
+			String isRequired = String.valueOf(requirement);
+			RestClient.getApiServices().docRequest(accessToken, isRequired, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {

@@ -44,9 +44,6 @@ import retrofit.mime.TypedByteArray;
 
 public class SelfAuditActivity extends BaseFragmentActivity {
 
-
-
-
 	RelativeLayout relative;
 	String accessToken;
 	AuditStateResponse auditStateResponse;

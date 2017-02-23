@@ -765,7 +765,6 @@
 	<string name="register_as_driver">Register as DRIVER</string>
 	<string name="distance_lower">दूरी</string>
 
-
 	<string name="select_customer">ग्राहक चुने </string>
 	<string name="collect_cash">नकद ले </string>
 	<string name="pool_start">पूल शुरू करे </string>
@@ -807,6 +806,12 @@
 	<string name="arriving">पहुच रहे है </string>
 	<string name="arrivingdot">पहुच रहे है ...</string>
 
+	<string name="upload_later">Upload Later</string>
+	<string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
+	<string name="request_autos">Request for AUTOS will be sent to you now.</string>
+	<string name="later">Later</string>
+	<string name="upload_now">Upload Now</string>
+	<string name="driver_resources">Driver Resources</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
