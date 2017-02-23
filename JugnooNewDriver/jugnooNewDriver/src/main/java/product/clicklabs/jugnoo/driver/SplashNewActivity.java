@@ -313,22 +313,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-//				startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
-//				finish();
-//				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//				FlurryEventLogger.event(LOGIN);
-
-				try {
-					if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
-							&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
-						fetchMessages();
-					} else{
+//				if(BuildConfig.DEBUG_MODE) {
+//					startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
+//					finish();
+//					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//				} else {
+					try {
+						if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
+								&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
+							fetchMessages();
+						} else{
+							changeUIState(State.LOGIN);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 						changeUIState(State.LOGIN);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					changeUIState(State.LOGIN);
-				}
+//				}
 			}
 		});
 

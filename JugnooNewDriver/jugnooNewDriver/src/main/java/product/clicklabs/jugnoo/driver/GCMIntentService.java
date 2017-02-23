@@ -70,6 +70,7 @@ import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
+import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -893,6 +894,166 @@ public class GCMIntentService extends IntentService {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void createDemoRequest(Context context, TourResponseModel message) {
+		try {
+			 {
+
+				try {
+					TourResponseModel.RequestResponse jObj = message.responses.requestResponse;
+					Log.i("push_notification", String.valueOf(jObj));
+					int flag = jObj.getFlag();
+					String title = "Jugnoo";
+
+					if (PushFlags.REQUEST.getOrdinal() == flag) {
+						int perfectRide = jObj.getPerfectRide();
+						int isPooled = jObj.getIsPooled();
+						int isDelivery = jObj.getIsDelivery();
+						int isDeliveryPool = 0;
+						int changeRing = jObj.getRingType();
+						int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
+								DriverScreenMode.D_INITIAL.getOrdinal());
+						boolean entertainRequest = false;
+						if(jObj.getRideType() == 4){
+							isDeliveryPool =1;
+						}
+						if (1 == perfectRide
+								&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
+								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+							entertainRequest = true;
+						} else if (1 == isPooled
+								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+							entertainRequest = true;
+						} else if (1 == isDelivery
+								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+							entertainRequest = true;
+						} else if (0 == perfectRide && 0 == isPooled
+								&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)
+								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+							entertainRequest = true;
+						}
+
+						if (entertainRequest) {
+							String engagementId = String.valueOf(jObj.getEngagementId());
+							String userId = String.valueOf(jObj.getUserId());
+							double latitude = jObj.getLatitude();
+							double longitude = jObj.getLongitude();
+							double currrentLatitude = Double.parseDouble(jObj.getCurrentLatitude());
+							double currrentLongitude = Double.parseDouble(jObj.getCurrentLongitude());
+							String startTime = jObj.getStartTime();
+							String address = jObj.getAddress();
+							double dryDistance = jObj.getDryDistance();
+							int totalDeliveries = 0;
+							double estimatedFare = 0;
+							double cashOnDelivery = 0;
+							String estimatedDriverFare = "0";
+
+							String userName = "";
+							int referenceId = 0;
+
+							String startTimeLocal = DateOperations.utcToLocal(startTime);
+							String endTime = jObj.getEndTime();
+							long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+							if ("".equalsIgnoreCase(endTime)) {
+								long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
+								long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
+								requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
+							} else {
+								long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
+										startTimeLocal);
+								if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
+									requestTimeOutMillis = startEndDiffMillis;
+								} else {
+									requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+								}
+							}
+							String distanceDry = "";
+							try {
+								DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+								DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+								if (dryDistance >= 1000) {
+									distanceDry = decimalFormat.format(dryDistance / 1000) + context.getResources().getString(R.string.km_away);
+								} else {
+									distanceDry = ""+decimalFormatNoDecimal.format(dryDistance) + " " + context.getResources().getString(R.string.m_away);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
+							double fareFactor = jObj.getFareFactor();
+
+
+
+							startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
+
+							if (HomeActivity.appInterruptHandler != null) {
+								CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+										Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+										referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
+										isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+										new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
+								Data.addCustomerInfo(customerInfo);
+
+								startRing(context, engagementId, changeRing);
+
+								if (jObj.getPenaliseDriverTimeout() == 1) {
+									startTimeoutAlarm(context);
+								}
+								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
+								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
+										referenceId, userId, perfectRide,
+										isPooled, isDelivery, isDeliveryPool);
+								HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
+
+								Log.e("referenceId", "=" + referenceId);
+							} else {
+								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
+										referenceId, userId, perfectRide,
+										isPooled, isDelivery, isDeliveryPool);
+								startRing(context, engagementId, changeRing);
+
+								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
+								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+							}
+						}
+
+						try {
+							if (jObj.getWakeUpLockEnabled() == 1) {
+								if (HomeActivity.activity != null) {
+									if (!HomeActivity.activity.hasWindowFocus()) {
+										Intent newIntent = new Intent(context, HomeActivity.class);
+										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										context.startActivity(newIntent);
+									}
+								} else {
+									Intent homeScreen = new Intent(context, SplashNewActivity.class);
+									homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									context.startActivity(homeScreen);
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					String message1 = "";
+//					savePush(jObj, flag, title, message1);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			// Release the wake lock provided by the WakefulBroadcastReceiver.
+
+		}
 	}
 
 
