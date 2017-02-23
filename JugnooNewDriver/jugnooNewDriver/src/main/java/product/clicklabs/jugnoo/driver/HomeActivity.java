@@ -449,7 +449,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private RelativeLayout tourLayout;
 	private ImageView tourCrossBtn ;
 	private TextView tourTextView;
-	private boolean isTourFlag, isTourBtnClicked;
+	private boolean isTourFlag, isTourBtnClicked, isJugnooOnTraining = false;
 	private View customView;
 	private GenrateTourPush gcmIntentService;
 	private RelativeLayout relativeLayoutTour, relativeLayoutDocs;
@@ -2747,10 +2747,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					changeJugnooONUIAndInitService();
 					if (jugnooOnFlag == 1) {
 						AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+						isJugnooOnTraining = true;
 					} else {
 						Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
 						intent1.putExtra("task_id", "2");
 						HomeActivity.this.startService(intent1);
+						isJugnooOnTraining = false;
 					}
 					nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 					resetSharedPrefs();
@@ -9301,7 +9303,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 			Log.e("isTourFlag", String.valueOf(isTourFlag));
-			changeJugnooON(0, false, false);
+			if(isJugnooOnTraining) {
+				changeJugnooON(0, false, false);
+			}
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {

@@ -36,34 +36,34 @@ public class TourResponseModel {
         public Integer id;
         @SerializedName("fare_fixed")
         @Expose
-        public Integer fareFixed;
+        public Double fareFixed;
         @SerializedName("fare_per_km")
         @Expose
-        public Integer farePerKm;
+        public Double farePerKm;
         @SerializedName("fare_threshold_distance")
         @Expose
-        public Integer fareThresholdDistance;
+        public Double fareThresholdDistance;
         @SerializedName("fare_per_km_threshold_distance")
         @Expose
-        public Integer farePerKmThresholdDistance;
+        public Double farePerKmThresholdDistance;
         @SerializedName("fare_per_km_after_threshold")
         @Expose
-        public Integer farePerKmAfterThreshold;
+        public Double farePerKmAfterThreshold;
         @SerializedName("fare_per_km_before_threshold")
         @Expose
-        public Integer farePerKmBeforeThreshold;
+        public Double farePerKmBeforeThreshold;
         @SerializedName("fare_per_min")
         @Expose
-        public Integer farePerMin;
+        public Double farePerMin;
         @SerializedName("fare_threshold_time")
         @Expose
-        public Integer fareThresholdTime;
+        public Double fareThresholdTime;
         @SerializedName("fare_per_waiting_min")
         @Expose
-        public Integer farePerWaitingMin;
+        public Double farePerWaitingMin;
         @SerializedName("fare_threshold_waiting_time")
         @Expose
-        public Integer fareThresholdWaitingTime;
+        public Double fareThresholdWaitingTime;
         @SerializedName("night_fare_applicable")
         @Expose
         public Integer nightFareApplicable;
@@ -72,13 +72,13 @@ public class TourResponseModel {
         public Integer type;
         @SerializedName("accept_subsidy_threshold_distance")
         @Expose
-        public Integer acceptSubsidyThresholdDistance;
+        public Double acceptSubsidyThresholdDistance;
         @SerializedName("accept_subsidy_before_threshold")
         @Expose
-        public Integer acceptSubsidyBeforeThreshold;
+        public Double acceptSubsidyBeforeThreshold;
         @SerializedName("accept_subsidy_after_threshold")
         @Expose
-        public Integer acceptSubsidyAfterThreshold;
+        public Double acceptSubsidyAfterThreshold;
         @SerializedName("ride_type")
         @Expose
         public Integer rideType;
@@ -113,7 +113,7 @@ public class TourResponseModel {
         public Integer ringType;
         @SerializedName("fare_factor")
         @Expose
-        public Integer fareFactor;
+        public Double fareFactor;
         @SerializedName("flag")
         @Expose
         public Integer flag;
@@ -195,11 +195,11 @@ public class TourResponseModel {
             this.ringType = ringType;
         }
 
-        public Integer getFareFactor() {
+        public Double getFareFactor() {
             return fareFactor;
         }
 
-        public void setFareFactor(Integer fareFactor) {
+        public void setFareFactor(Double fareFactor) {
             this.fareFactor = fareFactor;
         }
 
@@ -369,7 +369,7 @@ public class TourResponseModel {
         public Double userRating;
         @SerializedName("jugnoo_balance")
         @Expose
-        public Integer jugnooBalance;
+        public Double jugnooBalance;
         @SerializedName("address")
         @Expose
         public String address;

@@ -275,7 +275,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
 			} else {
-				holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
+					holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				}
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
