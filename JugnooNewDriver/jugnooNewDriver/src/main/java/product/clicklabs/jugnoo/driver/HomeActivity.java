@@ -741,7 +741,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverStartRideBtn.setText(getStringText(R.string.start_ride));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
 			buttonMarkArrived.setTypeface(Data.latoRegular(this));
-			buttonMarkArrived.setText(getStringText(R.string.arrived));
+//			buttonMarkArrived.setText(getStringText(R.string.arrived));
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
 			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverCancelRideBtn.setText(getStringText(R.string.cancel));
@@ -1504,8 +1504,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 													double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
+													double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
 
-													if (displacement <= DRIVER_START_RIDE_CHECK_METERS || actualDispalcement <= DRIVER_START_RIDE_CHECK_METERS) {
+													if (displacement <= arrivingDistance || actualDispalcement <= arrivingDistance) {
 														buildAlertMessageNoGps();
 														if (isTourFlag) {
 															driverScreenMode = DriverScreenMode.D_START_RIDE;
@@ -3620,8 +3621,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
-					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
-							getResources().getColor(R.color.new_orange));
+//					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
+//							getResources().getColor(R.color.new_orange));
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
@@ -5578,6 +5579,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(), totalHaversineDistanceInKm);
 
 					driverScreenMode = DriverScreenMode.D_RIDE_END;
+
 					Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 					switchDriverScreen(driverScreenMode);
 
@@ -6665,8 +6667,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					GCMIntentService.clearNotifications(activity);
 
-
-
 					rideTimeChronometer.stop();
 
 					driverScreenMode = DriverScreenMode.D_RIDE_END;
@@ -7693,6 +7693,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if(!isTourFlag) {
 					GCMIntentService.clearNotifications(activity);
 					driverMarkArriveRideAsync(activity, latLng, Data.getCustomerInfo(String.valueOf(engagementId)));
+				}
+			}
+		});
+	}
+
+
+	@Override
+	public void notifyArrivedButton(final boolean arrived, final int engagementId) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(engagementId))) {
+						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+						double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
+						double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
+						if (arrived || actualDispalcement < arrivingDistance) {
+							buttonMarkArrived.setText(getResources().getString(R.string.arrived));
+							buttonMarkArrived.setEnabled(true);
+							buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
+							if(isTourFlag){
+								handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+							}
+						} else {
+							buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
+							buttonMarkArrived.setEnabled(false);
+							buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
+							if(isTourFlag){
+								handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -9237,7 +9272,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									public void run() {
 										tutorialChangeState();
 									}
-								}, 1000);
+								}, 200);
 							}
 						});
 					} else {
@@ -9250,6 +9285,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} else {
                     reviewSkipBtn.performLongClick();
                 }
+				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -9334,7 +9370,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				gcmIntentService.stopRing(true, HomeActivity.this);
 
-				handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
+				handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
 
 				break;
 			case 3:
@@ -9343,6 +9379,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					dropLatitude = tourResponseModel.responses.acceptResponse.opDropLatitude;
 					dropLongitude = tourResponseModel.responses.acceptResponse.opDropLongitude;
 					CustomerInfo newCustomerInfo = Data.getCurrentCustomerInfo();
+					saveCustomerRideDataInSP(newCustomerInfo);
 					newCustomerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 					newCustomerInfo.setDropAddress(tourResponseModel.responses.acceptResponse.dropAddress);
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");

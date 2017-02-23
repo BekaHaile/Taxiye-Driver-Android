@@ -451,8 +451,8 @@
                             android:id="@+id/buttonMarkArrived"
                             android:layout_width="308px"
                             android:layout_height="74px"
-                            android:background="@drawable/new_orange_btn_normal_rounded"
-                            android:text="@string/arrived"
+                            android:background="@drawable/new_fadded_orange_btn_normal_rounded"
+                            android:text="@string/arrivingdot"
                             android:visibility="visible"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="38px"/>
