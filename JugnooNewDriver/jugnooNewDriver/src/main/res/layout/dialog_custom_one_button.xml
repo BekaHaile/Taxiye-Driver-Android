@@ -8,6 +8,41 @@
     >
 
     <RelativeLayout
+        android:id="@+id/tour_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/red_status"
+        android:layout_below="@+id/topBar"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/tour_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32px"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:padding="26px"
+            android:layout_toLeftOf="@+id/cross_tour"
+            android:layout_alignParentLeft="true"
+            />
+
+        <ImageView
+            android:id="@+id/cross_tour"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18px"
+            android:layout_centerVertical="true"
+            android:padding="8px"
+            android:src="@drawable/ic_tutorial_cross"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="620px"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

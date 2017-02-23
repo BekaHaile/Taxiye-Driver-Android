@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15px"
-        android:background="@drawable/background_white"
+        android:background="@drawable/background_white_rounded_orange_bordered"
         android:orientation="vertical">
 
         <RelativeLayout

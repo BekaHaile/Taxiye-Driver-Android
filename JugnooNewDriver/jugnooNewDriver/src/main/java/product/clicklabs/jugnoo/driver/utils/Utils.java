@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -204,22 +205,22 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
-//		return false;
-		try {
-			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-				boolean isMockLocation = false;
-				if(location != null){
-					Bundle extras = location.getExtras();
-					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-				}
-				return isMockLocation;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return false;
+//		try {
+//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+//				boolean isMockLocation = false;
+//				if(location != null){
+//					Bundle extras = location.getExtras();
+//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+//				}
+//				return isMockLocation;
+//			} else {
+//				return false;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return false;
+//		}
 	}
 
 
@@ -279,7 +280,7 @@ public class Utils {
 
 	public static boolean validPhoneNumber(String phoneNo) {
 		try {
-			if (phoneNo.length() >= 10) {
+			if (!TextUtils.isEmpty(phoneNo) && phoneNo.length() >= 10) {
 				if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
 					return false;
 				} else {

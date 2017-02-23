@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="271"
-          android:versionName="2.7.1">
+          android:versionCode="274"
+          android:versionName="2.7.4">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -234,6 +234,12 @@
 
         <activity
             android:name=".RideDetailsNewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DriverResourceActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
@@ -530,6 +536,10 @@
                 <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".tutorial.UpdateTutStatusService"
+            android:enabled="true"/>
 
         <!--<service-->
         <!--android:name=".pubnub.PubnubService"-->

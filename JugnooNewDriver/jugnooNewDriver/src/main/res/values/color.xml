@@ -95,6 +95,7 @@
     <color name="red_status">#F53C37</color>
     <color name="red_status_v2">#eb5635</color>
     <color name="red_v2">#ff8162</color>
+    <color name="red_v2_fadded">#ffc2b3</color>
 
     <color name="orange_text">#FBBC12</color>
 
@@ -170,6 +171,6 @@
     <color name="theme_color_start">#FC644F</color>
     <color name="theme_color_end">#FF9339</color>
 
-
+    <color name="dialog_brown">#474747</color>
 
 </resources>
