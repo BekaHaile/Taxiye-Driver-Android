@@ -81,7 +81,7 @@
         android:layout_height="98px"
         android:textSize="32px"
         android:visibility="gone"
-        android:text="message from vendor"
+        android:text="message from Merchant"
         android:gravity="center"/>
 
     <ImageView

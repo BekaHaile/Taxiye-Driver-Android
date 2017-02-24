@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -135,8 +136,11 @@ public class DialogPopup {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void alertPopupWithListener(Activity activity, String title, String message, final View.OnClickListener onClickListener) {
+		alertPopupWithListenerTopBar(activity, title, message, onClickListener, onClickListener, false, "");
+	}
+	public static void alertPopupWithListenerTopBar(Activity activity, String title, String message, final View.OnClickListener onClickListener,
+													final View.OnClickListener clickListener, boolean isTourEnable, String tourText) {
 		try {
 			dismissAlertPopup();
 			if("".equalsIgnoreCase(title)){
@@ -167,7 +171,26 @@ public class DialogPopup {
 			textMessage.setText(message);
 			
 			textHead.setVisibility(View.GONE);
-			
+
+			RelativeLayout tourLayoutView = (RelativeLayout) dialog.findViewById(R.id.tour_layout);
+			TextView tourTextView = (TextView) dialog.findViewById(R.id.tour_textView);
+			tourTextView.setTypeface(Data.latoRegular(activity));
+			tourTextView.setText(tourText);
+			ImageView crossTour = (ImageView) dialog.findViewById(R.id.cross_tour);
+
+			if(isTourEnable) {
+				tourLayoutView.setVisibility(View.VISIBLE);
+			} else {
+				tourLayoutView.setVisibility(View.GONE);
+			}
+
+			crossTour.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					clickListener.onClick(v);
+				}
+			});
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			
 			btnOk.setOnClickListener(new View.OnClickListener() {
@@ -403,6 +426,119 @@ public class DialogPopup {
                     }
                 }
             });
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static void alertPopupTrainingTwoButtonsWithListeners(Activity activity, String title, String message, String okText,
+																 String canceltext, final View.OnClickListener listenerPositive,
+																 final View.OnClickListener listenerNegative, final boolean cancelable,
+																 final boolean showTitle, final boolean showTour, final String tourText,
+																 final View.OnClickListener cancelTour) {
+		try {
+			dismissAlertPopup();
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_custom_two_buttons_tour);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancelable);
+			dialog.setCanceledOnTouchOutside(cancelable);
+
+			RelativeLayout tour_layout = (RelativeLayout) dialog.findViewById(R.id.tour_layout);
+			TextView tour_textView = (TextView) dialog.findViewById(R.id.tour_textView);
+			tour_textView.setTypeface(Data.latoRegular(activity));
+			ImageView cross_tour = (ImageView) dialog.findViewById(R.id.cross_tour);
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			TextView textMessage = (TextView) dialog
+					.findViewById(R.id.textMessage);
+			textMessage.setTypeface(Data.latoRegular(activity));
+
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textHead.setText(title);
+			textMessage.setText(message);
+			tour_textView.setText(tourText);
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
+
+			if(showTour){
+				tour_layout.setVisibility(View.VISIBLE);
+			} else {
+				tour_layout.setVisibility(View.GONE);
+			}
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			if(!"".equalsIgnoreCase(okText)){
+				btnOk.setText(okText);
+			}
+
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
+			if(!"".equalsIgnoreCase(canceltext)){
+				btnCancel.setText(canceltext);
+			}
+
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+					listenerPositive.onClick(view);
+				}
+			});
+
+			btnCancel.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					listenerNegative.onClick(v);
+				}
+			});
+
+			cross_tour.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					cancelTour.onClick(v);
+				}
+			});
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (cancelable) {
+						dismissAlertPopup();
+					}
+				}
+			});
 
 			dialog.show();
 		} catch (Exception e) {

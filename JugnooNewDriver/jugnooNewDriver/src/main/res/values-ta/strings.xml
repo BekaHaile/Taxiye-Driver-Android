@@ -807,7 +807,32 @@
     <string name="provide_sign_msg">Please provide signature before submit</string>
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app">Looking for Customer App</string>
+    <string name="image">image</string>
+    <string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
+    <string name="tutorial_tap_ok">Tap \'OK\'</string>
+    <string name="tutorial_wait_for_customer">Wait for customer...</string>
+    <string name="tutorial_your_location">The blue dot shows your current location</string>
+    <string name="start_training">Start Training</string>
+    <string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\\nTap \'Accept\'.</string>
+    <string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
+    <string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
+    <string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
+    <string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
+    <string name="tutorial_tap_done_finish">Tap \'DONE\' to finish</string>
+    <string name="tutorial_tap_arrived_if_at_pickup">Tap \'Arrived\' if you are at the pickup location</string>
+    <string name="tutorial_driver_to_pickup_point">Drive to the pickup point.</string>
 
+    <string name="auto_detect_otp_failed">Automatic detection of OTP Failed</string>
+    <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
+    <string name="tutorial_tap_yes">Tap \'YES\'</string>
+    <string name="arriving">Arriving</string>
+    <string name="arrivingdot">Arriving...</string>
+    <string name="upload_later">Upload Later</string>
+    <string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
+    <string name="request_autos">Request for AUTOS will be sent to you now.</string>
+    <string name="later">Later</string>
+    <string name="upload_now">Upload Now</string>
+    <string name="driver_resources">Driver Resources</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
