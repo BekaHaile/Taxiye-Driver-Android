@@ -1,5 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,6 +48,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +65,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -4544,6 +4549,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType;
 		LinearLayout relative, linearLayoutDeliveryFare;
+		DonutProgress donutProgress;
 		int id;
 	}
 
@@ -4576,15 +4582,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			runnableRefresh = new Runnable() {
 				@Override
 				public void run() {
-					DriverRequestListAdapter.this.notifyDataSetChanged();
+//					DriverRequestListAdapter.this.notifyDataSetChanged();
 					if(driverRideRequestsList.getVisibility() == View.VISIBLE){
-						handlerRefresh.postDelayed(runnableRefresh, 1000);
+						handlerRefresh.postDelayed(runnableRefresh, 10000);
 					} else{
 						handlerRefresh.postDelayed(runnableRefresh, 10000);
 					}
 				}
 			};
-			handlerRefresh.postDelayed(runnableRefresh, 1000);
+			handlerRefresh.postDelayed(runnableRefresh, 10000);
 		}
 
 		@Override
@@ -4669,6 +4675,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 
+				holder.donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
+
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
@@ -4695,6 +4703,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
 			long timeDiffInSec = timeDiff / 1000;
 			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
+
+			AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(HomeActivity.this, R.animator.progress_anim);
+			set.setInterpolator(new DecelerateInterpolator());
+			set.setDuration(timeDiff);
+			set.setTarget(holder.donutProgress);
+			set.start();
+
+//			Timer timer;
+//			timer = new Timer();
+//			timer.schedule(new TimerTask() {
+//				@Override
+//				public void run() {
+//					runOnUiThread(new Runnable() {
+//						@Override
+//						public void run() {
+//							boolean a = false;
+//							if (a) {
+//								ObjectAnimator anim = ObjectAnimator.ofInt(holder.donutProgress, "progress", 0, 10);
+//								anim.setInterpolator(new DecelerateInterpolator());
+//								anim.setDuration(500);
+//								anim.start();
+//							} else {
+//								AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(HomeActivity.this, R.animator.progress_anim);
+//								set.setInterpolator(new DecelerateInterpolator());
+//								set.setTarget(holder.donutProgress);
+//								set.start();
+//							}
+//						}
+//					});
+//				}
+//			}, 0, 2000);
+
 			double distance=0;
 			if(customerInfo.getDryDistance()>0){
 				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
