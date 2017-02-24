@@ -140,3 +140,6 @@
 
 # for training
 -keep public class product.clicklabs.jugnoo.driver.tutorial.** { *; }
+
+# for Utils
+-keep class product.clicklabs.jugnoo.driver.utils.Utils.** { *; }

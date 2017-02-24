@@ -812,6 +812,7 @@
 	<string name="later">Later</string>
 	<string name="upload_now">Upload Now</string>
 	<string name="driver_resources">Driver Resources</string>
+	<string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
