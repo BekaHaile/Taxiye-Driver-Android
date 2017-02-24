@@ -134,3 +134,9 @@
 -keep public class com.yesbank.** { *; }
 -keep public class org.npci.upi.security.services.** { *; }
 -keep public class org.apache.xml.security.** { *; }
+
+# for pushy
+-dontwarn com.fasterxml.jackson.**
+
+# for training
+-keep public class product.clicklabs.jugnoo.driver.tutorial.** { *; }
