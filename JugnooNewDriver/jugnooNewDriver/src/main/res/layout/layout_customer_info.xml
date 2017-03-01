@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutCustomerInfo"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="95px">
 
     <LinearLayout
         android:layout_width="480px"
@@ -54,14 +54,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20px"
-        android:layout_marginTop="20px"
-        android:layout_marginBottom="20px"
+        android:layout_marginTop="12px"
+        android:layout_marginBottom="12px"
         android:orientation="vertical"
         android:layout_centerVertical="true"
         >
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutCall"
+            android:id="@+id/relativeLayoutCall1"
             android:layout_width="180px"
             android:layout_height="70px"
             android:background="@drawable/new_orange_btn_corner_normal">

@@ -46,7 +46,7 @@ public class CustomerSwitcher {
 
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
 			textViewCustomerAddressInRide, textViewShowDistance, textViewCustomerCashRequired;
-	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo;
+	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
@@ -75,6 +75,7 @@ public class CustomerSwitcher {
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
+		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
@@ -137,6 +138,41 @@ public class CustomerSwitcher {
 			}
 		});
 
+		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String callPhoneNumber = "";
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if (customerInfo != null) {
+					callPhoneNumber = customerInfo.phoneNumber;
+				}
+				if (!"".equalsIgnoreCase(callPhoneNumber)) {
+					Utils.openCallIntent(activity, callPhoneNumber);
+					try {
+						JSONObject map = new JSONObject();
+						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
+						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
+						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALLED_CUSTOMER);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALL_CUSTOMER_AFTER_ARRIVING);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					}
+				} else {
+					Toast.makeText(activity, activity.getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 	}
 
 

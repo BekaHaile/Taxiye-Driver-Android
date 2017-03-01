@@ -18,7 +18,7 @@
         <RelativeLayout
             android:id="@+id/linearLayoutDeliveryItemHeader"
             android:layout_width="match_parent"
-            android:layout_height="92px"
+            android:layout_height="95px"
             android:background="@color/white">
 
             <TextView
@@ -33,7 +33,7 @@
 
             <TextView
                 android:id="@+id/textViewCustomerName"
-                android:layout_width="448px"
+                android:layout_width="410px"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
                 android:layout_centerVertical="true"
@@ -91,8 +91,7 @@
             android:layout_height="2px"
             android:background="@color/grey_light"
             android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"
-            android:layout_marginTop="8px"/>
+            android:layout_marginRight="30px"/>
 
         <LinearLayout
             android:layout_width="match_parent"
