@@ -3621,7 +3621,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					}
 
-					setCustomerInstruction(customerInfo);
+					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
+						setTextViewRideInstructions();
+					} else {
+						setCustomerInstruction(customerInfo);
+					}
 
 					topRlOuter.setVisibility(View.GONE);
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
@@ -3666,7 +3670,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
-					setTextViewRideInstructions();
 					updateCustomers();
 
 
@@ -3687,7 +3690,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 						polylineCustomersPath = null;
 					}
-					setCustomerInstruction(customerInfo);
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 					topRlOuter.setVisibility(View.GONE);
 					driverInitialLayout.setVisibility(View.GONE);
@@ -3761,7 +3763,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					startTimerPathRerouting();
-					setTextViewRideInstructions();
+					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
+						setTextViewRideInstructions();
+					} else {
+						setCustomerInstruction(customerInfo);
+					}
 					updateCustomers();
 					break;
 
@@ -3812,8 +3818,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						}
 					}
-
-					setCustomerInstruction(customerInfo);
 
 					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
 					updateDistanceFareTexts(customerInfo, customerInfo.getTotalDistance(customerRideDataGlobal
@@ -3882,17 +3886,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDeliveryPool() !=1) {
 						setDeliveryMarkers();
 					}
-					setTextViewRideInstructions();
-
+					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
+						setTextViewRideInstructions();
+					} else {
+						setCustomerInstruction(customerInfo);
+					}
 
 					startTimerPathRerouting();
-
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 					createPerfectRideMarker();
 					updateCustomers();
-
-
 					break;
 
 
@@ -3905,9 +3909,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverEngagedLayout.setVisibility(View.GONE);
 					setPannelVisibility(false);
 					cancelTimerPathRerouting();
-
 					break;
-
 
 				case D_RIDE_END:
 
@@ -3931,7 +3933,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						handleTourView(true, getString(R.string.tutorial_tap_done_finish));
 					}
 					break;
-
 
 				default:
 					driverInitialLayout.setVisibility(View.VISIBLE);
@@ -4544,12 +4545,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	class ViewHolderDriverRequest {
 		TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
-				textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare, textViewDeliveryApprox,
-				textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare;
+				textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare,
+				textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare, textViewEstimatedDist, textViewDropPoint,
+				textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount;
 		Button buttonAcceptRide, buttonCancelRide;
-		ImageView imageViewRequestType;
-		LinearLayout relative, linearLayoutDeliveryFare;
-		DonutProgress donutProgress;
+		ImageView imageViewRequestType, imageViewDeliveryList;
+		LinearLayout relative, linearLayoutDeliveryParams;
+		RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor;
+		ProgressBar progressBarRequest;
 		int id;
 	}
 
@@ -4582,15 +4585,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			runnableRefresh = new Runnable() {
 				@Override
 				public void run() {
-//					DriverRequestListAdapter.this.notifyDataSetChanged();
+					DriverRequestListAdapter.this.notifyDataSetChanged();
 					if(driverRideRequestsList.getVisibility() == View.VISIBLE){
-						handlerRefresh.postDelayed(runnableRefresh, 10000);
+						handlerRefresh.postDelayed(runnableRefresh, 1000);
 					} else{
 						handlerRefresh.postDelayed(runnableRefresh, 10000);
 					}
 				}
 			};
-			handlerRefresh.postDelayed(runnableRefresh, 10000);
+			handlerRefresh.postDelayed(runnableRefresh, 1000);
 		}
 
 		@Override
@@ -4647,7 +4650,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (convertView == null) {
 
 				holder = new ViewHolderDriverRequest();
-				convertView = mInflater.inflate(R.layout.list_item_driver_request, null);
+				convertView = mInflater.inflate(R.layout.list_item_driver_request_new, null);
 
 				holder.textViewRequestName = (TextView) convertView.findViewById(R.id.textViewRequestName);
 				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -4655,18 +4658,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
 				holder.textViewRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedDist = (TextView) convertView.findViewById(R.id.textViewEstimatedDist);
+				holder.textViewEstimatedDist.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime);
 				holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor);
 				holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewDeliveryFare = (TextView) convertView.findViewById(R.id.textViewDeliveryFare);
-				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
-				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+//				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
+//				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewEstimatedFareValue = (TextView) convertView.findViewById(R.id.textViewEstimatedFareValue);
-				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
-				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+//				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
+//				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
 				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
@@ -4674,16 +4679,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
-
-				holder.donutProgress = (DonutProgress) findViewById(R.id.donut_progress);
-
+				holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
-				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
-
+//				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
+				holder.linearLayoutDeliveryParams = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryParams);
+				holder.relativeLayoutDropPoints = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutDropPoints);
+				holder.driverRideTimeRl = (RelativeLayout) convertView.findViewById(R.id.driverRideTimeRl);
+				holder.driverFareFactor = (RelativeLayout) convertView.findViewById(R.id.driverFareFactor);
 				holder.relative.setTag(holder);
 				holder.buttonAcceptRide.setTag(holder);
 				holder.buttonCancelRide.setTag(holder);
+
+				holder.textViewDropPoint = (TextView) convertView.findViewById(R.id.textViewDropPoint);
+				holder.textViewDropPoint.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewDropPoint1 = (TextView) convertView.findViewById(R.id.textViewDropPoint1);
+				holder.textViewDropPoint1.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPoint2 = (TextView) convertView.findViewById(R.id.textViewDropPoint2);
+				holder.textViewDropPoint2.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPoint3 = (TextView) convertView.findViewById(R.id.textViewDropPoint3);
+				holder.textViewDropPoint3.setTypeface(Data.latoRegular(getApplicationContext()));
+
+				holder.textViewDropPointCount = (TextView) convertView.findViewById(R.id.textViewDropPointCount);
+				holder.textViewDropPointCount.setTypeface(Data.latoRegular(getApplicationContext()));
+
+				holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
@@ -4698,42 +4718,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			holder.id = position;
 
-
 			holder.textViewRequestAddress.setText(customerInfo.getAddress());
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
 			long timeDiffInSec = timeDiff / 1000;
-			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
-
-			AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(HomeActivity.this, R.animator.progress_anim);
-			set.setInterpolator(new DecelerateInterpolator());
-			set.setDuration(timeDiff);
-			set.setTarget(holder.donutProgress);
-			set.start();
-
-//			Timer timer;
-//			timer = new Timer();
-//			timer.schedule(new TimerTask() {
-//				@Override
-//				public void run() {
-//					runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							boolean a = false;
-//							if (a) {
-//								ObjectAnimator anim = ObjectAnimator.ofInt(holder.donutProgress, "progress", 0, 10);
-//								anim.setInterpolator(new DecelerateInterpolator());
-//								anim.setDuration(500);
-//								anim.start();
-//							} else {
-//								AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(HomeActivity.this, R.animator.progress_anim);
-//								set.setInterpolator(new DecelerateInterpolator());
-//								set.setTarget(holder.donutProgress);
-//								set.start();
-//							}
-//						}
-//					});
-//				}
-//			}, 0, 2000);
+			holder.textViewRequestTime.setText(""+timeDiffInSec);
 
 			double distance=0;
 			if(customerInfo.getDryDistance()>0){
@@ -4753,12 +4741,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
 			}
 
-			holder.textViewDeliveryApprox.setVisibility(View.GONE);
+//			holder.textViewDeliveryApprox.setVisibility(View.GONE);
 
 			holder.textViewRequestName.setVisibility(View.GONE);
 			holder.textViewRequestDetails.setVisibility(View.GONE);
-			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
+//			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
 			if(customerInfo.getIsDelivery() == 1 ){
+				holder.linearLayoutDeliveryParams.setVisibility(View.VISIBLE);
 				if(customerInfo.getTotalDeliveries() > 0) {
 					holder.textViewRequestDetails.setVisibility(View.VISIBLE);
 					holder.textViewRequestDetails.setText(getResources().getString(R.string.delivery_numbers)
@@ -4766,33 +4755,86 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				holder.textViewRequestName.setVisibility(View.VISIBLE);
 				holder.textViewRequestName.setText(customerInfo.getName());
-				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
+//				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 
 				if(!customerInfo.getCashOnDelivery().equalsIgnoreCase("0")){
+					holder.driverRideTimeRl.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setVisibility(View.VISIBLE);
-					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
+//					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
 							+": "+getResources().getString(R.string.rupee)
 							+""+customerInfo.getCashOnDelivery());
 				} else {
-					holder.textViewDeliveryFare.setVisibility(View.GONE);
-					holder.textViewDeliveryApprox.setVisibility(View.GONE);
+					holder.driverRideTimeRl.setVisibility(View.GONE);
+//					holder.textViewDeliveryApprox.setVisibility(View.GONE);
 				}
 			}
 
 			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
-				holder.textViewEstimatedFareValue.setText(customerInfo.getEstimatedDriverFare());
-				holder.textViewEstimatedFare.setVisibility(View.VISIBLE);
+				holder.textViewEstimatedFareValue.setText(getResources().getString(R.string.estimated_fare)
+						+" "+customerInfo.getEstimatedDriverFare());
+				holder.textViewEstimatedFareValue.setVisibility(View.VISIBLE);
 			} else {
-				holder.textViewEstimatedFare.setVisibility(View.GONE);
+//				holder.textViewEstimatedFare.setVisibility(View.GONE);
 				holder.textViewEstimatedFareValue.setVisibility(View.GONE);
+			}
+			if(customerInfo.getEstimatedDist() != 0){
+				holder.textViewEstimatedDist.setText(getResources().getString(R.string.estimated_dis)
+						+" "+customerInfo.getEstimatedDist());
+				holder.textViewEstimatedDist.setVisibility(View.VISIBLE);
+			} else {
+				holder.textViewEstimatedDist.setVisibility(View.GONE);
 			}
 
 			if (customerInfo.getFareFactor() > 1 || customerInfo.getFareFactor() < 1) {
-				holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
+				holder.driverFareFactor.setVisibility(View.VISIBLE);
 				holder.textViewRequestFareFactor.setText(getResources().getString(R.string.rate)+" " + decimalFormat.format(customerInfo.getFareFactor()) + "x");
 			} else {
-				holder.textViewRequestFareFactor.setVisibility(View.GONE);
+				holder.driverFareFactor.setVisibility(View.GONE);
+			}
+
+			int dropAddress = customerInfo.getDeliveryAddress().size();
+			android.view.ViewGroup.LayoutParams layoutParams = holder.imageViewDeliveryList.getLayoutParams();
+
+			if(dropAddress > 0){
+				holder.relativeLayoutDropPoints.setVisibility(View.VISIBLE);
+				if(dropAddress ==1){
+					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_1);
+					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
+					layoutParams.height = (int) (76f * ASSL.Yscale());
+				} else if(dropAddress ==2){
+					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_2);
+					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
+					holder.textViewDropPoint2.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
+					layoutParams.height = (int) (127f * ASSL.Yscale());
+				} else if(dropAddress ==3){
+					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
+					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
+					holder.textViewDropPoint2.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
+					holder.textViewDropPoint3.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint3.setText(customerInfo.getDeliveryAddress().get(2));
+					layoutParams.height = (int) (171f * ASSL.Yscale());
+				} else if(dropAddress > 3){
+					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
+					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
+					holder.textViewDropPoint2.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
+					holder.textViewDropPoint3.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint3.setText(customerInfo.getDeliveryAddress().get(2));
+					layoutParams.height = (int) (171f * ASSL.Yscale());
+					int totalDropCount = dropAddress-3;
+					holder.textViewDropPointCount.setVisibility(View.VISIBLE);
+					holder.textViewDropPointCount.setText("+"+totalDropCount+" "+getResources().getString(R.string.more));
+				}
+				holder.imageViewDeliveryList.setLayoutParams(layoutParams);
+			} else {
+				holder.relativeLayoutDropPoints.setVisibility(View.GONE);
 			}
 
 			if(customerInfo.getIsPooled() == 1){
@@ -8295,7 +8337,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private void setTextViewRideInstructions(){
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-			if(customerInfo.getIsDelivery() == 1) {
 				textViewRideInstructions.setVisibility(View.GONE);
 				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textViewRideInstructions.getLayoutParams();
 //				textViewRideInstructionsInRide.setVisibility(View.GONE);
@@ -8312,23 +8353,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 					layoutParams.setMargins((int)(54f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
 					textViewRideInstructions.setVisibility(View.VISIBLE);
-					textViewRideInstructions.setText(customerInfo.getName());
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
 								== DeliveryStatus.PENDING.getOrdinal()){
-//							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
-//									String.valueOf(i+1)));
+							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
+									String.valueOf(i+1)));
 							return;
 						}
 					}
 //					textViewRideInstructions.setText(getResources().getString(R.string.all_orders_have_been_delivered));
 				}
 				textViewRideInstructions.setLayoutParams(layoutParams);
-			}
-//			else if(customerInfo.getIsPooled() != 1){
-//				textViewRideInstructions.setVisibility(View.GONE);
-//				textViewRideInstructionsInRide.setVisibility(View.GONE);
-//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

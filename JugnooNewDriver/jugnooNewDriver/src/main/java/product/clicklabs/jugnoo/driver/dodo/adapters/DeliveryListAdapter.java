@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.dodo.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -77,18 +78,13 @@ public class DeliveryListAdapter extends PagerAdapter {
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
+		textViewCashCollected.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 		TextView textViewReturnText = (TextView) taskItemView.findViewById(R.id.textViewReturnText);
 
 		RelativeLayout call = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
 		Button buttonMarkDeliver = (Button) taskItemView.findViewById(R.id.buttonMarkDeliver);
 		Button buttonMarkReturn = (Button) taskItemView.findViewById(R.id.buttonMarkReturn);
 		Button buttonMarkFailed = (Button) taskItemView.findViewById(R.id.buttonMarkFailed);
-
-		RelativeLayout relativeLayoutDeliveredAmnt = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutDeliveredAmnt);
-		TextView textViewCashCollectedValue = (TextView) taskItemView.findViewById(R.id.textViewCashCollectedValue);
-
-		RelativeLayout relativeLayoutTotalCashCollected = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutTotalCashCollected);
-		TextView textViewTotalCashCollectedValue = (TextView) taskItemView.findViewById(R.id.textViewTotalCashCollectedValue);
 
 		call.setTag(position);
 		buttonMarkDeliver.setTag(position);
@@ -121,9 +117,9 @@ public class DeliveryListAdapter extends PagerAdapter {
 		textViewListCount.setText(position+1 +"/"+totalDeliveries);
 
 		if(task.getAmount() > 0 ){
-			textViewCashCollected.setVisibility(View.GONE);
-			textViewCashCollected.setText(activity.getResources().getString(R.string.take_cash)
-					+ " " + activity.getResources().getString(R.string.rupee)
+			textViewCashCollected.setVisibility(View.VISIBLE);
+			textViewCashCollected.setText(activity.getResources().getString(R.string.cash_to_collected)
+					+ ": " + activity.getResources().getString(R.string.rupee)
 					+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
 		} else {
 			textViewCashCollected.setVisibility(View.GONE);
@@ -133,8 +129,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 		ASSL.DoMagic(taskItemView);
 
 
-		relativeLayoutDeliveredAmnt.setVisibility(View.GONE);
-		relativeLayoutTotalCashCollected.setVisibility(View.GONE);
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) buttonMarkFailed.getLayoutParams();
 		params.setMargins((int)(35f*ASSL.Xscale()), 0, 0, 0);
 		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
@@ -150,8 +144,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				call.setEnabled(false);
 				buttonMarkFailed.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
-				relativeLayoutDeliveredAmnt.setVisibility(View.VISIBLE);
-				textViewCashCollectedValue.setText(activity.getResources().getString(R.string.rupee)
+				textViewCashCollected.setText(activity.getResources().getString(R.string.cash_collected)+": "+activity.getResources().getString(R.string.rupee)
 						+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
 				call.setVisibility(View.GONE);
 			}
@@ -173,15 +166,13 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
 //			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
-			textViewCashCollected.setVisibility(View.GONE);
+			textViewCashCollected.setVisibility(View.VISIBLE);
 			textViewListCount.setVisibility(View.GONE);
-			textViewCashCollected.setTextColor(activity.getResources().getColor(R.color.white));
 			call.setVisibility(View.GONE);
 			buttonMarkFailed.setVisibility(View.GONE);
 			buttonMarkDeliver.setVisibility(View.GONE);
 			buttonMarkReturn.setVisibility(View.VISIBLE);
-			relativeLayoutTotalCashCollected.setVisibility(View.VISIBLE);
-			textViewTotalCashCollectedValue.setText(activity.getResources().getString(R.string.rupee)
+			textViewCashCollected.setText(activity.getResources().getString(R.string.return_amount)+": "+activity.getResources().getString(R.string.rupee)
 					+ Utils.getDecimalFormatForMoney().format(totalCashCollected));
 		}
 
@@ -210,7 +201,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 								+ " " + activity.getResources().getString(R.string.rupee)
 								+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
 						task.getCustomerName(), task.getDeliveryAddress(),
-						activity.getResources().getString(R.string.delivery_conf),
+						activity.getResources().getString(R.string.delivery_conf_new),
 						activity.getResources().getString(R.string.deliver),
 						activity.getResources().getString(R.string.cancel),
 						new View.OnClickListener() {

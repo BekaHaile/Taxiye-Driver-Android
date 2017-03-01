@@ -833,6 +833,13 @@
     <string name="later">Later</string>
     <string name="upload_now">Upload Now</string>
     <string name="driver_resources">Driver Resources</string>
+    <string name="delivery_conf_new">Are you sure you want to mark this as delivered?</string>
+    <string name="drop_points">Dropoff Points :</string>
+    <string name="more">more</string>
+    <string name="estimated_dis">Estimated Distance</string>
+    <string name="cash_to_collected">Cash to be Collected</string>
+    <string name="return_amount">Returned Amount</string>
+    <string name="cash_required">Cash Required</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -11,15 +11,25 @@
     <LinearLayout
         android:id="@+id/linearLayoutDeliveryItem"
         android:layout_width="match_parent"
-        android:layout_height="316px"
-        android:background="@color/grey_light_delivery_tab_fill"
+        android:layout_height="360px"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/linearLayoutDeliveryItemHeader"
             android:layout_width="match_parent"
-            android:layout_height="76px"
+            android:layout_height="92px"
             android:background="@color/white">
+
+            <TextView
+                android:id="@+id/textViewListCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/NA"
+                android:layout_marginLeft="30px"
+                android:layout_marginTop="6px"
+                android:textSize="26px"
+                android:textColor="@color/black_text_v2"/>
 
             <TextView
                 android:id="@+id/textViewCustomerName"
@@ -27,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
                 android:layout_centerVertical="true"
+                android:layout_below="@+id/textViewListCount"
                 android:text="@string/NA"
                 android:textSize="32px"
                 android:visibility="visible"
@@ -43,62 +54,14 @@
                 android:visibility="gone"
                 android:textColor="@color/black_text_v2"/>
 
-            <TextView
-                android:id="@+id/textViewListCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/NA"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="30px"
-                android:textSize="32px"
-                android:textColor="@color/black_text_v2"/>
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="144px"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="12px">
-
-            <LinearLayout
-                android:id="@+id/linearLayoutContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textViewCustomerDeliveryAddress"
-                    android:layout_width="402px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30px"
-                    android:maxLines="4"
-                    android:textSize="30px"
-                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                    android:textColor="@color/black_text_v2"
-                    />
-
-                <TextView
-                    android:id="@+id/textViewCashCollected"
-                    android:layout_width="352px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30px"
-                    android:textSize="22px"
-                    android:layout_marginTop="4px"
-                    android:visibility="gone"
-                    android:text="lllllllllllllllllllllllllllllllllllllll"
-                    android:textColor="@color/black_text_v2"
-                    />
-
-            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutCall"
                 android:layout_width="220px"
                 android:layout_height="72px"
-                android:layout_marginLeft="25px"
+                android:layout_marginRight="36px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:visibility="visible"
                 android:background="@drawable/new_orange_btn_corner_normal">
 
@@ -121,66 +84,52 @@
                     android:textSize="42px"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutDeliveredAmnt"
-                android:layout_width="235px"
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/grey_light"
+            android:layout_marginLeft="30px"
+            android:layout_marginRight="30px"
+            android:layout_marginTop="8px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="174px"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutContent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:visibility="gone"
-                >
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewCashCollectedValue"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewCustomerDeliveryAddress"
+                    android:layout_width="592px"
                     android:layout_height="wrap_content"
-                    android:textSize="36px"
-                    android:text="@string/NA"
+                    android:layout_marginLeft="30px"
+                    android:maxLines="3"
+                    android:textSize="30px"
+                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                     android:textColor="@color/black_text_v2"
-                    android:layout_centerHorizontal="true"
                     />
 
                 <TextView
-                    android:id="@+id/textViewCashCollectedText"
-                    android:layout_below="@+id/textViewCashCollectedValue"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewCashCollected"
+                    android:layout_width="352px"
                     android:layout_height="wrap_content"
-                    android:textSize="24px"
-                    android:text="@string/cash_collected"
+                    android:layout_marginLeft="30px"
+                    android:textSize="30px"
+                    android:layout_marginTop="12px"
+                    android:visibility="visible"
+                    android:text="lllllllllllllllllllllllllllllllllllllll"
                     android:textColor="@color/black_text_v2"
-                    android:layout_centerHorizontal="true"
-                    />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutTotalCashCollected"
-                android:layout_width="235px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:visibility="gone"
-                android:layout_marginTop="15px"
-                >
-
-                <TextView
-                    android:id="@+id/textViewTotalCashCollectedValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="34px"
-                    android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"
-                    android:layout_centerHorizontal="true"
                     />
 
-                <TextView
-                    android:id="@+id/textViewTotalCashCollectedText"
-                    android:layout_below="@+id/textViewTotalCashCollectedValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22px"
-                    android:text="@string/total_cash_collected"
-                    android:textColor="@color/black_text_v2"
-                    android:layout_centerHorizontal="true"
-                    />
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

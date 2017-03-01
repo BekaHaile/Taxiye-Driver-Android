@@ -44,10 +44,9 @@ public class CustomerSwitcher {
 
 	private RecyclerView recyclerViewCustomersLinked;
 
-	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount, textViewCustomerAddressInRide,
-			textViewDeliveryFare, textViewShowDistance;
-	private RelativeLayout relativeLayoutCall, relativeLayoutCall1;
-	private LinearLayout linearLayoutDeliveryFare;
+	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
+			textViewCustomerAddressInRide, textViewShowDistance, textViewCustomerCashRequired;
+	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo;
 
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
@@ -60,24 +59,23 @@ public class CustomerSwitcher {
 
 	public void init(View rootView) {
 
+		textViewCustomerName1 = (TextView) rootView.findViewById(R.id.textViewCustomerName1);
+		textViewCustomerName1.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		textViewCustomerCashRequired = (TextView) rootView.findViewById(R.id.textViewCustomerCashRequired);
+		textViewCustomerCashRequired.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerAddressInRide = (TextView) rootView.findViewById(R.id.textViewCustomerAddressInRide);
 		textViewCustomerAddressInRide.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
 		textViewDeliveryCount.setTypeface(Fonts.mavenRegular(activity));
-		textViewDeliveryFare = (TextView) rootView.findViewById(R.id.textViewDeliveryFare);
-		textViewDeliveryFare.setTypeface(Fonts.mavenRegular(activity));
 		textViewShowDistance = (TextView) rootView.findViewById(R.id.textViewShowDistance);
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewDeliveryApprox)).setTypeface(Fonts.mavenRegular(activity));
-		rootView.findViewById(R.id.textViewDeliveryApprox).setVisibility(View.GONE);
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
-		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
-		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);
+		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
 		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
@@ -139,43 +137,6 @@ public class CustomerSwitcher {
 			}
 		});
 
-
-		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String callPhoneNumber = "";
-				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-				if (customerInfo != null) {
-					callPhoneNumber = customerInfo.phoneNumber;
-				}
-				if (!"".equalsIgnoreCase(callPhoneNumber)) {
-					Utils.openCallIntent(activity, callPhoneNumber);
-					try {
-						JSONObject map = new JSONObject();
-						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
-						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
-						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
-						FlurryEventLogger.event(FlurryEventNames.CALLED_CUSTOMER);
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CALL_CUSTOMER,null);
-					} else if (DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
-						FlurryEventLogger.event(FlurryEventNames.CALL_CUSTOMER_AFTER_ARRIVING);
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
-					} else if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-						FlurryEventLogger.event(FlurryEventNames.CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CALL_CUSTOMER, null);
-					}
-				} else {
-					Toast.makeText(activity, activity.getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-
 	}
 
 
@@ -186,6 +147,7 @@ public class CustomerSwitcher {
 				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
 						activity.getResources().getColor(R.color.new_orange));
 
+				textViewCustomerName1.setText(customerInfo.getName());
 				textViewCustomerName.setText(customerInfo.getName());
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
@@ -220,7 +182,6 @@ public class CustomerSwitcher {
 					}
 					updateDistanceOnLocationChanged();
 					textViewDeliveryCount.setVisibility(View.GONE);
-					linearLayoutDeliveryFare.setVisibility(View.GONE);
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
@@ -234,26 +195,27 @@ public class CustomerSwitcher {
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
+					textViewCustomerCashRequired.setVisibility(View.VISIBLE);
+					textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_required)
+							+ ": " + activity.getResources().getString(R.string.rupee)
+							+ "" + customerInfo.getCashOnDelivery());
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 								+ " " + customerInfo.getTotalDeliveries());
-						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)
-								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ "" + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
-						linearLayoutDeliveryFare.setVisibility(View.GONE);
 					}
 				}
 			}
 			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
 				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
 				textViewCustomerName.setVisibility(View.VISIBLE);
 			} else {
-				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
 				textViewCustomerName.setVisibility(View.VISIBLE);
 			}
 			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
@@ -297,13 +259,13 @@ public class CustomerSwitcher {
 													if (finalDistance > 0) {
 														distanceRefreshTime = System.currentTimeMillis();
 														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																.format(finalDistance / 1000d)
-																+ " " + activity.getResources().getString(R.string.km_away));
+																.format(finalDistance / 1000d)+" "
+																+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
 													} else {
 														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 																		new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-																+ " " + activity.getResources().getString(R.string.km_away));
+																+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
 													}
 												}
 											});
@@ -338,7 +300,7 @@ public class CustomerSwitcher {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-							+ " " + activity.getResources().getString(R.string.km_away));
+							+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -388,9 +350,9 @@ public class CustomerSwitcher {
 	public void setCallButton(){
 		if(Data.getCurrentCustomerInfo() != null){
 			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
-				relativeLayoutCall1.setVisibility(View.VISIBLE);
+				relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
 			}else {
-				relativeLayoutCall1.setVisibility(View.GONE);
+				relativeLayoutCustomerInfo.setVisibility(View.GONE);
 			}
 		}
 	}

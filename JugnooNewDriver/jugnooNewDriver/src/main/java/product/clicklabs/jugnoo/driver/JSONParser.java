@@ -630,7 +630,12 @@ public class JSONParser implements Constants {
 				String userName = jActiveRequest.optString(Constants.KEY_NAME, "");
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+				double estimatedDist = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
 				int isDeliveryPool = 0;
+				ArrayList<String> dropPoints = new ArrayList<>();
+				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
+					dropPoints = parseDropPoints(jActiveRequest);
+				}
 				if(jActiveRequest.optInt(KEY_RIDE_TYPE,0)==4){
 					isDeliveryPool =1;
 				}
@@ -640,7 +645,7 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -798,6 +803,19 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 		return deliveryReturnOptions;
+	}
+
+	public static ArrayList<String> parseDropPoints (JSONObject jObj){
+		ArrayList<String> dropPoints = new ArrayList<>();
+		try{
+			JSONArray jsonArray = jObj.getJSONArray(KEY_DROP_POINTS);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				dropPoints.add(jsonArray.getString(i));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dropPoints;
 	}
 
 

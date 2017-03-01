@@ -768,7 +768,7 @@
 	<string name="please_start_customer_delivery">Start %s\'s delivery</string>
 	<string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
 	<string name="select_merchant">Select Merchant</string>
-	<string name="estimated_fare">(Estimated Fare)</string>
+	<string name="estimated_fare">Estimated Fare</string>
 	<string name="provide_sign_msg">Please provide signature before submit</string>
 	<string name="pls_type_name">Please type your name before submit</string>
 	<string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
@@ -798,6 +798,13 @@
 	<string name="later">Later</string>
 	<string name="upload_now">Upload Now</string>
 	<string name="driver_resources">Driver Resources</string>
+	<string name="delivery_conf_new">Are you sure you want to mark this as delivered?</string>
+	<string name="drop_points">Dropoff Points :</string>
+	<string name="more">more</string>
+	<string name="estimated_dis">Estimated Distance</string>
+	<string name="cash_to_collected">Cash to be Collected</string>
+	<string name="return_amount">Returned Amount</string>
+	<string name="cash_required">Cash Required</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

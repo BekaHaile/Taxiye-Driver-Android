@@ -136,6 +136,7 @@ public interface Constants {
     String KEY_DELIVERY_FLAG = "delivery_flag";
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
+	String KEY_ESTIMATED_DISTANCE = "estimated_distance";
     String KEY_VENDOR_MESSAGE = "vendor_message";
     String KEY_END_DELIVERY_FORCED = "end_delivery_forced";
     String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
@@ -145,6 +146,7 @@ public interface Constants {
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
     String KEY_RING_COUNT = "ring_count";
 	String KEY_RIDE_TYPE = "ride_type";
+	String KEY_DROP_POINTS = "drop_points";
 
 	String HIGH_DEMAND_WEB_URL = "high_demand_web_url";
 

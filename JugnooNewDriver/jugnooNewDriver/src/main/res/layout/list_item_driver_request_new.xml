@@ -2,12 +2,12 @@
 <LinearLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="720px"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical"
-    android:padding="30px"
-    android:splitMotionEvents="false" xmlns:custom="http://schemas.android.com/apk/res-auto">
+    android:padding="30px" android:splitMotionEvents="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,12 +15,13 @@
         android:background="@drawable/background_white_rounded_orange_bordered"
         android:orientation="vertical"
         android:padding="20px"
-        android:splitMotionEvents="false"
-        >
+        android:splitMotionEvents="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8px"
+            android:layout_marginTop="10px"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -32,156 +33,297 @@
                     android:id="@+id/textViewRequestName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6px"
                     android:text="Sankar"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_30"
-                    android:layout_marginBottom="6px"/>
+                    android:textSize="@dimen/text_size_32"/>
 
                 <TextView
                     android:id="@+id/textViewRequestAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6px"
                     android:text="Sector 28, Chandigarh"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_30"
-                    android:layout_marginBottom="6px"
-                    />
-
-                <TextView
-                    android:id="@+id/textViewRequestDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10px"
-                    android:layout_marginBottom="6px"
-                    android:singleLine="true"
-                    android:text="No. of deliveries: 9"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_30"
-                    />
-
-                <TextView
-                    android:id="@+id/textViewRequestTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewRequestDistance"
-                    android:singleLine="true"
-                    android:text="30 sec ago"
-                    android:textColor="@color/text_color_light"
-                    android:textSize="@dimen/text_size_30"
-                    />
+                    android:textSize="@dimen/text_size_32"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.github.lzyzsd.circleprogress.DonutProgress
-                    android:id="@+id/donut_progress"
-                    android:layout_width="105px"
-                    android:layout_height="105px"
-                    custom:donut_progress="30"
-                    custom:donut_finished_color="#0066FF"
-                    custom:donut_finished_stroke_width="5px"
-                    android:backgroundTint="#0066FF"
-                    android:backgroundTintMode="add"
-                    custom:donut_show_text="false"
-                    custom:donut_unfinished_stroke_width="5px"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/progressBarRequest"
+                        android:layout_width="105px"
+                        android:layout_height="105px"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="visible"
+                        android:indeterminate="true"
+                        android:indeterminateTintMode="src_atop"
+                        android:indeterminateTint="@color/green_status"/>
+
+                    <TextView
+                        android:id="@+id/textViewRequestTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="30"
+                        android:textColor="@color/black_text"
+                        android:textSize="@dimen/text_size_30"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/textViewRequestDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:layout_marginTop="4px"
+                    android:gravity="center"
                     android:text="0 km away"
-                    android:layout_marginTop="8px"
                     android:textColor="@color/text_color"
-                    android:textSize="31px"
-                />
+                    android:textSize="32px"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/grey_light"
+            android:layout_marginTop="8px"
+            android:layout_marginBottom="8px"/>
 
         <LinearLayout
+            android:id="@+id/linearLayoutRideValues"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-        >
+            android:layout_height="117px"
+            android:layout_marginBottom="-14px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false"
+            android:visibility="visible">
 
-            <ImageView
-                android:id="@+id/imageViewRequestType"
-                android:layout_width="80px"
-                android:layout_height="80px"
-                android:src="@drawable/ic_delivery_request"
-                android:tag="mwar"
-                android:visibility="visible"/>
+            <RelativeLayout
+                android:id="@+id/driverRideType"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:splitMotionEvents="false">
 
-            <TextView
-                android:id="@+id/textViewRequestFareFactor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10px"
-                android:singleLine="true"
-                android:text="Rate: 1.42x"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="34px"
-                android:visibility="visible"
-            />
+                <ImageView
+                    android:id="@+id/imageViewRequestType"
+                    android:layout_width="80px"
+                    android:layout_height="80px"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_delivery_request"
+                    android:tag="mwar"
+                    android:visibility="visible"/>
 
-            <LinearLayout
-                android:id="@+id/linearLayoutDeliveryFare"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10px"
-                android:visibility="visible"
-            >
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textViewEstimatedFareValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_34"
-                    android:textColor="@color/text_color"
-                    android:text="Rs. 000 - 000"/>
 
-                <TextView
-                    android:id="@+id/textViewEstimatedFare"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_18"
-                    android:textColor="@color/text_color"
-                    android:text="@string/estimated_fare"/>
+
+
+            <RelativeLayout
+                android:id="@+id/driverRideTimeRl"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="72px"
+                    android:layout_centerVertical="true"
+                    android:background="@color/grey_light"/>
 
                 <TextView
                     android:id="@+id/textViewDeliveryFare"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="18px"
+                    android:gravity="center"
                     android:text="Rs. 0"
-                    android:layout_marginTop="10px"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_30"/>
+                    android:textSize="@dimen/text_size_36"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/driverFareFactor"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:splitMotionEvents="false"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="72px"
+                    android:layout_centerVertical="true"
+                    android:background="@color/grey_light"/>
 
                 <TextView
-                    android:id="@+id/textViewDeliveryApprox"
+                    android:id="@+id/textViewRequestFareFactor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_18"
-                    android:textColor="@color/text_color"
-                    android:text="@string/approx"/>
+                    android:layout_height="178px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="18px"
+                    android:gravity="center"
+                    android:text="Rate: 1.42x"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="@dimen/text_size_36"
+                    android:visibility="visible"/>
 
-            </LinearLayout>
-
-
+            </RelativeLayout>
 
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/grey_light"
+            android:layout_marginTop="8px"
+            android:layout_marginBottom="8px"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDeliveryParams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewEstimatedFareValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rs. 000 - 000"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="8px"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_32"/>
+
+            <TextView
+                android:id="@+id/textViewEstimatedDist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="8px"
+                android:text="Estimated Distance: NA"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_32"/>
+
+            <TextView
+                android:id="@+id/textViewRequestDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8px"
+                android:layout_marginTop="8px"
+                android:text="No. of deliveries: NA"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_32"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/grey_light"
+                android:layout_marginTop="8px"
+                android:layout_marginBottom="8px"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDropPoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px">
+
+            <ImageView
+                android:id="@+id/imageViewDeliveryList"
+                android:layout_width="33px"
+                android:layout_height="84px"
+                android:layout_marginTop="12px"
+                android:background="@drawable/dropoff_1"
+                android:layout_marginLeft="70px"/>
+
+            <LinearLayout
+                android:id="@+id/imageViewDeliveryAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40px"
+                android:layout_marginTop="9px"
+                android:layout_toRightOf="@+id/imageViewDeliveryList"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewDropPoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/drop_points"
+                    android:textSize="26px"/>
+
+                <TextView
+                    android:id="@+id/textViewDropPoint1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21px"
+                    android:maxLines="1"
+                    android:text="@string/drop_points"
+                    android:textSize="26px"/>
+
+                <TextView
+                    android:id="@+id/textViewDropPoint2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21px"
+                    android:maxLines="1"
+                    android:visibility="gone"
+                    android:text="@string/drop_points"
+                    android:textSize="26px"/>
+
+                <TextView
+                    android:id="@+id/textViewDropPoint3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21px"
+                    android:maxLines="1"
+                    android:visibility="gone"
+                    android:text="@string/drop_points"
+                    android:textSize="26px"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewDropPointCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:layout_marginLeft="360px"
+            android:visibility="gone"
+            android:text="@string/drop_points"
+            android:textSize="26px"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -189,27 +331,25 @@
             android:layout_marginTop="20px"
             android:splitMotionEvents="false">
 
-            <Button
-                android:id="@+id/buttonAcceptRide"
-                android:layout_width="380px"
-                android:layout_height="69px"
-                android:background="@drawable/orange_btn_selector"
-                android:text="@string/accept"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                />
-
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/buttonCancelRide"
                 android:layout_width="200px"
                 android:layout_height="69px"
-                android:layout_marginLeft="30px"
-                android:layout_toRightOf="@+id/buttonAcceptRide"
                 android:background="@drawable/menu_black_btn_selector"
                 android:text="@string/cancel"
                 android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                />
+                android:textSize="@dimen/button_text_size"/>
+
+            <Button
+                android:id="@+id/buttonAcceptRide"
+                android:layout_width="380px"
+                android:layout_height="69px"
+                android:layout_marginLeft="30px"
+                android:layout_toRightOf="@+id/buttonCancelRide"
+                android:background="@drawable/orange_btn_selector"
+                android:text="@string/accept"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
 
         </RelativeLayout>
 

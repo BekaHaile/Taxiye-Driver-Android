@@ -47,8 +47,9 @@ public class CustomerInfo {
 	private int isDelivery;
 	private int isDeliveryPool;
 	private ArrayList<DeliveryInfo> deliveryInfos;
+	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries;
-	private double estimatedFare, dryDistance;
+	private double estimatedFare, dryDistance, estimatedDist;
 	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
@@ -109,7 +110,7 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
-						LatLng currentLatLng, String estimatedDriverFare){
+						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -128,6 +129,8 @@ public class CustomerInfo {
 		this.dryDistance =dryDistance;
 		this.cashOnDelivery = cashOnDelivery;
 		this.estimatedDriverFare = estimatedDriverFare;
+		this.deliveryAddress = deliveryAddress;
+		this.estimatedDist = estimatedDist;
 	}
 
 	public double getDryDistance() {
@@ -524,5 +527,19 @@ public class CustomerInfo {
 		this.poolFare = poolFare;
 	}
 
+	public ArrayList<String> getDeliveryAddress() {
+		return deliveryAddress;
+	}
 
+	public void setDeliveryAddress(ArrayList<String> deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public double getEstimatedDist() {
+		return estimatedDist;
+	}
+
+	public void setEstimatedDist(double estimatedDist) {
+		this.estimatedDist = estimatedDist;
+	}
 }
