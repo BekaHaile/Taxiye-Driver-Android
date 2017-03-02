@@ -4551,7 +4551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType, imageViewDeliveryList;
 		LinearLayout relative, linearLayoutDeliveryParams;
-		RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor;
+		RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD;
 		ProgressBar progressBarRequest;
 		int id;
 	}
@@ -4699,7 +4699,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewDropPoint2.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewDropPoint3 = (TextView) convertView.findViewById(R.id.textViewDropPoint3);
 				holder.textViewDropPoint3.setTypeface(Data.latoRegular(getApplicationContext()));
-
+				holder.relativeLayoutDriverCOD = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutDriverCOD);
 				holder.textViewDropPointCount = (TextView) convertView.findViewById(R.id.textViewDropPointCount);
 				holder.textViewDropPointCount.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -4758,16 +4758,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 
 				if(!customerInfo.getCashOnDelivery().equalsIgnoreCase("0")){
-					holder.driverRideTimeRl.setVisibility(View.VISIBLE);
+					holder.relativeLayoutDriverCOD.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setVisibility(View.VISIBLE);
 //					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
 							+": "+getResources().getString(R.string.rupee)
 							+""+customerInfo.getCashOnDelivery());
 				} else {
-					holder.driverRideTimeRl.setVisibility(View.GONE);
+					holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
 //					holder.textViewDeliveryApprox.setVisibility(View.GONE);
 				}
+			} else {
+				holder.linearLayoutDeliveryParams.setVisibility(View.GONE);
+				holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
 			}
 
 			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
@@ -4801,6 +4804,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if(dropAddress ==1){
 					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_1);
 					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
+					holder.textViewDropPoint2.setVisibility(View.GONE);
+					holder.textViewDropPoint3.setVisibility(View.GONE);
 					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
 					layoutParams.height = (int) (76f * ASSL.Yscale());
 				} else if(dropAddress ==2){
@@ -4809,7 +4814,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
 					holder.textViewDropPoint2.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
-					layoutParams.height = (int) (127f * ASSL.Yscale());
+					holder.textViewDropPoint3.setVisibility(View.GONE);
+					layoutParams.height = (int) (166f * ASSL.Yscale());
 				} else if(dropAddress ==3){
 					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
 					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
@@ -4818,7 +4824,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
 					holder.textViewDropPoint3.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint3.setText(customerInfo.getDeliveryAddress().get(2));
-					layoutParams.height = (int) (171f * ASSL.Yscale());
+					layoutParams.height = (int) (245f * ASSL.Yscale());
 				} else if(dropAddress > 3){
 					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
 					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
@@ -4827,7 +4833,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
 					holder.textViewDropPoint3.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint3.setText(customerInfo.getDeliveryAddress().get(2));
-					layoutParams.height = (int) (171f * ASSL.Yscale());
+					layoutParams.height = (int) (245f * ASSL.Yscale());
 					int totalDropCount = dropAddress-3;
 					holder.textViewDropPointCount.setVisibility(View.VISIBLE);
 					holder.textViewDropPointCount.setText("+"+totalDropCount+" "+getResources().getString(R.string.more));
