@@ -760,6 +760,7 @@
     <string name="cash_to_collected">Cash to be Collected</string>
     <string name="return_amount">Returned Amount</string>
     <string name="cash_required">Cash Required</string>
+    <string name="pick_up">PICK - UP</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
