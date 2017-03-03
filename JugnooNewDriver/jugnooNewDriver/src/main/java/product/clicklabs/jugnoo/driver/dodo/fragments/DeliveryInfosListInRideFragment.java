@@ -14,6 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.adapters.DeliveryInfoInRideAdapter;
 import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryInfoAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
@@ -34,11 +36,11 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 	private LinearLayout linearLayoutRoot;
 
 	private Button buttonBack;
-	private LinearLayout currentLLayout, completedLLayout;
-	private TextView textViewTitle, textViewCompleted, textViewCurrent, textViewMerchantMessage, textViewPlaceholderMessage;
+	private TextView textViewTitle, textViewMerchantName, textViewCashReq;
 	private ImageView imageViewCompleted, imageViewCurrent;
-	private RecyclerView recyclerViewDeliveryInfo;
-	private DeliveryInfoAdapter deliveryInfoAdapter;
+	private RecyclerView recyclerViewDeliveryInfoInRide;
+	private DeliveryInfoInRideAdapter deliveryInfoInRideAdapter;
+	private RelativeLayout relativeLayoutCall;
 
 	private ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
 	private DeliveryStatus deliveryStatusOpened = DeliveryStatus.PENDING;
@@ -56,7 +58,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_delivery_info_list, container, false);
+		rootView = inflater.inflate(R.layout.fragment_delivery_info_list_inride, container, false);
 		activity = (HomeActivity) getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
@@ -67,64 +69,30 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		currentLLayout = (LinearLayout) rootView.findViewById(R.id.currentLLayout);
-		completedLLayout = (LinearLayout) rootView.findViewById(R.id.completedLLayout);
 
+		textViewMerchantName = (TextView) rootView.findViewById(R.id.textViewMerchantName);
+		textViewMerchantName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCashReq = (TextView) rootView.findViewById(R.id.textViewCashReq);
+		textViewCashReq.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		textViewCompleted = (TextView) rootView.findViewById(R.id.textViewCompleted);
-		textViewCompleted.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewCurrent = (TextView) rootView.findViewById(R.id.textViewCurrent);
-		textViewCurrent.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
 
 		imageViewCompleted = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
 		imageViewCurrent = (ImageView) rootView.findViewById(R.id.imageViewCurrent);
 
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
+		textViewTitle = (TextView) rootView.findViewById(R.id.title);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.select_delivery));
 
-		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
-		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity));
-		textViewPlaceholderMessage = (TextView) rootView.findViewById(R.id.textViewPlaceholderMessage);
-		textViewPlaceholderMessage.setTypeface(Fonts.mavenRegular(activity));
-		textViewPlaceholderMessage.setVisibility(View.GONE);
-
-		recyclerViewDeliveryInfo = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfo);
-		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));
-		recyclerViewDeliveryInfo.setItemAnimator(new DefaultItemAnimator());
-		recyclerViewDeliveryInfo.setHasFixedSize(false);
-
-		currentLLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				updateList(DeliveryStatus.PENDING);
-			}
-		});
-		completedLLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				updateList(DeliveryStatus.COMPLETED);
-			}
-		});
+		recyclerViewDeliveryInfoInRide = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfoInRide);
+		recyclerViewDeliveryInfoInRide.setLayoutManager(new LinearLayoutManager(activity));
+		recyclerViewDeliveryInfoInRide.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewDeliveryInfoInRide.setHasFixedSize(false);
 
 
-		deliveryInfoAdapter = new DeliveryInfoAdapter(activity,
-				deliveryInfos,
-				new DeliveryInfoAdapter.Callback() {
-					@Override
-					public void onClick(int position) {
-						activity.setDeliveryPos(position);
-						backPress();
-					}
+		deliveryInfoInRideAdapter = new DeliveryInfoInRideAdapter(activity, deliveryInfos);
 
-					@Override
-					public void onCancelClick(int position) {
-						backPress();
-					}
-				});
-
-		recyclerViewDeliveryInfo.setAdapter(deliveryInfoAdapter);
+		recyclerViewDeliveryInfoInRide.setAdapter(deliveryInfoInRideAdapter);
 
 		buttonBack.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -154,7 +122,6 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 				deliveryInfos.add(deliveryInfo);
 			}
 			deliveryInfoAdapter.notifyDataSetChanged();
-			textViewPlaceholderMessage.setVisibility(View.GONE);
 			deliveryStatusOpened = deliveryStatus;
 		} catch (Exception e) {
 			e.printStackTrace();
