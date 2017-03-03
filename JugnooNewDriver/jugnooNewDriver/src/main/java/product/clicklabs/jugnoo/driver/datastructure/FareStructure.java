@@ -13,10 +13,12 @@ public class FareStructure {
 
 	public double luggageFare;
 	public double convenienceCharge, convenienceChargeWaiver;
+	public double mandatoryFare, mandatoryFareCapping;
+	public int mandatoryFareApplicable = 0;
 	
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
-						 double farePerKmBeforeThreshold){
+						 double farePerKmBeforeThreshold, double mandatoryFare, double mandatoryFareCapping){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -31,6 +33,8 @@ public class FareStructure {
 		this.farePerKmThresholdDistance = farePerKmThresholdDistance;
 		this.farePerKmAfterThreshold = farePerKmAfterThreshold;
 		this.farePerKmBeforeThreshold =farePerKmBeforeThreshold;
+		this.mandatoryFare = mandatoryFare;
+		this.mandatoryFareCapping = mandatoryFareCapping;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){
@@ -73,11 +77,24 @@ public class FareStructure {
 		fare = fare + getEffectiveConvenienceCharge();
 
 		fare = Math.round(fare);
+		if(mandatoryFare > 0) {
+			double cappedFareUp = Math.round(mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100));
+			double cappedFareDown = Math.round(mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100));
+			if(fare < cappedFareUp && fare > cappedFareDown){
+				fare = mandatoryFare;
+				mandatoryFareApplicable = 1;
+			}
+		}
+
 		return fare;
 	}
 
 	public double getEffectiveConvenienceCharge(){
 		return (convenienceCharge - convenienceChargeWaiver);
+	}
+
+	public int getMandatoryFareApplicable(){
+		return  mandatoryFareApplicable;
 	}
 	
 	@Override

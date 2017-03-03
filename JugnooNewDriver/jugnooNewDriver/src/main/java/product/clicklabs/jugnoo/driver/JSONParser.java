@@ -82,19 +82,35 @@ public class JSONParser implements Constants {
 	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
 			JSONObject fareDetails = jObj.getJSONObject("fare_details");
-			return new FareStructure(fareDetails.getDouble("fare_fixed"),
-					fareDetails.getDouble("fare_threshold_distance"),
-					fareDetails.getDouble("fare_per_km"),
-					fareDetails.getDouble("fare_per_min"),
-					fareDetails.getDouble("fare_threshold_time"),
-					fareDetails.getDouble("fare_per_waiting_min"),
-					fareDetails.getDouble("fare_threshold_waiting_time"),
-					fareDetails.getDouble("fare_per_km_threshold_distance"),
-					fareDetails.getDouble("fare_per_km_after_threshold"),
-					fareDetails.getDouble("fare_per_km_before_threshold"));
+			if(fareDetails.has("mandatory_fare_details")){
+				JSONObject mandatoryFareDetails = fareDetails.getJSONObject("mandatory_fare_details");
+				return new FareStructure(fareDetails.getDouble("fare_fixed"),
+						fareDetails.getDouble("fare_threshold_distance"),
+						fareDetails.getDouble("fare_per_km"),
+						fareDetails.getDouble("fare_per_min"),
+						fareDetails.getDouble("fare_threshold_time"),
+						fareDetails.getDouble("fare_per_waiting_min"),
+						fareDetails.getDouble("fare_threshold_waiting_time"),
+						fareDetails.getDouble("fare_per_km_threshold_distance"),
+						fareDetails.getDouble("fare_per_km_after_threshold"),
+						fareDetails.getDouble("fare_per_km_before_threshold"),
+						mandatoryFareDetails.getDouble("mandatory_fare_value"),
+						mandatoryFareDetails.getDouble("mandatory_fare_capping"));
+			} else {
+				return new FareStructure(fareDetails.getDouble("fare_fixed"),
+						fareDetails.getDouble("fare_threshold_distance"),
+						fareDetails.getDouble("fare_per_km"),
+						fareDetails.getDouble("fare_per_min"),
+						fareDetails.getDouble("fare_threshold_time"),
+						fareDetails.getDouble("fare_per_waiting_min"),
+						fareDetails.getDouble("fare_threshold_waiting_time"),
+						fareDetails.getDouble("fare_per_km_threshold_distance"),
+						fareDetails.getDouble("fare_per_km_after_threshold"),
+						fareDetails.getDouble("fare_per_km_before_threshold"),0,0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 0, 0);
 		}
 	}
 

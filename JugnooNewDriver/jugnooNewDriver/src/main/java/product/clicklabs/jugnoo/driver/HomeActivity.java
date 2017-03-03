@@ -4415,6 +4415,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if(customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null && invalidPool==0){
 			return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
 		}
+
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
 
 		double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
@@ -5810,6 +5811,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				finalDistance = totalDistance;
 			}
+
 			Log.e("offline =============", "============");
 			Log.i("rideTime", "=" + rideTime);
 
@@ -5824,6 +5826,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 				totalFare = 0;
 			}
+			params.put("mandatory_fare_applicable", String.valueOf(Data.fareStructure.getMandatoryFareApplicable()));
 
 			try {
 				if (customerInfo != null && 1 == customerInfo.luggageChargesApplicable) {
