@@ -16,6 +16,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -23,63 +24,66 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Activity activity;
-    private Callback callback;
+	private Activity activity;
+	private Callback callback;
 
-    public CustomerInfoAdapter(Activity activity, Callback callback) {
-        this.activity = activity;
-        this.callback = callback;
-    }
+	public CustomerInfoAdapter(Activity activity, Callback callback) {
+		this.activity = activity;
+		this.callback = callback;
+	}
 
 
-    public synchronized void notifyList(){
-        this.notifyDataSetChanged();
-    }
+	public synchronized void notifyList() {
+		this.notifyDataSetChanged();
+	}
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_customer_detail, parent, false);
+	@Override
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_customer_detail, parent, false);
 
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
+		RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
 				RecyclerView.LayoutParams.WRAP_CONTENT);
-        v.setLayoutParams(layoutParams);
+		v.setLayoutParams(layoutParams);
 
-        ASSL.DoMagic(v);
-        return new ViewHolder(v, activity);
-    }
+		ASSL.DoMagic(v);
+		return new ViewHolder(v, activity);
+	}
 
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        CustomerInfo customerInfo = getItem(position);
-        ViewHolder holder = (ViewHolder) viewHolder;
-        holder.relative.setTag(position);
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+		CustomerInfo customerInfo = getItem(position);
+		ViewHolder holder = (ViewHolder) viewHolder;
+		holder.relative.setTag(position);
 		String text = "";
 
 		holder.textViewDeliveryName.setVisibility(View.GONE);
 
 		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-			if(customerInfo.getIsDeliveryPool() ==1){
+			if (customerInfo.getIsDeliveryPool() == 1) {
 				text = activity.getResources().getString(R.string.please_drop_customer_delivery,
 						customerInfo.getName());
 				holder.textViewDeliveryName.setVisibility(View.VISIBLE);
 				holder.textViewDeliveryName.setText(customerInfo.getDeliveryInfos().get(0).getCustomerName());
+				setView(holder, 3);
 			} else {
 				text = activity.getResources().getString(R.string.please_drop_customer,
 						customerInfo.getName());
 			}
 		} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
-			if(customerInfo.getIsDeliveryPool() ==1){
+			if (customerInfo.getIsDeliveryPool() == 1) {
 				text = activity.getResources().getString(R.string.please_reach_customer_delivery,
 						customerInfo.getName());
+				setView(holder, 1);
 			} else {
 				text = activity.getResources().getString(R.string.please_reach_customer_location,
 						customerInfo.getName());
 			}
 		} else if (customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
-			if(customerInfo.getIsDeliveryPool() ==1){
+			if (customerInfo.getIsDeliveryPool() == 1) {
 				text = activity.getResources().getString(R.string.please_start_customer_delivery,
 						customerInfo.getName());
+				setView(holder, 2);
 			} else {
 				text = activity.getResources().getString(R.string.please_start_customer_ride,
 						customerInfo.getName());
@@ -87,27 +91,71 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		}
 		holder.textViewCustomer1Name.setText(text);
 
+		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+			for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
+				if (customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
+						customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
+					ImageView ivLine = new ImageView(activity);
+					ivLine.setImageResource(R.color.red_v2);
+					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+					params1.weight = 1f;
+					holder.linearLayoutProgress.addView(ivLine, params1);
 
+					ImageView ivCircle = new ImageView(activity);
+					ivCircle.setImageResource(R.drawable.circle_orange);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+//					params.weight = 1f;
+					holder.linearLayoutProgress.addView(ivCircle, params);
+				} else {
+					ImageView ivLine = new ImageView(activity);
+					ivLine.setImageResource(R.color.white_grey_v2);
+					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+					params1.weight = 1f;
+					holder.linearLayoutProgress.addView(ivLine, params1);
 
-		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal() && customerInfo.getIsDeliveryPool() ==1) {
+						ImageView ivCircle = new ImageView(activity);
+					ivCircle.setImageResource(R.drawable.circle_grey);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+//					params.weight = 1f;
+					holder.linearLayoutProgress.addView(ivCircle, params);
+				}
+			}
+
+		} else {
+			for (int i = 0; i < customerInfo.getTotalDeliveries(); i++) {
+
+				ImageView ivLine = new ImageView(activity);
+				ivLine.setImageResource(R.color.white_grey_v2);
+				LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+				params1.weight = 1f;
+				holder.linearLayoutProgress.addView(ivLine, params1);
+
+				ImageView ivCircle = new ImageView(activity);
+				ivCircle.setImageResource(R.drawable.circle_grey);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+//				params.weight = 1f;
+				holder.linearLayoutProgress.addView(ivCircle, params);
+			}
+		}
+		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal() && customerInfo.getIsDeliveryPool() == 1) {
 			holder.textViewCustomer1Address.setText(customerInfo.getDeliveryInfos().get(0).getDeliveryAddress());
 		} else {
 			holder.textViewCustomer1Address.setText(customerInfo.getAddress());
 		}
 
-        holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
-        if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
+		holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
+		if (Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId())) && (getItemCount() > 1)) {
 //            Utils.setTextColor(holder.textViewCustomer1Name, customerInfo.getColor(),
 //                    activity.getResources().getColor(R.color.new_orange));
 			holder.linearLayoutSelection1.setVisibility(View.GONE);
 			holder.linearLayoutCard1.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-        } else {
+		} else {
 			holder.linearLayoutSelection1.setVisibility(View.VISIBLE);
 			holder.linearLayoutCard1.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
-        }
+		}
 
 		holder.buttonSelect.setTag(position);
-        holder.buttonSelect.setOnClickListener(new View.OnClickListener() {
+		holder.buttonSelect.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				try {
@@ -138,11 +186,10 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 		});
 
-
-		if(position == 0){
+		if (position == 0) {
 			holder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine.setVisibility(View.GONE);
-		} else if(position == getItemCount()-1){
+		} else if (position == getItemCount() - 1) {
 			holder.imageViewVerticalLine.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine1.setVisibility(View.GONE);
 			holder.imageViewDote.setBackgroundResource(R.drawable.red_dot_icon);
@@ -151,34 +198,80 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			holder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
 		}
 
+	}
 
-    }
+	public void setView(ViewHolder holder, int state) {
+		ImageView ivCircle = new ImageView(activity);
+		ImageView ivCircle1 = new ImageView(activity);
+		ImageView ivCircle2 = new ImageView(activity);
+		ImageView ivLine = new ImageView(activity);
+		ImageView ivLine1 = new ImageView(activity);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+		LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(14, 2);
 
-    @Override
-    public int getItemCount() {
-        if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
-                || Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0){
-            return 0;
-        }
-        else{
-            return Data.getAssignedCustomerInfosListForEngagedStatus().size();
-        }
-    }
+		if (state == 3) {
+			ivCircle.setImageResource(R.drawable.circle_orange);
+			ivCircle1.setImageResource(R.drawable.circle_orange);
+			ivCircle2.setImageResource(R.drawable.circle_orange);
+			ivLine.setBackgroundResource(R.color.red_v2);
+			ivLine1.setBackgroundResource(R.color.red_v2);
+			holder.linearLayoutProgress.addView(ivCircle, params);
+			holder.linearLayoutProgress.addView(ivLine, params1);
+			holder.linearLayoutProgress.addView(ivCircle1, params);
+			holder.linearLayoutProgress.addView(ivLine1, params1);
+			holder.linearLayoutProgress.addView(ivCircle2, params);
 
-    public CustomerInfo getItem(int position){
-        return Data.getAssignedCustomerInfosListForEngagedStatus().get(position);
-    }
+		} else if (state == 2) {
+			ivCircle.setImageResource(R.drawable.circle_orange);
+			ivCircle1.setImageResource(R.drawable.circle_orange);
+			ivCircle2.setImageResource(R.drawable.circle_grey);
+			ivLine.setBackgroundResource(R.color.red_v2);
+			ivLine1.setBackgroundResource(R.color.white_grey_v2);
+			holder.linearLayoutProgress.addView(ivCircle, params);
+			holder.linearLayoutProgress.addView(ivLine, params1);
+			holder.linearLayoutProgress.addView(ivCircle1, params);
+			holder.linearLayoutProgress.addView(ivLine1, params1);
+			holder.linearLayoutProgress.addView(ivCircle2, params);
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+		} else {
+			ivCircle.setImageResource(R.drawable.circle_orange);
+			ivCircle1.setImageResource(R.drawable.circle_grey);
+			ivCircle2.setImageResource(R.drawable.circle_grey);
+			ivLine.setBackgroundResource(R.color.white_grey_v2);
+			ivLine1.setBackgroundResource(R.color.white_grey_v2);
+			holder.linearLayoutProgress.addView(ivCircle, params);
+			holder.linearLayoutProgress.addView(ivLine, params1);
+			holder.linearLayoutProgress.addView(ivCircle1, params);
+			holder.linearLayoutProgress.addView(ivLine1, params1);
+			holder.linearLayoutProgress.addView(ivCircle2, params);
+		}
+	}
+
+	@Override
+	public int getItemCount() {
+		if (Data.getAssignedCustomerInfosListForEngagedStatus() == null
+				|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
+			return 0;
+		} else {
+			return Data.getAssignedCustomerInfosListForEngagedStatus().size();
+		}
+	}
+
+	public CustomerInfo getItem(int position) {
+		return Data.getAssignedCustomerInfosListForEngagedStatus().get(position);
+	}
+
+	public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName;
-		public LinearLayout linearLayoutCard1, linearLayoutSelection1;
-        public RelativeLayout relative;
-        public ImageView imageViewDote, imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1;
+		public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName;
+		public LinearLayout linearLayoutCard1, linearLayoutSelection1, linearLayoutProgress;
+		public RelativeLayout relative;
+		public ImageView imageViewDote, imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1;
 		public Button buttonSelect, buttonCancel;
-        public ViewHolder(View convertView, Activity context) {
-            super(convertView);
+
+		public ViewHolder(View convertView, Activity context) {
+			super(convertView);
 			textViewCustomer1Name = (TextView) convertView.findViewById(R.id.textViewCustomer1Name);
 			textViewCustomer1Name.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
 
@@ -188,9 +281,11 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			textViewCustomer1Address = (TextView) convertView.findViewById(R.id.textViewCustomer1Address);
 			textViewCustomer1Address.setTypeface(Fonts.mavenRegular(context));
 
-            relative = (RelativeLayout) convertView.findViewById(R.id.relative);
+			relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 			linearLayoutCard1 = (LinearLayout) convertView.findViewById(R.id.linearLayoutCard1);
 			linearLayoutSelection1 = (LinearLayout) convertView.findViewById(R.id.linearLayoutSelection1);
+			linearLayoutProgress = (LinearLayout) convertView.findViewById(R.id.linearLayoutProgress);
+
 			imageViewDote = (ImageView) convertView.findViewById(R.id.imageViewDote);
 			imageViewHorizontalLineNew = (ImageView) convertView.findViewById(R.id.imageViewHorizontalLineNew);
 
@@ -200,13 +295,13 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			buttonSelect = (Button) convertView.findViewById(R.id.buttonSelect);
 			buttonCancel = (Button) convertView.findViewById(R.id.buttonCancel);
-        }
-    }
+		}
+	}
 
-    public interface Callback{
-        void onClick(int position, CustomerInfo customerInfo);
+	public interface Callback {
+		void onClick(int position, CustomerInfo customerInfo);
 
 		void onCancelClick(int position, CustomerInfo customerInfo);
-    }
+	}
 
 }

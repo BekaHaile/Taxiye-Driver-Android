@@ -13,22 +13,23 @@
         android:splitMotionEvents="false">
 
         <Button
-            android:id="@+id/backBtn"
+            android:id="@+id/helpBtn"
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/help_in_ride_icon"
+            android:layout_alignParentRight="true"
             android:tag="mwar"/>
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/i_accept_abv"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25px"
+            android:text="@string/you_have_arrived"
             android:textColor="@color/white"
-            android:textSize="48px"/>
+            android:textSize="40px"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -106,16 +107,30 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/customerInfoLine2"
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:layout_below="@+id/relativeLayoutMerchantDetails"
+        android:background="@drawable/shadow_up_light_60"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDeliveryInfoInRide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayoutMerchantDetails"
+        android:layout_below="@+id/customerInfoLine2"
         android:fadeScrollbars="true"
-        android:layout_above="@+id/linearLayoutbuttons"
+        android:layout_above="@+id/customerInfoLine4"
         android:scrollbars="vertical"
         android:splitMotionEvents="false">
     </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/customerInfoLine4"
+        android:layout_width="match_parent"
+        android:layout_height="20px"
+        android:layout_above="@+id/linearLayoutbuttons"
+        android:background="@drawable/shadow_up_light_60"/>
 
     <LinearLayout
         android:id="@+id/linearLayoutbuttons"
@@ -123,32 +138,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="30px"
-        android:layout_marginRight="30px"
-        android:layout_marginBottom="12px"
+        android:padding="26px"
         android:gravity="center">
 
         <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-            android:id="@+id/driverStartRideBtn"
-            android:layout_width="308px"
-            android:layout_height="74px"
-            android:background="@drawable/new_orange_btn_normal_rounded"
-            android:text="@string/start_ride"
-            android:visibility="visible"
-            android:textColor="@drawable/white_color_selector"
-            android:textSize="38px"/>
-
-        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
             android:id="@+id/driverCancelRideBtn"
-            android:layout_width="308px"
+            android:layout_width="256px"
             android:layout_height="74px"
-            android:layout_marginLeft="35px"
             android:visibility="visible"
             android:background="@drawable/new_menu_black_btn_selector_rounded"
             android:text="@string/cancel"
             android:textColor="@drawable/white_color_selector"
-            android:textSize="38px"/>
+            android:textSize="32px"/>
 
+        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+            android:id="@+id/driverStartRideBtn"
+            android:layout_width="256px"
+            android:layout_height="74px"
+            android:layout_marginLeft="35px"
+            android:background="@drawable/new_orange_btn_normal_rounded"
+            android:text="@string/start_delivery"
+            android:visibility="visible"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="32px"/>
     </LinearLayout>
 
 </RelativeLayout>

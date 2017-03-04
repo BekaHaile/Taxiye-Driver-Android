@@ -3,8 +3,11 @@ package product.clicklabs.jugnoo.driver;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
+import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
@@ -117,6 +120,14 @@ public class TransactionUtils {
 				.replace(container.getId(), new SwitchCustomerFragment(),
 						SwitchCustomerFragment.class.getName())
 				.addToBackStack(SwitchCustomerFragment.class.getName())
+				.commitAllowingStateLoss();
+	}
+
+	public void openDeliveryInfoInRideFragment(FragmentActivity activity, View container, DeliveryInfoInRideDetails deliveryInfoInRideDetails) {
+		activity.getSupportFragmentManager().beginTransaction()
+				.replace(container.getId(), new DeliveryInfosListInRideFragment(deliveryInfoInRideDetails),
+						DeliveryInfosListInRideFragment.class.getName())
+				.addToBackStack(DeliveryInfosListInRideFragment.class.getName())
 				.commitAllowingStateLoss();
 	}
 

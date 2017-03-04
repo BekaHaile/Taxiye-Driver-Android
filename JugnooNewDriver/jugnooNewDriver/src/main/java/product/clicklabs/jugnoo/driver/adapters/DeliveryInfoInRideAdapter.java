@@ -11,9 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -23,38 +25,35 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class DeliveryInfoInRideAdapter extends RecyclerView.Adapter<DeliveryInfoInRideAdapter.rideInfoViewHolder> {
 
-	private ArrayList<FareStructureInfo> fareStructureInfos;
+	private List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryDetails;
 	private Context context;
 	private InfoTilesAdapterHandler infoTilesAdapterHandler;
 
-	public DeliveryInfoInRideAdapter(Context context, ArrayList<FareStructureInfo> fareStructureInfos) {
-		this.fareStructureInfos = fareStructureInfos;
+	public DeliveryInfoInRideAdapter(Context context, List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryDetails) {
+		this.deliveryDetails = deliveryDetails;
 		this.context = context;
 	}
 
 	@Override
 	public int getItemCount() {
-		return fareStructureInfos.size();
+		return deliveryDetails.size();
 	}
 
 	@Override
 	public void onBindViewHolder(rideInfoViewHolder rideInfoViewHolder, int i) {
-		final FareStructureInfo itr = fareStructureInfos.get(i);
+		final DeliveryInfoInRideDetails.DeliveryDatum itr = deliveryDetails.get(i);
 
 		rideInfoViewHolder.textViewCustomerNameValue.setTypeface(Fonts.mavenRegular(context));
 		rideInfoViewHolder.textViewCustomerDeliveryAddressValue.setTypeface(Fonts.mavenRegular(context));
 
 
-		if(itr.getInfo() != null){
-			rideInfoViewHolder.textViewCustomerNameValue.setText(itr.getInfo());
+		if(itr.getName() != null){
+			rideInfoViewHolder.textViewCustomerNameValue.setText(itr.getName());
 		} else {
 			rideInfoViewHolder.textViewCustomerNameValue.setVisibility(View.GONE);
 		}
 
-		rideInfoViewHolder.textViewCustomerDeliveryAddressValue.setText(Utils.getAbsWithDecimalAmount(context, itr.getValue()));
-
-
-
+		rideInfoViewHolder.textViewCustomerDeliveryAddressValue.setText(itr.getAddress());
 	}
 
 	@Override

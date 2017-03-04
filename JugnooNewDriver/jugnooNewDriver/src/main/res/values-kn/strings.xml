@@ -786,6 +786,7 @@
     <string name="return_amount">Returned Amount</string>
     <string name="cash_required">Cash Required</string>
     <string name="pick_up">PICK - UP</string>
+    <string name="you_have_arrived">You have Arrived</string>
 
 
     <string-array name="CountryCodes" >

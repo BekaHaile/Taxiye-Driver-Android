@@ -82,6 +82,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -140,6 +141,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
@@ -149,6 +151,7 @@ import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -288,8 +291,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
-	Button driverStartRideBtn, buttonMarkArrived;
-	Button driverCancelRideBtn;
+	public Button driverStartRideBtn, buttonMarkArrived;
+	public Button driverCancelRideBtn;
 
 
 	//In ride layout
@@ -5236,7 +5239,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				HashMap<String, String> params = new HashMap<String, String>();
-
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 				params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
@@ -5259,6 +5261,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
 									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
+									if(jObj.has("pickup_data")) {
+										DeliveryInfoInRideDetails deliveryInfoInRideDetails = new DeliveryInfoInRideDetails();
+										Gson gson = new Gson();
+										DeliveryInfoInRideDetails.PickupData pickupData = gson.fromJson(jObj.getJSONObject("pickup_data").toString(), DeliveryInfoInRideDetails.PickupData.class);
+										deliveryInfoInRideDetails.setPickupData(pickupData);
+										List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryDatumList;
+										deliveryDatumList= gson.fromJson(jObj.getJSONArray("delivery_data").toString(),
+												new TypeToken<List<DeliveryInfoInRideDetails.DeliveryDatum>>(){}.getType());
+										deliveryInfoInRideDetails.setDeliveryData(deliveryDatumList);
+										relativeLayoutContainer.setVisibility(View.VISIBLE);
+										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+												getRelativeLayoutContainer(), deliveryInfoInRideDetails);
+									}
 
 									driverScreenMode = DriverScreenMode.D_START_RIDE;
 									Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
