@@ -83,6 +83,8 @@ public class FareStructure {
 			if(fare < cappedFareUp && fare > cappedFareDown){
 				fare = mandatoryFare;
 				mandatoryFareApplicable = 1;
+			} else {
+				mandatoryFareApplicable = 0;
 			}
 		}
 
