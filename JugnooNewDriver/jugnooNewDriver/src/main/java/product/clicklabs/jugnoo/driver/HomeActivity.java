@@ -145,6 +145,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDeta
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
+import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
@@ -464,7 +465,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private TextView textViewTour, textViewDoc;
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
-
+	public boolean deliveryInfolistFragVisibility = false;
+	DeliveryInfoInRideDetails deliveryInfoInRideDetails = new DeliveryInfoInRideDetails();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -1609,7 +1611,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
 							intent.putExtra(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-							startActivity(intent);
+							startActivityForResult(intent, 12);
+
 							overridePendingTransition(R.anim.right_in, R.anim.right_out);
 							if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 								MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CANCEL, null);
@@ -3766,8 +3769,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					startTimerPathRerouting();
-					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
+					if (customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1) {
 						setTextViewRideInstructions();
+						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) == null){
+						try {
+							deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
+							deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
+							deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
+
+							List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
+
+							for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
+								DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
+								DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
+								deliveryDatum.setName(deliveryInfo.getCustomerName());
+								deliveryDatum.setAddress(deliveryInfo.getDeliveryAddress());
+								deliveryData.add(i, deliveryDatum);
+							}
+							deliveryInfoInRideDetails.setDeliveryData(deliveryData);
+							relativeLayoutContainer.setVisibility(View.VISIBLE);
+							deliveryInfolistFragVisibility = true;
+							getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+									getRelativeLayoutContainer(), deliveryInfoInRideDetails);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						}
+
 					} else {
 						setCustomerInstruction(customerInfo);
 					}
@@ -4336,6 +4364,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(getSupportFragmentManager().findFragmentByTag(AddSignatureFragment.class.getName()) != null){
 				if(getSupportFragmentManager().findFragmentByTag(AddSignatureFragment.class.getName()).isVisible()){
 					visible = true;
+				}
+			}
+
+			if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+				if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() &&
+						deliveryInfolistFragVisibility){
+					return;
 				}
 			}
 
@@ -5262,7 +5297,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
 									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
 									if(jObj.has("pickup_data")) {
-										DeliveryInfoInRideDetails deliveryInfoInRideDetails = new DeliveryInfoInRideDetails();
 										Gson gson = new Gson();
 										DeliveryInfoInRideDetails.PickupData pickupData = gson.fromJson(jObj.getJSONObject("pickup_data").toString(), DeliveryInfoInRideDetails.PickupData.class);
 										deliveryInfoInRideDetails.setPickupData(pickupData);
@@ -5271,6 +5305,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 												new TypeToken<List<DeliveryInfoInRideDetails.DeliveryDatum>>(){}.getType());
 										deliveryInfoInRideDetails.setDeliveryData(deliveryDatumList);
 										relativeLayoutContainer.setVisibility(View.VISIBLE);
+										deliveryInfolistFragVisibility =true;
 										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
 												getRelativeLayoutContainer(), deliveryInfoInRideDetails);
 									}
@@ -5372,6 +5407,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								double dropLatitude = 0, dropLongitude = 0;
 								try {
+									if(deliveryInfolistFragVisibility){
+										deliveryInfolistFragVisibility =false;
+										onBackPressed();
+									}
 									if (jObj.has(KEY_OP_DROP_LATITUDE) && jObj.has(KEY_OP_DROP_LONGITUDE)) {
 										dropLatitude = jObj.getDouble(KEY_OP_DROP_LATITUDE);
 										dropLongitude = jObj.getDouble(KEY_OP_DROP_LONGITUDE);
@@ -6473,14 +6512,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								if(driverScreenMode == DriverScreenMode.D_IN_RIDE
-										&& Data.getCurrentCustomerInfo().getIsDelivery() == 1
-										&& Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1){
-									setDeliveryMarkers();
-								} else if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
-									setAttachedDeliveryPoolMarkers(false);
-								}else {
-									setAttachedCustomerMarkers(false);
+								try {
+									if(driverScreenMode == DriverScreenMode.D_IN_RIDE
+											&& Data.getCurrentCustomerInfo().getIsDelivery() == 1
+											&& Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1){
+										setDeliveryMarkers();
+									} else if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+										setAttachedDeliveryPoolMarkers(false);
+									}else {
+										setAttachedCustomerMarkers(false);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
 							}
 						});
@@ -6945,6 +6988,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
 			super.onActivityResult(requestCode, resultCode, data);
+			if(requestCode == 12){
+				boolean state = data.getBooleanExtra("result", true);
+				if(deliveryInfolistFragVisibility && state){
+					deliveryInfolistFragVisibility =false;
+					onBackPressed();
+				}
+			}
+
 			if (LocationInit.LOCATION_REQUEST_CODE == requestCode) {
 				if (0 == resultCode) {
 					finish();
@@ -9725,6 +9776,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	public void cancelRideRemotely(String engagementId){
+		try {
+			if(isTourFlag) {
+
+				tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), 2);
+//							handleTourView(false, "");
+			} else {
+				Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+				intent.putExtra(KEY_ENGAGEMENT_ID, engagementId);
+				startActivityForResult(intent, 12);
+
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CANCEL, null);
+					FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
+				} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CANCEL, null);
+					FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

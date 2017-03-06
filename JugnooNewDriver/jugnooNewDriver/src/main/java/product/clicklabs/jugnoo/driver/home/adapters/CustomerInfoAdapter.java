@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -24,10 +25,10 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private Activity activity;
+	private HomeActivity activity;
 	private Callback callback;
 
-	public CustomerInfoAdapter(Activity activity, Callback callback) {
+	public CustomerInfoAdapter(HomeActivity activity, Callback callback) {
 		this.activity = activity;
 		this.callback = callback;
 	}
@@ -92,6 +93,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		holder.textViewCustomer1Name.setText(text);
 
 		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+			holder.buttonCancel.setVisibility(View.GONE);
 			for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
 				if (customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
 						customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
@@ -148,10 +150,8 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //            Utils.setTextColor(holder.textViewCustomer1Name, customerInfo.getColor(),
 //                    activity.getResources().getColor(R.color.new_orange));
 			holder.linearLayoutSelection1.setVisibility(View.GONE);
-			holder.linearLayoutCard1.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 		} else {
 			holder.linearLayoutSelection1.setVisibility(View.VISIBLE);
-			holder.linearLayoutCard1.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
 		}
 
 		holder.buttonSelect.setTag(position);
@@ -176,6 +176,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			public void onClick(View v) {
 				try {
 					int position = (int) v.getTag();
+					activity.cancelRideRemotely(String.valueOf(getItem(position).getEngagementId()));
 					if (!Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(getItem(position).getEngagementId()))) {
 						callback.onCancelClick(position, getItem(position));
 					}
@@ -189,10 +190,10 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		if (position == 0) {
 			holder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine.setVisibility(View.GONE);
+			holder.imageViewHorizontalLineNew.setImageResource(R.drawable.radio_select);
 		} else if (position == getItemCount() - 1) {
 			holder.imageViewVerticalLine.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine1.setVisibility(View.GONE);
-			holder.imageViewDote.setBackgroundResource(R.drawable.red_dot_icon);
 		} else {
 			holder.imageViewVerticalLine.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
@@ -267,7 +268,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName;
 		public LinearLayout linearLayoutCard1, linearLayoutSelection1, linearLayoutProgress;
 		public RelativeLayout relative;
-		public ImageView imageViewDote, imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1;
+		public ImageView imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1, bottomLine;
 		public Button buttonSelect, buttonCancel;
 
 		public ViewHolder(View convertView, Activity context) {
@@ -286,8 +287,8 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			linearLayoutSelection1 = (LinearLayout) convertView.findViewById(R.id.linearLayoutSelection1);
 			linearLayoutProgress = (LinearLayout) convertView.findViewById(R.id.linearLayoutProgress);
 
-			imageViewDote = (ImageView) convertView.findViewById(R.id.imageViewDote);
 			imageViewHorizontalLineNew = (ImageView) convertView.findViewById(R.id.imageViewHorizontalLineNew);
+			bottomLine = (ImageView) convertView.findViewById(R.id.bottomLine);
 
 			imageViewVerticalLine = (ImageView) convertView.findViewById(R.id.imageViewVerticalLine);
 			imageViewFakeBottom = (ImageView) convertView.findViewById(R.id.imageViewFakeBottom);

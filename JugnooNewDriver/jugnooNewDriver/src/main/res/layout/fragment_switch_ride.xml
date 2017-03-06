@@ -39,12 +39,13 @@
         android:layout_width="match_parent"
         android:layout_height="884px"
         android:layout_below="@+id/topRl"
-        android:layout_marginTop="72px">
+        android:layout_marginTop="32px">
 
         <ImageView
             android:layout_width="820px"
             android:layout_height="match_parent"
             android:layout_marginLeft="-365px"
+            android:visibility="gone"
             android:layerType="software"
             android:src="@drawable/dotted"/>
 
@@ -53,6 +54,7 @@
             android:layout_height="20px"
             android:layout_marginLeft="36px"
             android:layout_marginTop="9px"
+            android:visibility="gone"
             android:src="@drawable/circle_grey"/>
 
         <ImageView
@@ -60,6 +62,7 @@
             android:layout_height="20px"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="9px"
+            android:visibility="gone"
             android:layout_marginLeft="37px"
             android:src="@drawable/circle_grey"/>
 
@@ -69,6 +72,7 @@
             android:layout_height="wrap_content"
             android:textSize="32px"
             android:textColor="@color/black_text_v2"
+            android:visibility="gone"
             android:text="@string/pool_start"
             android:layout_marginLeft="72px"/>
 
@@ -79,7 +83,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/textViewPoolStart"
             android:layout_above="@+id/textViewPoolEnd"
-            android:layout_marginLeft="45px"
+            android:layout_marginLeft="28px"
             android:splitMotionEvents="false">
         </android.support.v7.widget.RecyclerView>
 
@@ -88,6 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="32px"
+            android:visibility="gone"
             android:textColor="@color/black_text_v2"
             android:layout_alignParentBottom="true"
             android:text="@string/pool_stop"

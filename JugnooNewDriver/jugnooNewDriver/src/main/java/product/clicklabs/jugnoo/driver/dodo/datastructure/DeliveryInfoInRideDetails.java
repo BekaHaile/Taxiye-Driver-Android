@@ -15,7 +15,7 @@ public class DeliveryInfoInRideDetails {
 
 	@SerializedName("pickup_data")
 	@Expose
-	private PickupData pickupData;
+	private PickupData pickupData = new PickupData();
 	@SerializedName("delivery_data")
 	@Expose
 	private List<DeliveryDatum> deliveryData = null;
@@ -73,7 +73,7 @@ public class DeliveryInfoInRideDetails {
 		}
 	}
 
-	public class DeliveryDatum {
+	public static class DeliveryDatum {
 
 		@SerializedName("name")
 		@Expose

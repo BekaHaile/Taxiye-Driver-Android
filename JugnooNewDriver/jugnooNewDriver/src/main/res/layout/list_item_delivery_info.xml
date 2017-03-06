@@ -88,7 +88,6 @@
                         android:layout_width="390px"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/imageViewDote"
                         android:text="@string/NA"
                         android:textSize="32px"/>
 
