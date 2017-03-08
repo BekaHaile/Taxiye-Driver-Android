@@ -10,38 +10,41 @@
     <ImageView
         android:id="@+id/imageViewVerticalLine"
         android:layout_width="3px"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/imageViewFakeBottom"
-        android:layout_alignTop="@+id/viewSep"
-        android:layout_marginLeft="38px"
+        android:layout_height="26px"
+        android:layout_marginLeft="30px"
+        android:layout_marginBottom="5px"
+        android:background="@color/grey_light"
         android:visibility="visible"
-        android:background="@color/grey_light_delivery"/>
+    />
 
     <ImageView
-        android:id="@+id/imageViewStatusCircle"
-        android:layout_width="20px"
-        android:layout_height="20px"
-        android:layout_marginLeft="29px"
-        android:layout_marginTop="32px"
+        android:id="@+id/imageViewVerticalLine1"
+        android:layout_width="3px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30px"
+        android:layout_alignTop="@+id/imageViewHorizontalLineNew"
+        android:layout_marginTop="30px"
+        android:layout_above="@+id/imageViewFakeBottom"
+        android:background="@color/grey_light"
+    />
+
+    <!--android:layout_alignBottom="@+id/imageViewHorizontalLineNew"-->
+
+    <ImageView
+        android:id="@+id/imageViewHorizontalLineNew"
+        android:layout_width="22px"
+        android:layout_height="22px"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="34px"
         android:background="@drawable/circle_orange"/>
 
     <ImageView
-        android:id="@+id/imageViewVerticalLineBottom"
-        android:layout_width="3px"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/imageViewStatusCircle"
-        android:layout_above="@+id/imageViewFakeBottom"
-        android:layout_marginLeft="38px"
-        android:background="@color/white"
-    />
-
-
-    <ImageView
         android:id="@+id/imageViewFakeBottom"
-        android:layout_width="1px"
-        android:layout_height="1px"
         android:layout_below="@+id/relativeLayoutCard1"
-        android:background="@color/black_varient"/>
+        android:background="@color/grey_light"
+        android:layout_width="2px"
+        android:layout_height="1px"/>
+
 
     <LinearLayout
         android:id="@+id/relativeLayoutCard1"

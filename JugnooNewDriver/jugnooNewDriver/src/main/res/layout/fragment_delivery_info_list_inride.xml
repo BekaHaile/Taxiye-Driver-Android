@@ -49,7 +49,7 @@
             android:paddingBottom="2px"
             android:paddingLeft="10px"
             android:paddingRight="10px"
-            android:textSize="20px"
+            android:textSize="16px"
             android:rotation="270"
             android:text="@string/pick_up"/>
 

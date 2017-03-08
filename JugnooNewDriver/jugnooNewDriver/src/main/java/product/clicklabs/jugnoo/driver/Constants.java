@@ -112,6 +112,7 @@ public interface Constants {
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
     String KEY_CANCEL_REASON = "cancel_reason";
+	String KEY_FALSE_DELIVERY = "false_delivery";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
 	String KEY_IS_DELIVERY_POOL = "is_delivery_pool";

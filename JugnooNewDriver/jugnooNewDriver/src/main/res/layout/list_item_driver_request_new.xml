@@ -333,7 +333,7 @@
 
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/buttonCancelRide"
-                android:layout_width="200px"
+                android:layout_width="290px"
                 android:layout_height="69px"
                 android:background="@drawable/menu_black_btn_selector"
                 android:text="@string/cancel"
@@ -342,7 +342,7 @@
 
             <Button
                 android:id="@+id/buttonAcceptRide"
-                android:layout_width="380px"
+                android:layout_width="290px"
                 android:layout_height="69px"
                 android:layout_marginLeft="30px"
                 android:layout_toRightOf="@+id/buttonCancelRide"

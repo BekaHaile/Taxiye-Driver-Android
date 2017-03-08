@@ -45,7 +45,7 @@ public class CustomerSwitcher {
 	private RecyclerView recyclerViewCustomersLinked;
 
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
-			textViewCustomerAddressInRide, textViewShowDistance, textViewCustomerCashRequired;
+			textViewCustomerAddressInRide, textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private CustomerInfoAdapter customerInfoAdapter;
@@ -61,6 +61,8 @@ public class CustomerSwitcher {
 
 		textViewCustomerName1 = (TextView) rootView.findViewById(R.id.textViewCustomerName1);
 		textViewCustomerName1.setTypeface(Fonts.mavenRegular(activity));
+		textViewPickupFrm = (TextView) rootView.findViewById(R.id.textViewPickupFrm);
+		textViewPickupFrm.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
@@ -296,12 +298,12 @@ public class CustomerSwitcher {
 														distanceRefreshTime = System.currentTimeMillis();
 														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																.format(finalDistance / 1000d)+" "
-																+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
+																+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
 													} else {
 														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 																		new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-																+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
+																+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
 													}
 												}
 											});
@@ -336,7 +338,7 @@ public class CustomerSwitcher {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-							+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away));
+							+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

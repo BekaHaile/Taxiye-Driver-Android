@@ -44,19 +44,19 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 	 *
 	 * @param tasksList
 	 */
-	public void render(int engagementId, ArrayList<DeliveryInfo> tasksList) {
+	public void render(int engagementId, ArrayList<DeliveryInfo> tasksList, int falseDeliveries) {
 		if (tasksList == null) {
 			deliveryListHorizontal.setVisibility(View.GONE);
 			return;
 		}
 		deliveryListHorizontal.setVisibility(View.VISIBLE);
-		populateTasksList(engagementId, tasksList);
+		populateTasksList(engagementId, tasksList, falseDeliveries);
 	}
 
 
 
-	private void populateTasksList(int engagementId, ArrayList<DeliveryInfo> tasksList) {
-		adapter = new DeliveryListAdapter(activity, tasksList, engagementId);
+	private void populateTasksList(int engagementId, ArrayList<DeliveryInfo> tasksList, int falseDeliveries) {
+		adapter = new DeliveryListAdapter(activity, tasksList, engagementId, falseDeliveries);
 		deliveryListHorizontal.setPageMargin(Utils.dpToPx(activity, 8));
 		deliveryListHorizontal.setAdapter(adapter);
 	}

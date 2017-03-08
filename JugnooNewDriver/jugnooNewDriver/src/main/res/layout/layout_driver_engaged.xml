@@ -49,7 +49,7 @@
                     android:visibility="visible"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:text="@string/change"/>
+                    android:text="@string/pool_only"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewDeliveryCount"
@@ -225,7 +225,7 @@
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_marginTop="8px"
         android:layout_marginLeft="18px"
-        android:background="@drawable/help_in_ride_icon"/>
+        android:background="@drawable/new_help_button"/>
 
 
     <LinearLayout
@@ -414,7 +414,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="100px"
-                            android:layout_marginRight="24px"
+                            android:layout_marginRight="25px"
                             android:gravity="right"
                             android:text="@string/NA"
                             android:textColor="@color/black"
@@ -429,14 +429,25 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginLeft="30px"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="25px"
                         android:layout_marginBottom="12px"
                         android:gravity="center">
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                            android:id="@+id/driverCancelRideBtn"
+                            android:layout_width="308px"
+                            android:layout_height="74px"
+                            android:visibility="visible"
+                            android:background="@drawable/new_menu_black_btn_selector_rounded"
+                            android:text="@string/cancel"
+                            android:textColor="@drawable/white_color_selector"
+                            android:textSize="38px"/>
 
                         <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverStartRideBtn"
                             android:layout_width="308px"
                             android:layout_height="74px"
+                            android:layout_marginLeft="35px"
                             android:background="@drawable/new_orange_btn_normal_rounded"
                             android:text="@string/start_ride"
                             android:visibility="gone"
@@ -447,23 +458,13 @@
                             android:id="@+id/buttonMarkArrived"
                             android:layout_width="308px"
                             android:layout_height="74px"
+                            android:layout_marginLeft="35px"
                             android:background="@drawable/new_fadded_orange_btn_normal_rounded"
                             android:text="@string/arrivingdot"
                             android:visibility="visible"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="38px"/>
 
-
-                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                            android:id="@+id/driverCancelRideBtn"
-                            android:layout_width="308px"
-                            android:layout_height="74px"
-                            android:layout_marginLeft="35px"
-                            android:visibility="visible"
-                            android:background="@drawable/new_menu_black_btn_selector_rounded"
-                            android:text="@string/cancel"
-                            android:textColor="@drawable/white_color_selector"
-                            android:textSize="38px"/>
 
                     </LinearLayout>
 
@@ -491,6 +492,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/transparent"
+                android:layout_gravity="bottom"
                 android:layout_alignParentBottom="true"/>
 
             <ImageView
@@ -814,8 +816,8 @@
 
     <Button
         android:id="@+id/driverEngagedMyLocationBtn"
-        android:layout_width="80px"
-        android:layout_height="80px"
+        android:layout_width="100px"
+        android:layout_height="100px"
         android:layout_alignParentRight="true"
         android:layout_marginRight="18px"
         android:layout_below="@+id/inRideCustomerInfoRl"
@@ -840,10 +842,10 @@
     <Button
         android:id="@+id/buttonDriverNavigation"
         android:layout_width="120px"
-        android:layout_height="110px"
+        android:layout_height="120px"
         android:layout_above="@+id/linearLayoutStartEnd"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="38px"
+        android:layout_marginRight="25px"
         android:background="@drawable/new_navigate_button_selector"
         android:tag="mwar"
         android:textColor="@color/white"

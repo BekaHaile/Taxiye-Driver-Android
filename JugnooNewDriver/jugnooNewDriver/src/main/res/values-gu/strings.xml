@@ -763,6 +763,9 @@
     <string name="pick_up">PICK - UP</string>
     <string name="you_have_arrived">You have Arrived</string>
     <string name="switchText">Switch</string>
+    <string name="away_cap">Away</string>
+    <string name="pool_only">Pool</string>
+    <string name="pickup_from">Pickup From:</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

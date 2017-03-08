@@ -109,7 +109,8 @@ public class CustomMapMarkerCreator {
 		float scale = Math.min(assl.Xscale(), assl.Yscale());
 		final TextView textView = new TextView(context);
 		textView.setText(text);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (scale * (float) fontSize));
+//		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (scale * (float) fontSize));
+		textView.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.text_size_8));
 		textView.setTypeface(Data.latoHeavy(context));
 
 		final Rect boundsText = new Rect();
@@ -156,7 +157,7 @@ public class CustomMapMarkerCreator {
 
 			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
 			shape.draw(canvasText);
-			canvasText.drawText(text, (canvasText.getWidth() / 2) - 5.5f, (40f * assl.Yscale()), paint);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 5.5f, (43f * scale), paint);
 			return bmpText;
 
 		} else {

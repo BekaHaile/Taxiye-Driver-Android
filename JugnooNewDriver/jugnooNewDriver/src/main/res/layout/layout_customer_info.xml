@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutCustomerInfo"
     android:layout_width="match_parent"
-    android:layout_height="95px">
+    android:layout_height="125px">
 
     <LinearLayout
-        android:layout_width="480px"
+        android:layout_width="440px"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20px"
         android:layout_marginTop="20px"
@@ -16,13 +16,23 @@
         >
 
         <TextView
+            android:id="@+id/textViewPickupFrm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/pickup_from"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="26px"
+            android:visibility="visible"/>
+
+        <TextView
             android:id="@+id/textViewCustomerName1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="@string/NA"
             android:textColor="@color/bg_grey_opaque"
-            android:textSize="36px"
+            android:textSize="32px"
             android:visibility="visible"/>
 
         <!--<TextView-->
@@ -50,10 +60,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="180px"
+        android:layout_width="220px"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20px"
+        android:layout_marginRight="25px"
         android:layout_marginTop="12px"
         android:layout_marginBottom="12px"
         android:orientation="vertical"
@@ -62,8 +72,8 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCall1"
-            android:layout_width="180px"
-            android:layout_height="70px"
+            android:layout_width="220px"
+            android:layout_height="74px"
             android:background="@drawable/new_orange_btn_corner_normal">
 
             <ImageView
@@ -79,7 +89,7 @@
                 android:layout_width="130px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="75px"
+                android:layout_marginLeft="95px"
                 android:text="@string/call"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="42px"/>

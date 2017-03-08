@@ -416,7 +416,7 @@ public class JSONParser implements Constants {
 							int forceEndDelivery =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
-							int totalDeliveries = 0;
+							int totalDeliveries = 0, falseDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
 								userId = userData.optString(KEY_USER_ID, "0");
@@ -434,6 +434,7 @@ public class JSONParser implements Constants {
 								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 								estimatedDriverFare= userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+								falseDeliveries = userData.optInt("false_deliveries",0);
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
@@ -478,7 +479,7 @@ public class JSONParser implements Constants {
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare);
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -758,7 +759,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false);
+						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false, jDelivery.optInt(KEY_FALSE_DELIVERY, 0));
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
@@ -781,7 +782,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size(), false);
+						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size(), false, jDelivery.optInt(KEY_FALSE_DELIVERY, 0));
 				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
 				customerInfo.getDeliveryInfos().add(deliveryInfo);
 			}

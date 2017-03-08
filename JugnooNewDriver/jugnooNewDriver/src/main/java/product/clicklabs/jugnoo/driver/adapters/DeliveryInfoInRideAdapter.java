@@ -52,8 +52,23 @@ public class DeliveryInfoInRideAdapter extends RecyclerView.Adapter<DeliveryInfo
 		} else {
 			rideInfoViewHolder.textViewCustomerNameValue.setVisibility(View.GONE);
 		}
-
 		rideInfoViewHolder.textViewCustomerDeliveryAddressValue.setText(itr.getAddress());
+
+		if (i == 0) {
+			rideInfoViewHolder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
+			rideInfoViewHolder.imageViewVerticalLine.setVisibility(View.GONE);
+			rideInfoViewHolder.imageViewHorizontalLineNew.setImageResource(R.drawable.radio_select);
+		} else if (i == getItemCount() - 1) {
+			rideInfoViewHolder.imageViewVerticalLine.setVisibility(View.VISIBLE);
+			rideInfoViewHolder.imageViewVerticalLine1.setVisibility(View.GONE);
+		} else {
+			rideInfoViewHolder.imageViewVerticalLine.setVisibility(View.VISIBLE);
+			rideInfoViewHolder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
+		}
+
+		if(getItemCount() == 1){
+			rideInfoViewHolder.imageViewVerticalLine1.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -68,7 +83,7 @@ public class DeliveryInfoInRideAdapter extends RecyclerView.Adapter<DeliveryInfo
 	public class rideInfoViewHolder extends RecyclerView.ViewHolder {
 		protected RelativeLayout rootLinear;
 		protected TextView textViewCustomerNameValue, textViewCustomerDeliveryAddressValue;
-		protected ImageView imageViewVerticalLine, imageViewStatusCircle, imageViewVerticalLineBottom;
+		protected ImageView imageViewVerticalLine, imageViewVerticalLine1, imageViewHorizontalLineNew, imageViewFakeBottom;
 		protected int id;
 
 		public rideInfoViewHolder(View v) {
@@ -79,10 +94,10 @@ public class DeliveryInfoInRideAdapter extends RecyclerView.Adapter<DeliveryInfo
 			textViewCustomerDeliveryAddressValue = (TextView) v.findViewById(R.id.textViewCustomerDeliveryAddressValue);
 			textViewCustomerDeliveryAddressValue.setTypeface(Fonts.mavenRegular(context));
 
+			imageViewFakeBottom = (ImageView) v.findViewById(R.id.imageViewFakeBottom);
 			imageViewVerticalLine = (ImageView) v.findViewById(R.id.imageViewVerticalLine);
-			imageViewStatusCircle = (ImageView) v.findViewById(R.id.imageViewStatusCircle);
-			imageViewVerticalLineBottom = (ImageView) v.findViewById(R.id.imageViewVerticalLineBottom);
-
+			imageViewVerticalLine1 = (ImageView) v.findViewById(R.id.imageViewVerticalLine1);
+			imageViewHorizontalLineNew = (ImageView) v.findViewById(R.id.imageViewHorizontalLineNew);
 
 			rootLinear.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(rootLinear);

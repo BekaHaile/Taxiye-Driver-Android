@@ -45,7 +45,7 @@ public class CustomerInfo {
 	private int isPooled;
 
 	private int isDelivery;
-	private int isDeliveryPool;
+	private int isDeliveryPool, falseDeliveries;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries;
@@ -61,7 +61,7 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare, int falseDeliveries){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -100,6 +100,7 @@ public class CustomerInfo {
 		this.cashOnDelivery = cashOnDelivery;
 		this.forceEndDelivery = forceEndDelivery;
 		this.estimatedDriverFare = estimatedDriverFare;
+		this.falseDeliveries = falseDeliveries;
 	}
 
 
@@ -541,5 +542,13 @@ public class CustomerInfo {
 
 	public void setEstimatedDist(double estimatedDist) {
 		this.estimatedDist = estimatedDist;
+	}
+
+	public int getFalseDeliveries() {
+		return falseDeliveries;
+	}
+
+	public void setFalseDeliveries(int falseDeliveries) {
+		this.falseDeliveries = falseDeliveries;
 	}
 }

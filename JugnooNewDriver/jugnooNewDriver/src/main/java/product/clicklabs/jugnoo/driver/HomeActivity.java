@@ -41,6 +41,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -196,6 +197,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 import static product.clicklabs.jugnoo.driver.Data.context;
+import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
@@ -1072,6 +1074,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onDrawerStateChanged(int newState) {
 
+				}
+			});
+
+			deliveryListHorizontal.setOnTouchListener(new View.OnTouchListener()
+			{
+				@Override
+				public boolean onTouch(View v, MotionEvent event)
+				{
+					try {
+						CustomerInfo customerInfo = getCurrentCustomerInfo();
+						if(customerInfo.getFalseDeliveries() ==1){
+							return true;
+						} else {
+							return false;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						return false;
+					}
 				}
 			});
 
@@ -3862,7 +3883,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1){
 						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
-						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
+						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos(), customerInfo.getFalseDeliveries());
 						deliveryInfoTabs.notifyDatasetchange(true);
 					} else {
 						linearLayoutRide.setVisibility(View.VISIBLE);
@@ -4691,7 +4712,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				convertView = mInflater.inflate(R.layout.list_item_driver_request_new, null);
 
 				holder.textViewRequestName = (TextView) convertView.findViewById(R.id.textViewRequestName);
-				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress);
 				holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
@@ -4813,7 +4834,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
 				holder.textViewEstimatedFareValue.setText(getResources().getString(R.string.estimated_fare)
-						+" "+customerInfo.getEstimatedDriverFare());
+						+": "+customerInfo.getEstimatedDriverFare());
 				holder.textViewEstimatedFareValue.setVisibility(View.VISIBLE);
 			} else {
 //				holder.textViewEstimatedFare.setVisibility(View.GONE);
@@ -4821,7 +4842,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			if(customerInfo.getEstimatedDist() != 0){
 				holder.textViewEstimatedDist.setText(getResources().getString(R.string.estimated_dis)
-						+" "+customerInfo.getEstimatedDist());
+						+": "+customerInfo.getEstimatedDist());
 				holder.textViewEstimatedDist.setVisibility(View.VISIBLE);
 			} else {
 				holder.textViewEstimatedDist.setVisibility(View.GONE);
@@ -5064,7 +5085,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "", estimatedDriverFare ="";
-					int ForceEndDelivery = 0;
+					int ForceEndDelivery = 0, falseDeliveries = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
 					int totalDeliveries = 0;
@@ -5083,6 +5104,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 						estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+						falseDeliveries = userData.optInt("false_deliveries", 0);
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -5123,7 +5145,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -8140,7 +8162,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (180f * ASSL.Yscale());
+				int top = (int) (220f * ASSL.Yscale());
 				int bottom = (int) (364f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
@@ -8423,7 +8445,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					textViewRideInstructions.setText(getResources().getString(R.string.start_the_delivery));
 				}
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-					layoutParams.setMargins((int)(54f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
+					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
