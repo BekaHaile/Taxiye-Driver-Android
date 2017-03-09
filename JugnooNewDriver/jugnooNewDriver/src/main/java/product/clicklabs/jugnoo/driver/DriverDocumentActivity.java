@@ -182,8 +182,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		if (AppStatus.getInstance(DriverDocumentActivity.this).isOnline(DriverDocumentActivity.this)) {
 
 			DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+			int newRequirement;
+			if(requirement == 0){
+				newRequirement =1;
+			} else {
+				newRequirement =requirement;
+			}
 
-			RestClient.getApiServices().docSubmission(accessToken, String.valueOf(requirement), new Callback<DocRequirementResponse>() {
+			RestClient.getApiServices().docSubmission(accessToken, String.valueOf(newRequirement), new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {

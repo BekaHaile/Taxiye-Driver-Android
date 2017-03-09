@@ -2769,32 +2769,37 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		});
 		if(isTourFlag){
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if (toggleDelivery) {
-						Data.userData.setDeliveryAvailable(jugnooOnFlag);
-					} else {
-						Data.userData.autosAvailable = jugnooOnFlag;
+			if(toggleDelivery){
+				DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.turn_jugnooo_for_training));
+				dismissLoadingFromBackground();
+			} else {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						if (toggleDelivery) {
+							Data.userData.setDeliveryAvailable(jugnooOnFlag);
+						} else {
+							Data.userData.autosAvailable = jugnooOnFlag;
+						}
+						changeJugnooONUIAndInitService();
+						if (jugnooOnFlag == 1) {
+							AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+							isJugnooOnTraining = true;
+						} else {
+							Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
+							intent1.putExtra("task_id", "2");
+							HomeActivity.this.startService(intent1);
+							isJugnooOnTraining = false;
+						}
+						nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
+						resetSharedPrefs();
+						if (jugnooOnFlag == 1) {
+							showDialogFromBackgroundWithListener(getResources().getString(R.string.request_autos));
+						}
+						dismissLoadingFromBackground();
 					}
-					changeJugnooONUIAndInitService();
-					if (jugnooOnFlag == 1) {
-						AGPSRefresh.softRefreshGpsData(HomeActivity.this);
-						isJugnooOnTraining = true;
-					} else {
-						Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
-						intent1.putExtra("task_id", "2");
-						HomeActivity.this.startService(intent1);
-						isJugnooOnTraining = false;
-					}
-					nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
-					resetSharedPrefs();
-					if (jugnooOnFlag == 1) {
-						showDialogFromBackgroundWithListener(getResources().getString(R.string.request_autos));
-					}
-					dismissLoadingFromBackground();
-				}
-			}).start();
+				}).start();
+			}
 		} else {
 
 			new Thread(new Runnable() {
@@ -4483,6 +4488,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if(customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null && invalidPool==0){
 			return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
 		}
+
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
 
 		double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
@@ -5978,6 +5984,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				finalDistance = totalDistance;
 			}
+
 			Log.e("offline =============", "============");
 			Log.i("rideTime", "=" + rideTime);
 
@@ -5992,6 +5999,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 				totalFare = 0;
 			}
+			params.put("mandatory_fare_applicable", String.valueOf(Data.fareStructure.getMandatoryFareApplicable()));
 
 			try {
 				if (customerInfo != null && 1 == customerInfo.luggageChargesApplicable) {
@@ -9440,7 +9448,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				break;
 			case R.id.relativeLayoutTour:
-				if(!isTourFlag) {
+				if(!isTourFlag && Data.userData.autosEnabled == 1) {
 					DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "",
 							getResources().getString(R.string.training_confirmation_text),
 							getResources().getString(R.string.ok), getResources().getString(R.string.cancel),
