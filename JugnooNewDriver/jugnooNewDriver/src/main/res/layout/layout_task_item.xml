@@ -181,6 +181,7 @@
             android:layout_marginLeft="30px"
             android:layout_marginRight="30px"
             android:layout_marginBottom="15px"
+            android:padding="5px"
             android:gravity="center"
             >
 
@@ -200,7 +201,7 @@
                 android:layout_height="72px"
                 android:background="@drawable/new_orange_btn_normal_rounded"
                 android:text="@string/deliver"
-                android:layout_marginLeft="44px"
+                android:layout_marginLeft="40px"
                 android:visibility="visible"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
@@ -209,7 +210,7 @@
                 android:id="@+id/buttonMarkReturn"
                 android:layout_width="300px"
                 android:layout_height="72px"
-                android:background="@drawable/new_orange_btn_normal_rounded"
+                android:background="@drawable/new_orange_btn_corner_normal"
                 android:text="@string/returned"
                 android:visibility="gone"
                 android:layout_centerInParent="true"

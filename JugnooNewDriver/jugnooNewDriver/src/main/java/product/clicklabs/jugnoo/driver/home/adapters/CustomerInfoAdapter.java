@@ -19,6 +19,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -145,6 +146,13 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			holder.textViewCustomer1Address.setText(customerInfo.getAddress());
 		}
 
+		if(customerInfo.getIsDeliveryPool() == 1 && customerInfo.getIsDelivery() == 1){
+			holder.textViewOrderId.setVisibility(View.VISIBLE);
+			holder.textViewOrderId.setText(""+Math.abs(customerInfo.getOrderId()));
+		} else {
+			holder.textViewOrderId.setVisibility(View.GONE);
+		}
+
 		holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
 		if (Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId())) && (getItemCount() > 1)) {
 //            Utils.setTextColor(holder.textViewCustomer1Name, customerInfo.getColor(),
@@ -159,11 +167,26 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			@Override
 			public void onClick(View v) {
 				try {
-					int position = (int) v.getTag();
-					if (!Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(getItem(position).getEngagementId()))) {
-						callback.onClick(position, getItem(position));
-					}
-					notifyList();
+					final int position = (int) v.getTag();
+					DialogPopup.alertPopupTwoButtonsWithListeners(activity, "",
+							activity.getResources().getString(R.string.switch_confiramtion),
+							activity.getResources().getString(R.string.ok),
+							activity.getResources().getString(R.string.cancel),
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									if (!Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(getItem(position).getEngagementId()))) {
+										callback.onClick(position, getItem(position));
+									}
+									notifyList();
+								}
+							}, new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+
+								}
+							}, false, false);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -265,7 +288,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-		public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName;
+		public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName, textViewOrderId;
 		public LinearLayout linearLayoutCard1, linearLayoutSelection1, linearLayoutProgress;
 		public RelativeLayout relative;
 		public ImageView imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1, bottomLine;
@@ -281,6 +304,9 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			textViewCustomer1Address = (TextView) convertView.findViewById(R.id.textViewCustomer1Address);
 			textViewCustomer1Address.setTypeface(Fonts.mavenRegular(context));
+
+			textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
+			textViewOrderId.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
 
 			relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 			linearLayoutCard1 = (LinearLayout) convertView.findViewById(R.id.linearLayoutCard1);

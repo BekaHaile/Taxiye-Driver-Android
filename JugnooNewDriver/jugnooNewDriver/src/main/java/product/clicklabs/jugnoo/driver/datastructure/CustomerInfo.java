@@ -48,7 +48,7 @@ public class CustomerInfo {
 	private int isDeliveryPool, falseDeliveries;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
-	private int totalDeliveries;
+	private int totalDeliveries, orderId;
 	private double estimatedFare, dryDistance, estimatedDist;
 	private String vendorMessage, estimatedDriverFare;
 
@@ -61,7 +61,7 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare, int falseDeliveries){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare, int falseDeliveries, int orderId){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -101,6 +101,7 @@ public class CustomerInfo {
 		this.forceEndDelivery = forceEndDelivery;
 		this.estimatedDriverFare = estimatedDriverFare;
 		this.falseDeliveries = falseDeliveries;
+		this.orderId = orderId;
 	}
 
 
@@ -550,5 +551,13 @@ public class CustomerInfo {
 
 	public void setFalseDeliveries(int falseDeliveries) {
 		this.falseDeliveries = falseDeliveries;
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 }

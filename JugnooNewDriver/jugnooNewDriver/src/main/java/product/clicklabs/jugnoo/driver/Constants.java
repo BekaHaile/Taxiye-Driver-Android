@@ -222,6 +222,7 @@ public interface Constants {
 
     String KEY_CHAT_COUNT = "chat_count";
 	String KEY_DRIVER_ARRIVED_DISTANCE = "driver_arrived_distance";
+	String KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE = "driver_show_arrive_ui_distance";
 
 }
 

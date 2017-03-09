@@ -503,8 +503,8 @@
 	<string name="enter_valid_amount">Please enter valid amount</string>
 	<string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
 	<string name="Ride">Ride</string>
-	<string name="Ride_id">Ride Id</string>
-	<string name="customer_id">Customer Id</string>
+	<string name="Ride_id">Ride ID</string>
+	<string name="customer_id">Customer ID</string>
 	<string name="paytm_transaction">Paytm Transaction</string>
 	<string name="phone_no">Phone No.</string>
 	<string name="changed_no_same_as_previous">Changed phone number is same as the previous one
@@ -517,12 +517,12 @@
 	<string name="customer_2">Customer 2</string>
 	<string name="kms">Kms</string>
 	<string name="mark_delivered">Mark Delivered</string>
-	<string name="order_id">Order Id</string>
+	<string name="order_id">Order ID</string>
 	<string name="thanks_for_feedback">Thank you for your valuable feedback</string>
 	<string name="total_amnt_till_now">Total Amount Till Now</string>
 	<string name="amnt_credited">To Pay In Account</string>
 	<string name="invoice_date">Invoice Date</string>
-	<string name="invoice_id">Invoice Id</string>
+	<string name="invoice_id">Invoice ID</string>
 	<string name="total_distance">TOTAL DISTANCE</string>
 	<string name="valid_email_phone_no">Enter valid Email or Phone No.</string>
 	<string name="select_destination">Please select atleast one Destination</string>
@@ -566,12 +566,12 @@
 	<string name="view_orders">View Orders</string>
 	<string name="delivery_numbers">No. of Deliveries :</string>
 	<string name="approx">(Approx)</string>
-	<string name="start_the_delivery">Start the delivery</string>
+	<string name="start_the_delivery">Start the Delivery</string>
 	<string name="deliver_order_number">Deliver order no. %s</string>
 	<string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
 	<string name="returned">Returned</string>
 	<string name="start_delivery_text">Are you sure you want to start Delivery?</string>
-	<string name="delivery_id">Delivery Id</string>
+	<string name="delivery_id">Delivery ID</string>
 	<string name="deliver">Deliver</string>
 	<string name="Return">Return</string>
 	<string name="delivery">Delivery</string>
@@ -722,7 +722,7 @@
 	<string name="auto_accept_message">Customer request has been automatically accepted</string>
 	<string name="start_ride_alert">If Customer is with you, than please start ride</string>
 	<string name="Reason">Reason</string>
-	<string name="delivery_conf">Are you sure you want to deliver ?</string>
+	<string name="delivery_conf">Are you sure you want to Deliver ?</string>
 	<string name="failed">Failed</string>
 	<string name="cash_deposite_conf">Have you deposited cash ?</string>
 	<string name="total">Total</string>
@@ -730,7 +730,7 @@
 	<string name="return_to_merchant">Return to the Merchant</string>
 	<string name="deposite_cash">Have you deposited cash?</string>
 	<string name="deposite_cash_1">Deposit cash</string>
-	<string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+	<string name="return_reasons_confirmation">Select a reason for failed Delivery</string>
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
@@ -764,9 +764,9 @@
 	<string name="driver_app">DRIVER APPLICATION</string>
 	<string name="register_as_driver">Register as DRIVER</string>
 	<string name="distance_lower">Distance</string>
-	<string name="please_drop_customer_delivery">End %s\'s delivery</string>
-	<string name="please_start_customer_delivery">Start %s\'s delivery</string>
-	<string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
+	<string name="please_drop_customer_delivery">End %s\'s Delivery</string>
+	<string name="please_start_customer_delivery">Start %s\'s Delivery</string>
+	<string name="please_reach_customer_delivery">Pickup %s\'s Delivery</string>
 	<string name="select_merchant">Select Merchant</string>
 	<string name="estimated_fare">Estimated Fare</string>
 	<string name="provide_sign_msg">Please provide signature before submit</string>
@@ -811,6 +811,8 @@
 	<string name="away_cap">Away</string>
 	<string name="pool_only">Pool</string>
 	<string name="pickup_from">Pickup From:</string>
+	<string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+	<string name="delivery_route">Delivery Route</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

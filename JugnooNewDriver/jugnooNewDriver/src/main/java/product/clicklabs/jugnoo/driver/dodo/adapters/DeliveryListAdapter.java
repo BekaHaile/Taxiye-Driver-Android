@@ -129,7 +129,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				totalCashCollected = totalCashCollected + deliveryInfo.getAmount();
 			}
 		}
-		textViewListCount.setText(ordinal(position+1) + activity.getResources().getString(R.string.delivery)+":");
+		textViewListCount.setText(ordinal(position+1)+" "+ activity.getResources().getString(R.string.delivery)+":");
 
 		if(task.getAmount() > 0 ){
 			textViewCashCollected.setVisibility(View.VISIBLE);
@@ -145,7 +145,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) buttonMarkFailed.getLayoutParams();
-		params.setMargins((int)(35f*ASSL.Xscale()), 0, 0, 0);
+		params.setMargins((int)(30f*ASSL.Xscale()), 0, 0, 0);
 		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){

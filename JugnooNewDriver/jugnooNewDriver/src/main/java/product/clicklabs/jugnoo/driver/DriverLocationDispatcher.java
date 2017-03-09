@@ -198,8 +198,8 @@ public class DriverLocationDispatcher {
 
 	private void checkForMarkArrived(Context context, Location location, String accessToken){
 		try{
-			String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
-			double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_ARRIVED_DISTANCE, 600);
+			double driverArrivedDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_ARRIVED_DISTANCE, 100);
+			double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
 			ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication.getInstance()
 					.getEngagementSP().getEngagementSPDatasArray();
 			for(EngagementSPData engagementSPData : engagementSPDatas){
@@ -208,7 +208,7 @@ public class DriverLocationDispatcher {
 						double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 								new LatLng(engagementSPData.getPickupLatitude(), engagementSPData.getPickupLongitude())));
 
-						if (distance < Double.parseDouble(driverArrivedDistance)){
+						if (distance < driverArrivedDistance){
 							if(HomeActivity.appInterruptHandler != null){
 								HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
 										location.getLongitude()), engagementSPData.getEngagementId());

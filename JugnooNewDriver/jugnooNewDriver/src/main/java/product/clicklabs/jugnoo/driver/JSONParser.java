@@ -264,7 +264,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.HIGH_DEMAND_AREA_POPUP, userData.optString("high_demand_area_popup", ""));
 		Prefs.with(context).save(Constants.HIGH_DEMAND_WEB_URL, userData.optString("high_demand_web_url", ""));
 
-		Prefs.with(context).save(Constants.KEY_DRIVER_ARRIVED_DISTANCE, userData.optInt("driver_arrived_distance", 600));
+		Prefs.with(context).save(Constants.KEY_DRIVER_ARRIVED_DISTANCE, userData.optInt("driver_arrived_distance", 100));
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
@@ -326,7 +326,7 @@ public class JSONParser implements Constants {
 
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
-
+		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
@@ -416,7 +416,7 @@ public class JSONParser implements Constants {
 							int forceEndDelivery =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
-							int totalDeliveries = 0, falseDeliveries = 0;
+							int totalDeliveries = 0, falseDeliveries = 0, orderId =0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
 								userId = userData.optString(KEY_USER_ID, "0");
@@ -435,6 +435,7 @@ public class JSONParser implements Constants {
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 								estimatedDriverFare= userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 								falseDeliveries = userData.optInt("false_deliveries",0);
+								orderId = userData.optInt("order_id",0);
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
@@ -479,7 +480,7 @@ public class JSONParser implements Constants {
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries);
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries, orderId);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));

@@ -825,6 +825,8 @@
 	<string name="away_cap">Away</string>
 	<string name="pool_only">Pool</string>
 	<string name="pickup_from">Pickup From:</string>
+	<string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+	<string name="delivery_route">Delivery Route</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

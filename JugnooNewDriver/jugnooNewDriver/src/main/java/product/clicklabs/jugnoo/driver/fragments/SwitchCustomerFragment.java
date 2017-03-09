@@ -44,15 +44,15 @@ import retrofit.mime.TypedByteArray;
 
 public class SwitchCustomerFragment extends Fragment {
 
-	private RelativeLayout relativeLayoutRoot;
-	private Button backBtn;
+	private RelativeLayout relativeLayoutRoot, relativeLayoutReset;
+	private Button backBtn, resetBtn;
 
 	private RecyclerView recyclerViewCustomer;
 
 	private View rootView;
 	private HomeActivity activity;
 	private CustomerInfoAdapter customerInfoAdapter;
-	private TextView title;
+	private TextView title, restText;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +69,10 @@ public class SwitchCustomerFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+
+		relativeLayoutReset = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutReset);
 		backBtn = (Button) rootView.findViewById(R.id.backBtn);
+		resetBtn = (Button) rootView.findViewById(R.id.resetBtn);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -83,12 +86,25 @@ public class SwitchCustomerFragment extends Fragment {
 		recyclerViewCustomer.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewCustomer.setHasFixedSize(false);
 
+		restText = (TextView) rootView.findViewById(R.id.restText);
+		restText.setTypeface(Data.latoRegular(activity));
 		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(activity));
+
 		if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
-			title.setText(activity.getResources().getString(R.string.select_merchant));
+			title.setText(activity.getResources().getString(R.string.pool_only));
 		} else {
 			title.setText(activity.getResources().getString(R.string.select_customer));
 		}
+
+		relativeLayoutReset.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.changeCustomerState(true);
+				activity.switchDriverScreen(HomeActivity.driverScreenMode);
+				activity.onBackPressed();
+			}
+		});
 
 		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
 			@Override

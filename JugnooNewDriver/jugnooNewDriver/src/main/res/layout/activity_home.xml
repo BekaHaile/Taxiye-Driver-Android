@@ -176,16 +176,6 @@
                 android:background="@drawable/icon_i"
                 android:tag="mwar"/>
 
-            <ListView
-                android:id="@+id/driverRideRequestsList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/topRlOuter"
-                android:divider="@color/transparent"
-                android:background="@color/black_translucent"
-                android:splitMotionEvents="false"
-                android:visibility="gone"
-                />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -198,10 +188,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
             </RelativeLayout>
 
+            <ListView
+                android:id="@+id/driverRideRequestsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/topRlOuter"
+                android:divider="@color/transparent"
+                android:background="@color/black_translucent"
+                android:splitMotionEvents="false"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

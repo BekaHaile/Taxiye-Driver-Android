@@ -23,6 +23,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textViewOrderId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="48px"
+                    android:textSize="32px"
+                    android:layout_marginBottom="12px"
+                    android:layout_toRightOf="@+id/imageViewDote"
+                    android:text="@string/NA"/>
+
+                <TextView
                     android:id="@+id/textViewCustomer1Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

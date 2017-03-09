@@ -96,7 +96,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 		recyclerViewDeliveryInfoInRide.setAdapter(deliveryInfoInRideAdapter);
 
 		textViewMerchantName.setText(deliveryInfos.getPickupData().getName());
-		textViewCashReq.setText(String.valueOf(activity.getResources().getString(R.string.cash_required)
+		textViewCashReq.setText(String.valueOf(activity.getResources().getString(R.string.cash_to_collected)
 				+": "+activity.getResources().getString(R.string.rupee)+ deliveryInfos.getPickupData().getCashToCollect()));
 
 		helpBtn.setOnClickListener(new View.OnClickListener() {

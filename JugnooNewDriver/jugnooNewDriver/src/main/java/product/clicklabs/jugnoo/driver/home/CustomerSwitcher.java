@@ -185,7 +185,7 @@ public class CustomerSwitcher {
 				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
 						activity.getResources().getColor(R.color.new_orange));
 
-				textViewCustomerName1.setText(customerInfo.getName());
+				textViewCustomerName1.setText(customerInfo.getName().toUpperCase());
 				textViewCustomerName.setText(customerInfo.getName());
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
@@ -234,7 +234,7 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 					textViewCustomerCashRequired.setVisibility(View.VISIBLE);
-					textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_required)
+					textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
 							+ ": " + activity.getResources().getString(R.string.rupee)
 							+ "" + customerInfo.getCashOnDelivery());
 					updateDistanceOnLocationChanged();

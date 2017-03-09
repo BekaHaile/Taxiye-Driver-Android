@@ -25,11 +25,41 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:gravity="center"
+            android:layout_marginLeft="103px"
             android:text="@string/select_customer"
             android:textColor="@color/white"
-            android:textSize="40px"/>
+            android:textSize="38px"/>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="35px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:id="@+id/resetBtn"
+                android:layout_width="26px"
+                android:layout_height="26px"
+                android:layout_marginTop="5px"
+                android:background="@drawable/icon_reset_small"
+                android:tag="mwar"/>
+
+            <TextView
+                android:id="@+id/restText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset"
+                android:layout_marginLeft="8px"
+                android:layout_toRightOf="@+id/resetBtn"
+                android:textColor="@color/white"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
 
 
     </RelativeLayout>

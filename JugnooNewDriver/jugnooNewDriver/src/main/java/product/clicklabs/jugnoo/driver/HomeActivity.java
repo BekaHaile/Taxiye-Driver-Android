@@ -1548,7 +1548,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 													double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
-													double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
+													double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
 
 													if (displacement <= arrivingDistance || actualDispalcement <= arrivingDistance) {
 														buildAlertMessageNoGps();
@@ -3899,7 +3899,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInRideMainRl.setVisibility(View.VISIBLE);
 					if(customerInfo.getIsDelivery() == 1 && customerInfo.getDeliveryInfos().size() > 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
-						changeButton.setVisibility(View.VISIBLE);
+						changeButton.setVisibility(View.GONE);
 						if(customerInfo.getIsDeliveryPool() == 1
 								&& Data.getAssignedCustomerInfosListForEngagedStatus().size() < 2){
 							changeButton.setVisibility(View.GONE);
@@ -5088,7 +5088,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int ForceEndDelivery = 0, falseDeliveries = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
-					int totalDeliveries = 0;
+					int totalDeliveries = 0, orderId =0 ;
 					if(isDelivery == 1){
 						userName = userData.optString(KEY_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -5105,6 +5105,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 						estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 						falseDeliveries = userData.optInt("false_deliveries", 0);
+						orderId = userData.optInt("order_id", 0);
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -5145,7 +5146,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -7920,7 +7921,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 						double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
-						double arrivingDistance = Prefs.with(HomeActivity.this).getInt(KEY_DRIVER_ARRIVED_DISTANCE, 600);
+						double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
 						if (arrived || actualDispalcement < arrivingDistance) {
 							buttonMarkArrived.setText(getResources().getString(R.string.arrived));
 							buttonMarkArrived.setEnabled(true);
@@ -8450,8 +8451,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
 								== DeliveryStatus.PENDING.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
-									String.valueOf(i+1)));
+							textViewRideInstructions.setText(getResources().getString(R.string.delivery_route));
+							return;
+						} else if(customerInfo.getDeliveryInfos().get(i).getStatus()
+								== DeliveryStatus.RETURN.getOrdinal()){
+							textViewRideInstructions.setText(getResources().getString(R.string.return_to_merchant));
 							return;
 						}
 					}
