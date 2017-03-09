@@ -120,7 +120,7 @@
 
                 <TextView
                     android:id="@+id/textViewCashCollected"
-                    android:layout_width="352px"
+                    android:layout_width="592px"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30px"
                     android:textSize="30px"

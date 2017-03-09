@@ -571,7 +571,7 @@
 	<string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
 	<string name="returned">Returned</string>
 	<string name="start_delivery_text">Are you sure you want to start Delivery?</string>
-	<string name="delivery_id">Delivery ID</string>
+	<string name="delivery_id">Order ID</string>
 	<string name="deliver">Deliver</string>
 	<string name="Return">Return</string>
 	<string name="delivery">Delivery</string>

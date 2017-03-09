@@ -97,7 +97,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 
 		textViewMerchantName.setText(deliveryInfos.getPickupData().getName());
 		textViewCashReq.setText(String.valueOf(activity.getResources().getString(R.string.cash_to_collected)
-				+": "+activity.getResources().getString(R.string.rupee)+ deliveryInfos.getPickupData().getCashToCollect()));
+				+": "+Utils.getAbsAmount(activity, deliveryInfos.getPickupData().getCashToCollect())));
 
 		helpBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -142,37 +142,6 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 		}
 	}
 
-
-//	private void updateList(DeliveryStatus deliveryStatus) {
-//		try {
-//			deliveryInfos.clear();
-//			for (DeliveryInfo deliveryInfo : Data.getCustomerInfo(String.valueOf(engagementId)).getDeliveryInfos()) {
-//				deliveryInfos.add(deliveryInfo);
-//			}
-//			deliveryInfoInRideAdapter.notifyDataSetChanged();
-//			deliveryStatusOpened = deliveryStatus;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-
-//	@Override
-//	public void onHiddenChanged(boolean hidden) {
-//		super.onHiddenChanged(hidden);
-//		try {
-//			if (!hidden) {
-//				if (deliveryStatusOpened == DeliveryStatus.PENDING
-//						&& deliveryInfos.size() == 1
-//						&& deliveryInfos.get(0).getStatus() != DeliveryStatus.PENDING.getOrdinal()) {
-//					deliveryStatusOpened = DeliveryStatus.COMPLETED;
-//				}
-//				updateList(deliveryStatusOpened);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	@Override
 	public void onDestroy() {

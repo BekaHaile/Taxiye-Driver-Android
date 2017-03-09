@@ -3940,6 +3940,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
 						setTextViewRideInstructions();
+						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() &&
+									deliveryInfolistFragVisibility){
+								deliveryInfolistFragVisibility =false;
+								onBackPressed();
+							}
+						}
+
 					} else {
 						setCustomerInstruction(customerInfo);
 					}
@@ -4842,7 +4850,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			if(customerInfo.getEstimatedDist() != 0){
 				holder.textViewEstimatedDist.setText(getResources().getString(R.string.estimated_dis)
-						+": "+customerInfo.getEstimatedDist());
+						+": "+customerInfo.getEstimatedDist()+" "+activity.getResources().getString(R.string.km));
 				holder.textViewEstimatedDist.setVisibility(View.VISIBLE);
 			} else {
 				holder.textViewEstimatedDist.setVisibility(View.GONE);
@@ -8455,7 +8463,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							return;
 						} else if(customerInfo.getDeliveryInfos().get(i).getStatus()
 								== DeliveryStatus.RETURN.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.return_to_merchant));
+							textViewRideInstructions.setText(getResources().getString(R.string.delivery_route));
 							return;
 						}
 					}

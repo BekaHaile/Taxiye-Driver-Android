@@ -133,7 +133,7 @@ public class CustomMapMarkerCreator {
 			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
 			shape.draw(canvasText);
 
-			canvasText.drawText(text, canvasText.getWidth() / 2, (28f*assl.Yscale()), paint);
+			canvasText.drawText(text, canvasText.getWidth() / 2, (29f*assl.Yscale()), paint);
 			return bmpText;
 
 		} else if(iconType == 2) {
@@ -184,7 +184,7 @@ public class CustomMapMarkerCreator {
 
 			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
 			shape.draw(canvasText);
-			canvasText.drawText(text, (canvasText.getWidth() / 2) - 4, (33f * assl.Yscale()), paint);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 4, (34f * assl.Yscale()), paint);
 			return bmpText;
 		}
 
