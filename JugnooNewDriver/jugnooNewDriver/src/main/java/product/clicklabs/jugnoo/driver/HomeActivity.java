@@ -1697,19 +1697,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
 					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 					try {
-						if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
-							getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
-						} else if(customerInfo.getIsDelivery() ==1){
-							if(anyDeliveriesUnchecked(customerInfo)){
-								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
-										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
-										DeliveryStatus.PENDING);
-							} else{
-								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
-										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
-										DeliveryStatus.COMPLETED);
-							}
-						}
+
+						getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
+
+//						if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
+//							getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
+//						} else if(customerInfo.getIsDelivery() ==1){
+//							if(anyDeliveriesUnchecked(customerInfo)){
+//								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+//										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+//										DeliveryStatus.PENDING);
+//							} else{
+//								getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+//										getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+//										DeliveryStatus.COMPLETED);
+//							}
+//						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3902,13 +3905,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					driverStartRideMainRl.setVisibility(View.GONE);
 					driverInRideMainRl.setVisibility(View.VISIBLE);
+
 					if(customerInfo.getIsDelivery() == 1 && customerInfo.getDeliveryInfos().size() > 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
-						changeButton.setVisibility(View.GONE);
-						if(customerInfo.getIsDeliveryPool() == 1
-								&& Data.getAssignedCustomerInfosListForEngagedStatus().size() < 2){
-							changeButton.setVisibility(View.GONE);
-						}
+//						ArrayList<CustomerInfo> customerEngCount = Data.getAssignedCustomerInfosListForEngagedStatus();
+//						if(customerInfo.getIsDeliveryPool() == 1
+//								&& Data.getAssignedCustomerInfosListForEngagedStatus().size() < 2){
+//							changeButton.setVisibility(View.GONE);
+//						}
+//						if (customerEngCount.size() > 1) {
+//							changeButton.setVisibility(View.VISIBLE);
+//						} else {
+//							changeButton.setVisibility(View.GONE);
+//						}
+
 					} else{
 						linearLayoutRideValues.setVisibility(View.VISIBLE);
 					}
@@ -4662,7 +4672,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(driverRideRequestsList.getVisibility() == View.VISIBLE){
 						handlerRefresh.postDelayed(runnableRefresh, 1000);
 					} else{
-						handlerRefresh.postDelayed(runnableRefresh, 10000);
+						handlerRefresh.postDelayed(runnableRefresh, 1000);
 					}
 				}
 			};
@@ -4775,6 +4785,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.relativeLayoutDriverCOD = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutDriverCOD);
 				holder.textViewDropPointCount = (TextView) convertView.findViewById(R.id.textViewDropPointCount);
 				holder.textViewDropPointCount.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPointCount.setVisibility(View.GONE);
 
 				holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
 
@@ -5444,10 +5455,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								double dropLatitude = 0, dropLongitude = 0;
 								try {
-									if(deliveryInfolistFragVisibility){
-										deliveryInfolistFragVisibility =false;
-										onBackPressed();
-									}
+//									if(deliveryInfolistFragVisibility){
+//										deliveryInfolistFragVisibility =false;
+//										onBackPressed();
+//									}
 									if (jObj.has(KEY_OP_DROP_LATITUDE) && jObj.has(KEY_OP_DROP_LONGITUDE)) {
 										dropLatitude = jObj.getDouble(KEY_OP_DROP_LATITUDE);
 										dropLongitude = jObj.getDouble(KEY_OP_DROP_LONGITUDE);
@@ -8689,7 +8700,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 							}
 
-							if(deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
+							if(deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && customerInfo.getFalseDeliveries() !=1){
 
 								if (deliveryInfo.getIndex() == Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, 0)){
 									addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 2));
@@ -8697,8 +8708,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 1));
 								}
 							}
-							else if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
-									deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+							else if((deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
+									deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal())&& customerInfo.getFalseDeliveries() !=1){
 								addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1),3));
 							}
 						}

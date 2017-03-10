@@ -65,7 +65,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			if (customerInfo.getIsDeliveryPool() == 1) {
 				text = activity.getResources().getString(R.string.please_drop_customer_delivery,
 						customerInfo.getName());
-				holder.textViewDeliveryName.setVisibility(View.VISIBLE);
+				holder.textViewDeliveryName.setVisibility(View.GONE);
 				holder.textViewDeliveryName.setText(customerInfo.getDeliveryInfos().get(0).getCustomerName());
 				setView(holder, 3);
 			} else {
@@ -301,6 +301,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			textViewDeliveryName = (TextView) convertView.findViewById(R.id.textViewDeliveryName);
 			textViewDeliveryName.setTypeface(Fonts.mavenRegular(context));
+			textViewDeliveryName.setVisibility(View.GONE);
 
 			textViewCustomer1Address = (TextView) convertView.findViewById(R.id.textViewCustomer1Address);
 			textViewCustomer1Address.setTypeface(Fonts.mavenRegular(context));

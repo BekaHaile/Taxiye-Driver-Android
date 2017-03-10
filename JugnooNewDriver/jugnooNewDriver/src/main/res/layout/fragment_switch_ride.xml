@@ -67,8 +67,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="884px"
+        android:layout_height="match_parent"
         android:layout_below="@+id/topRl"
+        android:layout_marginBottom="10px"
         android:layout_marginTop="32px">
 
         <ImageView

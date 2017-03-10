@@ -10,10 +10,8 @@
 
     <Button
         android:id="@+id/driverInitialMyLocationBtn"
-        android:layout_width="80px"
-        android:layout_height="80px"
-        android:layout_marginRight="24px"
-        android:layout_marginTop="24px"
+        android:layout_width="110px"
+        android:layout_height="110px"
         android:layout_alignParentRight="true"
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"/>

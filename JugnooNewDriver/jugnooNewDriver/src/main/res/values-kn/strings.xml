@@ -794,6 +794,7 @@
     <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
+    <string name="delivery_1">Delivery 1</string>
 
 
     <string-array name="CountryCodes" >
