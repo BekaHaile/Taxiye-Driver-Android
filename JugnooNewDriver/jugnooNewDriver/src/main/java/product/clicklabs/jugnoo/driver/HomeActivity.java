@@ -3163,7 +3163,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		public void onClick(View v) {
 			if (myLocation != null) {
 				firebaseScreenEvent(FirebaseEvents.LOCATION_BUTTON);
-				if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+				boolean state = false;
+				if(Data.getCurrentCustomerInfo() != null){
+					if( Data.getCurrentCustomerInfo().getFalseDeliveries() ==1 && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+						state = true;
+					}
+				}
+
+				if(DriverScreenMode.D_INITIAL == driverScreenMode || state) {
 					if (map.getCameraPosition().zoom < 12) {
 						map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12), MAP_ANIMATION_TIME, null);
 					} else if (map.getCameraPosition().zoom < 15) {
@@ -3328,7 +3335,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverScreenMode = Data.getCurrentState();
 			mode = driverScreenMode;
 
-			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 
 			initializeFusedLocationFetchers();
 
@@ -3598,6 +3605,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, -1);
 
 
+					new android.os.Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() &&
+										deliveryInfolistFragVisibility){
+									deliveryInfolistFragVisibility =false;
+									onBackPressed();
+								}
+							}
+						}
+					}, 200);
+
+
 					break;
 
 
@@ -3800,30 +3821,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startTimerPathRerouting();
 					if (customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1) {
 						setTextViewRideInstructions();
-						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) == null){
-						try {
-							deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
-							deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
-							deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
+						new android.os.Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) == null && !deliveryInfolistFragVisibility){
+									try {
+										deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
+										deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
+										deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
 
-							List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
+										List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
 
-							for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
-								DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
-								DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
-								deliveryDatum.setName(deliveryInfo.getCustomerName());
-								deliveryDatum.setAddress(deliveryInfo.getDeliveryAddress());
-								deliveryData.add(i, deliveryDatum);
+										for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
+											DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
+											DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
+											deliveryDatum.setName(deliveryInfo.getCustomerName());
+											deliveryDatum.setAddress(deliveryInfo.getDeliveryAddress());
+											deliveryData.add(i, deliveryDatum);
+										}
+										deliveryInfoInRideDetails.setDeliveryData(deliveryData);
+										relativeLayoutContainer.setVisibility(View.VISIBLE);
+										deliveryInfolistFragVisibility = true;
+										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+												getRelativeLayoutContainer(), deliveryInfoInRideDetails);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
 							}
-							deliveryInfoInRideDetails.setDeliveryData(deliveryData);
-							relativeLayoutContainer.setVisibility(View.VISIBLE);
-							deliveryInfolistFragVisibility = true;
-							getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
-									getRelativeLayoutContainer(), deliveryInfoInRideDetails);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						}
+						}, 200);
 
 					} else {
 						setCustomerInstruction(customerInfo);
@@ -3891,7 +3917,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1){
 						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
-						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos(), customerInfo.getFalseDeliveries());
+						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos(), customerInfo.getFalseDeliveries(), customerInfo.getOrderId());
 						deliveryInfoTabs.notifyDatasetchange(true);
 					} else {
 						linearLayoutRide.setVisibility(View.VISIBLE);
@@ -3955,13 +3981,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
 						setTextViewRideInstructions();
-						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
-							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() &&
-									deliveryInfolistFragVisibility){
-								deliveryInfolistFragVisibility =false;
-								onBackPressed();
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+									if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
+										deliveryInfolistFragVisibility =false;
+										onBackPressed();
+									}
+								}
 							}
-						}
+						}, 200);
 
 					} else {
 						setCustomerInstruction(customerInfo);
@@ -4190,6 +4220,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void buttonDriverNavigationSetVisibility(int visibility){
+		Log.d(TAG, "button visibility = "+visibility);
 		buttonDriverNavigation.setVisibility(visibility);
 	}
 
@@ -4890,6 +4921,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint1.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint2.setVisibility(View.GONE);
 					holder.textViewDropPoint3.setVisibility(View.GONE);
+					holder.textViewDropPointCount.setVisibility(View.GONE);
 					holder.textViewDropPoint1.setText(customerInfo.getDeliveryAddress().get(0));
 					layoutParams.height = (int) (76f * ASSL.Yscale());
 				} else if(dropAddress ==2){
@@ -4899,6 +4931,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint2.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
 					holder.textViewDropPoint3.setVisibility(View.GONE);
+					holder.textViewDropPointCount.setVisibility(View.GONE);
 					layoutParams.height = (int) (166f * ASSL.Yscale());
 				} else if(dropAddress ==3){
 					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
@@ -4908,6 +4941,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDropPoint2.setText(customerInfo.getDeliveryAddress().get(1));
 					holder.textViewDropPoint3.setVisibility(View.VISIBLE);
 					holder.textViewDropPoint3.setText(customerInfo.getDeliveryAddress().get(2));
+					holder.textViewDropPointCount.setVisibility(View.GONE);
 					layoutParams.height = (int) (245f * ASSL.Yscale());
 				} else if(dropAddress > 3){
 					holder.imageViewDeliveryList.setBackgroundResource(R.drawable.dropoff_3);
@@ -5455,10 +5489,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								double dropLatitude = 0, dropLongitude = 0;
 								try {
-//									if(deliveryInfolistFragVisibility){
-//										deliveryInfolistFragVisibility =false;
-//										onBackPressed();
-//									}
+									if(deliveryInfolistFragVisibility){
+										deliveryInfolistFragVisibility =false;
+										onBackPressed();
+									}
 									if (jObj.has(KEY_OP_DROP_LATITUDE) && jObj.has(KEY_OP_DROP_LONGITUDE)) {
 										dropLatitude = jObj.getDouble(KEY_OP_DROP_LATITUDE);
 										dropLongitude = jObj.getDouble(KEY_OP_DROP_LONGITUDE);
@@ -7042,7 +7076,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				boolean state = data.getBooleanExtra("result", true);
 				if(deliveryInfolistFragVisibility && state){
 					deliveryInfolistFragVisibility =false;
-					onBackPressed();
+					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+						onBackPressed();
+					}
 				}
 			}
 

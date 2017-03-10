@@ -95,49 +95,56 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
 			holder.buttonCancel.setVisibility(View.GONE);
-			for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
-				if (customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
-						customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
-					ImageView ivLine = new ImageView(activity);
-					ivLine.setImageResource(R.color.red_v2);
-					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
-					params1.weight = 1f;
-					holder.linearLayoutProgress.addView(ivLine, params1);
+		}
 
-					ImageView ivCircle = new ImageView(activity);
-					ivCircle.setImageResource(R.drawable.circle_orange);
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+
+		if(customerInfo.getIsDeliveryPool() == 1) {
+			if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+				holder.buttonCancel.setVisibility(View.GONE);
+				for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
+					if (customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
+							customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
+						ImageView ivLine = new ImageView(activity);
+						ivLine.setImageResource(R.color.red_v2);
+						LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+						params1.weight = 1f;
+						holder.linearLayoutProgress.addView(ivLine, params1);
+
+						ImageView ivCircle = new ImageView(activity);
+						ivCircle.setImageResource(R.drawable.circle_orange);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
 //					params.weight = 1f;
-					holder.linearLayoutProgress.addView(ivCircle, params);
-				} else {
+						holder.linearLayoutProgress.addView(ivCircle, params);
+					} else {
+						ImageView ivLine = new ImageView(activity);
+						ivLine.setImageResource(R.color.white_grey_v2);
+						LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
+						params1.weight = 1f;
+						holder.linearLayoutProgress.addView(ivLine, params1);
+
+						ImageView ivCircle = new ImageView(activity);
+						ivCircle.setImageResource(R.drawable.circle_grey);
+						LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
+//					params.weight = 1f;
+						holder.linearLayoutProgress.addView(ivCircle, params);
+					}
+				}
+
+			} else {
+				for (int i = 0; i < customerInfo.getTotalDeliveries(); i++) {
+
 					ImageView ivLine = new ImageView(activity);
 					ivLine.setImageResource(R.color.white_grey_v2);
 					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
 					params1.weight = 1f;
 					holder.linearLayoutProgress.addView(ivLine, params1);
 
-						ImageView ivCircle = new ImageView(activity);
+					ImageView ivCircle = new ImageView(activity);
 					ivCircle.setImageResource(R.drawable.circle_grey);
 					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
-//					params.weight = 1f;
+//				params.weight = 1f;
 					holder.linearLayoutProgress.addView(ivCircle, params);
 				}
-			}
-
-		} else {
-			for (int i = 0; i < customerInfo.getTotalDeliveries(); i++) {
-
-				ImageView ivLine = new ImageView(activity);
-				ivLine.setImageResource(R.color.white_grey_v2);
-				LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
-				params1.weight = 1f;
-				holder.linearLayoutProgress.addView(ivLine, params1);
-
-				ImageView ivCircle = new ImageView(activity);
-				ivCircle.setImageResource(R.drawable.circle_grey);
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(14, 14);
-//				params.weight = 1f;
-				holder.linearLayoutProgress.addView(ivCircle, params);
 			}
 		}
 		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal() && customerInfo.getIsDeliveryPool() == 1) {

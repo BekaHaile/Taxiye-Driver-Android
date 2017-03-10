@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.home;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,7 @@ public class CustomerSwitcher {
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerCashRequired = (TextView) rootView.findViewById(R.id.textViewCustomerCashRequired);
-		textViewCustomerCashRequired.setTypeface(Fonts.mavenRegular(activity));
+		textViewCustomerCashRequired.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCustomerAddressInRide = (TextView) rootView.findViewById(R.id.textViewCustomerAddressInRide);
 		textViewCustomerAddressInRide.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
@@ -233,17 +234,19 @@ public class CustomerSwitcher {
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
-					textViewCustomerCashRequired.setVisibility(View.VISIBLE);
-					textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
-							+ ": " + activity.getResources().getString(R.string.rupee)
-							+ "" + customerInfo.getCashOnDelivery());
+
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 								+ " " + customerInfo.getTotalDeliveries());
+						textViewCustomerCashRequired.setVisibility(View.VISIBLE);
+						textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
+								+ ": " + activity.getResources().getString(R.string.rupee)
+								+ "" + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
+						textViewCustomerCashRequired.setVisibility(View.GONE);
 					}
 				}
 			}

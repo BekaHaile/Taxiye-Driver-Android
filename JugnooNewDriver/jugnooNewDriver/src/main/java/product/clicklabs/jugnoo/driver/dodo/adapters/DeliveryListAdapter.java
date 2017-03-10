@@ -53,17 +53,17 @@ public class DeliveryListAdapter extends PagerAdapter {
 
     private ArrayList<DeliveryInfo> tasksList;
     private LayoutInflater layoutInflater;
-	int engagemnetId, falseDeliveries;
+	int engagemnetId, falseDeliveries, orderId;
 	boolean currentStatus = true;
-	String address;
 
-    public DeliveryListAdapter(HomeActivity activity, ArrayList<DeliveryInfo> tasks, int engagemnetId, int falseDeliveries) {
+    public DeliveryListAdapter(HomeActivity activity, ArrayList<DeliveryInfo> tasks, int engagemnetId, int falseDeliveries, int orderId) {
 
         this.activity = activity;
         this.tasksList = tasks;
 		this.engagemnetId = engagemnetId;
 		this.falseDeliveries = falseDeliveries;
         this.layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.orderId = orderId;
     }
 
     @Override
@@ -118,11 +118,17 @@ public class DeliveryListAdapter extends PagerAdapter {
 			textViewReturnText.setVisibility(View.GONE);
 			textViewCustomerName.setVisibility(View.VISIBLE);
 			textViewCustomerName.setText(task.getCustomerName().toUpperCase());
-		} else {
+		} else if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
 			textViewReturnText.setVisibility(View.VISIBLE);
 			textViewCustomerName.setVisibility(View.GONE);
 			textViewReturnText.setText(activity.getResources().getString(R.string.return_to_merchant));
+		} else {
+			textViewReturnText.setVisibility(View.GONE);
+			textViewCustomerName.setVisibility(View.VISIBLE);
+			textViewCustomerName.setText(activity.getResources().getString(R.string.NA));
 		}
+
+
 
 		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
 		int totalDeliveries = 0;
@@ -217,7 +223,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 			public void onClick(View v) {
 				int pos = (int)v.getTag();
 				if(falseDeliveries == 1){
-					address = activity.getResources().getString(R.string.delivery) +" "+position;
 
 					DialogPopup.alertPopupTwoButtonsWithListeners(activity,"",
 							activity.getResources().getString(R.string.delivery_conf_new),
@@ -239,11 +244,11 @@ public class DeliveryListAdapter extends PagerAdapter {
 				} else {
 					final DeliveryInfo task = tasksList.get(pos);
 					DialogPopup.alertPopupDeliveryTwoButtonsWithListeners(activity,
-							activity.getResources().getString(R.string.delivery_id) + ": " + task.getId(),
+							activity.getResources().getString(R.string.delivery_id) + ": " + Math.abs(orderId),
 							activity.getResources().getString(R.string.take_cash)
 									+ " " + activity.getResources().getString(R.string.rupee)
 									+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
-							task.getCustomerName(), address,
+							task.getCustomerName(), task.getDeliveryAddress(),
 							activity.getResources().getString(R.string.delivery_conf_new),
 							activity.getResources().getString(R.string.deliver),
 							activity.getResources().getString(R.string.cancel),
@@ -302,13 +307,14 @@ public class DeliveryListAdapter extends PagerAdapter {
 		});
 
 
-
+		activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 		if(falseDeliveries == 1){
 			linearLayoutProgress.setVisibility(View.VISIBLE);
 			linearLayoutDeliveryItemHeader.setVisibility(View.GONE);
 			linearLayoutDeliveryData.setVisibility(View.GONE);
 			imageViewSeprator.setVisibility(View.GONE);
 			relativelayoutProgressInfo.setVisibility(View.VISIBLE);
+			activity.buttonDriverNavigationSetVisibility(View.GONE);
 			final ImageView ivCircleCurrent = new ImageView(activity);
 			final int i = tasksList.size();
 			int j = 0;
@@ -340,7 +346,11 @@ public class DeliveryListAdapter extends PagerAdapter {
 //						params.weight = 1f;
 						linearLayoutProgress.addView(ivCircleCurrent, params2);
 						if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
-							textViewDeliveryText.setText(activity.getResources().getString(R.string.delivery)+" #R");
+							linearLayoutProgress.setVisibility(View.GONE);
+							linearLayoutDeliveryItemHeader.setVisibility(View.VISIBLE);
+							linearLayoutDeliveryData.setVisibility(View.VISIBLE);
+							imageViewSeprator.setVisibility(View.VISIBLE);
+							relativelayoutProgressInfo.setVisibility(View.GONE);
 						} else {
 							textViewDeliveryText.setText(activity.getResources().getString(R.string.delivery)+" #"+j);
 						}
@@ -374,6 +384,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 					params1.weight = 1f;
 					linearLayoutProgress.addView(ivLine, params1);
 				}
+
+
 			}
 
 			ImageView ivCircle = new ImageView(activity);
@@ -384,7 +396,18 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		}
 
-        container.addView(taskItemView);
+		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
+			new android.os.Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+				}
+			}, 200);
+
+		}
+
+
+			container.addView(taskItemView);
         return taskItemView;
     }
 
