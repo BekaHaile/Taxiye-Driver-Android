@@ -127,7 +127,6 @@ public class TransactionUtils {
 		activity.getSupportFragmentManager().beginTransaction()
 				.replace(container.getId(), new DeliveryInfosListInRideFragment(deliveryInfoInRideDetails),
 						DeliveryInfosListInRideFragment.class.getName())
-				.addToBackStack(DeliveryInfosListInRideFragment.class.getName())
 				.commitAllowingStateLoss();
 	}
 

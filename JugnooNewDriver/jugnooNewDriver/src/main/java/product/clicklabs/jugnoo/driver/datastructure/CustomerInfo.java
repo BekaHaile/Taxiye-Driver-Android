@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -54,7 +55,7 @@ public class CustomerInfo {
 
 	private String color;
 	private PoolFare poolFare;
-
+	private DeliveryInfoInRideDetails deliveryInfoInRideDetails;
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -559,5 +560,13 @@ public class CustomerInfo {
 
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
+	}
+
+	public DeliveryInfoInRideDetails getDeliveryInfoInRideDetails() {
+		return deliveryInfoInRideDetails;
+	}
+
+	public void setDeliveryInfoInRideDetails(DeliveryInfoInRideDetails deliveryInfoInRideDetails) {
+		this.deliveryInfoInRideDetails = deliveryInfoInRideDetails;
 	}
 }

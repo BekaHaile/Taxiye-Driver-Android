@@ -468,7 +468,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
-	DeliveryInfoInRideDetails deliveryInfoInRideDetails = new DeliveryInfoInRideDetails();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -3317,6 +3316,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					ArrayList<CustomerInfo> customerInfosList;
 
 					if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1) {
+						if(mode == DriverScreenMode.D_START_RIDE){
+							sortCustomerState = false;
+						}
 						customerInfosList = setAttachedDeliveryPoolMarkers(sortCustomerState);
 					} else {
 						customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
@@ -3524,7 +3526,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			topRlOuter.setVisibility(View.VISIBLE);
 			customerSwitcher.setCallButton();
 
-			showChatButton();
+			try {
+				showChatButton();
+				if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+//							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+//								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() && deliveryInfolistFragVisibility){
+//									deliveryInfolistFragVisibility =false;
+//									onBackPressed();
+//								}
+//							}
+						}
+					}, 500);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			switch (mode) {
 
@@ -3604,21 +3623,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Data.nextCustomerName = null;
 					Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, -1);
 
-
-					new android.os.Handler().postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
-								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible() &&
-										deliveryInfolistFragVisibility){
-									deliveryInfolistFragVisibility =false;
-									onBackPressed();
-								}
-							}
+					if (getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null) {
+						if (getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()) {
+							deliveryInfolistFragVisibility = false;
+//							onBackPressed();
+							relativeLayoutContainer.setVisibility(View.GONE);
+							getSupportFragmentManager().beginTransaction()
+									.remove(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()))
+									.commitAllowingStateLoss();
 						}
-					}, 200);
-
-
+					}
 					break;
 
 
@@ -3654,6 +3668,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
+
+//					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+//						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
+//							deliveryInfolistFragVisibility =false;
+//							onBackPressed();
+//						}
+//					}
 
 					break;
 
@@ -3723,6 +3744,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 //					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
 //							getResources().getColor(R.color.new_orange));
+
+					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
+							deliveryInfolistFragVisibility =false;
+//							onBackPressed();
+							relativeLayoutContainer.setVisibility(View.GONE);
+							getSupportFragmentManager().beginTransaction()
+									.remove(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()))
+									.commitAllowingStateLoss();
+						}
+					}
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
@@ -3821,35 +3853,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startTimerPathRerouting();
 					if (customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1) {
 						setTextViewRideInstructions();
-						new android.os.Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) == null && !deliveryInfolistFragVisibility){
-									try {
-										deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
-										deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
-										deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
+						try {
+							DeliveryInfoInRideDetails deliveryInfoInRideDetails = new DeliveryInfoInRideDetails();
 
-										List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
-
-										for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
-											DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
-											DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
-											deliveryDatum.setName(deliveryInfo.getCustomerName());
-											deliveryDatum.setAddress(deliveryInfo.getDeliveryAddress());
-											deliveryData.add(i, deliveryDatum);
-										}
-										deliveryInfoInRideDetails.setDeliveryData(deliveryData);
-										relativeLayoutContainer.setVisibility(View.VISIBLE);
-										deliveryInfolistFragVisibility = true;
-										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
-												getRelativeLayoutContainer(), deliveryInfoInRideDetails);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
+							if (customerInfo.getDeliveryInfos() != null) {
+								deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
+								deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
+								deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
+								List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
+								for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
+									DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
+									DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
+									deliveryDatum.setName(deliveryInfo.getCustomerName());
+									deliveryDatum.setAddress(deliveryInfo.getDeliveryAddress());
+									deliveryData.add(i, deliveryDatum);
 								}
+								relativeLayoutContainer.setVisibility(View.VISIBLE);
+								deliveryInfolistFragVisibility = true;
+								deliveryInfoInRideDetails.setDeliveryData(deliveryData);
+								customerInfo.setDeliveryInfoInRideDetails(deliveryInfoInRideDetails);
+								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+										getRelativeLayoutContainer(), deliveryInfoInRideDetails);
+								overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							} else if (customerInfo.getDeliveryInfoInRideDetails() != null) {
+								relativeLayoutContainer.setVisibility(View.VISIBLE);
+								deliveryInfolistFragVisibility = true;
+								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+										getRelativeLayoutContainer(), customerInfo.getDeliveryInfoInRideDetails());
+								overridePendingTransition(R.anim.right_in, R.anim.right_out);
 							}
-						}, 200);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
 					} else {
 						setCustomerInstruction(customerInfo);
@@ -3981,17 +4016,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1 ) {
 						setTextViewRideInstructions();
-						new Handler().postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
-									if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
-										deliveryInfolistFragVisibility =false;
-										onBackPressed();
-									}
-								}
+						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+							if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
+								deliveryInfolistFragVisibility =false;
+//								onBackPressed();
+								relativeLayoutContainer.setVisibility(View.GONE);
+								getSupportFragmentManager().beginTransaction()
+										.remove(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()))
+										.commitAllowingStateLoss();
 							}
-						}, 200);
+						}
 
 					} else {
 						setCustomerInstruction(customerInfo);
@@ -4034,6 +4068,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
+					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
+							deliveryInfolistFragVisibility =false;
+//							onBackPressed();
+							relativeLayoutContainer.setVisibility(View.GONE);
+							getSupportFragmentManager().beginTransaction()
+									.remove(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()))
+									.commitAllowingStateLoss();
+						}
+					}
+
 					if(isTourFlag) {
 						handleTourView(true, getString(R.string.tutorial_tap_done_finish));
 					}
@@ -4102,6 +4147,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			} finally {
 			}
+
 			try {
 				ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
 				if(customerEnfagementInfos1.size() > 0){
@@ -5380,16 +5426,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
 									if(jObj.has("pickup_data")) {
 										Gson gson = new Gson();
+										DeliveryInfoInRideDetails deliveryInfoInRideDetails1 = new DeliveryInfoInRideDetails();
 										DeliveryInfoInRideDetails.PickupData pickupData = gson.fromJson(jObj.getJSONObject("pickup_data").toString(), DeliveryInfoInRideDetails.PickupData.class);
-										deliveryInfoInRideDetails.setPickupData(pickupData);
+										deliveryInfoInRideDetails1.setPickupData(pickupData);
 										List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryDatumList;
 										deliveryDatumList= gson.fromJson(jObj.getJSONArray("delivery_data").toString(),
 												new TypeToken<List<DeliveryInfoInRideDetails.DeliveryDatum>>(){}.getType());
-										deliveryInfoInRideDetails.setDeliveryData(deliveryDatumList);
-										relativeLayoutContainer.setVisibility(View.VISIBLE);
-										deliveryInfolistFragVisibility =true;
-										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
-												getRelativeLayoutContainer(), deliveryInfoInRideDetails);
+										deliveryInfoInRideDetails1.setDeliveryData(deliveryDatumList);
+//										relativeLayoutContainer.setVisibility(View.VISIBLE);
+
+										customerInfo.setDeliveryInfoInRideDetails(deliveryInfoInRideDetails1);
+//										deliveryInfolistFragVisibility =true;
+//										getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
+//												getRelativeLayoutContainer(), deliveryInfoInRideDetails1);
 									}
 
 									driverScreenMode = DriverScreenMode.D_START_RIDE;
@@ -5491,7 +5540,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								try {
 									if(deliveryInfolistFragVisibility){
 										deliveryInfolistFragVisibility =false;
-										onBackPressed();
+//										onBackPressed();
+										relativeLayoutContainer.setVisibility(View.GONE);
+										getSupportFragmentManager().beginTransaction()
+												.remove(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()))
+												.commitAllowingStateLoss();
 									}
 									if (jObj.has(KEY_OP_DROP_LATITUDE) && jObj.has(KEY_OP_DROP_LONGITUDE)) {
 										dropLatitude = jObj.getDouble(KEY_OP_DROP_LATITUDE);
@@ -7075,10 +7128,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(requestCode == 12){
 				boolean state = data.getBooleanExtra("result", true);
 				if(deliveryInfolistFragVisibility && state){
-					deliveryInfolistFragVisibility =false;
-					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
-						onBackPressed();
-					}
+//					deliveryInfolistFragVisibility =false;
+//					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
+//						onBackPressed();
+//					}
 				}
 			}
 

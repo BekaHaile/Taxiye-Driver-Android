@@ -212,6 +212,8 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
 									performBackPressed(true);
+									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);
+
 									try {
 										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
 												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
