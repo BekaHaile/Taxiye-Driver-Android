@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="275"
-          android:versionName="2.7.5">
+          android:versionCode="276"
+          android:versionName="2.7.6">
 
     <uses-sdk
         android:minSdkVersion="14"

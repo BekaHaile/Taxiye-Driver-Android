@@ -433,20 +433,9 @@
                         android:gravity="center">
 
                         <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                            android:id="@+id/driverCancelRideBtn"
-                            android:layout_width="308px"
-                            android:layout_height="74px"
-                            android:visibility="visible"
-                            android:background="@drawable/new_menu_black_btn_selector_rounded"
-                            android:text="@string/cancel"
-                            android:textColor="@drawable/white_color_selector"
-                            android:textSize="38px"/>
-
-                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverStartRideBtn"
                             android:layout_width="308px"
                             android:layout_height="74px"
-                            android:layout_marginLeft="35px"
                             android:background="@drawable/new_orange_btn_normal_rounded"
                             android:text="@string/start_ride"
                             android:visibility="gone"
@@ -457,10 +446,21 @@
                             android:id="@+id/buttonMarkArrived"
                             android:layout_width="308px"
                             android:layout_height="74px"
-                            android:layout_marginLeft="35px"
                             android:background="@drawable/new_fadded_orange_btn_normal_rounded"
                             android:text="@string/arrivingdot"
                             android:visibility="visible"
+                            android:textColor="@drawable/white_color_selector"
+                            android:textSize="38px"/>
+
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                            android:id="@+id/driverCancelRideBtn"
+                            android:layout_width="308px"
+                            android:layout_height="74px"
+                            android:visibility="visible"
+                            android:layout_marginLeft="35px"
+                            android:background="@drawable/new_menu_black_btn_selector_rounded"
+                            android:text="@string/cancel"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="38px"/>
 

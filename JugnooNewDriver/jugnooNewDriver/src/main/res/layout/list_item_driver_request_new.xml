@@ -335,8 +335,10 @@
                 android:id="@+id/buttonCancelRide"
                 android:layout_width="290px"
                 android:layout_height="69px"
-                android:background="@drawable/menu_black_btn_selector"
                 android:text="@string/cancel"
+                android:layout_marginLeft="30px"
+                android:background="@drawable/menu_black_btn_selector"
+                android:layout_toRightOf="@+id/buttonAcceptRide"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 
@@ -344,9 +346,7 @@
                 android:id="@+id/buttonAcceptRide"
                 android:layout_width="290px"
                 android:layout_height="69px"
-                android:layout_marginLeft="30px"
-                android:layout_toRightOf="@+id/buttonCancelRide"
-                android:background="@drawable/orange_btn_selector"
+                android:background="@drawable/new_orange_btn_corner_selector"
                 android:text="@string/accept"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
