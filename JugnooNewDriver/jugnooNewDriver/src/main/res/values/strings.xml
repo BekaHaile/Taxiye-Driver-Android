@@ -9,7 +9,7 @@
 
 
 	 <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--Live-->
-	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
+	 <!--<string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
 	<!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General&ndash;&gt;-->
 
 
@@ -242,7 +242,7 @@
 
 	<string name="enter_new_phone_no">Enter New Phone Number</string>
 	<string name="enter_fare">ENTER FARE</string>
-	<string name="enter_otp">Enter OTP</string>
+	<string name="enter_otp">ENTER OTP</string>
 	<string name="email">Email:</string>
 
 	<string name="fare1">Fare :</string>
@@ -503,8 +503,8 @@
 	<string name="enter_valid_amount">Please enter valid amount</string>
 	<string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
 	<string name="Ride">Ride</string>
-	<string name="Ride_id">Ride Id</string>
-	<string name="customer_id">Customer Id</string>
+	<string name="Ride_id">Ride ID</string>
+	<string name="customer_id">Customer ID</string>
 	<string name="paytm_transaction">Paytm Transaction</string>
 	<string name="phone_no">Phone No.</string>
 	<string name="changed_no_same_as_previous">Changed phone number is same as the previous one
@@ -517,12 +517,12 @@
 	<string name="customer_2">Customer 2</string>
 	<string name="kms">Kms</string>
 	<string name="mark_delivered">Mark Delivered</string>
-	<string name="order_id">Order Id</string>
+	<string name="order_id">Order ID</string>
 	<string name="thanks_for_feedback">Thank you for your valuable feedback</string>
 	<string name="total_amnt_till_now">Total Amount Till Now</string>
 	<string name="amnt_credited">To Pay In Account</string>
 	<string name="invoice_date">Invoice Date</string>
-	<string name="invoice_id">Invoice Id</string>
+	<string name="invoice_id">Invoice ID</string>
 	<string name="total_distance">TOTAL DISTANCE</string>
 	<string name="valid_email_phone_no">Enter valid Email or Phone No.</string>
 	<string name="select_destination">Please select atleast one Destination</string>
@@ -562,16 +562,16 @@
 	<string name="delivery_is_over">Delivery is Over</string>
 	<string name="orders_delivered">Orders Delivered</string>
 	<string name="orders_returned">Orders Returned</string>
-	<string name="rate_your_vendor">Rate Your Vendor</string>
+	<string name="rate_your_vendor">Rate Your Merchant</string>
 	<string name="view_orders">View Orders</string>
 	<string name="delivery_numbers">No. of Deliveries :</string>
 	<string name="approx">(Approx)</string>
-	<string name="start_the_delivery">Start the delivery</string>
+	<string name="start_the_delivery">Start the Delivery</string>
 	<string name="deliver_order_number">Deliver order no. %s</string>
 	<string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
 	<string name="returned">Returned</string>
 	<string name="start_delivery_text">Are you sure you want to start Delivery?</string>
-	<string name="delivery_id">Delivery Id</string>
+	<string name="delivery_id">Order ID</string>
 	<string name="deliver">Deliver</string>
 	<string name="Return">Return</string>
 	<string name="delivery">Delivery</string>
@@ -580,7 +580,7 @@
 	<string name="delivery_completed">Delivery Completed</string>
 	<string name="delivery_cancelled">Delivery Cancelled</string>
 
-	<string name="miss_call_otp">Give a Missed Call</string>
+	<string name="miss_call_otp">GIVE A MISSED CALL</string>
 	<string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
 		identity
 	</string>
@@ -722,7 +722,7 @@
 	<string name="auto_accept_message">Customer request has been automatically accepted</string>
 	<string name="start_ride_alert">If Customer is with you, than please start ride</string>
 	<string name="Reason">Reason</string>
-	<string name="delivery_conf">Are you sure you want to deliver ?</string>
+	<string name="delivery_conf">Are you sure you want to Deliver ?</string>
 	<string name="failed">Failed</string>
 	<string name="cash_deposite_conf">Have you deposited cash ?</string>
 	<string name="total">Total</string>
@@ -730,7 +730,7 @@
 	<string name="return_to_merchant">Return to the Merchant</string>
 	<string name="deposite_cash">Have you deposited cash?</string>
 	<string name="deposite_cash_1">Deposit cash</string>
-	<string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+	<string name="return_reasons_confirmation">Select a reason for failed Delivery</string>
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
@@ -764,15 +764,57 @@
 	<string name="driver_app">DRIVER APPLICATION</string>
 	<string name="register_as_driver">Register as DRIVER</string>
 	<string name="distance_lower">Distance</string>
-	<string name="please_drop_customer_delivery">End %s\'s delivery</string>
-	<string name="please_start_customer_delivery">Start %s\'s delivery</string>
-	<string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
+	<string name="please_drop_customer_delivery">End %s\'s Delivery</string>
+	<string name="please_start_customer_delivery">Start %s\'s Delivery</string>
+	<string name="please_reach_customer_delivery">Pickup %s\'s Delivery</string>
 	<string name="select_merchant">Select Merchant</string>
-	<string name="estimated_fare">(Estimated Fare)</string>
+	<string name="estimated_fare">Estimated Fare</string>
 	<string name="provide_sign_msg">Please provide signature before submit</string>
 	<string name="pls_type_name">Please type your name before submit</string>
 	<string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
+	<string name="image">image</string>
+	<string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
+	<string name="tutorial_tap_ok">Tap \'OK\'</string>
+	<string name="tutorial_wait_for_customer">Wait for customer...</string>
+	<string name="tutorial_your_location">The blue dot shows your current location</string>
+	<string name="start_training">Start Training</string>
+	<string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\nTap \'Accept\'.</string>
+	<string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
+	<string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
+	<string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
+	<string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
+	<string name="tutorial_tap_done_finish">Tap \'DONE\' to finish</string>
+	<string name="tutorial_tap_arrived_if_at_pickup">Tap \'Arrived\' if you are at the pickup location</string>
+	<string name="tutorial_driver_to_pickup_point">Drive to the pickup point.</string>
 
+	<string name="auto_detect_otp_failed">Automatic detection of OTP Failed.</string>
+	<string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
+	<string name="tutorial_tap_yes">Tap \'YES\'</string>
+	<string name="arriving">Arriving</string>
+	<string name="arrivingdot">Arriving...</string>
+	<string name="upload_later">Upload Later</string>
+	<string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
+	<string name="request_autos">Request for AUTOS will be sent to you now.</string>
+	<string name="later">Later</string>
+	<string name="upload_now">Upload Now</string>
+	<string name="driver_resources">Driver Resources</string>
+	<string name="delivery_conf_new">Are you sure you want to mark this as delivered?</string>
+	<string name="drop_points">Dropoff Points :</string>
+	<string name="more">more</string>
+	<string name="estimated_dis">Estimated Distance</string>
+	<string name="cash_to_collected">Cash to be Collected</string>
+	<string name="return_amount">Returned Amount</string>
+	<string name="cash_required">Cash Required</string>
+	<string name="pick_up">PICK - UP</string>
+	<string name="you_have_arrived">You have Arrived</string>
+	<string name="switchText">Switch</string>
+	<string name="away_cap">Away</string>
+	<string name="pool_only">Pool</string>
+	<string name="pickup_from">Pickup From:</string>
+	<string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+	<string name="delivery_route">Delivery Route</string>
+	<string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
+	<string name="delivery_1">Delivery 1</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

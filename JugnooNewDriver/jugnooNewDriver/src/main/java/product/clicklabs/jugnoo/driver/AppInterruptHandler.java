@@ -41,6 +41,8 @@ public interface AppInterruptHandler {
 
 	void markArrivedInterrupt(LatLng latLng, int engagementId);
 
+	void notifyArrivedButton(boolean under600, int engagementId);
+
 	void driverTimeoutDialogPopup(long timeoutInterwal);
 
 	void fetchHeatMapDataCall(Context context);

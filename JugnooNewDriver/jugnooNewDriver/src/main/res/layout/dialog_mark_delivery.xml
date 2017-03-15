@@ -25,9 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="0px"
-            android:splitMotionEvents="false"
-
-            >
+            android:splitMotionEvents="false">
 
             <TextView
                 android:id="@+id/textViewDeliveryId"
@@ -56,61 +54,77 @@
                 android:maxHeight="800px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:textColor="@color/black_text_v2"
-                android:textSize="52px"/>
-
-            <RelativeLayout
-                android:layout_width="620px"
-                android:layout_height="54px"
-                android:layout_marginTop="32px"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="520px"
-                    android:layout_height="2px"
-                    android:id="@+id/imageViewHorizontal3"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light"/>
-
-                <TextView
-                    android:id="@+id/textViewName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/white"
-                    android:singleLine="true"
-                    android:paddingLeft="10px"
-                    android:paddingRight="10px"
-                    android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
-
-            </RelativeLayout>
+                android:textColor="@color/red_v2"
+                android:textSize="38px"/>
 
             <TextView
-                android:id="@+id/textViewAddress"
-                android:layout_width="452px"
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24px"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8px"
                 android:gravity="center"
-                android:layout_marginTop="28px"
-                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                android:background="@color/white"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:text="@string/NA"
                 android:textColor="@color/black_text_v2"
-                />
+                android:textSize="28px"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1.5px"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:layout_marginTop="28px"
+                android:background="@color/black_varient"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="20px"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="26px"
+                    android:layout_height="48px"
+                    android:src="@drawable/location_delivery_marker"/>
+
+                <ImageView
+                    android:layout_width="1.5px"
+                    android:layout_height="105px"
+                    android:layout_marginLeft="50px"
+                    android:layout_marginRight="22px"
+                    android:src="@color/black_varient"/>
+
+                <TextView
+                    android:id="@+id/textViewAddress"
+                    android:layout_width="442px"
+                    android:layout_height="wrap_content"
+                    android:textSize="24px"
+                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                    android:textColor="@color/black_text_v2"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1.5px"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:background="@color/black_varient"/>
 
             <TextView
                 android:id="@+id/textViewTakeConfMessage"
-                android:layout_width="294px"
+                android:layout_width="429px"
                 android:layout_height="wrap_content"
                 android:textSize="32px"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginTop="32px"
-                android:text="@string/delivery_conf"
+                android:text="@string/delivery_conf_new"
                 android:textColor="@color/black_text_v2"
                 />
 

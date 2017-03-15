@@ -14,8 +14,7 @@
         android:layout_gravity="center"
         android:layout_margin="40px"
         android:background="@drawable/dialog_background_color"
-        android:splitMotionEvents="false"
-        >
+        android:splitMotionEvents="false">
 
 
         <LinearLayout
@@ -24,9 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="0px"
-            android:splitMotionEvents="false"
-
-            >
+            android:splitMotionEvents="false">
 
             <TextView
                 android:id="@+id/textViewDeliveryId"
@@ -55,36 +52,31 @@
                 android:maxHeight="800px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
+                android:textColor="@color/red_v2"
+                android:textSize="38px"/>
+
+            <TextView
+                android:id="@+id/textViewSummaryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8px"
+                android:layout_marginBottom="22px"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingLeft="10px"
+                android:paddingRight="10px"
+                android:text="@string/NA"
                 android:textColor="@color/black_text_v2"
-                android:textSize="52px"/>
+                android:textSize="30px"/>
 
-            <RelativeLayout
+
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="48px"
-                android:layout_marginTop="32px">
-
-                <ImageView
-                    android:layout_width="520px"
-                    android:layout_height="2px"
-                    android:id="@+id/imageViewHorizontal3"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light"/>
-
-                <TextView
-                    android:id="@+id/textViewSummaryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:background="@color/white"
-                    android:paddingLeft="10px"
-                    android:paddingRight="10px"
-                    android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
-
-            </RelativeLayout>
+                android:layout_height="2px"
+                android:background="@color/grey_light"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"/>
 
             <LinearLayout
                 android:id="@+id/linearLayoutRideValues"
@@ -144,7 +136,7 @@
                     <ImageView
                         android:layout_width="2px"
                         android:layout_height="90px"
-                        android:background="@color/bg_grey_opaque"
+                        android:background="@color/grey_light"
                         android:layout_centerVertical="true"
                         />
 
@@ -186,7 +178,7 @@
                     <ImageView
                         android:layout_width="2px"
                         android:layout_height="90px"
-                        android:background="@color/bg_grey_opaque"
+                        android:background="@color/grey_light"
                         android:layout_centerVertical="true"
                         />
 
@@ -261,6 +253,13 @@
                         />
                 </RelativeLayout>
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/grey_light"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"/>
 
             <TextView
                 android:id="@+id/textViewTakeConfMessage"

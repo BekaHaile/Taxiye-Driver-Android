@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:orientation="vertical"
+    android:splitMotionEvents="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false">
+
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="1px"
+            android:splitMotionEvents="false">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutWaiting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="136px">
+
+                    <ImageView
+                        android:layout_width="600px"
+                        android:layout_height="12px"
+                        android:src="@drawable/grey_loading_bar"
+                        android:tag="mwar" />
+
+                    <ImageView
+                        android:id="@+id/imageViewYellowLoadingBar"
+                        android:layout_width="600px"
+                        android:layout_height="12px"
+                        android:src="@drawable/theme_color_loading_bar"
+                        android:tag="mwar" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textViewCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="26px"
+                    android:gravity="center"
+                    android:text="0:30"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="36px" />
+
+                <TextView
+                    android:id="@+id/textViewWaiting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="88px"
+                    android:layout_marginTop="100px"
+                    android:gravity="center"
+                    android:text="@string/auto_detect_otp_wait"
+                    android:textColor="@color/dialog_brown"
+                    android:textSize="30px" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llMissedCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/automaticOtpFailed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="30px"
+                    android:layout_marginTop="50px"
+                    android:gravity="center"
+                    android:text="@string/auto_detect_otp_failed"
+                    android:textColor="@color/grey_dark"
+                    android:textSize="30px" />
+
+
+                <ImageView
+                    android:id="@+id/callView"
+                    android:layout_width="120px"
+                    android:layout_height="120px"
+                    android:tag="mwar"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_missed_call" />
+
+
+                <TextView
+                    android:id="@+id/giveMissedCall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:gravity="center"
+                    android:text="@string/give_misscall_to_verify"
+                    android:textColor="@color/black_earnings_bg"
+                    android:textSize="30px" />
+
+
+                <TextView
+                    android:id="@+id/textViewOr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/or"
+                    android:textAllCaps="false"
+                    android:layout_margin="20px"
+                    android:textSize="32px"/>
+
+                <Button
+                    android:id="@+id/enterOtpButton"
+                    android:layout_width="372px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/enter_otp"
+                    android:textSize="30px"
+                    android:textColor="@color/new_orange"
+                    android:layout_marginBottom="60px"
+                    android:background="@drawable/background_white_rounded_orange_bordered"
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

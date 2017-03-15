@@ -82,19 +82,35 @@ public class JSONParser implements Constants {
 	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
 			JSONObject fareDetails = jObj.getJSONObject("fare_details");
-			return new FareStructure(fareDetails.getDouble("fare_fixed"),
-					fareDetails.getDouble("fare_threshold_distance"),
-					fareDetails.getDouble("fare_per_km"),
-					fareDetails.getDouble("fare_per_min"),
-					fareDetails.getDouble("fare_threshold_time"),
-					fareDetails.getDouble("fare_per_waiting_min"),
-					fareDetails.getDouble("fare_threshold_waiting_time"),
-					fareDetails.getDouble("fare_per_km_threshold_distance"),
-					fareDetails.getDouble("fare_per_km_after_threshold"),
-					fareDetails.getDouble("fare_per_km_before_threshold"));
+			if(fareDetails.has("mandatory_fare_details")){
+				JSONObject mandatoryFareDetails = fareDetails.getJSONObject("mandatory_fare_details");
+				return new FareStructure(fareDetails.getDouble("fare_fixed"),
+						fareDetails.getDouble("fare_threshold_distance"),
+						fareDetails.getDouble("fare_per_km"),
+						fareDetails.getDouble("fare_per_min"),
+						fareDetails.getDouble("fare_threshold_time"),
+						fareDetails.getDouble("fare_per_waiting_min"),
+						fareDetails.getDouble("fare_threshold_waiting_time"),
+						fareDetails.getDouble("fare_per_km_threshold_distance"),
+						fareDetails.getDouble("fare_per_km_after_threshold"),
+						fareDetails.getDouble("fare_per_km_before_threshold"),
+						mandatoryFareDetails.getDouble("mandatory_fare_value"),
+						mandatoryFareDetails.getDouble("mandatory_fare_capping"));
+			} else {
+				return new FareStructure(fareDetails.getDouble("fare_fixed"),
+						fareDetails.getDouble("fare_threshold_distance"),
+						fareDetails.getDouble("fare_per_km"),
+						fareDetails.getDouble("fare_per_min"),
+						fareDetails.getDouble("fare_threshold_time"),
+						fareDetails.getDouble("fare_per_waiting_min"),
+						fareDetails.getDouble("fare_threshold_waiting_time"),
+						fareDetails.getDouble("fare_per_km_threshold_distance"),
+						fareDetails.getDouble("fare_per_km_after_threshold"),
+						fareDetails.getDouble("fare_per_km_before_threshold"),0,0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 0, 0);
 		}
 	}
 
@@ -242,6 +258,10 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
+
+		Prefs.with(context).save(SPLabels.IS_TUTORIAL_SHOWN, userData.optInt("set_driver_tutorial_status", 0));
+		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
+
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
 		Prefs.with(context).save(SPLabels.DIGITAL_SIGNATURE_POPUP_STATUS, userData.optInt("digital_signature_popup_status", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_POPUP_STRING, userData.optString("self_audit_popup_message", ""));
@@ -260,6 +280,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.HIGH_DEMAND_AREA_POPUP, userData.optString("high_demand_area_popup", ""));
 		Prefs.with(context).save(Constants.HIGH_DEMAND_WEB_URL, userData.optString("high_demand_web_url", ""));
 
+		Prefs.with(context).save(Constants.KEY_DRIVER_ARRIVED_DISTANCE, userData.optInt("driver_arrived_distance", 100));
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
@@ -321,7 +342,7 @@ public class JSONParser implements Constants {
 
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
-
+		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
@@ -411,7 +432,7 @@ public class JSONParser implements Constants {
 							int forceEndDelivery =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
-							int totalDeliveries = 0;
+							int totalDeliveries = 0, falseDeliveries = 0, orderId =0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
 								userId = userData.optString(KEY_USER_ID, "0");
@@ -429,6 +450,8 @@ public class JSONParser implements Constants {
 								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 								estimatedDriverFare= userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+								falseDeliveries = userData.optInt("false_deliveries",0);
+								orderId = userData.optInt("order_id",0);
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
@@ -473,7 +496,7 @@ public class JSONParser implements Constants {
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare);
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries, orderId);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -625,7 +648,12 @@ public class JSONParser implements Constants {
 				String userName = jActiveRequest.optString(Constants.KEY_NAME, "");
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+				double estimatedDist = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
 				int isDeliveryPool = 0;
+				ArrayList<String> dropPoints = new ArrayList<>();
+				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
+					dropPoints = parseDropPoints(jActiveRequest);
+				}
 				if(jActiveRequest.optInt(KEY_RIDE_TYPE,0)==4){
 					isDeliveryPool =1;
 				}
@@ -635,7 +663,7 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -748,7 +776,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false);
+						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false, jDelivery.optInt(KEY_FALSE_DELIVERY, 0));
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
@@ -771,7 +799,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size(), false);
+						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size(), false, jDelivery.optInt(KEY_FALSE_DELIVERY, 0));
 				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
 				customerInfo.getDeliveryInfos().add(deliveryInfo);
 			}
@@ -793,6 +821,19 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 		return deliveryReturnOptions;
+	}
+
+	public static ArrayList<String> parseDropPoints (JSONObject jObj){
+		ArrayList<String> dropPoints = new ArrayList<>();
+		try{
+			JSONArray jsonArray = jObj.getJSONArray(KEY_DROP_POINTS);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				dropPoints.add(jsonArray.getString(i));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dropPoints;
 	}
 
 

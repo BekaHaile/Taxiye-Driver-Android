@@ -64,6 +64,9 @@
     <dimen name="button_height">90px</dimen>
     <dimen name="button_width_big_extra">430px</dimen>
     <dimen name="button_width_small">200px</dimen>
+    <dimen name="text_size_10">10dp</dimen>
+    <dimen name="text_size_9">9dp</dimen>
+    <dimen name="text_size_8">6sp</dimen>
 
 
 </resources>

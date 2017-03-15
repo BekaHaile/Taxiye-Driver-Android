@@ -91,7 +91,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 			@Override
 			public void onClick(View v) {
-				performBackPressed();
+				performBackPressed(false);
 			}
 		});
 
@@ -141,23 +141,27 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 				}
 				cancelOptionsListAdapter.notifyDataSetChanged();
 			} else {
-				performBackPressed();
+				performBackPressed(false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			performBackPressed();
+			performBackPressed(false);
 		}
 	}
 
 
-	public void performBackPressed() {
+	public void performBackPressed(boolean result) {
+
+		Intent intent=new Intent();
+		intent.putExtra("result",result);
+		setResult(12,intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
 	@Override
 	public void onBackPressed() {
-		performBackPressed();
+		performBackPressed(false);
 		super.onBackPressed();
 	}
 
@@ -177,7 +181,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 	@Override
 	public void close() {
-		performBackPressed();
+		performBackPressed(false);
 	}
 
 
@@ -207,7 +211,9 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							String message = JSONParser.getServerMessage(jObj);
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
-									performBackPressed();
+									performBackPressed(true);
+									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);
+
 									try {
 										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
 												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
@@ -221,20 +227,20 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId, message);
 									}
 							} else{
-									performBackPressed();
+									performBackPressed(false);
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
 									}
 								}
 							} else{
-								performBackPressed();
+								performBackPressed(false);
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
 								}
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							performBackPressed();
+							performBackPressed(false);
 							if (HomeActivity.appInterruptHandler != null) {
 								HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_error));
 							}
@@ -244,7 +250,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 					@Override
 					public void failure(RetrofitError error) {
 						DialogPopup.dismissLoadingDialog();
-						performBackPressed();
+						performBackPressed(false);
 						if (HomeActivity.appInterruptHandler != null) {
 							HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_not_responding));
 						}

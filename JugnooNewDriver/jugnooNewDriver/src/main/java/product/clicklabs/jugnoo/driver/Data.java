@@ -111,6 +111,7 @@ public class Data {
 	
 	public static final String SERVER_ERROR_MSG = "Connection lost. Please try again later.";
 	public static final String SERVER_NOT_RESOPNDING_MSG = "Connection lost. Please try again later.";
+	public static final String TOUR_FAILED_MSG = "Connection lost. Please try again.";
 	public static final String CHECK_INTERNET_MSG = "Check your internet connection.";
 	public static final String GADDAR_JUGNOO_APP = "com.autoncab.driver";
 	public static final String UBER_APP = "com.ubercab.driver";
