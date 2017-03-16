@@ -829,6 +829,9 @@
 	<string name="delivery_route">Delivery Route</string>
 	<string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
 	<string name="delivery_1">Delivery 1</string>
+	<string name="complainId">Complaint ID :</string>
+	<string name="createdOn">Created On :</string>
+	<string name="registered">Registered</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

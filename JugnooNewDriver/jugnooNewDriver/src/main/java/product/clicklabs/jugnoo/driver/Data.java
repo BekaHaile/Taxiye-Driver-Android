@@ -204,7 +204,7 @@ public class Data {
 	
 	
 	
-	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy, digitalRegular;																// fonts declaration
+	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy, digitalRegular, latoSemiBold;																// fonts declaration
 	
 
 	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
@@ -234,6 +234,13 @@ public class Data {
 			latoHeavy = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato-heavy.ttf");
 		}
 		return latoHeavy;
+	}
+
+	public static Typeface latoSemiBold(Context appContext) {											// accessing fonts functions
+		if (latoSemiBold == null) {
+			latoSemiBold = Typeface.createFromAsset(appContext.getAssets(), "fonts/Lato-Semibold.ttf");
+		}
+		return latoSemiBold;
 	}
 
 	public static Typeface digitalRegular(Context appContext) {											// accessing fonts functions
