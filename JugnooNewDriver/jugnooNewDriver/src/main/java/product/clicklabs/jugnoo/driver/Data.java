@@ -238,7 +238,7 @@ public class Data {
 
 	public static Typeface latoSemiBold(Context appContext) {											// accessing fonts functions
 		if (latoSemiBold == null) {
-			latoSemiBold = Typeface.createFromAsset(appContext.getAssets(), "fonts/Lato-Semibold.ttf");
+			latoSemiBold = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_semibold.ttf");
 		}
 		return latoSemiBold;
 	}

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/background_white"
+              android:orientation="vertical"
+              android:splitMotionEvents="false">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:textColor="@drawable/blue_alpha_color_selector"
+            android:textSize="@dimen/button_text_size"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/NA"
+            android:textColor="@color/white"
+            android:textSize="42px"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="47px"
+        android:orientation="vertical"
+        android:splitMotionEvents="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4px"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewComplainIdText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28px"
+                android:text="@string/complainId"
+                android:textColor="@color/grey_ticket_history"/>
+
+            <TextView
+                android:id="@+id/textViewComplainId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28px"
+                android:textColor="@color/grey_light_ticket_history"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28px"
+                    android:textAllCaps="true"
+                    android:gravity="right"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5px"
+                    android:layout_toLeftOf="@+id/imageViewStatus"
+                    android:textColor="@color/grey_ticket_history"
+                    android:text="@string/registered"/>
+
+                <ImageView
+                    android:id="@+id/imageViewStatus"
+                    android:layout_width="28px"
+                    android:layout_height="28px"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_tick_green_20"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="640px"
+            android:layout_height="2px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12px"
+            android:background="@color/grey_light"
+            android:layout_marginBottom="4px"/>
+
+        <LinearLayout
+            android:id="@+id/etLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15px"
+            android:layout_marginRight="40px"
+            android:layout_marginLeft="40px"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/transparent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutComplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewComplainText"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_ticket_history"
+                    android:layout_width="220px"
+                    android:text="@string/complain"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:text=":"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewComplain"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_width="wrap_content"
+                    android:text="@string/NA"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCreatedOn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCreatedOnText"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_ticket_history"
+                    android:layout_width="220px"
+                    android:text="@string/createdOnNew"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:text=":"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewCreatedOn"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:text="@string/NA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutUpdatedOn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewUpdatedOnText"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_ticket_history"
+                    android:layout_width="220px"
+                    android:text="@string/updated_on"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:text=":"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewUpdatedOn"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:text="@string/NA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutRideType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewRideTypeText"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_ticket_history"
+                    android:layout_width="220px"
+                    android:text="@string/ride_type"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:text=":"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewRideType"
+                    android:textSize="28px"
+                    android:text="@string/NA"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutManualAdj"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewManualAdjText"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_ticket_history"
+                    android:layout_width="220px"
+                    android:text="@string/Manual_adjustment"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:text=":"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewManualAdj"
+                    android:textSize="28px"
+                    android:textColor="@color/grey_light_ticket_history"
+                    android:text="@string/NA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCall1"
+            android:layout_width="408px"
+            android:layout_height="80px"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="64px"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/orange_btn_selector">
+
+            <ImageView
+                android:id="@+id/driverCallIcon"
+                android:layout_width="40px"
+                android:layout_height="40px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/call_icon_selector"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewCall"
+                android:layout_width="130px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="64px"
+                android:text="@string/call_us"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="38px"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewScroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

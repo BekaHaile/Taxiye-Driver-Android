@@ -773,6 +773,11 @@
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
     <string name="registered">Registered</string>
+    <string name="createdOnNew">Created On</string>
+    <string name="updated_on">Updated On</string>
+    <string name="complain">Complain</string>
+    <string name="settled">settled</string>
+    <string name="ended_on">Ended On</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

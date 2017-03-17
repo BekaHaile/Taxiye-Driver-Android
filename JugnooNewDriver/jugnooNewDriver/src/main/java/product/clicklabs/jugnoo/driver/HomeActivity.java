@@ -235,7 +235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
 	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
@@ -589,6 +589,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1273,6 +1275,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
+
+			relativeLayoutSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, DriverTicketHistory.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
 
 			relativeLayoutDocs.setOnClickListener(new OnClickListener() {
 				@Override

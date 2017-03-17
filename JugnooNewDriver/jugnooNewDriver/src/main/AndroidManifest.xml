@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="276"
-          android:versionName="2.7.6">
+          android:versionCode="277"
+          android:versionName="2.7.7">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -258,6 +258,18 @@
 
         <activity
             android:name=".DriverRideHistoryNew"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DriverTicketDetails"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DriverTicketHistory"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>

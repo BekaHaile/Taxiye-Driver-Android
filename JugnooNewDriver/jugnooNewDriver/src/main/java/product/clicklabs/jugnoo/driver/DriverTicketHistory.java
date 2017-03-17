@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -42,10 +44,10 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 	Button backBtn;
 	TextView title;
-	TextView textViewInfoDisplay;
-	ArrayList<TicketResponse.TicketDatum> rideHistoryItems = new ArrayList<>();
+	TextView textViewInfoDisplay, textViewCall;
+	ArrayList<TicketResponse.TicketDatum> ticketHistoryItems = new ArrayList<>();
 	RecyclerView recyclerViewTicketInfo;
-
+	RelativeLayout relativeLayoutCall1;
 	DriverTicketHistoryAdapter driverTicketHistoryAdapter;
 	int totalRides = 0;
 	public ASSL assl;
@@ -95,10 +97,13 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
+		title.setText(getResources().getString(R.string.support));
 
-		title.setText(getResources().getString(R.string.ride_history_cap));
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
+		textViewCall = (TextView) findViewById(R.id.textViewCall);
+		textViewCall.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
 		textViewInfoDisplay.setVisibility(View.GONE);
 		totalRides =0;
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
@@ -115,14 +120,16 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewTicketInfo.setLayoutManager(llm);
 		recyclerViewTicketInfo.setItemAnimator(new DefaultItemAnimator());
+		relativeLayoutCall1 = (RelativeLayout) findViewById(R.id.relativeLayoutCall1);
+		relativeLayoutCall1.setVisibility(View.VISIBLE);
 
-		rideHistoryItems = new ArrayList<>();
-		driverTicketHistoryAdapter = new DriverTicketHistoryAdapter(DriverTicketHistory.this, rideHistoryItems, totalRides, new DriverTicketHistoryAdapter.Callback() {
+		ticketHistoryItems = new ArrayList<>();
+		driverTicketHistoryAdapter = new DriverTicketHistoryAdapter(DriverTicketHistory.this, ticketHistoryItems, totalRides, new DriverTicketHistoryAdapter.Callback() {
 			@Override
-			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras) {
-				Intent intent = new Intent(DriverTicketHistory.this, RideDetailsNewActivity.class);
+			public void onTicketClick(int position, TicketResponse.TicketDatum extras) {
+				Intent intent = new Intent(DriverTicketHistory.this, DriverTicketDetails.class);
 				Gson gson = new Gson();
-				intent.putExtra("extras", gson.toJson(extras, InfoTileResponse.Tile.Extras.class));
+				intent.putExtra("extras", gson.toJson(extras, TicketResponse.TicketDatum.class));
 				DriverTicketHistory.this.startActivity(intent);
 				DriverTicketHistory.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
@@ -132,7 +139,13 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 			}
 		});
 		recyclerViewTicketInfo.setAdapter(driverTicketHistoryAdapter);
-
+		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Utils.openCallIntent(DriverTicketHistory.this, Data.userData.driverSupportNumber);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
 
 		getTicketsAsync(this, true);
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +160,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 	public void updateListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
-			if(rideHistoryItems.size() > 0) {
+			if(ticketHistoryItems.size() > 0) {
 				DialogPopup.alertPopup(DriverTicketHistory.this,"",message);
 			} else {
 				textViewInfoDisplay.setText(message);
@@ -155,8 +168,8 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 				driverTicketHistoryAdapter.notifyDataSetChanged();
 			}
 		} else {
-			if(rideHistoryItems.size() > 0) {
-				driverTicketHistoryAdapter.setList(rideHistoryItems, totalRides);
+			if(ticketHistoryItems.size() > 0) {
+				driverTicketHistoryAdapter.setList(ticketHistoryItems, totalRides);
 			} else {
 				textViewInfoDisplay.setText(getResources().getString(R.string.no_rides_currently));
 				textViewInfoDisplay.setVisibility(View.VISIBLE);
@@ -189,10 +202,10 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
-			params.put("start_from", "" + rideHistoryItems.size());
+			params.put("start_from", "" + ticketHistoryItems.size());
 
 			if(refresh){
-				rideHistoryItems.clear();
+				ticketHistoryItems.clear();
 			}
 
 			RestClient.getApiServices().getDriverTicketsAsync(params, new Callback<TicketResponse>() {
@@ -214,7 +227,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 									} else {
 										totalRides = jObj.optInt("history_size", 10);
-										rideHistoryItems.addAll(ticketResponse.getTicketData());
+										ticketHistoryItems.addAll(ticketResponse.getTicketData());
 
 										updateListData(getResources().getString(R.string.no_rides), false);
 									}

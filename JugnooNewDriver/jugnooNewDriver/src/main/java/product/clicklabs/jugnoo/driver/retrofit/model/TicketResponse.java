@@ -52,7 +52,7 @@ public class TicketResponse {
 		@SerializedName("closing_date")
 		@Expose
 		private String closingDate;
-		@SerializedName("last_updated")
+		@SerializedName("last_updated_on")
 		@Expose
 		private String lastUpdated;
 		@SerializedName("ride_type")
@@ -61,6 +61,9 @@ public class TicketResponse {
 		@SerializedName("issue_type")
 		@Expose
 		private String issueType;
+		@SerializedName("amount")
+		@Expose
+		private Double manualAdjustment;
 
 		public Integer getTicketId() {
 			return ticketId;
@@ -126,6 +129,13 @@ public class TicketResponse {
 			this.issueType = issueType;
 		}
 
+		public Double getManualAdjustment() {
+			return manualAdjustment;
+		}
+
+		public void setManualAdjustment(Double manualAdjustment) {
+			this.manualAdjustment = manualAdjustment;
+		}
 	}
 
 }
