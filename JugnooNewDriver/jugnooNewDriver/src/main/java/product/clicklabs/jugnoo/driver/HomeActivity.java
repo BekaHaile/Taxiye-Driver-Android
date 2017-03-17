@@ -1015,7 +1015,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
-				relativeLayoutTour.setVisibility(View.VISIBLE);
+				relativeLayoutTour.setVisibility(View.GONE);
 			} else {
 				relativeLayoutTour.setVisibility(View.GONE);
 			}
@@ -1290,7 +1290,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
-					startActivity(intent);
+					startActivityForResult(intent, 14);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
@@ -7144,6 +7144,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
 //						onBackPressed();
 //					}
+				}
+			}
+
+			if(requestCode == 14){
+				boolean state = data.getBooleanExtra("result", true);
+				if(state){
+					relativeLayoutTour.performClick();
 				}
 			}
 

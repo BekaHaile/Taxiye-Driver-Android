@@ -380,6 +380,7 @@
                 android:id="@+id/relativeLayoutTour"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:visibility="gone"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
@@ -447,7 +448,7 @@
                     android:layout_height="37px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_driver_resources"
+                    android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
