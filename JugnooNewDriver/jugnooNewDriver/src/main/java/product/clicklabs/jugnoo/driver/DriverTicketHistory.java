@@ -77,20 +77,6 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		setContentView(R.layout.activity_daily_details_new);
 
 
-//		try {
-//			Intent intent = getIntent();
-//
-//			if("".equalsIgnoreCase(intent.getStringExtra("date"))) {
-//				date = intent.getStringExtra("date");
-//			}
-//			if(intent.getIntExtra("invoice_id", 0) != 0) {
-//				invoice_id = intent.getIntExtra("invoice_id", 0);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-
-
 		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DriverTicketHistory.this, linear, 1134, 720, false);
 
@@ -226,7 +212,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 										}
 
 									} else {
-										totalRides = jObj.optInt("history_size", 10);
+										totalRides = jObj.optInt("history_size", 0);
 										ticketHistoryItems.addAll(ticketResponse.getTicketData());
 
 										updateListData(getResources().getString(R.string.no_rides), false);
