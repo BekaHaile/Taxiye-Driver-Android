@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/helpBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/new_help_button"
+            android:layout_alignParentRight="true"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25px"
+            android:text="@string/you_have_arrived"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutMerchantDetails"
+        android:layout_below="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="164px">
+
+        <TextView
+            android:id="@+id/textViewPickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_btn_round_normal"
+            android:textColor="@color/white"
+            android:layout_marginTop="66px"
+            android:paddingTop="2px"
+            android:paddingBottom="2px"
+            android:paddingLeft="10px"
+            android:paddingRight="10px"
+            android:textSize="16px"
+            android:rotation="270"
+            android:text="@string/pick_up"/>
+
+        <RelativeLayout
+            android:layout_width="440px"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewPickup">
+
+            <TextView
+                android:id="@+id/textViewMerchantName"
+                android:text="llllllllllllllllllllllllllllllllllllllllllll"
+                android:textSize="40px"
+                android:layout_marginTop="36px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/textViewCashReq"
+                android:text="llllllllllllllllllllllllllllllllllllllllllll"
+                android:textSize="30px"
+                android:layout_below="@+id/textViewMerchantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCall"
+            android:layout_width="136px"
+            android:layout_height="60px"
+            android:layout_marginRight="25px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:background="@drawable/new_orange_btn_corner_normal">
+
+            <ImageView
+                android:id="@+id/driverCallIcon"
+                android:layout_width="22px"
+                android:layout_height="22px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="22px"
+                android:src="@drawable/call_icon_selector"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewCall"
+                android:layout_width="70px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="62px"
+                android:text="@string/call"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="26px"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/customerInfoLine2"
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:layout_below="@+id/relativeLayoutMerchantDetails"
+        android:background="@drawable/shadow_up_light_60"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewDeliveryInfoInRide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/customerInfoLine2"
+        android:fadeScrollbars="true"
+        android:layout_above="@+id/customerInfoLine4"
+        android:scrollbars="vertical"
+        android:splitMotionEvents="false">
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/customerInfoLine4"
+        android:layout_width="match_parent"
+        android:layout_height="20px"
+        android:layout_above="@+id/linearLayoutbuttons"
+        android:background="@drawable/shadow_up_light_60"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutbuttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="26px"
+        android:gravity="center">
+
+        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+            android:id="@+id/driverCancelRideBtn"
+            android:layout_width="256px"
+            android:layout_height="74px"
+            android:visibility="visible"
+            android:background="@drawable/new_menu_black_btn_selector_rounded"
+            android:text="@string/cancel"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="32px"/>
+
+        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+            android:id="@+id/driverStartRideBtn"
+            android:layout_width="256px"
+            android:layout_height="74px"
+            android:layout_marginLeft="35px"
+            android:background="@drawable/new_orange_btn_normal_rounded"
+            android:text="@string/start_delivery"
+            android:visibility="visible"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="32px"/>
+    </LinearLayout>
+
+</RelativeLayout>

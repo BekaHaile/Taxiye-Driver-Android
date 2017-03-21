@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class DeliveryInfo {
 
-	private int id, index;
+	private int id, index, falseDelivery;
 	private LatLng latLng;
 	private String customerName;
 	private String deliveryAddress;
@@ -24,7 +24,7 @@ public class DeliveryInfo {
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
 						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime,
-						String cancelReason, int index, boolean sate) {
+						String cancelReason, int index, boolean sate, int falseDelivery) {
 		this.id = id;
 		this.latLng = latLng;
 		this.customerName = customerName;
@@ -38,6 +38,7 @@ public class DeliveryInfo {
 		this.cancelReason = cancelReason;
 		this.index = index;
 		this.sate = sate;
+		this.falseDelivery = falseDelivery;
 	}
 
 	public void setReturnData(int totalDelivery, int delSuccess, int delFail){
@@ -193,5 +194,13 @@ public class DeliveryInfo {
 
 	public void setSate(boolean sate) {
 		this.sate = sate;
+	}
+
+	public int getFalseDelivery() {
+		return falseDelivery;
+	}
+
+	public void setFalseDelivery(int falseDelivery) {
+		this.falseDelivery = falseDelivery;
 	}
 }

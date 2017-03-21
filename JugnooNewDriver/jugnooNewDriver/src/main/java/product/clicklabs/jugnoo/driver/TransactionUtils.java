@@ -3,8 +3,11 @@ package product.clicklabs.jugnoo.driver;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
+import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
@@ -12,6 +15,7 @@ import product.clicklabs.jugnoo.driver.fragments.SwitchCustomerFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.NonJugnooAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfEnrollmentCameraFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SubmitAuditFragment;
 
 /**
@@ -107,11 +111,22 @@ public class TransactionUtils {
 		return (activity.getSupportFragmentManager().findFragmentByTag(tag) != null);
 	}
 
+	private SelfEnrollmentCameraFragment getSelfEnrollmentCameraFragment(FragmentActivity activity){
+		return  (SelfEnrollmentCameraFragment) activity.getSupportFragmentManager().findFragmentByTag(SelfEnrollmentCameraFragment.class.getName());
+	}
+
 	public void openSwitchCustomerFragment(FragmentActivity activity, View container) {
 		activity.getSupportFragmentManager().beginTransaction()
 				.replace(container.getId(), new SwitchCustomerFragment(),
 						SwitchCustomerFragment.class.getName())
 				.addToBackStack(SwitchCustomerFragment.class.getName())
+				.commitAllowingStateLoss();
+	}
+
+	public void openDeliveryInfoInRideFragment(FragmentActivity activity, View container, DeliveryInfoInRideDetails deliveryInfoInRideDetails) {
+		activity.getSupportFragmentManager().beginTransaction()
+				.replace(container.getId(), new DeliveryInfosListInRideFragment(deliveryInfoInRideDetails),
+						DeliveryInfosListInRideFragment.class.getName())
 				.commitAllowingStateLoss();
 	}
 
@@ -121,6 +136,30 @@ public class TransactionUtils {
 						AddSignatureFragment.class.getName())
 				.addToBackStack(AddSignatureFragment.class.getName())
 				.commitAllowingStateLoss();
+	}
+
+	public void openSelfEnrollmentCameraFragment1(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
+			activity.getSupportFragmentManager().beginTransaction()
+//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.replace(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
+							SelfEnrollmentCameraFragment.class.getName())
+					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
+					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+					.commitAllowingStateLoss();
+	}
+
+	public void openSelfEnrollmentCameraFragment(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
+		if(getSelfEnrollmentCameraFragment(activity) == null) {
+			activity.getSupportFragmentManager().beginTransaction()
+//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.add(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
+							SelfEnrollmentCameraFragment.class.getName())
+					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+					.commit();
+		}
 	}
 
 }

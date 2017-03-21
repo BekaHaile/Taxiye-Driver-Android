@@ -12,59 +12,42 @@
         android:id="@+id/relativeLayoutCard1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35px"
         android:layout_marginBottom="40px"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="64px">
-
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card1"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:cardBackgroundColor="@android:color/transparent"
-            card_view:cardCornerRadius="3dp"
-            card_view:cardUseCompatPadding="true">
-
+        android:layout_marginTop="36px">
 
             <LinearLayout
                 android:id="@+id/linearLayoutCard1"
-                android:layout_width="604px"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_white_rounded_orange_bordered"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/textViewOrderId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32px">
+                    android:layout_marginLeft="48px"
+                    android:textSize="32px"
+                    android:layout_marginBottom="12px"
+                    android:layout_toRightOf="@+id/imageViewDote"
+                    android:text="@string/NA"/>
 
-                    <ImageView
-                        android:id="@+id/imageViewDote"
-                        android:layout_width="16px"
-                        android:layout_height="16px"
-                        android:layout_marginLeft="12px"
-                        android:src="@drawable/green_dot_icon"
-                        android:layout_centerVertical="true"/>
+                <TextView
+                    android:id="@+id/textViewCustomer1Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="48px"
+                    android:textSize="32px"
+                    android:layout_toRightOf="@+id/imageViewDote"
+                    android:text="@string/NA"/>
 
-                    <TextView
-                        android:id="@+id/textViewCustomer1Name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16px"
-                        android:textSize="32px"
-                        android:layout_toRightOf="@+id/imageViewDote"
-                        android:text="@string/NA"/>
-
-                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/textViewDeliveryName"
                     android:layout_width="525px"
                     android:layout_height="wrap_content"
                     android:textSize="32px"
+                    android:visibility="gone"
                     android:layout_marginLeft="48px"
                     android:layout_marginTop="28px"
                     android:layout_toRightOf="@+id/imageViewDote1"
@@ -82,6 +65,21 @@
                     android:layout_toRightOf="@+id/imageViewDote1"
                     android:text="@string/NA"/>
 
+                <LinearLayout
+                    android:id="@+id/linearLayoutProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10px"
+                    android:layout_marginBottom="22px"
+                    android:layout_marginLeft="40px"
+                    android:layout_marginRight="40px"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                >
+
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/linearLayoutSelection1"
@@ -90,37 +88,49 @@
                     android:orientation="horizontal"
                     android:layout_marginLeft="30px"
                     android:layout_marginRight="30px"
-                    android:layout_marginBottom="32px"
+                    android:layout_marginTop="16px"
+                    android:layout_marginBottom="16px"
                     android:visibility="visible"
                     android:gravity="center">
 
                     <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonSelect"
-                        android:layout_width="236px"
-                        android:layout_height="70px"
-                        android:background="@drawable/new_orange_btn_normal_rounded"
-                        android:text="@string/select"
-                        android:visibility="visible"
-                        android:textColor="@drawable/white_color_selector"
-                        android:textSize="@dimen/button_text_size"/>
-
-
-                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                         android:id="@+id/buttonCancel"
-                        android:layout_width="236px"
+                        android:layout_width="wrap_content"
                         android:layout_height="70px"
-                        android:layout_marginLeft="35px"
+                        android:layout_weight="1"
                         android:visibility="visible"
+                        android:layout_marginLeft="12px"
+                        android:layout_marginRight="12px"
                         android:background="@drawable/new_menu_black_btn_selector_rounded"
                         android:text="@string/cancel"
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="32px"/>
 
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                        android:id="@+id/buttonSelect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="70px"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="12px"
+                        android:layout_marginRight="12px"
+                        android:background="@drawable/new_orange_btn_normal_rounded"
+                        android:text="@string/switchText"
+                        android:visibility="visible"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"/>
+
                 </LinearLayout>
 
-            </LinearLayout>
+                <ImageView
+                    android:id="@+id/bottomLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="@color/grey_light"
+                    android:layout_marginTop="22px"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginRight="30px"/>
 
-        </android.support.v7.widget.CardView>
+            </LinearLayout>
 
     </RelativeLayout>
 
@@ -128,8 +138,10 @@
     <ImageView
         android:id="@+id/imageViewVerticalLine"
         android:layout_width="3px"
-        android:layout_height="124px"
-        android:background="@color/black_varient"
+        android:layout_height="38px"
+        android:layout_marginLeft="10px"
+        android:layout_marginBottom="5px"
+        android:background="@color/grey_light"
         android:visibility="visible"
         />
 
@@ -137,24 +149,26 @@
         android:id="@+id/imageViewVerticalLine1"
         android:layout_width="3px"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10px"
         android:layout_alignTop="@+id/imageViewHorizontalLineNew"
+        android:layout_marginTop="30px"
         android:layout_above="@+id/imageViewFakeBottom"
-        android:background="@color/black_varient"
+        android:background="@color/grey_light"
         />
 
     <!--android:layout_alignBottom="@+id/imageViewHorizontalLineNew"-->
 
     <ImageView
         android:id="@+id/imageViewHorizontalLineNew"
-        android:layout_width="53px"
-        android:layout_height="3px"
-        android:layout_marginTop="121px"
-        android:background="@color/black_varient"/>
+        android:layout_width="22px"
+        android:layout_height="22px"
+        android:layout_marginTop="44px"
+        android:background="@drawable/circle_orange"/>
 
     <ImageView
         android:id="@+id/imageViewFakeBottom"
         android:layout_below="@+id/relativeLayoutCard1"
-        android:background="@color/black_varient"
+        android:background="@color/grey_light"
         android:layout_width="2px"
         android:layout_height="1px"/>
 

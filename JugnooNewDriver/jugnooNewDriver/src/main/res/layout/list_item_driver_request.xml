@@ -7,7 +7,7 @@
     android:background="@color/transparent"
     android:orientation="vertical"
     android:padding="30px"
-    android:splitMotionEvents="false">
+    android:splitMotionEvents="false" xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,6 +71,18 @@
                     android:textColor="@color/text_color_light"
                     android:textSize="@dimen/text_size_30"
                     />
+
+                <com.github.lzyzsd.circleprogress.DonutProgress
+                    android:id="@+id/donut_progress"
+                    android:layout_width="105px"
+                    android:layout_height="105px"
+                    custom:donut_progress="30"
+                    custom:donut_finished_color="#0066FF"
+                    custom:donut_finished_stroke_width="5px"
+                    android:backgroundTint="#0066FF"
+                    android:backgroundTintMode="add"
+                    custom:donut_show_text="false"
+                    custom:donut_unfinished_stroke_width="5px"/>
 
             </LinearLayout>
 

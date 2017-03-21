@@ -112,6 +112,7 @@ public interface Constants {
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
     String KEY_CANCEL_REASON = "cancel_reason";
+	String KEY_FALSE_DELIVERY = "false_delivery";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
 	String KEY_IS_DELIVERY_POOL = "is_delivery_pool";
@@ -136,6 +137,7 @@ public interface Constants {
     String KEY_DELIVERY_FLAG = "delivery_flag";
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
+	String KEY_ESTIMATED_DISTANCE = "estimated_distance";
     String KEY_VENDOR_MESSAGE = "vendor_message";
     String KEY_END_DELIVERY_FORCED = "end_delivery_forced";
     String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
@@ -145,6 +147,7 @@ public interface Constants {
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
     String KEY_RING_COUNT = "ring_count";
 	String KEY_RIDE_TYPE = "ride_type";
+	String KEY_DROP_POINTS = "drop_points";
 
 	String HIGH_DEMAND_WEB_URL = "high_demand_web_url";
 
@@ -218,6 +221,8 @@ public interface Constants {
 	String START_RIDE_ALARM_SERVICE_STATUS = "start_ride_alarm_service_status";
 
     String KEY_CHAT_COUNT = "chat_count";
+	String KEY_DRIVER_ARRIVED_DISTANCE = "driver_arrived_distance";
+	String KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE = "driver_show_arrive_ui_distance";
 
 }
 

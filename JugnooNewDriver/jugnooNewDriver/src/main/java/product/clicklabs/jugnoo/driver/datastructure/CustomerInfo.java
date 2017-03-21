@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -45,22 +46,23 @@ public class CustomerInfo {
 	private int isPooled;
 
 	private int isDelivery;
-	private int isDeliveryPool;
+	private int isDeliveryPool, falseDeliveries;
 	private ArrayList<DeliveryInfo> deliveryInfos;
-	private int totalDeliveries;
-	private double estimatedFare, dryDistance;
+	private ArrayList<String> deliveryAddress;
+	private int totalDeliveries, orderId;
+	private double estimatedFare, dryDistance, estimatedDist;
 	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
 	private PoolFare poolFare;
-
+	private DeliveryInfoInRideDetails deliveryInfoInRideDetails;
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare, int falseDeliveries, int orderId){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -99,6 +101,8 @@ public class CustomerInfo {
 		this.cashOnDelivery = cashOnDelivery;
 		this.forceEndDelivery = forceEndDelivery;
 		this.estimatedDriverFare = estimatedDriverFare;
+		this.falseDeliveries = falseDeliveries;
+		this.orderId = orderId;
 	}
 
 
@@ -109,7 +113,7 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
-						LatLng currentLatLng, String estimatedDriverFare){
+						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -128,6 +132,8 @@ public class CustomerInfo {
 		this.dryDistance =dryDistance;
 		this.cashOnDelivery = cashOnDelivery;
 		this.estimatedDriverFare = estimatedDriverFare;
+		this.deliveryAddress = deliveryAddress;
+		this.estimatedDist = estimatedDist;
 	}
 
 	public double getDryDistance() {
@@ -524,5 +530,43 @@ public class CustomerInfo {
 		this.poolFare = poolFare;
 	}
 
+	public ArrayList<String> getDeliveryAddress() {
+		return deliveryAddress;
+	}
 
+	public void setDeliveryAddress(ArrayList<String> deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public double getEstimatedDist() {
+		return estimatedDist;
+	}
+
+	public void setEstimatedDist(double estimatedDist) {
+		this.estimatedDist = estimatedDist;
+	}
+
+	public int getFalseDeliveries() {
+		return falseDeliveries;
+	}
+
+	public void setFalseDeliveries(int falseDeliveries) {
+		this.falseDeliveries = falseDeliveries;
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public DeliveryInfoInRideDetails getDeliveryInfoInRideDetails() {
+		return deliveryInfoInRideDetails;
+	}
+
+	public void setDeliveryInfoInRideDetails(DeliveryInfoInRideDetails deliveryInfoInRideDetails) {
+		this.deliveryInfoInRideDetails = deliveryInfoInRideDetails;
+	}
 }

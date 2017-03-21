@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:splitMotionEvents="false"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <!-- customer info layout -->
     <RelativeLayout
@@ -49,7 +49,7 @@
                     android:visibility="visible"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:text="@string/change"/>
+                    android:text="@string/pool_only"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewDeliveryCount"
@@ -64,33 +64,6 @@
                     android:visibility="gone"
                     />
 
-                <RelativeLayout
-                    android:id="@+id/relativeLayoutCall1"
-                    android:layout_width="240px"
-                    android:layout_height="56px"
-                    android:layout_marginRight="28px"
-                    android:layout_centerVertical="true"
-                    android:visibility="visible">
-
-                    <ImageView
-                        android:id="@+id/driverCallIcon1"
-                        android:layout_width="24px"
-                        android:layout_height="24px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15px"
-                        android:src="@drawable/call_icon"/>
-
-                    <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
-                        <!--android:id="@+id/textViewCall1"-->
-                        <!--android:layout_width="110px"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_marginLeft="65px"-->
-                        <!--android:text="@string/call"-->
-                        <!--android:textColor="@color/jet_black"-->
-                        <!--android:textSize="28px"/>-->
-                </RelativeLayout>
-
             </RelativeLayout>
 
 
@@ -100,14 +73,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@color/white_translucent">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewCustomersLinked"
                     android:layout_width="720px"
                     android:layout_height="80px"
-                    >
+                    android:visibility="gone">
                 </android.support.v7.widget.RecyclerView>
 
                 <include layout="@layout/layout_customer_info"/>
@@ -121,7 +94,7 @@
                 android:background="@color/white_translucent"
                 android:orientation="vertical"
                 android:splitMotionEvents="false"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -247,12 +220,11 @@
 
     <Button
         android:id="@+id/btnHelp"
-        android:layout_width="108px"
-        android:layout_height="108px"
+        android:layout_width="110px"
+        android:layout_height="110px"
         android:layout_below="@+id/inRideCustomerInfoRl"
-        android:layout_marginTop="8px"
-        android:layout_marginLeft="18px"
-        android:background="@drawable/help_in_ride_icon"/>
+        android:layout_marginLeft="8px"
+        android:background="@drawable/new_help_button"/>
 
 
     <LinearLayout
@@ -262,8 +234,7 @@
         android:background="@drawable/transparent"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
 
 
@@ -325,29 +296,33 @@
 
 
 
+            <LinearLayout
+                android:id="@+id/linearLayoutDeliveryItem"
+                android:layout_width="720px"
+                android:layout_height="375px"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/customerInfoLine4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40px"
+                    android:layout_below="@+id/inRideCustomerInfoRl"
+                    android:background="@drawable/shadow_up_light"/>
                 <LinearLayout
-                    android:id="@+id/linearLayoutDeliveryItem"
                     android:layout_width="720px"
-                    android:layout_height="330px"
-                    android:background="@color/grey_light_delivery_tab_fill"
+                    android:layout_height="335px"
+                    android:background="@color/white"
                     android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/customerInfoLine4"
-                        android:layout_width="match_parent"
-                        android:layout_height="6px"
-                        android:layout_below="@+id/inRideCustomerInfoRl"
-                        android:background="@drawable/shadow_up_light"/>
 
                     <RelativeLayout
                         android:id="@+id/linearLayoutDeliveryItemHeader"
                         android:layout_width="match_parent"
-                        android:layout_height="72px"
+                        android:layout_height="95px"
                         android:background="@color/white">
 
                         <TextView
                             android:id="@+id/textViewCustomerName"
-                            android:layout_width="490px"
+                            android:layout_width="430px"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30px"
                             android:layout_centerVertical="true"
@@ -356,53 +331,13 @@
                             android:visibility="visible"
                             android:textColor="@color/black_text_v2"/>
 
-                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                            android:id="@+id/textViewShowDistance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="28px"
-                            android:layout_centerVertical="true"
-                            android:text="@string/NA"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_28"
-                            android:layout_alignParentRight="true"
-                            android:visibility="visible"
-                            />
-
-
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="142px"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="12px">
-
-                        <LinearLayout
-                            android:id="@+id/linearLayoutContent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/textViewCustomerPickupAddress"
-                                android:layout_width="398px"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="30px"
-                                android:maxLines="4"
-                                android:textSize="30px"
-                                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                                android:textColor="@color/black_text_v2"
-                                />
-
-                        </LinearLayout>
-
                         <RelativeLayout
                             android:id="@+id/relativeLayoutCall"
                             android:layout_width="226px"
                             android:layout_height="74px"
-                            android:layout_marginLeft="25px"
-                            android:layout_marginTop="15px"
+                            android:layout_marginRight="25px"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
                             android:visibility="visible"
                             android:background="@drawable/new_orange_btn_corner_normal">
 
@@ -425,6 +360,66 @@
                                 android:textSize="38px"/>
                         </RelativeLayout>
 
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/grey_light"
+                        android:layout_marginLeft="30px"
+                        android:layout_marginRight="30px"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="142px"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12px">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayoutContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textViewCustomerPickupAddress"
+                                android:layout_width="448px"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="30px"
+                                android:maxLines="2"
+                                android:textSize="30px"
+                                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                                android:textColor="@color/black_text_v2"
+                            />
+
+                            <TextView
+                                android:id="@+id/textViewCustomerCashRequired"
+                                android:layout_width="428px"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                android:layout_marginLeft="30px"
+                                android:layout_marginTop="10px"
+                                android:layout_marginBottom="10px"
+                                android:textSize="30px"
+                                android:text="lllllllllllllll"
+                                android:textColor="@color/black_text_v2"
+                            />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textViewShowDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="100px"
+                            android:layout_marginRight="25px"
+                            android:gravity="right"
+                            android:text="@string/NA"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_28"
+                            android:visibility="visible"
+                        />
 
                     </LinearLayout>
 
@@ -433,7 +428,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginLeft="30px"
-                        android:layout_marginRight="30px"
+                        android:layout_marginRight="25px"
                         android:layout_marginBottom="12px"
                         android:gravity="center">
 
@@ -451,8 +446,8 @@
                             android:id="@+id/buttonMarkArrived"
                             android:layout_width="308px"
                             android:layout_height="74px"
-                            android:background="@drawable/new_orange_btn_normal_rounded"
-                            android:text="@string/arrived"
+                            android:background="@drawable/new_fadded_orange_btn_normal_rounded"
+                            android:text="@string/arrivingdot"
                             android:visibility="visible"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="38px"/>
@@ -462,16 +457,19 @@
                             android:id="@+id/driverCancelRideBtn"
                             android:layout_width="308px"
                             android:layout_height="74px"
-                            android:layout_marginLeft="35px"
                             android:visibility="visible"
+                            android:layout_marginLeft="35px"
                             android:background="@drawable/new_menu_black_btn_selector_rounded"
                             android:text="@string/cancel"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="38px"/>
 
+
                     </LinearLayout>
 
                 </LinearLayout>
+
+            </LinearLayout>
 
 
         </RelativeLayout>
@@ -493,6 +491,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/transparent"
+                android:layout_gravity="bottom"
                 android:layout_alignParentBottom="true"/>
 
             <ImageView
@@ -514,7 +513,7 @@
                 android:background="@drawable/grey_light_delivery_tab_fill_rounded_corner"
                 android:orientation="vertical"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <ImageView
@@ -816,12 +815,10 @@
 
     <Button
         android:id="@+id/driverEngagedMyLocationBtn"
-        android:layout_width="80px"
-        android:layout_height="80px"
+        android:layout_width="110px"
+        android:layout_height="110px"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="18px"
         android:layout_below="@+id/inRideCustomerInfoRl"
-        android:layout_marginTop="18px"
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"
         />
@@ -842,31 +839,28 @@
     <Button
         android:id="@+id/buttonDriverNavigation"
         android:layout_width="120px"
-        android:layout_height="110px"
+        android:layout_height="120px"
         android:layout_above="@+id/linearLayoutStartEnd"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="20px"
-        android:layout_marginRight="38px"
         android:background="@drawable/new_navigate_button_selector"
         android:tag="mwar"
         android:textColor="@color/white"
-        android:textSize="28px"
         android:visibility="visible"
         />
 
 
     <RelativeLayout
         android:id="@+id/rlChatDriver"
-        android:layout_width="149px"
-        android:layout_height="149px"
+        android:layout_width="129px"
+        android:layout_height="129px"
         android:layout_marginLeft="12px"
         android:layout_above="@+id/linearLayoutStartEnd"
         android:visibility="visible">
 
         <Button
             android:id="@+id/btnChatHead"
-            android:layout_width="144px"
-            android:layout_height="144px"
+            android:layout_width="124px"
+            android:layout_height="124px"
             android:background="@drawable/chat_icon_eng"/>
 
         <TextView
@@ -874,18 +868,15 @@
             android:layout_width="35px"
             android:layout_height="35px"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16px"
-            android:layout_marginTop="16px"
+            android:layout_marginRight="10px"
+            android:layout_marginTop="10px"
             android:text="3"
             android:textColor="@color/theme_color"
             android:textSize="@dimen/text_size_24"
             android:gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             android:background="@drawable/circle_white_stroke_theme"/>
 
     </RelativeLayout>
-
-
-
 
 </RelativeLayout>
