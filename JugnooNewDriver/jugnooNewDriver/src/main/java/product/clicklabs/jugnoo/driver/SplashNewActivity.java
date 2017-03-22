@@ -801,9 +801,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			noNetFirstTime = true;
 			getDeviceToken();
-			changeUIState(State.LOGIN);
 			if(getIntent().hasExtra("number")){
+				changeUIState(State.LOGIN);
 				phoneNoOPTEt.setText(getIntent().getStringExtra("number"));
+			} else {
+				changeUIState(State.SPLASH_LS);
 			}
 		}
 		else{

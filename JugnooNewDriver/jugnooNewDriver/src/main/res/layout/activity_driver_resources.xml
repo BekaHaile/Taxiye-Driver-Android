@@ -121,6 +121,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="700px"
             android:layout_height="2px"
             android:layout_below="@+id/linearLayoutResources"

@@ -134,7 +134,7 @@
                     android:textSize="28px"
                     android:textColor="@color/grey_ticket_history"
                     android:layout_width="220px"
-                    android:text="@string/complain"
+                    android:text="@string/complaint"
                     android:layout_height="wrap_content"/>
 
                 <TextView
@@ -168,7 +168,7 @@
                     android:textSize="28px"
                     android:textColor="@color/grey_ticket_history"
                     android:layout_width="220px"
-                    android:text="@string/createdOnNew"
+                    android:text="@string/raisedOn"
                     android:layout_height="wrap_content"/>
 
                 <TextView

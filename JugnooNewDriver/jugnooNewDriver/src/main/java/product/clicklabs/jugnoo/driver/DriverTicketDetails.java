@@ -213,7 +213,7 @@ public class DriverTicketDetails extends BaseActivity {
 				} else if(!extras.getClosingDate().equalsIgnoreCase("")){
 					linearLayoutUpdatedOn.setVisibility(View.VISIBLE);
 					textViewUpdatedOn.setText(extras.getClosingDate());
-					textViewUpdatedOnText.setText(getResources().getString(R.string.ended_on));
+					textViewUpdatedOnText.setText(getResources().getString(R.string.closed_on));
 				} else {
 					linearLayoutUpdatedOn.setVisibility(View.GONE);
 				}
