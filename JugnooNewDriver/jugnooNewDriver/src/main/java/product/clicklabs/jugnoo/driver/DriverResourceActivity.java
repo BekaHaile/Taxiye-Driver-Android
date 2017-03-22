@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,8 +24,9 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 	RelativeLayout relative;
 	String accessToken;
 	Button backBtn;
-	TextView title, textViewResource, textViewTraining;
-	LinearLayout linearLayoutResources, linearLayoutTraining;
+	TextView title, textViewResource, textViewTraining, textViewSupport;
+	LinearLayout linearLayoutResources, linearLayoutTraining, linearLayoutSupport;
+	ImageView imageView2, imageView3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,13 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		textViewTraining.setTypeface(Data.latoRegular(getApplicationContext()));
 		linearLayoutResources = (LinearLayout) findViewById(R.id.linearLayoutResources);
 		linearLayoutTraining = (LinearLayout) findViewById(R.id.linearLayoutTraining);
+		textViewSupport = (TextView) findViewById(R.id.textViewSupport) ;
+		textViewSupport.setTypeface(Data.latoRegular(getApplicationContext()));
+		linearLayoutSupport = (LinearLayout) findViewById(R.id.linearLayoutSupport);
 		backBtn = (Button) findViewById(R.id.backBtn);
+
+		imageView2 = (ImageView) findViewById(R.id.imageView2);
+		imageView3 = (ImageView) findViewById(R.id.imageView3);
 
 		linearLayoutResources.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -63,10 +71,29 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 			}
 		});
 
+		linearLayoutSupport.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(DriverResourceActivity.this, DriverTicketHistory.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+
 		if(Prefs.with(DriverResourceActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
 			linearLayoutTraining.setVisibility(View.VISIBLE);
+			imageView2.setVisibility(View.VISIBLE);
 		} else {
 			linearLayoutTraining.setVisibility(View.GONE);
+			imageView2.setVisibility(View.GONE);
+		}
+
+		if(Prefs.with(DriverResourceActivity.this).getInt(SPLabels.SHOW_SUPPORT_IN_RESOURCES, 0) == 1){
+			linearLayoutSupport.setVisibility(View.VISIBLE);
+			imageView3.setVisibility(View.VISIBLE);
+		} else {
+			linearLayoutSupport.setVisibility(View.GONE);
+			imageView3.setVisibility(View.GONE);
 		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {

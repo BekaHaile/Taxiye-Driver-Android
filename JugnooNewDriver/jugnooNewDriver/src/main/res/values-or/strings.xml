@@ -776,6 +776,10 @@
     <string name="complain">Complain</string>
     <string name="settled">settled</string>
     <string name="ended_on">Ended On</string>
+    <string name="no_tickets">No complaints yet</string>
+    <string name="closed_on">Closed On</string>
+    <string name="complaint">Complaint</string>
+    <string name="raisedOn">Raised On</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -121,7 +123,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl, selectLanguageLl;
-	ImageView jugnooTextImg, jugnooTextImg2;
+	ImageView jugnooTextImg, jugnooTextImg2, viewInitLogoMargin;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
 	boolean secondtime = false, refreshApp = false;
@@ -232,6 +234,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
+		viewInitLogoMargin = (ImageView) findViewById(R.id.viewInitLogoMargin);
+
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
@@ -357,6 +361,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, HelpActivity.class));
+				overridePendingTransition(R.anim.left_in, R.anim.left_out);
 			}
 		});
 
@@ -515,6 +520,33 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				return true;
 			}
 		});
+
+//		relative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//			@Override
+//			public void onGlobalLayout() {
+//
+//				Rect r = new Rect();
+//				relative.getWindowVisibleDisplayFrame(r);
+//				int screenHeight = relative.getRootView().getHeight();
+//
+//				// r.bottom is the position above soft keypad or device button.
+//				// if keypad is shown, the r.bottom is smaller than that before.
+//				int keypadHeight = screenHeight - r.bottom;
+//
+//				Log.d(TAG, "keypadHeight = " + keypadHeight);
+//
+//				if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+//					if(loginState){
+//						viewInitLogoMargin.setVisibility(View.GONE);
+//					} else {
+//						viewInitLogoMargin.setVisibility(View.VISIBLE);
+//					}
+//				}
+//				else {
+//					viewInitLogoMargin.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		});
 
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -783,8 +815,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			imageViewJugnooLogo.startAnimation(animation);
 		}
 
-
-
+		try {
+			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+			if (!"".equalsIgnoreCase(accPair.first)){
+				refreshApp = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 		relative.setOnClickListener(new View.OnClickListener() {
@@ -979,7 +1017,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
 									DialogPopup.alertPopup(activity, "", message);
 								} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
-									DialogPopup.alertPopup(activity, "", message);
+									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											changeUIState(State.LOGIN);
+										}
+									});
 								} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
 									RegisterScreenResponse data = registerScreenResponse;
 									SplashNewActivity.this.name = name;
@@ -2541,6 +2584,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 	}
 
+	boolean loginState = false;
 	private void changeUIState(State state) {
 		imageViewJugnooLogo.requestFocus();
 		relativeLayoutScrollStop.setVisibility(View.VISIBLE);
@@ -2600,7 +2644,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.GONE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-
+				loginState =true;
 				relativeLayoutLS.setVisibility(View.GONE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);

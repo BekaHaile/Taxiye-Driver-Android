@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -75,20 +76,6 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_daily_details_new);
-
-
-//		try {
-//			Intent intent = getIntent();
-//
-//			if("".equalsIgnoreCase(intent.getStringExtra("date"))) {
-//				date = intent.getStringExtra("date");
-//			}
-//			if(intent.getIntExtra("invoice_id", 0) != 0) {
-//				invoice_id = intent.getIntExtra("invoice_id", 0);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 
 
 		linear = (RelativeLayout) findViewById(R.id.linear);
@@ -171,7 +158,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 			if(ticketHistoryItems.size() > 0) {
 				driverTicketHistoryAdapter.setList(ticketHistoryItems, totalRides);
 			} else {
-				textViewInfoDisplay.setText(getResources().getString(R.string.no_rides_currently));
+				textViewInfoDisplay.setText(getResources().getString(R.string.no_tickets));
 				textViewInfoDisplay.setVisibility(View.VISIBLE);
 				driverTicketHistoryAdapter.notifyDataSetChanged();
 			}
@@ -199,6 +186,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 	private void getTicketsAsync(final Activity activity, boolean refresh) {
 		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
@@ -226,10 +214,10 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 										}
 
 									} else {
-										totalRides = jObj.optInt("history_size", 10);
+										totalRides = jObj.optInt("history_size", 0);
 										ticketHistoryItems.addAll(ticketResponse.getTicketData());
 
-										updateListData(getResources().getString(R.string.no_rides), false);
+										updateListData(getResources().getString(R.string.no_tickets), false);
 									}
 								}
 							} catch (Exception e) {
@@ -256,9 +244,19 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 							}
 						}
 					});
+			} else {
+				DialogPopup.alertPopup(DriverTicketHistory.this, "", Data.CHECK_INTERNET_MSG);
+				updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 }
+
+
+
+
+
+
