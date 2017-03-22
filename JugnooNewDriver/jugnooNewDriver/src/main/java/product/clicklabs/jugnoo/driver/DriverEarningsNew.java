@@ -249,7 +249,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(0).getEarnings() >0) {
+				if(res.getEarnings().get(0).getEarnings() != 0) {
 					arrow1.setVisibility(View.VISIBLE);
 					getDailyDetails(res.getEarnings().get(0).getDate());
 				}
@@ -260,7 +260,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(1).getEarnings() >0) {
+				if(res.getEarnings().get(1).getEarnings() != 0) {
 					arrow2.setVisibility(View.VISIBLE);
 					getDailyDetails(res.getEarnings().get(1).getDate());
 				}
@@ -271,7 +271,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(2).getEarnings() >0) {
+				if(res.getEarnings().get(2).getEarnings() != 0) {
 					arrow3.setVisibility(View.VISIBLE);
 					getDailyDetails(res.getEarnings().get(2).getDate());
 				}
@@ -283,7 +283,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(3).getEarnings() >0) {
+				if(res.getEarnings().get(3).getEarnings() != 0) {
 					arrow4.setVisibility(View.VISIBLE);
 					getDailyDetails(res.getEarnings().get(3).getDate());
 				}
@@ -294,7 +294,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout5.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(4).getEarnings() >0) {
+				if(res.getEarnings().get(4).getEarnings() != 0) {
 					arrow5.setVisibility(View.VISIBLE);
 					getDailyDetails(res.getEarnings().get(4).getDate());
 				}
@@ -430,7 +430,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
 				entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings(), j++));
 				labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
-				if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() > 0){
+				if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
 					graphVisibility =true;
 				}
 			}

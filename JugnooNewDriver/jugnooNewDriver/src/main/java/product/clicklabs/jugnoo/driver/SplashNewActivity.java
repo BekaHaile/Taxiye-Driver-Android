@@ -815,8 +815,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			imageViewJugnooLogo.startAnimation(animation);
 		}
 
-
-
+		try {
+			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+			if (!"".equalsIgnoreCase(accPair.first)){
+				refreshApp = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 		relative.setOnClickListener(new View.OnClickListener() {
