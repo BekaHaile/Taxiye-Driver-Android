@@ -521,32 +521,32 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		relative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-			@Override
-			public void onGlobalLayout() {
-
-				Rect r = new Rect();
-				relative.getWindowVisibleDisplayFrame(r);
-				int screenHeight = relative.getRootView().getHeight();
-
-				// r.bottom is the position above soft keypad or device button.
-				// if keypad is shown, the r.bottom is smaller than that before.
-				int keypadHeight = screenHeight - r.bottom;
-
-				Log.d(TAG, "keypadHeight = " + keypadHeight);
-
-				if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-					if(loginState){
-						viewInitLogoMargin.setVisibility(View.GONE);
-					} else {
-						viewInitLogoMargin.setVisibility(View.VISIBLE);
-					}
-				}
-				else {
-					viewInitLogoMargin.setVisibility(View.VISIBLE);
-				}
-			}
-		});
+//		relative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//			@Override
+//			public void onGlobalLayout() {
+//
+//				Rect r = new Rect();
+//				relative.getWindowVisibleDisplayFrame(r);
+//				int screenHeight = relative.getRootView().getHeight();
+//
+//				// r.bottom is the position above soft keypad or device button.
+//				// if keypad is shown, the r.bottom is smaller than that before.
+//				int keypadHeight = screenHeight - r.bottom;
+//
+//				Log.d(TAG, "keypadHeight = " + keypadHeight);
+//
+//				if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+//					if(loginState){
+//						viewInitLogoMargin.setVisibility(View.GONE);
+//					} else {
+//						viewInitLogoMargin.setVisibility(View.VISIBLE);
+//					}
+//				}
+//				else {
+//					viewInitLogoMargin.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		});
 
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -801,11 +801,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			noNetFirstTime = true;
 			getDeviceToken();
+			changeUIState(State.LOGIN);
 			if(getIntent().hasExtra("number")){
-				changeUIState(State.LOGIN);
 				phoneNoOPTEt.setText(getIntent().getStringExtra("number"));
-			} else {
-				changeUIState(State.SPLASH_LS);
 			}
 		}
 		else{

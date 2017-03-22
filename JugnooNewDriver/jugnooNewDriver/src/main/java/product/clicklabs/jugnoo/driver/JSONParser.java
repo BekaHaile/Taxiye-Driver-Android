@@ -260,8 +260,13 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
 
 		Prefs.with(context).save(SPLabels.IS_TUTORIAL_SHOWN, userData.optInt("set_driver_tutorial_status", 0));
-		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
+		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
+		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_MENU, userData.optInt("show_support_in_menu", 0));
+		Prefs.with(context).save(SPLabels.SHOW_CALL_US_MENU, userData.optInt("show_call_us_menu", 0));
 
+
+
+		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
 		Prefs.with(context).save(SPLabels.DIGITAL_SIGNATURE_POPUP_STATUS, userData.optInt("digital_signature_popup_status", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_POPUP_STRING, userData.optString("self_audit_popup_message", ""));
