@@ -8707,39 +8707,43 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setDeliveryPos(int index) {
-		CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-		deliveryListHorizontal.setCurrentItem(index);
-		int prev = Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, -1);
-		if (prev > -1 && markersDelivery.size() > 0) {
-			DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(prev);
-			Marker oldMarker = markersDelivery.get(prev);
-			if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
-				oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 1)));
-			} else {
-				oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 3)));
+		try {
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			deliveryListHorizontal.setCurrentItem(index);
+			int prev = Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, -1);
+			if (prev > -1 && markersDelivery.size() > 0) {
+				DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(prev);
+				Marker oldMarker = markersDelivery.get(prev);
+				if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+					oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+							.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 1)));
+				} else {
+					oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+							.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 3)));
+				}
 			}
-		}
 
-		DeliveryInfo newDeliveryInfo = customerInfo.getDeliveryInfos().get(index);
-		if (newDeliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && markersDelivery.size() > 0) {
-			Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
-			Marker marker = markersDelivery.get(index);
-			marker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.getTextBitmap(this, assl, String.valueOf(index + 1), 18, 2)));
-		} else {
-			Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
-		}
-		deliveryInfoTabs.notifyDatasetchange(false);
-		if(polylineDelivery != null){
-			polylineDelivery.remove();
-			polylineDelivery = null;
-		}
-		inRideZoom();
-		if(System.currentTimeMillis() > (refreshPolyLineDelay + 5000)) {
-			refreshPolyLineDelay = System.currentTimeMillis();
-			setDeliveryMarkers();
+			DeliveryInfo newDeliveryInfo = customerInfo.getDeliveryInfos().get(index);
+			if (newDeliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && markersDelivery.size() > 0) {
+				Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
+				Marker marker = markersDelivery.get(index);
+				marker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.getTextBitmap(this, assl, String.valueOf(index + 1), 18, 2)));
+			} else {
+				Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
+			}
+			deliveryInfoTabs.notifyDatasetchange(false);
+			if(polylineDelivery != null){
+				polylineDelivery.remove();
+				polylineDelivery = null;
+			}
+			inRideZoom();
+			if(System.currentTimeMillis() > (refreshPolyLineDelay + 5000)) {
+				refreshPolyLineDelay = System.currentTimeMillis();
+				setDeliveryMarkers();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
