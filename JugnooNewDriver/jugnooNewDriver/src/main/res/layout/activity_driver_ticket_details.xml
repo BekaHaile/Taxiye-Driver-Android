@@ -152,6 +152,9 @@
                     android:textColor="@color/grey_light_ticket_history"
                     android:layout_width="wrap_content"
                     android:text="@string/NA"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="2px"
+                    android:layout_marginBottom="3px"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>

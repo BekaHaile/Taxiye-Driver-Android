@@ -829,7 +829,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			
 			@Override
 			public void onClick(View v) {
-				if(!loginDataFetched && refreshApp){
+				if(!loginDataFetched){
 					noNetFirstTime = false;
 					noNetSecondTime = false;
 					getDeviceToken();
