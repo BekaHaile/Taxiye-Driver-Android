@@ -185,6 +185,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		super.onCreate(savedInstanceState);
 		Fabric.with(this, new Crashlytics());
 
+		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
+			JSONParser.saveAccessToken(this, "");
+		}
+		Prefs.with(this).save(Constants.SP_FIRST_TIME_OPEN, 1);
+
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 
@@ -709,13 +714,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
 
 		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
