@@ -36,6 +36,7 @@
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
     <color name="theme_color">#FD7945</color>
+    <color name="document_text_color">#f79042</color>
 
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
@@ -59,6 +60,7 @@
 
     <color name="green_btn">#66BB66</color>
     <color name="green_btn_pressed">#669966</color>
+    <color name="green_doc_status">#7ed321</color>
 
     <color name="grey_btn">#8E8E8E</color>
     <color name="grey_btn_pressed">#7E7E7E</color>
@@ -121,6 +123,7 @@
     <color name="grey_light_alpha">#99DDDDDD</color>
     <color name="grey_light_bg_v2">#d8d8d8</color>
     <color name="grey_light_v2">#A4A4A4</color>
+    <color name="grey_light_doc_status">#4a4a4a</color>
     <color name="grey_dark_less">#A3A3A3</color>
     <color name="grey_light_boarder">#d2d1d1</color>
     <color name="grey_dark">#838383</color>
