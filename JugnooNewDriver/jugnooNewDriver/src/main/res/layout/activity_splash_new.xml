@@ -100,20 +100,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
+        android:layout_marginTop="140px"
         android:splitMotionEvents="false">
 
-        <ImageView
-            android:id="@+id/viewInitLogoMargin"
-            android:layout_width="match_parent"
-            android:layout_height="140px"
-            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"
             android:layout_width="250px"
             android:layout_height="264px"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/viewInitLogoMargin"
             android:background="@drawable/new_jugnoo_spalsh_logo"
             android:tag="mwar"
             android:visibility="visible"/>

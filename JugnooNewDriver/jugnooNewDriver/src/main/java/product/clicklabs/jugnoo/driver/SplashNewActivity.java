@@ -123,7 +123,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl, selectLanguageLl;
-	ImageView jugnooTextImg, jugnooTextImg2, viewInitLogoMargin;
+	ImageView jugnooTextImg, jugnooTextImg2;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
 	boolean secondtime = false, refreshApp = false;
@@ -239,7 +239,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
-		viewInitLogoMargin = (ImageView) findViewById(R.id.viewInitLogoMargin);
 
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -322,11 +321,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-//				if(BuildConfig.DEBUG_MODE) {
-//					startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
-//					finish();
-//					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//				} else {
 					try {
 						if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
 								&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
@@ -338,7 +332,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						e.printStackTrace();
 						changeUIState(State.LOGIN);
 					}
-//				}
 			}
 		});
 
@@ -526,32 +519,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-//		relative.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//			@Override
-//			public void onGlobalLayout() {
-//
-//				Rect r = new Rect();
-//				relative.getWindowVisibleDisplayFrame(r);
-//				int screenHeight = relative.getRootView().getHeight();
-//
-//				// r.bottom is the position above soft keypad or device button.
-//				// if keypad is shown, the r.bottom is smaller than that before.
-//				int keypadHeight = screenHeight - r.bottom;
-//
-//				Log.d(TAG, "keypadHeight = " + keypadHeight);
-//
-//				if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-//					if(loginState){
-//						viewInitLogoMargin.setVisibility(View.GONE);
-//					} else {
-//						viewInitLogoMargin.setVisibility(View.VISIBLE);
-//					}
-//				}
-//				else {
-//					viewInitLogoMargin.setVisibility(View.VISIBLE);
-//				}
-//			}
-//		});
 
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -813,14 +780,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			imageViewJugnooLogo.startAnimation(animation);
 		}
 
-		try {
-			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
-			if (!"".equalsIgnoreCase(accPair.first)){
-				refreshApp = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+//			if (!"".equalsIgnoreCase(accPair.first)){
+//				refreshApp = true;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 
 		relative.setOnClickListener(new View.OnClickListener() {
@@ -2582,7 +2549,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 	}
 
-	boolean loginState = false;
+//	boolean loginState = false;
 	private void changeUIState(State state) {
 		imageViewJugnooLogo.requestFocus();
 		relativeLayoutScrollStop.setVisibility(View.VISIBLE);
@@ -2591,7 +2558,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.VISIBLE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.VISIBLE);
-				refreshApp = true;
+//				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 				textViewRegDriver.setVisibility(View.GONE);
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2609,7 +2576,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.VISIBLE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-				refreshApp = false;
+//				refreshApp = false;
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2623,7 +2590,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.GONE);
-				refreshApp = true;
+//				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2638,11 +2605,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			case LOGIN:
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
-				refreshApp = false;
+//				refreshApp = false;
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.GONE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-				loginState =true;
+//				loginState =true;
 				relativeLayoutLS.setVisibility(View.GONE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2660,7 +2627,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						getCityAsync();
 					}
 				}, 1000);
-				refreshApp = false;
+//				refreshApp = false;
 				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
