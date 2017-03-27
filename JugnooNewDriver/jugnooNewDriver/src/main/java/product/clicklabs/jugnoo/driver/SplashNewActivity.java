@@ -185,10 +185,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		super.onCreate(savedInstanceState);
 		Fabric.with(this, new Crashlytics());
 
-		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
-			JSONParser.saveAccessToken(this, "");
-		}
-		Prefs.with(this).save(Constants.SP_FIRST_TIME_OPEN, 1);
+//		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
+//			JSONParser.saveAccessToken(this, "");
+//		}
+//		Prefs.with(this).save(Constants.SP_FIRST_TIME_OPEN, 1);
 
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
@@ -293,10 +293,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		textViewRegLogin = (TextView) findViewById(R.id.textViewRegLogin);
 		textViewRegLogin.setTypeface(Data.latoRegular(getApplicationContext()));
 
-
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
-
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
