@@ -822,6 +822,18 @@
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
     <string name="delivery_1">Delivery 1</string>
+    <string name="complainId">Complaint ID :</string>
+    <string name="createdOn">Created On :</string>
+    <string name="registered">Registered</string>
+    <string name="createdOnNew">Created On</string>
+    <string name="updated_on">Updated On</string>
+    <string name="complain">Complain</string>
+    <string name="settled">settled</string>
+    <string name="ended_on">Ended On</string>
+    <string name="no_tickets">No complaints yet</string>
+    <string name="closed_on">Closed On</string>
+    <string name="complaint">Complaint</string>
+    <string name="raisedOn">Raised On</string>
 
 
     <string-array name="CountryCodes" >

@@ -380,6 +380,7 @@
                 android:id="@+id/relativeLayoutTour"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:visibility="gone"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
@@ -429,6 +430,35 @@
                     android:layout_toRightOf="@+id/imageViewDocIcon"
                     android:layout_marginLeft="8px"
                     android:text="@string/driver_resources"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutSupport"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewSupportIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewSupportIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/support"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
 

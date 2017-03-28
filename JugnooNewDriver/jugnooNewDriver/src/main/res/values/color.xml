@@ -95,6 +95,7 @@
     <color name="yellow_status">#F89414</color>
     <color name="green_status">#2EA058</color>
     <color name="red_status">#F53C37</color>
+    <color name="red_ticket_status">#d0021b</color>
     <color name="red_status_v2">#eb5635</color>
     <color name="red_v2">#ff8162</color>
     <color name="red_v2_fadded">#ffc2b3</color>
@@ -134,6 +135,8 @@
     <color name="grey_menu_black_v2">#363645</color>
     <color name="grey_black_light">#3E3E3E</color>
     <color name="grey_ride_history">#6D6e71</color>
+    <color name="grey_ticket_history">#4a4a4a</color>
+    <color name="grey_light_ticket_history">#616270</color>
     <color name="grey_ride_detail_bg">#f2f4f5</color>
     <color name="grey_ride_detail">#9e9e9e</color>
     <color name="gradient_orange_v2">#ff8162</color>

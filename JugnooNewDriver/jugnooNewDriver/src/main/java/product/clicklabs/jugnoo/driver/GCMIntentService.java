@@ -709,7 +709,11 @@ public class GCMIntentService extends IntentService {
 								if (!"".equalsIgnoreCase(picture)) {
 									new BigImageNotifAsync(title, message1, picture).execute();
 								} else {
-									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+									if (HomeActivity.appInterruptHandler != null) {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
+									} else {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+									}
 								}
 								if (sendAck) {
 									sendMarketPushAckToServer(this, campainId, currentTimeUTC);

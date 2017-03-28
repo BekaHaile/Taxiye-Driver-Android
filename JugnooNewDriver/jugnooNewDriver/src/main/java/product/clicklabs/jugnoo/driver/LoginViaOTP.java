@@ -681,6 +681,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                 .listener(new OtpDialog.Listener() {
                     @Override
                     public void performPostAlertAction(int purpose, Bundle backpack) {
+                        otpEt.setCursorVisible(true);
                         if(purpose == AppConstants.OperationType.CALL) {
                             btnOtpViaCall.performClick();
                         } else if(purpose == AppConstants.OperationType.ENTER_OTP) {
@@ -707,7 +708,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     @Override
     public void swictchLayout() {
         btnReGenerateOtp.setVisibility(View.VISIBLE);
-        otpEt.setCursorVisible(true);
+//        otpEt.setCursorVisible(true);
         if(TextUtils.isEmpty(knowlarityMissedCallNumber)){
             layoutResendOtp.setVisibility(View.GONE);
         }else {

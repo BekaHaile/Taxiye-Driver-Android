@@ -8,11 +8,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 
 	private SurfaceView surfaceView;
 	private SurfaceHolder surfaceHolder;
-	private Camera camera;
+	private Camera mCamera;
 	private Button acceptImage;
 	private Button rejectImage;
 	private Button captureImage, backBtn, buttonGallery;
@@ -93,7 +95,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		activity.relativeLayoutContainer.setVisibility(View.VISIBLE);
 		new ASSL(activity, linearLayoutroot, 1134, 720, false);
 
-		// camera surface view created
+		// mCamera surface view created
 		relativeLayoutConfirmImage = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutConfirmImage);
 
 		cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
@@ -101,6 +103,59 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		rejectImage = (Button) rootView.findViewById(R.id.rejectImage);
 		captureImage = (Button) rootView.findViewById(R.id.captureImage);
 		surfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
+		surfaceView.setFocusable(true);
+		surfaceView.setFocusableInTouchMode(true);
+		surfaceView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+
+				try {
+					if (mCamera != null) {
+						Camera camera = mCamera;
+						camera.cancelAutoFocus();
+	//					Rect focusRecct = calculateTapArea(event.getX(), event.getY(), 1f);
+
+						Camera.Parameters parameters = camera.getParameters();
+						if (parameters.getFocusMode() != Camera.Parameters.FOCUS_MODE_AUTO) {
+							parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+						}
+						if (parameters.getMaxNumFocusAreas() > 0) {
+							List<Camera.Area> mylist = new ArrayList<Camera.Area>();
+							//mylist.add(new Camera.Area(focusRect, 1000));
+							parameters.setFocusAreas(mylist);
+						}
+
+						try {
+							camera.cancelAutoFocus();
+							camera.setParameters(parameters);
+							camera.startPreview();
+							camera.autoFocus(new Camera.AutoFocusCallback() {
+								@Override
+								public void onAutoFocus(boolean success, Camera camera) {
+									if (camera.getParameters().getFocusMode() != Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE) {
+										Camera.Parameters parameters = camera.getParameters();
+										parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+										if (parameters.getMaxNumFocusAreas() > 0) {
+											parameters.setFocusAreas(null);
+										}
+										camera.setParameters(parameters);
+										camera.startPreview();
+									}
+								}
+							});
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return true;
+			}
+		});
+
+
+
 		backBtn = (Button) rootView.findViewById(R.id.backBtn);
 		buttonGallery = (Button) rootView.findViewById(R.id.buttonGallery);
 
@@ -144,9 +199,9 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		try {
-			camera.stopPreview();
-			camera.release();
-			camera = null;
+			mCamera.stopPreview();
+			mCamera.release();
+			mCamera = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,13 +218,13 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		}
 
 		try {
-			camera.stopPreview();
+			mCamera.stopPreview();
 		} catch (Exception e) {
 		}
 
 		try {
-			camera.setPreviewDisplay(surfaceHolder);
-			camera.startPreview();
+			mCamera.setPreviewDisplay(surfaceHolder);
+			mCamera.startPreview();
 		} catch (Exception e) {
 		}
 	}
@@ -203,7 +258,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 
 	private void alertCameraDialog() {
 		AlertDialog.Builder dialog = createAlert(getActivity(),
-				"Camera info", "error to open camera");
+				"Camera info", "error to open Camera");
 		dialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -239,22 +294,23 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		cameraId = id;
 		releaseCamera();
 		try {
-			camera = Camera.open(cameraId);
+			mCamera = Camera.open(cameraId);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (camera != null) {
+		if (mCamera != null) {
 			try {
-				setUpCamera(camera);
-				camera.setErrorCallback(new Camera.ErrorCallback() {
+				setUpCamera(mCamera);
+				mCamera.setErrorCallback(new Camera.ErrorCallback() {
 
 					@Override
 					public void onError(int error, Camera camera) {
 //to show the error message.
 					}
 				});
-				camera.setPreviewDisplay(surfaceHolder);
-				camera.startPreview();
+				mCamera.setPreviewDisplay(surfaceHolder);
+				mCamera.startPreview();
 				result = true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -267,17 +323,17 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 
 	private void releaseCamera() {
 		try {
-			if (camera != null) {
-				camera.setPreviewCallback(null);
-				camera.setErrorCallback(null);
-				camera.stopPreview();
-				camera.release();
-				camera = null;
+			if (mCamera != null) {
+				mCamera.setPreviewCallback(null);
+				mCamera.setErrorCallback(null);
+				mCamera.stopPreview();
+				mCamera.release();
+				mCamera = null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e("error", e.toString());
-			camera = null;
+			mCamera = null;
 		}
 	}
 
@@ -325,6 +381,16 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 			}
 		}
 
+		try {
+			List<String> focusModesNew = params.getSupportedFocusModes();
+			if (focusModesNew != null) {
+				if (focusModesNew.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
+					params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		params.setRotation(rotation);
 	}
 
@@ -345,25 +411,6 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		activity.relativeLayoutContainer.setVisibility(View.GONE);
 		activity.getSupportFragmentManager().popBackStackImmediate();
 
-
-//		if(auditCmeraOption ==1){
-//			activity.getTransactionUtils().openSubmitAuditFragment(activity,
-//					activity.getRelativeLayoutContainer(), auditType);
-//		} else {
-//			DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
-//					getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
-//						@Override
-//						public void onClick(View v) {
-//							deleteCurrentAudit();
-//						}
-//					}, new View.OnClickListener() {
-//						@Override
-//						public void onClick(View v) {
-//
-//						}
-//					}, true, false);
-//		}
-
 	}
 
 
@@ -371,13 +418,31 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	private void takeImage() {
 		try {
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-			camera.takePicture(null, null, new Camera.PictureCallback() {
+			mCamera.takePicture(null, null, new Camera.PictureCallback() {
 
 				private File imageFile;
 
 				@Override
 				public void onPictureTaken(byte[] data, Camera camera) {
 					try {
+
+//						BitmapFactory.Options opt;
+
+//						opt = new BitmapFactory.Options();
+//						opt.inTempStorage = new byte[16 * 1024];
+//						Camera.Parameters parameters = mCamera.getParameters();
+//						Camera.Size size = parameters.getPictureSize();
+
+//						int height11 = size.height;
+//						int width11 = size.width;
+//						float mb = (width11 * height11) / 1024000;
+
+//						if (mb > 4f)
+//							opt.inSampleSize = 4;
+//						else if (mb > 3f)
+//							opt.inSampleSize = 2;
+
+
 						// convert byte array into bitmap
 						Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
 								data.length);
@@ -385,8 +450,8 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 						// rotate Image
 						Bitmap rotatedBitmap = null;
 						Matrix rotateMatrix = new Matrix();
-						try {
 
+						try {
 							rotateMatrix.postRotate(rotation);
 							rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
 									0, loadedImage.getWidth(), loadedImage.getHeight(),
