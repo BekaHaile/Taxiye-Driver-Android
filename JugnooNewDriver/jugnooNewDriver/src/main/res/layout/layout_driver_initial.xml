@@ -16,59 +16,48 @@
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"/>
 
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="45px"
-        android:layout_marginLeft="36px"
-        android:layout_marginRight="36px"
-        android:layout_alignParentBottom="true">
-
-
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutHighDemandAreas"
-            android:layout_width="match_parent"
-            android:layout_height="90px"
-            android:layout_marginTop="20px"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            android:background="@drawable/background_white_rounded_orange_bordered">
-
-            <TextView
-                android:id="@+id/textViewHighDemandAreas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/high_demand_areas"
-                android:layout_centerInParent="true"
-                android:textSize="28px"/>
-
-            <ImageView
-                android:layout_width="40px"
-                android:layout_height="40px"
-                android:layout_marginRight="15px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/arrow_icon_normal"/>
-            
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/jugnooOffText"
+        android:id="@+id/linearLayoutJugnooOff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:background="@color/black_translucent_level_3"
         android:gravity="center"
-        android:text="@string/jugnoo_off"
-        android:textColor="@color/white"
-        android:textSize="44px"
-        android:visibility="visible"
+        android:background="@color/black_translucent_level_3"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/jugnooOffText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/jugnoo_off"
+            android:textColor="@color/white"
+            android:textSize="44px"
+            android:visibility="visible"
         />
+
+        <TextView
+            android:id="@+id/textViewDocText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/jugnoo_off"
+            android:textColor="@color/white"
+            android:textSize="44px"
+            android:layout_marginTop="48px"
+            android:visibility="visible"
+        />
+
+        <Button
+            android:id="@+id/buttonUploadOnInitial"
+            android:layout_width="380px"
+            android:layout_height="88px"
+            android:layout_marginTop="48px"
+            android:background="@drawable/orange_btn_selector"
+            android:text="@string/upload"
+            android:textColor="@color/white"
+            android:textSize="36px"/>
+
+    </LinearLayout>
 </RelativeLayout>
