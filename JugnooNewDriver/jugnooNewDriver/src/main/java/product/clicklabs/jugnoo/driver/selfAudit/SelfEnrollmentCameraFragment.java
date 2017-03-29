@@ -426,26 +426,26 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 				public void onPictureTaken(byte[] data, Camera camera) {
 					try {
 
-//						BitmapFactory.Options opt;
+						BitmapFactory.Options opt;
 
-//						opt = new BitmapFactory.Options();
-//						opt.inTempStorage = new byte[16 * 1024];
-//						Camera.Parameters parameters = mCamera.getParameters();
-//						Camera.Size size = parameters.getPictureSize();
+						opt = new BitmapFactory.Options();
+						opt.inTempStorage = new byte[16 * 1024];
+						Camera.Parameters parameters = mCamera.getParameters();
+						Camera.Size size = parameters.getPictureSize();
 
-//						int height11 = size.height;
-//						int width11 = size.width;
-//						float mb = (width11 * height11) / 1024000;
+						int height11 = size.height;
+						int width11 = size.width;
+						float mb = (width11 * height11) / 1024000;
 
-//						if (mb > 4f)
-//							opt.inSampleSize = 4;
-//						else if (mb > 3f)
-//							opt.inSampleSize = 2;
+						if (mb > 4f)
+							opt.inSampleSize = 4;
+						else if (mb > 3f)
+							opt.inSampleSize = 2;
 
 
 						// convert byte array into bitmap
 						Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-								data.length);
+								data.length, opt);
 
 						// rotate Image
 						Bitmap rotatedBitmap = null;
@@ -474,14 +474,14 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 							}
 						}
 
-					} catch (Exception e) {
+					} catch (Exception|OutOfMemoryError e) {
 						e.printStackTrace();
 						DialogPopup.dismissLoadingDialog();
 					}
 
 				}
 			});
-		} catch (Exception e) {
+		} catch (Exception|OutOfMemoryError e) {
 			e.printStackTrace();
 		}
 	}
