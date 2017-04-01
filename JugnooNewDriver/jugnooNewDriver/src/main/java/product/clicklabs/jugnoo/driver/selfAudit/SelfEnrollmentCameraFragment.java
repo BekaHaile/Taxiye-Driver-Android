@@ -154,11 +154,8 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 			}
 		});
 
-
-
 		backBtn = (Button) rootView.findViewById(R.id.backBtn);
 		buttonGallery = (Button) rootView.findViewById(R.id.buttonGallery);
-
 
 		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
 		titleAutoSide.setTypeface(Data.latoRegular(activity));
@@ -385,7 +382,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 			List<String> focusModesNew = params.getSupportedFocusModes();
 			if (focusModesNew != null) {
 				if (focusModesNew.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE))
-					params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+					params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -536,67 +533,6 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 
 	}
 
-	private void uploadPicToServer(File photoFile, final Integer auditType, final Integer imageType) {
-		try {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if(auditCmeraOption == 1){
-					DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-				}
-				HashMap<String, String> params = new HashMap<String, String>();
-
-				params.put("access_token", Data.userData.accessToken);
-				params.put("image_type", String.valueOf(imageType));
-				params.put("audit_type", String.valueOf(auditType));
-				TypedFile typedFile;
-				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-				Log.i("selfaudit", String.valueOf(typedFile) + params);
-				capturedImage.recycle();
-				RestClient.getApiServices().uploadAuditImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
-					@Override
-					public void success(DocRequirementResponse docRequirementResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-
-							int flag = jObj.getInt("flag");
-							String message = JSONParser.getServerMessage(jObj);
-
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-								if(imageType == 4 || auditCmeraOption ==1){
-									activity.getTransactionUtils().openSubmitAuditFragment(activity,
-											activity.getRelativeLayoutContainer(), auditType);
-								}
-								DialogPopup.dismissLoadingDialog();
-
-
-							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								DialogPopup.dismissLoadingDialog();
-								reloadImagePopup(imageType);
-
-							}
-
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.dismissLoadingDialog();
-							reloadImagePopup(imageType);
-						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						DialogPopup.dismissLoadingDialog();
-						reloadImagePopup(imageType);
-					}
-				});
-			} else {
-				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
-			}
-		} catch (Resources.NotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void reloadImagePopup(int imageType){
 		if(imageType == 4 || auditCmeraOption ==1) {
@@ -611,108 +547,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		}
 	}
 
-	public void deleteCurrentAudit() {
-		try {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-				HashMap<String, String> params = new HashMap<String, String>();
 
-				params.put("access_token", Data.userData.accessToken);
-				params.put("audit_type", String.valueOf(auditType));
-
-				RestClient.getApiServices().cancelAuditByDriver(params, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						try {
-							JSONObject jObj = new JSONObject(responseStr);
-							int flag = jObj.getInt("flag");
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								activity.getTransactionUtils().openSelectAuditFragment(activity,
-										activity.getRelativeLayoutContainer());
-							} else {
-								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-						}
-						DialogPopup.dismissLoadingDialog();
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						product.clicklabs.jugnoo.driver.utils.Log.e("request fail", error.toString());
-						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-					}
-				});
-			} else {
-				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void skipPicToServer(final Integer auditType, final Integer imageType) {
-		try {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if(auditCmeraOption == 1){
-					DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-				}
-				HashMap<String, String> params = new HashMap<String, String>();
-
-				params.put("access_token", Data.userData.accessToken);
-				params.put("image_type", String.valueOf(imageType));
-				params.put("audit_type", String.valueOf(auditType));
-
-				RestClient.getApiServices().skipImageToServer(params, new Callback<DocRequirementResponse>() {
-					@Override
-					public void success(DocRequirementResponse docRequirementResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-
-							int flag = jObj.getInt("flag");
-							String message = JSONParser.getServerMessage(jObj);
-
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-								if (imageType == 4 || auditCmeraOption == 1) {
-									activity.getTransactionUtils().openSubmitAuditFragment(activity,
-											activity.getRelativeLayoutContainer(), auditType);
-								}
-								DialogPopup.dismissLoadingDialog();
-
-
-							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								DialogPopup.dismissLoadingDialog();
-								reloadImagePopup(imageType);
-
-							}
-
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.dismissLoadingDialog();
-							reloadImagePopup(imageType);
-						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						DialogPopup.dismissLoadingDialog();
-						reloadImagePopup(imageType);
-					}
-				});
-			} else {
-				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
-			}
-		} catch (Resources.NotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 
 }

@@ -244,9 +244,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			if(docInfo.docCount<2){
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
+			//MAIN THODI DER MEIN AAUNGA
 
 			if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+				holder.docType.setText(docInfo.docType+"*");
+			} else if (docInfo.docRequirement == 4) {
+				holder.docRequirement.setText(getResources().getString(R.string.required));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
@@ -581,7 +585,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		try {
 			progressBar.setVisibility(View.VISIBLE);
 			String isRequired = String.valueOf(requirement);
-			RestClient.getApiServices().docRequest(accessToken, isRequired, new Callback<DocRequirementResponse>() {
+			RestClient.getApiServices().docRequest(accessToken, isRequired, Data.appVersion, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
@@ -1016,7 +1020,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									   int quality, int index) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
-		File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+		long index2 = System.currentTimeMillis();
+		File f = new File(context.getExternalCacheDir(), "temp" + index2 + ".jpg");
 		try {
 			f.createNewFile();
 			byte[] bitmapdata = os.toByteArray();
