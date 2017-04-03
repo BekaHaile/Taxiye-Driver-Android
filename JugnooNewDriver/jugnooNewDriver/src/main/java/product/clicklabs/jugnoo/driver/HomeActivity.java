@@ -274,7 +274,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout driverInitialLayout;
 	ListView driverRideRequestsList;
 	Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial;
-	TextView jugnooOffText, temptext, textViewDocText;
+	TextView jugnooOffText, temptext, textViewDocText, textViewDocDayText;
 
 	DriverRequestListAdapter driverRequestListAdapter;
 
@@ -717,6 +717,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDocText = (TextView) findViewById(R.id.textViewDocText);
 			textViewDocText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewDocText.setVisibility(View.GONE);
+
+			textViewDocDayText = (TextView) findViewById(R.id.textViewDocDayText);
+			textViewDocDayText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewDocDayText.setVisibility(View.GONE);
 
 			driverRideRequestsList.setVisibility(View.GONE);
 
@@ -3092,8 +3096,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									textViewDocText.setVisibility(View.VISIBLE);
 									buttonUploadOnInitial.setVisibility(View.VISIBLE);
 									textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""));
+									if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""))){
+										textViewDocDayText.setVisibility(View.VISIBLE);
+										textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""));
+									}
 								} else {
 									textViewDocText.setVisibility(View.GONE);
+									textViewDocDayText.setVisibility(View.GONE);
 									buttonUploadOnInitial.setVisibility(View.GONE);
 								}
 

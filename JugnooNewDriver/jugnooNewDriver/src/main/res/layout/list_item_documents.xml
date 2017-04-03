@@ -106,7 +106,7 @@
                 android:layout_width="193px"
                 android:layout_height="193px"
                 android:layout_marginBottom="10px"
-                android:layout_marginLeft="20px"
+                android:layout_marginLeft="44px"
                 android:layout_marginRight="28px"
                 android:layout_marginTop="10px"
                 android:background="@drawable/add_img_big"
@@ -148,7 +148,7 @@
                 android:id="@+id/deleteImage1"
                 android:layout_width="48px"
                 android:layout_height="48px"
-                android:layout_marginLeft="173px"
+                android:layout_marginLeft="197px"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="visible"/>
@@ -159,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/addImageLayout"
                 android:layout_marginTop="10px"
-                android:layout_marginLeft="28px">
+                android:layout_marginLeft="52px">
 
                 <TextView
                     android:id="@+id/docStatus"
@@ -228,7 +228,7 @@
                 android:id="@+id/deleteImage2"
                 android:layout_width="48px"
                 android:layout_height="48px"
-                android:layout_marginLeft="409px"
+                android:layout_marginLeft="433px"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="gone"/>

@@ -442,6 +442,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout.setVisibility(View.VISIBLE);
 				holder.addImageLayout2.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatus.setVisibility(View.GONE);
+				holder.docType.setTextColor(getResources().getColor(R.color.document_text_color));
 			}
 
 			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){

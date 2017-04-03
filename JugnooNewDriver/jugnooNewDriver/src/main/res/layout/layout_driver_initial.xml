@@ -42,10 +42,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/jugnoo_off"
+            android:text="@string/NA"
             android:textColor="@color/white"
             android:textSize="44px"
             android:layout_marginTop="48px"
+            android:visibility="visible"
+        />
+
+        <TextView
+            android:id="@+id/textViewDocDayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            android:textColor="@color/white"
+            android:textSize="44px"
+            android:layout_marginTop="12px"
             android:visibility="visible"
         />
 

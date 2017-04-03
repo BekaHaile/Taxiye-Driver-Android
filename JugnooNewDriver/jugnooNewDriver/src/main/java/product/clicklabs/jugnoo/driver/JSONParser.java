@@ -296,6 +296,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.DRIVER_OFFLINE_PERIOD, userData.optLong("driver_offline_period", 180000));
 
 		Prefs.with(context).save(Constants.UPLOAD_DOCUMENT_MESSAGE, userData.optString("upload_document_message", ""));
+		Prefs.with(context).save(Constants.UPLOAD_DOCUMENT_DAYS_LEFT, userData.optString("upload_document_days_left", ""));
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
