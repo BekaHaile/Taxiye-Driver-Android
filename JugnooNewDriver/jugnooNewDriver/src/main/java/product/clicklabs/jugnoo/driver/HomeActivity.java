@@ -4448,6 +4448,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				setPannelVisibility(true);
 			}
+
+			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""))){
+				textViewDocText.setVisibility(View.VISIBLE);
+				buttonUploadOnInitial.setVisibility(View.VISIBLE);
+				textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""));
+				if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""))){
+					textViewDocDayText.setVisibility(View.VISIBLE);
+					textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""));
+				}
+			} else {
+				textViewDocText.setVisibility(View.GONE);
+				textViewDocDayText.setVisibility(View.GONE);
+				buttonUploadOnInitial.setVisibility(View.GONE);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
