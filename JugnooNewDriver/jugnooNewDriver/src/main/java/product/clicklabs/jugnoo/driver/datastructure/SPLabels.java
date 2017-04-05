@@ -120,4 +120,8 @@ public class SPLabels {
     public static final String PREF_TRAINING_ACCESS_TOKEN = "tour_access_token";
     public static final String PREF_TRAINING_ID = "pref_training_id";
 
+	public static final String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
+	public static final String SHOW_SUPPORT_IN_RESOURCES = "show_support_in_resources";
+	public static final String SHOW_CALL_US_MENU = "show_call_us_menu";
+
 }

@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.home;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -297,16 +298,20 @@ public class CustomerSwitcher {
 											activity.runOnUiThread(new Runnable() {
 												@Override
 												public void run() {
-													if (finalDistance > 0) {
-														distanceRefreshTime = System.currentTimeMillis();
-														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																.format(finalDistance / 1000d)+" "
-																+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
-													} else {
-														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																		new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-																+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+													try {
+														if (finalDistance > 0) {
+															distanceRefreshTime = System.currentTimeMillis();
+															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+																	.format(finalDistance / 1000d)+" "
+																	+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+														} else {
+															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+																	+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+														}
+													} catch (Exception e) {
+														e.printStackTrace();
 													}
 												}
 											});

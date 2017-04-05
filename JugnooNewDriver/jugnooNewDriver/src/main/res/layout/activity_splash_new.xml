@@ -99,8 +99,10 @@
         android:id="@+id/relativeLayoutJugnooLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:layout_marginTop="140px"
         android:splitMotionEvents="false">
+
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"

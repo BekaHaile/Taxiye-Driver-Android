@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import retrofit.Callback;
@@ -584,5 +585,10 @@ public interface APIServices {
 	@POST("/update_simulation_status")
 	void updateDriverStatus(@FieldMap Map<String, String> params,
 					 Callback<UpdateTourStatusModel> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_tickets")
+	void getDriverTicketsAsync(@FieldMap Map<String, String> params,
+							Callback<TicketResponse> callback);
 
 }

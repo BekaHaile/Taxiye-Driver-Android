@@ -235,7 +235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
 	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
@@ -589,6 +589,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1013,7 +1015,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
-				relativeLayoutTour.setVisibility(View.VISIBLE);
+				relativeLayoutTour.setVisibility(View.GONE);
 			} else {
 				relativeLayoutTour.setVisibility(View.GONE);
 			}
@@ -1274,11 +1276,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			relativeLayoutSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, DriverTicketHistory.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
+
 			relativeLayoutDocs.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
-					startActivity(intent);
+					startActivityForResult(intent, 14);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
@@ -2082,6 +2094,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				auditRL.setVisibility(View.VISIBLE);
 			} else {
 				auditRL.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_SUPPORT_IN_MENU,0) == 1){
+				relativeLayoutSupport.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutSupport.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
+				callUsRl.setVisibility(View.VISIBLE);
+			} else {
+				callUsRl.setVisibility(View.GONE);
 			}
 
 
@@ -7135,6 +7159,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 
+			if(requestCode == 14){
+				boolean state = data.getBooleanExtra("result", true);
+				if(state){
+					relativeLayoutTour.performClick();
+				}
+			}
+
 			if (LocationInit.LOCATION_REQUEST_CODE == requestCode) {
 				if (0 == resultCode) {
 					finish();
@@ -8676,39 +8707,43 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setDeliveryPos(int index) {
-		CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-		deliveryListHorizontal.setCurrentItem(index);
-		int prev = Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, -1);
-		if (prev > -1 && markersDelivery.size() > 0) {
-			DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(prev);
-			Marker oldMarker = markersDelivery.get(prev);
-			if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
-				oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 1)));
-			} else {
-				oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 3)));
+		try {
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			deliveryListHorizontal.setCurrentItem(index);
+			int prev = Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, -1);
+			if (prev > -1 && markersDelivery.size() > 0) {
+				DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(prev);
+				Marker oldMarker = markersDelivery.get(prev);
+				if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+					oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+							.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 1)));
+				} else {
+					oldMarker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+							.getTextBitmap(this, assl, String.valueOf(prev + 1), 18, 3)));
+				}
 			}
-		}
 
-		DeliveryInfo newDeliveryInfo = customerInfo.getDeliveryInfos().get(index);
-		if (newDeliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && markersDelivery.size() > 0) {
-			Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
-			Marker marker = markersDelivery.get(index);
-			marker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.getTextBitmap(this, assl, String.valueOf(index + 1), 18, 2)));
-		} else {
-			Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
-		}
-		deliveryInfoTabs.notifyDatasetchange(false);
-		if(polylineDelivery != null){
-			polylineDelivery.remove();
-			polylineDelivery = null;
-		}
-		inRideZoom();
-		if(System.currentTimeMillis() > (refreshPolyLineDelay + 5000)) {
-			refreshPolyLineDelay = System.currentTimeMillis();
-			setDeliveryMarkers();
+			DeliveryInfo newDeliveryInfo = customerInfo.getDeliveryInfos().get(index);
+			if (newDeliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && markersDelivery.size() > 0) {
+				Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
+				Marker marker = markersDelivery.get(index);
+				marker.setIcon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.getTextBitmap(this, assl, String.valueOf(index + 1), 18, 2)));
+			} else {
+				Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, index);
+			}
+			deliveryInfoTabs.notifyDatasetchange(false);
+			if(polylineDelivery != null){
+				polylineDelivery.remove();
+				polylineDelivery = null;
+			}
+			inRideZoom();
+			if(System.currentTimeMillis() > (refreshPolyLineDelay + 5000)) {
+				refreshPolyLineDelay = System.currentTimeMillis();
+				setDeliveryMarkers();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

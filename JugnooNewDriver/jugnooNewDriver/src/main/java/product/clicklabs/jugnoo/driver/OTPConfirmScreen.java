@@ -229,6 +229,8 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 try {
                     phoneNoEt.setHint(emailRegisterData.phoneNo);
                     phoneNoEt.setEnabled(false);
+					editTextOTP.setText("");
+					editTextOTP.setError(null);
                     generateOTP(emailRegisterData.phoneNo);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -619,6 +621,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 if (!"".equalsIgnoreCase(otp)) {
                     if (Boolean.parseBoolean(Prefs.with(OTPConfirmScreen.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
                         editTextOTP.setText(otp);
+                        editTextOTP.setCursorVisible(true);
                         editTextOTP.setSelection(editTextOTP.getText().length());
                         buttonVerify.performClick();
                     }
@@ -649,6 +652,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 .listener(new OtpDialog.Listener() {
                     @Override
                     public void performPostAlertAction(int purpose, Bundle backpack) {
+						editTextOTP.setCursorVisible(true);
                         if (purpose == AppConstants.OperationType.CALL) {
                             btnOtpViaCall.performClick();
                         } else if (purpose == AppConstants.OperationType.ENTER_OTP) {
@@ -672,7 +676,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
     @Override
     public void swictchLayout() {
-		editTextOTP.setCursorVisible(true);
+//		editTextOTP.setCursorVisible(true);
         if (TextUtils.isEmpty(knowlarityMissedCallNumber)) {
             btnOtpViaCall.setVisibility(View.GONE);
             textViewOr.setVisibility(View.GONE);

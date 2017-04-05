@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -183,6 +185,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		super.onCreate(savedInstanceState);
 		Fabric.with(this, new Crashlytics());
 
+//		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
+//			JSONParser.saveAccessToken(this, "");
+//		}
+//		Prefs.with(this).save(Constants.SP_FIRST_TIME_OPEN, 1);
+
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 
@@ -232,6 +239,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
+
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
@@ -285,10 +293,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		textViewRegLogin = (TextView) findViewById(R.id.textViewRegLogin);
 		textViewRegLogin.setTypeface(Data.latoRegular(getApplicationContext()));
 
-
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
-
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -313,11 +319,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-//				if(BuildConfig.DEBUG_MODE) {
-//					startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
-//					finish();
-//					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//				} else {
 					try {
 						if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
 								&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
@@ -329,7 +330,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						e.printStackTrace();
 						changeUIState(State.LOGIN);
 					}
-//				}
 			}
 		});
 
@@ -357,6 +357,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, HelpActivity.class));
+				overridePendingTransition(R.anim.left_in, R.anim.left_out);
 			}
 		});
 
@@ -515,6 +516,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				return true;
 			}
 		});
+
 
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -677,13 +679,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
 
 		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
@@ -783,15 +778,21 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			imageViewJugnooLogo.startAnimation(animation);
 		}
 
-
-
+//		try {
+//			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+//			if (!"".equalsIgnoreCase(accPair.first)){
+//				refreshApp = true;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 
 		relative.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if(!loginDataFetched && refreshApp){
+				if(!loginDataFetched){
 					noNetFirstTime = false;
 					noNetSecondTime = false;
 					getDeviceToken();
@@ -979,7 +980,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
 									DialogPopup.alertPopup(activity, "", message);
 								} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
-									DialogPopup.alertPopup(activity, "", message);
+									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											changeUIState(State.LOGIN);
+										}
+									});
 								} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
 									RegisterScreenResponse data = registerScreenResponse;
 									SplashNewActivity.this.name = name;
@@ -2541,6 +2547,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 	}
 
+//	boolean loginState = false;
 	private void changeUIState(State state) {
 		imageViewJugnooLogo.requestFocus();
 		relativeLayoutScrollStop.setVisibility(View.VISIBLE);
@@ -2549,7 +2556,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.VISIBLE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.VISIBLE);
-				refreshApp = true;
+//				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 				textViewRegDriver.setVisibility(View.GONE);
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2567,7 +2574,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.VISIBLE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-				refreshApp = false;
+//				refreshApp = false;
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2581,7 +2588,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.GONE);
-				refreshApp = true;
+//				refreshApp = true;
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2596,11 +2603,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			case LOGIN:
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
-				refreshApp = false;
+//				refreshApp = false;
 				viewInitLS.setVisibility(View.GONE);
 				selectLanguageLl.setVisibility(View.GONE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-
+//				loginState =true;
 				relativeLayoutLS.setVisibility(View.GONE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2618,7 +2625,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						getCityAsync();
 					}
 				}, 1000);
-				refreshApp = false;
+//				refreshApp = false;
 				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
