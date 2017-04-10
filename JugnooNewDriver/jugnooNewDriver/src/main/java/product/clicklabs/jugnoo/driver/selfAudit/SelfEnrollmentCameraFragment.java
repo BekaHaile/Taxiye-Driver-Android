@@ -427,12 +427,12 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 					try {
 
 //						BitmapFactory.Options opt;
-
+//
 //						opt = new BitmapFactory.Options();
 //						opt.inTempStorage = new byte[16 * 1024];
 //						Camera.Parameters parameters = mCamera.getParameters();
 //						Camera.Size size = parameters.getPictureSize();
-
+//
 //						int height11 = size.height;
 //						int width11 = size.width;
 //						float mb = (width11 * height11) / 1024000;

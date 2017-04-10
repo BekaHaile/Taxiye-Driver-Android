@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.hardware.Camera;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -623,87 +624,87 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	public void uploadfile(final DriverDocumentActivity activity, int index) {
 
 		DocumentListFragment.this.index = index;
-		String cameraText = getResources().getString(R.string.upload)+" "+docs.get(index).docType
-				+" "+getResources().getString(R.string.image);
+//		String cameraText = getResources().getString(R.string.upload)+" "+docs.get(index).docType
+//				+" "+getResources().getString(R.string.image);
+//
+//		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
+//		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
+//				activity.getRelativeLayoutContainer(), cameraText, "bottom");
 
-		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
-		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
-				activity.getRelativeLayoutContainer(), cameraText, "bottom");
+		try {
+			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_upload_document);
 
-//		try {
-//			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-//			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-//			dialog.setContentView(R.layout.dialog_upload_document);
-//
-//			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
-//			new ASSL(activity, frameLayout, 1134, 720, true);
-//
-//			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-//			layoutParams.dimAmount = 0.6f;
-//			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//			dialog.setCancelable(true);
-//			dialog.setCanceledOnTouchOutside(true);
-//
-//			LinearLayout LayoutCamera, LayoutGallery;
-//
-//			LayoutCamera = (LinearLayout) dialog.findViewById(R.id.LayoutCamera);
-//			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
-//
-//			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-//			btnCancel.setTypeface(Data.latoRegular(activity));
-//
-//
-//
-//			LayoutGallery.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View view) {
-//					chooseImageFromGallery();
-//					dialog.dismiss();
-//				}
-//
-//			});
-//			LayoutCamera.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					chooseImageFromCamera();
-//					dialog.dismiss();
-//				}
-//			});
-//
-//			btnCancel.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//
-//					dialog.dismiss();
-//				}
-//			});
-//
-//
-//			dialog.show();
-//
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+			LinearLayout LayoutCamera, LayoutGallery;
+
+			LayoutCamera = (LinearLayout) dialog.findViewById(R.id.LayoutCamera);
+			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
+
+			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
+
+
+
+			LayoutGallery.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					chooseImageFromGallery();
+					dialog.dismiss();
+				}
+
+			});
+			LayoutCamera.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					chooseImageFromCamera();
+					dialog.dismiss();
+				}
+			});
+
+			btnCancel.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					dialog.dismiss();
+				}
+			});
+
+
+			dialog.show();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	private void chooseImageFromCamera() {
 
-		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
-		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
-				activity.getRelativeLayoutContainer(), "top", "bottom");
+//		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
+//		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
+//				activity.getRelativeLayoutContainer(), "top", "bottom");
 
 
-//		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
-//		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
-//		imageChooserManager.setImageChooserListener(this);
-//		imageChooserManager.clearOldFiles();
-//		try {
-//			String filePath = imageChooserManager.choose();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
+		imageChooserManager.setImageChooserListener(this);
+		imageChooserManager.clearOldFiles();
+		try {
+			String filePath = imageChooserManager.choose();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -751,9 +752,20 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						// image.getFileThumbnail();
 						// image.getFileThumbnailSmall();
 
-						BitmapFactory.Options options = new BitmapFactory.Options();
-						options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-						Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
+						BitmapFactory.Options opt;
+						opt = new BitmapFactory.Options();
+						opt.inTempStorage = new byte[16 * 1024];
+						int height11 = Integer.parseInt(image.getMediaHeight());
+						int width11 = Integer.parseInt(image.getMediaWidth());
+						float mb = (width11 * height11) / 1024000;
+
+						if (mb > 4f)
+							opt.inSampleSize = 4;
+						else if (mb > 3f)
+							opt.inSampleSize = 2;
+
+						opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+						Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), opt);
 
 						Uri uri = Uri.fromFile(new File(image.getFilePathOriginal()));
 						int rotate = getCameraPhotoOrientation(activity, uri, image.getFilePathOriginal());
