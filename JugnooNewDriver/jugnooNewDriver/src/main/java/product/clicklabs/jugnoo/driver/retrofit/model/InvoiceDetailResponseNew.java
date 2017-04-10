@@ -37,6 +37,9 @@ public class InvoiceDetailResponseNew {
 	@SerializedName("total_trips")
 	@Expose
 	private Integer totalTrips;
+	@SerializedName("delivery_trips")
+	@Expose
+	private Integer totalDelivery;
 	@SerializedName("daily_breakup")
 	@Expose
 	private List<DailyBreakup> dailyBreakup = new ArrayList<DailyBreakup>();
@@ -173,6 +176,14 @@ public class InvoiceDetailResponseNew {
 	 */
 	public void setTotalTrips(Integer totalTrips) {
 		this.totalTrips = totalTrips;
+	}
+
+	public Integer getTotalDelivery() {
+		return totalDelivery;
+	}
+
+	public void setTotalDelivery(Integer totalDelivery) {
+		this.totalDelivery = totalDelivery;
 	}
 
 	/**

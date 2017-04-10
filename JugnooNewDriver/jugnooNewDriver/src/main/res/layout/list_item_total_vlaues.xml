@@ -172,7 +172,7 @@
                     android:textSize="32px"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewTrips"
+                    android:id="@+id/textViewDeliveryCount"
                     android:layout_width="225px"
                     android:layout_height="48px"
                     android:layout_below="@+id/textViewTripCount"
