@@ -163,8 +163,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getAccount()));
 
 					totalRides = dailyEarningResponse.getTotalTrips() - dailyEarningResponse.getTotalDelivery();
-					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides);
-					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+dailyEarningResponse.getTotalDelivery());
+					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides+" "+ activity.getResources().getString(R.string.rides));
+					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+dailyEarningResponse.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
 					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
 					if(dailyEarningResponse.getTrips().size() <= 0){
 						((ViewHolderHeader) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_rides_currently));
@@ -180,8 +180,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips());
 
 					totalRides = invoiceDetailResponseNew.getTotalTrips() - invoiceDetailResponseNew.getTotalDelivery();
-					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides);
-					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery());
+					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides+" "+ activity.getResources().getString(R.string.rides));
+					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
 
 					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
 					if(invoiceDetailResponseNew.getDailyBreakup().size() <= 0){

@@ -166,8 +166,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="8px"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:text="@string/NA"
+                    android:textAllCaps="true"
                     android:textColor="@color/black_text_v2"
                     android:textSize="32px"/>
 
@@ -177,11 +177,11 @@
                     android:layout_height="48px"
                     android:layout_below="@+id/textViewTripCount"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
                     android:layout_weight="1"
                     android:text="@string/trips"
-                    android:textColor="@color/grey_light_v2"
-                    android:textSize="30px"/>
+                    android:textAllCaps="true"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
 
             </RelativeLayout>
 
