@@ -2,8 +2,8 @@
 <manifest package="product.clicklabs.jugnoo.driver"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="279"
-          android:versionName="2.7.9">
+          android:versionCode="281"
+          android:versionName="2.8.1">
 
     <uses-sdk
         android:minSdkVersion="14"

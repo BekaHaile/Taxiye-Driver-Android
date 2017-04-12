@@ -3041,6 +3041,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutDeliveryOn.setVisibility(View.GONE);
 				Data.userData.setDeliveryAvailable(0);
 			}
+
+			int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
+			if(menuOptionVisibility == 1){
+				relativeLayoutDeliveryOn.setVisibility(View.GONE);
+			} else if(menuOptionVisibility == 2){
+				relativeLayoutAutosOn.setVisibility(View.GONE);
+			} else if(menuOptionVisibility == 3){
+				relativeLayoutDeliveryOn.setVisibility(View.VISIBLE);
+				relativeLayoutAutosOn.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
