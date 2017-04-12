@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/rate_card"
+            android:textColor="@color/white"
+            android:textSize="44px"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="4px">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="175px"
+            android:background="@color/white"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/textViewBeforeRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10px"
+                android:layout_marginLeft="30px"
+                android:text="@string/base_fare"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180px"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:layout_below="@+id/textViewBeforeRide"
+                android:gravity="center_vertical">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewPickupCharges"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewPickupChargesValues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+        android:id="@+id/imageViewHorizontal3"
+        android:layout_width="match_parent"
+        android:layout_height="15px"
+        android:layout_centerVertical="true"
+        android:background="@color/sliding_bottom_bg_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/textViewPerKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10px"
+                android:layout_marginLeft="30px"
+                android:layout_marginTop="10px"
+                android:text="@string/base_fare"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="40px"
+                android:layout_below="@+id/textViewPerKm"
+                android:gravity="center_vertical">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewKmValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewFareValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageViewHorizontal2"
+            android:layout_width="match_parent"
+            android:layout_height="15px"
+            android:layout_centerVertical="true"
+            android:background="@color/sliding_bottom_bg_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="175px"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewPerDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="10px"
+                android:layout_marginLeft="30px"
+                android:text="@string/base_fare"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180px"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="40px"
+                android:layout_below="@+id/textViewPerDelivery"
+                android:gravity="center_vertical">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewForAdditional"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewAdDeliveryFareValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/NA"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageViewHorizontal1"
+            android:layout_width="match_parent"
+            android:layout_height="15px"
+            android:layout_centerVertical="true"
+            android:background="@color/sliding_bottom_bg_color"/>
+
+    </LinearLayout>
+
+</LinearLayout>
