@@ -3631,6 +3631,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
 						startService(new Intent(this, DriverLocationUpdateService.class));
+						linearLayoutJugnooOff.setVisibility(View.GONE);
 					}
 
 					try {
