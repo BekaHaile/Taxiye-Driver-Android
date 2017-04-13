@@ -224,6 +224,7 @@
         android:layout_height="110px"
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_marginLeft="8px"
+        android:tag="mwar"
         android:background="@drawable/new_help_button"/>
 
 
