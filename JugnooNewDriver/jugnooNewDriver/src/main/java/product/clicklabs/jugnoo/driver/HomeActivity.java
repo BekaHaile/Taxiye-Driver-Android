@@ -273,8 +273,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	//Driver initial layout
 	RelativeLayout driverInitialLayout;
 	ListView driverRideRequestsList;
-	Button driverInitialMyLocationBtn, driverInformationBtn;
-	TextView jugnooOffText, temptext;
+	Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial;
+	TextView jugnooOffText, temptext, textViewDocText, textViewDocDayText;
 
 	DriverRequestListAdapter driverRequestListAdapter;
 
@@ -288,7 +288,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout driverEngagedLayout;
 
 	RelativeLayout perfectRidePassengerCallRl;
-	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
+	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions;
 	Button driverEngagedMyLocationBtn;
 
@@ -346,12 +346,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom,
+	RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
 			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer, relativeLayoutBatteryLow;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
-			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
+			 textViewRetryUSL, textViewEnterDestination;
 	Shader textShader;
 	double fixDeliveryDistance = -1;
 	double fixedDeliveryWaitTime = -1;
@@ -715,6 +715,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			jugnooOffText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			jugnooOffText.setVisibility(View.GONE);
 
+			buttonUploadOnInitial = (Button) findViewById(R.id.buttonUploadOnInitial);
+			linearLayoutJugnooOff = (LinearLayout) findViewById(R.id.linearLayoutJugnooOff);
+			textViewDocText = (TextView) findViewById(R.id.textViewDocText);
+			textViewDocText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewDocText.setVisibility(View.GONE);
+
+			textViewDocDayText = (TextView) findViewById(R.id.textViewDocDayText);
+			textViewDocDayText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewDocDayText.setVisibility(View.GONE);
+
 			driverRideRequestsList.setVisibility(View.GONE);
 
 			driverRequestListAdapter = new DriverRequestListAdapter();
@@ -926,8 +936,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewEnterDestination= (TextView) findViewById(R.id.textViewEnterDestination);
 			textViewEnterDestination.setTypeface(Data.latoRegular(this));
 
-			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
-			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 			linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
 			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
@@ -1458,6 +1466,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			buttonUploadOnInitial.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
+					intent.putExtra("access_token",Data.userData.accessToken);
+					intent.putExtra("in_side", true);
+					intent.putExtra("doc_required", 0);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
 
 			// driver accept layout events
 			driverRequestAcceptBackBtn.setOnClickListener(new OnClickListener() {
@@ -1532,18 +1552,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""))){
-				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
-				textViewHighDemandAreas.setText(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""));
-			}
-
-			relativeLayoutHighDemandAreas.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, HighDemandAreaActivity.class));
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				}
-			});
 
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
@@ -3096,6 +3104,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 								setDriverServiceRunOnOnlineBasis();
 								jugnooOffText.setVisibility(View.VISIBLE);
+								linearLayoutJugnooOff.setVisibility(View.VISIBLE);
+								if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""))){
+									textViewDocText.setVisibility(View.VISIBLE);
+									buttonUploadOnInitial.setVisibility(View.VISIBLE);
+									textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""));
+									if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""))){
+										textViewDocDayText.setVisibility(View.VISIBLE);
+										textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""));
+									}
+								} else {
+									textViewDocText.setVisibility(View.GONE);
+									textViewDocDayText.setVisibility(View.GONE);
+									buttonUploadOnInitial.setVisibility(View.GONE);
+								}
+
 								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
@@ -3109,6 +3132,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 								Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								setDriverServiceRunOnOnlineBasis();
+								linearLayoutJugnooOff.setVisibility(View.GONE);
 								jugnooOffText.setVisibility(View.GONE);
 								fetchHeatMapData(HomeActivity.this);
 								startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -4151,10 +4175,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(DriverScreenMode.D_INITIAL == mode ){
 				slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			} else {
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			}
 
 			if(rideCancelledByCustomer){
@@ -4438,6 +4460,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				setPannelVisibility(false);
 			} else {
 				setPannelVisibility(true);
+			}
+
+			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""))){
+				textViewDocText.setVisibility(View.VISIBLE);
+				buttonUploadOnInitial.setVisibility(View.VISIBLE);
+				textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE,""));
+				if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""))){
+					textViewDocDayText.setVisibility(View.VISIBLE);
+					textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT,""));
+				}
+			} else {
+				textViewDocText.setVisibility(View.GONE);
+				textViewDocDayText.setVisibility(View.GONE);
+				buttonUploadOnInitial.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4824,7 +4860,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
 					&& customerInfos.size() > 0) {
 				driverRideRequestsList.setVisibility(View.VISIBLE);
-				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
@@ -4832,7 +4867,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
-					relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 //					setPannelVisibility(true);
 				}
 				showDriverEarning();

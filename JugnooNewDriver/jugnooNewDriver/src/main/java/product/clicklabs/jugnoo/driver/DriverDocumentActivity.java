@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -208,6 +209,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
 										dialogLogin.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 									} else {
+										Prefs.with(DriverDocumentActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, jObj.optString("display_message", ""));
 										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
 											@Override
 											public void onClick(View v) {
