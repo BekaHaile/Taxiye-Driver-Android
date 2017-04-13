@@ -177,11 +177,14 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderHeader) holder).onlineTimeValue.setText(""+invoiceDetailResponseNew.getTotalDistanceTravelled()
 							+" "+ activity.getResources().getString(R.string.km));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount()));
-					((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips());
 
-//					totalRides = invoiceDetailResponseNew.getTotalTrips() - invoiceDetailResponseNew.getTotalDelivery();
-					((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.rides));
-					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
+					if(invoiceDetailResponseNew.getTotalDelivery() == -1){
+						((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.trips));
+						((ViewHolderHeader) holder).textViewDeliveryCount.setVisibility(View.GONE);
+					} else {
+						((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.rides));
+						((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
+					}
 
 					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
 					if(invoiceDetailResponseNew.getDailyBreakup().size() <= 0){

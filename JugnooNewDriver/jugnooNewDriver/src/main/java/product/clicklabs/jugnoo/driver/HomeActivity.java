@@ -581,6 +581,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
 			textViewSuperDrivers.setTypeface(Fonts.mavenRegular(this));
 			textViewSuperDrivers.setText(getStringText(R.string.super_driver));
+			if(Prefs.with(this).getInt(SPLabels.VEHICLE_TYPE,0) == 2){
+				textViewSuperDrivers.setText(getResources().getString(R.string.super_biker));
+			}
 
 			relativeLayoutDestination = (RelativeLayout) findViewById(R.id.relativeLayoutDestination);
 			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
