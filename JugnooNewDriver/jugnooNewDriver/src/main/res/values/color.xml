@@ -16,6 +16,7 @@
     <color name="black_text_shop">#1C1C1C</color>
     <color name="nl_white_dark">#E0E0E0</color>
     <color name="white_grey_v2">#e2e2e2</color>
+    <color name="darker_grey_v2">#e1e1e1</color>
     <color name="transparent_white">#50FFFFFF</color>
 
     <color name="white_translucent">#D8FFFFFF</color>

@@ -1,35 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/relative"
+<RelativeLayout android:id="@+id/relative"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
 
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
-            android:tag="mwar"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/rate_card"
-            android:textColor="@color/white"
-            android:textSize="44px"/>
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -52,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:padding="10px"
+                android:textAllCaps="true"
                 android:layout_marginLeft="30px"
                 android:text="@string/base_fare"
                 android:textColor="@color/new_orange"
@@ -62,6 +39,7 @@
                 android:layout_height="180px"
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
+                android:layout_marginTop="15px"
                 android:layout_below="@+id/textViewBeforeRide"
                 android:gravity="center_vertical">
 
@@ -70,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
 
                 <TextView
@@ -79,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
 
             </RelativeLayout>
@@ -104,20 +82,21 @@
                 android:id="@+id/textViewPerKm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:padding="10px"
                 android:layout_marginLeft="30px"
-                android:layout_marginTop="10px"
-                android:text="@string/base_fare"
+                android:layout_marginTop="30px"
+                android:textAllCaps="true"
+                android:text="@string/per_km_wo_brack"
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
             <RelativeLayout
+                android:id="@+id/relativeLayoutPerKm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="15px"
                 android:layout_marginBottom="40px"
                 android:layout_below="@+id/textViewPerKm"
                 android:gravity="center_vertical">
@@ -127,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
 
                 <TextView
@@ -136,8 +115,174 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
+
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:layout_width="650px"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="30px"
+                android:visibility="visible"
+                android:layout_below="@+id/relativeLayoutPerKm">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="110px"
+                    android:background="@color/white_dark1"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/grey_ticket_history"
+                        android:gravity="center"
+                        android:textSize="28px"
+                        android:text="@string/range_in_km"/>
+
+                    <ImageView
+                        android:layout_width="2px"
+                        android:layout_height="match_parent"
+                        android:background="@color/darker_grey_v2"/>
+
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/grey_ticket_history"
+                        android:gravity="center"
+                        android:textSize="28px"
+                        android:text="@string/per_km_fare"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_below="@+id/linearLayoutHeading"
+                    android:background="@color/darker_grey_v2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="210px"
+                    android:background="@color/sliding_bottom_bg_color"
+                    android:layout_below="@+id/linearLayoutHeading"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textViewRange1"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="match_parent"
+                            android:background="@color/darker_grey_v2"/>
+
+                        <TextView
+                            android:id="@+id/textViewFare1"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/darker_grey_v2"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textViewRange2"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="match_parent"
+                            android:background="@color/darker_grey_v2"/>
+
+                        <TextView
+                            android:id="@+id/textViewFare2"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/darker_grey_v2"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0px"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textViewRange3"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="match_parent"
+                            android:background="@color/darker_grey_v2"/>
+
+                        <TextView
+                            android:id="@+id/textViewFare3"
+                            android:layout_width="0px"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/grey_ticket_history"
+                            android:gravity="center"
+                            android:textSize="28px"
+                            android:text="@string/NA"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/darker_grey_v2"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -163,7 +308,8 @@
                 android:layout_centerVertical="true"
                 android:padding="10px"
                 android:layout_marginLeft="30px"
-                android:text="@string/base_fare"
+                android:text="@string/per_delivery"
+                android:textAllCaps="true"
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
@@ -172,6 +318,7 @@
                 android:layout_height="180px"
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
+                android:layout_marginTop="15px"
                 android:layout_below="@+id/textViewPerDelivery"
                 android:gravity="center_vertical">
 
@@ -180,7 +327,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
 
                 <TextView
@@ -189,7 +336,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="@string/NA"
-                    android:textColor="@color/black"
+                    android:textColor="@color/grey_ticket_history"
                     android:textSize="34px"/>
 
             </RelativeLayout>
@@ -205,4 +352,33 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="123px"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/textViewReturnfareText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_ticket_history"
+            android:layout_centerHorizontal="true"
+            android:textAllCaps="true"
+            android:gravity="center"
+            android:textSize="28px"
+            android:text="@string/return_fare_aplicable"/>
+
+        <TextView
+            android:id="@+id/textViewReturnFareValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewReturnfareText"
+            android:textColor="@color/grey_ticket_history"
+            android:layout_centerHorizontal="true"
+            android:textSize="28px"
+            android:text="@string/NA"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

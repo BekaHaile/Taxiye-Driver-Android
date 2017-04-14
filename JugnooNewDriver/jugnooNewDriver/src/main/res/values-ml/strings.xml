@@ -780,6 +780,11 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
+    <string name="range_in_km">Range (In km)</string>
+    <string name="return_fare_aplicable">Return Fare If Applicable</string>
+    <string name="per_km_wo_brack">PER Km</string>
+    <string name="per_delivery">Per Delivery</string>
+    <string name="per_km_fare">Per km fare</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
