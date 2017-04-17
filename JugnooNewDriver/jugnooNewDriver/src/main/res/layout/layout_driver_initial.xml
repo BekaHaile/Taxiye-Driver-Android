@@ -27,8 +27,6 @@
         android:layout_alignParentBottom="true">
 
 
-
-
         <RelativeLayout
             android:id="@+id/relativeLayoutHighDemandAreas"
             android:layout_width="match_parent"

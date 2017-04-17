@@ -99,15 +99,22 @@
                     android:layout_marginRight="22px"
                     android:src="@color/black_varient"/>
 
-                <TextView
-                    android:id="@+id/textViewAddress"
-                    android:layout_width="442px"
-                    android:layout_height="wrap_content"
-                    android:textSize="24px"
-                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                    android:textColor="@color/black_text_v2"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewAddress"
+                        android:layout_width="442px"
+                        android:layout_height="wrap_content"
+                        android:textSize="24px"
+                        android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                        android:textColor="@color/black_text_v2"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
+
 
             <ImageView
                 android:layout_width="match_parent"
@@ -115,6 +122,37 @@
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
                 android:background="@color/black_varient"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15px">
+
+
+                <TextView
+                    android:id="@+id/textViewItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="28px"
+                    android:layout_marginLeft="26px"
+                    android:layout_marginRight="26px"
+                    android:scrollbars="vertical"
+                    android:maxLines="12"
+                    android:paddingBottom="15px"
+                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                    android:textColor="@color/black_text_v2"/>
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5px"
+                    android:layout_marginLeft="25px"
+                    android:layout_marginRight="25px"
+                    android:layout_below="@+id/textViewItems"
+                    android:background="@color/black_varient"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/textViewTakeConfMessage"
