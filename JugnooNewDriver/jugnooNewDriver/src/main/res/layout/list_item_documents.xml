@@ -18,7 +18,7 @@
             android:id="@+id/relativeLayoutSelectPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="28px"
+            android:background="@drawable/background_white_white_dark_selector"
             android:gravity="center_horizontal">
 
             <TextView
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="52px"
                 android:text="@string/Document_type"
                 android:textColor="@color/document_text_color"
                 android:textSize="36px"
@@ -63,9 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docType"
-                android:layout_marginBottom="24px"
+                android:layout_marginBottom="34px"
                 android:layout_marginTop="32px"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="52px"
                 android:text="@string/Requirement"
                 android:textColor="@color/grey_black_light"
                 android:textSize="24px"
@@ -259,7 +259,6 @@
             android:id="@+id/bottomLine"
             android:layout_width="match_parent"
             android:layout_height="3px"
-            android:layout_marginTop="22px"
             android:background="@color/grey_light"/>
 
     </LinearLayout>
