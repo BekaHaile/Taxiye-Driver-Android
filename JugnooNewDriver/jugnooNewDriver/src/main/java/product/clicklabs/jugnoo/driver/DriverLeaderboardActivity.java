@@ -17,10 +17,12 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboardData;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardAreaMode;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardMode;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class DriverLeaderboardActivity extends BaseFragmentActivity implements FlurryEventNames {
 
@@ -67,8 +69,9 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 		buttonBack = (Button) findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Data.latoRegular(this));
-
-
+		if(Prefs.with(this).getInt(SPLabels.VEHICLE_TYPE,0) == 2){
+			textViewTitle.setText(getResources().getString(R.string.super_biker));
+		}
 		textViewPositionTop = (TextView) findViewById(R.id.textViewPositionTop);
 		textViewPositionTop.setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewPositions)).setTypeface(Data.latoRegular(this));

@@ -151,7 +151,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
 		RelativeLayout relative, relativeLayoutImageStatus;
 		LinearLayout rideHistoryItem;
-		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
+		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
+				imageViewDocStatusImage, imageViewAddImageDisabled;
 		int id;
 	}
 
@@ -197,6 +198,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
+				holder.imageViewDocStatusImage = (ImageView) convertView.findViewById(R.id.imageViewDocStatusImage);
+				holder.imageViewAddImageDisabled = (ImageView) convertView.findViewById(R.id.imageViewAddImageDisabled);
 
 				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
 				holder.deleteImage1.setTag(holder);
@@ -242,9 +245,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			if(docInfo.docCount<2){
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
+			//MAIN THODI DER MEIN AAUNGA
 
 			if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+				holder.docType.setText(docInfo.docType+"*");
+			} else if (docInfo.docRequirement == 4) {
+				holder.docRequirement.setText(getResources().getString(R.string.required));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
@@ -256,29 +263,30 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			holder.addImageLayout.setVisibility(View.VISIBLE);
 			holder.addImageLayout2.setVisibility(View.VISIBLE);
-			holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white);
 
 			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
 				holder.docStatus.setText(getResources().getString(R.string.uploaded));
-				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
+				holder.imageViewDocStatusImage.setVisibility(View.VISIBLE);
+				holder.imageViewDocStatusImage.setImageResource(R.drawable.uploaded_doc_status);
+				holder.docStatus.setTextColor(getResources().getColor(R.color.green_doc_status));
 			} else if (docInfo.status.equalsIgnoreCase("2")) {
 				holder.docStatus.setText(getResources().getString(R.string.rejected));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_rejected);
 				holder.docRejected.setVisibility(View.VISIBLE);
+				holder.imageViewDocStatusImage.setVisibility(View.VISIBLE);
+				holder.imageViewDocStatusImage.setImageResource(R.drawable.rejected_doc_status);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 			} else if (docInfo.status.equalsIgnoreCase("3")) {
 				holder.docStatus.setText(getResources().getString(R.string.verified));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_verified);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.green_delivery));
+				holder.docStatus.setTextColor(getResources().getColor(R.color.green_doc_status));
+				holder.imageViewDocStatusImage.setVisibility(View.GONE);
 			} else if (docInfo.status.equalsIgnoreCase("1")) {
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
-			} else {
-				if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
-					holder.rideHistoryItem.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				}
+				holder.imageViewDocStatusImage.setVisibility(View.GONE);
+				holder.docStatus.setTextColor(getResources().getColor(R.color.document_text_color));
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
@@ -424,6 +432,20 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docRequirement.setVisibility(View.VISIBLE);
 			}
 
+			if (docInfo.status.equalsIgnoreCase("3") || docInfo.status.equalsIgnoreCase("1")) {
+				holder.addImageLayout.setVisibility(View.GONE);
+				holder.deleteImage1.setVisibility(View.GONE);
+				holder.addImageLayout2.setVisibility(View.GONE);
+				holder.deleteImage2.setVisibility(View.GONE);
+				holder.docType.setTextColor(getResources().getColor(R.color.grey_light_doc_status));
+				holder.imageViewDocStatus.setVisibility(View.VISIBLE);
+			} else {
+				holder.addImageLayout.setVisibility(View.VISIBLE);
+				holder.addImageLayout2.setVisibility(View.VISIBLE);
+				holder.imageViewDocStatus.setVisibility(View.GONE);
+				holder.docType.setTextColor(getResources().getColor(R.color.document_text_color));
+			}
+
 			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
 				docInfo.isExpended = false;
 			}
@@ -541,6 +563,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			});
 
+			if(holder.deleteImage2.getVisibility() == View.VISIBLE){
+				holder.imageViewAddImageDisabled.setVisibility(View.VISIBLE);
+			} else {
+				holder.imageViewAddImageDisabled.setVisibility(View.GONE);
+			}
+
 			return convertView;
 		}
 
@@ -559,7 +587,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		try {
 			progressBar.setVisibility(View.VISIBLE);
 			String isRequired = String.valueOf(requirement);
-			RestClient.getApiServices().docRequest(accessToken, isRequired, new Callback<DocRequirementResponse>() {
+			RestClient.getApiServices().docRequest(accessToken, isRequired, Data.appVersion, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
@@ -1005,7 +1033,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									   int quality, int index) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
-		File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+		long index2 = System.currentTimeMillis();
+		File f = new File(context.getExternalCacheDir(), "temp" + index2 + ".jpg");
 		try {
 			f.createNewFile();
 			byte[] bitmapdata = os.toByteArray();
