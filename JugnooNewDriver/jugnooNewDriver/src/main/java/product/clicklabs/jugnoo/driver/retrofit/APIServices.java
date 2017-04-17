@@ -464,6 +464,7 @@ public interface APIServices {
 	@POST("/fetch_required_docs")
 	void docRequest(@Field("access_token") String accessToken,
 					@Field("login_documents") String isRequired,
+					@Field("app_version") int appVersion,
 					Callback<DocRequirementResponse> callback);
 
 	@Multipart
