@@ -109,7 +109,7 @@
                 android:layout_marginLeft="44px"
                 android:layout_marginRight="28px"
                 android:layout_marginTop="10px"
-                android:background="@drawable/add_img_big"
+                android:background="@drawable/add_img_selector"
                 android:orientation="vertical"
                 android:padding="0px"
                 android:visibility="visible">
@@ -191,7 +191,7 @@
                 android:layout_marginRight="28px"
                 android:layout_marginTop="10px"
                 android:layout_toRightOf="@+id/addImageLayout"
-                android:background="@drawable/add_img_big"
+                android:background="@drawable/add_img_selector"
                 android:tag="mwar">
 
                 <ImageView
