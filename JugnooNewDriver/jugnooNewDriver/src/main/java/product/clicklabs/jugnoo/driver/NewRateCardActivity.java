@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.NotificationFragmentAdapter;
+import product.clicklabs.jugnoo.driver.adapters.RateCardFragmentAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -34,7 +35,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
     private Button backBtn;
 
 	ViewPager viewPager;
-	NotificationFragmentAdapter notificationFragmentAdapter;
+	RateCardFragmentAdapter rateCardFragmentAdapter;
 	PagerSlidingTabStrip tabs;
 
 	@Override
@@ -74,8 +75,8 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		});
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		notificationFragmentAdapter = new NotificationFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
-		viewPager.setAdapter(notificationFragmentAdapter);
+		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
+		viewPager.setAdapter(rateCardFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));

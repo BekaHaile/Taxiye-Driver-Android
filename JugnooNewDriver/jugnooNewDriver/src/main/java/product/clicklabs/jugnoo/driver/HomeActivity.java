@@ -1332,7 +1332,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
+					startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}

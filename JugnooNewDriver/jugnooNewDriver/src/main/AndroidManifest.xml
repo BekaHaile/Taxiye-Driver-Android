@@ -241,11 +241,11 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity
-            android:name=".DriverRateCard"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".DriverRateCard"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:screenOrientation="portrait">-->
+        <!--</activity>-->
 
         <activity
             android:name=".HighDemandAreaActivity"
@@ -267,6 +267,12 @@
 
         <activity
             android:name=".DriverTicketHistory"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".NewRateCardActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
