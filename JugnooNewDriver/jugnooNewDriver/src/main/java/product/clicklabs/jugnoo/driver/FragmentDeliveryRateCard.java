@@ -13,7 +13,10 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -26,8 +29,12 @@ import retrofit.mime.TypedByteArray;
 
 public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
-	LinearLayout basefare_extras, perKm_extras, perDelivery_extras;
-	RelativeLayout relative, relativeLayoutRange;
+	LinearLayout basefare_extras, perKm_extras, perDelivery_extras, pickupWaitTime_extras, pickupDistanceFare_extras,
+			loadingFare_extras, unLoadingFare_extras;
+
+	RelativeLayout relative, relativeLayoutRange, relativelayoutBaseFare, relativelayoutPerDelivery, relativelayoutReturnFare,
+			relativeLayoutPickupWaitTime, relativeLayoutPickupDistanceFare, relativeLayoutLoadingFare, relativeLayoutUnLoadingFare;
+
 	TextView textViewPickupChargesValues, textViewFareValue, textViewAdDeliveryFareValue, textViewReturnfareText;
 
 	NewRateCardActivity activity;
@@ -59,6 +66,10 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		perDelivery_extras = (LinearLayout) rootView.findViewById(R.id.perDelivery_extras);
 		perKm_extras = (LinearLayout) rootView.findViewById(R.id.perKm_extras);
 		basefare_extras = (LinearLayout) rootView.findViewById(R.id.basefare_extras);
+		pickupWaitTime_extras = (LinearLayout) rootView.findViewById(R.id.pickupWaitTime_extras);
+		pickupDistanceFare_extras = (LinearLayout) rootView.findViewById(R.id.pickupDistanceFare_extras);
+		loadingFare_extras = (LinearLayout) rootView.findViewById(R.id.loadingFare_extras);
+		unLoadingFare_extras = (LinearLayout) rootView.findViewById(R.id.unLoadingFare_extras);
 		relativeLayoutRange = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutRange);
 
 		textViewPickupChargesValues = (TextView) rootView.findViewById(R.id.textViewPickupChargesValues);
@@ -90,6 +101,91 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 	public void onBackPressed() {
 		performBackPressed();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		ASSL.closeActivity(relative);
+		System.gc();
+	}
+
+//	Retrofit
+
+
+	public void updateData(DeliveryRateCardResponse rateCardResponse) {
+
+		if (rateCardResponse != null) {
+			DeliveryRateCardResponse.Data data = rateCardResponse.getData();
+
+			if(data.getBaseFare() != null){
+				setFares(data.getBaseFare(), basefare_extras);
+
+			} else {
+				relativelayoutBaseFare.setVisibility(View.GONE);
+			}
+
+			if(data.getDistanceFare() != null){
+
+			} else {
+				relativeLayoutRange.setVisibility(View.GONE);
+			}
+
+			if(data.getDeliveryFare() != null){
+
+			} else {
+				relativelayoutPerDelivery.setVisibility(View.GONE);
+			}
+
+			if(data.getReturnFare() != null){
+
+			} else {
+				relativelayoutReturnFare.setVisibility(View.GONE);
+			}
+
+			if(data.getPickupDistanceFare() != null){
+
+			} else {
+				relativeLayoutPickupDistanceFare.setVisibility(View.GONE);
+			}
+
+			if(data.getPickupWaitTimeFare() != null){
+
+			} else {
+				relativeLayoutPickupWaitTime.setVisibility(View.GONE);
+			}
+
+			if(data.getLoadingFare() != null){
+
+			} else {
+				relativeLayoutLoadingFare.setVisibility(View.GONE);
+			}
+
+			if(data.getUnloadingFare() != null){
+
+			} else {
+				relativeLayoutUnLoadingFare.setVisibility(View.GONE);
+			}
+
+		} else {
+			performBackPressed();
+		}
+
+	}
+
+	public void setFares(List<DeliveryRateCardResponse.Data.Fare> fare, LinearLayout ll){
+		for(int i=0; i< fare.size(); i++){
+			ll.addView(getAdditionalTimeData(fare.get(i).getTimeInterval()));
+			List<DeliveryRateCardResponse.Data.Slot> slots = fare.get(i).getSlots();
+			for(int j =0; j< slots.size(); j++){
+				if(j==0){
+					ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
+				} else {
+					ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
+				}
+			}
+		}
+
 	}
 
 	private View getAdditionalData(boolean first, String left, String right) {
@@ -126,32 +222,11 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	}
 
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		ASSL.closeActivity(relative);
-		System.gc();
-	}
-
-//	Retrofit
-
-
-	public void updateData(RateCardResponse rateCardResponse) {
-
-		if (rateCardResponse != null) {
-
-
-		} else {
-			performBackPressed();
-		}
-
-	}
-
 	private void getRateCardDetails(final Activity activity) {
 		try {
-			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<RateCardResponse>() {
+			RestClient.getApiServices().deliveryRateCardDetail(Data.userData.accessToken, new Callback<DeliveryRateCardResponse>() {
 				@Override
-				public void success(RateCardResponse rateCardResponse, Response response) {
+				public void success(DeliveryRateCardResponse rateCardResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;

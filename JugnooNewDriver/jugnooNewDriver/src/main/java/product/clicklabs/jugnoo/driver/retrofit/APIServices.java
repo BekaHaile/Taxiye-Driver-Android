@@ -7,6 +7,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -591,4 +592,8 @@ public interface APIServices {
 	void getDriverTicketsAsync(@FieldMap Map<String, String> params,
 							Callback<TicketResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/show_delivery_rate_card")
+	void deliveryRateCardDetail(@Field("access_token") String accessToken,
+						Callback<DeliveryRateCardResponse> callback);
 }
