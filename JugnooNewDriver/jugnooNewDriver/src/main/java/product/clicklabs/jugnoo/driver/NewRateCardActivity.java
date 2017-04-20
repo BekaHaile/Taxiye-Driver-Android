@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,19 +38,16 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 	ViewPager viewPager;
 	RateCardFragmentAdapter rateCardFragmentAdapter;
 	PagerSlidingTabStrip tabs;
+	ImageView imageViewSeprator;
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Notification opened");
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
     @Override
@@ -77,12 +75,14 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(rateCardFragmentAdapter);
-
+		imageViewSeprator = (ImageView) findViewById(R.id.imageViewSeprator);
+		imageViewSeprator.setVisibility(View.GONE);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
-		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
+		tabs.setIndicatorColor(getResources().getColor(R.color.red_v2));
+		tabs.setTextColorResource(R.color.red_v2, R.color.white);
 		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
+		tabs.setBackgroundColor(getResources().getColor(R.color.black_top_bar_bg));
 
 		try {
 			if(getIntent().getExtras().getInt("trick_page") ==1){
@@ -102,11 +102,9 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 			public void onPageSelected(int position) {
 				if (position == 0) {
 					NudgeClient.trackEvent(NewRateCardActivity.this, FlurryEventNames.NUDGE_NOTIFICATION, null);
-					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_MESSAGE);
 					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.MESSAGE, null);
 				} else if (position == 1) {
 					NudgeClient.trackEvent(NewRateCardActivity.this, FlurryEventNames.NUDGE_HINTS, null);
-					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_TIP_TO_EARN);
 					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.TIPS_TO_EARN, null);
 				}
 			}

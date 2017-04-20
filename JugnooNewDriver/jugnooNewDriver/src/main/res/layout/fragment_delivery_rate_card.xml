@@ -3,40 +3,44 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/sliding_bottom_bg_color"
               android:orientation="vertical">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12px">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical"
+        android:background="@color/sliding_bottom_bg_color"
         android:padding="4px">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="175px"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center">
-
 
             <TextView
                 android:id="@+id/textViewBeforeRide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="10px"
+                android:padding="8px"
                 android:textAllCaps="true"
-                android:layout_marginLeft="30px"
+                android:layout_marginLeft="32px"
+                android:layout_marginTop="24px"
                 android:text="@string/base_fare"
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
             <RelativeLayout
+                android:id="@+id/relativeLayoutBaseFareValues"
                 android:layout_width="match_parent"
-                android:layout_height="180px"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
                 android:layout_marginTop="15px"
@@ -62,29 +66,40 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/basefare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativeLayoutBaseFareValues"
+                android:layout_marginTop="24px"
+                android:layout_marginBottom="30px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
         </RelativeLayout>
 
         <ImageView
         android:id="@+id/imageViewHorizontal3"
         android:layout_width="match_parent"
-        android:layout_height="15px"
+        android:layout_height="12px"
         android:layout_centerVertical="true"
         android:background="@color/sliding_bottom_bg_color"/>
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center">
 
-
             <TextView
                 android:id="@+id/textViewPerKm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10px"
-                android:layout_marginLeft="30px"
-                android:layout_marginTop="30px"
+                android:padding="8px"
+                android:layout_marginLeft="32px"
+                android:layout_marginTop="24px"
                 android:textAllCaps="true"
                 android:text="@string/per_km_wo_brack"
                 android:textColor="@color/new_orange"
@@ -97,7 +112,6 @@
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
                 android:layout_marginTop="15px"
-                android:layout_marginBottom="40px"
                 android:layout_below="@+id/textViewPerKm"
                 android:gravity="center_vertical">
 
@@ -119,191 +133,30 @@
                     android:textSize="34px"/>
 
             </RelativeLayout>
-            
-            <RelativeLayout
-                android:id="@+id/relativeLayoutFareRange"
-                android:layout_width="650px"
+
+            <LinearLayout
+                android:id="@+id/perKm_extras"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_below="@+id/relativeLayoutPerKm"
                 android:layout_marginBottom="30px"
-                android:visibility="visible"
-                android:layout_below="@+id/relativeLayoutPerKm">
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutHeading"
-                    android:layout_width="match_parent"
-                    android:layout_height="110px"
-                    android:background="@color/white_dark1"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/textViewRangeText"
-                        android:layout_width="0px"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/grey_ticket_history"
-                        android:gravity="center"
-                        android:textSize="28px"
-                        android:text="@string/range_in_km"/>
-
-                    <ImageView
-                        android:layout_width="2px"
-                        android:layout_height="match_parent"
-                        android:background="@color/darker_grey_v2"/>
-
-                    <TextView
-                        android:id="@+id/textViewPerKmText"
-                        android:layout_width="0px"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/grey_ticket_history"
-                        android:gravity="center"
-                        android:textSize="28px"
-                        android:text="@string/per_km_fare"/>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_below="@+id/linearLayoutHeading"
-                    android:background="@color/darker_grey_v2"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="210px"
-                    android:background="@color/sliding_bottom_bg_color"
-                    android:layout_below="@+id/linearLayoutHeading"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:id="@+id/linearLayoutRange1"
-                        android:layout_width="match_parent"
-                        android:layout_height="0px"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/textViewRange1"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                        <ImageView
-                            android:layout_width="2px"
-                            android:layout_height="match_parent"
-                            android:background="@color/darker_grey_v2"/>
-
-                        <TextView
-                            android:id="@+id/textViewFare1"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:background="@color/darker_grey_v2"/>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutRange2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0px"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/textViewRange2"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                        <ImageView
-                            android:layout_width="2px"
-                            android:layout_height="match_parent"
-                            android:background="@color/darker_grey_v2"/>
-
-                        <TextView
-                            android:id="@+id/textViewFare2"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:background="@color/darker_grey_v2"/>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutRange3"
-                        android:layout_width="match_parent"
-                        android:layout_height="0px"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/textViewRange3"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                        <ImageView
-                            android:layout_width="2px"
-                            android:layout_height="match_parent"
-                            android:background="@color/darker_grey_v2"/>
-
-                        <TextView
-                            android:id="@+id/textViewFare3"
-                            android:layout_width="0px"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/grey_ticket_history"
-                            android:gravity="center"
-                            android:textSize="28px"
-                            android:text="@string/NA"/>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:background="@color/darker_grey_v2"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
+                android:layout_marginTop="24px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
 
         </RelativeLayout>
 
         <ImageView
             android:id="@+id/imageViewHorizontal2"
             android:layout_width="match_parent"
-            android:layout_height="15px"
+            android:layout_height="12px"
             android:layout_centerVertical="true"
             android:background="@color/sliding_bottom_bg_color"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="175px"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:gravity="center">
 
@@ -311,17 +164,18 @@
                 android:id="@+id/textViewPerDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:padding="10px"
-                android:layout_marginLeft="30px"
+                android:padding="8px"
+                android:layout_marginLeft="32px"
+                android:layout_marginTop="24px"
                 android:text="@string/per_delivery"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
             <RelativeLayout
+                android:id="@+id/relativelayoutPerDeliveryThresh"
                 android:layout_width="match_parent"
-                android:layout_height="180px"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="40px"
                 android:layout_marginRight="40px"
                 android:layout_marginTop="15px"
@@ -347,6 +201,17 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/perDelivery_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayoutPerDeliveryThresh"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="24px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
         </RelativeLayout>
 
         <ImageView
@@ -358,10 +223,14 @@
 
     </LinearLayout>
 
+    </ScrollView>
+
     <RelativeLayout
+        android:id="@+id/relativeLayoutFooter"
         android:layout_width="match_parent"
-        android:layout_height="123px"
+        android:layout_height="110px"
         android:gravity="center"
+        android:background="@color/white"
         android:layout_alignParentBottom="true">
 
         <TextView

@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -24,10 +26,9 @@ import retrofit.mime.TypedByteArray;
 
 public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
-	LinearLayout linearLayoutRange1, linearLayoutRange2, linearLayoutRange3;
-	RelativeLayout relativeLayoutFareRange, relative;
-	TextView textViewPickupChargesValues, textViewFareValue, textViewRange1, textViewRange2,
-			textViewRange3, textViewFare1, textViewFare2, textViewFare3, textViewAdDeliveryFareValue, textViewReturnfareText;
+	LinearLayout basefare_extras, perKm_extras, perDelivery_extras;
+	RelativeLayout relative, relativeLayoutRange;
+	TextView textViewPickupChargesValues, textViewFareValue, textViewAdDeliveryFareValue, textViewReturnfareText;
 
 	NewRateCardActivity activity;
 	private View rootView;
@@ -50,34 +51,20 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_delivery_rate_card, container, false);
 		activity = (NewRateCardActivity) getActivity();
-
 		relative = (RelativeLayout) rootView.findViewById(R.id.relative);
+
 		new ASSL(activity, relative, 1134, 720, false);
 
 
-		linearLayoutRange1 = (LinearLayout) rootView.findViewById(R.id.linearLayoutRange1);
-		linearLayoutRange2 = (LinearLayout) rootView.findViewById(R.id.linearLayoutRange2);
-		linearLayoutRange3 = (LinearLayout) rootView.findViewById(R.id.linearLayoutRange3);
-
-		relativeLayoutFareRange = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutFareRange);
+		perDelivery_extras = (LinearLayout) rootView.findViewById(R.id.perDelivery_extras);
+		perKm_extras = (LinearLayout) rootView.findViewById(R.id.perKm_extras);
+		basefare_extras = (LinearLayout) rootView.findViewById(R.id.basefare_extras);
+		relativeLayoutRange = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutRange);
 
 		textViewPickupChargesValues = (TextView) rootView.findViewById(R.id.textViewPickupChargesValues);
 		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(activity));
 		textViewFareValue = (TextView) rootView.findViewById(R.id.textViewFareValue);
 		textViewFareValue.setTypeface(Fonts.mavenRegular(activity));
-		textViewRange1 = (TextView) rootView.findViewById(R.id.textViewRange1);
-		textViewRange1.setTypeface(Fonts.mavenRegular(activity));
-		textViewRange2 = (TextView) rootView.findViewById(R.id.textViewRange2);
-		textViewRange2.setTypeface(Fonts.mavenRegular(activity));
-		textViewRange3 = (TextView) rootView.findViewById(R.id.textViewRange3);
-		textViewRange3.setTypeface(Fonts.mavenRegular(activity));
-		textViewFare1 = (TextView) rootView.findViewById(R.id.textViewFare1);
-		textViewFare1.setTypeface(Fonts.mavenRegular(activity));
-		textViewFare2 = (TextView) rootView.findViewById(R.id.textViewFare2);
-		textViewFare2.setTypeface(Fonts.mavenRegular(activity));
-
-		textViewFare3 = (TextView) rootView.findViewById(R.id.textViewFare3);
-		textViewFare3.setTypeface(Fonts.mavenRegular(activity));
 		textViewAdDeliveryFareValue = (TextView) rootView.findViewById(R.id.textViewAdDeliveryFareValue);
 		textViewAdDeliveryFareValue.setTypeface(Fonts.mavenRegular(activity));
 
@@ -88,8 +75,6 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPerKm)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewRangeText)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewPerKmText)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPerDelivery)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewForAdditional)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewReturnfareText)).setTypeface(Fonts.mavenRegular(activity));
@@ -107,6 +92,39 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		performBackPressed();
 	}
 
+	private View getAdditionalData(boolean first, String left, String right) {
+		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = layoutInflater.inflate(R.layout.item_additional_fare_view, null, false);
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.main_layout);
+		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
+		TextView rightText = (TextView) view.findViewById(R.id.right_text_view);
+		View topLine = view.findViewById(R.id.top_line);
+		topLine.setVisibility(View.GONE);
+		if(first) {
+			topLine.setVisibility(View.VISIBLE);
+			leftText.setTextColor(activity.getResources().getColor(R.color.grey_ticket_history));
+			rightText.setTextColor(activity.getResources().getColor(R.color.grey_ticket_history));
+			leftText.setBackgroundResource(R.color.darker_grey_v2);
+			rightText.setBackgroundResource(R.color.darker_grey_v2);
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dpToPx(activity,60));
+			layout.setLayoutParams(layoutParams);
+		}
+		leftText.setText(left);
+		rightText.setText(right);
+		return view;
+	}
+
+	private View getAdditionalTimeData(String left) {
+		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = layoutInflater.inflate(R.layout.item_additional_time_slot_view, null, false);
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.main_layout);
+		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
+		View topLine = view.findViewById(R.id.top_line);
+		topLine.setVisibility(View.GONE);
+		leftText.setText(left);
+		return view;
+	}
+
 
 	@Override
 	public void onDestroy() {
@@ -114,7 +132,6 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		ASSL.closeActivity(relative);
 		System.gc();
 	}
-
 
 //	Retrofit
 
