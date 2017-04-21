@@ -7,9 +7,52 @@ import com.google.gson.annotations.SerializedName;
 
 public class DeliveryRateCardResponse {
 
+	@SerializedName("flag")
+	@Expose
+	private Integer flag;
+	@SerializedName("message")
+	@Expose
+	private String message;
 	@SerializedName("data")
 	@Expose
 	private Data data;
+
+	/**
+	 *
+	 * @return
+	 * The flag
+	 */
+	public Integer getFlag() {
+		return flag;
+	}
+
+	/**
+	 *
+	 * @param flag
+	 * The flag
+	 */
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 *
+	 * @param message
+	 * The message
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 
 	public Data getData() {
 		return data;

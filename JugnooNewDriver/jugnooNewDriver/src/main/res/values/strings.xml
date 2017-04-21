@@ -838,6 +838,8 @@
 	<string name="un_loading_fare">un loading fare</string>
 	<string name="loading_fare">loading fare</string>
 	<string name="pickup_distance_fare">pickup distance fare</string>
+	<string name="range">Range</string>
+	<string name="value">Value</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

@@ -10,14 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.json.JSONObject;
-
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -30,12 +27,10 @@ import retrofit.mime.TypedByteArray;
 public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 	LinearLayout basefare_extras, perKm_extras, perDelivery_extras, pickupWaitTime_extras, pickupDistanceFare_extras,
-			loadingFare_extras, unLoadingFare_extras;
+			loadingFare_extras, unLoadingFare_extras, returnFare_extras;
 
 	RelativeLayout relative, relativeLayoutRange, relativelayoutBaseFare, relativelayoutPerDelivery, relativelayoutReturnFare,
 			relativeLayoutPickupWaitTime, relativeLayoutPickupDistanceFare, relativeLayoutLoadingFare, relativeLayoutUnLoadingFare;
-
-	TextView textViewPickupChargesValues, textViewFareValue, textViewAdDeliveryFareValue, textViewReturnfareText;
 
 	NewRateCardActivity activity;
 	private View rootView;
@@ -57,38 +52,36 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_delivery_rate_card, container, false);
-		activity = (NewRateCardActivity) getActivity();
 		relative = (RelativeLayout) rootView.findViewById(R.id.relative);
-
+		activity = (NewRateCardActivity) getActivity();
 		new ASSL(activity, relative, 1134, 720, false);
 
-
-		perDelivery_extras = (LinearLayout) rootView.findViewById(R.id.perDelivery_extras);
 		perKm_extras = (LinearLayout) rootView.findViewById(R.id.perKm_extras);
 		basefare_extras = (LinearLayout) rootView.findViewById(R.id.basefare_extras);
-		pickupWaitTime_extras = (LinearLayout) rootView.findViewById(R.id.pickupWaitTime_extras);
-		pickupDistanceFare_extras = (LinearLayout) rootView.findViewById(R.id.pickupDistanceFare_extras);
+		returnFare_extras = (LinearLayout) rootView.findViewById(R.id.returnFare_extras);
+		perDelivery_extras = (LinearLayout) rootView.findViewById(R.id.perDelivery_extras);
 		loadingFare_extras = (LinearLayout) rootView.findViewById(R.id.loadingFare_extras);
 		unLoadingFare_extras = (LinearLayout) rootView.findViewById(R.id.unLoadingFare_extras);
+		pickupWaitTime_extras = (LinearLayout) rootView.findViewById(R.id.pickupWaitTime_extras);
+		pickupDistanceFare_extras = (LinearLayout) rootView.findViewById(R.id.pickupDistanceFare_extras);
+
 		relativeLayoutRange = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutRange);
+		relativelayoutBaseFare = (RelativeLayout) rootView.findViewById(R.id.relativelayoutBaseFare);
+		relativelayoutReturnFare = (RelativeLayout) rootView.findViewById(R.id.relativelayoutReturnFare);
+		relativeLayoutLoadingFare = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutLoadingFare);
+		relativelayoutPerDelivery = (RelativeLayout) rootView.findViewById(R.id.relativelayoutPerDelivery);
+		relativeLayoutUnLoadingFare = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutUnLoadingFare);
+		relativeLayoutPickupWaitTime = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutPickupWaitTime);
+		relativeLayoutPickupDistanceFare = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutPickupDistanceFare);
 
-		textViewPickupChargesValues = (TextView) rootView.findViewById(R.id.textViewPickupChargesValues);
-		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(activity));
-		textViewFareValue = (TextView) rootView.findViewById(R.id.textViewFareValue);
-		textViewFareValue.setTypeface(Fonts.mavenRegular(activity));
-		textViewAdDeliveryFareValue = (TextView) rootView.findViewById(R.id.textViewAdDeliveryFareValue);
-		textViewAdDeliveryFareValue.setTypeface(Fonts.mavenRegular(activity));
-
-		textViewReturnfareText = (TextView) rootView.findViewById(R.id.textViewReturnfareText);
-		textViewReturnfareText.setTypeface(Fonts.mavenRegular(activity));
-
-
-		((TextView) rootView.findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPerKm)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewReturnFare)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewLoadingFare)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPerDelivery)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewForAdditional)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewReturnfareText)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewUnLoadingFare)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewPickupWaitTime)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewPickupDistanceFare)).setTypeface(Fonts.mavenRegular(activity));
 
 		getRateCardDetails(activity);
 		return rootView;
@@ -126,43 +119,43 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 			}
 
 			if(data.getDistanceFare() != null){
-
+				setFares(data.getDistanceFare(), perKm_extras);
 			} else {
 				relativeLayoutRange.setVisibility(View.GONE);
 			}
 
 			if(data.getDeliveryFare() != null){
-
+				setFares(data.getDeliveryFare(), perDelivery_extras);
 			} else {
 				relativelayoutPerDelivery.setVisibility(View.GONE);
 			}
 
 			if(data.getReturnFare() != null){
-
+				setFares(data.getReturnFare(), returnFare_extras);
 			} else {
 				relativelayoutReturnFare.setVisibility(View.GONE);
 			}
 
 			if(data.getPickupDistanceFare() != null){
-
+				setFares(data.getPickupDistanceFare(), pickupDistanceFare_extras);
 			} else {
 				relativeLayoutPickupDistanceFare.setVisibility(View.GONE);
 			}
 
 			if(data.getPickupWaitTimeFare() != null){
-
+				setFares(data.getPickupWaitTimeFare(), pickupWaitTime_extras);
 			} else {
 				relativeLayoutPickupWaitTime.setVisibility(View.GONE);
 			}
 
 			if(data.getLoadingFare() != null){
-
+				setFares(data.getLoadingFare(), loadingFare_extras);
 			} else {
 				relativeLayoutLoadingFare.setVisibility(View.GONE);
 			}
 
 			if(data.getUnloadingFare() != null){
-
+				setFares(data.getUnloadingFare(), unLoadingFare_extras);
 			} else {
 				relativeLayoutUnLoadingFare.setVisibility(View.GONE);
 			}
@@ -175,13 +168,20 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 	public void setFares(List<DeliveryRateCardResponse.Data.Fare> fare, LinearLayout ll){
 		for(int i=0; i< fare.size(); i++){
-			ll.addView(getAdditionalTimeData(fare.get(i).getTimeInterval()));
 			List<DeliveryRateCardResponse.Data.Slot> slots = fare.get(i).getSlots();
-			for(int j =0; j< slots.size(); j++){
-				if(j==0){
-					ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
-				} else {
-					ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
+			if(fare.size()>1){
+				ll.addView(getAdditionalTimeData(fare.get(i).getTimeInterval()));
+			}
+			if(fare.size() ==1 && slots.size() ==1){
+				ll.addView(getSingleData(slots.get(0).getRange(), String.valueOf(slots.get(0).getValue())));
+			} else {
+				for (int j = 0; j < slots.size(); j++) {
+					if (j == 0) {
+						ll.addView(getAdditionalData(true, activity.getResources().getString(R.string.range), activity.getResources().getString(R.string.value)));
+						ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
+					} else {
+						ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
+					}
 				}
 			}
 		}
@@ -196,12 +196,12 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		TextView rightText = (TextView) view.findViewById(R.id.right_text_view);
 		View topLine = view.findViewById(R.id.top_line);
 		topLine.setVisibility(View.GONE);
+		leftText.setBackgroundResource(R.color.sliding_bottom_bg_color);
+		rightText.setBackgroundResource(R.color.sliding_bottom_bg_color);
 		if(first) {
 			topLine.setVisibility(View.VISIBLE);
-			leftText.setTextColor(activity.getResources().getColor(R.color.grey_ticket_history));
-			rightText.setTextColor(activity.getResources().getColor(R.color.grey_ticket_history));
-			leftText.setBackgroundResource(R.color.darker_grey_v2);
-			rightText.setBackgroundResource(R.color.darker_grey_v2);
+			leftText.setBackgroundResource(R.color.white_dark1);
+			rightText.setBackgroundResource(R.color.white_dark1);
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dpToPx(activity,60));
 			layout.setLayoutParams(layoutParams);
 		}
@@ -218,6 +218,19 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		View topLine = view.findViewById(R.id.top_line);
 		topLine.setVisibility(View.GONE);
 		leftText.setText(left);
+		return view;
+	}
+
+	private View getSingleData(String left, String right) {
+		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = layoutInflater.inflate(R.layout.item_single_fare_view, null, false);
+		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.main_layout);
+		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
+		TextView rightText = (TextView) view.findViewById(R.id.right_text_view);
+//		View topLine = view.findViewById(R.id.top_line);
+//		topLine.setVisibility(View.GONE);
+		leftText.setText(left);
+		rightText.setText(right);
 		return view;
 	}
 

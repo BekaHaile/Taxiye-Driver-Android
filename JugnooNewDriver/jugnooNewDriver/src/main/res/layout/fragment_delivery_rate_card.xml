@@ -37,41 +37,12 @@
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutBaseFareValues"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="15px"
-                android:layout_below="@+id/textViewBeforeRide"
-                android:gravity="center_vertical">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewPickupCharges"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-                <TextView
-                    android:id="@+id/textViewPickupChargesValues"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:id="@+id/basefare_extras"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeLayoutBaseFareValues"
-                android:layout_marginTop="24px"
+                android:layout_below="@+id/textViewBeforeRide"
+                android:layout_marginTop="12px"
                 android:layout_marginBottom="30px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
@@ -107,42 +78,13 @@
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutPerKm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="15px"
-                android:layout_below="@+id/textViewPerKm"
-                android:gravity="center_vertical">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewKmValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-                <TextView
-                    android:id="@+id/textViewFareValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:id="@+id/perKm_extras"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeLayoutPerKm"
+                android:layout_below="@+id/textViewPerKm"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -177,42 +119,13 @@
                 android:textColor="@color/new_orange"
                 android:textSize="40px"/>
 
-            <RelativeLayout
-                android:id="@+id/relativelayoutPerDeliveryThresh"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="15px"
-                android:layout_below="@+id/textViewPerDelivery"
-                android:gravity="center_vertical">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewForAdditional"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-                <TextView
-                    android:id="@+id/textViewAdDeliveryFareValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/NA"
-                    android:textColor="@color/grey_ticket_history"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:id="@+id/perDelivery_extras"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativelayoutPerDeliveryThresh"
+                android:layout_below="@+id/textViewPerDelivery"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -253,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewReturnFare"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -295,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewPickupWaitTime"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -336,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewPickupDistanceFare"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -376,7 +289,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewLoadingFare"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -416,7 +329,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewUnLoadingFare"
                 android:layout_marginBottom="30px"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:orientation="vertical" />
@@ -431,35 +344,6 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutFooter"
-            android:layout_width="match_parent"
-            android:layout_height="110px"
-            android:gravity="center"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/textViewReturnfareText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/grey_ticket_history"
-                android:layout_centerHorizontal="true"
-                android:textAllCaps="true"
-                android:gravity="center"
-                android:textSize="28px"
-                android:text="@string/return_fare_aplicable"/>
-
-            <TextView
-                android:id="@+id/textViewReturnFareValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewReturnfareText"
-                android:textColor="@color/grey_ticket_history"
-                android:layout_centerHorizontal="true"
-                android:textSize="28px"
-                android:text="@string/NA"/>
-
-        </RelativeLayout>
 
     </LinearLayout>
 
