@@ -4,14 +4,18 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverRateCard;
 import product.clicklabs.jugnoo.driver.FragmentDeliveryRateCard;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
 import product.clicklabs.jugnoo.driver.fragments.NotificationTipsFragment;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+
+import static product.clicklabs.jugnoo.driver.R.id.relativeLayoutDeliveryOn;
 
 
 /**
@@ -20,7 +24,9 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
 public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 
 	Context context;
-
+	Fragment myFragment = null;
+	Boolean count = false;
+	String displayString;
 	public RateCardFragmentAdapter(Context context, FragmentManager fm) {
 		super(fm);
 		this.context = context;
@@ -28,25 +34,22 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		Fragment fragment = null;
-
-
 		switch(position){
 			case 0:
-				fragment = new DriverRateCard();
+				setFragment();
 				break;
 
 			case 1:
-				fragment = new FragmentDeliveryRateCard();
+				myFragment = new FragmentDeliveryRateCard();
 				break;
 		}
-
-		return fragment;
+		return myFragment;
 	}
 
 	@Override
 	public int getCount() {
-		if(Prefs.with(context).getInt(Constants.SHOW_NOTIFICATION_TIPS, 0)==1){
+		setFragment();
+		if(count){
 			return 2;
 		}
 		return 1;
@@ -55,17 +58,32 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 	@Override
 	public CharSequence getPageTitle(int position) {
 
-		String rides = context.getResources().getString(R.string.Ride);
 		String delivery = context.getResources().getString(R.string.delivery);
 
 		switch (position) {
 			case 0:
-				return rides;
+				setFragment();
+				return displayString;
 			case 1:
 				return delivery;
 		}
-
 		return null;
+	}
+
+	public void setFragment(){
+		if (1 == Data.userData.autosEnabled && 1 == Data.userData.getDeliveryEnabled()) {
+			myFragment = new DriverRateCard();
+			displayString = context.getResources().getString(R.string.Ride);
+			count = true;
+		} else if(1 == Data.userData.getDeliveryEnabled()){
+			myFragment = new FragmentDeliveryRateCard();
+			displayString = context.getResources().getString(R.string.delivery);
+			count = false;
+		} else {
+			myFragment = new DriverRateCard();
+			displayString = context.getResources().getString(R.string.Ride);
+			count = false;
+		}
 	}
 
 }

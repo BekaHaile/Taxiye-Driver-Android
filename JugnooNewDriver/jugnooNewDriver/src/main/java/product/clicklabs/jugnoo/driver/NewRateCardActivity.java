@@ -101,11 +101,9 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 			@Override
 			public void onPageSelected(int position) {
 				if (position == 0) {
-					NudgeClient.trackEvent(NewRateCardActivity.this, FlurryEventNames.NUDGE_NOTIFICATION, null);
-					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.MESSAGE, null);
+
 				} else if (position == 1) {
-					NudgeClient.trackEvent(NewRateCardActivity.this, FlurryEventNames.NUDGE_HINTS, null);
-					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.TIPS_TO_EARN, null);
+
 				}
 			}
 
@@ -114,9 +112,6 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 
 			}
 		});
-
-		NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
-
 
     }
 
@@ -132,13 +127,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 	public void onBackPressed() {
 		if(viewPager.getCurrentItem() == 0){
 
-			MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION+"_"+FirebaseEvents.MESSAGE
-					+"_"+FirebaseEvents.BACK, null);
-
 		} else if(viewPager.getCurrentItem() == 1){
-
-			MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION+"_"+FirebaseEvents.TIPS_TO_EARN
-					+"_"+FirebaseEvents.BACK, null);
 
 		}
 		performBackPressed();
