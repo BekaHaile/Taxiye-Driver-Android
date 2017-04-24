@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -38,6 +39,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 	ViewPager viewPager;
 	RateCardFragmentAdapter rateCardFragmentAdapter;
 	PagerSlidingTabStrip tabs;
+	Boolean notVisible = true;
 	ImageView imageViewSeprator;
 
 	@Override
@@ -119,6 +121,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 
 
     public void performBackPressed(){
+		notVisible = true;
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }
@@ -154,8 +157,21 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + viewPager.getId() + ":" + pos);
 		if (page != null) {
 			if(pos == 2){
-				((NotificationMessagesFragment) page).update();
+//				((NotificationMessagesFragment) page).update();
 			}
+		}
+	}
+
+	public void showDialog(String message){
+		if(notVisible){
+			notVisible = false;
+			DialogPopup.alertPopupWithListener(NewRateCardActivity.this, "", message, new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					performBackPressed();
+				}
+			});
+
 		}
 	}
 

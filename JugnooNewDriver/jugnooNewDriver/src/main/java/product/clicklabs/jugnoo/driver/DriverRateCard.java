@@ -212,7 +212,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 	}
 
-	private void getRateCardDetails(final Activity activity) {
+	private void getRateCardDetails(final NewRateCardActivity activity) {
 		try {
 			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<RateCardResponse>() {
 				@Override
@@ -226,20 +226,24 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 								HomeActivity.logoutUser(activity);
 							}
+							activity.showDialog(errorMessage);
 						} else {
 							updateData(rateCardResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
+						activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 					}
 				}
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
+					activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 		}
 	}
 

@@ -847,6 +847,7 @@
     <string name="pickup_distance_fare">pickup distance fare</string>
     <string name="range">Range</string>
     <string name="value">Value</string>
+    <string name="no_rate_card_available">No Rate Card Available</string>
 
 
     <string-array name="CountryCodes" >

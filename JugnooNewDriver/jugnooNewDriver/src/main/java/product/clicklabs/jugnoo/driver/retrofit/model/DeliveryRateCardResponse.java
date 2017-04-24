@@ -158,6 +158,9 @@ public class DeliveryRateCardResponse {
 			@SerializedName("time_interval")
 			@Expose
 			private String timeInterval;
+			@SerializedName("unit")
+			@Expose
+			private String unit;
 			@SerializedName("slots")
 			@Expose
 			private List<Slot> slots = null;
@@ -168,6 +171,14 @@ public class DeliveryRateCardResponse {
 
 			public void setTimeInterval(String timeInterval) {
 				this.timeInterval = timeInterval;
+			}
+
+			public String getUnit() {
+				return unit;
+			}
+
+			public void setUnit(String unit) {
+				this.unit = unit;
 			}
 
 			public List<Slot> getSlots() {
