@@ -46,7 +46,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 	private TextView textViewTitle, textViewMerchantName, textViewCashReq;
 	private RecyclerView recyclerViewDeliveryInfoInRide;
 	private DeliveryInfoInRideAdapter deliveryInfoInRideAdapter;
-	private RelativeLayout relativeLayoutCall;
+	private RelativeLayout relativeLayoutCall, relativeLayoutLoading;
 	private DeliveryInfoInRideDetails deliveryInfos = new DeliveryInfoInRideDetails();
 
 	private View rootView;
@@ -71,13 +71,13 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-
 		textViewMerchantName = (TextView) rootView.findViewById(R.id.textViewMerchantName);
 		textViewMerchantName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCashReq = (TextView) rootView.findViewById(R.id.textViewCashReq);
 		textViewCashReq.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
+		relativeLayoutLoading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutLoading);
 
 		helpBtn = (Button) rootView.findViewById(R.id.helpBtn);
 		driverStartRideBtn = (Button) rootView.findViewById(R.id.driverStartRideBtn);
@@ -96,6 +96,13 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 		recyclerViewDeliveryInfoInRide.setAdapter(deliveryInfoInRideAdapter);
 
 		textViewMerchantName.setText(deliveryInfos.getPickupData().getName());
+
+		if(deliveryInfos.getPickupData().getLoadingStatus() ==1){
+			relativeLayoutLoading.setVisibility(View.VISIBLE);
+		}else {
+			relativeLayoutLoading.setVisibility(View.GONE);
+		}
+
 		textViewCashReq.setText(String.valueOf(activity.getResources().getString(R.string.cash_to_collected)
 				+": "+Utils.getAbsAmount(activity, deliveryInfos.getPickupData().getCashToCollect())));
 
@@ -141,7 +148,6 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 			activity.onBackPressed();
 		}
 	}
-
 
 	@Override
 	public void onDestroy() {

@@ -848,6 +848,9 @@
     <string name="range">Range</string>
     <string name="value">Value</string>
     <string name="no_rate_card_available">No Rate Card Available</string>
+    <string name="unloading_req">Unloading Required</string>
+    <string name="loading_req">Loading Required</string>
+    <string name="unloading_fare">Unloading Fare</string>
 
 
     <string-array name="CountryCodes" >

@@ -88,7 +88,9 @@ public class DeliveryListAdapter extends PagerAdapter {
 		final CardView cvTask = (CardView) taskItemView.findViewById(R.id.cvTask);
 
 		RelativeLayout linearLayoutDeliveryItemHeader = (RelativeLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItemHeader);
-        TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
+        RelativeLayout relativeLayoutLoading = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutLoading);
+
+		TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
@@ -150,6 +152,12 @@ public class DeliveryListAdapter extends PagerAdapter {
 					+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
 		} else {
 			textViewCashCollected.setVisibility(View.GONE);
+		}
+
+		if(task.getLoadUnload() == 1){
+			relativeLayoutLoading.setVisibility(View.VISIBLE);
+		} else {
+			relativeLayoutLoading.setVisibility(View.GONE);
 		}
 
 		taskItemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

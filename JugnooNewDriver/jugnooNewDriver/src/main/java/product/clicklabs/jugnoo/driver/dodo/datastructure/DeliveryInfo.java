@@ -13,7 +13,7 @@ public class DeliveryInfo {
 	private String deliveryAddress;
 	private String customerNo;
 	private double amount;
-	private int status, totalDelivery, delSuccess, delFail;
+	private int status, totalDelivery, delSuccess, delFail, loadUnload;
 
 	private double distance = 0;
 	private long deliveryTime = System.currentTimeMillis();
@@ -24,7 +24,7 @@ public class DeliveryInfo {
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
 						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime,
-						String cancelReason, int index, boolean sate, int falseDelivery) {
+						String cancelReason, int index, boolean sate, int falseDelivery, int loadUnload) {
 		this.id = id;
 		this.latLng = latLng;
 		this.customerName = customerName;
@@ -39,6 +39,7 @@ public class DeliveryInfo {
 		this.index = index;
 		this.sate = sate;
 		this.falseDelivery = falseDelivery;
+		this.loadUnload = loadUnload;
 	}
 
 	public void setReturnData(int totalDelivery, int delSuccess, int delFail){
@@ -202,5 +203,13 @@ public class DeliveryInfo {
 
 	public void setFalseDelivery(int falseDelivery) {
 		this.falseDelivery = falseDelivery;
+	}
+
+	public int getLoadUnload() {
+		return loadUnload;
+	}
+
+	public void setLoadUnload(int loadUnload) {
+		this.loadUnload = loadUnload;
 	}
 }

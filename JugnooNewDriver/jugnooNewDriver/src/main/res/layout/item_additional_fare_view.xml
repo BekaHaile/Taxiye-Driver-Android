@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:id="@+id/linearLayoutRoot"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
     <View
         android:id="@+id/top_line"
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60px"
         android:orientation="horizontal">
 
         <View
@@ -28,7 +29,7 @@
             android:layout_weight="1"
             android:textColor="@color/grey_ticket_history"
             android:gravity="center"
-            android:textSize="24px" />
+            android:textSize="28px" />
 
         <View
             android:layout_width="2px"
@@ -43,7 +44,7 @@
             android:layout_weight="1"
             android:textColor="@color/grey_ticket_history"
             android:gravity="center"
-            android:textSize="24px" />
+            android:textSize="28px" />
 
         <View
             android:layout_width="2px"

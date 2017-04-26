@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -13,7 +14,7 @@
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60px"
         android:layout_marginTop="12px"
         android:orientation="horizontal">
 
@@ -27,7 +28,7 @@
             android:textColor="@color/grey_dark"
             android:gravity="center_vertical"
             android:text="@string/NA"
-            android:textSize="24px" />
+            android:textSize="32px" />
 
     </LinearLayout>
 

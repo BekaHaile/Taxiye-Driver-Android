@@ -183,17 +183,18 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 			linearLayoutRCard.setVisibility(View.VISIBLE);
 			textViewNoRCard.setVisibility(View.GONE);
 			for(int i=0; i< fare.size(); i++){
+				String unit = fare.get(i).getUnit();
+				String unitValue = fare.get(i).getUnitValue();
 				List<DeliveryRateCardResponse.Data.Slot> slots = fare.get(i).getSlots();
 				if(fare.size()>1){
 					ll.addView(getAdditionalTimeData(fare.get(i).getTimeInterval()));
 				}
 				if(fare.size() ==1 && slots.size() ==1){
-					ll.addView(getSingleData(slots.get(0).getRange(), String.valueOf(slots.get(0).getValue())));
+					ll.addView(getSingleData(String.valueOf(slots.get(0).getValue()+" ("+unitValue+")"), String.valueOf(slots.get(0).getValue())));
 				} else {
-					String unit = fare.get(i).getUnit();
 					for (int j = 0; j < slots.size(); j++) {
 						if (j == 0) {
-							ll.addView(getAdditionalData(true, activity.getResources().getString(R.string.range)+" ("+unit+")", activity.getResources().getString(R.string.value)));
+							ll.addView(getAdditionalData(true, activity.getResources().getString(R.string.range)+" ("+unit+")", activity.getResources().getString(R.string.value)+" ("+unitValue+")"));
 							ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
 						} else {
 							ll.addView(getAdditionalData(false, slots.get(j).getRange(), String.valueOf(slots.get(j).getValue())));
@@ -210,6 +211,9 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	private View getAdditionalData(boolean first, String left, String right) {
 		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.item_additional_fare_view, null, false);
+		LinearLayout linearLayoutRoot = (LinearLayout) view.findViewById(R.id.linearLayoutRoot);
+		linearLayoutRoot.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		ASSL.DoMagic(linearLayoutRoot);
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.main_layout);
 		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
 		TextView rightText = (TextView) view.findViewById(R.id.right_text_view);
@@ -221,7 +225,7 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 			topLine.setVisibility(View.VISIBLE);
 			leftText.setBackgroundResource(R.color.white_dark1);
 			rightText.setBackgroundResource(R.color.white_dark1);
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dpToPx(activity,60));
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dpToPx(activity,40));
 			layout.setLayoutParams(layoutParams);
 		}
 		leftText.setText(left);
@@ -232,6 +236,9 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	private View getAdditionalTimeData(String left) {
 		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.item_additional_time_slot_view, null, false);
+		LinearLayout linearLayoutRoot = (LinearLayout) view.findViewById(R.id.linearLayoutRoot);
+		linearLayoutRoot.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		ASSL.DoMagic(linearLayoutRoot);
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.main_layout);
 		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
 		View topLine = view.findViewById(R.id.top_line);
@@ -243,6 +250,9 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 	private View getSingleData(String left, String right) {
 		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.item_single_fare_view, null, false);
+		LinearLayout linearLayoutRoot = (LinearLayout) view.findViewById(R.id.linearLayoutRoot);
+		linearLayoutRoot.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		ASSL.DoMagic(linearLayoutRoot);
 		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.main_layout);
 		TextView leftText = (TextView) view.findViewById(R.id.left_text_view);
 		TextView rightText = (TextView) view.findViewById(R.id.right_text_view);
@@ -250,6 +260,7 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 //		topLine.setVisibility(View.GONE);
 		leftText.setText(left);
 		rightText.setText(right);
+		rightText.setVisibility(View.GONE);
 		return view;
 	}
 

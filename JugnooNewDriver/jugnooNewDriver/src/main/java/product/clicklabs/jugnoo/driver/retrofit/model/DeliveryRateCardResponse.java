@@ -161,6 +161,9 @@ public class DeliveryRateCardResponse {
 			@SerializedName("unit")
 			@Expose
 			private String unit;
+			@SerializedName("unit_value")
+			@Expose
+			private String unitValue;
 			@SerializedName("slots")
 			@Expose
 			private List<Slot> slots = null;
@@ -179,6 +182,14 @@ public class DeliveryRateCardResponse {
 
 			public void setUnit(String unit) {
 				this.unit = unit;
+			}
+
+			public String getUnitValue() {
+				return unitValue;
+			}
+
+			public void setUnitValue(String unitValue) {
+				this.unitValue = unitValue;
 			}
 
 			public List<Slot> getSlots() {

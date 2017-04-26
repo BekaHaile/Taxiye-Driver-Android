@@ -48,7 +48,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/base_fare"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/basefare_extras"
@@ -90,7 +90,7 @@
                 android:textAllCaps="true"
                 android:text="@string/per_km_wo_brack"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/perKm_extras"
@@ -132,7 +132,7 @@
                 android:text="@string/per_delivery"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/perDelivery_extras"
@@ -174,7 +174,7 @@
                 android:text="@string/return_fare"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/returnFare_extras"
@@ -216,7 +216,7 @@
                 android:text="@string/pick_up_wait_time"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
 
             <LinearLayout
@@ -256,10 +256,10 @@
                 android:padding="8px"
                 android:layout_marginLeft="32px"
                 android:layout_marginTop="24px"
-                android:text="@string/pickup_distance_fare"
+                android:text="@string/accept_subsidy"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/pickupDistanceFare_extras"
@@ -300,7 +300,7 @@
                 android:text="@string/loading_fare"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/loadingFare_extras"
@@ -338,10 +338,10 @@
                 android:padding="8px"
                 android:layout_marginLeft="32px"
                 android:layout_marginTop="24px"
-                android:text="@string/un_loading_fare"
+                android:text="@string/unloading_fare"
                 android:textAllCaps="true"
                 android:textColor="@color/new_orange"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
             <LinearLayout
                 android:id="@+id/unLoadingFare_extras"
