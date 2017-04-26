@@ -130,9 +130,16 @@ public class DeliveryListAdapter extends PagerAdapter {
 			textViewCustomerName.setText(activity.getResources().getString(R.string.NA));
 		}
 
+		String address = task.getDeliveryAddress();
+		int sepratorIndex = address.indexOf(":::");
+		String onlyAddress = "";
+		if(sepratorIndex != -1) {
+			onlyAddress = address.substring(0, sepratorIndex);
+		} else {
+			onlyAddress = address;
+		}
 
-
-		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
+		textViewCustomerDeliveryAddress.setText(onlyAddress);
 		int totalDeliveries = 0;
 		double totalCashCollected = 0;
 		for(DeliveryInfo deliveryInfo : tasksList){
@@ -251,12 +258,22 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 				} else {
 					final DeliveryInfo task = tasksList.get(pos);
+					String address = task.getDeliveryAddress();
+					int sepratorIndex = address.indexOf(":::");
+					String onlyAddress = "", itemDetails = "-1";
+					if(sepratorIndex != -1) {
+						onlyAddress = address.substring(0, sepratorIndex);
+						itemDetails = address.substring(sepratorIndex + 3, address.length());
+						itemDetails = itemDetails.replace("\\n", "\n");
+					} else {
+						onlyAddress = address;
+					}
 					DialogPopup.alertPopupDeliveryTwoButtonsWithListeners(activity,
 							activity.getResources().getString(R.string.delivery_id) + ": " + Math.abs(orderId),
 							activity.getResources().getString(R.string.take_cash)
 									+ " " + activity.getResources().getString(R.string.rupee)
 									+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
-							task.getCustomerName(), task.getDeliveryAddress(),
+							task.getCustomerName(), onlyAddress, itemDetails,
 							activity.getResources().getString(R.string.delivery_conf_new),
 							activity.getResources().getString(R.string.deliver),
 							activity.getResources().getString(R.string.cancel),

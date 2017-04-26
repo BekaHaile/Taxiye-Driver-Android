@@ -1096,7 +1096,7 @@ public class DialogPopup {
 	}
 
 
-	public static void alertPopupDeliveryTwoButtonsWithListeners(Activity activity, String deliveryId, String collectCash, String name, String address, String message , String okText, String canceltext,
+	public static void alertPopupDeliveryTwoButtonsWithListeners(Activity activity, String deliveryId, String collectCash, String name, String address, String items, String message , String okText, String canceltext,
 														 final View.OnClickListener listenerPositive, final View.OnClickListener listenerNegative, final boolean cancelable, final boolean showTitle) {
 		try {
 			dismissAlertPopup();
@@ -1113,6 +1113,11 @@ public class DialogPopup {
 			dialog.setCancelable(cancelable);
 			dialog.setCanceledOnTouchOutside(cancelable);
 
+			RelativeLayout relativeLayoutNotes = (RelativeLayout) dialog.findViewById(R.id.relativeLayoutNotes);
+			if("-1".equalsIgnoreCase(items)){
+				relativeLayoutNotes.setVisibility(View.GONE);
+			}
+
 			TextView textHead = (TextView) dialog.findViewById(R.id.textViewDeliveryId);
 			textHead.setTypeface(Data.latoRegular(activity));
 
@@ -1125,6 +1130,10 @@ public class DialogPopup {
 			TextView textViewAddress = (TextView) dialog.findViewById(R.id.textViewAddress);
 			textViewAddress.setTypeface(Data.latoRegular(activity));
 
+			TextView textViewItems = (TextView) dialog.findViewById(R.id.textViewItems);
+			textViewItems.setTypeface(Data.latoRegular(activity));
+			textViewItems.setMovementMethod(new ScrollingMovementMethod());
+
 			TextView textViewTakeConfMessage = (TextView) dialog.findViewById(R.id.textViewTakeConfMessage);
 			textViewTakeConfMessage.setTypeface(Data.latoRegular(activity));
 
@@ -1135,6 +1144,7 @@ public class DialogPopup {
 			textMessage.setText(collectCash);
 			textViewName.setText(name);
 			textViewAddress.setText(address);
+			textViewItems.setText(items);
 			textViewTakeConfMessage.setText(message);
 
 			if(showTitle){

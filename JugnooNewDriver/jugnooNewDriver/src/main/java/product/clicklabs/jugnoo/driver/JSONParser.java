@@ -263,8 +263,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_MENU, userData.optInt("show_support_in_menu", 0));
 		Prefs.with(context).save(SPLabels.SHOW_CALL_US_MENU, userData.optInt("show_call_us_menu", 0));
-
-
+		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
+		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
 
 		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
@@ -295,7 +295,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.DRIVER_OFFLINE_PERIOD, userData.optLong("driver_offline_period", 180000));
 
-
+		Prefs.with(context).save(Constants.UPLOAD_DOCUMENT_MESSAGE, userData.optString("upload_document_message", ""));
+		Prefs.with(context).save(Constants.UPLOAD_DOCUMENT_DAYS_LEFT, userData.optString("upload_document_days_left", ""));
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");

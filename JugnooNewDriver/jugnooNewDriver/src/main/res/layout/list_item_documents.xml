@@ -8,18 +8,16 @@
 
     <LinearLayout
         android:id="@+id/rideHistoryItem"
-        android:layout_width="690px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15px"
-        android:background="@drawable/background_white_rounded_orange_bordered"
+        android:background="@drawable/background_white"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/relativeLayoutSelectPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3px"
             android:background="@drawable/background_white_white_dark_selector"
             android:gravity="center_horizontal">
 
@@ -28,59 +26,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="52px"
                 android:text="@string/Document_type"
-                android:textColor="@color/black"
+                android:textColor="@color/document_text_color"
                 android:textSize="36px"
-                />
+            />
 
             <TextView
                 android:id="@+id/docRejected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/docType"
-                android:layout_marginTop="42px"
                 android:layout_marginLeft="12px"
+                android:layout_marginTop="42px"
+                android:layout_toRightOf="@+id/docType"
                 android:text="@string/upload_again"
                 android:textColor="@color/red_status"
                 android:textSize="18px"
                 android:visibility="gone"
-                />
+            />
 
             <TextView
                 android:id="@+id/docRejectionReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/docType"
-                android:layout_marginTop="32px"
                 android:layout_marginLeft="18px"
+                android:layout_marginTop="32px"
+                android:layout_toRightOf="@+id/docType"
                 android:text="@string/Requirement"
                 android:textColor="@color/red_status"
                 android:textSize="24px"
                 android:visibility="gone"
-                />
+            />
 
             <TextView
                 android:id="@+id/docRequirement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docType"
-                android:layout_marginBottom="24px"
+                android:layout_marginBottom="34px"
                 android:layout_marginTop="32px"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="52px"
                 android:text="@string/Requirement"
                 android:textColor="@color/grey_black_light"
                 android:textSize="24px"
-                />
+            />
 
             <ImageView
                 android:id="@+id/imageViewUploadDoc"
-                android:layout_width="90px"
-                android:layout_height="90px"
+                android:layout_width="120px"
+                android:layout_height="120px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20px"
-                android:background="@drawable/upload_doc_img"/>
+                android:src="@drawable/ic_addimage"/>
 
         </RelativeLayout>
 
@@ -96,21 +94,22 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutImageStatus"
             android:layout_width="match_parent"
-            android:layout_height="186px"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="24px"
-            android:layout_marginTop="12px"
+            android:layout_marginTop="24px"
             android:visibility="visible"
-            >
+        >
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
-                android:layout_width="160px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginRight="34px"
-                android:layout_marginTop="18px"
-                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:layout_width="193px"
+                android:layout_height="193px"
+                android:layout_marginBottom="10px"
+                android:layout_marginLeft="44px"
+                android:layout_marginRight="28px"
+                android:layout_marginTop="10px"
+                android:background="@drawable/add_img_selector"
                 android:orientation="vertical"
                 android:padding="0px"
                 android:visibility="visible">
@@ -121,7 +120,8 @@
                     android:layout_height="60px"
                     android:layout_marginLeft="50px"
                     android:layout_marginTop="24px"
-                    android:background="@drawable/image_icon"/>
+                    android:background="@drawable/image_icon"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/addImage2"
@@ -132,12 +132,14 @@
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
                     android:textColor="@color/new_orange"
-                    android:textSize="20px"/>
+                    android:textSize="20px"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage"
-                    android:layout_width="160px"
-                    android:layout_height="160px"
+                    android:layout_width="173px"
+                    android:layout_height="173px"
+                    android:layout_centerInParent="true"
                     android:tag="mwar"/>
 
             </RelativeLayout>
@@ -146,19 +148,50 @@
                 android:id="@+id/deleteImage1"
                 android:layout_width="48px"
                 android:layout_height="48px"
+                android:layout_marginLeft="197px"
                 android:src="@drawable/orange_cross"
-                android:layout_marginLeft="160px"
-                android:visibility="gone"
-                android:tag="mwar"/>
+                android:tag="mwar"
+                android:visibility="visible"/>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addImageLayout"
+                android:layout_marginTop="10px"
+                android:layout_marginLeft="52px">
+
+                <TextView
+                    android:id="@+id/docStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/uploaded"
+                    android:textColor="@color/new_orange"
+                    android:textSize="26px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewDocStatusImage"
+                    android:layout_width="23px"
+                    android:layout_height="23px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8px"
+                    android:layout_toRightOf="@+id/docStatus"
+                    android:src="@drawable/orange_cross"
+                    android:tag="mwar"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/addImageLayout2"
-                android:layout_width="160px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginTop="16px"
+                android:layout_width="193px"
+                android:layout_height="193px"
+                android:layout_marginLeft="10px"
+                android:layout_marginRight="28px"
+                android:layout_marginTop="10px"
                 android:layout_toRightOf="@+id/addImageLayout"
-                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:background="@drawable/add_img_selector"
                 android:tag="mwar">
 
                 <ImageView
@@ -167,8 +200,8 @@
                     android:layout_height="60px"
                     android:layout_marginLeft="50px"
                     android:layout_marginTop="24px"
-                    android:visibility="visible"
-                    android:background="@drawable/image_icon"/>
+                    android:background="@drawable/image_icon"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/addImage"
@@ -178,14 +211,15 @@
                     android:layout_marginLeft="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
-                    android:visibility="visible"
                     android:textColor="@color/new_orange"
-                    android:textSize="20px"/>
+                    android:textSize="20px"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage2"
-                    android:layout_width="160px"
-                    android:layout_height="160px"
+                    android:layout_width="173px"
+                    android:layout_height="173px"
+                    android:layout_centerInParent="true"
                     android:tag="mwar"/>
 
             </RelativeLayout>
@@ -194,41 +228,38 @@
                 android:id="@+id/deleteImage2"
                 android:layout_width="48px"
                 android:layout_height="48px"
+                android:layout_marginLeft="433px"
                 android:src="@drawable/orange_cross"
-                android:layout_marginLeft="369px"
-                android:visibility="gone"
-                android:tag="mwar"/>
+                android:tag="mwar"
+                android:visibility="gone"/>
 
-            <RelativeLayout
-                android:layout_width="120px"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageViewAddImageDisabled"
+                android:layout_width="203px"
+                android:layout_height="203px"
+                android:layout_marginTop="10px"
+                android:layout_toRightOf="@+id/addImageLayout2"
+                android:src="@drawable/add_img_dsble"
+                android:tag="mwar"
+                android:visibility="visible"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewDocStatus"
+                android:layout_width="40px"
+                android:layout_height="40px"
+                android:layout_marginRight="60px"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="28px">
-
-                <ImageView
-                    android:id="@+id/imageViewDocStatus"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/doc_uploaded"/>
-
-                <TextView
-                    android:id="@+id/docStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:layout_below="@+id/imageViewDocStatus"
-                    android:text="@string/uploaded"
-                    android:layout_marginTop="10px"
-                    android:textColor="@color/new_orange"
-                    android:textSize="20px"/>
-
-            </RelativeLayout>
+                android:src="@drawable/doc_uploaded"/>
 
 
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/bottomLine"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:background="@color/grey_light"/>
 
     </LinearLayout>
 
