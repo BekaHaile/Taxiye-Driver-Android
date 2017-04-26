@@ -606,10 +606,10 @@
 	<string name="upload">Upload</string>
 	<string name="mandatory">Mandatory</string>
 	<string name="optional">Optional</string>
-	<string name="uploaded">UPLOADED</string>
-	<string name="rejected">REJECTED</string>
-	<string name="verified">VERIFIED</string>
-	<string name="approval_pending">APPROVAL PENDING</string>
+	<string name="uploaded">Uploaded</string>
+	<string name="rejected">Rejected</string>
+	<string name="verified">Verified</string>
+	<string name="approval_pending">Approval Pending</string>
 	<string name="owned">Owned</string>
 	<string name="auto">Auto</string>
 	<string name="rejection_reason">Rejection Reason</string>
@@ -827,6 +827,8 @@
 	<string name="closed_on">Closed On</string>
 	<string name="complaint">Complaint</string>
 	<string name="raisedOn">Raised On</string>
+	<string name="super_biker">Super Biker</string>
+	<string name="needed">Needed</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
