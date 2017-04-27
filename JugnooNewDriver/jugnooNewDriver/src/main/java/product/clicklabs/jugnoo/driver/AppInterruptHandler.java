@@ -53,4 +53,6 @@ public interface AppInterruptHandler {
 
 	void showStartRidePopup();
 
+	public void showDialogFromPush(String message);
+
 }

@@ -2987,6 +2987,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 	}
 
+	public void showDialogFromPush(final String message) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopup(HomeActivity.this, "", message);
+			}
+		});
+	}
+
 	public void showDialogFromBackgroundWithListener(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override

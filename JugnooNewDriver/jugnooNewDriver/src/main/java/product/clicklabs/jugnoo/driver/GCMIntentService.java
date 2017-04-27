@@ -719,6 +719,15 @@ public class GCMIntentService extends IntentService {
 									sendMarketPushAckToServer(this, campainId, currentTimeUTC);
 								}
 
+							} else if (PushFlags.DISPLAY_MESSAGE_POPUP.getOrdinal() == flag) {
+								String message1 = jObj.getString("message");
+								if (HomeActivity.appInterruptHandler != null) {
+									notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
+									HomeActivity.appInterruptHandler.showDialogFromPush(message);
+								} else {
+									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+								}
+
 							} else if (PushFlags.DISPLAY_AUDIT_IMAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 
