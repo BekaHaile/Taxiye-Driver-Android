@@ -22,12 +22,14 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
@@ -50,8 +52,8 @@ import retrofit.mime.TypedByteArray;
 
 public class DriverRateCard extends android.support.v4.app.Fragment {
 
-	LinearLayout relative, linearLayoutDriverReferral;
-	RelativeLayout relativeLayoutDriverReferralHeading, relativeLayoutDriverReferralSingle;
+	LinearLayout relative, linearLayoutDriverReferral, linearLayoutMain;
+	RelativeLayout relativeLayoutDriverReferralHeading, relativeLayoutDriverReferralSingle, relativeLayoutNoData;
 	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue, textViewPickupChargesCond,
 			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
 			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar;
@@ -85,6 +87,12 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 		linearLayoutDriverReferral = (LinearLayout) rootView.findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutDriverReferralHeading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDriverReferralHeading);
+		relativeLayoutNoData = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNoData);
+		relativeLayoutNoData.setVisibility(View.GONE);
+
+		linearLayoutMain = (LinearLayout) rootView.findViewById(R.id.linearLayoutMain);
+		linearLayoutMain.setVisibility(View.VISIBLE);
+
 		textViewPickupChargesValues = (TextView) rootView.findViewById(R.id.textViewPickupChargesValues);
 		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(activity));
 		textViewBaseFareValue = (TextView) rootView.findViewById(R.id.textViewBaseFareValue);
@@ -219,31 +227,31 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				public void success(RateCardResponse rateCardResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							}
-							activity.showDialog(errorMessage);
-						} else {
+						JSONObject jObj = new JSONObject(jsonString);
+						String message = JSONParser.getServerMessage(jObj);
+						int flag = jObj.getInt("flag");
+
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 							updateData(rateCardResponse);
+							linearLayoutMain.setVisibility(View.VISIBLE);
+							relativeLayoutNoData.setVisibility(View.GONE);
+						} else {
+							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
+						relativeLayoutNoData.setVisibility(View.VISIBLE);
 					}
 				}
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
-					activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
+					relativeLayoutNoData.setVisibility(View.VISIBLE);
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
-			activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
+			relativeLayoutNoData.setVisibility(View.VISIBLE);
 		}
 	}
 

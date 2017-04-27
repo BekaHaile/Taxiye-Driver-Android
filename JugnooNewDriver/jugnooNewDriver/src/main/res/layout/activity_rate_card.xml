@@ -5,12 +5,29 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <RelativeLayout
+        android:id="@+id/relativeLayoutNoData"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_rate_card_available"
+            android:layout_centerInParent="true"
+            android:textSize="32px"/>
+
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
+        android:visibility="visible"
         android:padding="4px">
 
 

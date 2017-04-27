@@ -14,9 +14,11 @@ import android.widget.TextView;
 import org.json.JSONObject;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -272,31 +274,23 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 				public void success(DeliveryRateCardResponse rateCardResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							}
-							activity.showDialog(errorMessage);
-						} else {
+						JSONObject jObj = new JSONObject(jsonString);
+						String message = JSONParser.getServerMessage(jObj);
+						int flag = jObj.getInt("flag");
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 							updateData(rateCardResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 					}
 				}
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
-					activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
-			activity.showDialog(activity.getResources().getString(R.string.error_occured_tap_to_retry));
 		}
 	}
 
