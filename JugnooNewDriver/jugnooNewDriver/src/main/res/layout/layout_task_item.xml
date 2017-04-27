@@ -148,6 +148,7 @@
                         <ImageView
                             android:id="@+id/imageViewLoadingIcon"
                             android:background="@drawable/unloading_icon_copy"
+                            android:layout_centerVertical="true"
                             android:layout_width="26px"
                             android:layout_height="26px"/>
 
@@ -156,6 +157,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@+id/imageViewLoadingIcon"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/black_text_v2"
                             android:layout_marginLeft="8px"
                             android:textSize="30px"
                             android:text="@string/unloading_req"/>
