@@ -9,7 +9,6 @@
     <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_marginLeft="10px"
         android:layout_height="60px">
 
         <TextView

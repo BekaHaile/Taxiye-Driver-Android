@@ -62,7 +62,7 @@
                 android:id="@+id/textViewMerchantName"
                 android:text="llllllllllllllllllllllllllllllllllllllllllll"
                 android:textSize="40px"
-                android:layout_marginTop="36px"
+                android:layout_marginTop="32px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -84,6 +84,7 @@
                 <ImageView
                     android:id="@+id/imageViewLoadingIcon"
                     android:background="@drawable/unloading_icon_copy"
+                    android:layout_centerVertical="true"
                     android:layout_width="26px"
                     android:layout_height="26px"/>
 
@@ -92,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="28px"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageViewLoadingIcon"
                     android:layout_marginLeft="8px"
                     android:text="@string/loading_req"/>
