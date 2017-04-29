@@ -723,7 +723,7 @@ public class GCMIntentService extends IntentService {
 								String message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
-									HomeActivity.appInterruptHandler.showDialogFromPush(message);
+									HomeActivity.appInterruptHandler.showDialogFromPush(message1);
 								} else {
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
 								}
