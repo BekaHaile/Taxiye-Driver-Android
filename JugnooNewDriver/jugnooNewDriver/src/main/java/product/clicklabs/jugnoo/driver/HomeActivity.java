@@ -2075,6 +2075,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									}
 								});
 					}
+					int avgEarning = Prefs.with(HomeActivity.this).getInt(AVERAGE_DRIVER_EARNING,0);
+					if(avgEarning > 0){
+						String averageDays = getResources().getString(R.string.average_days_text, String.valueOf(Prefs.with(HomeActivity.this).getInt(AVERAGE_EARNING_DAYS, 0)));
+						DialogPopup.driverEarningPopup(HomeActivity.this, String.valueOf(avgEarning), averageDays,false, true);
+					}
 
 				}
 			}, 300);

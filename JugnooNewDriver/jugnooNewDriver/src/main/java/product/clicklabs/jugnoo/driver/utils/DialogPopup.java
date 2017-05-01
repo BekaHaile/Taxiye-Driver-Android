@@ -1327,4 +1327,56 @@ public class DialogPopup {
 		}
 	}
 
+	public static void driverEarningPopup(Activity activity, String earning, String message, boolean cancellable, boolean okVisible) {
+		try {
+			dismissAlertPopup();
+
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_show_average_sallary);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, false);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancellable);
+			dialog.setCanceledOnTouchOutside(cancellable);
+
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
+			textMessage.setTypeface(Data.latoRegular(activity));
+			TextView textMessageEarnings = (TextView) dialog.findViewById(R.id.textMessageEarnings);
+			textMessageEarnings.setTypeface(Data.latoRegular(activity));
+			TextView textMessage2 = (TextView) dialog.findViewById(R.id.textMessage2);
+			textMessage2.setTypeface(Data.latoRegular(activity));
+
+
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textMessage.setText(message);
+			textMessageEarnings.setText(earning);
+
+			textHead.setVisibility(View.GONE);
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setVisibility(okVisible ? View.VISIBLE : View.GONE);
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+				}
+
+			});
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
