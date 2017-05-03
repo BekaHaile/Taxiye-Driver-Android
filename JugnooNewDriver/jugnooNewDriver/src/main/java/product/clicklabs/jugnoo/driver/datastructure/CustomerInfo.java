@@ -46,7 +46,7 @@ public class CustomerInfo {
 	private int isPooled;
 
 	private int isDelivery;
-	private int isDeliveryPool, falseDeliveries;
+	private int isDeliveryPool, falseDeliveries, loadingStatus;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries, orderId;
@@ -62,7 +62,8 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare, int falseDeliveries, int orderId){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
+						int falseDeliveries, int orderId, int loadingStatus){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -103,6 +104,7 @@ public class CustomerInfo {
 		this.estimatedDriverFare = estimatedDriverFare;
 		this.falseDeliveries = falseDeliveries;
 		this.orderId = orderId;
+		this.loadingStatus = loadingStatus;
 	}
 
 
@@ -568,5 +570,13 @@ public class CustomerInfo {
 
 	public void setDeliveryInfoInRideDetails(DeliveryInfoInRideDetails deliveryInfoInRideDetails) {
 		this.deliveryInfoInRideDetails = deliveryInfoInRideDetails;
+	}
+
+	public int getLoadingStatus() {
+		return loadingStatus;
+	}
+
+	public void setLoadingStatus(int loadingStatus) {
+		this.loadingStatus = loadingStatus;
 	}
 }

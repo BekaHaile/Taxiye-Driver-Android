@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60px">
+
+        <TextView
+            android:id="@+id/left_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/grey_ticket_history"
+            android:gravity="center_vertical"
+            android:text="@string/NA"
+            android:textSize="28px" />
+
+        <TextView
+            android:id="@+id/right_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:textColor="@color/grey_ticket_history"
+            android:text="@string/NA"
+            android:gravity="center_vertical"
+            android:textSize="28px" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
