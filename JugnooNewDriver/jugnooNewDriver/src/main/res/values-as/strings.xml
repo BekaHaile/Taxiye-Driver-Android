@@ -786,6 +786,8 @@
     <string name="did_you_know">Did you know?</string>
     <string name="keep_jugnoo_on">Kepp your Jugnoo ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
+    <string name="day">day</string>
+    <string name="update_webview">Please update your WebView to latest version.</string>
 
 
     <string-array name="CountryCodes" >

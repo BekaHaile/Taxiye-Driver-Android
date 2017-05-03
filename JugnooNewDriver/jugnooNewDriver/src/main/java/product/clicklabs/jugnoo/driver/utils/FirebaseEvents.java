@@ -21,6 +21,7 @@ public interface FirebaseEvents {
 	String RIDE_RECEIVED = "ride_received";
 	String RATING = "rating";
 	String RIDE_END_RIDE = "ride_end_ride";
+	String HEARTBEAT_REC = "heartbeat_rec";
 
 
 

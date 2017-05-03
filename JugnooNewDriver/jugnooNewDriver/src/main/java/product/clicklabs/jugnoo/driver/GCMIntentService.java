@@ -29,6 +29,7 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -45,6 +46,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -74,6 +76,7 @@ import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -755,6 +758,11 @@ public class GCMIntentService extends IntentService {
 								try {
 									String uuid = jObj.getString("uuid");
 									sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
+									MyApplication.getInstance().logEvent(FirebaseEvents.HEARTBEAT_REC+"_", null);
+									Map<String, String> articleParams = new HashMap<String, String>();
+									articleParams.put("heatbeat_id", uuid);
+									try {MyApplication.getInstance().trackEvent("Driver", "heartbeat", uuid, articleParams);} catch (Exception e) {}
+
 								} catch (Exception e) {
 									e.printStackTrace();
 								}

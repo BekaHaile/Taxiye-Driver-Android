@@ -12,6 +12,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -1344,13 +1345,12 @@ public class DialogPopup {
 			dialog.setCancelable(cancellable);
 			dialog.setCanceledOnTouchOutside(cancellable);
 
-
+			CardView card1 = (CardView) dialog.findViewById(R.id.card1);
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 			TextView textMessageEarnings = (TextView) dialog.findViewById(R.id.textMessageEarnings);
-			textMessageEarnings.setTypeface(Data.latoRegular(activity));
+			textMessageEarnings.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 			TextView textMessage2 = (TextView) dialog.findViewById(R.id.textMessage2);
 			textMessage2.setTypeface(Data.latoRegular(activity));
 
@@ -1359,9 +1359,7 @@ public class DialogPopup {
 			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 
 			textMessage.setText(message);
-			textMessageEarnings.setText(earning);
-
-			textHead.setVisibility(View.GONE);
+			textMessageEarnings.setText(activity.getResources().getString(R.string.rupee)+" "+earning+"/"+activity.getResources().getString(R.string.day));
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			btnOk.setVisibility(okVisible ? View.VISIBLE : View.GONE);
