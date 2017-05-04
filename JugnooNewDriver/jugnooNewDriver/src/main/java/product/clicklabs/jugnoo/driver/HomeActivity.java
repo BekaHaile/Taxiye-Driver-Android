@@ -2062,9 +2062,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 
-					if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP,0) == 1){
+					if (Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP, 0) == 1) {
 						DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
-								Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
+								Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING, ""), new OnClickListener() {
 									@Override
 									public void onClick(View v) {
 										Intent intent = new Intent(HomeActivity.this, SelfAuditActivity.class);
@@ -2076,7 +2076,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								});
 					}
 
+				int maxDriverEarning = Prefs.with(HomeActivity.this).getInt(DIFF_MAX_EARNING, 0);
+				if(maxDriverEarning>0) {
+					DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 				}
+			}
+
 			}, 300);
 
 			new Handler().postDelayed(new Runnable() {

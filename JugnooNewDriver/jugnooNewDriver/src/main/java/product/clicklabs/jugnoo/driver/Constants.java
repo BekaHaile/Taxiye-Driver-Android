@@ -225,6 +225,7 @@ public interface Constants {
 	String KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE = "driver_show_arrive_ui_distance";
 	String UPLOAD_DOCUMENT_MESSAGE = "upload_document_message";
 	String UPLOAD_DOCUMENT_DAYS_LEFT = "upload_document_days_left";
+	String DIFF_MAX_EARNING = "diff_max_earning";
 
 	String SP_FIRST_TIME_OPEN = "sp_first_time_open";
 
