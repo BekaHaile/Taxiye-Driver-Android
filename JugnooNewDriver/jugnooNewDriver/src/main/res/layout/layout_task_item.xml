@@ -105,7 +105,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutDeliveryData"
                 android:layout_width="match_parent"
-                android:layout_height="174px"
+                android:layout_height="212px"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -137,6 +137,33 @@
                         android:textSize="30px"
                         android:visibility="visible"
                     />
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayoutLoading"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:layout_marginTop="12px">
+                        
+                        <ImageView
+                            android:id="@+id/imageViewLoadingIcon"
+                            android:background="@drawable/unloading_icon_copy"
+                            android:layout_centerVertical="true"
+                            android:layout_width="26px"
+                            android:layout_height="26px"/>
+
+                        <TextView
+                            android:id="@+id/textViewUnLoading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/imageViewLoadingIcon"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/black_text_v2"
+                            android:layout_marginLeft="8px"
+                            android:textSize="30px"
+                            android:text="@string/unloading_req"/>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 

@@ -2568,7 +2568,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
 
 
-
 					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
 						@Override
 						public void success(RegisterScreenResponse registerScreenResponse, Response response) {

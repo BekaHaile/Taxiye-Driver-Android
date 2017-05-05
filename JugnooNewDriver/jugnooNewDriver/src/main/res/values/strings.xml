@@ -827,8 +827,30 @@
 	<string name="closed_on">Closed On</string>
 	<string name="complaint">Complaint</string>
 	<string name="raisedOn">Raised On</string>
+	<string name="range_in_km">Range (In km)</string>
+	<string name="return_fare_aplicable">Return Fare If Applicable</string>
+	<string name="per_km_wo_brack">PER Km</string>
+	<string name="per_delivery">Per Delivery</string>
+	<string name="per_km_fare">Per km fare</string>
+	<string name="return_fare">Return Fare</string>
+	<string name="pick_up_wait_time">Pickup Wait Time fare</string>
+	<string name="un_loading">un loading</string>
+	<string name="un_loading_fare">un loading fare</string>
+	<string name="loading_fare">loading fare</string>
+	<string name="pickup_distance_fare">pickup distance fare</string>
+	<string name="range">Range</string>
+	<string name="value">Value</string>
+	<string name="no_rate_card_available">No Rate Card Available</string>
+	<string name="unloading_req">Unloading Required</string>
+	<string name="loading_req">Loading Required</string>
+	<string name="unloading_fare">Unloading Fare</string>
 	<string name="super_biker">Super Biker</string>
 	<string name="needed">Needed</string>
+	<string name="did_you_know">Did you know?</string>
+	<string name="keep_jugnoo_on">Keep your Jugnoo ON to earn more</string>
+	<string name="average_days_text">In last %s days drivers in your area have earned:</string>
+	<string name="day">day</string>
+	<string name="update_webview">Please update your WebView to latest version.</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
