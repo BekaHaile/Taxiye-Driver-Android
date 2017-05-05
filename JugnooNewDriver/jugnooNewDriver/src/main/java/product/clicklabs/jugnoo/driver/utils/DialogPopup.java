@@ -1328,7 +1328,7 @@ public class DialogPopup {
 		}
 	}
 
-	public static void driverEarningPopup(Activity activity, String earning, String message, boolean cancellable, boolean okVisible) {
+	public static void driverEarningPopup(Activity activity, String heading, String earning, String message, boolean cancellable, boolean okVisible) {
 		try {
 			dismissAlertPopup();
 
@@ -1347,6 +1347,7 @@ public class DialogPopup {
 
 			CardView card1 = (CardView) dialog.findViewById(R.id.card1);
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity));
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 			TextView textMessageEarnings = (TextView) dialog.findViewById(R.id.textMessageEarnings);
@@ -1358,8 +1359,15 @@ public class DialogPopup {
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
 			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 
+			textHead.setText(heading);
 			textMessage.setText(message);
-			textMessageEarnings.setText(activity.getResources().getString(R.string.rupee)+" "+earning+"/"+activity.getResources().getString(R.string.day));
+			if("".equalsIgnoreCase(earning)){
+				textMessageEarnings.setVisibility(View.GONE);
+			} else {
+				textMessageEarnings.setVisibility(View.VISIBLE);
+				textMessageEarnings.setText(activity.getResources().getString(R.string.rupee)+" "+earning+"/"+activity.getResources().getString(R.string.day));
+			}
+
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			btnOk.setVisibility(okVisible ? View.VISIBLE : View.GONE);

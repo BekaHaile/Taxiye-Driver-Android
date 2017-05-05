@@ -886,6 +886,9 @@
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">Please update your WebView to latest version.</string>
+    <string name="max_earning_ins">Hurray! You are just %s away to reach your maximum earning
+    </string>
+    <string name="max_earning">Maximum Earning</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

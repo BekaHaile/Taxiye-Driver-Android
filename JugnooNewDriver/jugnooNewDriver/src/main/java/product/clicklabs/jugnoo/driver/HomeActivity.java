@@ -2078,13 +2078,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int avgEarning = Prefs.with(HomeActivity.this).getInt(AVERAGE_DRIVER_EARNING,0);
 					if(avgEarning > 0){
 						String averageDays = getResources().getString(R.string.average_days_text, String.valueOf(Prefs.with(HomeActivity.this).getInt(AVERAGE_EARNING_DAYS, 0)));
-						DialogPopup.driverEarningPopup(HomeActivity.this, String.valueOf(avgEarning), averageDays,false, true);
+						String heading = getResources().getString(R.string.did_you_know);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading, String.valueOf(avgEarning), averageDays,false, true);
 					}
 
-				int maxDriverEarning = Prefs.with(HomeActivity.this).getInt(DIFF_MAX_EARNING, 0);
-				if(maxDriverEarning>0) {
-					DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
-				}
+					int maxDriverEarning = Prefs.with(HomeActivity.this).getInt(DIFF_MAX_EARNING, 0);
+					if(maxDriverEarning>0) {
+						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
+						String heading = getResources().getString(R.string.max_earning);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(maxDriverEarning +" "+getResources().getString(R.string.rupee))),false, true);
+					}
 			}
 
 			}, 300);
