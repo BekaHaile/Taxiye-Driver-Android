@@ -140,12 +140,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	static boolean loginDataFetched = false;
 
 	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt, vehicleNumEt;
-	Spinner selectCitySp, autoNumEt, VehicleType;
+	Spinner selectCitySp, autoNumEt, VehicleType, offeringType;
 
 	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, textViewRegDriver, textViewCustomerApp;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
-	Integer cityposition, vehiclePosition;
+	Integer cityposition, vehiclePosition, offeringPosition;
 	CityResponse res = new CityResponse();
 	boolean tandc = false, sendToOtpScreen = false, loginFailed = false;
 
@@ -153,6 +153,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	public static JSONObject multipleCaseJSON;
 
 	ArrayList<CityResponse.VehicleType> vehicleTypes = new ArrayList<>();
+	ArrayList<CityResponse.OfferingType> offeringTypes = new ArrayList<>();
 	ArrayList<CityResponse.City>newCities = new ArrayList<>();
 
 
@@ -284,6 +285,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+		offeringType = (Spinner) findViewById(R.id.spinnerOfferingType);
 
 		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
 		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -469,6 +471,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		});
 
 		selectCitySp.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				return false;
+			}
+		});
+
+		offeringType.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				hideKeyboard();
@@ -741,6 +751,21 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		offeringTypes.add(res.new OfferingType("Select Offering",0));
+		offeringType.setAdapter(new OfferingArrayAdapter(this, R.layout.spinner_layout, offeringTypes));
+		offeringType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				offeringPosition = offeringTypes.get(position).getOfferingType();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
 
 		Data.generateKeyHash(SplashNewActivity.this);
 		
@@ -942,6 +967,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
 			params.put("vehicle_type",""+vehiclePosition);
+			params.put("offering_type",""+offeringPosition);
 			params.put("vehicle_status",vehicleStatus);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
@@ -1287,6 +1313,48 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	}
 
+
+	public class OfferingArrayAdapter extends ArrayAdapter<CityResponse.OfferingType>{
+		private LayoutInflater inflate;
+		private List<CityResponse.OfferingType> dataOffering;
+		public OfferingArrayAdapter(Context context, int resource, List<CityResponse.OfferingType> objects) {
+			super(context, resource, objects);
+			dataOffering = objects;
+			inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return dataOffering.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflate.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(dataOffering.get(position).getOfferingName());
+
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
+
+			return convertView;
+		}
+	}
+
+
 	public class VehicyleArrayAdapter extends ArrayAdapter<CityResponse.VehicleType> {
 		private LayoutInflater inflater;
 		private List<CityResponse.VehicleType> dataVehicle;
@@ -1607,6 +1675,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		selectCitySp.setSelection(0);
 		VehicleType.setSelection(0);
 		autoNumEt.setSelection(0);
+		offeringType.setSelection(0);
 	}
 
 
@@ -2416,7 +2485,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						res = cityResponse;
 						vehicleTypes.clear();
 						newCities.clear();
+						offeringTypes.clear();
 						vehicleTypes.addAll(res.getVehicleTypes());
+						offeringTypes.addAll(res.getOfferingTypes());
 						newCities.addAll(res.getCities());
 						for(int i=0; i< res.getCities().size(); i++){
 							if(res.getCities().get(i).getCityName().equalsIgnoreCase(res.getCurrentCity())){
