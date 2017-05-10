@@ -595,27 +595,31 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 										if (cityposition != 0) {
 											if (vehiclePosition != 0) {
 												if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
-													if (true) {
+													if (offeringPosition != 0) {
+														if (true) {
 
-														if(!"".equalsIgnoreCase(altPhoneNo)) {
-															if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
-																alternatePhoneNoEt.requestFocus();
-																alternatePhoneNoEt.setError("Please enter valid phone number");
-															} else {
-																altPhoneNo = "+91"+altPhoneNo;
-																if (isPhoneValid(altPhoneNo)) {
-																	sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
-																} else {
+															if (!"".equalsIgnoreCase(altPhoneNo)) {
+																if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
 																	alternatePhoneNoEt.requestFocus();
 																	alternatePhoneNoEt.setError("Please enter valid phone number");
+																} else {
+																	altPhoneNo = "+91" + altPhoneNo;
+																	if (isPhoneValid(altPhoneNo)) {
+																		sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
+																	} else {
+																		alternatePhoneNoEt.requestFocus();
+																		alternatePhoneNoEt.setError("Please enter valid phone number");
+																	}
 																}
+															} else {
+																sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
 															}
+															FlurryEventLogger.emailSignupClicked(emailId);
 														} else {
-															sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
+															DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
 														}
-														FlurryEventLogger.emailSignupClicked(emailId);
 													} else {
-														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
+														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_offering));
 													}
 												} else {
 													DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_status));
@@ -751,7 +755,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		offeringTypes.add(res.new OfferingType("Select Offering",0));
+		offeringTypes.add(res.new OfferingType("Enrolled For",0));
 		offeringType.setAdapter(new OfferingArrayAdapter(this, R.layout.spinner_layout, offeringTypes));
 		offeringType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override

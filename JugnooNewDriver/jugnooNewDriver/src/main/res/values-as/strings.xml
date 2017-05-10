@@ -808,6 +808,7 @@
     <string name="max_earning_ins">Hurray! You are just %s away to reach your maximum earning
     </string>
     <string name="max_earning">Maximum Earning</string>
+    <string name="select_valid_offering">Please select valid Offering</string>
 
 
     <string-array name="CountryCodes" >

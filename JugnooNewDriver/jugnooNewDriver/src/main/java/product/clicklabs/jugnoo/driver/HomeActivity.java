@@ -2086,7 +2086,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(maxDriverEarning>0) {
 						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 						String heading = getResources().getString(R.string.max_earning);
-						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(maxDriverEarning +" "+getResources().getString(R.string.rupee))),false, true);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(getResources().getString(R.string.rupee) +" "+maxDriverEarning)),false, true);
 					}
 			}
 

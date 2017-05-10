@@ -407,7 +407,7 @@
                         android:layout_height="30px"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="36px"
-                        android:src="@drawable/icon_owners_v3"
+                        android:src="@drawable/enrolled_for"
                         android:tag="mhar"/>
 
                     <Spinner
