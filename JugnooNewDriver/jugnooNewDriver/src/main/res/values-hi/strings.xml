@@ -845,6 +845,7 @@
 	<string name="closed_on">समाधान हुआ</string>
 	<string name="complaint">शिकायत</string>
 	<string name="raisedOn">शिकायत की तारीख</string>
+	<string name="your_income">Your Income</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

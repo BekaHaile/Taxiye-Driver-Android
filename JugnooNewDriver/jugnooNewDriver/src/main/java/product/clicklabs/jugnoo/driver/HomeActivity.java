@@ -8327,14 +8327,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
 				if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-//					for (int i = 0; i < markersDelivery.size(); i++) {
-//						if(markersDelivery.get(i).getSnippet().equalsIgnoreCase("return")){
-//							builder = new LatLngBounds.Builder();
-//							builder.include(markersDelivery.get(i).getPosition());
-//						} else{
-//							builder.include(markersDelivery.get(i).getPosition());
-//						}
-//					}
+
 					int j = getDeliveryPos();
 					builder.include(markersDelivery.get(j).getPosition());
 
@@ -8750,8 +8743,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public int getDeliveryPos(){
-		int index = deliveryListHorizontal.getCurrentItem();
-		return index;
+		try {
+			int index = deliveryListHorizontal.getCurrentItem();
+			return index;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	public void setDeliveryPos(int index) {
@@ -8888,9 +8886,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 				}
 
-				if(reCreateDeliveryMarkers) {
-					reCreateDeliveryMarkers = false;
-					setDeliveryPos(getDeliveryPos());
+				try {
+					if(reCreateDeliveryMarkers) {
+						reCreateDeliveryMarkers = false;
+						setDeliveryPos(getDeliveryPos());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 
 
@@ -9558,20 +9560,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setNevigationButtonVisibiltyDelivery(int position){
-		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
-				&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-			try {
-				if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-						== DeliveryStatus.PENDING.getOrdinal()
-						|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-						== DeliveryStatus.RETURN.getOrdinal()){
-					buttonDriverNavigationSetVisibility(View.VISIBLE);
-				} else {
-					buttonDriverNavigationSetVisibility(View.GONE);
+		try {
+			if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+					&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+				try {
+					if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+							== DeliveryStatus.PENDING.getOrdinal()
+							|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+							== DeliveryStatus.RETURN.getOrdinal()){
+						buttonDriverNavigationSetVisibility(View.VISIBLE);
+					} else {
+						buttonDriverNavigationSetVisibility(View.GONE);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
