@@ -12,6 +12,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -1319,6 +1320,63 @@ public class DialogPopup {
 						dismissAlertPopup();
 					}
 				}
+			});
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void driverEarningPopup(Activity activity, String heading, String earning, String message, boolean cancellable, boolean okVisible) {
+		try {
+			dismissAlertPopup();
+
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_show_average_sallary);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, false);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancellable);
+			dialog.setCanceledOnTouchOutside(cancellable);
+
+			CardView card1 = (CardView) dialog.findViewById(R.id.card1);
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
+			textMessage.setTypeface(Data.latoRegular(activity));
+			TextView textMessageEarnings = (TextView) dialog.findViewById(R.id.textMessageEarnings);
+			textMessageEarnings.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			TextView textMessage2 = (TextView) dialog.findViewById(R.id.textMessage2);
+			textMessage2.setTypeface(Data.latoRegular(activity));
+
+
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textHead.setText(heading);
+			textMessage.setText(message);
+			if("".equalsIgnoreCase(earning)){
+				textMessageEarnings.setVisibility(View.GONE);
+			} else {
+				textMessageEarnings.setVisibility(View.VISIBLE);
+				textMessageEarnings.setText(activity.getResources().getString(R.string.rupee)+" "+earning+"/"+activity.getResources().getString(R.string.day));
+			}
+
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setVisibility(okVisible ? View.VISIBLE : View.GONE);
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+				}
+
 			});
 
 			dialog.show();

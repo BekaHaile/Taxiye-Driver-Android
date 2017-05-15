@@ -37,6 +37,7 @@
 
 
     <ImageView
+        android:id="@+id/imageViewSeprator"
         android:layout_width="match_parent"
         android:layout_height="6px"
         android:background="@drawable/shadow_down"
@@ -46,7 +47,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="99px"
+        android:layout_height="90px"
         android:visibility="visible"
         app:pstsIndicatorHeight="7px"
         app:pstsDividerColor="@color/menu_black"

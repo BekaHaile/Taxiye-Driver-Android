@@ -28,8 +28,11 @@ import java.net.URL;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -112,6 +115,17 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 				PackageInfo pi = pm.getPackageInfo("com.google.android.webview", 0);
 				Log.d("version name: ", pi.versionName);
 				Log.d("version code: " , String.valueOf(pi.versionCode));
+
+
+
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && pi.versionCode < 302908300){
+					// Do something for lollipop and above versions
+					redirectToApp();
+				} else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP && pi.versionCode < 298713200) {
+					// Do something for lollipop and above versions
+					redirectToApp();
+				}
+
 			} catch (PackageManager.NameNotFoundException e) {
 				Log.e("notFound","Android System WebView is not found");
 			}
@@ -202,4 +216,21 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		}
 	}
 
+	public void redirectToApp(){
+		DialogPopup.alertPopupTwoButtonsWithListeners(HighDemandAreaActivity.this, "",
+				getResources().getString(R.string.update_webview),
+				getResources().getString(R.string.ok),
+				getResources().getString(R.string.cancel),
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						CustomAppLauncher.launchApp(HighDemandAreaActivity.this, "com.google.android.webview");
+					}
+				}, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				}, false, false);
+	}
 }
