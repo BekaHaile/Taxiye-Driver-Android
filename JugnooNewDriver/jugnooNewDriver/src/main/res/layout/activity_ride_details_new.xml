@@ -113,15 +113,15 @@
             android:layout_marginTop="2px">
 
             <TextView
-                android:id="@+id/textViewActualFareText"
+                android:id="@+id/textViewAccountBalanceText"
                 android:layout_width="460px"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
-                android:text="@string/estimated_payout_lower"
+                android:text="@string/bank_deposite"
                 android:textColor="@color/black_text_v2"
                 android:textSize="34px"/>
             <TextView
-                android:id="@+id/textViewActualFareValue"
+                android:id="@+id/textViewAccountBalance"
                 android:layout_width="140px"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -170,15 +170,15 @@
             android:layout_marginTop="0px">
 
             <TextView
-                android:id="@+id/textViewAccountBalanceText"
+                android:id="@+id/textViewActualFareText"
                 android:layout_width="440px"
                 android:layout_height="74px"
                 android:gravity="center_vertical"
-                android:text="@string/bank_deposite"
+                android:text="@string/your_income"
                 android:textColor="@color/black"
                 android:textSize="40px"/>
             <TextView
-                android:id="@+id/textViewAccountBalance"
+                android:id="@+id/textViewActualFareValue"
                 android:layout_width="160px"
                 android:layout_height="74px"
                 android:layout_alignParentRight="true"
