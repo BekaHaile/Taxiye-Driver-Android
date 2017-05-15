@@ -47,6 +47,9 @@ public class DeliveryInfoInRideDetails {
 		@SerializedName("phone")
 		@Expose
 		private String phone;
+		@SerializedName("is_loading")
+		@Expose
+		private int loadingStatus;
 
 		public String getName() {
 			return name;
@@ -70,6 +73,14 @@ public class DeliveryInfoInRideDetails {
 
 		public void setPhone(String phone) {
 			this.phone = phone;
+		}
+
+		public int getLoadingStatus() {
+			return loadingStatus;
+		}
+
+		public void setLoadingStatus(int loadingStatus) {
+			this.loadingStatus = loadingStatus;
 		}
 	}
 

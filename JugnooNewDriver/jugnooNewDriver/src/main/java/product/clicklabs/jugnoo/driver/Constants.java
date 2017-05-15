@@ -113,6 +113,9 @@ public interface Constants {
     String KEY_WAIT_TIME = "wait_time";
     String KEY_CANCEL_REASON = "cancel_reason";
 	String KEY_FALSE_DELIVERY = "false_delivery";
+	String KEY_LOADING_STATUS = "loading_status";
+	String KEY_IS_LOADING = "is_loading";
+	String KEY_IS_UNLOADING = "is_unloading";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
 	String KEY_IS_DELIVERY_POOL = "is_delivery_pool";
@@ -225,6 +228,8 @@ public interface Constants {
 	String KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE = "driver_show_arrive_ui_distance";
 	String UPLOAD_DOCUMENT_MESSAGE = "upload_document_message";
 	String UPLOAD_DOCUMENT_DAYS_LEFT = "upload_document_days_left";
+	String AVERAGE_DRIVER_EARNING = "average_driver_earning";
+	String AVERAGE_EARNING_DAYS = "average_earning_days";
 
 	String SP_FIRST_TIME_OPEN = "sp_first_time_open";
 

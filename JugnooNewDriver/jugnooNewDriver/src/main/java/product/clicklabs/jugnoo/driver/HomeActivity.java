@@ -1343,7 +1343,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
+					startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}
@@ -2074,6 +2074,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										overridePendingTransition(R.anim.left_in, R.anim.left_out);
 									}
 								});
+					}
+					int avgEarning = Prefs.with(HomeActivity.this).getInt(AVERAGE_DRIVER_EARNING,0);
+					if(avgEarning > 0){
+						String averageDays = getResources().getString(R.string.average_days_text, String.valueOf(Prefs.with(HomeActivity.this).getInt(AVERAGE_EARNING_DAYS, 0)));
+						DialogPopup.driverEarningPopup(HomeActivity.this, String.valueOf(avgEarning), averageDays,false, true);
 					}
 
 				}
@@ -2978,6 +2983,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void showDialogFromBackground(final String message) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopup(HomeActivity.this, "", message);
+			}
+		});
+	}
+
+	public void showDialogFromPush(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -3922,6 +3937,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								deliveryInfoInRideDetails.getPickupData().setName(customerInfo.getName());
 								deliveryInfoInRideDetails.getPickupData().setPhone(customerInfo.getPhoneNumber());
 								deliveryInfoInRideDetails.getPickupData().setCashToCollect(Double.valueOf(customerInfo.getCashOnDelivery()));
+								deliveryInfoInRideDetails.getPickupData().setLoadingStatus(customerInfo.getLoadingStatus());
 								List<DeliveryInfoInRideDetails.DeliveryDatum> deliveryData = new ArrayList<>();
 								for (int i = 0; i < customerInfo.getDeliveryInfos().size(); i++) {
 									DeliveryInfoInRideDetails.DeliveryDatum deliveryDatum = new DeliveryInfoInRideDetails.DeliveryDatum();
@@ -5262,7 +5278,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "", estimatedDriverFare ="";
-					int ForceEndDelivery = 0, falseDeliveries = 0;
+					int ForceEndDelivery = 0, falseDeliveries = 0, loadingStatus=0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
 					int totalDeliveries = 0, orderId =0 ;
@@ -5281,6 +5297,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 						estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
+						loadingStatus = userData.optInt(KEY_IS_LOADING, 0);
 						falseDeliveries = userData.optInt("false_deliveries", 0);
 						orderId = userData.optInt("order_id", 0);
 					} else{
@@ -5323,7 +5340,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 

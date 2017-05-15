@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/sliding_bottom_bg_color"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewNoRCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_rate_card_available"
+        android:gravity="center"
+        android:textSize="32px"/>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12px">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:background="@color/sliding_bottom_bg_color"
+        android:padding="4px">
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutBaseFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="visible"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewBeforeRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:textAllCaps="true"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/base_fare"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/basefare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewBeforeRide"
+                android:layout_marginTop="12px"
+                android:layout_marginBottom="30px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal3"
+                android:layout_width="match_parent"
+                android:layout_height="12px"
+                android:layout_below="@+id/basefare_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutRange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewPerKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:textAllCaps="true"
+                android:text="@string/per_km_wo_brack"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/perKm_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPerKm"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal2"
+                android:layout_width="match_parent"
+                android:layout_height="12px"
+                android:layout_below="@+id/perKm_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutPerDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewPerDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/per_delivery"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/perDelivery_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPerDelivery"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal1"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_below="@+id/perDelivery_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutReturnFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewReturnFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/return_fare"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/returnFare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewReturnFare"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal5"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_below="@+id/returnFare_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPickupWaitTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewPickupWaitTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/pick_up_wait_time"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+
+            <LinearLayout
+                android:id="@+id/pickupWaitTime_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPickupWaitTime"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal6"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_centerVertical="true"
+                android:layout_below="@+id/pickupWaitTime_extras"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPickupDistanceFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewPickupDistanceFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/accept_subsidy"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/pickupDistanceFare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPickupDistanceFare"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal7"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_below="@+id/pickupDistanceFare_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutLoadingFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewLoadingFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/loading_fare"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/loadingFare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewLoadingFare"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal8"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_below="@+id/loadingFare_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutUnLoadingFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewUnLoadingFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8px"
+                android:layout_marginLeft="22px"
+                android:layout_marginTop="24px"
+                android:text="@string/unloading_fare"
+                android:textAllCaps="true"
+                android:textColor="@color/new_orange"
+                android:textSize="38px"/>
+
+            <LinearLayout
+                android:id="@+id/unLoadingFare_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewUnLoadingFare"
+                android:layout_marginBottom="30px"
+                android:layout_marginTop="12px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal9"
+                android:layout_width="match_parent"
+                android:layout_height="15px"
+                android:layout_below="@+id/unLoadingFare_extras"
+                android:layout_centerVertical="true"
+                android:background="@color/sliding_bottom_bg_color"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
