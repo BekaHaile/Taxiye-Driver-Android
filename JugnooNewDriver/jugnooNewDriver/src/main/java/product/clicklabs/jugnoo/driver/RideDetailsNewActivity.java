@@ -306,18 +306,18 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
 		waitTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewActualFareValue = (TextView) findViewById(R.id.textViewActualFareValue);
-		textViewActualFareValue.setTypeface(Fonts.mavenRegular(this));
+		textViewActualFareValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		relativeContainer.setVisibility(View.GONE);
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
-		textViewAccountBalance.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		textViewAccountBalance.setTypeface(Fonts.mavenRegular(this));
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
 		textViewCustomerPaid.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
 		textViewFromValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(this));
 
 		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
@@ -325,7 +325,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Fonts.mavenRegular(this));
 

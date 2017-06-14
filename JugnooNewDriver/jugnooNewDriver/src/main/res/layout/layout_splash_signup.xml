@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="584px"
+                android:layout_height="675px"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
@@ -390,6 +390,51 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageViewOfferingType"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/enrolled_for"
+                        android:tag="mhar"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerOfferingType"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_marginLeft="78px"
+                        android:background="@drawable/transparent"
+                        android:capitalize="words"
+                        android:dropDownSelector="@drawable/arrow_down"
+                        android:hint="@string/auto_number"
+                        android:paddingLeft="0px"
+                        android:singleLine="true"
+                        android:spinnerMode="dropdown"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="25px"
+                        android:layout_height="16px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="34px"
+                        android:layout_marginTop="32px"
+                        android:background="@drawable/arrow_down"/>
+
+                </RelativeLayout>
+
             </LinearLayout>
 
 
@@ -425,7 +470,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/i_accept_new"
                 android:textColor="@color/white"
-                android:layout_marginTop="100px"
+                android:layout_marginTop="24px"
                 android:layout_toRightOf="@+id/imageViewTandC"
                 android:textSize="28px"/>
 

@@ -292,9 +292,9 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			linear = (LinearLayout) itemView.findViewById(R.id.linear);
 
 			textViewActualFareText = (TextView)itemView.findViewById(R.id.textViewActualFareText);
-			textViewActualFareText.setTypeface(Fonts.mavenRegular(context));
+			textViewActualFareText.setTypeface(Data.latoRegular(context), Typeface.BOLD);
 			textViewActualFareValue = (TextView)itemView.findViewById(R.id.textViewActualFareValue);
-			textViewActualFareValue.setTypeface(Fonts.mavenRegular(context));
+			textViewActualFareValue.setTypeface(Data.latoRegular(context), Typeface.BOLD);
 
 			textViewCustomerPaidText = (TextView)itemView.findViewById(R.id.textViewCustomerPaidText);
 			textViewCustomerPaidText.setTypeface(Fonts.mavenRegular(context));
@@ -302,9 +302,9 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			textViewCustomerPaid.setTypeface(Fonts.mavenRegular(context));
 
 			textViewBankDeposite = (TextView)itemView.findViewById(R.id.textViewBankDeposite);
-			textViewBankDeposite.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+			textViewBankDeposite.setTypeface(Fonts.mavenRegular(context));
 			textViewBankDepositeValue = (TextView)itemView.findViewById(R.id.textViewBankDepositeValue);
-			textViewBankDepositeValue.setTypeface(Fonts.mavenBold(context));
+			textViewBankDepositeValue.setTypeface(Fonts.mavenRegular(context));
 
 			onlineTimeValue = (TextView)itemView.findViewById(R.id.onlineTimeValue);
 			onlineTimeValue.setTypeface(Fonts.mavenRegular(context));

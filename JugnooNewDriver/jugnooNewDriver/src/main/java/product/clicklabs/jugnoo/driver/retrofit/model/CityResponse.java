@@ -27,6 +27,9 @@ public class CityResponse implements Serializable {
 	@SerializedName("current_city")
 	@Expose
 	private String currentCity;
+	@SerializedName("offering_types")
+	@Expose
+	private List<OfferingType> offeringTypes = null;
 
 	/**
 	 * @return The flag
@@ -90,6 +93,14 @@ public class CityResponse implements Serializable {
 	 */
 	public void setVehicleTypes(List<VehicleType> vehicleTypes) {
 		this.vehicleTypes = vehicleTypes;
+	}
+
+	public List<OfferingType> getOfferingTypes() {
+		return offeringTypes;
+	}
+
+	public void setOfferingTypes(List<OfferingType> offeringTypes) {
+		this.offeringTypes = offeringTypes;
 	}
 
 	public class City implements Serializable{
@@ -193,6 +204,38 @@ public class CityResponse implements Serializable {
 		 */
 		public void setVehicleType(Integer vehicleType) {
 			this.vehicleType = vehicleType;
+		}
+
+	}
+
+	public class OfferingType implements Serializable {
+
+		@SerializedName("offering_name")
+		@Expose
+		private String offeringName;
+		@SerializedName("offering_type")
+		@Expose
+		private Integer offeringType;
+
+		public OfferingType(String offeringName, Integer offeringType) {
+			this.offeringName = offeringName;
+			this.offeringType = offeringType;
+		}
+
+		public String getOfferingName() {
+			return offeringName;
+		}
+
+		public void setOfferingName(String offeringName) {
+			this.offeringName = offeringName;
+		}
+
+		public Integer getOfferingType() {
+			return offeringType;
+		}
+
+		public void setOfferingType(Integer offeringType) {
+			this.offeringType = offeringType;
 		}
 
 	}

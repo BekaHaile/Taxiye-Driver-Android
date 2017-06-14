@@ -73,7 +73,6 @@
                     android:text="@string/NA"
                     android:textColor="@color/grey_light_doc_status"
                     android:textSize="38px"
-
                 />
 
                 <TextView
@@ -91,7 +90,6 @@
                     android:text="@string/keep_jugnoo_on"
                     android:textColor="@color/grey_light_doc_status"
                     android:textSize="28px"
-
                 />
 
 
