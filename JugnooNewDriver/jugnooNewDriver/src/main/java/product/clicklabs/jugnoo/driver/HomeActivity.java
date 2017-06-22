@@ -3142,8 +3142,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									buttonUploadOnInitial.setVisibility(View.GONE);
 								}
 
-								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-
+								Prefs.with(HomeActivity.this).save(Constants.IS_OFFLINE, 1);
+								if(Prefs.with(HomeActivity.this).getInt(Constants.UPDATE_LOCATION_OFFLINE, 0) == 0) {
+									stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+								} else {
+									startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+								}
 								GCMIntentService.clearNotifications(HomeActivity.this);
 								GCMIntentService.stopRing(true, HomeActivity.this);
 
@@ -3152,6 +3156,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 							}
 						} else {
+							Prefs.with(HomeActivity.this).save(Constants.IS_OFFLINE, 0);
 							if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 								Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								setDriverServiceRunOnOnlineBasis();
@@ -3202,7 +3207,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	private void setDriverServiceRunOnOnlineBasis() {
-		if (checkIfDriverOnline()) {
+		if (checkIfDriverOnline() || Prefs.with(HomeActivity.this).getInt(Constants.UPDATE_LOCATION_OFFLINE, 0) ==1) {
 			Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.YES);
 		} else {
 			Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
@@ -3643,8 +3648,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}, 2000);
 
-
-
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
@@ -3653,8 +3656,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startMeteringService();
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
-						startService(new Intent(this, DriverLocationUpdateService.class));
 						linearLayoutJugnooOff.setVisibility(View.GONE);
+						Prefs.with(HomeActivity.this).save(Constants.IS_OFFLINE, 0);
+					}
+
+					if(Prefs.with(HomeActivity.this).getInt(Constants.UPDATE_LOCATION_OFFLINE, 0) ==1 || checkIfDriverOnline()){
+						startService(new Intent(this, DriverLocationUpdateService.class));
 					}
 
 					try {
@@ -3665,7 +3672,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					if (map != null) {
-
 						map.clear();
 						drawHeatMapData(heatMapResponseGlobal);
 					}

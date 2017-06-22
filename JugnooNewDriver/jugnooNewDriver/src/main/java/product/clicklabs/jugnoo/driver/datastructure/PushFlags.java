@@ -34,7 +34,8 @@ public enum PushFlags {
 	SHARING_RIDE_ENDED(74),
 	UPDATE_HEAT_MAP(87),
 	SEND_DATA_USAGE(89),
-	SEND_USL_LOG(90);
+	SEND_USL_LOG(90),
+	CHANGE_JUGNOO_AVAILABILITY(90);
 
 	private int ordinal;
 
