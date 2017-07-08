@@ -7,7 +7,7 @@ public class FareStructure {
 	public double farePerMin;
 	public double freeMinutes;
 	public double farePerWaitingMin;
-	public double freeWaitingMinutes;
+	public double freeWaitingMinutes, fareMinimum;
 	
 	public double fareFactor;
 
@@ -18,7 +18,7 @@ public class FareStructure {
 	
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
-						 double farePerKmBeforeThreshold, double mandatoryFare, double mandatoryFareCapping){
+						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -35,6 +35,7 @@ public class FareStructure {
 		this.farePerKmBeforeThreshold =farePerKmBeforeThreshold;
 		this.mandatoryFare = mandatoryFare;
 		this.mandatoryFareCapping = mandatoryFareCapping;
+		this.fareMinimum = fareMinimum;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){
@@ -85,6 +86,12 @@ public class FareStructure {
 				mandatoryFareApplicable = 1;
 			} else {
 				mandatoryFareApplicable = 0;
+			}
+		}
+
+		if(fareMinimum > 0){
+			if(fare < fareMinimum){
+				fare = fareMinimum;
 			}
 		}
 
