@@ -4080,7 +4080,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					try {
 						if (customerInfo.getWaitingChargesApplicable() == 1) {
-							driverWaitRl.setVisibility(View.VISIBLE);
+							driverWaitRl.setVisibility(View.GONE);
 							driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 						} else {
 							driverWaitRl.setVisibility(View.GONE);
@@ -5032,7 +5032,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //					holder.textViewDeliveryApprox.setVisibility(View.GONE);
 				}
 			} else {
-				holder.linearLayoutDeliveryParams.setVisibility(View.GONE);
+				holder.linearLayoutDeliveryParams.setVisibility(View.VISIBLE);
 				holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
 			}
 
