@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:splitMotionEvents="false"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <!-- customer info layout -->
     <RelativeLayout
@@ -302,7 +302,7 @@
                 android:layout_width="720px"
                 android:layout_height="375px"
                 android:background="@color/transparent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
                 <ImageView
                     android:id="@+id/customerInfoLine4"
@@ -515,7 +515,7 @@
                 android:background="@drawable/grey_light_delivery_tab_fill_rounded_corner"
                 android:orientation="vertical"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <ImageView
