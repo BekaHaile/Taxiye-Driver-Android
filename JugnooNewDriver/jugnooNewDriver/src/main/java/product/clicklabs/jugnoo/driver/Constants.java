@@ -233,6 +233,9 @@ public interface Constants {
 	String AVERAGE_EARNING_DAYS = "average_earning_days";
 
 	String SP_FIRST_TIME_OPEN = "sp_first_time_open";
+	String UPDATE_LOCATION_OFFLINE = "update_location_offline";
+	String OFFLINE_UPDATE_TIME_PERIOD = "offline_update_time_period";
+	String IS_OFFLINE = "is_offline";
 
 }
 

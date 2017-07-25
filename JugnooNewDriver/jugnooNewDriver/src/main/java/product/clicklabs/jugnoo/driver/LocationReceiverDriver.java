@@ -72,43 +72,48 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
 
-
-
-						if(Utils.isBatteryCharging(context)){
-							//TODO save server fast time
-							if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
-								// Do something for lollipop and above versions
-								if(Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD,120000l)
-										!=  Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5,10000l)) {
-									Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
-											Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
-									context.stopService(new Intent(context, DriverLocationUpdateService.class));
-									setAlarm(context);
-								}
-							} else{
-								// do something for phones running an SDK before lollipop
-								if(Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD,120000l)
-										!=  Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING,10000l)) {
-									Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
-											Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
-									context.stopService(new Intent(context, DriverLocationUpdateService.class));
-									setAlarm(context);
-								}
-							}
+						if(Prefs.with(context).getInt(Constants.IS_OFFLINE, 0) == 1){
+							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+									Prefs.with(context).getLong(Constants.OFFLINE_UPDATE_TIME_PERIOD, 180000l));
+							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+							setAlarm(context);
 						} else {
-							if (location.getAccuracy() > 200) {
-								Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
-								context.stopService(new Intent(context, DriverLocationUpdateService.class));
-								setAlarm(context);
-								Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_LOC_BAD_ACCURACY_RESTART);
+							if (Utils.isBatteryCharging(context)) {
+								//TODO save server fast time
+								if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+									// Do something for lollipop and above versions
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
+										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										setAlarm(context);
+									}
+								} else {
+									// do something for phones running an SDK before lollipop
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
+										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										setAlarm(context);
+									}
+								}
 							} else {
-								//TODO save server normal time
-								if(Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD,120000l)
-										!=  Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING,120000l)) {
-									Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
-											Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING,120000l));
+								if (location.getAccuracy() > 200) {
+									Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()=" + location.getAccuracy());
 									context.stopService(new Intent(context, DriverLocationUpdateService.class));
 									setAlarm(context);
+									Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_LOC_BAD_ACCURACY_RESTART);
+								} else {
+									//TODO save server normal time
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l));
+										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										setAlarm(context);
+									}
 								}
 							}
 						}

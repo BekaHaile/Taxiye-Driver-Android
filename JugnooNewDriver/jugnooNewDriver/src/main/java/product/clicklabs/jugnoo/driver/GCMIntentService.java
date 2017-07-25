@@ -699,11 +699,16 @@ public class GCMIntentService extends IntentService {
 								} else {
 									notificationManager(this, logMessage, false);
 								}
+							} else if (PushFlags.CHANGE_JUGNOO_AVAILABILITY.getOrdinal() == flag) {
+								if (HomeActivity.appInterruptHandler != null) {
+									Intent openApp = new Intent(this, SplashNewActivity.class);
+									openApp.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+									startActivity(openApp);
+								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 								String campainId = jObj.getString("campaign_id");
 								boolean sendAck = jObj.optBoolean("ack_notif", false);
-
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
 								if ("".equalsIgnoreCase(picture)) {

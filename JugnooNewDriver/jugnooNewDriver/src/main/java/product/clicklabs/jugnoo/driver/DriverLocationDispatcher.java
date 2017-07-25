@@ -68,7 +68,7 @@ public class DriverLocationDispatcher {
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 						Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_RECEIVED);
 
-						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
+						if (((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() || screenMode == DriverScreenMode.D_OFFLINE.getOrdinal()) && diff >= freeStateTime)
 								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
