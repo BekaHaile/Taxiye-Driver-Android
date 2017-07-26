@@ -415,7 +415,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
 
-	public static final long DRIVER_START_RIDE_CHECK_METERS = 600; //in meters
+	public static final long DRIVER_START_RIDE_CHECK_METERS = 400; //in meters
 
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
@@ -1277,12 +1277,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+
 					FlurryEventLogger.event(CALL_US);
 					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
 					drawerLayout.closeDrawer(GravityCompat.START);
-//					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});

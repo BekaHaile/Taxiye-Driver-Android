@@ -244,6 +244,15 @@ public class Utils {
 		activity.startActivity(callIntent);
 	}
 
+	public static void makeCallIntent(Activity activity, String phoneNumber) {
+		try {
+			Intent callIntent = new Intent(Intent.ACTION_CALL);
+			callIntent.setData(Uri.parse("tel:" + phoneNumber));
+			activity.startActivity(callIntent);
+		} catch (Exception e) {
+			openCallIntent(activity, phoneNumber);
+		}
+	}
 
 	public static String hidePhoneNoString(String phoneNo) {
 		String returnPhoneNo = "";
