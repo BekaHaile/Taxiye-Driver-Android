@@ -161,7 +161,7 @@ public class DriverTicketDetails extends BaseActivity {
 		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Utils.openCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
+				Utils.makeCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
