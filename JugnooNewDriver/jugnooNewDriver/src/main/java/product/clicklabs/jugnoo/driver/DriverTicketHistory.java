@@ -129,7 +129,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Utils.openCallIntent(DriverTicketHistory.this, Data.userData.driverSupportNumber);
+				Utils.makeCallIntent(DriverTicketHistory.this, Data.userData.driverSupportNumber);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
