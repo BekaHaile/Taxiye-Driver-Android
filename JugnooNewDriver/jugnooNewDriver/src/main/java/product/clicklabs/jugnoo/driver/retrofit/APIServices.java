@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -597,4 +598,9 @@ public interface APIServices {
 	@POST("/show_delivery_rate_card")
 	void deliveryRateCardDetail(@Field("access_token") String accessToken,
 						Callback<DeliveryRateCardResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_transaction_history")
+	void getUserTransaction(@FieldMap Map<String, String> params,
+						  Callback<WalletTransactionResponse> callback);
 }

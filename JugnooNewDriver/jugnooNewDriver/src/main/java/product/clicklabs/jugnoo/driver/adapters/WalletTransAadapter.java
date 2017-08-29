@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.databinding.LayoutItemShowMoreBinding;
 import product.clicklabs.jugnoo.driver.databinding.LayoutTransactionItemBinding;
+import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 
 /**
  * Created by gurmail on 26/08/17.
@@ -19,15 +22,19 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final static String TAG = WalletTransAadapter.class.getSimpleName();
     private final static int TYPE_ITEM_VIEW = 0;
     private final static int TYPE_FOOTER = 1;
+    private int totalTransactions = 0;
     private ShowMore showMore;
     private Activity activity;
+    private ArrayList<WalletTransactionResponse.Transactions> transactionses = new ArrayList<>();
 
     public WalletTransAadapter(Activity activity, ShowMore showMore) {
         this.activity = activity;
         this.showMore = showMore;
     }
 
-    public void updateList() {
+    public void updateList(int totalTransactions, ArrayList<WalletTransactionResponse.Transactions> transactionses) {
+        this.transactionses = transactionses;
+        this.totalTransactions = totalTransactions;
         notifyDataSetChanged();
     }
 
@@ -45,30 +52,42 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof viewHolder) {
-            ((viewHolder) holder).transactionItemBinding.textViewTransactionAmount.setText("");
+
+            viewHolder viewHolder = (WalletTransAadapter.viewHolder) holder;
+            viewHolder.transactionItemBinding.textViewTransactionAmount.setText(""+transactionses.get(position).getAmount());
+            viewHolder.transactionItemBinding.textViewTransactionDate.setText(transactionses.get(position).getTxnDate());
+            viewHolder.transactionItemBinding.textViewTransactionTime.setText(transactionses.get(position).getTxnTime());
+            viewHolder.transactionItemBinding.tvPaymentType.setText(transactionses.get(position).getTxnText());
+            viewHolder.transactionItemBinding.textViewTransactionType.setText(transactionses.get(position).getTxnText());
         }
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        if(transactionses == null || transactionses.size() == 0){
+            return 0;
+        } else{
+            if(totalTransactions > transactionses.size()){
+                return transactionses.size() + 1;
+            } else{
+                return transactionses.size();
+            }
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(isViewTypeFooter(position)) {
+        if(isPositionFooter(position)) {
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM_VIEW;
         }
     }
 
-    private boolean isViewTypeFooter(int position) {
-        if(position == 9)
-            return true;
-        else
-            return false;
+    private boolean isPositionFooter(int position) {
+        return position == transactionses.size();
     }
+
 
     public class viewHolder extends RecyclerView.ViewHolder {
         private LayoutTransactionItemBinding transactionItemBinding;

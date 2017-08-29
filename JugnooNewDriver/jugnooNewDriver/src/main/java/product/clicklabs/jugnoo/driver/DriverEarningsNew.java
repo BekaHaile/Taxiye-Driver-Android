@@ -78,8 +78,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	ASSL assl;
 	BarChart barChart;
 	int index = 0, maxIndex = 0;
-	Shader textShader;
-	DriverEarningsResponse res;
+
+	private DriverEarningsResponse res;
 	private Type listType = new TypeToken<List<DriverEarningsResponse.RechargeOption>>() {
 	}.getType();
 
@@ -525,7 +525,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	}
 
 	private void setWalletData(String amount) {
-		textViewWalletBalance.setText(getString(R.string.wallet_balance).toUpperCase());
+		String text = getString(R.string.wallet_balance);
+		textViewWalletBalance.setText(text.toUpperCase());
 		String amountStr = getString(R.string.rupees_value_format, amount);
 		if(Double.parseDouble(amount)<0) {
 			amountStr = getString(R.string.rupees_value_format_negtive, amount);

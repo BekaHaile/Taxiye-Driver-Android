@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by gurmail on 24/08/17.
@@ -64,6 +65,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
                 inflater, R.layout.fragment_wallet, container, false);
         rootView = fragmentWalletBinding.getRoot();
         walletActivity = (WalletActivity) getActivity();
+        jugnooAmount = Utils.getDecimalFormatForMoney().format(balance);
         if(balance < 0) {
             fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format_negtive, jugnooAmount) + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
             Spannable spannable = (Spannable) fragmentWalletBinding.walletBalanceView.getText();

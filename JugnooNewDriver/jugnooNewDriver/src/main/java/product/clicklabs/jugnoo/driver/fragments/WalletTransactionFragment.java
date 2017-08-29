@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverEarningsNew;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -18,6 +22,7 @@ import product.clicklabs.jugnoo.driver.WalletActivity;
 import product.clicklabs.jugnoo.driver.adapters.WalletTransAadapter;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletTransactionBinding;
+import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -39,6 +44,7 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
     private View rootView;
     private FragmentWalletTransactionBinding transactionFragment;
     private WalletTransAadapter transAadapter;
+    private ArrayList<WalletTransactionResponse.Transactions> arrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -66,6 +72,8 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
         transactionFragment.recyclerView.setLayoutManager(layoutManager);
         transAadapter = new WalletTransAadapter(walletActivity, this);
         transactionFragment.recyclerView.setAdapter(transAadapter);
+
+        getTrnsList();
     }
 
     @Override
@@ -96,11 +104,19 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
     private void getTrnsList() {
         try {
             if (AppStatus.getInstance(walletActivity).isOnline(walletActivity)) {
-                String invoiceId = "0";
+                HashMap<String, String> map = new HashMap<>();
+                map.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+                map.put("start_from", ""+arrayList.size());
+                map.put("device_type", ""+Data.DEVICE_TYPE);
+                map.put("is_access_token_new", "1");
+                map.put("app_version", ""+Data.appVersion);
+                map.put("client_id", ""+Data.CLIENT_ID);
+                map.put("login_type", ""+Data.LOGIN_TYPE);
+
                 DialogPopup.showLoadingDialog(walletActivity, walletActivity.getResources().getString(R.string.loading));
-                RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, new Callback<DriverEarningsResponse>() {
+                RestClient.getApiServices().getUserTransaction(map, new Callback<WalletTransactionResponse>() {
                     @Override
-                    public void success(DriverEarningsResponse driverEarningsResponse, Response response) {
+                    public void success(WalletTransactionResponse transactionResponse, Response response) {
                         try {
                             String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
                             JSONObject jObj;
@@ -111,9 +127,15 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
                                     HomeActivity.logoutUser(walletActivity);
                                 }
                             } else {
-                                DialogPopup.dismissLoadingDialog();
-                                // TODO: 28/08/17  After sucessfull handle data here.
+                                arrayList.addAll(transactionResponse.getTransactions());
+                                transAadapter.updateList(transactionResponse.getNumTxns(), arrayList);
+                                if(arrayList.size() == 0) {
+                                    transactionFragment.textViewNoItems.setVisibility(View.VISIBLE);
+                                } else {
+                                    transactionFragment.textViewNoItems.setVisibility(View.GONE);
+                                }
                             }
+                            DialogPopup.dismissLoadingDialog();
                         } catch (Exception exception) {
                             exception.printStackTrace();
                             DialogPopup.dismissLoadingDialog();

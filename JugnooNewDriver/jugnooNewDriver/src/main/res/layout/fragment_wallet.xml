@@ -38,9 +38,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp"
-                        android:drawableLeft="@drawable/radio_select"
+                        android:drawableLeft="@drawable/wallet_balance"
                         android:drawablePadding="12dp"
                         android:textSize="@dimen/text_size_16_sp"
+                        android:gravity="center_vertical"
                         android:layout_centerVertical="true"
                         android:text="@string/wallet_title"
                         android:textAllCaps="true" />
@@ -120,11 +121,11 @@
 
                     <ImageView
                         android:id="@+id/imageViewWalletTransactionsIcon"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:src="@drawable/radio_select" />
+                        android:src="@drawable/recent_transaction" />
 
                     <TextView
                         android:id="@+id/textViewWalletTransactions"

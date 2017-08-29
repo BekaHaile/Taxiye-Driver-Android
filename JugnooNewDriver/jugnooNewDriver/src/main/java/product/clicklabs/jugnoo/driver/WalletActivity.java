@@ -5,7 +5,6 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 
-import product.clicklabs.jugnoo.driver.datastructure.WalletFragmentData;
 import product.clicklabs.jugnoo.driver.fragments.WalletFragment;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 
