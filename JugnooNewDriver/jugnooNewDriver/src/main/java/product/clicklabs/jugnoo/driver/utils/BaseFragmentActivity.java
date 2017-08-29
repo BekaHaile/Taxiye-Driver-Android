@@ -5,7 +5,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Window;
 import android.view.WindowManager;
@@ -147,5 +150,34 @@ public class BaseFragmentActivity extends FragmentActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	/**
+	 * Helper method to load fragments into layout
+	 *
+	 * @param containerResId The container resource Id in the content view into which to load the
+	 *                       fragment
+	 * @param mainFragment   The fragment to load
+	 * @param tag            The fragment tag
+	 */
+	public void loadFragment(final int containerResId,
+							 final Fragment mainFragment, final String tag,
+							 final boolean customAnimate, final boolean hideView) {
+
+		final FragmentManager fragmentManager = getSupportFragmentManager();
+		final FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+		if (customAnimate) {
+			transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.hold, R.anim.slide_in_left, R.anim.hold);
+		}
+		transaction.add(containerResId, mainFragment, tag);
+		transaction.addToBackStack(tag);
+		if(hideView && getSupportFragmentManager().getBackStackEntryCount() > 0) {
+			transaction.hide(getSupportFragmentManager().findFragmentByTag(getSupportFragmentManager()
+					.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName()));
+		}
+		transaction.commitAllowingStateLoss();
+
 	}
 }

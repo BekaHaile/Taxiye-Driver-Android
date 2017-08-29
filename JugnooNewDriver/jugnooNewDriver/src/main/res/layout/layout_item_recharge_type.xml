@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_recharge_type"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:drawableRight="@drawable/arrow_thick_new"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/visit_office"
+            android:textSize="@dimen/text_size_16_sp" />
+
+        <LinearLayout
+            android:id="@+id/extras_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="@string/enter_amount"
+                android:textSize="@dimen/text_size_14_sp" />
+
+            <EditText
+                android:id="@+id/amount_edtxt"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/bg_white"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textSize="@dimen/text_size_16_sp" />
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="128dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/orange_btn_selector"
+                android:text="@string/confirm"
+                android:textColor="@drawable/white_color_selector" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

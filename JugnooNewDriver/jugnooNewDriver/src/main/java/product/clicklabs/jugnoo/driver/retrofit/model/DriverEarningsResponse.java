@@ -27,9 +27,23 @@ public class DriverEarningsResponse {
 	@SerializedName("current_invoice_id")
 	@Expose
 	private Integer currentInvoiceId;
+	@SerializedName("jugnoo_balance")
+	@Expose
+	private Double jugnooBalance;
 	@SerializedName("period")
 	@Expose
 	private String period;
+	@SerializedName("recharge_options")
+	@Expose
+	private List<RechargeOption> rechargeOptions = null;
+
+	public List<RechargeOption> getRechargeOptions() {
+		return rechargeOptions;
+	}
+
+	public void setRechargeOptions(List<RechargeOption> rechargeOptions) {
+		this.rechargeOptions = rechargeOptions;
+	}
 
 	/**
 	 *
@@ -121,6 +135,25 @@ public class DriverEarningsResponse {
 		this.currentInvoiceId = currentInvoiceId;
 	}
 
+
+	/**
+	 *
+	 * @return
+	 * The jugnooBalance
+	 */
+	public Double getJugnooBalance() {
+		return jugnooBalance;
+	}
+
+	/**
+	 *
+	 * @param jugnooBalance
+	 * The jugnoo_balance
+	 */
+	public void setJugnooBalance(Double jugnooBalance) {
+		this.jugnooBalance = jugnooBalance;
+	}
+
 	/**
 	 *
 	 * @return
@@ -204,6 +237,44 @@ public class DriverEarningsResponse {
 		 */
 		public void setDay(String day) {
 			this.day = day;
+		}
+
+	}
+
+	public class RechargeOption {
+
+		@SerializedName("name")
+		@Expose
+		private String name;
+		@SerializedName("is_active")
+		@Expose
+		private Integer isActive;
+		@SerializedName("tag")
+		@Expose
+		private String value;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Integer getIsActive() {
+			return isActive;
+		}
+
+		public void setIsActive(Integer isActive) {
+			this.isActive = isActive;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
 		}
 
 	}

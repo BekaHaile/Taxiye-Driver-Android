@@ -226,6 +226,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId, message);
 									}
+
 							} else{
 									performBackPressed(false);
 									if (HomeActivity.appInterruptHandler != null) {
