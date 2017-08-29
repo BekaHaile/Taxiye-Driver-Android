@@ -13,6 +13,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.databinding.LayoutItemShowMoreBinding;
 import product.clicklabs.jugnoo.driver.databinding.LayoutTransactionItemBinding;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by gurmail on 26/08/17.
@@ -54,7 +55,13 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(holder instanceof viewHolder) {
 
             viewHolder viewHolder = (WalletTransAadapter.viewHolder) holder;
-            viewHolder.transactionItemBinding.textViewTransactionAmount.setText(""+transactionses.get(position).getAmount());
+            String amount = "";
+            if(transactionses.get(position).getAmount()>0) {
+                amount = activity.getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
+            } else {
+                amount = activity.getString(R.string.rupees_value_format_negtive, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
+            }
+            viewHolder.transactionItemBinding.textViewTransactionAmount.setText(amount);
             viewHolder.transactionItemBinding.textViewTransactionDate.setText(transactionses.get(position).getTxnDate());
             viewHolder.transactionItemBinding.textViewTransactionTime.setText(transactionses.get(position).getTxnTime());
             viewHolder.transactionItemBinding.tvPaymentType.setText(transactionses.get(position).getTxnText());
