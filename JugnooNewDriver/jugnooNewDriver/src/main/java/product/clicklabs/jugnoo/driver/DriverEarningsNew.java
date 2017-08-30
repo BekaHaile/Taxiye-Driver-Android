@@ -333,13 +333,23 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			public void onClick(View v) {
 //				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_RIDE_HISTORY);
 //				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
-
-				String data = new Gson().toJson(res.getRechargeOptions(), listType);
-				Intent intent = new Intent(DriverEarningsNew.this, WalletActivity.class);
-				intent.putExtra("data", data);
-				intent.putExtra("amount", res.getJugnooBalance());
-				startActivity(intent);
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				if(res != null && res.getRechargeOptions() != null) {
+					String data = new Gson().toJson(res.getRechargeOptions(), listType);
+					Intent intent = new Intent(DriverEarningsNew.this, WalletActivity.class);
+					intent.putExtra("data", data);
+					intent.putExtra("amount", res.getJugnooBalance());
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+				else {
+					DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", "Unable to fetch wallet detail. Please try again",
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									getEarningsDetails(DriverEarningsNew.this, 0, true);
+								}
+							});
+				}
 			}
 		});
 
@@ -376,7 +386,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 //	Retrofit
 
 
-	public void updateData(DriverEarningsResponse driverEarningsResponse) {
+	public void updateData(DriverEarningsResponse driverEarningsResponse, boolean walletClick) {
 
 		if (driverEarningsResponse != null) {
 
@@ -516,7 +526,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				dataset.setBarSpacePercent(percent);
 			}
 
-			setWalletData(Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
+			setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
 
 		} else {
 			performBackPressed();
@@ -524,7 +534,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 	}
 
-	private void setWalletData(String amount) {
+	private void setWalletData(boolean walletClick, String amount) {
 		String text = getString(R.string.wallet_balance);
 		textViewWalletBalance.setText(text.toUpperCase());
 		String amountStr = getString(R.string.rupees_value_format, amount);
@@ -538,14 +548,19 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		}
 		Spannable spannable = (Spannable) textViewWalletBalanceAmount.getText();
 		int index = amountStr.length();
-		float size = Math.min(ASSL.Xscale(), ASSL.Xscale()) * 1.6f;
 		spannable.setSpan(new RelativeSizeSpan(2f), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		if(Double.parseDouble(amount) < Data.MINI_BALANCE) {
 			textViewWalletBalanceAmount.setTextColor(getResources().getColor(R.color.red_status));
 		}
+		if(walletClick) {
+			relativeLayoutWallet.performClick();
+		}
 	}
 
 	private void getEarningsDetails(final Activity activity, int invoice) {
+		getEarningsDetails(activity, invoice, false);
+	}
+	private void getEarningsDetails(final Activity activity, int invoice, final boolean walletClick) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 			String invoiceId = "0";
@@ -573,7 +588,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 						} else {
 							DialogPopup.dismissLoadingDialog();
 							res = driverEarningsResponse;
-							updateData(driverEarningsResponse);
+							updateData(driverEarningsResponse, walletClick);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();

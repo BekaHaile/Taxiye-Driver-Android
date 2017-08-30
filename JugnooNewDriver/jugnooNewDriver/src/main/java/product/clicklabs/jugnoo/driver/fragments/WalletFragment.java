@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,9 +25,7 @@ import product.clicklabs.jugnoo.driver.WalletActivity;
 import product.clicklabs.jugnoo.driver.adapters.WalletTypeAdapter;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.datastructure.RechargeType;
-import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -72,7 +69,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
             int index = getString(R.string.rupees_value_format, jugnooAmount).length();
             spannable.setSpan(new RelativeSizeSpan(1.6f), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             fragmentWalletBinding.walletBalanceView.setTextColor(getResources().getColor(R.color.red_status));
-        } else if(balance <= Data.MINI_BALANCE) {
+        } else if(balance < Data.MINI_BALANCE) {
             fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format, jugnooAmount) + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
             Spannable spannable = (Spannable) fragmentWalletBinding.walletBalanceView.getText();
             int index = getString(R.string.rupees_value_format, jugnooAmount).length();
