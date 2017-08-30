@@ -878,7 +878,7 @@
     <string name="recharge_new">2 ) Recharge Now</string>
     <string name="visit_office">1 ) Visit Office</string>
     <string name="wallet_balance">खाता राशि</string>
-    <string name="low_balance">\n(काम राशि)</string>
+    <string name="low_balance">\n(न्यूनतम राशि)</string>
     <string name="rupees_value_format">\u20B9%s</string>
 	<string name="rupees_value_format_negtive">-\u20B9%s</string>
     <string name="wallet_transactions">खाता लेन-देन प्रकिर्या</string>
