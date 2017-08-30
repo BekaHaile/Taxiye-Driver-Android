@@ -891,20 +891,21 @@
     </string>
     <string name="max_earning">Maximum Earning</string>
     <string name="select_valid_offering">Please select valid Offering</string>
-    <string name="wallet_title">Wallet Balance</string>
-    <string name="how_to_recharge">How to Recharge</string>
+
+    <string name="wallet_title">பணப்பை மீதம்</string>
+    <string name="how_to_recharge">எப்படி ரிச்சார்ஜ் செய்வது</string>
     <string name="recharge_new">2 ) Recharge Now</string>
     <string name="visit_office">1 ) Visit Office</string>
-    <string name="wallet_balance">Wallet Balance</string>
-    <string name="low_balance">\n(Low Balance)</string>
+    <string name="wallet_balance">பணப்பை மீதம்</string>
+    <string name="low_balance">\n(குறைவான தொகை)</string>
     <string name="rupees_value_format">\u20B9%s</string>
     <string name="rupees_value_format_negtive">-\u20B9%s</string>
-    <string name="wallet_transactions">Wallet Transactions</string>
-    <string name="no_transactions">No Transactions Currently</string>
+    <string name="wallet_transactions">பணப்பை பரிவர்த்தனைகல்</string>
+    <string name="no_transactions">தற்போது பரிவர்த்தனைகள் இல்லை</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
     <string name="office_address">Office Address</string>
-    <string name="view_wallet_transactions">4. View Wallet Transactions</string>
+    <string name="view_wallet_transactions">பணப்பை பரிவர்த்தனை விவரங்கள்</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
