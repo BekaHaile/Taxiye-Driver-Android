@@ -904,6 +904,7 @@
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
     <string name="office_address">Office Address</string>
+    <string name="view_wallet_transactions">4. View Wallet Transactions</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

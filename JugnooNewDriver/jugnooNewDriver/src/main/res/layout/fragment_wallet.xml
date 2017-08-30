@@ -135,7 +135,7 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="@dimen/text_size_16_sp"
                         android:layout_toRightOf="@+id/imageViewWalletTransactionsIcon"
-                        android:text="View Wallet Transactions"
+                        android:text="@string/view_wallet_transactions"
                         android:textColor="@color/text_color_light_selector"
                         />
 

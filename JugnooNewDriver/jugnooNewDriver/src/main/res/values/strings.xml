@@ -8,8 +8,8 @@
 
 
 
-	 <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--Live-->
-	 <!--<string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
+	 <!--<string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> &lt;!&ndash;Live&ndash;&gt;-->
+	 <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev
 	<!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General&ndash;&gt;-->
 
 
@@ -868,8 +868,9 @@
 	<string name="added">Added</string>
 	<string name="deducted">Deducted</string>
     <string name="office_address">Office Address</string>
+	<string name="view_wallet_transactions">View Wallet Transactions</string>
 
-    <string-array name="CountryCodes" >
+	<string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>
