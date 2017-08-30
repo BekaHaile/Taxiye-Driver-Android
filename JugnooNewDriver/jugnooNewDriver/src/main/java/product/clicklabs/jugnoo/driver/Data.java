@@ -461,4 +461,9 @@ public class Data {
 		}
 	}
 
+	public static interface TxnType {
+		public static final int CREDITED = 1;
+		public static final int DEBITED = 2;
+	}
+
 }

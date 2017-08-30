@@ -252,6 +252,9 @@ public class DriverEarningsResponse {
 		@SerializedName("tag")
 		@Expose
 		private String value;
+		@SerializedName("addresses")
+		@Expose
+		private List<Address> addresses = new ArrayList<>();
 
 		public String getName() {
 			return name;
@@ -275,6 +278,52 @@ public class DriverEarningsResponse {
 
 		public void setValue(String value) {
 			this.value = value;
+		}
+
+		public List<Address> getAddresses() {
+			return addresses;
+		}
+
+		public void setAddresses(List<Address> addresses) {
+			this.addresses = addresses;
+		}
+
+	}
+
+	public class Address {
+
+		@SerializedName("contact_name")
+		@Expose
+		private String contactName;
+		@SerializedName("contact")
+		@Expose
+		private String contact;
+		@SerializedName("address")
+		@Expose
+		private String address;
+
+		public String getContactName() {
+			return contactName;
+		}
+
+		public void setContactName(String contactName) {
+			this.contactName = contactName;
+		}
+
+		public String getContact() {
+			return contact;
+		}
+
+		public void setContact(String contact) {
+			this.contact = contact;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
 		}
 
 	}

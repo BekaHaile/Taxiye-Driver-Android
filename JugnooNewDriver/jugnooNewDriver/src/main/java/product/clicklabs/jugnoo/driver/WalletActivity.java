@@ -16,13 +16,17 @@ public class WalletActivity extends BaseFragmentActivity {
 
     private static final String TAG = WalletActivity.class.getSimpleName();
     private double walletBalance;
+    String data = "[]";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
-        String data = getIntent().getStringExtra("data");
-        walletBalance = getIntent().getDoubleExtra("amount", 0);
+        if(getIntent().hasExtra("data")) {
+            data = getIntent().getStringExtra("data");
+        }
+        if(getIntent().hasExtra("amount"))
+            walletBalance = getIntent().getDoubleExtra("amount", 0);
 
         WalletFragment walletFragment = new WalletFragment();
         Bundle bundle = new Bundle();

@@ -522,6 +522,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20px"
                     android:textColor="@color/black_text_v2"
+                    android:text="--"
                     android:textSize="20px" />
 
 

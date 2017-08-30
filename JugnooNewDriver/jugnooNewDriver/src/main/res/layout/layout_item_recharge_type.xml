@@ -15,6 +15,7 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
+            android:textColor="@color/text_color_light_selector"
             android:textSize="@dimen/text_size_16_sp" />
 
         <LinearLayout
@@ -30,6 +31,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:textColor="@color/text_color_light_selector"
                 android:text="@string/enter_amount"
                 android:textSize="@dimen/text_size_14_sp" />
 

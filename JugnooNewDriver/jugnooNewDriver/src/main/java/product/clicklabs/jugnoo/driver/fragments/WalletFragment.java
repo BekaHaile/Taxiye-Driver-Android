@@ -102,6 +102,10 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
             }
         });
 
+        if(rechargeOptionList == null || rechargeOptionList.size() == 0) {
+            fragmentWalletBinding.howToRecharge.setVisibility(View.GONE);
+        }
+
         return rootView;
     }
 
@@ -133,9 +137,23 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
     }
 
     @Override
-    public void onItemClick(String tag) {
-        if(tag.equalsIgnoreCase(RechargeType.VISIT_OFFICE.toString())) {
-            DialogPopup.alertPopup(walletActivity, "", "Visit Jugnoo office");
+    public void onItemClick(int position) {
+        if(rechargeOptionList.get(position).getValue().equalsIgnoreCase(RechargeType.VISIT_OFFICE.toString())) {
+            String address = "";
+            int addressSize = rechargeOptionList.get(position).getAddresses().size();
+            if(addressSize > 1) {
+                for (int i = 0; i < addressSize; i++) {
+                    if(i == 0)
+                        address = rechargeOptionList.get(position).getAddresses().get(i).getAddress();
+                    else
+                        address =address +"\n"+ rechargeOptionList.get(position).getAddresses().get(i).getAddress();
+                }
+            } else if(addressSize == 1) {
+                address = rechargeOptionList.get(position).getAddresses().get(0).getAddress();
+            } else {
+                address = "Visit Jugnoo office in your city";
+            }
+            DialogPopup.alertPopup(walletActivity, "", address);
         }
     }
 }

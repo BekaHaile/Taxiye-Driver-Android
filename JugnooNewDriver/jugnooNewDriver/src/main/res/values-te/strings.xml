@@ -873,6 +873,9 @@
     <string name="rupees_value_format_negtive">-\u20B9%s</string>
     <string name="wallet_transactions">Wallet Transactions</string>
     <string name="no_transactions">No Transactions Currently</string>
+    <string name="added">Added</string>
+    <string name="deducted">Deducted</string>
+    <string name="office_address">Office Address</string>
 
 
     <string-array name="CountryCodes" >

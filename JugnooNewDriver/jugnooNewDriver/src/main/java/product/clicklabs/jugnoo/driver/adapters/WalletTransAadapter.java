@@ -3,12 +3,14 @@ package product.clicklabs.jugnoo.driver.adapters;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.databinding.LayoutItemShowMoreBinding;
 import product.clicklabs.jugnoo.driver.databinding.LayoutTransactionItemBinding;
@@ -61,13 +63,29 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 amount = activity.getString(R.string.rupees_value_format_negtive, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
             }
+
             viewHolder.transactionItemBinding.textViewTransactionAmount.setText(amount);
             viewHolder.transactionItemBinding.textViewTransactionDate.setText(transactionses.get(position).getTxnDate());
             viewHolder.transactionItemBinding.textViewTransactionTime.setText(transactionses.get(position).getTxnTime());
             viewHolder.transactionItemBinding.tvPaymentType.setText(transactionses.get(position).getTxnText());
-            viewHolder.transactionItemBinding.textViewTransactionType.setText(transactionses.get(position).getTxnText());
+
+            viewHolder.transactionItemBinding.tvPaymentType.setVisibility(TextUtils.isEmpty(transactionses.get(position).getTxnText().trim()) ? View.GONE : View.VISIBLE);
+
+            viewHolder.transactionItemBinding.textViewTransactionType.setVisibility(View.VISIBLE);
+            if(transactionses.get(position).getTxnType() == Data.TxnType.CREDITED) {
+                viewHolder.transactionItemBinding.textViewTransactionType.setText(activity.getString(R.string.added));
+                viewHolder.transactionItemBinding.textViewTransactionType.setTextColor(activity.getResources().getColor(R.color.case_added));
+            } else if(transactionses.get(position).getTxnType() == Data.TxnType.DEBITED) {
+                //Deducted
+                viewHolder.transactionItemBinding.textViewTransactionType.setText(activity.getString(R.string.deducted));
+                viewHolder.transactionItemBinding.textViewTransactionType.setTextColor(activity.getResources().getColor(R.color.case_deducted));
+            } else {
+                viewHolder.transactionItemBinding.textViewTransactionType.setVisibility(View.GONE);
+            }
         }
     }
+
+
 
     @Override
     public int getItemCount() {

@@ -60,10 +60,10 @@ public class WalletTypeAdapter extends RecyclerView.Adapter<WalletTypeAdapter.It
             rechargeTypeBinding.tvRechargeType.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if("".equalsIgnoreCase(rechargeOptions.get(getAdapterPosition()).getValue())) {
+                    if("recharge_option".equalsIgnoreCase(rechargeOptions.get(getAdapterPosition()).getValue())) {
                         rechargeTypeBinding.extrasView.setVisibility(View.VISIBLE);
                     } else {
-                        onItemClickListener.onItemClick(rechargeOptions.get(getAdapterPosition()).getValue());
+                        onItemClickListener.onItemClick(getAdapterPosition());
                     }
                 }
             });
@@ -97,7 +97,7 @@ public class WalletTypeAdapter extends RecyclerView.Adapter<WalletTypeAdapter.It
 
     public interface OnItemClickListener {
         void onRechargeBtnClick();
-        void onItemClick(String tag);
+        void onItemClick(int position);
     }
 
 }
