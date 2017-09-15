@@ -64,7 +64,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
         walletActivity = (WalletActivity) getActivity();
         jugnooAmount = Utils.getDecimalFormatForMoney().format(balance);
         if(balance < 0) {
-            fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format_negtive, jugnooAmount) + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
+            fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format_negtive, jugnooAmount.replace("-", "")) + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
             Spannable spannable = (Spannable) fragmentWalletBinding.walletBalanceView.getText();
             int index = getString(R.string.rupees_value_format, jugnooAmount).length();
             spannable.setSpan(new RelativeSizeSpan(1.6f), 0, index, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
+import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -67,12 +68,12 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	LinearLayout  linearLayoutDriverReferral;
 	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5,
 			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative, relativeLayoutPrev,
-			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet;
+			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet, relativeLayoutNefy;
 	Button backBtn;
 	TextView textViewEstPayout, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
 			textViewDailyValue5, title, textViewPayOutValue, textViewRideHistory, textViewNoChartData,
-			textViewWalletBalanceAmount, textViewWalletBalance;
+			textViewWalletBalanceAmount, textViewWalletBalance, textViewNefy, textViewNefyAmount;
 
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
@@ -122,6 +123,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		relativeLayout5 = (RelativeLayout) findViewById(R.id.relativeLayout5);
 		relativeLayoutRideHistory = (RelativeLayout) findViewById(R.id.relativeLayoutRideHistory);
 		relativeLayoutWallet = (RelativeLayout) findViewById(R.id.relativeLayoutWallet);
+		relativeLayoutNefy = (RelativeLayout) findViewById(R.id.relativeLayoutNefy);
 		relativeLayoutPrev = (RelativeLayout) findViewById(R.id.relativeLayoutPrev);
 		relativeLayoutNext = (RelativeLayout) findViewById(R.id.relativeLayoutNext);
 
@@ -171,10 +173,17 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewDailyValue5 = (TextView) findViewById(R.id.textViewDailyValue5);
 		textViewDailyValue5.setTypeface(Fonts.mavenRegular(this));
 
+		textViewNefy = (TextView) findViewById(R.id.textViewNefy);
+		textViewNefy.setTypeface(Fonts.mavenBold(this));
+		textViewNefyAmount = (TextView) findViewById(R.id.textViewNefyAmount);
+		textViewNefyAmount.setTypeface(Fonts.mavenRegular(this));
 		textViewWalletBalance = (TextView) findViewById(R.id.textViewWalletBalance);
 		textViewWalletBalance.setTypeface(Fonts.mavenBold(this));
 		textViewWalletBalanceAmount = (TextView) findViewById(R.id.textViewWalletBalanceAmount);
 		textViewWalletBalanceAmount.setTypeface(Fonts.mavenRegular(this));
+		ImageView imageViewWalletBalance = (ImageView) findViewById(R.id.imageViewWalletBalance);
+		int color = Color.parseColor("#FFFFFF");
+		imageViewWalletBalance.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
@@ -528,6 +537,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
 
+			if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
+				relativeLayoutNefy.setVisibility(View.VISIBLE);
+				textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
+
+			} else {
+				relativeLayoutNefy.setVisibility(View.GONE);
+			}
+
 		} else {
 			performBackPressed();
 		}
@@ -539,7 +556,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewWalletBalance.setText(text.toUpperCase());
 		String amountStr = getString(R.string.rupees_value_format, amount);
 		if(Double.parseDouble(amount)<0) {
-			amountStr = getString(R.string.rupees_value_format_negtive, amount);
+			amountStr = getString(R.string.rupees_value_format_negtive, amount.replace("-", ""));
 			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
 		} else if(Double.parseDouble(amount) < Data.MINI_BALANCE) {
 			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);

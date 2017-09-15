@@ -30,6 +30,9 @@ public class DriverEarningsResponse {
 	@SerializedName("jugnoo_balance")
 	@Expose
 	private Double jugnooBalance;
+	@SerializedName("neft_pending")
+	@Expose
+	private Double neftPending;
 	@SerializedName("period")
 	@Expose
 	private String period;
@@ -153,6 +156,26 @@ public class DriverEarningsResponse {
 	public void setJugnooBalance(Double jugnooBalance) {
 		this.jugnooBalance = jugnooBalance;
 	}
+
+
+	/**
+	 *
+	 * @return
+	 * The neftPending
+	 */
+	public Double getNeftPending() {
+		return neftPending;
+	}
+
+	/**
+	 *
+	 * @param neftPending
+	 * The neft_pending
+	 */
+	public void setNeftPending(Double neftPending) {
+		this.neftPending = neftPending;
+	}
+
 
 	/**
 	 *
