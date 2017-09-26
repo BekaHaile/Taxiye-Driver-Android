@@ -56,7 +56,13 @@
     <dimen name="text_size_20">20px</dimen>
     <dimen name="text_size_18">18px</dimen>
 
+    <dimen name="text_size_10_sp">10sp</dimen>
+    <dimen name="text_size_14_sp">14sp</dimen>
+    <dimen name="text_size_16_sp">16sp</dimen>
+
     <dimen name="top_bar_height">98px</dimen>
+
+
 
     <dimen name="button_width_big">400px</dimen>
     <dimen name="button_width_big_new">295px</dimen>
@@ -69,4 +75,5 @@
     <dimen name="text_size_8">6sp</dimen>
 
 
+    <dimen name="line_size">0.6dp</dimen>
 </resources>

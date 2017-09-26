@@ -40,8 +40,9 @@ public class Data {
 	//TODO change flurry key
 	//H8Y94ND8GPQTKKG5R2VY
 	public static final String STATIC_FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
-	
-	public static String FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
+    public static final int MINI_BALANCE = 50;
+
+    public static String FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
 	
 	public static final String INVALID_ACCESS_TOKEN = "invalid access token";
 	
@@ -458,6 +459,11 @@ public class Data {
 		else{
 			return DriverScreenMode.D_INITIAL;
 		}
+	}
+
+	public static interface TxnType {
+		public static final int CREDITED = 1;
+		public static final int DEBITED = 2;
 	}
 
 }

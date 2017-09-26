@@ -27,9 +27,26 @@ public class DriverEarningsResponse {
 	@SerializedName("current_invoice_id")
 	@Expose
 	private Integer currentInvoiceId;
+	@SerializedName("jugnoo_balance")
+	@Expose
+	private Double jugnooBalance;
+	@SerializedName("neft_pending")
+	@Expose
+	private Double neftPending;
 	@SerializedName("period")
 	@Expose
 	private String period;
+	@SerializedName("recharge_options")
+	@Expose
+	private List<RechargeOption> rechargeOptions = null;
+
+	public List<RechargeOption> getRechargeOptions() {
+		return rechargeOptions;
+	}
+
+	public void setRechargeOptions(List<RechargeOption> rechargeOptions) {
+		this.rechargeOptions = rechargeOptions;
+	}
 
 	/**
 	 *
@@ -121,6 +138,45 @@ public class DriverEarningsResponse {
 		this.currentInvoiceId = currentInvoiceId;
 	}
 
+
+	/**
+	 *
+	 * @return
+	 * The jugnooBalance
+	 */
+	public Double getJugnooBalance() {
+		return jugnooBalance;
+	}
+
+	/**
+	 *
+	 * @param jugnooBalance
+	 * The jugnoo_balance
+	 */
+	public void setJugnooBalance(Double jugnooBalance) {
+		this.jugnooBalance = jugnooBalance;
+	}
+
+
+	/**
+	 *
+	 * @return
+	 * The neftPending
+	 */
+	public Double getNeftPending() {
+		return neftPending;
+	}
+
+	/**
+	 *
+	 * @param neftPending
+	 * The neft_pending
+	 */
+	public void setNeftPending(Double neftPending) {
+		this.neftPending = neftPending;
+	}
+
+
 	/**
 	 *
 	 * @return
@@ -204,6 +260,93 @@ public class DriverEarningsResponse {
 		 */
 		public void setDay(String day) {
 			this.day = day;
+		}
+
+	}
+
+	public class RechargeOption {
+
+		@SerializedName("name")
+		@Expose
+		private String name;
+		@SerializedName("is_active")
+		@Expose
+		private Integer isActive;
+		@SerializedName("tag")
+		@Expose
+		private String value;
+		@SerializedName("addresses")
+		@Expose
+		private List<Address> addresses = new ArrayList<>();
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Integer getIsActive() {
+			return isActive;
+		}
+
+		public void setIsActive(Integer isActive) {
+			this.isActive = isActive;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+		public List<Address> getAddresses() {
+			return addresses;
+		}
+
+		public void setAddresses(List<Address> addresses) {
+			this.addresses = addresses;
+		}
+
+	}
+
+	public class Address {
+
+		@SerializedName("contact_name")
+		@Expose
+		private String contactName;
+		@SerializedName("contact")
+		@Expose
+		private String contact;
+		@SerializedName("address")
+		@Expose
+		private String address;
+
+		public String getContactName() {
+			return contactName;
+		}
+
+		public void setContactName(String contactName) {
+			this.contactName = contactName;
+		}
+
+		public String getContact() {
+			return contact;
+		}
+
+		public void setContact(String contact) {
+			this.contact = contact;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public void setAddress(String address) {
+			this.address = address;
 		}
 
 	}

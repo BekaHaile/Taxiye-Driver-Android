@@ -538,6 +538,9 @@
             android:name="com.nudgespot.notification.ReceiverActivity"
             android:theme="@android:style/Theme.NoDisplay">
         </activity>
+        <activity android:name=".WalletActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".receiver.NetworkCheckReceiver">

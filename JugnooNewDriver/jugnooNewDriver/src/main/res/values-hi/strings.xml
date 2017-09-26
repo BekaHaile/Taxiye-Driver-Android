@@ -873,7 +873,22 @@
 	<string name="max_earning">Maximum Earning</string>
 	<string name="select_valid_offering">Please select valid Offering</string>
 
-	<string-array name="CountryCodes" >
+    <string name="wallet_title">खाता राशि</string>
+    <string name="how_to_recharge">रिचार्ज कैसे करें</string>
+    <string name="recharge_new">2 ) Recharge Now</string>
+    <string name="visit_office">1 ) Visit Office</string>
+    <string name="wallet_balance">खाता राशि</string>
+    <string name="low_balance">\n(न्यूनतम राशि)</string>
+    <string name="rupees_value_format">\u20B9%s</string>
+	<string name="rupees_value_format_negtive">-\u20B9%s</string>
+    <string name="wallet_transactions">खाता लेन-देन प्रकिर्या</string>
+    <string name="no_transactions">कोई लेन-देन प्रकिर्या नहीं की गई</string>
+    <string name="added">Added</string>
+    <string name="deducted">Deducted</string>
+    <string name="office_address">Office Address</string>
+    <string name="view_wallet_transactions">लेन-देन प्रकिर्या ब्यौरा</string>
+
+    <string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>

@@ -254,7 +254,7 @@ public class MeteringService extends Service {
 		return gpsDistanceTimeUpdater;
 	}
 	
-    public static GpsDistanceCalculator gpsInstance(Context context){
+    public static GpsDistanceCalculator gpsInstance(Context context) {
 		return GpsDistanceCalculator.getInstance(context, getGpsDistanceTimeUpdater(context),
 				GpsDistanceCalculator.getTotalDistanceFromSP(context),
 				GpsDistanceCalculator.getLastLocationTimeFromSP(context),

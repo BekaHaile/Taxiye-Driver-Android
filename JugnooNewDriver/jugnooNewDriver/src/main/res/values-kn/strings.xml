@@ -837,6 +837,21 @@
     <string name="max_earning">Maximum Earning</string>
     <string name="select_valid_offering">Please select valid Offering</string>
 
+    <string name="wallet_title">ವಾಲೆಟ್ ಬ್ಯಾಲೆನ್ಸ್</string>
+    <string name="how_to_recharge">ರೀಚಾರ್ಚ್ ಹೇಗೆ ಮಾಡಿಕೊಳ್ಳುವುದು</string>
+    <string name="recharge_new">2 ) Recharge Now</string>
+    <string name="visit_office">1 ) Visit Office</string>
+    <string name="wallet_balance">ವಾಲೆಟ್ ಬ್ಯಾಲೆನ್ಸ್</string>
+    <string name="low_balance">\n(ಕಡಿಮೆ ಬ್ಯಾಲೆನ್ಸ್ )</string>
+    <string name="rupees_value_format">\u20B9%s</string>
+    <string name="rupees_value_format_negtive">-\u20B9%s</string>
+    <string name="wallet_transactions">ವಾಲೆಟ್ ಟ್ರಾಸಾಕ್ಷನ್ಸ್</string>
+    <string name="no_transactions">ಪ್ರಸ್ತುತ ಟ್ರಾನ್ಸಾಕ್ಷನ್ಸ್ ಇಲ್ಲ</string>
+    <string name="added">Added</string>
+    <string name="deducted">Deducted</string>
+    <string name="office_address">Office Address</string>
+    <string name="view_wallet_transactions">ವಾಲೆಟ್ ಟ್ರಾಸಾಕ್ಷನ್ಸ್ ವೀಕ್ಷಿಸಿ</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

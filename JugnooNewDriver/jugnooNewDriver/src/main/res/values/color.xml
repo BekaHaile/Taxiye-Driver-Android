@@ -179,5 +179,7 @@
     <color name="theme_color_end">#FF9339</color>
 
     <color name="dialog_brown">#474747</color>
+    <color name="case_added">#00af5a</color>
+    <color name="case_deducted">#ff6c6c</color>
 
 </resources>
