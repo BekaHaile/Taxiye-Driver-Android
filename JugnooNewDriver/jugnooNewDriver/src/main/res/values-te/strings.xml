@@ -183,7 +183,7 @@
     <string name="customer_pickup_text">ఒక పికప్ మీకు కేటాయించబడిన. దయచేసి కస్టమర్ ని పిక్ అప్
         చేస్కొండి
     </string>
-    <string name="start_ride_text">మీరు రైడ్ ప్రారంభించడానికి సిద్దంగా ఉన్నారా?</string>
+    <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
     <string name="battery_level_text">రైడ్ అంగీకరించడానికి బ్యాటరీ స్థాయి 20 % కంటే ఎక్కువ ఉండాలి.
         కొనసాగించడానికి ఫోన్ ఛార్జింగ్ పెట్టుకోండి.
     </string>

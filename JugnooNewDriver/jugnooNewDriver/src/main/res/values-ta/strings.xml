@@ -189,7 +189,7 @@
     <string name="customer_pickup_text">தங்களுக்கு ஒரு அழைப்பு நியமிக்கப்பட்டுள்ளது. வாடிக்கையாளரை
         பிக் அப் செய்யவும்
     </string>
-    <string name="start_ride_text">தாங்கள் சவாரியை தொடங்க வேண்டும் என்பதில் உறுதியாக உள்ளீர்களா?
+    <string name="start_ride_text">Please confirm you have picked up customer : %s
     </string>
     <string name="battery_level_text">பேட்டரி லெவல் 20%-இற்கு மேல் இருந்தால் தான் சவாரி-ஐ ஏற்க்க
         முடியும். உடனடியாக சார்ஜ் செய்யவும்

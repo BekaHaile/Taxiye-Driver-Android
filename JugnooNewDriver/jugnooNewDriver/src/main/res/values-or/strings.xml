@@ -160,7 +160,7 @@
     <string name="end_ride_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ରାଇଡ୍ ଶେସ କରିବାକୁ ?</string>
     <string name="logout_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ଲଗ୍-ଆଉଟ୍ କରିବାକୁ ?</string>
     <string name="customer_pickup_text">ଗୋଟିଏ ପିକ୍-ଅପ୍ କରିବାକୁ ଆପଣଂକୁ ନିର୍ଦେଶ ଦିଆଜାଇଛି.ଦୟାକରି କଷ୍ଟମର୍ କୁ ପିକ୍-ଅପ୍ କରନ୍ତୁ</string>
-    <string name="start_ride_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ରାଇଡ୍ ଆରମ୍ଭ କରିବାକୁ ?</string>
+    <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
     <string name="battery_level_text">ଭଡ଼ା ନେବା ପାଇଁ 20% ରୁ ଅଧିକ ମୋବାଇଲ୍ ଚାର୍ଜ୍ ରହିବା ଦରକାର୍,ଦୟାକରି ମୋବାଇଲ୍ କୁ ଚାର୍ଜ୍ କରି ରଖନ୍ତୁ</string>
     <string name="battery_level_start_text">ରାଇଡ୍ ସ୍ଟାର୍ଟ୍ କରିବା ପାଇଁ ଚାର୍ଜ୍ 10% ରୁ ଅଧିକ ଚାର୍ଜ୍ ରହିବା ଦରକାର୍,ଦୟାକରି ମୋବାଇଲ୍ କୁ ଚାର୍ଜ୍ କରି ରଖନ୍ତୁ</string>
     <string name="battery_level_arrived_text">ରାଇଡ୍ ଆରାଇଭ୍ କରିବା ପାଇଁ ଚାର୍ଜ୍ 10% ରୁ ଅଧିକ ରହିବା ଦରକାର୍,ଦୟାକରି ମୋବାଇଲ୍ କୁ ଚାର୍ଜ୍ କରି ରଖନ୍ତୁ</string>

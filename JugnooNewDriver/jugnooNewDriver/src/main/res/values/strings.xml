@@ -210,7 +210,7 @@
 	<string name="end_ride_text">Are you sure you want to end ride?</string>
 	<string name="logout_text">Are you sure you want to logout?</string>
 	<string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
-	<string name="start_ride_text">Are you sure you want to start ride?</string>
+	<string name="start_ride_text">Please confirm you have picked up customer : %s</string>
 
 	<string name="battery_level_text">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
 	<string name="battery_level_start_text">Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.</string>

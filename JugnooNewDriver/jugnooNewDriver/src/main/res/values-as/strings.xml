@@ -172,7 +172,7 @@
     <string name="end_ride_text">আপুনি নিশ্চয়কৈ ভাড়াটো সমাপ্ত কৰিব বিছাৰিছে নে?</string>
     <string name="logout_text">আপুনি নিশ্চয়কৈ লগআউট কৰিব বিছাৰিছে নে?</string>
     <string name="customer_pickup_text">আপনাক এজন গ্ৰাহক নিশ্বিত কৰা হৈছে।অনুগ্ৰহ কৰি ওঠাওক</string>
-    <string name="start_ride_text">আপুনি নিশ্চয়কৈ ভাড়াটো আৰম্ভ্ৰ কৰিব বিছাৰিছে নে?</string>
+    <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
     <string name="battery_level_text">বেটেৰীৰ পৰিমান সদায় 20% ত কৈ বেছি থাকিব লগিব ৰাইড একচেপ্ত কৰিবলে।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
     <string name="battery_level_start_text">বেটেৰীৰ পৰিমান সদায় আৰম্ভ্ৰ কৰিবলৈ 10% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
     <string name="battery_level_arrived_text">বেটেৰীৰ পৰিমান সদায় 10% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
