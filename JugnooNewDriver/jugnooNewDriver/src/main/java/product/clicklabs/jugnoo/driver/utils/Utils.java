@@ -64,6 +64,7 @@ import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
@@ -207,7 +208,7 @@ public class Utils {
 	public static boolean mockLocationEnabled(Location location) {
 //		return false;
 		try {
-			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+			if (!BuildConfig.DEBUG_MODE &&  Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				boolean isMockLocation = false;
 				if(location != null){
 					Bundle extras = location.getExtras();

@@ -84,6 +84,15 @@ public class DialogPopup {
 				
 			});
 
+			if(cancellable) {
+				frameLayout.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+			}
+
 			dialog.show();
 		} catch (Exception e) {
 			e.printStackTrace();

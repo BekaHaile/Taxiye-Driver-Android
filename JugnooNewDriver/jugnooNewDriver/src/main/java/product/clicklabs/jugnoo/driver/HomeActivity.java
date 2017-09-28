@@ -2155,7 +2155,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			getInfoTilesAsync(HomeActivity.this);
 		}
 
-
 	}
 
 
@@ -5773,9 +5772,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		double totalDistanceFromLogInMeter = 0;
 
-		double totalDistance = customerInfo
-				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
-		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
+		double totalDistanceInKm = getTotalDistanceInKm(customerInfo);
 
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
@@ -5879,8 +5876,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getIsDelivery() == 1){
 				url = PendingCall.END_DELIVERY.getPath();
 			}
-
-			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
+			double totalFare = getTotalFare(customerInfo, getTotalDistanceInKm(customerInfo),
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 &&  (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
 						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
@@ -5901,6 +5899,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private double getTotalDistanceInKm(CustomerInfo customerInfo) {
+		double totalDistance = customerInfo
+				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
+		return Math.abs(totalDistance / 1000.0);
 	}
 
 	private CallbackEndRide callbackEndDelivery;
@@ -6044,13 +6048,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		public void onEndRideFailure(){
-			if(customerInfo.getIsDelivery() != 1) {
+			double totalFare = getTotalFare(customerInfo, getTotalDistanceInKm(customerInfo),
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+
+			if(customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
 						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 			} else{
 //				endDelivery.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", false, false);
+				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", true, false);
 
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
 					driverScreenMode = DriverScreenMode.D_IN_RIDE;
@@ -6131,22 +6138,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							   int luggageCountAdded, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB) {
 		try {
 
+
+
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 			int invalidPool =0;
 
-			try {
-				if(customerInfo.getPoolFare() != null && customerInfo.getIsPooled() ==1) {
-					LatLng poolDropLatLng = customerInfo.dropLatLng;
-					LatLng actualDropLatng = new LatLng(dropLatitude, dropLongitude);
-					double poolDropDistanceDiff = MapUtils.distance(poolDropLatLng, actualDropLatng);
-					if (poolDropDistanceDiff > customerInfo.getPoolFare().getPoolDropRadius()) {
-						invalidPool = 1;
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			invalidPool = getInvalidPool(customerInfo, dropLatitude, dropLongitude, invalidPool);
 
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
@@ -6353,6 +6351,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
+		try {
+            if(customerInfo.getPoolFare() != null && customerInfo.getIsPooled() ==1) {
+                LatLng poolDropLatLng = customerInfo.dropLatLng;
+                LatLng actualDropLatng = new LatLng(dropLatitude, dropLongitude);
+                double poolDropDistanceDiff = MapUtils.distance(poolDropLatLng, actualDropLatng);
+                if (poolDropDistanceDiff > customerInfo.getPoolFare().getPoolDropRadius()) {
+                    invalidPool = 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return invalidPool;
 	}
 
 
