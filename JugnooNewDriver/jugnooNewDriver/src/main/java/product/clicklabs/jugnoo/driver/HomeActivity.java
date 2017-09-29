@@ -6051,13 +6051,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double totalFare = getTotalFare(customerInfo, getTotalDistanceInKm(customerInfo),
 					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
 
-			if(customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
+			if(customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
 						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 			} else{
 //				endDelivery.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", true, false);
+//				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", true, false);
+
+				endDelivery.alertPopupTwoButtonsWithListeners(activity, "", getString(R.string.connection_lost), "Retry", "Cancel", new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						endRideGPSCorrection(customerInfo);
+
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				},false,false);
 
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
 					driverScreenMode = DriverScreenMode.D_IN_RIDE;
