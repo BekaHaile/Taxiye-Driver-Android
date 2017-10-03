@@ -713,7 +713,7 @@
 	<string name="no_invoice_currently">No invoice currently</string>
 	<string name="no_data">No Data</string>
 	<string name="web_view">WEB VIEW</string>
-	<string name="connection_lost">You are not connected. Please tap here to retry.</string>
+	<string name="connection_lost">You are not connected. Please tap to retry.</string>
 	<string name="pls_enter_some_msg">Please enter some issue</string>
 	<string name="enter_destination">Enter Destination</string>
 	<string name="no_results_found">No Result Found</string>
