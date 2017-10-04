@@ -194,7 +194,7 @@
 	<string name="end_ride_text">क्या आप निश्चित रूप से राइड समापत करना चाहते हैं?</string>
 	<string name="logout_text">या आप निश्चित रूप से लॉग आउट करना चाहते हैं?</string>
 	<string name="customer_pickup_text">एक पिक आप को सौंपा गया है । कृपया ग्राहक को पिक करें।  </string>
-	<string name="start_ride_text">क्या आप निश्चित रूप से राइड पिक करना चाहते हैं?</string>
+	<string name="start_ride_text">Please confirm you have picked up customer : %s</string>
 
 	<string name="battery_level_text">बैटरी स्तर राइड स्वीकार करने के लिए 20% से अधिक होना चाहिए। जारी रखने क लिए पावर सोर्स में प्लगइन करें। </string>
 	<string name="battery_level_start_text">राइड शुरू करने के लिए बैटरी स्तर 10% से अधिक होना चाहिए। जारी रखने क लिए पावर सोर्स में प्लगइन करें।</string>

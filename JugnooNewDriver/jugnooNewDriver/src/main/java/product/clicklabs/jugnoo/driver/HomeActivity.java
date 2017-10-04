@@ -6825,10 +6825,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tour_textView.setTypeface(Data.latoRegular(activity));
 			ImageView cross_tour = (ImageView) dialog.findViewById(R.id.cross_tour);
 
+
 			if(customerInfo.getIsDelivery()==1){
 				textMessage.setText(getResources().getString(R.string.start_delivery_text));
 			}else{
 				textMessage.setText(getResources().getString(R.string.start_ride_text));
+				textMessage.setText(getResources().getString(R.string.start_ride_text, customerInfo.getName()));
 			}
 
 			if(isTourFlag){
@@ -9176,19 +9178,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else {
 						counterMap.put(latLng, 1);
 					}
-					if (!latLngs.contains(latLng)) {
-						latLngs.add(latLng);
-						builder.include(latLng);
-					} else {
-						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
-					}
-					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
-						if(customerInfo.getIsDelivery() != 1  && customerInfo.getDropLatLng() != null) {
-							addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "", 2));
+					if (customerInfo.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())) {
+						if (!latLngs.contains(latLng)) {
+							latLngs.add(latLng);
+							builder.include(latLng);
+						} else {
+							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 						}
-					} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
-							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
-						addCustomerMarker(addCustomerPickupMarker(map, customerInfo, latLng));
+						if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+							if (customerInfo.getIsDelivery() != 1 && customerInfo.getDropLatLng() != null) {
+								addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? "D" : "D", 2));
+							}
+						} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+								|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+							addCustomerMarker(addCustomerPickupMarker(map, customerInfo, latLng));
+						}
 					}
 				}
 			}

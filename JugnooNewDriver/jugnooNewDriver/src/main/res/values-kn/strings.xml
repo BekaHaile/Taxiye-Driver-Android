@@ -163,7 +163,7 @@
     <string name="end_ride_text">ನೀವು ಸವಾರಿ ಕೊನೆಗೊಳಿಸಲು ಬಯಸಿದ್ದೀರಾ?</string>
     <string name="logout_text">ನೀವು ನಿರ್ಗಮಿಸ ಬಯಸುವಿರಾ ?</string>
     <string name="customer_pickup_text">ಒಂದು ಸವಾರಿ ನಿಮಗೆ ಗೊತ್ತು ಮಾಡಲ್ಪಟ್ಟಿದೆ, ದಯವಿಟ್ಟು ಗ್ರಾಹಕರನ್ನು ಪಿಕ್ ಅಪ್ ಮಾಡಿ.</string>
-    <string name="start_ride_text">ನೀವು ಖಚಿತವಾಗಿ ಸವಾರಿಯನ್ನು ಆರಂಬಿಸಲು ಬಯಸುವಿರೆ?</string>
+    <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
     <string name="battery_level_text">ಸವಾರಿ ಸ್ವೀಕರಿಸಲು ಬ್ಯಾಟರಿ ಮಟ್ಟ 20 % ಕ್ಕೂ ಹೆಚ್ಚು ಇರಬೇಕು. ಮುಂದುವರಿಸಲು ವಿದ್ಯುತ್ಚಕ್ತಿಗೆ ಅಂಟಿಸಿ.</string>
     <string name="battery_level_start_text">ಸವಾರಿ ಆರಂಭಿಸಲು ಬ್ಯಾಟರಿ ಮಟ್ಟ 10 % ಕ್ಕೂ ಹೆಚ್ಚು ಇರಬೇಕು. ಮುಂದುವರಿಸಲು ವಿದ್ಯುತ್ಚಕ್ತಿಗೆ ಅಂಟಿಸಿ.</string>
     <string name="battery_level_arrived_text">ಸವಾರಿ ಆಗಮಿಸಲು ಬ್ಯಾಟರಿ ಮಟ್ಟ 10 % ಕ್ಕೂ ಹೆಚ್ಚು ಇರಬೇಕು. ಮುಂದುವರಿಸಲು ವಿದ್ಯುತ್ಚಕ್ತಿಗೆ ಅಂಟಿಸಿ.</string>

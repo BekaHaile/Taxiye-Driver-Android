@@ -168,7 +168,7 @@
     <string name="end_ride_text">നിങ്ങൾക്ക് ഉറപ്പാണോ റൈഡ് അവസാനിച്ചു എന്ന് ?</string>
     <string name="logout_text">ലോഗൗട്ട് ചെയ്യണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?</string>
     <string name="customer_pickup_text">ഒരു ട്രിപ്പ്‌ നിങ്ങള്ക്ക് വന്നിരിക്കുന്നു. ദയവായി അത് എടുക്കു </string>
-    <string name="start_ride_text">നിങ്ങൾക്ക് ഉറപ്പാണോ റൈഡ് ആരംഭിക്കണം എന്ന്?</string>
+    <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
     <string name="battery_level_text">സവാരി സ്വീകരിക്കാൻ ബാറ്ററി ലെവൽ 20% അധികം ആയിരിക്കണം.തടസ്സങ്ങൾ ഇല്ലാതെ  തുടരുന്നതിനായി ഉടനെ ചാർജ് ചെയ്യുക</string>
     <string name="battery_level_start_text">സവാരി സ്റ്റാർട്ട്‌ ചെയ്യാൻ  ബാറ്ററി ലെവൽ 20% അധികം ആയിരിക്കണം.തടസ്സങ്ങൾ ഇല്ലാതെ  തുടരുന്നതിനായി ഉടനെ ചാർജ് ചെയ്യുക.</string>
     <string name="battery_level_arrived_text">സവാരി ഉറവിടത്തിൽ എത്തി എന്ന് മാർക്ക്‌ ചെയ്യാൻ   ബാറ്ററി ലെവൽ 20% അധികം ആയിരിക്കണം.തടസ്സങ്ങൾ ഇല്ലാതെ  തുടരുന്നതിനായി ഉടനെ ചാർജ് ചെയ്യുക.</string>
