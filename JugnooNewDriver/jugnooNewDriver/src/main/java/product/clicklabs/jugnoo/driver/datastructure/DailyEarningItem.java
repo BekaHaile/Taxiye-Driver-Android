@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 
 /**
  * Created by aneeshbansal on 20/09/16.
@@ -15,11 +15,11 @@ public class DailyEarningItem {
 	private int type;
 	private String status;
 	private double earning;
-	private InfoTileResponse.Tile.Extras extras;
+	private Tile.Extras extras;
 
 	private DailyRideDetailsAdapter.ViewType viewType;
 
-	public DailyEarningItem(String text, double value, String time,String date, int type, String status, double earning, InfoTileResponse.Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType) {
+	public DailyEarningItem(String text, double value, String time, String date, int type, String status, double earning, Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType) {
 		this.text = text;
 		this.value = value;
 		this.time = time;
@@ -95,11 +95,11 @@ public class DailyEarningItem {
 		this.viewType = viewType;
 	}
 
-	public InfoTileResponse.Tile.Extras getExtras() {
+	public Tile.Extras getExtras() {
 		return extras;
 	}
 
-	public void setExtras(InfoTileResponse.Tile.Extras extras) {
+	public void setExtras(Tile.Extras extras) {
 		this.extras = extras;
 	}
 }

@@ -1,8 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -49,7 +46,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,7 +62,6 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
-import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -136,6 +131,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
+import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
@@ -153,11 +149,12 @@ import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
-import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -331,6 +328,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout endRideInfoRl;
 	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn, tvChatCount;
 
+	private TextView endRideCustomText;
 	Button reviewSubmitBtn, btnHelp, btnChatHead;
 	RelativeLayout relativeLayoutRateCustomer, topRlOuter, rlChatDriver;
 	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
@@ -449,7 +447,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public RelativeLayout relativeLayoutContainer;
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
-	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
+	ArrayList<Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
 	private GoogleApiClient mGoogleApiClient;
 
@@ -877,13 +875,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewPerfectRideWating.setText(getStringText(R.string.customer_waiting));
 
 
-
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Data.latoHeavy(getApplicationContext()));
 
+			endRideCustomText = (TextView) findViewById(R.id.end_ride_custom_text);
+			String endRideText = Prefs.with(HomeActivity.this).getString(Constants.END_RIDE_CUSTOM_TEXT, "");
+			if(!TextUtils.isEmpty(endRideText)) {
+				endRideCustomText.setText(endRideText);
+				endRideCustomText.setVisibility(View.VISIBLE);
+			} else {
+				endRideCustomText.setVisibility(View.GONE);
+			}
+			endRideCustomText.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getRidesAsync();
+				}
+			});
 
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -2235,109 +2246,112 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
 		@Override
-		public void okClicked(InfoTileResponse.Tile infoTileResponse, int pos) {
+		public void okClicked(Tile infoTileResponse, int pos) {
 
 			if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 			} else {
 
-				if (infoTileResponse.getDeepIndex() == 1) {
-					Intent intent = new Intent(HomeActivity.this, RideDetailsNewActivity.class);
-					Gson gson = new Gson();
-					intent.putExtra("extras", gson.toJson(infoTileResponse.getExtras(), InfoTileResponse.Tile.Extras.class));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_RIDE);
-					firebaseJugnooDeliveryHomeEvent(ITEM_RIDE + "_" + pos);
-				} else if (infoTileResponse.getDeepIndex() == 2) {
-					Calendar c = Calendar.getInstance();
-					System.out.println("Current time => " + c.getTime());
-					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-					String formattedDate = df.format(c.getTime());
-					Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
-					intent.putExtra("date", formattedDate);
-					startActivity(intent);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_DAILY + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_DAILY);
-				} else if (infoTileResponse.getDeepIndex() == 3) {
-					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_WEB + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_WEB);
-				} else if (infoTileResponse.getDeepIndex() == 4) {
-					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
-				} else if (infoTileResponse.getDeepIndex() == 5) {
-					Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_EARNINGS);
-				} else if (infoTileResponse.getDeepIndex() == 6) {
-					Intent intent = new Intent(HomeActivity.this, ShareActivity.class);
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_INVITE + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVITE);
-				} else if (infoTileResponse.getDeepIndex() == 7) {
-					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_NOTIFICATION + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_NOTIFICATION);
-				} else if (infoTileResponse.getDeepIndex() == 8) {
-					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
-					intent.putExtra("trick_page", 1);
-					startActivity(intent);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_TIPS + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_TIPS);
-				} else if (infoTileResponse.getDeepIndex() == 9) {
-					Intent intent = new Intent(HomeActivity.this, DriverProfileActivity.class);
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_PROFILE + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_PROFILE);
-				} else if (infoTileResponse.getDeepIndex() == 10) {
-					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_FULFILLMENT + "_" + pos);
-					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_FULFILLMENT);
-				} else if (infoTileResponse.getDeepIndex() == 11) {
-					try {
-						String finalUrl = String.valueOf(infoTileResponse.getExtras().getRedirectUrl())
-								+ "?access_token=" + Database2.getInstance(HomeActivity.this).getDLDAccessToken();
-						Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
-						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						i.setPackage("com.android.chrome");
-						startActivity(i);
-					} catch (ActivityNotFoundException e) {
-						// Chrome is not installed
-						Intent intent1 = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-						intent1.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
-						intent1.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
-						HomeActivity.this.startActivity(intent1);
-						HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					} catch (Exception e) {
-
-					}
-				}
+				openDeepIndexScreen(infoTileResponse, pos);
 			}
 
 		}
 	};
 
+	private void openDeepIndexScreen(Tile infoTileResponse, int pos) {
+		if (infoTileResponse.getDeepIndex() == 1) {
+			Intent intent = new Intent(HomeActivity.this, RideDetailsNewActivity.class);
+			Gson gson = new Gson();
+			intent.putExtra("extras", gson.toJson(infoTileResponse.getExtras(), Tile.Extras.class));
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_RIDE);
+			firebaseJugnooDeliveryHomeEvent(ITEM_RIDE + "_" + pos);
+		} else if (infoTileResponse.getDeepIndex() == 2) {
+			Calendar c = Calendar.getInstance();
+			System.out.println("Current time => " + c.getTime());
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedDate = df.format(c.getTime());
+			Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
+			intent.putExtra("date", formattedDate);
+			startActivity(intent);
+			overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_DAILY + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_DAILY);
+		} else if (infoTileResponse.getDeepIndex() == 3) {
+			Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+			intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+			intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_WEB + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_WEB);
+		} else if (infoTileResponse.getDeepIndex() == 4) {
+			Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
+			intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
+		} else if (infoTileResponse.getDeepIndex() == 5) {
+			Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_EARNINGS);
+		} else if (infoTileResponse.getDeepIndex() == 6) {
+			Intent intent = new Intent(HomeActivity.this, ShareActivity.class);
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_INVITE + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVITE);
+		} else if (infoTileResponse.getDeepIndex() == 7) {
+			Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_NOTIFICATION + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_NOTIFICATION);
+		} else if (infoTileResponse.getDeepIndex() == 8) {
+			Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
+			intent.putExtra("trick_page", 1);
+			startActivity(intent);
+			overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_TIPS + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_TIPS);
+		} else if (infoTileResponse.getDeepIndex() == 9) {
+			Intent intent = new Intent(HomeActivity.this, DriverProfileActivity.class);
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_PROFILE + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_PROFILE);
+		} else if (infoTileResponse.getDeepIndex() == 10) {
+			Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+			intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+			intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
+			HomeActivity.this.startActivity(intent);
+			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			firebaseJugnooDeliveryHomeEvent(ITEM_FULFILLMENT + "_" + pos);
+			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_FULFILLMENT);
+		} else if (infoTileResponse.getDeepIndex() == 11) {
+			try {
+				String finalUrl = String.valueOf(infoTileResponse.getExtras().getRedirectUrl())
+						+ "?access_token=" + Database2.getInstance(HomeActivity.this).getDLDAccessToken();
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.setPackage("com.android.chrome");
+				startActivity(i);
+			} catch (ActivityNotFoundException e) {
+				// Chrome is not installed
+				Intent intent1 = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+				intent1.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+				intent1.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
+				HomeActivity.this.startActivity(intent1);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} catch (Exception e) {
+
+			}
+		}
+	}
 
 	public void updateUSL(){
 		new Thread(new Runnable() {
@@ -9464,7 +9478,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							infoTileResponses.clear();
 							tileCount = infoTileResponse.getTiles().size();
-							infoTileResponses.addAll((ArrayList<InfoTileResponse.Tile>) infoTileResponse.getTiles());
+							infoTileResponses.addAll((ArrayList<Tile>) infoTileResponse.getTiles());
 							updateInfoTileListData(getResources().getString(R.string.no_rides_currently), false);
 						}
 					} catch (Exception exception) {
@@ -10089,6 +10103,74 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getRidesAsync() {
+		try {
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("start_from", "0");
+			//params.put("engagement_date", "" + date);
+
+
+			RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
+				@Override
+				public void success(DailyEarningResponse dailyEarningResponse, Response response) {
+					try {
+
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							DialogPopup.dismissLoadingDialog();
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(HomeActivity.this);
+								} else {
+									Toast.makeText(HomeActivity.this, getString(R.string.error_occured_tap_to_retry), Toast.LENGTH_SHORT).show();
+									//updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+								}
+
+							} else {
+								if(dailyEarningResponse != null && dailyEarningResponse.getTrips() != null &&
+										dailyEarningResponse.getTrips().size()>0 && dailyEarningResponse.getTrips().get(0).getExtras() != null ) {
+									Intent intent = new Intent(HomeActivity.this, RideDetailsNewActivity.class);
+									Gson gson = new Gson();
+									intent.putExtra("extras", gson.toJson(dailyEarningResponse.getTrips().get(0).getExtras(), Tile.Extras.class));
+									startActivity(intent);
+									overridePendingTransition(R.anim.right_in, R.anim.right_out);
+								}
+							}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+						try {
+							Toast.makeText(HomeActivity.this, getString(R.string.error_occured_tap_to_retry), Toast.LENGTH_SHORT).show();
+							//updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							DialogPopup.dismissLoadingDialog();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+							DialogPopup.dismissLoadingDialog();
+						}
+					}
+
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					try {
+						DialogPopup.dismissLoadingDialog();
+						Toast.makeText(HomeActivity.this, getString(R.string.error_occured_tap_to_retry), Toast.LENGTH_SHORT).show();
+					} catch (Exception e) {
+						DialogPopup.dismissLoadingDialog();
+						e.printStackTrace();
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -19,8 +19,8 @@ import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -325,7 +325,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public interface Callback{
-        void onRideClick(int position, InfoTileResponse.Tile.Extras extras, String date);
+        void onRideClick(int position, Tile.Extras extras, String date);
     }
 
     public enum ViewType {

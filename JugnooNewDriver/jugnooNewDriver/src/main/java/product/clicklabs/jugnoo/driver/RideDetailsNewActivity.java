@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,37 +30,28 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class RideDetailsNewActivity extends BaseFragmentActivity {
 
@@ -94,7 +84,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	GoogleMap mapLite;
 	private ArrayList<LatLng> latLngs = new ArrayList<>();
 	private SearchResult searchResultGlobal;
-	InfoTileResponse.Tile.Extras extras;
+	Tile.Extras extras;
 	CustomerInfo customerInfo;
 	String accessToken;
 
@@ -126,7 +116,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		try {
 			Intent intent = getIntent();
 			String extra = intent.getStringExtra("extras");
-			extras = new Gson().fromJson(extra, InfoTileResponse.Tile.Extras.class);
+			extras = new Gson().fromJson(extra, Tile.Extras.class);
 
 
 		} catch (Exception e) {
@@ -232,7 +222,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 							builder.include(new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude()));
 						}
 						if(extras.getDropCoordinates() != null){
-							for(InfoTileResponse.Tile.Extras.DropCoordinate dropCoordinate : extras.getDropCoordinates()){
+							for(Tile.Extras.DropCoordinate dropCoordinate : extras.getDropCoordinates()){
 								if(dropCoordinate.getLatitude() != 0 && dropCoordinate.getLongitude()!= 0) {
 									latLngs.add(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
 									MarkerOptions markerOptionsE = new MarkerOptions();

@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 
 /**
  * Created by aneeshbansal on 20/09/16.
@@ -13,10 +12,10 @@ public class RideHistoryItem {
 	private double earning;
 	private int type;
 	private String status;
-	private InfoTileResponse.Tile.Extras extras;
+	private Tile.Extras extras;
 
 
-	public RideHistoryItem(String date, String time, double earning, int type, String status, InfoTileResponse.Tile.Extras extras) {
+	public RideHistoryItem(String date, String time, double earning, int type, String status, Tile.Extras extras) {
 		this.date = date;
 		this.time = time;
 		this.earning = earning;
@@ -65,11 +64,11 @@ public class RideHistoryItem {
 		this.status = status;
 	}
 
-	public InfoTileResponse.Tile.Extras getExtras() {
+	public Tile.Extras getExtras() {
 		return extras;
 	}
 
-	public void setExtras(InfoTileResponse.Tile.Extras extras) {
+	public void setExtras(Tile.Extras extras) {
 		this.extras = extras;
 	}
 }

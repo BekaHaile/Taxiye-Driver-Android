@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,20 +20,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -132,10 +125,10 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		rideHistoryItems = new ArrayList<>();
 		driverRideHistoryAdapter = new DriverRideHistoryAdapter(DriverRideHistoryNew.this, rideHistoryItems, totalRides, new DriverRideHistoryAdapter.Callback() {
 			@Override
-			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras) {
+			public void onRideClick(int position, Tile.Extras extras) {
 				Intent intent = new Intent(DriverRideHistoryNew.this, RideDetailsNewActivity.class);
 				Gson gson = new Gson();
-				intent.putExtra("extras", gson.toJson(extras, InfoTileResponse.Tile.Extras.class));
+				intent.putExtra("extras", gson.toJson(extras, Tile.Extras.class));
 				DriverRideHistoryNew.this.startActivity(intent);
 				DriverRideHistoryNew.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}

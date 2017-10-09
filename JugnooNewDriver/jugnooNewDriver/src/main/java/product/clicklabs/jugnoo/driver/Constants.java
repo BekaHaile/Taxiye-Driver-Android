@@ -236,6 +236,7 @@ public interface Constants {
 	String UPDATE_LOCATION_OFFLINE = "update_location_offline";
 	String OFFLINE_UPDATE_TIME_PERIOD = "offline_update_time_period";
 	String IS_OFFLINE = "is_offline";
+    String END_RIDE_CUSTOM_TEXT = "end_ride_custom_text";
 
 }
 

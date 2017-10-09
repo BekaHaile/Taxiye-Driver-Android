@@ -279,7 +279,7 @@ public class DailyEarningResponse {
 		private String status;
 		@SerializedName("extras")
 		@Expose
-		private InfoTileResponse.Tile.Extras extras;
+		private Tile.Extras extras;
 
 		public String getDate() {
 			return date;
@@ -357,7 +357,7 @@ public class DailyEarningResponse {
 		 * @return
 		 * The extras
 		 */
-		public InfoTileResponse.Tile.Extras getExtras() {
+		public Tile.Extras getExtras() {
 			return extras;
 		}
 
@@ -366,7 +366,7 @@ public class DailyEarningResponse {
 		 * @param extras
 		 * The extras
 		 */
-		public void setExtras(InfoTileResponse.Tile.Extras extras) {
+		public void setExtras(Tile.Extras extras) {
 			this.extras = extras;
 		}
 

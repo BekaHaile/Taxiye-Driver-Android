@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,8 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,16 +27,13 @@ import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
-import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -138,12 +132,12 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		dailyEarningItems = new ArrayList<>();
 		dailyRideDetailsAdapter = new DailyRideDetailsAdapter(this, dailyEarningItems, new DailyRideDetailsAdapter.Callback() {
 			@Override
-			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras, String date) {
+			public void onRideClick(int position, Tile.Extras extras, String date) {
 
 				if(extras !=null) {
 					Intent intent = new Intent(DailyRideDetailsActivity.this, RideDetailsNewActivity.class);
 					Gson gson = new Gson();
-					intent.putExtra("extras", gson.toJson(extras, InfoTileResponse.Tile.Extras.class));
+					intent.putExtra("extras", gson.toJson(extras, Tile.Extras.class));
 					DailyRideDetailsActivity.this.startActivity(intent);
 					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if(date != null) {

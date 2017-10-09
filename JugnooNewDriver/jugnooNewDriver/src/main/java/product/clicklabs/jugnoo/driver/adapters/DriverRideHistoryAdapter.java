@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,15 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverRideHistoryNew;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
-import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
-import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -215,7 +210,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
 
 	public interface Callback{
-		void onRideClick(int position, InfoTileResponse.Tile.Extras extras);
+		void onRideClick(int position, Tile.Extras extras);
 		void onShowMoreClick();
 	}
 

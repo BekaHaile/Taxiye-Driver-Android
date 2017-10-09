@@ -1,40 +1,31 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by aneesh on 10/4/15.
  */
 public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.infoTileViewHolder> {
 
-	private ArrayList<InfoTileResponse.Tile> infoTileResponses;
+	private ArrayList<Tile> infoTileResponses;
 	private Context context;
 	private InfoTilesAdapterHandler infoTilesAdapterHandler;
 
-	public InfoTilesAdapter(Context context, ArrayList<InfoTileResponse.Tile> infoTileResponses, InfoTilesAdapterHandler infoTilesAdapterHandler) {
+	public InfoTilesAdapter(Context context, ArrayList<Tile> infoTileResponses, InfoTilesAdapterHandler infoTilesAdapterHandler) {
 		this.infoTileResponses = infoTileResponses;
 		this.context = context;
 		this.infoTilesAdapterHandler = infoTilesAdapterHandler;
@@ -47,7 +38,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 
 	@Override
 	public void onBindViewHolder(infoTileViewHolder infoTileViewHolder, int i) {
-		final InfoTileResponse.Tile itr = infoTileResponses.get(i);
+		final Tile itr = infoTileResponses.get(i);
 
 		infoTileViewHolder.textViewHeadText.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textView1Value.setTypeface(Data.latoRegular(context));
