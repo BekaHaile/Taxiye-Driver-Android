@@ -6,16 +6,15 @@ import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
@@ -28,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
@@ -603,4 +603,9 @@ public interface APIServices {
 	@POST("/get_transaction_history")
 	void getUserTransaction(@FieldMap Map<String, String> params,
 						  Callback<WalletTransactionResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/schedule_call_driver")
+	void scheduleCallDriver(@FieldMap Map<String, String> params,
+						  Callback<SettleUserDebt> callback);
 }

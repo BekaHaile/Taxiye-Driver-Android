@@ -823,6 +823,7 @@
     <string name="deducted">Deducted</string>
     <string name="office_address">Office Address</string>
     <string name="view_wallet_transactions">4. View Wallet Transactions</string>
+    <string name="get_support">Get Support</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

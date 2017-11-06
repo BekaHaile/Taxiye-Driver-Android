@@ -869,8 +869,10 @@
 	<string name="deducted">Deducted</string>
     <string name="office_address">Office Address</string>
 	<string name="view_wallet_transactions">View Wallet Transactions</string>
+	<string name="dont_touch_me">DontTouchMe</string>
+    <string name="get_support">Get Support</string>
 
-	<string-array name="CountryCodes" >
+    <string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>

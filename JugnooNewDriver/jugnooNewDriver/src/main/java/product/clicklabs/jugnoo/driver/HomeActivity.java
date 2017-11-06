@@ -154,6 +154,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
@@ -232,8 +233,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
-	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
+	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
+	TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
+	LinearLayout rlGetSupport;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -587,8 +589,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
 
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
+			rlGetSupport = (LinearLayout) findViewById(R.id.rlGetSupport);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			tvGetSupport = (TextView) findViewById(R.id.tvGetSupport);
+			tvGetSupport.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
 
 			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
@@ -1291,8 +1296,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 
 					FlurryEventLogger.event(CALL_US);
-					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
+					drawerLayout.closeDrawer(GravityCompat.START);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+			rlGetSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					HomeUtil.scheduleCallDriverApi(HomeActivity.this);
 					drawerLayout.closeDrawer(GravityCompat.START);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -2141,6 +2153,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				callUsRl.setVisibility(View.VISIBLE);
 			} else {
 				callUsRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1){
+				rlGetSupport.setVisibility(View.VISIBLE);
+			} else {
+				rlGetSupport.setVisibility(View.GONE);
 			}
 
 
