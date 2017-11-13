@@ -5890,7 +5890,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getIsDelivery() == 1){
 				url = PendingCall.END_DELIVERY.getPath();
 			}
-			double totalFare = getTotalFare(customerInfo, getTotalDistanceInKm(customerInfo),
+			double distance = customerInfo
+					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
+			double totalFare = getTotalFare(customerInfo, distance,
 					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
 			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 &&  (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
@@ -6062,7 +6064,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		public void onEndRideFailure(){
-			double totalFare = getTotalFare(customerInfo, getTotalDistanceInKm(customerInfo),
+			double distance = customerInfo
+					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
+			double totalFare = getTotalFare(customerInfo, distance,
 					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
 
 			if(customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
