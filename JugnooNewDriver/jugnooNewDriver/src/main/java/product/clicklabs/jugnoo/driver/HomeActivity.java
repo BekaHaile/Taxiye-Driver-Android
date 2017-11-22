@@ -4241,7 +4241,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(rideCancelledByCustomer){
-				DialogPopup.dialogNewBanner(HomeActivity.this, cancelationMessage, 7000);
+				DialogPopup.dialogBannerNewWithCancelListener(HomeActivity.this, cancelationMessage, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						SoundMediaPlayer.stopSound();
+					}
+				}, 7000);
 			}
 			rideCancelledByCustomer = false;
 

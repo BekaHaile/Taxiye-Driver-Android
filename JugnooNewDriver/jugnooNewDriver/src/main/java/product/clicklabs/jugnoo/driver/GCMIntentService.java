@@ -21,26 +21,20 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -50,18 +44,12 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import product.clicklabs.jugnoo.driver.chat.ChatActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
-import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
@@ -73,7 +61,6 @@ import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
-import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -88,7 +75,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedInput;
 
 public class GCMIntentService extends IntentService {
 
@@ -676,7 +662,7 @@ public class GCMIntentService extends IntentService {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true);
+								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 4, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
