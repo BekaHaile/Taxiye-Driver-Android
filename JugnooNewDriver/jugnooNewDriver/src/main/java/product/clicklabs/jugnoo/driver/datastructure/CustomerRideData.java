@@ -55,7 +55,11 @@ public class CustomerRideData {
 
 
 
-	public long getWaitTime() {
+	public long getWaitTime(Context context) {
+		long spWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
+		if(spWaitTime > waitTime){
+			waitTime = spWaitTime;
+		}
 		return waitTime;
 	}
 

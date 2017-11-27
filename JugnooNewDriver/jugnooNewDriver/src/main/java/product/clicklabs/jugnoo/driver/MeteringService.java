@@ -117,7 +117,7 @@ public class MeteringService extends Service {
 
 	public static final int UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE = 114;
 	public static final String UPLOAD_IN_RIDE_DATA = "product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA";
-	public static final long UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL = 60000;
+	public static final long UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL = 30000;
 	public void startUploadInRideDataAlarm() {
 		boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
 				new Intent(this, UploadInRideDataReceiver.class).setAction(UPLOAD_IN_RIDE_DATA),

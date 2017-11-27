@@ -290,6 +290,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions;
 	Button driverEngagedMyLocationBtn;
+//	Button distanceReset2;
 
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
@@ -1971,7 +1972,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
 								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this),0));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0));
 						if (!fare.equalsIgnoreCase(s.toString())) {
 							fareFetchedFromJugnoo = 0;
 						}
@@ -2033,8 +2034,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			distanceReset2.setOnClickListener(new OnClickListener() {
 //				@Override
 //				public void onClick(View v) {
-//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
-//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
+//					MeteringService.gpsInstance(HomeActivity.this).distanceResetForced();
 //				}
 //			});
 
@@ -4062,7 +4062,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
-					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
+					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this);
 					updateDistanceFareTexts(customerInfo, customerInfo.getTotalDistance(customerRideDataGlobal
 									.getDistance(HomeActivity.this), HomeActivity.this),
 							rideTimeChronometer.eclipsedTime,
@@ -4602,7 +4602,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				jc.put(KEY_DISTANCE, customerRideDataGlobal.getDistance(HomeActivity.this));
 				jc.put(KEY_HAVERSINE_DISTANCE, customerRideDataGlobal.getHaversineDistance());
 				jc.put(KEY_RIDE_TIME, System.currentTimeMillis());
-				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime());
+				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime(HomeActivity.this));
 				jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
 			} else {
 				jObj.remove(String.valueOf(customerInfo.getEngagementId()));
@@ -5826,7 +5826,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 
 		long customerWaitTimeMillis = customerInfo
-				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
+				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this);
 
 		if (customerInfo != null && customerInfo.waitingChargesApplicable != 1) {
 			customerWaitTimeMillis = 0;
@@ -8097,7 +8097,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						updateDistanceFareTexts(customerInfo, customerInfo.getTotalDistance(customerRideDataGlobal
 										.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this));
 					}
 				}
 			});
@@ -9108,7 +9108,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public long getCurrentDeliveryWaitTime(CustomerInfo customerInfo){
-		long waitTime = customerRideDataGlobal.getWaitTime();
+		long waitTime = customerRideDataGlobal.getWaitTime(HomeActivity.this);
 		for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
 			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 				waitTime = waitTime - deliveryInfo.getWaitTime();

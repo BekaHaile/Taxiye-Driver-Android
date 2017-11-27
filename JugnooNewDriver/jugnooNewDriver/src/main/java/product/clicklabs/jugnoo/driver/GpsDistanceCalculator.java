@@ -11,7 +11,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -46,6 +48,7 @@ public class GpsDistanceCalculator {
 	public static final double MAX_ACCURACY = 200;
 	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
 	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
+	public final double WAIT_TIME_RESET_TOLERANCE = 10000; // in milliseconds
 
 
 	public double totalDistance;
@@ -156,8 +159,10 @@ public class GpsDistanceCalculator {
 		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at stop =" + totalDistance);
 	}
 
-//	public void distanceReset(){
+//	public void distanceResetForced(){
 //		saveTotalDistanceToSP(context, -1);
+//		saveStartTimeToSP(context, System.currentTimeMillis());
+//		saveWaitTimeToSP(context, 0);
 //		instance.totalDistance = -1;
 //	}
 
@@ -755,16 +760,35 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	public void updateDistanceInCaseOfReset(double distance){
+	public void updateDistanceInCaseOfReset(final double distance, final long rideTime, final long waitTime){
 		MyApplication.getInstance().writePathLogToFile("m",
 				"updateDistanceInCaseOfReset func distance from server:" + distance
-						+ " & totalDistance:" + totalDistance);
+						+ " & totalDistance:" + totalDistance + " & waitTime:"+waitTime+" & rideTime:"+rideTime);
 		if(distance > totalDistance + DISTANCE_RESET_TOLERANCE){
 			totalDistance = totalDistance + distance;
 			saveTotalDistanceToSP(context, totalDistance);
 			MyApplication.getInstance().writePathLogToFile("m",
 					"updateDistanceInCaseOfReset func totalDistance updated:"+ totalDistance);
 		}
+		long spElapsedTime = getElapsedMillis();
+		if(rideTime > spElapsedTime + WAIT_TIME_RESET_TOLERANCE){
+			saveStartTimeToSP(context, System.currentTimeMillis() - rideTime - spElapsedTime);
+			MyApplication.getInstance().writePathLogToFile("m",
+					"updateDistanceInCaseOfReset func rideTime updated:"+ (System.currentTimeMillis() - rideTime - spElapsedTime));
+		}
+		long spWaitTime = getWaitTimeFromSP(context);
+		if(waitTime > spWaitTime + WAIT_TIME_RESET_TOLERANCE){
+			saveWaitTimeToSP(context, waitTime+spWaitTime);
+			MyApplication.getInstance().writePathLogToFile("m",
+					"updateDistanceInCaseOfReset func waitTime updated:"+ (waitTime+spWaitTime));
+		}
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(context, "Distance reset case => "+distance+", "+rideTime+", "+waitTime, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	public static synchronized void saveDriverScreenModeMetering(Context context, DriverScreenMode driverScreenMode) {
