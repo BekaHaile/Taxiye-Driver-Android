@@ -871,8 +871,10 @@
 	<string name="view_wallet_transactions">View Wallet Transactions</string>
 	<string name="dont_touch_me">DontTouchMe</string>
     <string name="get_support">Get Support</string>
+	<string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
+	<string name="get_call">Get call</string>
 
-    <string-array name="CountryCodes" >
+	<string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>

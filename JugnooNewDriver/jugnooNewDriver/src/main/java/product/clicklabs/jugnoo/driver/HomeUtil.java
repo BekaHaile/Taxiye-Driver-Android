@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.view.View;
 
 import org.json.JSONObject;
 
@@ -20,7 +21,24 @@ import retrofit.mime.TypedByteArray;
 
 public class HomeUtil {
 
-	public static void scheduleCallDriverApi(final Activity context) {
+	public static void scheduleCallDriver(final Activity context) {
+		DialogPopup.alertPopupTwoButtonsWithListeners(context, "",
+				context.getString(R.string.schedule_call_message),
+				context.getString(R.string.get_call), context.getString(R.string.cancel),
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						scheduleCallDriverApi(context);
+					}
+				}, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				}, true, false);
+	}
+
+	private static void scheduleCallDriverApi(final Activity context) {
 		try {
 			DialogPopup.showLoadingDialog(context, context.getString(R.string.loading));
 			HashMap<String, String> params = new HashMap<>();

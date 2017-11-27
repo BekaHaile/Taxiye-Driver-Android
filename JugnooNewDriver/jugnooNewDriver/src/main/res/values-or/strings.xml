@@ -825,6 +825,8 @@
     <string name="office_address">Office Address</string>
     <string name="view_wallet_transactions">ମୁଣି ର ଦୃଶ୍ଯ ଦେଣନେ</string>
     <string name="get_support">Get Support</string>
+    <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
+    <string name="get_call">Get call</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

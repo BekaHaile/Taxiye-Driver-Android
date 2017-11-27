@@ -352,7 +352,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		buttonGetSupport.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				HomeUtil.scheduleCallDriverApi(RideDetailsNewActivity.this);
+				HomeUtil.scheduleCallDriver(RideDetailsNewActivity.this);
 			}
 		});
 

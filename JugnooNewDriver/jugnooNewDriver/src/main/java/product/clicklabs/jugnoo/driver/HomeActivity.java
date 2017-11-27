@@ -1304,7 +1304,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			rlGetSupport.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					HomeUtil.scheduleCallDriverApi(HomeActivity.this);
+					HomeUtil.scheduleCallDriver(HomeActivity.this);
 					drawerLayout.closeDrawer(GravityCompat.START);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
