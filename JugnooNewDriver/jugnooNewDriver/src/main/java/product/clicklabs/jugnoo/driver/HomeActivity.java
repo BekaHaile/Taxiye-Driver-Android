@@ -3729,7 +3729,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					cancelTimerPathRerouting();
-					SoundMediaPlayer.stopSound();
 					Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
 					try {
 
