@@ -441,7 +441,7 @@
             android:id="@+id/buttonGetSupport"
             android:layout_width="432px"
             android:layout_height="80px"
-            android:text="@string/get_support"
+            android:text="@string/get_support_call"
             android:textColor="@color/black_text_v2"
             android:textSize="30px"
             android:layout_marginBottom="25px"

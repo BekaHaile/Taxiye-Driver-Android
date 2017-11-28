@@ -880,6 +880,7 @@
     <string name="get_support">Get Support</string>
     <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
+    <string name="get_support_call">Get Support Call</string>
 
 
     <string-array name="CountryCodes" >
