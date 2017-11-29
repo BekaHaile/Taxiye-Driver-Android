@@ -643,6 +643,34 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/rlGetSupport"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false"
+                android:gravity="center_vertical"
+                android:tag="@string/dont_touch_me"
+                >
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/call_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvGetSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/get_support_call"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutDestination"
                 android:layout_width="match_parent"

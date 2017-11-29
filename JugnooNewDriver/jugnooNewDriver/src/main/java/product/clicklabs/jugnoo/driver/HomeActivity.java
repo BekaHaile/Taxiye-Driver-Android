@@ -154,6 +154,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
@@ -232,8 +233,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
-	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
+	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
+	TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
+	LinearLayout rlGetSupport;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -288,6 +290,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions;
 	Button driverEngagedMyLocationBtn;
+//	Button distanceReset2;
 
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
@@ -587,8 +590,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
 
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
+			rlGetSupport = (LinearLayout) findViewById(R.id.rlGetSupport);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			tvGetSupport = (TextView) findViewById(R.id.tvGetSupport);
+			tvGetSupport.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
 
 			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
@@ -1291,8 +1297,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 
 					FlurryEventLogger.event(CALL_US);
-					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
+					drawerLayout.closeDrawer(GravityCompat.START);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+			rlGetSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					HomeUtil.scheduleCallDriver(HomeActivity.this);
 					drawerLayout.closeDrawer(GravityCompat.START);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -1959,7 +1972,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
 								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this),0));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0));
 						if (!fare.equalsIgnoreCase(s.toString())) {
 							fareFetchedFromJugnoo = 0;
 						}
@@ -2021,8 +2034,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			distanceReset2.setOnClickListener(new OnClickListener() {
 //				@Override
 //				public void onClick(View v) {
-//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
-//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
+//					MeteringService.gpsInstance(HomeActivity.this).distanceResetForced();
 //				}
 //			});
 
@@ -2141,6 +2153,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				callUsRl.setVisibility(View.VISIBLE);
 			} else {
 				callUsRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1){
+				rlGetSupport.setVisibility(View.VISIBLE);
+			} else {
+				rlGetSupport.setVisibility(View.GONE);
 			}
 
 
@@ -3712,7 +3729,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					cancelTimerPathRerouting();
-					SoundMediaPlayer.stopSound();
 					Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
 					try {
 
@@ -4045,7 +4061,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
-					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
+					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this);
 					updateDistanceFareTexts(customerInfo, customerInfo.getTotalDistance(customerRideDataGlobal
 									.getDistance(HomeActivity.this), HomeActivity.this),
 							rideTimeChronometer.eclipsedTime,
@@ -4224,7 +4240,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(rideCancelledByCustomer){
-				DialogPopup.dialogNewBanner(HomeActivity.this, cancelationMessage, 7000);
+				DialogPopup.dialogBannerNewWithCancelListener(HomeActivity.this, cancelationMessage, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						SoundMediaPlayer.stopSound();
+					}
+				}, 7000);
 			}
 			rideCancelledByCustomer = false;
 
@@ -4580,7 +4601,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				jc.put(KEY_DISTANCE, customerRideDataGlobal.getDistance(HomeActivity.this));
 				jc.put(KEY_HAVERSINE_DISTANCE, customerRideDataGlobal.getHaversineDistance());
 				jc.put(KEY_RIDE_TIME, System.currentTimeMillis());
-				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime());
+				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime(HomeActivity.this));
 				jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
 			} else {
 				jObj.remove(String.valueOf(customerInfo.getEngagementId()));
@@ -5804,7 +5825,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 
 		long customerWaitTimeMillis = customerInfo
-				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
+				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this);
 
 		if (customerInfo != null && customerInfo.waitingChargesApplicable != 1) {
 			customerWaitTimeMillis = 0;
@@ -8075,7 +8096,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						updateDistanceFareTexts(customerInfo, customerInfo.getTotalDistance(customerRideDataGlobal
 										.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this));
 					}
 				}
 			});
@@ -9086,7 +9107,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public long getCurrentDeliveryWaitTime(CustomerInfo customerInfo){
-		long waitTime = customerRideDataGlobal.getWaitTime();
+		long waitTime = customerRideDataGlobal.getWaitTime(HomeActivity.this);
 		for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
 			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 				waitTime = waitTime - deliveryInfo.getWaitTime();

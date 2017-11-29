@@ -835,6 +835,8 @@
         <!--android:layout_marginBottom="20px"-->
         <!--android:layout_marginLeft="160px"-->
         <!--android:background="@drawable/new_my_loc_button"-->
+        <!--android:text="R"-->
+        <!--android:textSize="50px"-->
         <!--android:tag="mwar"-->
         <!--/>-->
 

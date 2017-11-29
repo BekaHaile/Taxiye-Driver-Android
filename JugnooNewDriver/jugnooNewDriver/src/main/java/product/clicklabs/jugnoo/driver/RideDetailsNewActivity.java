@@ -37,6 +37,7 @@ import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
@@ -51,6 +52,7 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class RideDetailsNewActivity extends BaseFragmentActivity {
@@ -59,7 +61,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 	RelativeLayout relative, relativeContainer, relativeLayoutCreateTicket;
 
-	Button backBtn, buttonReportIssue;
+	Button backBtn, buttonReportIssue, buttonGetSupport;
 	TextView title;
 
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,textViewTicketDate,
@@ -132,6 +134,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		backBtn = (Button) findViewById(R.id.backBtn);
 		relativeLayoutCreateTicket = (RelativeLayout) findViewById(R.id.relativeLayoutCreateTicket);
 		buttonReportIssue = (Button) findViewById(R.id.buttonReportIssue);
+		buttonGetSupport = (Button) findViewById(R.id.buttonGetSupport);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
@@ -346,6 +349,13 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			}
 		});
 
+		buttonGetSupport.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				HomeUtil.scheduleCallDriver(RideDetailsNewActivity.this);
+			}
+		});
+
 
 		if (extras != null) {
 
@@ -402,6 +412,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
 				textViewTicketDate.setText(extras.getTicketDate());
 			}
+
+			buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
 
 			textViewFromValue.setText(extras.getFrom());
 			fareStructureInfos.addAll(extras.getRideParam());

@@ -8,10 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -23,7 +20,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -64,6 +60,8 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                 double totalDistanceInKm = Math.abs(GpsDistanceCalculator.getTotalDistanceFromSP(context) / 1000.0d);
                 long rideTimeSeconds = (System.currentTimeMillis() - GpsDistanceCalculator.getStartTimeFromSP(context)) / 1000;
                 double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
+                long waitTimeSeconds = GpsDistanceCalculator.getWaitTimeFromSP(context) / 1000;
+                double waitTimeMinutes = Math.ceil(waitTimeSeconds / 60);
                 int lastLogId = Integer.parseInt((Prefs.with(context).getString(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0)));
 
                 DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
@@ -76,7 +74,7 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                 params.put("current_longitude", String.valueOf(location.getLongitude()));
                 params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
                 params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
-                params.put("wait_time", "0");
+                params.put("wait_time", decimalFormatNoDecimal.format(waitTimeMinutes));
                 params.put("last_log_id", "" + lastLogId);
 
                 Response response = RestClient.getApiServices().updateInRideDataRetro(params);
@@ -90,7 +88,9 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                     if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
                         try {
                             double distance = jObj.getDouble("total_distance") * 1000;
-                            MeteringService.gpsInstance(context).updateDistanceInCaseOfReset(distance);
+                            long rideTime = jObj.optLong("ride_time", 0) * 60000;
+                            long waitTime = jObj.optLong("wait_time", 0) * 60000;
+                            MeteringService.gpsInstance(context).updateDistanceInCaseOfReset(distance, rideTime, waitTime);
                             FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_IN_RIDE_DATA_RESPONSE);
                         } catch (Exception e) {
                             e.printStackTrace();

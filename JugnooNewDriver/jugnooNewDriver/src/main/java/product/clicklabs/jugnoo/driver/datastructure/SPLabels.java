@@ -123,6 +123,7 @@ public class SPLabels {
 	public static final String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
 	public static final String SHOW_SUPPORT_IN_RESOURCES = "show_support_in_resources";
 	public static final String SHOW_CALL_US_MENU = "show_call_us_menu";
+	public static final String SHOW_IN_APP_CALL_US = "show_in_app_call_us";
 	public static final String MENU_OPTION_VISIBILITY = "menu_option_visibility";
 	public static final String VEHICLE_TYPE = "vehicle_type";
 
