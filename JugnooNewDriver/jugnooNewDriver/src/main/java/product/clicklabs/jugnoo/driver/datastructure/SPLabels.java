@@ -127,4 +127,5 @@ public class SPLabels {
 	public static final String MENU_OPTION_VISIBILITY = "menu_option_visibility";
 	public static final String VEHICLE_TYPE = "vehicle_type";
 
+    public static final String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
 }

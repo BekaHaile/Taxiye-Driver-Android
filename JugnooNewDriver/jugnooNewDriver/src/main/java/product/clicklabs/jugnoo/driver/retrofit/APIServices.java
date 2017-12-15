@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.datastructure.FetchDriverPlansResponse;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
@@ -608,4 +609,11 @@ public interface APIServices {
 	@POST("/schedule_call_driver")
 	void scheduleCallDriver(@FieldMap Map<String, String> params,
 						  Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_plans")
+	void fetchDriverPlans(@FieldMap Map<String, String> params,
+						  Callback<FetchDriverPlansResponse> callback);
+
+
 }

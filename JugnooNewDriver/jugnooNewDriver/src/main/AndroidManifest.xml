@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="product.clicklabs.jugnoo.driver"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="product.clicklabs.jugnoo.driver">
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19"/>
+        android:targetSdkVersion="19" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission
         android:name="android.permission.CAMERA"
-        android:required="false"/>
+        android:required="false" />
+
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
-        android:required="false"/>
+        android:required="false" />
+
     <uses-permission
         android:name="android.permission.FLASHLIGHT"
         android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
         android:protectionLevel="normal"
-        android:required="false"/>
+        android:required="false" />
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE" />
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
-    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
         android:name=".MyApplication"
@@ -79,252 +79,229 @@
             android:name=".GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="product.clicklabs.jugnoo.driver"/>
+                <category android:name="product.clicklabs.jugnoo.driver" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCMIntentService"/>
+        <service android:name=".GCMIntentService" />
 
         <activity
             android:name=".SplashNewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SplashLogin"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ForgotPasswordScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TriCitySupplyActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HelpActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LanguagePrefrencesActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DriverHistoryActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".OTPConfirmScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ShareActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HelpParticularActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".NotificationCenterActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DriverPatymRecharge"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".MultipleAccountsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RequestDuplicateRegistrationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ChangePhoneBeforeOTPActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RideDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DriverLeaderboardActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SharingRidesActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DriverProfileActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RideCancellationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditDriverProfile"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".oldRegistration.OldRegisterScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".oldRegistration.OldOTPConfirmScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
-        <!--<activity-->
-        <!--android:name=".PhoneEditOTPConfirmScreen"-->
-        <!--android:label="@string/app_name"-->
-        <!--android:screenOrientation="portrait"></activity>-->
+            android:screenOrientation="portrait" />
+        <!-- <activity -->
+        <!-- android:name=".PhoneEditOTPConfirmScreen" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:screenOrientation="portrait"></activity> -->
         <activity
             android:name=".LoginViaOTP"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".services.DownloadActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PaymentActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".InvoiceDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DriverEarningsNew"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DailyRideDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RideDetailsNewActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DriverResourceActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
-        <!--<activity-->
-            <!--android:name=".DriverRateCard"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:screenOrientation="portrait">-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name=".DriverRateCard" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:screenOrientation="portrait"> -->
+        <!-- </activity> -->
 
         <activity
             android:name=".HighDemandAreaActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DriverRideHistoryNew"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DriverTicketDetails"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DriverTicketHistory"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".NewRateCardActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".chat.ChatActivity"
-            android:label="@string/app_name"
             android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
 
         <service
-            android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
+            android:name=".DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
-            android:process=":DriverLocationUpdateService">
-        </service>
+            android:process=":DriverLocationUpdateService"></service>
 
         <activity
             android:name=".DeliveryDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".selfAudit.SelfAuditActivity"
             android:label="@string/app_name"
             android:largeHeap="true"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH"/>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".IncomingSmsReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".IncomingSmsReceiverReg"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
@@ -334,13 +311,13 @@
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
+                <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!--
              Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
@@ -350,101 +327,99 @@
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".receiver.PowerConnectionReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".home.utils.LocationReceiverBG" />
 
-        <receiver android:name=".home.utils.LocationReceiverBG"/>
         <service
             android:name=".home.StartRideLocationUpdateService"
             android:enabled="true"
-            android:exported="true"></service>
-
-        <service android:name="com.google.android.gms.analytics.CampaignTrackingService"/>
+            android:exported="true" />
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
         <service
             android:name=".DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
-            android:process=":DriverLocationUpdateService"></service>
+            android:process=":DriverLocationUpdateService" />
         <service
             android:name=".services.DownloadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".DriverTimeoutIntentService"
-            android:enabled="true"></service>
+            android:enabled="true" />
         <service
             android:name=".services.ApiAcceptRideServices"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".ContactsUploadService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".PushPendingCallsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".services.FetchMFileService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".MeteringService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".services.SyncMessageService"
-            android:enabled="true"/>
+            android:enabled="true" />
         <service
             android:name=".services.FetchDataUsageService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
-        <receiver android:name=".LocationReceiverDriver"/>
-        <receiver android:name=".GPSLocationReceiverBackground"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundBalanced"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundHigh"/>
+        <receiver android:name=".LocationReceiverDriver" />
+        <receiver android:name=".GPSLocationReceiverBackground" />
+        <receiver android:name=".FusedLocationReceiverBackgroundBalanced" />
+        <receiver android:name=".FusedLocationReceiverBackgroundHigh" />
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver android:name=".DriverLocationUpdateAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.SEND_LOCATION"/>
+                <action android:name="product.clicklabs.jugnoo.driver.SEND_LOCATION" />
             </intent-filter>
         </receiver>
         <receiver android:name=".MeteringAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION"/>
+                <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION" />
             </intent-filter>
         </receiver>
         <receiver android:name=".PathUploadReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH"/>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
             </intent-filter>
         </receiver>
         <receiver android:name=".UploadInRideDataReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA"/>
+                <action android:name="product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA" />
             </intent-filter>
         </receiver>
         <receiver android:name=".TimeOutAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH"/>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
             </intent-filter>
         </receiver>
         <receiver android:name=".DriverServiceRestartReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE"/>
+                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE" />
             </intent-filter>
         </receiver>
         <receiver
@@ -452,120 +427,176 @@
             android:enabled="false"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
 
-
-        <!-- Pushy Declarations -->  
-        <!-- Pushy Notification Receiver --> 
-        <!-- Incoming pushes will be redirected to the following BroadcastReceiver class -->
-         
-        <receiver android:name=".PushReceiver"> 
-            <intent-filter> 
-                <!-- Do not modify this --> 
-                <action android:name="pushy.me"/> 
-            </intent-filter>
-             
-        </receiver>
+        <!-- Pushy Declarations -->
           
+
+        <!-- Pushy Notification Receiver -->
+         
+
+        <!-- Incoming pushes will be redirected to the following BroadcastReceiver class -->
+
+
+         
+
+        <receiver android:name=".PushReceiver">
+             
+
+            <intent-filter>
+                 
+
+                <!-- Do not modify this -->
+                 
+
+                <action android:name="pushy.me" />
+                 
+
+            </intent-filter>
+
+             
+
+        </receiver>
+
+          
+
+
         <!-- Pushy Update Receiver -->
 
-         <!-- Do not modify - internal BroadcastReceiver that restarts the listener service --> 
-        <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver"> 
-            <intent-filter> 
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/> 
-                <data android:scheme="package"/> 
-            </intent-filter>
-             
-        </receiver>
-          <!-- Pushy Boot Receiver --> 
+
+         
 
         <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
          
-        <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver"> 
-            <intent-filter> 
-                <action android:name="android.intent.action.BOOT_COMPLETED"/> 
-            </intent-filter>
+
+        <receiver android:name="me.pushy.sdk.receivers.PushyUpdateReceiver">
              
+
+            <intent-filter>
+                 
+
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                 
+
+                <data android:scheme="package" />
+                 
+
+            </intent-filter>
+
+             
+
         </receiver>
+
           
+        <!-- Pushy Boot Receiver -->
+
+         
+
+
+        <!-- Do not modify - internal BroadcastReceiver that restarts the listener service -->
+
+
+         
+
+        <receiver android:name="me.pushy.sdk.receivers.PushyBootReceiver">
+             
+
+            <intent-filter>
+                 
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 
+
+            </intent-filter>
+
+             
+
+        </receiver>
+
+          
+
+
         <!-- Pushy Socket Service -->
 
-         <!-- Do not modify - internal socket background service -->
+
          
-        <service android:name="me.pushy.sdk.services.PushySocketService"/>
-          <!-- End Pushy Declarations -->
+
+        <!-- Do not modify - internal socket background service -->
+
+
+         
+
+        <service android:name="me.pushy.sdk.services.PushySocketService" />
+
+          
+        <!-- End Pushy Declarations -->
 
         <activity
             android:name=".BlankActivityForDialog"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.DriverDocumentActivity"
+            android:name=".DriverDocumentActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
-        <service android:name=".sticky.GeanieView"/>
+        <service android:name=".sticky.GeanieView" />
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_api_key"/>
+            android:value="@string/google_maps_api_key" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f96b4d9d9886e413041e7b14fa52434b87709356"/>
+            android:value="f96b4d9d9886e413041e7b14fa52434b87709356" />
 
         <!-- nudgesopt integration -->
         <receiver
             android:name="com.nudgespot.notification.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="product.clicklabs.jugnoo.driver"/>
+                <category android:name="product.clicklabs.jugnoo.driver" />
             </intent-filter>
         </receiver>
 
-        <service android:name="com.nudgespot.notification.GcmIntentService"/>
+        <service android:name="com.nudgespot.notification.GcmIntentService" />
 
         <activity
             android:name="com.nudgespot.notification.ReceiverActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-        </activity>
-        <activity android:name=".WalletActivity"
+            android:theme="@android:style/Theme.NoDisplay"></activity>
+        <activity
+            android:name=".WalletActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
-        <receiver
-            android:name=".receiver.NetworkCheckReceiver">
+        <receiver android:name=".receiver.NetworkCheckReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-
         <receiver android:name=".receiver.PowerCheckReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
 
         <service
             android:name=".tutorial.UpdateTutStatusService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
-        <!--<service-->
-        <!--android:name=".pubnub.PubnubService"-->
-        <!--android:enabled="true"-->
-        <!--android:exported="true">-->
-        <!--</service>-->
+        <!-- <service -->
+        <!-- android:name=".pubnub.PubnubService" -->
+        <!-- android:enabled="true" -->
+        <!-- android:exported="true"> -->
+        <!-- </service> -->
 
+        <activity android:name=".JugnooSubscriptionActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

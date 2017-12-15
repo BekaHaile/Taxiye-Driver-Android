@@ -31,6 +31,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -982,4 +984,27 @@ public class Utils {
 		return mPackageName;
 	}
 
+	public static CharSequence trimHTML(CharSequence s) {
+		if(s.length()==0)
+			return "";
+
+		int start = 0;
+		int end = s.length();
+		while (start < end && Character.isWhitespace(s.charAt(start))) {
+			start++;
+		}
+
+		while (end > start && Character.isWhitespace(s.charAt(end - 1))) {
+			end--;
+		}
+
+		return s.subSequence(start, end);
+	}
+
+	@SuppressWarnings("deprecation")
+	public static Spanned fromHtml(String html) {
+		Spanned result;
+		result = Html.fromHtml(html);
+		return result;
+	}
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_subscription"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:paddingLeft="10dp"
+    android:background="@color/grey_light"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_marginBottom="1dp"
+    android:layout_height="wrap_content">
+
+
+    <RadioButton
+        android:id="@+id/rb_plan_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:clickable="false"
+        tools:text="10 rupees"
+        android:paddingLeft="15dp" />
+
+   <!-- <TextView
+        android:id="@+id/plan_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/plan_description"
+        app:layout_constraintRight_toLeftOf="@id/plan_validity"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:text="10 rupees" />-->
+
+
+
+    <TextView
+        android:id="@+id/tv_plan_validity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintBaseline_toBaselineOf="@id/rb_plan_description"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        tools:text="3 days" />
+
+</android.support.constraint.ConstraintLayout>

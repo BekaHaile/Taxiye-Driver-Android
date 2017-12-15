@@ -233,7 +233,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport;
+	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport,relativeLayoutPlans;
 	TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 	LinearLayout rlGetSupport;
 
@@ -598,6 +598,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText.setText(getResources().getText(R.string.call_us));
 
 			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
+			relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1315,6 +1316,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(HomeActivity.this, DriverTicketHistory.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+			relativeLayoutPlans.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, JugnooSubscriptionActivity.class);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -2147,6 +2156,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutSupport.setVisibility(View.GONE);
+			}
+
+			if(/*Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1*/true){
+				relativeLayoutPlans.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutPlans.setVisibility(View.GONE);
 			}
 
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
