@@ -3,10 +3,10 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
@@ -15,12 +15,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,8 +52,9 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     private TextView labelRecyclerView;
     private Double currentOutstandingAmount;
     private Handler handler = new Handler();
-    private FrameLayout rlFragment;
-    // TODO: 18/12/17  SHOw loader in fragment, sometimes shows error even when fragment closed,Dialog builder to made dismissable
+    private CardView cardViewPriceBreakup;
+
+
 
 
     @Override
@@ -63,16 +62,19 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugnoo_subscription);
+        cardViewPriceBreakup = (CardView) findViewById(R.id.cardViewBreakUp);
         tvtopBarTitle = (TextView) findViewById(R.id.textViewTitle);
-        rlFragment = (FrameLayout) findViewById(R.id.rlFragment);
         tvlabelCurrentSavings = (TextView) findViewById(R.id.label_savings);
         tvinfoText = (TextView) findViewById(R.id.info_text);
         labelRecyclerView = (TextView) findViewById(R.id.label_offers);
         tvlabelOutstanding = (TextView) findViewById(R.id.label_outstanding);
         recyclerViewPlans = (RecyclerView)findViewById(R.id.recyclerViewPlans);
+        recyclerViewPlans.setNestedScrollingEnabled(false);
         ((SimpleItemAnimator) recyclerViewPlans.getItemAnimator()).setSupportsChangeAnimations(false);
         recyclerViewPlans.setLayoutManager(new LinearLayoutManager(this));
-
+        ((TextView)findViewById(R.id.layoutPlanBreakup).findViewById(R.id.tvLabel)).setText("Plan Amount");
+        ((TextView)findViewById(R.id.layoutOutstandingBreakUp).findViewById(R.id.tvLabel)).setText("Outstanding Amount");
+        ((TextView)findViewById(R.id.layoutTotalBreakUp).findViewById(R.id.tvLabel)).setText("Total Amount");
         ivBack = (ImageView)findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
 
@@ -87,9 +89,14 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             public void onClick(View v) {
                 final PlanDetails planDetails = subscriptionPlansAdapter.getCurrentSelectedPlan();
                 if(planDetails!=null){
+
+                    buttonPay.setEnabled(false);
+                    initiatePlanSubscription(planDetails.getPlanId(),JugnooSubscriptionActivity.this);
+
 //                    Log.i("TAG", "onClick: "+ planDetails.getAmount());
 //                    Toast.makeText(JugnooSubscriptionActivity.this, "Plan selected: " + planDetails.getValidityDays(), Toast.LENGTH_SHORT).show();
 
+/*
 
                         Double totalAmount = planDetails.getAmount();
                         if(currentOutstandingAmount!=null){
@@ -100,10 +107,10 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                         DialogPopup.alertPopupTwoButtonsWithListeners(JugnooSubscriptionActivity.this, null, getString(R.string.popup_plan_payment_message,String.valueOf(totalAmount)),"OK","CANCEL", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                initiatePlanSubscription(planDetails.getPlanId(),JugnooSubscriptionActivity.this);
 
                             }
                         },null,true,false);
+*/
 
                 }
             }
@@ -172,13 +179,9 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
         }
     }
 
-    private boolean isApiInProgress;
     private void initiatePlanSubscription(int planId, final Activity context){
         try {
-            if(isApiInProgress){
-                return;
-            }
-            isApiInProgress= true;
+
             DialogPopup.showLoadingDialog(this, getString(R.string.loading));
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -221,7 +224,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                             DialogPopup.dismissLoadingDialog();
                         }
                     }
-                    isApiInProgress = false;
+                    buttonPay.setEnabled(true);
                 }
 
                 @Override
@@ -233,13 +236,13 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                         DialogPopup.dismissLoadingDialog();
                         e.printStackTrace();
                     }
-                    isApiInProgress = false;
+                    buttonPay.setEnabled(true);
 
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            isApiInProgress = false;
+            buttonPay.setEnabled(true);
 
         }
 
@@ -258,6 +261,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
         boolean isActivePlanArray = false ;
         if(dailyEarningResponse.getActivePlanDetails()==null || dailyEarningResponse.getActivePlanDetails().size()==0){
 
+            Double planAmount = null;
             /**
              * No plan
              */
@@ -274,15 +278,24 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             planDetails = dailyEarningResponse.getAvailablePlanDetails();
 
             if(dailyEarningResponse.getOutstandingAmount()!=null){
-
-                String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getTotalSavings()));
+                currentOutstandingAmount = dailyEarningResponse.getOutstandingAmount();
                 String label = "Current Outstanding: ";
+                String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(currentOutstandingAmount));
                 tvlabelOutstanding.setText(String.format("%s%s", label, amount));
                 tvlabelOutstanding.setVisibility(View.VISIBLE);
             }else{
                 tvlabelOutstanding.setVisibility(View.GONE);
 
             }
+
+            for(PlanDetails planDetail:dailyEarningResponse.getAvailablePlanDetails()){
+                if(planDetail.getIsSelected()){
+                    planAmount = planDetail.getAmount();
+                }
+            }
+
+            setUpBreakUpData(planAmount);
+            tvlabelCurrentSavings.setVisibility(View.GONE);
 
         }else{
 
@@ -337,7 +350,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
 
             buttonPay.setVisibility(View.GONE);
-
+            cardViewPriceBreakup.setVisibility(View.GONE);
 
         }
 
@@ -405,4 +418,51 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             getSubscriptionData(JugnooSubscriptionActivity.this);
         }
     };
+
+    public void setUpBreakUpData(Double planAmount) {
+
+
+
+        if(planAmount!=null){
+
+            if(currentOutstandingAmount==null){
+                findViewById(R.id.layoutOutstandingBreakUp).setVisibility(View.GONE);
+                findViewById(R.id.dividerBelowOutstandingBreakup).setVisibility(View.GONE);
+            }else{
+                findViewById(R.id.layoutOutstandingBreakUp).setVisibility(View.VISIBLE);
+                findViewById(R.id.dividerBelowOutstandingBreakup).setVisibility(View.VISIBLE);
+                String value =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(currentOutstandingAmount));
+                ((TextView)findViewById(R.id.layoutOutstandingBreakUp).findViewById(R.id.tvValue)).setText(value);
+            }
+
+
+            String planValue =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(planAmount));
+            ((TextView)findViewById(R.id.layoutPlanBreakup).findViewById(R.id.tvValue)).setText(planValue);
+            Double totalAmount = planAmount;
+            if(currentOutstandingAmount!=null){
+                totalAmount+=currentOutstandingAmount;
+            }
+            String totalValue =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(totalAmount));
+            ((TextView)findViewById(R.id.layoutTotalBreakUp).findViewById(R.id.tvValue)).setText(totalValue);
+
+
+            cardViewPriceBreakup.setVisibility(View.VISIBLE);
+
+        }else{
+            cardViewPriceBreakup.setVisibility(View.GONE);
+
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 }

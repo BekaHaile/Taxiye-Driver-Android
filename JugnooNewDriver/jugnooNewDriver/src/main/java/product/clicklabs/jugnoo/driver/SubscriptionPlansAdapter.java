@@ -90,6 +90,8 @@ class SubscriptionPlansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         }
                         planDetails.get(pos).setIsSelected(1);
+                        activity.setUpBreakUpData(planDetails.get(pos).getAmount());
+
                         notifyItemChanged(currentSelectedIndex);
                         notifyItemChanged(pos);
                     }
