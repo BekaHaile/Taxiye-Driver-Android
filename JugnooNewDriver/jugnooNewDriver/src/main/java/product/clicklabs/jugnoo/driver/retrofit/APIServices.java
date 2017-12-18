@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.FetchDriverPlansResponse;
+import product.clicklabs.jugnoo.driver.datastructure.InitiatePaymentResponse;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
@@ -614,6 +615,11 @@ public interface APIServices {
 	@POST("/fetch_driver_plans")
 	void fetchDriverPlans(@FieldMap Map<String, String> params,
 						  Callback<FetchDriverPlansResponse> callback);
+
+		@FormUrlEncoded
+	@POST("/initiate_plan_subscription")
+	void initiatePlanSubscription(@FieldMap Map<String, String> params,
+						  Callback<InitiatePaymentResponse> callback);
 
 
 }

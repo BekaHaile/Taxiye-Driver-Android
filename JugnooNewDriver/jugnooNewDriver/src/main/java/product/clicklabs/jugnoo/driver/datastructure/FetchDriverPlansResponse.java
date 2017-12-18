@@ -17,6 +17,7 @@ public class FetchDriverPlansResponse {
     private String message;
 
 
+
     @SerializedName("plan_details")
     private ArrayList<PlanDetails> availablePlanDetails;
 

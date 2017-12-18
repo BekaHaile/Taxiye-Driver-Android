@@ -9,6 +9,7 @@
 
 
 
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_top_bar"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -142,6 +143,11 @@
         android:background="@drawable/new_orange_btn_selector_rounded"
         android:textColor="@drawable/white_color_selector"
         android:textSize="15sp" />
+
+    <FrameLayout
+        android:id="@+id/rlFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 

@@ -238,5 +238,6 @@ public interface Constants {
 	String IS_OFFLINE = "is_offline";
     String END_RIDE_CUSTOM_TEXT = "end_ride_custom_text";
 
+    String PLAN_ID = "plan_id";
 }
 
