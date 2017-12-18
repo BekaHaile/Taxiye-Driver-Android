@@ -458,7 +458,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/ivJugnooPlans"
                     android:layout_marginLeft="8px"
-                    android:text="@string/plans"
+                    android:text="@string/plans_drawer_title"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
 

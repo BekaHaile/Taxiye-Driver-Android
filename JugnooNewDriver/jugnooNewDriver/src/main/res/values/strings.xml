@@ -867,11 +867,26 @@
     <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
-    <string name="pay_now">Pay Now</string>
 
-    <string name="plans">Plans</string>
+
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">Pay Now</string>
+    <string name="plans_drawer_title">Plans</string>
     <string name="days">Days</string>
     <string name="popup_plan_payment_message">Total amount is sum of offer amount &amp; current outstanding i.e \u20B9%s.\n Press OK to proceed.</string>
+    <string name="plan_amount">Plan Amount</string>
+    <string name="label_outstanding_amount">Outstanding Amount</string>
+    <string name="label_total_amount">Total Amount</string>
+    <string name="transaction_failed">Transaction Failed</string>
+    <string name="transaction_successful">Transaction Successful</string>
+    <string name="cancel_transaction_warning">Do you really want to cancel the transaction?</string>
+    <string name="label_total_savings">Total savings till now:</string>
+    <string name="label_current_savings">Current savings till now:</string>
+    <string name="label_active_plan">Active Plan</string>
+    <string name="label_current_outstanding">Current Outstanding:</string>
+    <string name="label_available_plans">Available Plans</string>
+    <string name="title_plans_screen">Ride Without Commission</string>
+    <!--Strings for Subscription plans-->
 
     <string-array name="CountryCodes">
         <item>93,AF</item>

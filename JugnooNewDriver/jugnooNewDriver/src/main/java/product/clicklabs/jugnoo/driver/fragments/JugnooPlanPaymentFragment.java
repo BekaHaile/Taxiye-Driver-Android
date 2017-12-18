@@ -155,7 +155,6 @@ public class JugnooPlanPaymentFragment extends Fragment {
         try {
             final String mimeType = "text/html";
             final String encoding = "UTF-8";
-//		webView.loadUrl(data);
 
             webView.loadDataWithBaseURL("", data, mimeType, encoding, "");
         } catch (Exception e) {

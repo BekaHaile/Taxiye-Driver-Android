@@ -34,7 +34,7 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:layout_height="wrap_content"
-            android:text="Ride Without Commission" />
+            android:text="@string/title_plans_screen" />
 
         <ImageView
             android:id="@+id/ivBack"
@@ -50,7 +50,6 @@
     <ScrollView
         android:id="@+id/scrollView"
         app:layout_constraintTop_toBottomOf="@id/layout_top_bar"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -79,7 +78,7 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                android:text="Plans:"
+                tools:text="Plans:"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintLeft_toRightOf="parent"
