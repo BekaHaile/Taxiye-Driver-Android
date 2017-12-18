@@ -8,7 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class PlanDetails {
 
-
+    @SerializedName("plan_id")
+    private int planId;
     @SerializedName("description")
     private String description;
     @SerializedName("amount")
@@ -17,6 +18,10 @@ public class PlanDetails {
     private int isSelected;
     @SerializedName("validity_days")
     private int validityDays;
+
+
+    @SerializedName("valid_till")
+    private String expiryString;
 
     public boolean getIsSelected() {
         return isSelected==1;
@@ -36,5 +41,14 @@ public class PlanDetails {
 
     public int getValidityDays() {
         return validityDays;
+    }
+
+
+    public String getExpiryString() {
+        return expiryString;
+    }
+
+    public int getPlanId() {
+        return planId;
     }
 }

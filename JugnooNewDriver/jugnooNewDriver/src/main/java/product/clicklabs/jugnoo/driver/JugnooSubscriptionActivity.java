@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -69,6 +70,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
                 PlanDetails planDetails = subscriptionPlansAdapter.getCurrentSelectedPlan();
                 if(planDetails!=null){
                     Log.i("TAG", "onClick: "+ planDetails.getAmount());
+                    Toast.makeText(JugnooSubscriptionActivity.this, "Plan selected: " + planDetails.getValidityDays(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -175,8 +177,16 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
              */
 
 
-            if(!TextUtils.isEmpty(dailyEarningResponse.getExpiryString())){
-                tvinfoText.setText(Utils.trimHTML(Html.fromHtml(dailyEarningResponse.getExpiryString())));
+            String expiryString = null;
+            isActivePlanArray = true;
+            planDetails = dailyEarningResponse.getActivePlanDetails();
+            labelRecyclerView.setText("Active Plan");
+
+            if(planDetails!=null && planDetails.size()>0){
+                expiryString=planDetails.get(0).getExpiryString();
+            }
+            if(!TextUtils.isEmpty(expiryString)){
+                tvinfoText.setText(Utils.trimHTML(Html.fromHtml(expiryString)));
 
                 tvinfoText.setVisibility(View.VISIBLE);
             }else{
@@ -184,9 +194,6 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
             }
 
 
-            isActivePlanArray = true;
-            planDetails = dailyEarningResponse.getActivePlanDetails();
-            labelRecyclerView.setText("Active Plans");
 
 
 
@@ -194,6 +201,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getCurrentPlanSaving()));
                 String label = "Current Savings till now: \n";
                 tvlabelCurrentSavings.setText(String.format("%s%s", label, amount));
+                tvlabelCurrentSavings.setVisibility(View.VISIBLE);
             }else{
                 tvlabelCurrentSavings.setVisibility(View.GONE);
             }
@@ -203,6 +211,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getTotalSavings()));
                 String label = "Total Savings till now: \n";
                 tvlabelOutstanding.setText(String.format("%s%s", label, amount));
+                tvlabelOutstanding.setVisibility(View.VISIBLE);
             }else{
                 tvlabelOutstanding.setVisibility(View.GONE);
             }
@@ -215,7 +224,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity {
 
         if(planDetails!=null && planDetails.size()>0){
             recyclerViewPlans.setVisibility(View.VISIBLE);
-            subscriptionPlansAdapter = new SubscriptionPlansAdapter(this,dailyEarningResponse.getAvailablePlanDetails(),recyclerViewPlans,isActivePlanArray );
+            subscriptionPlansAdapter = new SubscriptionPlansAdapter(this,planDetails,recyclerViewPlans,isActivePlanArray );
             recyclerViewPlans.setAdapter(subscriptionPlansAdapter);
             buttonPay.setVisibility(isActivePlanArray?View.GONE:View.VISIBLE);
             labelRecyclerView.setVisibility(View.VISIBLE);

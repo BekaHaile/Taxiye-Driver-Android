@@ -35,8 +35,6 @@ public class FetchDriverPlansResponse {
     @SerializedName("amount_spent_today")
     private String amountSpentToday;
 
-    @SerializedName("valid_till")
-    private String expiryString;
 
     public String getAmountSpentToday() {
         return amountSpentToday;
@@ -70,7 +68,5 @@ public class FetchDriverPlansResponse {
         return totalSavings;
     }
 
-    public String getExpiryString() {
-        return expiryString;
-    }
+
 }

@@ -105,6 +105,7 @@ class SubscriptionPlansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.itemView = itemView;
             radioButton  = (RadioButton) itemView.findViewById(R.id.rb_plan_description);
             tvValidity  = (TextView) itemView.findViewById(R.id.tv_plan_validity);
+            itemView.setClickable(!isActiveSubscriptionArray);
             itemView.setOnClickListener(isActiveSubscriptionArray?null:rootOnClickListener);
         }
 

@@ -2158,7 +2158,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutSupport.setVisibility(View.GONE);
 			}
 
-			if(/*Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1*/true){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1){
 				relativeLayoutPlans.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutPlans.setVisibility(View.GONE);
