@@ -871,6 +871,7 @@
 
     <string name="plans">Plans</string>
     <string name="days">Days</string>
+    <string name="popup_plan_payment_message">Total amount is sum of offer amount &amp; current outstanding i.e \u20B9%s.\n Press OK to proceed.</string>
 
     <string-array name="CountryCodes">
         <item>93,AF</item>
@@ -1081,8 +1082,7 @@
         <item>263,ZW</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 
 </resources>

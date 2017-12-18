@@ -13,7 +13,7 @@ public class PlanDetails {
     @SerializedName("description")
     private String description;
     @SerializedName("amount")
-    private Double amount;
+    private double amount;
     @SerializedName("is_selected")
     private int isSelected;
     @SerializedName("validity_days")
@@ -35,7 +35,7 @@ public class PlanDetails {
         return description;
     }
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 

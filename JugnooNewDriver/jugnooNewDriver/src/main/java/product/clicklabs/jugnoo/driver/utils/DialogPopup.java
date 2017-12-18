@@ -405,7 +405,10 @@ public class DialogPopup {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
-                    listenerPositive.onClick(view);
+					if(listenerPositive!=null){
+						listenerPositive.onClick(view);
+
+					}
                 }
             });
 			
@@ -414,7 +417,10 @@ public class DialogPopup {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
-                    listenerNegative.onClick(v);
+                    if(listenerNegative!=null){
+						listenerNegative.onClick(v);
+
+					}
                 }
             });
 			

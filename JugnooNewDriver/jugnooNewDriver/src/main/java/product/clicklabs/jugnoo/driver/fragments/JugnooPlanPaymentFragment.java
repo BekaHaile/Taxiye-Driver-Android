@@ -75,6 +75,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
         View rootView = inflater.inflate(R.layout.fragment_jugnoo_plan_payment, container, false);
         WebView webView = (WebView) rootView.findViewById(R.id.webViewPayment);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -155,7 +156,6 @@ public class JugnooPlanPaymentFragment extends Fragment {
             final String mimeType = "text/html";
             final String encoding = "UTF-8";
 //		webView.loadUrl(data);
-            DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
 
             webView.loadDataWithBaseURL("", data, mimeType, encoding, "");
         } catch (Exception e) {

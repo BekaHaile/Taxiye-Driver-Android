@@ -44,11 +44,8 @@ class SubscriptionPlansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         SubscriptionPlansView subscriptionPlansView = (SubscriptionPlansView) holder;
-        if(planDetails.get(position).getAmount()!=null){
-            subscriptionPlansView.tvValidity.setText(String.format("%s%s", activity.getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(planDetails.get(position).getAmount())));
-        }else{
-            subscriptionPlansView.tvValidity.setText(null);
-        }
+        subscriptionPlansView.tvValidity.setText(String.format("%s%s", activity.getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(planDetails.get(position).getAmount())));
+
 
 
 

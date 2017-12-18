@@ -6,11 +6,16 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +52,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     private Button buttonPay;
     private SubscriptionPlansAdapter subscriptionPlansAdapter;
     private TextView labelRecyclerView;
+    private Double currentOutstandingAmount;
     private Handler handler = new Handler();
     private FrameLayout rlFragment;
     // TODO: 18/12/17  SHOw loader in fragment, sometimes shows error even when fragment closed,Dialog builder to made dismissable
@@ -79,11 +85,25 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlanDetails planDetails = subscriptionPlansAdapter.getCurrentSelectedPlan();
+                final PlanDetails planDetails = subscriptionPlansAdapter.getCurrentSelectedPlan();
                 if(planDetails!=null){
 //                    Log.i("TAG", "onClick: "+ planDetails.getAmount());
 //                    Toast.makeText(JugnooSubscriptionActivity.this, "Plan selected: " + planDetails.getValidityDays(), Toast.LENGTH_SHORT).show();
-                        initiatePlanSubscription(planDetails.getPlanId(),JugnooSubscriptionActivity.this);
+
+
+                        Double totalAmount = planDetails.getAmount();
+                        if(currentOutstandingAmount!=null){
+                            totalAmount+=currentOutstandingAmount;
+                        }
+
+
+                        DialogPopup.alertPopupTwoButtonsWithListeners(JugnooSubscriptionActivity.this, null, getString(R.string.popup_plan_payment_message,String.valueOf(totalAmount)),"OK","CANCEL", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                initiatePlanSubscription(planDetails.getPlanId(),JugnooSubscriptionActivity.this);
+
+                            }
+                        },null,true,false);
 
                 }
             }
@@ -152,8 +172,13 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
         }
     }
 
+    private boolean isApiInProgress;
     private void initiatePlanSubscription(int planId, final Activity context){
         try {
+            if(isApiInProgress){
+                return;
+            }
+            isApiInProgress= true;
             DialogPopup.showLoadingDialog(this, getString(R.string.loading));
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -196,7 +221,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                             DialogPopup.dismissLoadingDialog();
                         }
                     }
-
+                    isApiInProgress = false;
                 }
 
                 @Override
@@ -208,10 +233,14 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                         DialogPopup.dismissLoadingDialog();
                         e.printStackTrace();
                     }
+                    isApiInProgress = false;
+
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
+            isApiInProgress = false;
+
         }
 
     }
@@ -224,6 +253,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
     private  void setUpUI(FetchDriverPlansResponse dailyEarningResponse) {
 
+        currentOutstandingAmount = dailyEarningResponse.getOutstandingAmount();
         ArrayList<PlanDetails> planDetails = null;
         boolean isActivePlanArray = false ;
         if(dailyEarningResponse.getActivePlanDetails()==null || dailyEarningResponse.getActivePlanDetails().size()==0){
@@ -233,6 +263,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
              */
             if(!TextUtils.isEmpty(dailyEarningResponse.getAmountSpentToday())){
                 tvinfoText.setText(Utils.trimHTML(Html.fromHtml(dailyEarningResponse.getAmountSpentToday())));
+                tvinfoText.setTextColor(ContextCompat.getColor(this,R.color.black));
                 tvinfoText.setVisibility(View.VISIBLE);
             }else{
                 tvinfoText.setVisibility(View.GONE);
@@ -270,8 +301,8 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             }
             if(!TextUtils.isEmpty(expiryString)){
                 tvinfoText.setText(Utils.trimHTML(Html.fromHtml(expiryString)));
-
                 tvinfoText.setVisibility(View.VISIBLE);
+                tvinfoText.setTextColor(ContextCompat.getColor(this,R.color.red_status));
             }else{
                 tvinfoText.setVisibility(View.GONE);
             }
@@ -283,7 +314,9 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             if(dailyEarningResponse.getCurrentPlanSaving()!=null){
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getCurrentPlanSaving()));
                 String label = "Current Savings till now: \n";
-                tvlabelCurrentSavings.setText(String.format("%s%s", label, amount));
+                SpannableString spannableString = new SpannableString(label + amount);
+                spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tvlabelCurrentSavings.setText(spannableString);
                 tvlabelCurrentSavings.setVisibility(View.VISIBLE);
             }else{
                 tvlabelCurrentSavings.setVisibility(View.GONE);
@@ -293,7 +326,10 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             if(dailyEarningResponse.getTotalSavings()!=null){
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getTotalSavings()));
                 String label = "Total Savings till now: \n";
-                tvlabelOutstanding.setText(String.format("%s%s", label, amount));
+                SpannableString spannableString = new SpannableString(label + amount);
+                spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                tvlabelOutstanding.setText(spannableString);
+
                 tvlabelOutstanding.setVisibility(View.VISIBLE);
             }else{
                 tvlabelOutstanding.setVisibility(View.GONE);
@@ -333,6 +369,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    Toast.makeText(JugnooSubscriptionActivity.this, "Transaction Failed", Toast.LENGTH_SHORT).show();
                     JugnooSubscriptionActivity.super.onBackPressed();
                 }
             });
@@ -352,11 +389,12 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     @Override
     public void onFragmentInteraction(boolean isSuccess) {
         if(isSuccess){
+            Toast.makeText(this, "Transaction Successful", Toast.LENGTH_SHORT).show();
             handler.postDelayed(runnableGetPlansAPi, DELAY_HITTING_API_AFTER_SUCCESS_PAYMENT);
 
 
         }else{
-//            DialogPopup.alertPopup(this,"Transaction failed","Transaction was unsuccessful!");
+            Toast.makeText(this, "Transaction Failed", Toast.LENGTH_SHORT).show();
             JugnooSubscriptionActivity.super.onBackPressed();
         }
     }
