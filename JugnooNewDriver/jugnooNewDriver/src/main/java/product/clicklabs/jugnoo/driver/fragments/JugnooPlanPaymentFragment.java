@@ -37,6 +37,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
     private String mParam3;
 
     private OnFragmentInteractionListener mListener;
+    private WebView webView;
 
     public JugnooPlanPaymentFragment() {
         // Required empty public constructor
@@ -77,7 +78,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
         // Inflate the layout for this fragment
         DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
         View rootView = inflater.inflate(R.layout.fragment_jugnoo_plan_payment, container, false);
-        WebView webView = (WebView) rootView.findViewById(R.id.webViewPayment);
+        webView = (WebView) rootView.findViewById(R.id.webViewPayment);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
@@ -85,7 +86,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
         PaymentWebViewClient paymentWebViewClient = new PaymentWebViewClient();
         webView.setWebViewClient(paymentWebViewClient);
 
-        loadHTMLContent(mParam1,webView);
+        loadHTMLContent(mParam1, webView);
         return rootView;
 
     }
@@ -133,9 +134,15 @@ public class JugnooPlanPaymentFragment extends Fragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if(url .equalsIgnoreCase(mParam2) ){
-                mListener.onFragmentInteraction(true);
+                if(mListener!=null){
+                    mListener.onFragmentInteraction(true);
+
+                }
             }else if(url.equalsIgnoreCase(mParam3)){
-                mListener.onFragmentInteraction(false);
+                if(mListener!=null){
+                    mListener.onFragmentInteraction(false);
+
+                }
 
             }
             super.onPageStarted(view, url, favicon);
@@ -143,7 +150,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if(view.getProgress()>90){
+            if(view.getProgress()>80){
                 DialogPopup.dismissLoadingDialog();
 
             }
@@ -161,9 +168,23 @@ public class JugnooPlanPaymentFragment extends Fragment {
             DialogPopup.dismissLoadingDialog();
 
             e.printStackTrace();
-            mListener.onFragmentInteraction(false);
+            if(mListener!=null){
+                mListener.onFragmentInteraction(false);
+
+            }
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+          /*  if(webView!=null){
+                webView.stopLoading();
+            }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
 }

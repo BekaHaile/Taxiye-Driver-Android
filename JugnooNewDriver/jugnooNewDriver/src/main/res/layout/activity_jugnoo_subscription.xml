@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         android:background="@color/black_top_bar_bg"
         android:layout_width="0dp"
-        android:layout_marginBottom="20dp"
+
         android:minHeight="48dp"
         android:layout_height="wrap_content">
 
@@ -50,12 +50,15 @@
     <ScrollView
         android:id="@+id/scrollView"
         app:layout_constraintTop_toBottomOf="@id/layout_top_bar"
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
+            android:paddingTop="20dp"
+            android:paddingBottom="30dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -205,12 +208,13 @@
                 android:minWidth="200dp"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardViewBreakUp"
+                android:layout_marginBottom="30dp"
                 android:visibility="gone"
                 android:padding="10dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/pay_now"
                 android:background="@drawable/new_orange_btn_selector_rounded"
                 android:textColor="@drawable/white_color_selector"

@@ -42,7 +42,7 @@ import retrofit.mime.TypedByteArray;
 public class JugnooSubscriptionActivity extends BaseFragmentActivity implements JugnooPlanPaymentFragment.OnFragmentInteractionListener {
 
 
-    public static final int DELAY_HITTING_API_AFTER_SUCCESS_PAYMENT = 10 * 1000;
+    public static final int DELAY_HITTING_API_AFTER_SUCCESS_PAYMENT = 6 * 1000;
     private TextView  tvlabelCurrentSavings, tvinfoText, tvlabelOutstanding;
     private RecyclerView recyclerViewPlans;
     private Button buttonPay;
@@ -153,6 +153,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                 }
             });
         } catch (Exception e) {
+            DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
             e.printStackTrace();
         }
     }
@@ -257,10 +258,11 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
             if(dailyEarningResponse.getOutstandingAmount()!=null){
                 currentOutstandingAmount = dailyEarningResponse.getOutstandingAmount();
-                String label = getString(R.string.label_current_outstanding) +" ";
+               /* String label = getString(R.string.label_current_outstanding) +" ";
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(currentOutstandingAmount));
                 tvlabelOutstanding.setText(String.format("%s%s", label, amount));
-                tvlabelOutstanding.setVisibility(View.VISIBLE);
+                tvlabelOutstanding.setVisibility(View.VISIBLE);*/
+                tvlabelOutstanding.setVisibility(View.GONE);
             }else{
                 tvlabelOutstanding.setVisibility(View.GONE);
 
@@ -304,7 +306,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
             if(dailyEarningResponse.getCurrentPlanSaving()!=null){
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getCurrentPlanSaving()));
-                String label = getString(R.string.label_current_savings) + " \n";
+                String label = getString(R.string.label_current_savings) + " ";
                 SpannableString spannableString = new SpannableString(label + amount);
                 spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 tvlabelCurrentSavings.setText(spannableString);
@@ -316,7 +318,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
             if(dailyEarningResponse.getTotalSavings()!=null){
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getTotalSavings()));
-                String label = getString(R.string.label_total_savings) + " \n";
+                String label = getString(R.string.label_total_savings) + " ";
                 SpannableString spannableString = new SpannableString(label + amount);
                 spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 tvlabelOutstanding.setText(spannableString);
@@ -380,7 +382,9 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     @Override
     public void onFragmentInteraction(boolean isSuccess) {
         if(isSuccess){
+            JugnooSubscriptionActivity.super.onBackPressed();
             Toast.makeText(this, R.string.transaction_successful, Toast.LENGTH_SHORT).show();
+            DialogPopup.showLoadingDialog(this, getString(R.string.loading));
             handler.postDelayed(runnableGetPlansAPi, DELAY_HITTING_API_AFTER_SUCCESS_PAYMENT);
 
 
