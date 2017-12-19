@@ -892,6 +892,33 @@
 	<string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 
+
+	<!--Strings for Subscription plans-->
+	<string name="pay_now">भुगतान करें</string>
+	<string name="plans_drawer_title">प्लान</string>
+	<string name="days">दिन</string>
+	<string name="plan_amount">प्लान की राशि</string>
+	<string name="label_outstanding_amount">शेष राशि</string>
+	<string name="label_total_amount">कुल रकम</string>
+	<string name="transaction_failed">लेन-देन प्रक्रिया असफल</string>
+	<string name="transaction_successful">लेन-देन प्रक्रिया सफल</string>
+	<string name="cancel_transaction_warning">क्या आप लेन-देन प्रक्रिया को रद्द करना चाहते है ?</string>
+	<string name="label_total_savings">	कुल बचत अब तक:</string>
+	<string name="label_current_savings">मौजूदा बचत अब तक:</string>
+	<string name="label_active_plan">सक्रिय प्लान</string>
+	<string name="label_current_outstanding">वर्तमान बकाया:</string>
+	<string name="label_available_plans">उपलब्ध योजनाएं</string>
+	<string name="title_plans_screen">बिना कमीशन की सवारी</string>
+	<!--Strings for Subscription plans-->
+
+
+
+
+
+
+
+
+
     <string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>

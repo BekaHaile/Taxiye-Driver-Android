@@ -857,6 +857,31 @@
     <string name="get_support_call">Get Support Call</string>
 
 
+
+
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">    ಈಗ ಪಾವತಿಸಿ</string>
+    <string name="plans_drawer_title">    ಯೋಜನೆಗಳು</string>
+    <string name="days">  ದಿನಗಳು</string>
+    <string name="plan_amount">    ಯೋಜನೆ ಮೊತ್ತ</string>
+    <string name="label_outstanding_amount">    ಬಾಕಿ ಮೊತ್ತ</string>
+    <string name="label_total_amount"> ಒಟ್ಟು ಮೊತ್ತ</string>
+    <string name="transaction_failed">    ವಹಿವಾಟು ವಿಫಲವಾಗಿದೆ</string>
+    <string name="transaction_successful">    ವಹಿವಾಟು ಯಶಸ್ವಿಯಾಗಿದೆ</string>
+    <string name="cancel_transaction_warning">    ನೀವು ವ್ಯವಹಾರವನ್ನು ರದ್ದು ಮಾಡಲು ನಿಜವಾಗಿಯೂ ಬಯಸುವಿರಾ?</string>
+    <string name="label_total_savings">    ಪ್ರಸ್ತುತ ಒಟ್ಟು ಉಳಿತಾಯ:</string>
+    <string name="label_current_savings">   ಪ್ರಸ್ತುತ ಉಳಿತಾಯ:</string>
+    <string name="label_active_plan">    ಸಕ್ರಿಯ ಯೋಜನೆ</string>
+    <string name="label_current_outstanding">    ಪ್ರಸ್ತುತ ಬಾಕಿ ಮೊತ್ತ:</string>
+    <string name="label_available_plans">    ಲಭ್ಯವಿರುವ ಯೋಜನೆಗಳು</string>
+    <string name="title_plans_screen">    ಕಮಿಷನ್ ಇಲ್ಲದೆ ರೈಡ್ಸ್</string>
+    <!--Strings for Subscription plans-->
+
+
+
+
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

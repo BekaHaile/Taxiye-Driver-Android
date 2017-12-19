@@ -872,8 +872,7 @@
     <!--Strings for Subscription plans-->
     <string name="pay_now">Pay Now</string>
     <string name="plans_drawer_title">Plans</string>
-    <string name="days">Days</string>
-    <string name="popup_plan_payment_message">Total amount is sum of offer amount &amp; current outstanding i.e \u20B9%s.\n Press OK to proceed.</string>
+    <string name="days">Day</string>
     <string name="plan_amount">Plan Amount</string>
     <string name="label_outstanding_amount">Outstanding Amount</string>
     <string name="label_total_amount">Total Amount</string>

@@ -829,6 +829,27 @@
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 
+
+
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">ଏବେ ପେମେଣ୍ଟ କରନ୍ତୁ </string>
+    <string name="plans_drawer_title"> ପ୍ଲାନ</string>
+    <string name="days">ଦିନ</string>
+    <string name="plan_amount">    ପ୍ଲାନ ଆମାଉଣ୍ଟ</string>
+    <string name="label_outstanding_amount">    ବାକିଥିବା ଆମାଉଣ୍ଟ</string>
+    <string name="label_total_amount">  ଟୋଟାଲ ଆମାଉଣ୍ଟ</string>
+    <string name="transaction_failed"> ଟ୍ରାନଯାକସନ ଫେଲ</string>
+    <string name="transaction_successful">ଟ୍ରାନଯାକସନ ସଫଳ</string>
+    <string name="cancel_transaction_warning"> ଆପଣ ଟ୍ରାନଯାକସନ କ୍ୟାନସଲ କରିବାକୁ ଚାଁହୁଛନ୍ତି କି ?</string>
+    <string name="label_total_savings"> ଟୋଟାଲ ସେଭିଙ୍ଗ ରାଶି:</string>
+    <string name="label_current_savings"> ବର୍ତମାନ ର ଟୋଟାଲ ସେଭିଙ୍ଗ ରାଶି:</string>
+    <string name="label_active_plan">    ଆକ୍ଟିଭ ପ୍ଲାନ</string>
+    <string name="label_current_outstanding">    ବର୍ତମାନ ବାକିଥିବା ଆମାଉଣ୍ଟ:</string>
+    <string name="label_available_plans">    ପ୍ଲାନ ଉପଲବ୍ଧ</string>
+    <string name="title_plans_screen"> କମିସନ ନକଟିବା ରାଇଡ</string>
+    <!--Strings for Subscription plans-->
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

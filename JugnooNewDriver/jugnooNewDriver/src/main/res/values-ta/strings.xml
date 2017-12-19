@@ -911,6 +911,29 @@
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">    இப்போது செலுத்த</string>
+    <string name="plans_drawer_title">    திட்டங்கள்</string>
+    <string name="days">    நாட்களில்</string>
+    <string name="plan_amount">திட்டத் தொகை</string>
+    <string name="label_outstanding_amount">நிலுவையில் உள்ள தொகை</string>
+    <string name="label_total_amount">மொத்த தொகை</string>
+    <string name="transaction_failed">    பரிவர்த்தனை தோல்வியடைந்தது</string>
+    <string name="transaction_successful">    பரிவர்த்தனை வெற்றிகரமாக முடிந்தது</string>
+    <string name="cancel_transaction_warning">    பரிவர்த்தனை ரத்து செய்ய விரும்புகிறீர்களா??</string>
+    <string name="label_total_savings">    மொத்த சேமிப்பு இப்போது வரை:</string>
+    <string name="label_current_savings">    தற்போதைய சேமிப்புகள் இப்போது வரை:</string>
+    <string name="label_active_plan">நடப்பு திட்டங்கள்</string>
+    <string name="label_current_outstanding">தற்போதைய நிலுவை:</string>
+    <string name="label_available_plans"> செயல்திட்டம்</string>
+    <string name="title_plans_screen">    கமிஷன் இல்லாத</string>
+    <!--Strings for Subscription plans-->
+
+
+
+
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

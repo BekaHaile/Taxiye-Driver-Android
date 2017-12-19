@@ -831,6 +831,32 @@
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">હવે ચુકવણી કરો</string>
+    <string name="plans_drawer_title"> યોજનાઓ</string>
+    <string name="days">દિવસ</string>
+    <string name="plan_amount"> યોજના ની રકમ</string>
+    <string name="label_outstanding_amount">બાકીની રકમ</string>
+    <string name="label_total_amount"> કુલ રકમ</string>
+    <string name="transaction_failed">    નિષ્ફળ વ્યવહાર</string>
+    <string name="transaction_successful">    સફળ વ્યવહાર</string>
+    <string name="cancel_transaction_warning">    શું તમે આ પ્રક્રિયા રદ્દ કરવા ઈચ્છો છો?</string>
+    <string name="label_total_savings">    અત્યાર સુધીની કુલ બચત:</string>
+    <string name="label_current_savings">    વર્તમાન બચત:</string>
+    <string name="label_active_plan">    સક્રિય યોજના</string>
+    <string name="label_current_outstanding">  હવે બાકી:</string>
+    <string name="label_available_plans">  ઉપલબ્ધ યોજના</string>
+    <string name="title_plans_screen">   કમિશન વગર ની રાઈડ</string>
+    <!--Strings for Subscription plans-->
+
+
+
+
+
+
+
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

@@ -48,13 +48,13 @@ class SubscriptionPlansAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
+        subscriptionPlansView.radioButton.setText(planDetails.get(position).getValidityDays()+ " "+  activity.getString(R.string.days));
 
-        if(planDetails.get(position).getValidityDays()>1){
-            subscriptionPlansView.radioButton.setText(planDetails.get(position).getValidityDays()+ " "+  activity.getString(R.string.days));
+       /* if(planDetails.get(position).getValidityDays()>1){
         }else{
             subscriptionPlansView.radioButton.setText(planDetails.get(position).getValidityDays()+ " " + activity.getString(R.string.day));
         }
-
+*/
         if(!isActiveSubscriptionArray){
             if(planDetails.get(position).getIsSelected()){
                 subscriptionPlansView.radioButton.setChecked(true);
