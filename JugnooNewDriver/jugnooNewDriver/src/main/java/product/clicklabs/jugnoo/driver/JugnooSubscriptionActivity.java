@@ -104,19 +104,18 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             params.put(Constants.KEY_PHONE_NO, Data.userData.phoneNo);
-            params.put(Constants.KEY_LATITUDE, String.valueOf(HomeActivity.myLocation.getLatitude()));
-            params.put(Constants.KEY_LONGITUDE, String.valueOf(HomeActivity.myLocation.getLongitude()));
 
             RestClient.getApiServices().fetchDriverPlans(params, new Callback<FetchDriverPlansResponse>() {
                 @Override
-                public void success(FetchDriverPlansResponse dailyEarningResponse, Response response) {
+                public void success(final FetchDriverPlansResponse dailyEarningResponse, Response response) {
                     try {
 
                         String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
                         JSONObject jObj;
-                        DialogPopup.dismissLoadingDialog();
                         jObj = new JSONObject(jsonString);
                         if (!jObj.isNull("error")) {
+                            DialogPopup.dismissLoadingDialog();
+
                             String errorMessage = jObj.getString("error");
                             if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
                                 HomeActivity.logoutUser(context);
@@ -125,7 +124,15 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                             }
 
                         } else {
-                            setUpUI(dailyEarningResponse);
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DialogPopup.dismissLoadingDialog();
+
+                                    setUpUI(dailyEarningResponse);
+
+                                }
+                            },250);
                         }
 
                     } catch (Exception e) {
@@ -153,6 +160,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                 }
             });
         } catch (Exception e) {
+            DialogPopup.dismissLoadingDialog();
             DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
             e.printStackTrace();
         }
@@ -165,8 +173,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             params.put(Constants.PLAN_ID, String.valueOf(planId));
-            params.put(Constants.KEY_LATITUDE, String.valueOf(HomeActivity.myLocation.getLatitude()));
-            params.put(Constants.KEY_LONGITUDE, String.valueOf(HomeActivity.myLocation.getLongitude()));
+
 
             RestClient.getApiServices().initiatePlanSubscription(params, new Callback<InitiatePaymentResponse>() {
                 @Override
@@ -221,6 +228,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             });
         } catch (Exception e) {
             e.printStackTrace();
+            DialogPopup.dismissLoadingDialog();
             buttonPay.setEnabled(true);
 
         }
@@ -446,5 +454,14 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            handler.removeCallbacks(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
 
+    }
 }
