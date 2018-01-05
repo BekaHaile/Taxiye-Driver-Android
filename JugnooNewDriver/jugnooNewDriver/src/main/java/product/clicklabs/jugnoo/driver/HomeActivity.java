@@ -26,6 +26,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -131,7 +132,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
-import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
@@ -154,7 +154,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
@@ -5795,10 +5794,59 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //		}
 	}
 
+	public void driverEndRideWithDistanceSafetyCheck(final Activity activity, final LatLng lastAccurateLatLng,
+													 final double dropLatitude, final double dropLongitude,
+													 final int flagDistanceTravelled, final CustomerInfo customerInfo) {
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
+				if (currentPathItemPair != null
+						&& (Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) - currentPathItemPair.first) > 500
+						|| MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
+					double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
+					try {
+						Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
+								dropLatitude + "," + dropLongitude, "EN", false, false);
+						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
+						JSONObject jsonObject = new JSONObject(response);
+						String status = jsonObject.getString("status");
+						if ("OK".equalsIgnoreCase(status)) {
+							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+							double distanceOfPath = element0.getJSONObject("distance").getDouble("value");
+							if (distanceOfPath <= 1.8 * displacement) {
+								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
+								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+							} else {
+								throw new Exception();
+							}
+						} else {
+							throw new Exception();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
+						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+					}
+				}
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						DialogPopup.dismissLoadingDialog();
+						driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, flagDistanceTravelled, customerInfo);
+					}
+				});
+			}
+		});
+	}
+
 	/**
 	 * ASync for start ride in  driver mode from server
 	 */
-	public void driverEndRideAsync(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
+	public void driverEndRideAsync1(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
 								   int flagDistanceTravelled, CustomerInfo customerInfo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
@@ -7180,7 +7228,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()),
 								lastloctime, customerInfo);
 					} else {
-						driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
+						driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
 								0, customerInfo);
 					}
 					return true;
@@ -7264,14 +7312,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						@Override
 						public void run() {
 							DialogPopup.dismissLoadingDialog();
-							driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+							driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
 									flagDistanceTravelled, customerInfo);
 						}
 					});
 				} catch (Exception e) {
 					e.printStackTrace();
 					DialogPopup.dismissLoadingDialog();
-					driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+					driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
 							flagDistanceTravelled, customerInfo);
 				}
 

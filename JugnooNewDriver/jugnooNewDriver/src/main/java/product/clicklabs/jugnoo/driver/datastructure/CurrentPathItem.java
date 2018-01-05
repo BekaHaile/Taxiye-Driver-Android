@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import product.clicklabs.jugnoo.driver.utils.MapUtils;
+
 /**
  * Created by socomo20 on 6/12/15.
  */
@@ -23,6 +25,10 @@ public class CurrentPathItem {
         this.sectionIncomplete = sectionIncomplete;
         this.googlePath = googlePath;
         this.acknowledged = acknowledged;
+    }
+
+    public double distance(){
+        return MapUtils.distance(sLatLng, dLatLng);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
+import android.support.v4.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -1409,6 +1410,27 @@ public class Database2 {                                                        
 			e.printStackTrace();
 		}
 		return currentPathItems;
+	}
+
+	public Pair<Double, CurrentPathItem> getCurrentPathItemsAllComplete() {
+		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+		Pair<Double, CurrentPathItem> pathItemPair = null;
+		try {
+			String[] columns = new String[]{ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED};
+			Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, SECTION_INCOMPLETE + "=0", null, null, null, null);
+			currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
+			if(currentPathItems.size() > 0) {
+				double totalDistance = 0;
+				CurrentPathItem lastCPI = currentPathItems.get(currentPathItems.size() - 1);
+				for (CurrentPathItem cpi : currentPathItems) {
+					totalDistance += cpi.distance();
+				}
+				pathItemPair = new Pair<>(totalDistance,lastCPI);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pathItemPair;
 	}
 
 
