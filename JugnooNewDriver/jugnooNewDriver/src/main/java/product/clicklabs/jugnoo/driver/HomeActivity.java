@@ -5830,6 +5830,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
 						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 					}
+				} else {
+					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.second.dLatLng=" + currentPathItemPair.second.dLatLng + " and drop=" + new LatLng(dropLatitude, dropLongitude));
+					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.first=" + currentPathItemPair.first + " and global dist=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 				}
 				runOnUiThread(new Runnable() {
 
@@ -5840,7 +5843,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 				});
 			}
-		});
+		}).start();
 	}
 
 	/**
