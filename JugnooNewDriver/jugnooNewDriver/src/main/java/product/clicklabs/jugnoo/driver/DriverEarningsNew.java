@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -117,6 +118,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		barChart = (BarChart) findViewById(R.id.chart);
 		listEarningsPerDay = (RecyclerView) findViewById(R.id.list_earnings_per_day);
 		listEarningsPerDay.setLayoutManager(new LinearLayoutManager(this));
+		listEarningsPerDay.setNestedScrollingEnabled(false);
 		linearLayoutDriverReferral = (LinearLayout) findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutPayout = (RelativeLayout) findViewById(R.id.relativeLayoutPayout);
 		relativelayoutChart = (RelativeLayout) findViewById(R.id.relativelayoutChart);
@@ -275,7 +277,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			}
 		});
 
-		getEarningsDetails(this, 0);
+		if(Data.isCaptive()){
+			getEarningsDetails(this, 0);
+			llGraphWithEarnings.setVisibility(View.GONE);
+		}else{
+			getEarningsDetails(this, 0);
+
+		}
+
 	}
 
 	public void performBackPressed() {
@@ -312,112 +321,116 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 		if (driverEarningsResponse != null) {
 
-			if(driverEarningsResponse.getCurrentInvoiceId() == 0){
-				relativeLayoutPayout.setVisibility(View.VISIBLE);
-				textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
-			} else {
-				relativeLayoutPayout.setVisibility(View.VISIBLE);
-			}
-
-			if(driverEarningsResponse.getNextInvoiceId() != null){
-				imageViewNext.setVisibility(View.VISIBLE);
-				relativeLayoutNext.setClickable(true);
-			} else {
-				imageViewNext.setVisibility(View.GONE);
-				relativeLayoutNext.setClickable(false);
-			}
-
-			if(driverEarningsResponse.getPreviousInvoiceId() != null){
-				imageViewPrev.setVisibility(View.VISIBLE);
-				relativeLayoutPrev.setClickable(true);
-			} else {
-				imageViewPrev.setVisibility(View.GONE);
-				relativeLayoutPrev.setClickable(false);
-			}
-
-			if(driverEarningsResponse.getCurrentInvoiceId() == 0){
-				textViewInvPeriod.setText(getResources().getString(R.string.this_week));
-			} else {
-				textViewInvPeriod.setText(driverEarningsResponse.getPeriod());
-			}
 
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
 
+			if(!Data.isCaptive()){
+				//Graph set up Only required for nonCaptive Users
+				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
+					relativeLayoutPayout.setVisibility(View.VISIBLE);
+					textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
+				} else {
+					relativeLayoutPayout.setVisibility(View.VISIBLE);
+				}
+
+				if(driverEarningsResponse.getNextInvoiceId() != null){
+					imageViewNext.setVisibility(View.VISIBLE);
+					relativeLayoutNext.setClickable(true);
+				} else {
+					imageViewNext.setVisibility(View.GONE);
+					relativeLayoutNext.setClickable(false);
+				}
+
+				if(driverEarningsResponse.getPreviousInvoiceId() != null){
+					imageViewPrev.setVisibility(View.VISIBLE);
+					relativeLayoutPrev.setClickable(true);
+				} else {
+					imageViewPrev.setVisibility(View.GONE);
+					relativeLayoutPrev.setClickable(false);
+				}
+
+				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
+					textViewInvPeriod.setText(getResources().getString(R.string.this_week));
+				} else {
+					textViewInvPeriod.setText(driverEarningsResponse.getPeriod());
+				}
 
 
-			ArrayList<BarEntry> entries = new ArrayList<>();
-			ArrayList<String> labels = new ArrayList<String>();
-			int j = 0;
-			maxIndex = driverEarningsResponse.getEarnings().size();
-			boolean graphVisibility = false;
-			for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
-				entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings(), j++));
-				labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
-				if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
-					graphVisibility =true;
+				ArrayList<BarEntry> entries = new ArrayList<>();
+				ArrayList<String> labels = new ArrayList<String>();
+				int j = 0;
+				maxIndex = driverEarningsResponse.getEarnings().size();
+				boolean graphVisibility = false;
+				for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
+					entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings(), j++));
+					labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
+					if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
+						graphVisibility =true;
+					}
+				}
+
+				if(graphVisibility){
+					relativeLayoutChartData.setVisibility(View.VISIBLE);
+					textViewNoChartData.setVisibility(View.GONE);
+				} else {
+					relativeLayoutChartData.setVisibility(View.GONE);
+					textViewNoChartData.setVisibility(View.VISIBLE);
+				}
+
+				BarDataSet dataset = new BarDataSet(entries, "");
+				BarData data = new BarData(labels, dataset);
+				dataset.setColor(getResources().getColor(R.color.white_grey_v2));
+				dataset.setHighLightColor(getResources().getColor(R.color.red_v2));
+				dataset.setHighLightAlpha(255);
+//			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+				barChart.setData(data);
+				barChart.setNoDataTextDescription("");
+				dataset.setBarSpacePercent(20);
+				barChart.animateY(500);
+				barChart.getLegend().setEnabled(false);
+				barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+				XAxis xAxis = barChart.getXAxis();
+				xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+				xAxis.setTextSize(12);
+				xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
+				YAxis yAxis = barChart.getAxisRight();
+				yAxis.setDrawAxisLine(false);
+				yAxis.setDrawLabels(false);
+
+				barChart.getAxisLeft().setTextSize(12);
+				barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
+
+				barChart.setDrawMarkerViews(true);
+				CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
+				barChart.setMarkerView(mv);
+				barChart.setPinchZoom(false);
+				barChart.setDescription("");
+				barChart.setDoubleTapToZoomEnabled(false);
+				barChart.setDrawGridBackground(false);
+				barChart.setExtraTopOffset(40f);
+				barChart.setExtraRightOffset(20f);
+				barChart.setExtraBottomOffset(10f);
+				dataset.setDrawValues(false);
+
+				if (entries.size() <3){ // barEntries is my Entry Array
+					int factor = 7; // increase this to decrease the bar width. Decrease to increase he bar width
+					int percent = (factor - entries.size())*10;
+					dataset.setBarSpacePercent(percent);
+				}
+
+				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
+
+				if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
+					relativeLayoutNefy.setVisibility(View.VISIBLE);
+					textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
+
+				} else {
+					relativeLayoutNefy.setVisibility(View.GONE);
 				}
 			}
 
-			if(graphVisibility){
-				relativeLayoutChartData.setVisibility(View.VISIBLE);
-				textViewNoChartData.setVisibility(View.GONE);
-			} else {
-				relativeLayoutChartData.setVisibility(View.GONE);
-				textViewNoChartData.setVisibility(View.VISIBLE);
-			}
-
-			BarDataSet dataset = new BarDataSet(entries, "");
-			BarData data = new BarData(labels, dataset);
-			dataset.setColor(getResources().getColor(R.color.white_grey_v2));
-			dataset.setHighLightColor(getResources().getColor(R.color.red_v2));
-			dataset.setHighLightAlpha(255);
-//			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-
-			barChart.setData(data);
-			barChart.setNoDataTextDescription("");
-			dataset.setBarSpacePercent(20);
-			barChart.animateY(500);
-			barChart.getLegend().setEnabled(false);
-			barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
-
-			XAxis xAxis = barChart.getXAxis();
-			xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-			xAxis.setTextSize(12);
-			xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
-			YAxis yAxis = barChart.getAxisRight();
-			yAxis.setDrawAxisLine(false);
-			yAxis.setDrawLabels(false);
-
-			barChart.getAxisLeft().setTextSize(12);
-			barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
-
-			barChart.setDrawMarkerViews(true);
-			CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
-			barChart.setMarkerView(mv);
-			barChart.setPinchZoom(false);
-			barChart.setDescription("");
-			barChart.setDoubleTapToZoomEnabled(false);
-			barChart.setDrawGridBackground(false);
-			barChart.setExtraTopOffset(40f);
-			barChart.setExtraRightOffset(20f);
-			barChart.setExtraBottomOffset(10f);
-			dataset.setDrawValues(false);
-
-			if (entries.size() <3){ // barEntries is my Entry Array
-				int factor = 7; // increase this to decrease the bar width. Decrease to increase he bar width
-				int percent = (factor - entries.size())*10;
-				dataset.setBarSpacePercent(percent);
-			}
-
-			setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
-
-			if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
-				relativeLayoutNefy.setVisibility(View.VISIBLE);
-				textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
-
-			} else {
-				relativeLayoutNefy.setVisibility(View.GONE);
-			}
 
 		} else {
 			performBackPressed();
@@ -477,35 +490,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			}
 
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, new Callback<DriverEarningsResponse>() {
-				@Override
-				public void success(DriverEarningsResponse driverEarningsResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							}
-						} else {
-							DialogPopup.dismissLoadingDialog();
-							res = driverEarningsResponse;
-							updateData(driverEarningsResponse, walletClick);
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						DialogPopup.dismissLoadingDialog();
-					}
-				}
+			if(Data.isCaptive()){
+				RestClient.getApiServices().earningNewDetailsCaptive(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));
 
-				@Override
-				public void failure(RetrofitError error) {
-					Log.i("error", String.valueOf(error));
-					DialogPopup.dismissLoadingDialog();
-				}
-			});
+
+			}else{
+				RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));
+
+			}
 		} else {
 			DialogPopup.alertPopup(DriverEarningsNew.this, "", Data.CHECK_INTERNET_MSG);
 		}
@@ -513,6 +505,44 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			e.printStackTrace();
 			DialogPopup.dismissLoadingDialog();
 		}
+	}
+
+	@NonNull
+	private Callback<DriverEarningsResponse> getCallbackEarningDetails(final Activity activity, final boolean walletClick) {
+		return new Callback<DriverEarningsResponse>() {
+            @Override
+            public void success(DriverEarningsResponse driverEarningsResponse, Response response) {
+                try {
+                    String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                    JSONObject jObj;
+                    jObj = new JSONObject(jsonString);
+                    if (!jObj.isNull("error")) {
+                        String errorMessage = jObj.getString("error");
+                        if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+                            HomeActivity.logoutUser(activity);
+                        }else{
+                        	DialogPopup.alertPopup(activity,"",errorMessage);
+							DialogPopup.dismissLoadingDialog();
+						}
+
+
+                    } else {
+                        DialogPopup.dismissLoadingDialog();
+                        res = driverEarningsResponse;
+                        updateData(driverEarningsResponse, walletClick);
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    DialogPopup.dismissLoadingDialog();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("error", String.valueOf(error));
+                DialogPopup.dismissLoadingDialog();
+            }
+        };
 	}
 
 	@Override

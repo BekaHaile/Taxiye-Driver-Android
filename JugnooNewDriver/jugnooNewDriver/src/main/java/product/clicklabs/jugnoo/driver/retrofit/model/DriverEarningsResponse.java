@@ -207,6 +207,20 @@ public class DriverEarningsResponse {
 		@SerializedName("day")
 		@Expose
 		private String day;
+		@SerializedName("distance")
+		@Expose
+		private String distance;
+		@SerializedName("no_of_rides")
+		@Expose
+		private int noOfRides;
+
+		public int getNoOfRides() {
+			return noOfRides;
+		}
+
+		public String getDistance() {
+			return distance;
+		}
 
 		/**
 		 *

@@ -280,6 +280,9 @@ public class DailyEarningResponse {
 		@SerializedName("extras")
 		@Expose
 		private Tile.Extras extras;
+		@SerializedName("distance")
+		@Expose
+		private  int distance;
 
 		public String getDate() {
 			return date;
@@ -371,6 +374,9 @@ public class DailyEarningResponse {
 		}
 
 
+		public void getDistance(){
+
+		}
 	}
 
 }

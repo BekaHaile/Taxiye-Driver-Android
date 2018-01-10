@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
@@ -43,10 +44,17 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 
 	@Override
 	public void onBindViewHolder(rideInfoViewHolder rideInfoViewHolder, int i) {
-		rideInfoViewHolder.relativeLayout.setVisibility(View.VISIBLE);
+
 		rideInfoViewHolder.textViewDayDateVal.setText(deliveryDetails.get(i).getDay()
 				+", "+ DateOperations.convertMonthDayViaFormat(deliveryDetails.get(i).getDate()));
-		rideInfoViewHolder.textViewDailyValue.setText(context.getResources().getString(R.string.rupee)+deliveryDetails.get(i).getEarnings());
+		rideInfoViewHolder.relativeLayout.setVisibility(View.VISIBLE);
+		if(Data.isCaptive()){
+			rideInfoViewHolder.textViewDailyValue.setText(deliveryDetails.get(i).getNoOfRides() + " " +  context.getString(R.string.rides) + ", " + deliveryDetails.get(i).getDistance());
+
+		}else{
+			rideInfoViewHolder.textViewDailyValue.setText(context.getResources().getString(R.string.rupee)+deliveryDetails.get(i).getEarnings());
+		}
+
 
 	}
 
@@ -65,11 +73,19 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 		rideInfoViewHolder rideInfoViewHolder = (NewEarningsPerDayAdapter.rideInfoViewHolder) recyclerView.getChildViewHolder(parentView);
 		if(position!=RecyclerView.NO_POSITION){
 			switch (childView.getId()){
-				case R.id.relative:
-					if(deliveryDetails.get(position).getEarnings() != 0) {
-						rideInfoViewHolder.arrow.setVisibility(View.VISIBLE);
-						newEarningsCallback.onDailyDetailsClick(deliveryDetails.get(position));
+				case R.id.relativeLayout:
+					if(Data.isCaptive()){
+						if(deliveryDetails.get(position).getNoOfRides() != 0) {
+							rideInfoViewHolder.arrow.setVisibility(View.VISIBLE);
+							newEarningsCallback.onDailyDetailsClick(deliveryDetails.get(position));
+						}
+					}else{
+						if(deliveryDetails.get(position).getEarnings() != 0) {
+							rideInfoViewHolder.arrow.setVisibility(View.VISIBLE);
+							newEarningsCallback.onDailyDetailsClick(deliveryDetails.get(position));
+						}
 					}
+
 					break;
 				default:
 						break;
@@ -92,14 +108,13 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 			textViewDayDateVal = (TextView) v.findViewById(R.id.textViewDayDateVal);
 			textViewDailyValue = (TextView) v.findViewById(R.id.textViewDailyValue);
 			textViewDayDateVal.setTypeface(Fonts.mavenRegular(context));
-			relativeLayout.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
+			textViewDailyValue.setTypeface(Fonts.mavenRegular(context));
 			relativeLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					itemListener.onClickItem(v,relativeLayout);
 				}
 			});
-			ASSL.DoMagic(relativeLayout);
 		}
 	}
 
