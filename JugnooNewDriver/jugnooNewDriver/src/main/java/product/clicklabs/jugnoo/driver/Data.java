@@ -466,4 +466,7 @@ public class Data {
 		public static final int DEBITED = 2;
 	}
 
+	public static boolean isCaptive(){
+		return true;
+	}
 }
