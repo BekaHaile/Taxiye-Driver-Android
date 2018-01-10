@@ -5808,15 +5808,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						|| MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
 					double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
 					try {
-						Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
-								dropLatitude + "," + dropLongitude, "EN", false, false);
+						Response responseR = RestClient.getGoogleApiServices().getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
+								dropLatitude + "," + dropLongitude, false, "driving", false);
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 						JSONObject jsonObject = new JSONObject(response);
 						String status = jsonObject.getString("status");
 						if ("OK".equalsIgnoreCase(status)) {
-							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-							double distanceOfPath = element0.getJSONObject("distance").getDouble("value");
-							if (distanceOfPath <= 1.8 * displacement) {
+							JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
+							double distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
+							if (Utils.compareDouble(distanceOfPath, (displacement * 1.6)) <= 0) {
+								long rowId = Database2.getInstance(activity).insertCurrentPathItem(-1, currentPathItemPair.second.dLatLng.latitude, currentPathItemPair.second.dLatLng.longitude,
+										dropLatitude, dropLongitude, 1, 1);
+								String encodedString = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONObject("overview_polyline").getString("points");
+								List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+								for (int z = 0; z < list.size() - 1; z++) {
+									LatLng src = list.get(z);
+									LatLng dest = list.get(z + 1);
+									if(rowId != -1) {
+										Database2.getInstance(activity).insertCurrentPathItem(rowId, src.latitude, src.longitude,
+												dest.latitude, dest.longitude, 0, 0);
+									}
+								}
+								if(rowId != -1) {
+									Database2.getInstance(activity).updateCurrentPathItemSectionIncomplete(rowId, 0);
+								}
+								PathUploadReceiver.uploadInRidePath(activity, false);
 								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
 								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 							} else {
