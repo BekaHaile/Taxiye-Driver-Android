@@ -80,6 +80,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	private Type listType = new TypeToken<List<DriverEarningsResponse.RechargeOption>>() {
 	}.getType();
 	private RecyclerView listEarningsPerDay;
+	private TextView textViewNoData;
+	private TextView textViewTripsLabel;
 
 	@Override
 	protected void onStart() {
@@ -274,6 +276,9 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				}
 			}
 		});
+		textViewTripsLabel = (TextView)findViewById(R.id.textViewTripsText);
+		textViewTripsLabel.setText(getString(R.string.current_earnings));
+		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
 
 		if(Data.isCaptive()){
 			getEarningsDetails(this, 0);
@@ -325,6 +330,12 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		if (driverEarningsResponse != null) {
 
 
+			if(driverEarningsResponse.getEarnings()!=null && driverEarningsResponse.getEarnings().size()>0){
+				findViewById(R.id.textViewNoData).setVisibility(View.GONE);
+			}else {
+				findViewById(R.id.textViewNoData).setVisibility(View.VISIBLE);
+
+			}
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
 
 			if(Data.isCaptive){

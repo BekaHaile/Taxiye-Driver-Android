@@ -895,6 +895,7 @@
     <string name="slots">ONLINE HOURS</string>
     <string name="hour">hour</string>
     <string name="hours">hours</string>
+    <string name="current_earnings">CURRENT EARNINGS</string>
 
     <string-array name="CountryCodes">
         <item>93,AF</item>
