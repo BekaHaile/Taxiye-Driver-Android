@@ -329,6 +329,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
 								}
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+								dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TRIP_HEADING));
 
 								for (int i=0; i<invoiceDetailResponse.getDailyBreakup().size(); i++) {
 									dailyEarningItems.add(new DailyEarningItem(null, 0,null,

@@ -312,6 +312,8 @@
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
+
+                <!--<include layout="@layout/list_item_trips_heading"/>-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_earnings_per_day"
                     android:layout_width="match_parent"

@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    tools:showIn="@layout/list_item_total_vlaues">
+    android:gravity="center">
 
     <TextView
         android:id="@+id/textViewTripsText"
@@ -25,6 +24,7 @@
         android:gravity="center"
         android:layout_marginTop="30px"
         android:text="@string/no_rides_currently"
+        android:visibility="gone"
         android:textColor="@color/grey_ride_detail"
         android:textSize="30px" />
 

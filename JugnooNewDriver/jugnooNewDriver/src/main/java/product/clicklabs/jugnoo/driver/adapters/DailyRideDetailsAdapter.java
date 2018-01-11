@@ -215,6 +215,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					((TripHeadingHolder) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
 					if(dailyEarningResponse.getTrips().size() <= 0){
+						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.VISIBLE);
 						((TripHeadingHolder) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_rides_currently));
 					}else {
 						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.GONE);
@@ -223,6 +224,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					((TripHeadingHolder) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
 					if(invoiceDetailResponseNew.getDailyBreakup().size() <= 0){
+						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.VISIBLE);
 						((TripHeadingHolder) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_invoice_currently));
 					}else {
 						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.GONE);
