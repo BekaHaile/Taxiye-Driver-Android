@@ -246,10 +246,10 @@ public class DriverEarningsResponse {
 		private int onlineMin;
 		@SerializedName("slots")
 		@Expose
-		private ArrayList<Slots> slots;
+		private ArrayList<CaptiveSlots> slots;
 
 
-		public ArrayList<Slots> getSlots() {
+		public ArrayList<CaptiveSlots> getSlots() {
 			return slots;
 		}
 

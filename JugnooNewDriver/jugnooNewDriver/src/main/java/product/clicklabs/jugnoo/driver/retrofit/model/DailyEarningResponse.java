@@ -44,9 +44,17 @@ public class DailyEarningResponse {
 	@SerializedName("trips")
 	@Expose
 	private List<Trip> trips = new ArrayList<Trip>();
+	@SerializedName("extras")
+	@Expose
+	private ExtrasData extrasData;
 
 	public String getTotalDistanceTravelled() {
 		return "abstract";
+	}
+
+
+	public ExtrasData getExtrasData() {
+		return extrasData;
 	}
 
 	/**
@@ -386,6 +394,14 @@ public class DailyEarningResponse {
 		}
 	}
 
+	public class ExtrasData {
+		@SerializedName("slots")
+		private ArrayList<CaptiveSlots> slots;
+
+		public ArrayList<CaptiveSlots> getCaptiveSlots() {
+			return slots;
+		}
+	}
 }
 
 

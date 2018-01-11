@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Parminder Saini on 11/01/18.
  */
 
-public class Slots {
+public class CaptiveSlots {
 
 
     @SerializedName("online_min")

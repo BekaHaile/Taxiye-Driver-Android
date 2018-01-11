@@ -29,7 +29,6 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
-import product.clicklabs.jugnoo.driver.retrofit.model.Slots;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -90,9 +89,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			if(intent.getStringExtra("date") != null) {
 				date = intent.getStringExtra("date");
 			}
-			if(intent.getStringExtra(EARNING_DATA)!=null){
+		/*	if(intent.getStringExtra(EARNING_DATA)!=null){
 				earning =gson.fromJson(intent.getStringExtra(EARNING_DATA),DriverEarningsResponse.Earning.class);
-			}
+			}*/
 			if(intent.getIntExtra("invoice_id", 0) != 0) {
 				invoice_id = intent.getIntExtra("invoice_id", 0);
 			}
@@ -229,10 +228,10 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 
 											if(Data.isCaptive && invoice_id==0){
-												if (earning !=null && earning.getSlots()!=null) {
-													for (int i=0; i<earning.getSlots().size(); i++) {
-                                                        dailyEarningItems.add(new DailyEarningItem(earning.getSlots().get(i).getSlotName()
-                                                                ,earning.getSlots().get(i).getOnlineMin(),
+												if (dailyEarningResponse.getExtrasData() !=null && dailyEarningResponse.getExtrasData().getCaptiveSlots()!=null) {
+													for (int i=0; i<dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
+                                                        dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
+                                                                ,dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
                                                                 null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
                                                     }
 												}
