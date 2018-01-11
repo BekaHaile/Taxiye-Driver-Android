@@ -3,9 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.PorterDuff;
-import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,14 +13,11 @@ import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.github.mikephil.charting.charts.BarChart;
@@ -34,7 +29,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,12 +43,10 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.adapters.NewEarningsPerDayAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMarkerView;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -77,12 +69,12 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	TextView textViewEstPayout, textViewInvPeriod,
 			title, textViewPayOutValue, textViewRideHistory, textViewNoChartData,
 			textViewWalletBalanceAmount, textViewWalletBalance, textViewNefy, textViewNefyAmount;
-
+	TextView tvDistanceCaptive, tvDaysLeftCaptive, tvAmountCollectedCaptive;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
 	BarChart barChart;
 	int index = 0, maxIndex = 0;
-	private LinearLayout llGraphWithEarnings;
+	private LinearLayout llGraphWithEarnings,layoutCaptivePlanDetails;
 	private NewEarningsPerDayAdapter newEarningsPerDayAdapter;
 	private DriverEarningsResponse res;
 	private Type listType = new TypeToken<List<DriverEarningsResponse.RechargeOption>>() {
@@ -113,6 +105,13 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		setContentView(R.layout.activity_new_earnings);
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		llGraphWithEarnings = (LinearLayout) findViewById(R.id.ll_graph_with_earnings);
+		layoutCaptivePlanDetails = (LinearLayout) findViewById(R.id.layout_captive_plan_details);
+		tvDistanceCaptive = (TextView) findViewById(R.id.tvDistanceCaptive);
+		tvDistanceCaptive.setTypeface(Fonts.mavenRegular(this));
+		tvDaysLeftCaptive = (TextView) findViewById(R.id.tvDaysLeft);
+		tvDaysLeftCaptive.setTypeface(Fonts.mavenRegular(this));
+		tvAmountCollectedCaptive = (TextView) findViewById(R.id.tvAmountCollected);
+		tvAmountCollectedCaptive.setTypeface(Fonts.mavenRegular(this));
 		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
@@ -214,8 +213,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				Calendar c = Calendar.getInstance();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				String formattedDate = df.format(c.getTime());
-				arrow1.setVisibility(View.VISIBLE);
-				getDailyDetails(formattedDate);
+				getDailyDetails(formattedDate,null);
 			}
 		});
 
@@ -230,7 +228,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 					if (index >= 0 && index < 5) {
 						int newIndex = maxIndex-index-1;
 						if(res.getEarnings().get(newIndex).getEarnings()>0) {
-							getDailyDetails(res.getEarnings().get(newIndex).getDate());
+							getDailyDetails(res.getEarnings().get(newIndex).getDate(),null);
 						}
 					}
 				} catch (Exception e) {
@@ -282,6 +280,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			llGraphWithEarnings.setVisibility(View.GONE);
 		}else{
 			getEarningsDetails(this, 0);
+			llGraphWithEarnings.setVisibility(View.VISIBLE);
 
 		}
 
@@ -306,9 +305,13 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		System.gc();
 	}
 
-	public void getDailyDetails(String date){
+	public void getDailyDetails(String date,DriverEarningsResponse.Earning earning){
 		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
 		intent.putExtra("date", date);
+		if(earning!=null){
+			intent.putExtra(DailyRideDetailsActivity.EARNING_DATA, new Gson().toJson(earning, DriverEarningsResponse.Earning.class));
+
+		}
 		startActivity(intent);
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
@@ -324,7 +327,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
 
-			if(!Data.isCaptive()){
+			if(Data.isCaptive){
+				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
+				tvDistanceCaptive.setText(getString(R.string.label_distance_details) +   Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this) + "/" +
+						Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
+				tvDaysLeftCaptive.setText(this.getString(R.string.days_left) + ": " + driverEarningsResponse.getDaysLeft());
+				tvAmountCollectedCaptive.setText(this.getString(R.string.amount_collected) + ": " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
+
+			} else{
 				//Graph set up Only required for nonCaptive Users
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
@@ -443,7 +453,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			newEarningsPerDayAdapter = new NewEarningsPerDayAdapter(this, earnings, listEarningsPerDay, new NewEarningsPerDayAdapter.NewEarningsCallback() {
 				@Override
 				public void onDailyDetailsClick(DriverEarningsResponse.Earning earning) {
-					getDailyDetails(earning.getDate());
+					getDailyDetails(earning.getDate(),earning);
 				}
 			});
 			listEarningsPerDay.setAdapter(newEarningsPerDayAdapter);
@@ -492,7 +502,6 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			if(Data.isCaptive()){
 				RestClient.getApiServices().earningNewDetailsCaptive(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));
-
 
 			}else{
 				RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));

@@ -38,9 +38,16 @@ public class DailyEarningResponse {
 	@SerializedName("delivery_trips")
 	@Expose
 	private Integer totalDelivery;
+	/*@SerializedName("total_distance_covered")
+	@Expose
+	private String totalDistanceTravelled;*/
 	@SerializedName("trips")
 	@Expose
 	private List<Trip> trips = new ArrayList<Trip>();
+
+	public String getTotalDistanceTravelled() {
+		return "abstract";
+	}
 
 	/**
 	 *
@@ -282,7 +289,7 @@ public class DailyEarningResponse {
 		private Tile.Extras extras;
 		@SerializedName("distance")
 		@Expose
-		private  int distance;
+		private double distance;
 
 		public String getDate() {
 			return date;

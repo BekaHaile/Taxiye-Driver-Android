@@ -22,13 +22,13 @@
         />
 
     <TextView
-        android:id="@+id/textViewEarningsValue"
+        android:id="@+id/textViewEarningsDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:singleLine="true"
         android:layout_marginTop="10px"
-        android:text="@string/rupee_zero"
+        android:text="@string/km"
         android:textColor="@color/red_v2"
         android:textSize="84px"/>
 
@@ -61,16 +61,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/grey_light"/>
 
-    <TextView
-        android:id="@+id/textViewEarningsText"
-        android:layout_width="620px"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:singleLine="true"
-        android:layout_marginTop="48px"
-        android:layout_marginBottom="30px"
-        android:text="@string/trip_earning"
-        android:textColor="@color/grey_light_v2"
-        android:textSize="30px"/>
+
+
 
 </LinearLayout>

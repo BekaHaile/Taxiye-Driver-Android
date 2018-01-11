@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.CircleTransform;
@@ -78,7 +79,21 @@ public class DriverProfileActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_profile_screen);
+		findViewById(R.id.topRl).setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				if(Data.isCaptive){
+					Data.isCaptive = false;
+					Toast.makeText(DriverProfileActivity.this,"Driver made non captive",Toast.LENGTH_SHORT).show();
 
+				}else{
+					Data.isCaptive = true;
+					Toast.makeText(DriverProfileActivity.this,"Driver made captive",Toast.LENGTH_SHORT).show();
+
+				}
+				return false;
+			}
+		});
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
 		driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);

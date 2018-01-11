@@ -108,6 +108,7 @@
             android:background="@color/grey_light"/>
 
         <RelativeLayout
+            android:id="@+id/rl_bank_deposit"
             android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="2px">
@@ -133,6 +134,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+
             android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
@@ -165,6 +167,7 @@
             android:background="@color/grey_light"/>
 
         <RelativeLayout
+            android:id="@+id/rlIncome"
             android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="0px">
@@ -190,6 +193,7 @@
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/iv_below_rl_income"
             android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="12px"

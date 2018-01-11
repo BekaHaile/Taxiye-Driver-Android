@@ -19,6 +19,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Item;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by aneesh on 10/4/15.
@@ -30,7 +31,7 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 	private RecyclerView recyclerView;
 	private  NewEarningsCallback newEarningsCallback;
 
-	public NewEarningsPerDayAdapter(Context context, List<DriverEarningsResponse.Earning> deliveryDetails,RecyclerView recyclerView,NewEarningsCallback newEarningsCallback) {
+	public 	NewEarningsPerDayAdapter(Context context, List<DriverEarningsResponse.Earning> deliveryDetails,RecyclerView recyclerView,NewEarningsCallback newEarningsCallback) {
 		this.deliveryDetails = deliveryDetails;
 		this.context = context;
 		this.recyclerView = recyclerView;
@@ -49,7 +50,8 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 				+", "+ DateOperations.convertMonthDayViaFormat(deliveryDetails.get(i).getDate()));
 		rideInfoViewHolder.relativeLayout.setVisibility(View.VISIBLE);
 		if(Data.isCaptive()){
-			rideInfoViewHolder.textViewDailyValue.setText(deliveryDetails.get(i).getNoOfRides() + " " +  context.getString(R.string.rides) + ", " + deliveryDetails.get(i).getDistance());
+			rideInfoViewHolder.textViewDailyValue.setText(deliveryDetails.get(i).getNoOfRides() + " " +  context.getString(R.string.rides) + ", " +
+					Utils.getKilometers(deliveryDetails.get(i).getDistance(),context));
 
 		}else{
 			rideInfoViewHolder.textViewDailyValue.setText(context.getResources().getString(R.string.rupee)+deliveryDetails.get(i).getEarnings());
@@ -75,7 +77,7 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 			switch (childView.getId()){
 				case R.id.relativeLayout:
 					if(Data.isCaptive()){
-						if(deliveryDetails.get(position).getNoOfRides() != 0) {
+						if(deliveryDetails.get(position).getDistance() >0) {
 							rideInfoViewHolder.arrow.setVisibility(View.VISIBLE);
 							newEarningsCallback.onDailyDetailsClick(deliveryDetails.get(position));
 						}

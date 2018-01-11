@@ -63,11 +63,18 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			ASSL.DoMagic(v);
 			return new ViewHolderTotalAmount(v, activity);
 
-        } else if(viewType == ViewType.EARNING_PARAM.getOrdinal()){
+        }/*if(viewType == ViewType.HEADER_CAPTIVE.getOrdinal()) {
+			View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_total_amnt_captive_header, parent, false);
+			RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+			v.setLayoutParams(layoutParams);
+			ASSL.DoMagic(v);
+			return new ViewHolderCaptiveHeader(v, activity);
+
+        }*/ else if(viewType == ViewType.EARNING_PARAM.getOrdinal()){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_ride_param, parent, false);
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+          /*  RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
             v.setLayoutParams(layoutParams);
-            ASSL.DoMagic(v);
+            ASSL.DoMagic(v);*/
             return new ViewHolderRideParam(v, activity);
 
         } else if(viewType == ViewType.TOTAL_VALUES.getOrdinal()){
@@ -76,6 +83,13 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			v.setLayoutParams(layoutParams);
 			ASSL.DoMagic(v);
 			return new ViewHolderHeader(v, activity);
+
+        }else if(viewType == ViewType.TRIP_HEADING.getOrdinal()){
+			View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_trips_heading, parent, false);
+			RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+			v.setLayoutParams(layoutParams);
+			ASSL.DoMagic(v);
+			return new TripHeadingHolder(v, activity);
 
         } else {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_ride_history_new, parent, false);
@@ -99,7 +113,14 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				}
 				((ViewHolderRide)holder).textViewInfoDate.setText(DateOperations.convertDateToDay(item.getDate()) +", "+
 						DateOperations.convertMonthDayViaFormat(item.getDate()));
-				((ViewHolderRide)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, item.getEarning()));
+				if(Data.isCaptive()){
+
+					((ViewHolderRide)holder).textViewInfoValue.setText(item.getExtras()==null?null:Utils.getKilometers(item.getExtras().getDistance(),activity));
+
+				}else{
+					((ViewHolderRide)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, item.getEarning()));
+
+				}
 
 
 				if(item.getStatus()!= null && (item.getStatus().equalsIgnoreCase("Ride Cancelled")
@@ -165,12 +186,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					totalRides = dailyEarningResponse.getTotalTrips() - dailyEarningResponse.getTotalDelivery();
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides+" "+ activity.getResources().getString(R.string.rides));
 					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+dailyEarningResponse.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
-					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
-					if(dailyEarningResponse.getTrips().size() <= 0){
-						((ViewHolderHeader) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_rides_currently));
-					}else {
-						((ViewHolderHeader) holder).textViewNoData.setVisibility(View.GONE);
-					}
+
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getPaidUsingCash()));
@@ -186,32 +202,85 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 						((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
 					}
 
-					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
-					if(invoiceDetailResponseNew.getDailyBreakup().size() <= 0){
-						((ViewHolderHeader) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_invoice_currently));
-					}else {
-						((ViewHolderHeader) holder).textViewNoData.setVisibility(View.GONE);
-					}
+
 				}
 
-            } else if(holder instanceof ViewHolderTotalAmount) {
+            } else if(holder instanceof  TripHeadingHolder){
+				int totalRides = 0;
+				if(dailyEarningResponse != null) {
+
+					((TripHeadingHolder) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
+					if(dailyEarningResponse.getTrips().size() <= 0){
+						((TripHeadingHolder) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_rides_currently));
+					}else {
+						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.GONE);
+					}
+				} else if(invoiceDetailResponseNew != null) {
+
+					((TripHeadingHolder) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
+					if(invoiceDetailResponseNew.getDailyBreakup().size() <= 0){
+						((TripHeadingHolder) holder).textViewNoData.setText(activity.getResources().getString(R.string.no_invoice_currently));
+					}else {
+						((TripHeadingHolder) holder).textViewNoData.setVisibility(View.GONE);
+					}
+				}
+			}else if(holder instanceof ViewHolderTotalAmount) {
 				if(dailyEarningResponse != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
-					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
+					if(Data.isCaptive){
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(dailyEarningResponse.getTimeOnline()
+								+" "+ activity.getResources().getString(R.string.km));
+						((ViewHolderTotalAmount) holder).textViewRides.setText(dailyEarningResponse.getTotalTrips() + " " +  activity.getString(R.string.rides));
+						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.slots));
+
+					}else{
+						((ViewHolderTotalAmount) holder).textViewRides.setVisibility(View.GONE);
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
+						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.trip_earning));
+
+					}
 
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText(invoiceDetailResponseNew.getPeriod());
-					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
-					((ViewHolderTotalAmount) holder).textViewInvoiceStatus.setText(invoiceDetailResponseNew.getInvoiceStatus());
+					if(Data.isCaptive){
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText( invoiceDetailResponseNew.getTotalDistanceTravelled());
+						((ViewHolderTotalAmount) holder).textViewRides.setText(invoiceDetailResponseNew.getTotalTrips() + activity.getString(R.string.rides));
+						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.slots));
+
+					}else{
+						((ViewHolderTotalAmount) holder).textViewRides.setVisibility(View.GONE);
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
+						((ViewHolderTotalAmount) holder).textViewInvoiceStatus.setText(invoiceDetailResponseNew.getInvoiceStatus());
+
+					}
+
 				}
 
-			} else if(holder instanceof ViewHolderRideParam){
+			}else if(holder instanceof ViewHolderRideParam){
                 final DailyEarningItem param = items.get(position);
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
-                ((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(activity, param.getValue()));
+                if(Data.isCaptive){
+					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getTimeFromMins(activity, (int) param.getValue()));
 
-            }
-        } catch (Exception e) {
+				}else{
+					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(activity, param.getValue()));
+
+				}
+
+            } /*else if(holder instanceof ViewHolderCaptiveHeader) {
+				if(dailyEarningResponse != null) {
+					((ViewHolderCaptiveHeader) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
+//					((ViewHolderCaptiveHeader) holder).textViewEarningsDistance.setText(activity,Utils.getKilometers(dailyEarningResponse.getEarnings());
+					((ViewHolderCaptiveHeader) holder).textViewRides.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getTotalTrips()));
+
+				} else if(invoiceDetailResponseNew != null) {
+					((ViewHolderCaptiveHeader) holder).dateTimeValue.setText(invoiceDetailResponseNew.getPeriod());
+					((ViewHolderCaptiveHeader) holder).textViewEarningsDistance.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
+					((ViewHolderCaptiveHeader) holder).textViewInvoiceStatus.setText(invoiceDetailResponseNew.getInvoiceStatus());
+				}
+
+			}*/
+		} catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -228,11 +297,11 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     static class ViewHolderRideParam extends RecyclerView.ViewHolder {
-        public LinearLayout linearLayoutRideItem;
+        public RelativeLayout relativeLayoutRideItem;
         public TextView textViewInfoText, textViewInfoValue;
         public ViewHolderRideParam(View itemView, Context context) {
             super(itemView);
-			linearLayoutRideItem = (LinearLayout) itemView.findViewById(R.id.linearLayoutRideItem);
+			relativeLayoutRideItem = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutRideItem);
 			textViewInfoText = (TextView) itemView.findViewById(R.id.textViewInfoText);
 			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
 			textViewInfoValue = (TextView)itemView.findViewById(R.id.textViewInfoValue);
@@ -265,7 +334,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     static class ViewHolderTotalAmount extends RecyclerView.ViewHolder {
 		public LinearLayout linearLayout;
-		public TextView dateTimeValue, textViewEarningsValue, textViewEarningsText, textViewInvoiceStatus;
+		public TextView dateTimeValue, textViewEarningsValue, textViewEarningsText, textViewInvoiceStatus,textViewRides;
         public ViewHolderTotalAmount(View itemView, Context context) {
             super(itemView);
 			linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
@@ -273,18 +342,36 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			dateTimeValue.setTypeface(Fonts.mavenRegular(context));
 			textViewEarningsValue = (TextView)itemView.findViewById(R.id.textViewEarningsValue);
 			textViewEarningsValue.setTypeface(Fonts.mavenRegular(context));
+			textViewRides = (TextView)itemView.findViewById(R.id.textViewRides);
+			textViewRides.setTypeface(Fonts.mavenRegular(context));
 			textViewEarningsText = (TextView)itemView.findViewById(R.id.textViewEarningsText);
 			textViewEarningsText.setTypeface(Fonts.mavenRegular(context));
 			textViewInvoiceStatus = (TextView)itemView.findViewById(R.id.textViewInvoiceStatus);
 			textViewInvoiceStatus.setTypeface(Fonts.mavenBold(context));
         }
     }
+/* static class ViewHolderCaptiveHeader extends RecyclerView.ViewHolder {
+		public LinearLayout linearLayout;
+		public TextView dateTimeValue, textViewEarningsDistance, textViewRides,textViewInvoiceStatus;
+        public ViewHolderCaptiveHeader(View itemView, Context context) {
+            super(itemView);
+			linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+			dateTimeValue = (TextView) itemView.findViewById(R.id.dateTimeValue);
+			dateTimeValue.setTypeface(Fonts.mavenRegular(context));
+			textViewEarningsDistance = (TextView)itemView.findViewById(R.id.textViewEarningsDistance);
+			textViewEarningsDistance.setTypeface(Fonts.mavenRegular(context));
+			textViewRides = (TextView)itemView.findViewById(R.id.textViewRides);
+			textViewRides.setTypeface(Fonts.mavenRegular(context));
+			textViewInvoiceStatus = (TextView)itemView.findViewById(R.id.textViewInvoiceStatus);
+			textViewInvoiceStatus.setTypeface(Fonts.mavenBold(context));
+        }
+    }*/
 
     static class ViewHolderHeader extends RecyclerView.ViewHolder {
         public LinearLayout linear;
         public TextView textViewActualFareText, textViewActualFareValue, textViewTripCount,
 				textViewCustomerPaidText, textViewCustomerPaid, rideTimeValueText, textViewDeliveryCount,
-				textViewBankDeposite, textViewBankDepositeValue, onlineTimeValue, textViewTripsText, textViewNoData;
+				textViewBankDeposite, textViewBankDepositeValue, onlineTimeValue;
 
 
         public ViewHolderHeader(View itemView, Context context) {
@@ -316,6 +403,17 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			textViewDeliveryCount = (TextView)itemView.findViewById(R.id.textViewDeliveryCount);
 			textViewDeliveryCount.setTypeface(Fonts.mavenRegular(context));
 
+
+        }
+    }
+
+    static class TripHeadingHolder extends RecyclerView.ViewHolder {
+        public TextView textViewTripsText, textViewNoData;
+
+
+        public TripHeadingHolder(View itemView, Context context) {
+            super(itemView);
+
 			textViewTripsText = (TextView)itemView.findViewById(R.id.textViewTripsText);
 			textViewTripsText.setTypeface(Fonts.mavenRegular(context));
 			textViewNoData = (TextView)itemView.findViewById(R.id.textViewNoData);
@@ -332,8 +430,9 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
         TOTAL_AMNT(0),
         EARNING_PARAM(1),
         TOTAL_VALUES(2),
-        RIDE_INFO(3)
-        ;
+        RIDE_INFO(3),
+		TRIP_HEADING(4),
+		HEADER_CAPTIVE(5),;
 
         private int ordinal;
 

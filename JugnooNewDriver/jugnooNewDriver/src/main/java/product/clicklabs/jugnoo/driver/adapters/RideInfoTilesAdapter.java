@@ -68,21 +68,21 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 	}
 
 	public class rideInfoViewHolder extends RecyclerView.ViewHolder {
-		protected LinearLayout linearLayoutRideItem;
+		protected RelativeLayout relativeLayoutRideItem;
 		protected TextView textViewInfoText, textViewInfoValue;
 		protected int id;
 
 		public rideInfoViewHolder(View v) {
 			super(v);
-			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
+			relativeLayoutRideItem = (RelativeLayout) v.findViewById(R.id.relativeLayoutRideItem);
 			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
 			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
 			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
 			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
 
 
-			linearLayoutRideItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
-			ASSL.DoMagic(linearLayoutRideItem);
+			/*relativeLayoutRideItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
+			ASSL.DoMagic(relativeLayoutRideItem);*/
 		}
 	}
 }

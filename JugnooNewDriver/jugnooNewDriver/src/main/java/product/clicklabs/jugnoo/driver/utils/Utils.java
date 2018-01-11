@@ -68,6 +68,7 @@ import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -936,15 +937,24 @@ public class Utils {
 		}
 	}
 
+	private static DecimalFormat decimalFormatNoDecimal ;
+
+	public static DecimalFormat getDecimalFormatNoDecimal() {
+		if(decimalFormatNoDecimal==null){
+			decimalFormatNoDecimal = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+		}
+		return decimalFormatNoDecimal;
+	}
+
 	public static String getAbsWithDecimalAmount(Context context, double amount){
-		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+
 		String showAmount;
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(amount);
+				showAmount = context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(amount);
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(Math.abs(amount));
+				showAmount = "-"+context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(Math.abs(amount));
 			}
 			return showAmount;
 		} catch (Exception e) {
@@ -1006,5 +1016,29 @@ public class Utils {
 		Spanned result;
 		result = Html.fromHtml(html);
 		return result;
+	}
+
+	/*public static String getKilometers(double meter,Context context){
+		double kilometer = meter/1000;
+		return  (Math.round(kilometer * 100) / 100) + context.getString(R.string.km);
+	}*/
+	public static String getKilometers(double kilometer,Context context){
+
+		return   getDecimalFormatNoDecimal().format(kilometer) +  " " +  context.getString(R.string.km);
+	}
+
+	public static String getTimeFromMins(Context context, int min) {
+		int hours = min/60;
+		if(hours<=0){
+			return min + " " +  context.getString(R.string.min);
+		}
+
+			String time = hours + " " + (hours==1?context.getString(R.string.hour):context.getString(R.string.hours));
+			int minToDisplay = min%60;
+			if(minToDisplay>0){
+				time+= " " + minToDisplay + " " +  context.getString(R.string.min);
+			}
+
+		return time;
 	}
 }

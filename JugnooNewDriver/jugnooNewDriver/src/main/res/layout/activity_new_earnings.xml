@@ -269,6 +269,44 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_captive_plan_details"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="30px"
+                android:visibility="gone"
+                android:paddingBottom="40px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvDistanceCaptive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30px"
+                    android:text="@string/distance_covered"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+                <TextView
+                    android:id="@+id/tvDaysLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30px"
+                    android:text="@string/days_left"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+
+                <TextView
+                    android:id="@+id/tvAmountCollected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount_collected"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

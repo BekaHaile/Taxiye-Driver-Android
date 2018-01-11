@@ -39,6 +39,34 @@ public class DriverEarningsResponse {
 	@SerializedName("recharge_options")
 	@Expose
 	private List<RechargeOption> rechargeOptions = null;
+	@SerializedName("target_distance")
+	@Expose
+	private double targetDistance;
+	@SerializedName("amount_collected")
+	@Expose
+	private double amountCollected;
+	@SerializedName("days_left")
+	@Expose
+	private int daysLeft;
+	@SerializedName("covered_distance")
+	@Expose
+	private double coveredDistance;
+
+	public double getTargetDistance() {
+		return targetDistance;
+	}
+
+	public double getAmountCollected() {
+		return amountCollected;
+	}
+
+	public int getDaysLeft() {
+		return daysLeft;
+	}
+
+	public double getCoveredDistance() {
+		return coveredDistance;
+	}
 
 	public List<RechargeOption> getRechargeOptions() {
 		return rechargeOptions;
@@ -209,16 +237,31 @@ public class DriverEarningsResponse {
 		private String day;
 		@SerializedName("distance")
 		@Expose
-		private String distance;
-		@SerializedName("no_of_rides")
+		private double distance;
+		@SerializedName("total_rides")
 		@Expose
 		private int noOfRides;
+		@SerializedName("online_min")
+		@Expose
+		private int onlineMin;
+		@SerializedName("slots")
+		@Expose
+		private ArrayList<Slots> slots;
+
+
+		public ArrayList<Slots> getSlots() {
+			return slots;
+		}
+
+		public int getOnlineMin() {
+			return onlineMin;
+		}
 
 		public int getNoOfRides() {
 			return noOfRides;
 		}
 
-		public String getDistance() {
+		public double getDistance() {
 			return distance;
 		}
 
