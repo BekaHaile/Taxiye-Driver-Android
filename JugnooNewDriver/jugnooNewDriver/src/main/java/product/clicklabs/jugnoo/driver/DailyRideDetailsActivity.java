@@ -152,7 +152,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			}
-		});
+		},invoice_id);
 		recyclerViewDailyInfo.setAdapter(dailyRideDetailsAdapter);
 
 		if(!"".equalsIgnoreCase(date)) {
@@ -228,7 +228,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
 
-											if(Data.isCaptive){
+											if(Data.isCaptive && invoice_id==0){
 												if (earning !=null && earning.getSlots()!=null) {
 													for (int i=0; i<earning.getSlots().size(); i++) {
                                                         dailyEarningItems.add(new DailyEarningItem(earning.getSlots().get(i).getSlotName()
@@ -367,5 +367,6 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			DialogPopup.dismissLoadingDialog();
 		}
 	}
+
 
 }

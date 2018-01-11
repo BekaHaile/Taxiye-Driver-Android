@@ -79,21 +79,24 @@ public class DriverProfileActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_profile_screen);
-		findViewById(R.id.topRl).setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				if(Data.isCaptive){
-					Data.isCaptive = false;
-					Toast.makeText(DriverProfileActivity.this,"Driver made non captive",Toast.LENGTH_SHORT).show();
+		if(BuildConfig.DEBUG){
+			findViewById(R.id.topRl).setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					if(Data.isCaptive){
+						Data.isCaptive = false;
+						Toast.makeText(DriverProfileActivity.this,"Driver made non captive",Toast.LENGTH_SHORT).show();
 
-				}else{
-					Data.isCaptive = true;
-					Toast.makeText(DriverProfileActivity.this,"Driver made captive",Toast.LENGTH_SHORT).show();
+					}else{
+						Data.isCaptive = true;
+						Toast.makeText(DriverProfileActivity.this,"Driver made captive",Toast.LENGTH_SHORT).show();
 
+					}
+					return false;
 				}
-				return false;
-			}
-		});
+			});
+		}
+
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
 		driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);

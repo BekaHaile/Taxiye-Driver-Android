@@ -38,11 +38,15 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     protected String editTextStr = "";
     DailyEarningResponse dailyEarningResponse;
 	InvoiceDetailResponseNew invoiceDetailResponseNew;
+	int invoiceId  = 0;
+	private  boolean showCaptiveData;
 
-    public DailyRideDetailsAdapter(DailyRideDetailsActivity activity, ArrayList<DailyEarningItem> items, Callback callback) {
+    public DailyRideDetailsAdapter(DailyRideDetailsActivity activity, ArrayList<DailyEarningItem> items, Callback callback,int invoiceId) {
         this.activity = activity;
         this.items = items;
         this.callback = callback;
+        this.invoiceId = invoiceId;
+        showCaptiveData = Data.isCaptive && invoiceId==0;
     }
 
     public void setList(ArrayList<DailyEarningItem> slots, DailyEarningResponse dailyEarningResponse, InvoiceDetailResponseNew invoiceDetailResponseNew){
@@ -113,7 +117,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				}
 				((ViewHolderRide)holder).textViewInfoDate.setText(DateOperations.convertDateToDay(item.getDate()) +", "+
 						DateOperations.convertMonthDayViaFormat(item.getDate()));
-				if(Data.isCaptive()){
+				if(showCaptiveData || Data.isCaptive()){
 
 					((ViewHolderRide)holder).textViewInfoValue.setText(item.getExtras()==null?null:Utils.getKilometers(item.getExtras().getDistance(),activity));
 
@@ -227,7 +231,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			}else if(holder instanceof ViewHolderTotalAmount) {
 				if(dailyEarningResponse != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
-					if(Data.isCaptive){
+					if(showCaptiveData){
 						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(dailyEarningResponse.getTimeOnline()
 								+" "+ activity.getResources().getString(R.string.km));
 						((ViewHolderTotalAmount) holder).textViewRides.setText(dailyEarningResponse.getTotalTrips() + " " +  activity.getString(R.string.rides));
@@ -242,7 +246,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText(invoiceDetailResponseNew.getPeriod());
-					if(Data.isCaptive){
+					if(showCaptiveData){
 						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText( invoiceDetailResponseNew.getTotalDistanceTravelled());
 						((ViewHolderTotalAmount) holder).textViewRides.setText(invoiceDetailResponseNew.getTotalTrips() + activity.getString(R.string.rides));
 						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.slots));
@@ -259,7 +263,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			}else if(holder instanceof ViewHolderRideParam){
                 final DailyEarningItem param = items.get(position);
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
-                if(Data.isCaptive){
+                if(showCaptiveData){
 					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getTimeFromMins(activity, (int) param.getValue()));
 
 				}else{

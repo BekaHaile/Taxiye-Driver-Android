@@ -232,6 +232,9 @@ public class Tile {
         @SerializedName("ticket_date")
         @Expose
         private String ticketDate;
+        @SerializedName("slots")
+        @Expose
+        private ArrayList<Slots> slots;
 
         /**
          * @return The type
