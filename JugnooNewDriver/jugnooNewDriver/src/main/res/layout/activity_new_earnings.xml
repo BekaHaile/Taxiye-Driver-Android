@@ -33,7 +33,7 @@
             android:textSize="48px" />
     </RelativeLayout>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/topRl">
@@ -44,8 +44,10 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_graph_with_earnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@color/black_earnings_bg"
                 android:orientation="vertical">
 
@@ -267,212 +269,68 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_captive_plan_details"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingTop="30px"
+                android:visibility="gone"
+                android:paddingBottom="40px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvDistanceCaptive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30px"
+                    android:text="@string/distance_covered"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+                <TextView
+                    android:id="@+id/tvDaysLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30px"
+                    android:text="@string/days_left"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+
+                <TextView
+                    android:id="@+id/tvAmountCollected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount_collected"
+                    android:textColor="@color/text_color"
+                    android:textSize="36px" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/relativeLayout1"
+
+                <include layout="@layout/list_item_trips_heading"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_earnings_per_day"
                     android:layout_width="match_parent"
-                    android:layout_height="90px"
-                    android:layout_marginTop="24px"
-                    android:background="@drawable/list_white_selector"
-                    android:gravity="center_vertical">
+                    android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/textViewDayDateVal1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="54px"
-                        android:text="day, date"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px">
-
-                        <TextView
-                            android:id="@+id/textViewDailyValue1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="18px"
-                            android:layout_toLeftOf="@+id/arrow1"
-                            android:text="Rs. NA"
-                            android:textColor="@color/black_text_v2"
-                            android:textSize="36px" />
-
-                        <ImageView
-                            android:id="@+id/arrow1"
-                            android:layout_width="23px"
-                            android:layout_height="21px"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="14px"
-                            android:src="@drawable/arrow_thick_new" />
-
-                    </RelativeLayout>
+                <!--<include layout="@layout/layout_item_earning_per_day" />-->
 
 
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/relativeLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="90px"
-                    android:background="@drawable/list_white_selector"
-                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/textViewDayDateVal2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="54px"
-                        android:text="day, date"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
 
-                    <TextView
-                        android:id="@+id/textViewDailyValue2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="18px"
-                        android:layout_toLeftOf="@+id/arrow2"
-                        android:text="Rs. NA"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <ImageView
-                        android:id="@+id/arrow2"
-                        android:layout_width="23px"
-                        android:layout_height="21px"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px"
-                        android:layout_marginTop="14px"
-                        android:src="@drawable/arrow_thick_new" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout3"
-                    android:layout_width="match_parent"
-                    android:layout_height="90px"
-                    android:background="@drawable/list_white_selector"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/textViewDayDateVal3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="54px"
-                        android:text="day, date"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <TextView
-                        android:id="@+id/textViewDailyValue3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="18px"
-                        android:layout_toLeftOf="@+id/arrow3"
-                        android:text="Rs. NA"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <ImageView
-                        android:id="@+id/arrow3"
-                        android:layout_width="23px"
-                        android:layout_height="21px"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px"
-                        android:layout_marginTop="14px"
-                        android:src="@drawable/arrow_thick_new" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="90px"
-                    android:background="@drawable/list_white_selector"
-                    android:gravity="center_vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/textViewDayDateVal4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="54px"
-                        android:text="day, date"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <TextView
-                        android:id="@+id/textViewDailyValue4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="18px"
-                        android:layout_toLeftOf="@+id/arrow4"
-                        android:text="Rs. NA"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <ImageView
-                        android:id="@+id/arrow4"
-                        android:layout_width="23px"
-                        android:layout_height="21px"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px"
-                        android:layout_marginTop="14px"
-                        android:src="@drawable/arrow_thick_new" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayout5"
-                    android:layout_width="match_parent"
-                    android:layout_height="90px"
-                    android:background="@drawable/list_white_selector"
-                    android:gravity="center_vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/textViewDayDateVal5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="54px"
-                        android:text="day, date"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <TextView
-                        android:id="@+id/textViewDailyValue5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="18px"
-                        android:layout_toLeftOf="@+id/arrow5"
-                        android:text="Rs. NA"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
-
-                    <ImageView
-                        android:id="@+id/arrow5"
-                        android:layout_width="23px"
-                        android:layout_height="21px"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px"
-                        android:layout_marginTop="14px"
-                        android:src="@drawable/arrow_thick_new" />
-
-                </RelativeLayout>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="3px"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="36px"
+                    android:layout_marginTop="10px"
                     android:background="@color/grey_light_op_60" />
 
                 <ImageView
@@ -593,7 +451,7 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </RelativeLayout>

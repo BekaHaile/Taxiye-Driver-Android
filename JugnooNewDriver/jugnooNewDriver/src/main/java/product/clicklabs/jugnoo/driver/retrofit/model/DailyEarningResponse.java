@@ -38,9 +38,24 @@ public class DailyEarningResponse {
 	@SerializedName("delivery_trips")
 	@Expose
 	private Integer totalDelivery;
+	/*@SerializedName("total_distance_covered")
+	@Expose
+	private String totalDistanceTravelled;*/
 	@SerializedName("trips")
 	@Expose
 	private List<Trip> trips = new ArrayList<Trip>();
+	@SerializedName("extras")
+	@Expose
+	private ExtrasData extrasData;
+
+	public String getTotalDistanceTravelled() {
+		return "abstract";
+	}
+
+
+	public ExtrasData getExtrasData() {
+		return extrasData;
+	}
 
 	/**
 	 *
@@ -280,6 +295,9 @@ public class DailyEarningResponse {
 		@SerializedName("extras")
 		@Expose
 		private Tile.Extras extras;
+		@SerializedName("distance")
+		@Expose
+		private double distance;
 
 		public String getDate() {
 			return date;
@@ -371,8 +389,19 @@ public class DailyEarningResponse {
 		}
 
 
+		public void getDistance(){
+
+		}
 	}
 
+	public class ExtrasData {
+		@SerializedName("slots")
+		private ArrayList<CaptiveSlots> slots;
+
+		public ArrayList<CaptiveSlots> getCaptiveSlots() {
+			return slots;
+		}
+	}
 }
 
 

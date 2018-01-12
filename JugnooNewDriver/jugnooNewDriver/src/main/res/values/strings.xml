@@ -887,6 +887,16 @@
     <string name="title_plans_screen">Ride Without Commission</string>
     <!--Strings for Subscription plans-->
 
+
+    <string name="amount_collected">Amount Collected</string>
+    <string name="days_left">Days Left</string>
+    <string name="distance_covered">Distance Covered</string>
+    <string name="label_distance_details">Distance Details :</string>
+    <string name="slots">ONLINE HOURS</string>
+    <string name="hour">hour</string>
+    <string name="hours">hours</string>
+    <string name="day_wise_breakup">DAY WISE BREAKUP</string>
+
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>

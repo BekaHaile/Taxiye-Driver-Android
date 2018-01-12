@@ -128,4 +128,5 @@ public class SPLabels {
 	public static final String VEHICLE_TYPE = "vehicle_type";
 
     public static final String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
+    public static final String SHOW_RATE_CARD_IN_MENU = "show_rate_card_in_menu";
 }

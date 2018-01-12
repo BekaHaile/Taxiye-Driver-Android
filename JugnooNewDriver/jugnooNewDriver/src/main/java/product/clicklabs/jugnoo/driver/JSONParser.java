@@ -170,7 +170,7 @@ public class JSONParser implements Constants {
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
-		Integer fareCachingLimit = 0;
+		Integer fareCachingLimit= 0,isCaptiveDriver = 0;
 
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
@@ -181,6 +181,10 @@ public class JSONParser implements Constants {
 		}
 		if(userData.has("fare_caching_limit")){
 			fareCachingLimit = userData.getInt("fare_caching_limit");
+		}
+
+		if(userData.has("is_captive_driver")){
+			isCaptiveDriver = userData.getInt("is_captive_driver");
 		}
 		if (userData.has("meals_enabled")) {
 			mealsEnabled = userData.getInt("meals_enabled");
@@ -270,6 +274,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_MENU, userData.optInt("show_support_in_menu", 0));
 		Prefs.with(context).save(SPLabels.SHOW_PLANS_IN_MENU, userData.optInt("show_plans_in_menu", 0));
+		Prefs.with(context).save(SPLabels.SHOW_RATE_CARD_IN_MENU, userData.optInt("show_rate_card_in_menu", 0));
 		Prefs.with(context).save(SPLabels.SHOW_CALL_US_MENU, userData.optInt("show_call_us_menu", 0));
 		Prefs.with(context).save(SPLabels.SHOW_IN_APP_CALL_US, userData.optInt("show_in_app_call_us", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
@@ -353,7 +358,7 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit);
+				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,isCaptiveDriver);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

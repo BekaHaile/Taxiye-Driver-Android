@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -42,8 +43,8 @@ import retrofit.mime.TypedByteArray;
 
 public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
-	RelativeLayout linear;
-
+	public static final String EARNING_DATA = "earning_data";
+    RelativeLayout linear;
 	Button backBtn;
 	TextView title;
 	String date = "";
@@ -56,8 +57,8 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	public ASSL assl;
 	int invoice_id = 0;
 	CustomerInfo customerInfo;
-
-
+	DriverEarningsResponse.Earning earning;
+	private Gson gson = new Gson();
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -88,6 +89,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			if(intent.getStringExtra("date") != null) {
 				date = intent.getStringExtra("date");
 			}
+		/*	if(intent.getStringExtra(EARNING_DATA)!=null){
+				earning =gson.fromJson(intent.getStringExtra(EARNING_DATA),DriverEarningsResponse.Earning.class);
+			}*/
 			if(intent.getIntExtra("invoice_id", 0) != 0) {
 				invoice_id = intent.getIntExtra("invoice_id", 0);
 			}
@@ -147,7 +151,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			}
-		});
+		},invoice_id);
 		recyclerViewDailyInfo.setAdapter(dailyRideDetailsAdapter);
 
 		if(!"".equalsIgnoreCase(date)) {
@@ -206,7 +210,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				params.put("access_token", Data.userData.accessToken);
 				params.put("start_from", "" + 0);
 				params.put("engagement_date", "" + date);
-			RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
+			    RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
 						@Override
 						public void success(DailyEarningResponse dailyEarningResponse, Response response) {
 							try {
@@ -222,12 +226,28 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.clear();
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
-											for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
-												dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
-														, dailyEarningResponse.getDailyParam().get(i).getValue(),
-														null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+
+											if(Data.isCaptive() && invoice_id==0){
+												if (dailyEarningResponse.getExtrasData() !=null && dailyEarningResponse.getExtrasData().getCaptiveSlots()!=null) {
+													for (int i=0; i<dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
+                                                        dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
+                                                                ,dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
+                                                                null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+                                                    }
+												}
+											}else{
+												for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
+													dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
+															, dailyEarningResponse.getDailyParam().get(i).getValue(),
+															null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+												}
 											}
-											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+
+											if(!Data.isCaptive()){
+												dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+
+											}
+											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TRIP_HEADING));
 
 											for (int i=0; i<dailyEarningResponse.getTrips().size(); i++) {
 												dailyEarningItems.add(new DailyEarningItem(null, 0,dailyEarningResponse.getTrips().get(i).getTime(),
@@ -308,6 +328,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
 								}
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+								dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TRIP_HEADING));
 
 								for (int i=0; i<invoiceDetailResponse.getDailyBreakup().size(); i++) {
 									dailyEarningItems.add(new DailyEarningItem(null, 0,null,
@@ -346,5 +367,6 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			DialogPopup.dismissLoadingDialog();
 		}
 	}
+
 
 }

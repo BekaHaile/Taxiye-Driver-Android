@@ -169,9 +169,14 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		}
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
-		fareStructureInfos = new ArrayList<>();
-		rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
-		recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
+		if(Data.isCaptive()){
+			recyclerViewRideInfo.setVisibility(View.GONE);
+		}else{
+			fareStructureInfos = new ArrayList<>();
+			rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
+			recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
+		}
+
 
 
 		ArrayList<String> deliveryAddressList = new ArrayList<>();
@@ -374,14 +379,9 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				waitTimeValue.setText( extras.getWaitTime() + " " + getResources().getString(R.string.min));
 			}
 
-			if (extras.getEarning() <= 0) {
-				imageViewSeprator.setVisibility(View.GONE);
-			}
 
-			textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning()));
-			textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning()));
-			textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
-			textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
+
+
 
 			if(extras.getTicketStatus() == 0){
 				relativeLayoutCreateTicket.setVisibility(View.GONE);
@@ -416,14 +416,38 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
 
 			textViewFromValue.setText(extras.getFrom());
-			fareStructureInfos.addAll(extras.getRideParam());
+
 
 			if(extras.getTo().size() == 0){
 				linearLayoutTo.setVisibility(View.GONE);
 			}
 			deliveryAddressList.addAll(extras.getTo());
 			deliveryAddressListAdapter.notifyDataSetChanged();
-			rideInfoTilesAdapter.notifyDataSetChanged();
+
+			if(Data.isCaptive()){
+				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
+				imageViewSeprator.setVisibility(View.GONE);
+				findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
+				findViewById(R.id.rlIncome).setVisibility(View.GONE);
+				findViewById(R.id.iv_below_rl_income).setVisibility(View.GONE);
+				textViewActualFare.setText(Utils.getKilometers(extras.getDistance(),this));
+			}else{
+				if (extras.getEarning() <= 0) {
+					imageViewSeprator.setVisibility(View.GONE);
+				}else{
+					imageViewSeprator.setVisibility(View.VISIBLE);
+
+				}
+
+				textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning()));
+				textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning()));
+				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
+				textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
+				fareStructureInfos.addAll(extras.getRideParam());
+				rideInfoTilesAdapter.notifyDataSetChanged();
+
+			}
+
 		} else {
 			performBackPressed();
 		}

@@ -196,35 +196,5 @@
             <!--android:layout_height="2px"-->
             <!--android:layout_marginTop="24px"-->
             <!--android:background="@color/grey_light"/>-->
-
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="98px"
-           android:background="@color/grey_ride_detail_bg"
-           android:gravity="center">
-
-        <TextView
-            android:id="@+id/textViewTripsText"
-            android:layout_width="620px"
-            android:layout_height="45px"
-            android:gravity="center_vertical"
-            android:layout_marginTop="24px"
-            android:text="@string/trips"
-            android:textColor="@color/grey_ride_detail"
-            android:textSize="30px"/>
-
-
-       </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/textViewNoData"
-        android:layout_width="620px"
-        android:layout_height="45px"
-        android:gravity="center"
-        android:layout_marginTop="30px"
-        android:text="@string/no_rides_currently"
-        android:textColor="@color/grey_ride_detail"
-        android:textSize="30px"/>
-
+    <!--<include layout="@layout/list_item_trips_heading" />-->
 </LinearLayout>

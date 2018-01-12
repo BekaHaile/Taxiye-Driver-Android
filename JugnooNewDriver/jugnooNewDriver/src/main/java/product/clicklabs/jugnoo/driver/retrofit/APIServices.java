@@ -410,6 +410,13 @@ public interface APIServices {
 						Callback<DriverEarningsResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/get_captive_driver_earnings")
+	void earningNewDetailsCaptive(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						   @Field("invoice_id") String invoiceId,
+						Callback<DriverEarningsResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/delivery_details")
 	void deliveryDetails(@Field("access_token") String accessToken,
 						@Field("login_type") String loginType,
