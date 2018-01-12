@@ -1024,7 +1024,8 @@ public class Utils {
 	}*/
 	public static String getKilometers(double kilometer,Context context){
 
-		return   getDecimalFormatNoDecimal().format(kilometer) +  " " +  context.getString(R.string.km);
+		String suffix = kilometer>1?context.getString(R.string.kms):context.getString(R.string.km);
+		return  getDecimalFormatNoDecimal().format(kilometer) +  " " +  suffix;
 	}
 
 

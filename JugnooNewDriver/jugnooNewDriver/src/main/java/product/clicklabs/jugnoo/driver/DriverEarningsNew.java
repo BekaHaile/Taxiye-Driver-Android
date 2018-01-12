@@ -359,30 +359,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			if(Data.isCaptive()){
 				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
-				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				);
+				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this));
 				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
 				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
 				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
