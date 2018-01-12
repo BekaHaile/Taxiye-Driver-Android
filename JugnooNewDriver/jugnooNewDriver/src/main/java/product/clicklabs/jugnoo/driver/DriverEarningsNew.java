@@ -277,7 +277,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			}
 		});
 		textViewTripsLabel = (TextView)findViewById(R.id.textViewTripsText);
-		textViewTripsLabel.setText(getString(R.string.current_earnings));
+		textViewTripsLabel.setText(getString(R.string.day_wise_breakup));
 		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
 
 		if(Data.isCaptive()){
