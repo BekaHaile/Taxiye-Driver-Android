@@ -245,6 +245,8 @@
                 <!--android:background="@color/blue_btn_pressed"/>-->
 
             <RelativeLayout
+                android:id="@+id/rlMonthlyEarnings"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="120px">
 

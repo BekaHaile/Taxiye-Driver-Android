@@ -232,8 +232,9 @@ public class DriverProfileActivity extends BaseActivity {
 										try {
 											String textViewDriverName = "", textViewTitleBarDEI = "", accNo="", ifscCode = "", bankName="", bankLoc="";
 											int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0,
-													textViewMonthlyValue = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
+												 textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
 													textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
+											Integer textViewMonthlyValue = null;
 											if (jObj.has("driver_name")) {
 												textViewDriverName = jObj.getString("driver_name");
 											}
@@ -336,7 +337,14 @@ public class DriverProfileActivity extends BaseActivity {
 					textViewRankOverall.setText(getStringText(R.string.rank_overall) + " " + openedProfileInfo.textViewRankOverall);
 				}
 
-				textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);
+				if(openedProfileInfo.textViewMonthlyValue!=null){
+					textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);
+					findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
+
+
+				}else {
+					findViewById(R.id.rlMonthlyEarnings).setVisibility(View.GONE);
+				}
 				textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
 				textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
 				textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);

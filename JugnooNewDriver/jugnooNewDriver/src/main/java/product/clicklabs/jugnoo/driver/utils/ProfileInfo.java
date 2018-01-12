@@ -9,7 +9,7 @@ public class ProfileInfo {
 	public int textViewDriverId;
 	public int textViewRankCity;
 	public int textViewRankOverall;
-	public int textViewMonthlyValue;
+	public Integer textViewMonthlyValue;
 	public int textViewRidesTakenValue;
 	public int textViewRidesCancelledValue;
 	public int textViewRidesMissedValue;
@@ -18,7 +18,7 @@ public class ProfileInfo {
 
 	public ProfileInfo(String textViewDriverName, int textViewDriverId, int textViewRankCity, int textViewRankOverall,
 					   int textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesMissedValue,
-					   int textViewRidesCancelledValue, int textViewOnlineHoursValue, String textViewTitleBarDEI,
+					   int textViewRidesCancelledValue, Integer textViewOnlineHoursValue, String textViewTitleBarDEI,
 					   String accNo, String ifscCode, String bankName, String bankLoc) {
 
 
