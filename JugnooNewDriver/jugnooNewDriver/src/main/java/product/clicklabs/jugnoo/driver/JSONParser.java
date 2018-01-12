@@ -170,7 +170,7 @@ public class JSONParser implements Constants {
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
-		Integer fareCachingLimit = 0;
+		Integer fareCachingLimit= 0,isCaptiveDriver = 0;
 
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
@@ -181,6 +181,10 @@ public class JSONParser implements Constants {
 		}
 		if(userData.has("fare_caching_limit")){
 			fareCachingLimit = userData.getInt("fare_caching_limit");
+		}
+
+		if(userData.has("is_captive_driver")){
+			isCaptiveDriver = userData.getInt("is_captive_driver");
 		}
 		if (userData.has("meals_enabled")) {
 			mealsEnabled = userData.getInt("meals_enabled");
@@ -353,7 +357,7 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit);
+				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,isCaptiveDriver);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

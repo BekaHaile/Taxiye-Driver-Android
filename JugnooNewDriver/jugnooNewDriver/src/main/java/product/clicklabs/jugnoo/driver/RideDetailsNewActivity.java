@@ -169,7 +169,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		}
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
-		if(Data.isCaptive){
+		if(Data.isCaptive()){
 			recyclerViewRideInfo.setVisibility(View.GONE);
 		}else{
 			fareStructureInfos = new ArrayList<>();
@@ -424,7 +424,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			deliveryAddressList.addAll(extras.getTo());
 			deliveryAddressListAdapter.notifyDataSetChanged();
 
-			if(Data.isCaptive){
+			if(Data.isCaptive()){
 				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
 				imageViewSeprator.setVisibility(View.GONE);
 				findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);

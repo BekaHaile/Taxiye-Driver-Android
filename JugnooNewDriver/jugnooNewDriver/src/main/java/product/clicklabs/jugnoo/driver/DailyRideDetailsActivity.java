@@ -227,7 +227,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
 
-											if(Data.isCaptive && invoice_id==0){
+											if(Data.isCaptive() && invoice_id==0){
 												if (dailyEarningResponse.getExtrasData() !=null && dailyEarningResponse.getExtrasData().getCaptiveSlots()!=null) {
 													for (int i=0; i<dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
                                                         dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
@@ -243,7 +243,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 												}
 											}
 
-											if(!Data.isCaptive){
+											if(!Data.isCaptive()){
 												dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
 
 											}

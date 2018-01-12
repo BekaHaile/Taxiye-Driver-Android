@@ -83,12 +83,12 @@ public class DriverProfileActivity extends BaseActivity {
 			findViewById(R.id.topRl).setOnLongClickListener(new View.OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
-					if(Data.isCaptive){
-						Data.isCaptive = false;
+					if(Data.isCaptive()){
+						Data.setCaptive(false);
 						Toast.makeText(DriverProfileActivity.this,"Driver made non captive",Toast.LENGTH_SHORT).show();
 
 					}else{
-						Data.isCaptive = true;
+						Data.setCaptive(true);
 						Toast.makeText(DriverProfileActivity.this,"Driver made captive",Toast.LENGTH_SHORT).show();
 
 					}

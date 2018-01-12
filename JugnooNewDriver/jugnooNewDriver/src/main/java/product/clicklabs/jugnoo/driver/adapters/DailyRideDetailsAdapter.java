@@ -46,7 +46,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.items = items;
         this.callback = callback;
         this.invoiceId = invoiceId;
-        showCaptiveData = Data.isCaptive && invoiceId==0;
+        showCaptiveData = Data.isCaptive() && invoiceId==0;
     }
 
     public void setList(ArrayList<DailyEarningItem> slots, DailyEarningResponse dailyEarningResponse, InvoiceDetailResponseNew invoiceDetailResponseNew){

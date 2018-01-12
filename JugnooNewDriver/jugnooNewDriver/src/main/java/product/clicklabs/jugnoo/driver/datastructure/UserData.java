@@ -12,7 +12,7 @@ public class UserData {
 	public long remainigPenaltyPeriod, walletUpdateTimeout;
 	public String userId, userEmail, blockedAppPackageMessage;
 	private int deliveryEnabled, deliveryAvailable;
-	public Integer fareCachingLimit;
+	public Integer fareCachingLimit,isCaptiveDriver;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -22,7 +22,7 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit) {
+					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -64,6 +64,7 @@ public class UserData {
 		this.deliveryEnabled = deliveryEnabled;
 		this.deliveryAvailable = deliveryAvailable;
 		this.fareCachingLimit = fareCachingLimit;
+		this.isCaptiveDriver = isCaptiveDriver;
 	}
 
 	public String getUserId() {
