@@ -17,8 +17,8 @@ public class ProfileInfo {
 	public String textViewTitleBarDEI, accNo, ifscCode, bankName, bankLoc;
 
 	public ProfileInfo(String textViewDriverName, int textViewDriverId, int textViewRankCity, int textViewRankOverall,
-					   int textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesMissedValue,
-					   int textViewRidesCancelledValue, Integer textViewOnlineHoursValue, String textViewTitleBarDEI,
+					   Integer textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesMissedValue,
+					   int textViewRidesCancelledValue, int textViewOnlineHoursValue, String textViewTitleBarDEI,
 					   String accNo, String ifscCode, String bankName, String bankLoc) {
 
 

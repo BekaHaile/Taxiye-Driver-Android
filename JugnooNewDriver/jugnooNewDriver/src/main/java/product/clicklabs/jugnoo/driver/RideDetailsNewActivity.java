@@ -367,8 +367,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			textViewEngID.setText(getResources().getString(R.string.id)+": "+extras.getEngagementId());
 			dateTimeValue.setText(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime());
 
-			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
-					+ " " + getResources().getString(R.string.km));
+			distanceValue.setText(Utils.getKilometers(extras.getDistance(),this));
 
 			rideTimeValue.setText(extras.getRideTime() + " " + getResources().getString(R.string.min));
 

@@ -1028,6 +1028,21 @@ public class Utils {
 		return  getDecimalFormatNoDecimal().format(kilometer) +  " " +  suffix;
 	}
 
+	public static String getKilometers(String kilometer,Context context){
+
+
+		try {
+			return getKilometers(Double.parseDouble(kilometer),context);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 	""+kilometer + " "+ context.getResources().getString(R.string.km);
+		}
+
+
+
+
+	}
+
 
 	public static String getTimeFromMins(Context context, int min) {
 		int hours = min/60;

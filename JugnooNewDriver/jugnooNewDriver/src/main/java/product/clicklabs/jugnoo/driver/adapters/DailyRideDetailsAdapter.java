@@ -183,8 +183,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				if(dailyEarningResponse != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getPaidByCustomer()));
-					((ViewHolderHeader) holder).onlineTimeValue.setText(""+dailyEarningResponse.getTimeOnline()
-							+" "+ activity.getResources().getString(R.string.km));
+					((ViewHolderHeader) holder).onlineTimeValue.setText(Utils.getKilometers(dailyEarningResponse.getTimeOnline(),activity));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getAccount()));
 
 					totalRides = dailyEarningResponse.getTotalTrips() - dailyEarningResponse.getTotalDelivery();
@@ -194,8 +193,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getPaidUsingCash()));
-					((ViewHolderHeader) holder).onlineTimeValue.setText(""+invoiceDetailResponseNew.getTotalDistanceTravelled()
-							+" "+ activity.getResources().getString(R.string.km));
+					((ViewHolderHeader) holder).onlineTimeValue.setText(Utils.getKilometers(invoiceDetailResponseNew.getTotalDistanceTravelled(),activity));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount()));
 
 					if(invoiceDetailResponseNew.getTotalDelivery() == -1){
@@ -234,8 +232,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				if(dailyEarningResponse != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
 					if(showCaptiveData){
-						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(dailyEarningResponse.getTimeOnline()
-								+" "+ activity.getResources().getString(R.string.km));
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getKilometers(dailyEarningResponse.getTimeOnline(),activity));
 						((ViewHolderTotalAmount) holder).textViewRides.setText(dailyEarningResponse.getTotalTrips() + " " +  activity.getString(R.string.rides));
 						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.slots));
 
@@ -450,5 +447,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             return ordinal;
         }
     }
+
+
 
 }
