@@ -2163,6 +2163,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutPlans.setVisibility(View.GONE);
 			}
 
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_RATE_CARD_IN_MENU,0) == 1){
+				relativeLayoutRateCard.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutRateCard.setVisibility(View.GONE);
+			}
+
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
 				callUsRl.setVisibility(View.VISIBLE);
 			} else {

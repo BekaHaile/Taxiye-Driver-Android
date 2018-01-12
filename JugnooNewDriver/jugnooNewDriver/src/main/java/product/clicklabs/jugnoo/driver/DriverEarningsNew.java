@@ -281,6 +281,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
 
 		if(Data.isCaptive()){
+			relativeLayoutRideHistory.setVisibility(View.GONE);
 			getEarningsDetails(this, 0);
 			llGraphWithEarnings.setVisibility(View.GONE);
 		}else{
