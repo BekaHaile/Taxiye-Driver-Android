@@ -272,8 +272,13 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 
 //	Retrofit
 
+	boolean isInvoiceHistoryInProgress;
 	private void getInvoiceHistory(final Activity activity) {
+		if(isInvoiceHistoryInProgress)
+			return;
+
 		progressBar.setVisibility(View.VISIBLE);
+		isInvoiceHistoryInProgress = true;
 		try {
 			RestClient.getApiServices().invoiceHistory(Data.userData.accessToken, "1", new Callback<InvoiceHistoryResponse>() {
                         @Override
@@ -306,6 +311,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                                 updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
                             }
                             progressBar.setVisibility(View.GONE);
+							isInvoiceHistoryInProgress=false;
                         }
 
 
@@ -313,10 +319,12 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                         public void failure(RetrofitError error) {
                             progressBar.setVisibility(View.GONE);
                             updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+							isInvoiceHistoryInProgress = false;
                         }
                     });
 		} catch (Exception e) {
 			e.printStackTrace();
+			isInvoiceHistoryInProgress = false;
 		}
 	}
 

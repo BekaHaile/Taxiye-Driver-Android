@@ -296,12 +296,13 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewTripsLabel = (TextView)findViewById(R.id.textViewTripsText);
 		textViewTripsLabel.setText(getString(R.string.day_wise_breakup));
 		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
-
+		findViewById(R.id.layout_recycler).setVisibility(View.GONE);
 		if(Data.isCaptive()){
 			relativeLayoutRideHistory.setVisibility(View.GONE);
 			getEarningsDetails(this, 0);
 			llGraphWithEarnings.setVisibility(View.GONE);
 			findViewById(R.id.divider_below_ride_history_bar).setVisibility(View.GONE);
+
 		}else{
 			getEarningsDetails(this, 0);
 			llGraphWithEarnings.setVisibility(View.VISIBLE);
@@ -348,7 +349,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 		if (driverEarningsResponse != null) {
 
-
+			findViewById(R.id.layout_recycler).setVisibility(View.VISIBLE);
 			if(driverEarningsResponse.getEarnings()!=null && driverEarningsResponse.getEarnings().size()>0){
 				findViewById(R.id.textViewNoData).setVisibility(View.GONE);
 			}else {
@@ -567,7 +568,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
                         if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
                             HomeActivity.logoutUser(activity);
                         }else{
-                        	DialogPopup.alertPopup(activity,"",errorMessage);
+							DialogPopup.alertPopup(activity,"",errorMessage);
 							DialogPopup.dismissLoadingDialog();
 						}
 
@@ -579,6 +580,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
+					DialogPopup.alertPopup(activity,"",activity.getString(R.string.some_error_occured));
                     DialogPopup.dismissLoadingDialog();
                 }
             }
@@ -586,7 +588,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
             @Override
             public void failure(RetrofitError error) {
                 Log.i("error", String.valueOf(error));
-                DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopup(activity,"",activity.getString(R.string.some_error_occured));
+				DialogPopup.dismissLoadingDialog();
             }
         };
 	}

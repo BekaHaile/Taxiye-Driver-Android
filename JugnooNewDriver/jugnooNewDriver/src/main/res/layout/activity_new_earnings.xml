@@ -273,7 +273,7 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:paddingTop="30px"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:paddingBottom="40px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -395,8 +395,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
@@ -432,54 +434,55 @@
                     android:layout_height="2px"
                     android:layout_gravity="center_horizontal"
                     android:background="@color/grey_light_op_60" />
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutRideHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="152px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/list_white_selector"
+                    android:gravity="center_vertical">
+
+
+                    <ImageView
+                        android:id="@+id/imageViewRideHistory"
+                        android:layout_width="36px"
+                        android:layout_height="31px"
+                        android:layout_marginLeft="54px"
+                        android:layout_marginRight="26px"
+                        android:layout_marginTop="12px"
+                        android:src="@drawable/ride_history_icon" />
+
+
+                    <TextView
+                        android:id="@+id/textViewRideHistory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55px"
+                        android:layout_toRightOf="@+id/imageViewRideHistory"
+                        android:gravity="center_vertical"
+                        android:text="@string/ride_history_cap"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="36px" />
+
+
+                    <ImageView
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="48px"
+                        android:layout_marginTop="14px"
+                        android:src="@drawable/arrow_thick_new" />
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/divider_below_ride_history_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="22px"
+                    android:background="@drawable/background_divider_drawable"/>
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutRideHistory"
-                android:layout_width="match_parent"
-                android:layout_height="152px"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/list_white_selector"
-                android:gravity="center_vertical">
 
-
-                <ImageView
-                    android:id="@+id/imageViewRideHistory"
-                    android:layout_width="36px"
-                    android:layout_height="31px"
-                    android:layout_marginLeft="54px"
-                    android:layout_marginRight="26px"
-                    android:layout_marginTop="12px"
-                    android:src="@drawable/ride_history_icon" />
-
-
-                <TextView
-                    android:id="@+id/textViewRideHistory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="55px"
-                    android:layout_toRightOf="@+id/imageViewRideHistory"
-                    android:gravity="center_vertical"
-                    android:text="@string/ride_history_cap"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="36px" />
-
-
-                <ImageView
-                    android:layout_width="23px"
-                    android:layout_height="21px"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="48px"
-                    android:layout_marginTop="14px"
-                    android:src="@drawable/arrow_thick_new" />
-
-            </RelativeLayout>
-            
-            <View
-                android:id="@+id/divider_below_ride_history_bar"
-                android:layout_width="match_parent"
-                android:layout_height="22px"
-                android:background="@drawable/background_divider_drawable"/>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutNefy"
