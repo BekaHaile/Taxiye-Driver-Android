@@ -85,6 +85,9 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	private TextView tvDaysLeftCaptiveLabel;
 	private TextView tvDistanceCaptiveLabel;
 	private TextView tvAmountCollectedCaptiveLabel;
+	private TextView dateTimeValue;
+	private TextView tvTargetDistanceLabel;
+	private TextView tvTargetDistance;
 
 	@Override
 	protected void onStart() {
@@ -123,6 +126,10 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		tvAmountCollectedCaptive.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptiveLabel = (TextView) findViewById(R.id.tvAmountCollectedLabel);
 		tvAmountCollectedCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
+		tvTargetDistanceLabel = (TextView) findViewById(R.id.tvTargetDistanceLabel);
+		tvTargetDistanceLabel.setTypeface(Fonts.mavenRegular(this));
+		tvTargetDistance = (TextView) findViewById(R.id.tvTargetDistance);
+		tvTargetDistance.setTypeface(Fonts.mavenRegular(this));
 		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
@@ -151,7 +158,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewRideHistory.setTypeface(Fonts.mavenBold(this));
 		textViewNoChartData = (TextView) findViewById(R.id.textViewNoChartData);
 		textViewNoChartData.setTypeface(Fonts.mavenRegular(this));
-
+		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
+		dateTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewNefy = (TextView) findViewById(R.id.textViewNefy);
 		textViewNefy.setTypeface(Fonts.mavenBold(this));
 		textViewNefyAmount = (TextView) findViewById(R.id.textViewNefyAmount);
@@ -351,10 +359,39 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			if(Data.isCaptive()){
 				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
-				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this) + " / " +
-						Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
+				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				);
+				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
 				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
 				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
+				if(driverEarningsResponse.getPeriod()!=null){
+					dateTimeValue.setText(driverEarningsResponse.getPeriod());
+					dateTimeValue.setVisibility(View.VISIBLE);
+				}else{
+					dateTimeValue.setVisibility(View.GONE);
+				}
 
 			} else{
 				//Graph set up Only required for nonCaptive Users
