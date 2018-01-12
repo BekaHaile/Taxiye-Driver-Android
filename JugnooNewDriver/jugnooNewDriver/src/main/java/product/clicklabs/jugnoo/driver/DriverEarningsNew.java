@@ -82,6 +82,9 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	private RecyclerView listEarningsPerDay;
 	private TextView textViewNoData;
 	private TextView textViewTripsLabel;
+	private TextView tvDaysLeftCaptiveLabel;
+	private TextView tvDistanceCaptiveLabel;
+	private TextView tvAmountCollectedCaptiveLabel;
 
 	@Override
 	protected void onStart() {
@@ -109,11 +112,17 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		llGraphWithEarnings = (LinearLayout) findViewById(R.id.ll_graph_with_earnings);
 		layoutCaptivePlanDetails = (LinearLayout) findViewById(R.id.layout_captive_plan_details);
 		tvDistanceCaptive = (TextView) findViewById(R.id.tvDistanceCaptive);
+		tvDistanceCaptiveLabel = (TextView) findViewById(R.id.tvDistanceCaptiveLabel);
 		tvDistanceCaptive.setTypeface(Fonts.mavenRegular(this));
+		tvDistanceCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvDaysLeftCaptive = (TextView) findViewById(R.id.tvDaysLeft);
 		tvDaysLeftCaptive.setTypeface(Fonts.mavenRegular(this));
+		tvDaysLeftCaptiveLabel = (TextView) findViewById(R.id.tvDaysLeftLabel);
+		tvDaysLeftCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptive = (TextView) findViewById(R.id.tvAmountCollected);
 		tvAmountCollectedCaptive.setTypeface(Fonts.mavenRegular(this));
+		tvAmountCollectedCaptiveLabel = (TextView) findViewById(R.id.tvAmountCollectedLabel);
+		tvAmountCollectedCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
@@ -284,6 +293,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			relativeLayoutRideHistory.setVisibility(View.GONE);
 			getEarningsDetails(this, 0);
 			llGraphWithEarnings.setVisibility(View.GONE);
+			findViewById(R.id.divider_below_ride_history_bar).setVisibility(View.GONE);
 		}else{
 			getEarningsDetails(this, 0);
 			llGraphWithEarnings.setVisibility(View.VISIBLE);
@@ -341,13 +351,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			if(Data.isCaptive()){
 				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
-				tvDistanceCaptive.setText(getString(R.string.label_distance_details) +   Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this) + "/" +
+				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this) + " / " +
 						Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
-				tvDaysLeftCaptive.setText(this.getString(R.string.days_left) + ": " + driverEarningsResponse.getDaysLeft());
-				tvAmountCollectedCaptive.setText(this.getString(R.string.amount_collected) + ": " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
+				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
+				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
 
 			} else{
 				//Graph set up Only required for nonCaptive Users
+				layoutCaptivePlanDetails.setVisibility(View.GONE);
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 					textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());

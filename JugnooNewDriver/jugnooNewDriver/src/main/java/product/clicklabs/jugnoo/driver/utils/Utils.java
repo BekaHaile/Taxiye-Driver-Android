@@ -1027,6 +1027,7 @@ public class Utils {
 		return   getDecimalFormatNoDecimal().format(kilometer) +  " " +  context.getString(R.string.km);
 	}
 
+
 	public static String getTimeFromMins(Context context, int min) {
 		int hours = min/60;
 		if(hours<=0){
