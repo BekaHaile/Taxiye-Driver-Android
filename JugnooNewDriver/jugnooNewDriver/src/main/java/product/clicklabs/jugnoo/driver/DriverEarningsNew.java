@@ -313,7 +313,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 	public void getDailyDetails(String date,DriverEarningsResponse.Earning earning){
 		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
-		intent.putExtra("date", date);
+		intent.putExtra("date", earning.getLastInvoiceDate()==null?date:earning.getLastInvoiceDate());
 		if(earning!=null){
 			intent.putExtra(DailyRideDetailsActivity.EARNING_DATA, new Gson().toJson(earning, DriverEarningsResponse.Earning.class));
 

@@ -232,6 +232,9 @@ public class DriverEarningsResponse {
 		@SerializedName("date")
 		@Expose
 		private String date;
+		@SerializedName("last_invoice_date")
+		@Expose
+		private String lastInvoiceDate;
 		@SerializedName("day")
 		@Expose
 		private String day;
@@ -263,6 +266,10 @@ public class DriverEarningsResponse {
 
 		public double getDistance() {
 			return distance;
+		}
+
+		public String getLastInvoiceDate() {
+			return lastInvoiceDate;
 		}
 
 		/**
