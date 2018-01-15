@@ -59,6 +59,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -821,11 +822,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			
 			@Override
 			public void onClick(View v) {
-				if(!loginDataFetched){
+				/*if(!loginDataFetched){
 					noNetFirstTime = false;
 					noNetSecondTime = false;
 					getDeviceToken();
-				}
+				}*/
 			}
 		});
 
@@ -836,7 +837,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	
 	public void getDeviceToken(){
-	    progressBar1.setVisibility(View.VISIBLE);
+//	    progressBar1.setVisibility(View.VISIBLE);
 		Data.deviceToken = "";
 		Data.pushyToken = "";
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
@@ -1142,13 +1143,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			});
 		}
 		else{
-			runOnUiThread(new Runnable() {
+			/*runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
 					progressBar1.setVisibility(View.VISIBLE);
 				}
-			});
+			});*/
 	    	stopService(new Intent(context, PushPendingCallsService.class));
 	    	stopPushApiThread();
 	    	try{
@@ -1621,6 +1622,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		else{
 
 			fetchLanguageList();
+
 			buttonLogin.setVisibility(View.VISIBLE);
 			buttonRegister.setVisibility(View.VISIBLE);
 //			toggleRegistrationButton();
@@ -2499,6 +2501,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								break;
 							}
 						}
+						//setLanguageData(jObj);
 
 //						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
 //						intent.putExtra("cityResponse", cityResponse);
@@ -2582,17 +2585,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								String message = JSONParser.getServerMessage(jObj);
 								int flag = jObj.getInt("flag");
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									languagePrefStatus = jObj.getInt("locale_preference_enabled");
-									registerViaTooken = jObj.optInt("registration_enabled", RegisterOption.ONLY_TOOKAN.getOrdinal());
-									JSONArray jArray = jObj.getJSONArray("locales");
-//									toggleRegistrationButton();
-									if (jArray != null) {
-										categories.clear();
-										for (int i = 0; i < jArray.length(); i++) {
-											categories.add(jArray.get(i).toString());
-										}
-									}
-									showLanguagePreference();
+									setLanguageData(jObj);
 
 								} else {
 									DialogPopup.alertPopup(SplashNewActivity.this, "", message);
@@ -2621,7 +2614,21 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 	}
 
-//	boolean loginState = false;
+	private void setLanguageData(JSONObject jObj) throws JSONException {
+		languagePrefStatus = jObj.getInt("locale_preference_enabled");
+		registerViaTooken = jObj.optInt("registration_enabled", RegisterOption.ONLY_TOOKAN.getOrdinal());
+		JSONArray jArray = jObj.getJSONArray("locales");
+//									toggleRegistrationButton();
+		if (jArray != null) {
+            categories.clear();
+            for (int i = 0; i < jArray.length(); i++) {
+                categories.add(jArray.get(i).toString());
+            }
+        }
+		showLanguagePreference();
+	}
+
+	//	boolean loginState = false;
 	private void changeUIState(State state) {
 		imageViewJugnooLogo.requestFocus();
 		relativeLayoutScrollStop.setVisibility(View.VISIBLE);
