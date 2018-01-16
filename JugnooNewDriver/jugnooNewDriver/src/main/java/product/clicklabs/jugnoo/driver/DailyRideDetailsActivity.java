@@ -89,9 +89,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			if(intent.getStringExtra("date") != null) {
 				date = intent.getStringExtra("date");
 			}
-		/*	if(intent.getStringExtra(EARNING_DATA)!=null){
+			if(intent.getStringExtra(EARNING_DATA)!=null){
 				earning =gson.fromJson(intent.getStringExtra(EARNING_DATA),DriverEarningsResponse.Earning.class);
-			}*/
+			}
 			if(intent.getIntExtra("invoice_id", 0) != 0) {
 				invoice_id = intent.getIntExtra("invoice_id", 0);
 			}
@@ -210,6 +210,10 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				params.put("access_token", Data.userData.accessToken);
 				params.put("start_from", "" + 0);
 				params.put("engagement_date", "" + date);
+				if(earning!=null && earning.getLastInvoiceDate()!=null){
+					params.put("last_invoice_date", "" + earning.getLastInvoiceDate());
+				}
+
 			    RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
 						@Override
 						public void success(DailyEarningResponse dailyEarningResponse, Response response) {
