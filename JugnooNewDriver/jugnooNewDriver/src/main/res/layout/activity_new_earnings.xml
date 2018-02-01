@@ -313,6 +313,8 @@
                 <RelativeLayout
                     android:layout_marginLeft="35px"
                     android:layout_marginRight="35px"
+                    android:layout_marginBottom="30px"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -320,7 +322,6 @@
                         android:id="@+id/tvTargetDistanceLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="30px"
                         android:text="@string/target_distance"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
@@ -329,7 +330,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="30px"
                         android:gravity="right"
                         android:layout_toRightOf="@id/tvTargetDistanceLabel"
                         android:textColor="@color/text_color"
@@ -339,6 +339,7 @@
                 <RelativeLayout
                     android:layout_marginLeft="35px"
                     android:layout_marginRight="35px"
+                    android:layout_marginBottom="30px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -346,7 +347,6 @@
                         android:id="@+id/tvDaysLeftLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="30px"
                         android:text="@string/days_left"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
@@ -357,7 +357,6 @@
                         android:gravity="right"
                         android:layout_toRightOf="@id/tvDaysLeftLabel"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="30px"
                         android:text="@string/days_left"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
@@ -383,6 +382,34 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/amount_collected"
+                        android:textColor="@color/text_color"
+                        android:textSize="36px" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/rl_adjusted_distance"
+                    android:layout_marginLeft="35px"
+                    android:layout_marginRight="35px"
+                    android:layout_marginTop="30px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tvAdjustedDistanceLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/adjusted_distance"
+                        android:textColor="@color/text_color"
+                        android:textSize="36px" />
+
+                    <TextView
+                        android:id="@+id/tvAdjustedDistanceValue"
+                        android:gravity="right"
+                        android:layout_toRightOf="@id/tvAdjustedDistanceLabel"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
                 </RelativeLayout>

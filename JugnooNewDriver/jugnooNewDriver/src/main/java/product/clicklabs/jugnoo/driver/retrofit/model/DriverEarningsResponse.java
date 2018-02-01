@@ -51,6 +51,12 @@ public class DriverEarningsResponse {
 	@SerializedName("covered_distance")
 	@Expose
 	private double coveredDistance;
+	@SerializedName("extra_km")
+	private Double adjustedKilometer;
+
+	public Double getAdjustedKilometer() {
+		return adjustedKilometer;
+	}
 
 	public double getTargetDistance() {
 		return targetDistance;

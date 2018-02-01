@@ -898,6 +898,7 @@
     <string name="day_wise_breakup">DAY WISE BREAKUP</string>
     <string name="target_distance">Target Distance</string>
     <string name="cash_collected_from_user">Cash collected from user</string>
+    <string name="adjusted_distance">Adjusted Distance</string>
 
     <string-array name="CountryCodes">
         <item>93,AF</item>

@@ -88,6 +88,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	private TextView dateTimeValue;
 	private TextView tvTargetDistanceLabel;
 	private TextView tvTargetDistance;
+	private TextView tvAdjustedDistanceValue;
 
 	@Override
 	protected void onStart() {
@@ -124,6 +125,10 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		tvDaysLeftCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptive = (TextView) findViewById(R.id.tvAmountCollected);
 		tvAmountCollectedCaptive.setTypeface(Fonts.mavenRegular(this));
+		TextView tvAdjustedDistanceLabel = (TextView) findViewById(R.id.tvAdjustedDistanceLabel);
+		tvAdjustedDistanceLabel.setTypeface(Fonts.mavenRegular(this));
+		tvAdjustedDistanceValue = (TextView) findViewById(R.id.tvAdjustedDistanceValue);
+		tvAdjustedDistanceValue.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptiveLabel = (TextView) findViewById(R.id.tvAmountCollectedLabel);
 		tvAmountCollectedCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvTargetDistanceLabel = (TextView) findViewById(R.id.tvTargetDistanceLabel);
@@ -369,6 +374,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 					dateTimeValue.setVisibility(View.VISIBLE);
 				}else{
 					dateTimeValue.setVisibility(View.GONE);
+				}
+
+				if(driverEarningsResponse.getAdjustedKilometer()!=null){
+					findViewById(R.id.rl_adjusted_distance).setVisibility(View.VISIBLE);
+					tvAdjustedDistanceValue.setText(Utils.getKilometers(driverEarningsResponse.getAdjustedKilometer(),this));
+				}else{
+					findViewById(R.id.rl_adjusted_distance).setVisibility(View.GONE);
+
 				}
 
 			} else{
