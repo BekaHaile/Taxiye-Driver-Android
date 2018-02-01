@@ -154,7 +154,7 @@
                     android:layout_height="35px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/jugnoo_side_menu_logo"
+                    android:src="@drawable/autos_v2"
                     android:tag="mwar"/>
 
                 <TextView
@@ -199,7 +199,7 @@
                     android:layout_height="35px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/jugnoo_side_menu_logo"
+                    android:src="@drawable/delivery_v2"
                     android:tag="mwar"/>
 
                 <TextView

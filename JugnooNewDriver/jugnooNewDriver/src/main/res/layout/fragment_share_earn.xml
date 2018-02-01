@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="485px"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/invite_earn_image"
+                    android:background="@drawable/graphic_refer"
                     android:tag="mwar"
                     android:visibility="visible"/>
 

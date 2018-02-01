@@ -246,8 +246,8 @@ public class JSONParser implements Constants {
 
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
-						"Download it from here\nhttp://smarturl.it/jugnoo");
+				"Use my code " + referralCode + " to download Jingos customer App and earn jingo cash.\n" +
+						"Download it from here\nhttps://www.jingorides.com/");
 		String referralMessage = userData.optString("referral_message");
 		String referralButtonText = userData.optString("referral_button_text", "Share");
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");

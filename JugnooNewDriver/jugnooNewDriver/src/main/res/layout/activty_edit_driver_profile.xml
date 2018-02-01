@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/activity_profile_screen"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:animateLayoutChanges="true"
-              android:background="@color/white"
-              android:orientation="vertical"
-              android:splitMotionEvents="false"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_profile_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false">
 
 
     <RelativeLayout
@@ -23,7 +22,7 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
-            android:tag="mwar"/>
+            android:tag="mwar" />
 
         <TextView
             android:id="@+id/title"
@@ -33,7 +32,7 @@
             android:gravity="center"
             android:text="@string/profile"
             android:textColor="@color/white"
-            android:textSize="40px"/>
+            android:textSize="40px" />
 
     </RelativeLayout>
 
@@ -70,21 +69,21 @@
                         android:layout_height="200px"
                         android:layout_centerInParent="true"
                         android:background="@drawable/ring"
-                        android:tag="mwar"/>
+                        android:tag="mwar" />
 
                     <ImageView
                         android:id="@+id/profileBack2"
                         android:layout_width="225px"
                         android:layout_height="225px"
                         android:background="@drawable/profile_oval"
-                        android:tag="mwar"/>
+                        android:tag="mwar" />
 
                     <ImageView
                         android:id="@+id/profileImg"
                         android:layout_width="200px"
                         android:layout_height="200px"
                         android:layout_centerInParent="true"
-                        android:tag="mwar"/>
+                        android:tag="mwar" />
                 </RelativeLayout>
 
 
@@ -108,7 +107,7 @@
                     android:layout_marginLeft="42px"
                     android:text="@string/info"
                     android:textColor="@color/new_orange"
-                    android:textSize="42px"/>
+                    android:textSize="42px" />
 
 
                 <ImageView
@@ -116,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -135,7 +134,7 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
 
                 </RelativeLayout>
@@ -145,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
 
                 <RelativeLayout
@@ -162,12 +161,12 @@
                         android:background="#0000"
                         android:hint="@string/phone_number"
                         android:inputType="number"
-                        android:maxLength="14"
+                        android:maxLength="13"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
                     <ImageView
                         android:id="@+id/imageViewEditPhone"
@@ -177,7 +176,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="42px"
                         android:background="@drawable/edit_pencil_icon"
-                        android:tag="mwar"/>
+                        android:tag="mwar" />
 
                 </RelativeLayout>
 
@@ -186,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
             </LinearLayout>
 
@@ -196,7 +195,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/infoLLayout"
                 android:layout_marginTop="24px"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/bankDetailsText"
@@ -207,7 +207,7 @@
                     android:layout_marginLeft="42px"
                     android:text="@string/bank_details"
                     android:textColor="@color/new_orange"
-                    android:textSize="42px"/>
+                    android:textSize="42px" />
 
 
                 <ImageView
@@ -215,7 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -229,29 +229,29 @@
                         android:layout_marginLeft="42px"
                         android:background="#0000"
                         android:capitalize="words"
-                        android:text="@string/acc_no"
                         android:singleLine="true"
+                        android:text="@string/acc_no"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
                     <TextView
                         android:id="@+id/TextViewAccNo"
                         android:layout_width="380px"
-                        android:gravity="right"
                         android:layout_height="70px"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="42px"
                         android:background="#0000"
                         android:capitalize="words"
+                        android:gravity="right"
                         android:hint="@string/acc_no"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
 
                 </RelativeLayout>
@@ -261,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
 
                 <RelativeLayout
@@ -275,30 +275,30 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
                         android:background="#0000"
-                        android:text="@string/ifsc_code"
                         android:inputType="number"
                         android:singleLine="true"
+                        android:text="@string/ifsc_code"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
                     <TextView
                         android:id="@+id/textViewIFSC"
                         android:layout_width="380px"
-                        android:gravity="right"
                         android:layout_height="70px"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="42px"
                         android:background="#0000"
                         android:capitalize="words"
+                        android:gravity="right"
                         android:hint="@string/acc_no"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
 
                 </RelativeLayout>
@@ -308,7 +308,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -321,30 +321,30 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
                         android:background="#0000"
-                        android:text="@string/bank_name"
                         android:inputType="number"
                         android:singleLine="true"
+                        android:text="@string/bank_name"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
                     <TextView
                         android:id="@+id/textViewBankName"
                         android:layout_width="380px"
-                        android:gravity="right"
                         android:layout_height="70px"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="42px"
                         android:background="#0000"
+                        android:gravity="right"
                         android:hint="Bank name"
                         android:inputType="number"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
 
                 </RelativeLayout>
@@ -354,7 +354,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -373,24 +373,24 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
                     <TextView
                         android:id="@+id/textViewBankLoc"
                         android:layout_width="380px"
-                        android:gravity="right"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginBottom="15px"
                         android:layout_marginRight="42px"
                         android:layout_marginTop="15px"
                         android:background="#0000"
+                        android:gravity="right"
                         android:hint="@string/bank_loc"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black_text_alpha"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="36px" />
 
 
                 </RelativeLayout>
@@ -400,7 +400,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    android:background="@color/grey_light_more" />
 
             </LinearLayout>
 

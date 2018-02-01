@@ -285,14 +285,14 @@ public class MeteringService extends Service {
 			
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(false);
-			builder.setContentTitle("Jugnoo Driver");
+			builder.setContentTitle("Jingo Driver");
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
 			
 			builder.setWhen(when);
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 			
 			

@@ -105,7 +105,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
+			builder.setContentTitle("Jingo");
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -117,8 +117,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 
 
@@ -152,7 +152,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
+			builder.setContentTitle("Jingo");
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -164,8 +164,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 
 
@@ -207,7 +207,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
+			builder.setContentTitle("Jingo");
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -220,8 +220,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 
 
@@ -309,7 +309,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle(title);
+			builder.setContentTitle("jingos");
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -320,8 +320,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -355,7 +355,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle(title);
+			builder.setContentTitle("jingos");
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -366,8 +366,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -403,7 +403,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle(title);
+			builder.setContentTitle("jingos");
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -414,8 +414,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
+			builder.setSmallIcon(R.drawable.ic_notif);
 			builder.setContentIntent(intent);
 
 			Notification notification = builder.build();

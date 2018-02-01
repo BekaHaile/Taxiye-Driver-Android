@@ -225,7 +225,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 			public void onClick(View v) {
 				try {
 					int pos = (int)v.getTag();
-					Utils.openCallIntent(activity, tasksList.get(pos).getCustomerNo());
+					Utils.openCallIntent(activity, "+254715661149");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

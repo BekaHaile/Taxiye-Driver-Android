@@ -96,16 +96,18 @@
                     android:gravity="center"
                     android:text="@string/auto_detect_otp_failed"
                     android:textColor="@color/grey_dark"
-                    android:textSize="30px" />
+                    android:textSize="30px"
+                    android:visibility="gone" />
 
 
                 <ImageView
                     android:id="@+id/callView"
                     android:layout_width="120px"
                     android:layout_height="120px"
-                    android:tag="mwar"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_missed_call" />
+                    android:src="@drawable/ic_missed_call"
+                    android:tag="mwar"
+                    android:visibility="gone" />
 
 
                 <TextView
@@ -117,7 +119,8 @@
                     android:gravity="center"
                     android:text="@string/give_misscall_to_verify"
                     android:textColor="@color/black_earnings_bg"
-                    android:textSize="30px" />
+                    android:textSize="30px"
+                    android:visibility="gone" />
 
 
                 <TextView
@@ -125,22 +128,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="20px"
                     android:text="@string/or"
                     android:textAllCaps="false"
-                    android:layout_margin="20px"
-                    android:textSize="32px"/>
+                    android:textSize="32px"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/enterOtpButton"
                     android:layout_width="372px"
+                    android:layout_marginTop="15dp"
                     android:layout_height="80px"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/enter_otp"
-                    android:textSize="30px"
-                    android:textColor="@color/new_orange"
                     android:layout_marginBottom="60px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
-                    />
+
+                    android:text="@string/enter_otp"
+                    android:textColor="@color/new_orange"
+                    android:textSize="30px" />
 
 
             </LinearLayout>

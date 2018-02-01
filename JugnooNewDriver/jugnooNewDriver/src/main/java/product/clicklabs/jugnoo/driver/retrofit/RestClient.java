@@ -16,7 +16,8 @@ import retrofit.RestAdapter;
 /**
  * Created by aneeshbansal on 08/09/15.
  */
-public class RestClient {
+public class
+RestClient {
 	private static final String TAG = RestClient.class.getSimpleName();
 	private static String CURRENT_URL;
 	private static APIServices API_SERVICES;

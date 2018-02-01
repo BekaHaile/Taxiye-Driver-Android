@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Jugnoo Drivers</string>
+    <string name="app_name">Jingo Drivers</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -38,7 +38,7 @@
 
     <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
-    <string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
+    <string name="about_1_text">Jingo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">Rate card</string>
     <string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
 
@@ -96,7 +96,7 @@
     <string name="update">Update</string>
 
     <string name="driver_mode">Driver Mode</string>
-    <string name="jugnoo_on">Jugnoo ON</string>
+    <string name="jugnoo_on">Jingo ON</string>
     <string name="driver_type">Driver Type</string>
     <string name="ride_type">Ride Type</string>
     <string name="invite_friends">Invite Friends</string>
@@ -257,10 +257,10 @@
     <string name="create_new_account_msg">If you would still like to create a new account</string>
     <string name="not_recived_otp">I didn\'t receive the OTP</string>
 
-    <string name="jugnoo_cash">Jugnoo Cash</string>
-    <string name="jugnoo">Jugnoo</string>
-    <string name="jugnoo_off">Jugnoo OFF</string>
-    <string name="jugnoo_cut">Jugnoo Cut</string>
+    <string name="jugnoo_cash">Jingo Cash</string>
+    <string name="jugnoo">Jingo</string>
+    <string name="jugnoo_off">Jingo OFF</string>
+    <string name="jugnoo_cut">Jingo Cut</string>
 
     <string name="loading">Loading ...</string>
     <string name="local_position">Local position</string>
@@ -281,7 +281,7 @@
     <string name="no_luggage">No luggage added</string>
     <string name="luggage_added">luggage items added</string>
     <string name="no_lugage">NO LUGGAGE</string>
-    <string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using Jugnoo.</string>
+    <string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using Jingo.</string>
     <string name="no_data_to_show">No data to show</string>
     <string name="no_cash">NO CASH</string>
     <string name="no_of_rides">No. of rides</string>
@@ -352,7 +352,7 @@
     <string name="amount_entered">The amount entered is</string>
     <string name="time">Time</string>
     <string name="time_new">Time /n</string>
-    <string name="jugnoo_ride_over">Jugnoo ride over</string>
+    <string name="jugnoo_ride_over">Jingo ride over</string>
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="title">Title</string>
@@ -386,7 +386,7 @@
     <string name="no_rides">No rides currently</string>
     <string name="pickup_location">Your Pickup Location</string>
     <string name="money_to_pay">Money to pay: Rs.</string>
-    <string name="money_to">Money to Jugnoo</string>
+    <string name="money_to">Money to Jingo</string>
     <string name="start_ride_loc">start ride location</string>
 
     <string name="sec_left">sec left</string>
@@ -398,7 +398,7 @@
     <string name="Scheduled_Ride_Pickup">Scheduled Ride Pickup: </string>
 
 
-    <string name="referral_msg">"Use my code %1$s to download Jugnoo customer App and earn jugnoo cash.\n Download it from here\nhttp://smarturl.it/jugnoo</string>
+    <string name="referral_msg">"Use my code %1$s to download Jingo customer App and earn Jingo cash.\n Download it from here\nhttp://smarturl.it/Jingo</string>
     <string name="no_of_account">accounts have already been created on this device</string>
     <string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
     <string name="select_reason">Please select one reason</string>
@@ -406,7 +406,7 @@
     <string name="send">Send</string>
 
     <string name="wait_here">Wait here...</string>
-    <string name="use_jugnoo_fare">USE JUGNOO FARE</string>
+    <string name="use_jugnoo_fare">USE Jingo FARE</string>
     <string name="view_account">View Account</string>
     <string name="hint_created_multiple_account">You have already created 2 accounts from this device. Please explain the reason for creating a new account.</string>
     <string name="convenience_charge">Convenience Charge</string>
@@ -459,11 +459,11 @@
     <string name="upcoming_invoice">Upcoming Invoice</string>
     <string name="current_invoice">Current Invoice</string>
     <string name="Outstanding_amnt">Previous invoice adjustments</string>
-    <string name="jugnoo_cmsn">Jugnoo Commission</string>
+    <string name="jugnoo_cmsn">Jingo Commission</string>
     <string name="Manual_adjustment">Manual Adjustment</string>
     <string name="referral_amount">Referral Amount</string>
     <string name="phone_deduction">Phone Deduction</string>
-    <string name="paid_by_jugnoo">Paid By Jugnoo</string>
+    <string name="paid_by_jugnoo">Paid By Jingo</string>
     <string name="paid_by_customer">Paid In Cash</string>
     <string name="paid_using_wallet">Paid Using Wallet</string>
     <string name="acc_credited">Account Credited</string>
@@ -518,7 +518,7 @@
     <string name="total_distance">TOTAL DISTANCE</string>
     <string name="valid_email_phone_no">Enter valid Email or Phone No.</string>
     <string name="select_destination">Please select atleast one Destination</string>
-    <string name="JUGNOO">JUGNOO</string>
+    <string name="JUGNOO">JINGO</string>
     <string name="fatafat_on">Fatafat On</string>
     <string name="Notifications">Notifications</string>
     <string name="PAYMENTS">Payments</string>
@@ -658,7 +658,7 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="Audit">AUDIT</string>
-    <string name="non_jugnoo_auto_branding">NON JUGNOO AUTO BRANDING</string>
+    <string name="non_jugnoo_auto_branding">NON Jingo AUTO BRANDING</string>
 
     <string name="auto_from_front">Auto From Front</string>
     <string name="auto_from_back">Auto From Back</string>
@@ -671,7 +671,7 @@
     <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
     <string name="has_smart_phone">The driver has a smart phone</string>
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
+    <string name="non_jugnoo_auto_audit">NON Jingo AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="self_audit_caps">SELF AUDIT</string>
     <string name="audit_required">Audit Required</string>
@@ -737,7 +737,7 @@
     <string name="spinner_rented">Rented</string>
     <string name="select">Select</string>
     <string name="select_customer">Select Customer</string>
-    <string name="collect_cash">Collect Cash</string>
+    <string name="collect_cash">Collect Amount</string>
     <string name="pool_start">Pool Start</string>
     <string name="pool_stop">Pool Stop</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
@@ -752,7 +752,7 @@
     <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
-    <string name="reg_as_driver"><u>Register as a Jugnoo DRIVER</u></string>
+    <string name="reg_as_driver"><u>Register as a Jingo DRIVER</u></string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as DRIVER</string>
     <string name="distance_lower">Distance</string>
@@ -765,7 +765,7 @@
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
     <string name="image">image</string>
-    <string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
+    <string name="tutorial_accept_ride">Turn Jingo on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
@@ -786,7 +786,7 @@
     <string name="arrivingdot">Arriving...</string>
     <string name="upload_later">Upload Later</string>
     <string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
-    <string name="request_autos">Request for AUTOS will be sent to you now.</string>
+    <string name="request_autos">Booking Request will be sent to you now.</string>
     <string name="later">Later</string>
     <string name="upload_now">Upload Now</string>
     <string name="driver_resources">Driver Resources</string>
@@ -805,7 +805,7 @@
     <string name="pickup_from">Pickup From:</string>
     <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
-    <string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
+    <string name="turn_jugnooo_for_training">Please turn Jingo On</string>
     <string name="delivery_1">Delivery 1</string>
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
@@ -840,7 +840,7 @@
     <string name="needed">Needed</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
-    <string name="keep_jugnoo_on">Keep your Jugnoo ON to earn more</string>
+    <string name="keep_jugnoo_on">Keep your Jingo ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">Please update your WebView to latest version.</string>
@@ -864,7 +864,7 @@
     <string name="view_wallet_transactions">View Wallet Transactions</string>
     <string name="dont_touch_me">DontTouchMe</string>
     <string name="get_support">Get Support</string>
-    <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
+    <string name="schedule_call_message">Press the below button to get support from Jingo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 

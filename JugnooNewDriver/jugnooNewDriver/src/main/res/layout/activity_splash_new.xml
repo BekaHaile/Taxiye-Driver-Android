@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="1134px"
     android:animateLayoutChanges="true"
-    android:background="@drawable/splash_new_background"
-    android:splitMotionEvents="false" android:orientation="vertical"
-    android:baselineAligned="false">
+    android:background="@color/white"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    android:splitMotionEvents="false">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -20,19 +20,19 @@
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
             android:textColor="@drawable/blue_alpha_color_selector"
-            android:textSize="@dimen/button_text_size"/>
+            android:textSize="@dimen/button_text_size" />
 
 
         <TextView
             android:id="@+id/textViewRegDriver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_marginLeft="162px"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="162px"
+            android:text="@string/register_as_driver"
+            android:textColor="@color/white"
             android:textSize="46px"
-            android:visibility="gone"
-            android:text="@string/register_as_driver"/>
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/selectLanguageLl"
@@ -51,24 +51,24 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="6px"
                 android:background="@drawable/language_icon"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:layout_width="2px"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6px"
                 android:background="@color/new_orange"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/language_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:background="@color/transparent"
-                android:visibility="visible"
+                android:background="@null"
                 android:popupBackground="@drawable/background_white_rounded_orange_bordered"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:visibility="visible" />
 
             <ImageView
                 android:layout_width="30px"
@@ -76,7 +76,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15px"
-                android:background="@drawable/white_arrow_down"/>
+                android:background="@drawable/white_arrow_down" />
 
         </RelativeLayout>
 
@@ -86,32 +86,31 @@
         android:id="@+id/viewInitJugnoo"
         android:layout_width="match_parent"
         android:layout_height="40px"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/viewInitSplashJugnoo"
         android:layout_width="match_parent"
         android:layout_height="200px"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
     <RelativeLayout
         android:id="@+id/relativeLayoutJugnooLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="130px"
         android:animateLayoutChanges="true"
-        android:layout_marginTop="140px"
         android:splitMotionEvents="false">
-
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"
-            android:layout_width="250px"
-            android:layout_height="264px"
+            android:layout_width="400px"
+            android:layout_height="400px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/new_jugnoo_spalsh_logo"
+            android:background="@drawable/splash_logo"
             android:tag="mwar"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <RelativeLayout
             android:id="@+id/jugnooTextImgRl"
@@ -125,14 +124,13 @@
                 android:id="@+id/jugnooTextImg"
                 android:layout_width="279px"
                 android:layout_height="86px"
-                android:tag="mwar"/>
+                android:tag="mwar" />
 
             <ImageView
                 android:id="@+id/jugnooTextImg2"
                 android:layout_width="70px"
                 android:layout_height="90px"
-                android:src="@drawable/transparent"
-                />
+                android:src="@drawable/transparent" />
 
         </RelativeLayout>
 
@@ -140,24 +138,23 @@
             android:id="@+id/textViewDriver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewJugnooLogo"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/imageViewJugnooLogo"
             android:layout_marginTop="18px"
             android:text="@string/driver_app"
             android:textColor="@color/white"
-            android:textSize="32px"/>
+            android:textSize="32px" />
 
 
         <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="100px"
-        android:layout_height="100px"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="760px"
-        android:layout_marginBottom="24px"
-        android:visibility="gone"
-        />
+            android:id="@+id/progressBar1"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24px"
+            android:layout_marginTop="760px"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -166,7 +163,7 @@
         android:id="@+id/viewInitLS"
         android:layout_width="match_parent"
         android:layout_height="300px"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
     <RelativeLayout
@@ -188,7 +185,6 @@
             android:visibility="visible">
 
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -199,24 +195,23 @@
                     android:layout_width="273px"
                     android:layout_height="100px"
                     android:layout_marginTop="32px"
-                    android:background="@drawable/background_translucent_white_rounded_orange_bordered"
+                    android:background="@drawable/button_bg_gradient"
                     android:text="@string/login"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_34"/>
+                    android:textSize="@dimen/text_size_34" />
 
                 <Button
                     android:id="@+id/buttonRegister"
                     android:layout_width="273px"
                     android:layout_height="100px"
-                    android:layout_marginTop="32px"
                     android:layout_marginLeft="32px"
-                    android:background="@drawable/button_white_selector"
+                    android:layout_marginTop="32px"
+                    android:background="@drawable/button_bg_gradient"
                     android:text="@string/register"
                     android:textAllCaps="true"
-                    android:textColor="@color/red_v2"
-                    android:textSize="@dimen/text_size_34"/>
-
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_34" />
 
 
             </LinearLayout>
@@ -226,15 +221,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="54px"
                 android:layout_marginTop="32px"
-                android:visibility="visible"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal3"
                     android:layout_width="330px"
                     android:layout_height="3px"
                     android:layout_centerVertical="true"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <TextView
                     android:id="@+id/textViewName"
@@ -247,8 +242,8 @@
                     android:paddingRight="10px"
                     android:text="@string/or"
                     android:textColor="@color/white"
-                    android:visibility="gone"
-                    android:textSize="30px"/>
+                    android:textSize="30px"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal4"
@@ -256,7 +251,7 @@
                     android:layout_height="3px"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewName"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
             </RelativeLayout>
 
@@ -265,10 +260,10 @@
                 android:id="@+id/textViewCustomerApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32px"
                 android:text="@string/looking_for_customer_app"
                 android:textColor="@color/white"
-                android:layout_marginTop="32px"
-                android:textSize="36px"/>
+                android:textSize="36px" />
 
             <Button
                 android:id="@+id/buttonRegisterTookan"
@@ -279,8 +274,7 @@
                 android:text="@string/register_via_agent"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_34"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textViewTerms"
@@ -288,9 +282,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60px"
                 android:text=""
-                android:visibility="gone"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_26"/>
+                android:textSize="@dimen/text_size_26"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -299,9 +293,9 @@
 
 
     <!-- login buttons -->
-    <include layout="@layout/layout_login"/>
+    <include layout="@layout/layout_login" />
 
 
-    <include layout="@layout/layout_splash_signup"/>
+    <include layout="@layout/layout_splash_signup" />
 
 </LinearLayout>

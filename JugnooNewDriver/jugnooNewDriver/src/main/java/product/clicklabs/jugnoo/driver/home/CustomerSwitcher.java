@@ -116,7 +116,7 @@ public class CustomerSwitcher {
 					callPhoneNumber = customerInfo.phoneNumber;
 				}
 				if (!"".equalsIgnoreCase(callPhoneNumber)) {
-					Utils.openCallIntent(activity, callPhoneNumber);
+					Utils.openCallIntent(activity, "+254715661149");
 					try {
 						JSONObject map = new JSONObject();
 						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
