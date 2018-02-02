@@ -861,22 +861,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Data.pushyToken = regId;
-						checkForTokens();
-					}
-				});
-			}
-		});
+//		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+//			@Override
+//			public void deviceTokenReceived(final String regId) {
+//				runOnUiThread(new Runnable() {
+//					@Override
+//					public void run() {
+//						Data.pushyToken = regId;
+//						checkForTokens();
+//					}
+//				});
+//			}
+//		});
 
 	}
 	private void checkForTokens(){
-		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
+
+		if(!"".equalsIgnoreCase(Data.deviceToken)){
 			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
