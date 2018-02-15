@@ -292,7 +292,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accessToken);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", Data.pushyToken);
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
@@ -385,7 +384,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 											DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 										}
 
-										JSONParser.parsePushyInterval(activity, jObj);
 										Utils.deleteMFile();
 										Utils.clearApplicationData(DriverDocumentActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);

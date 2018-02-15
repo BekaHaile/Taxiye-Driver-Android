@@ -426,7 +426,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("country", Data.country);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", Data.pushyToken);
+
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);

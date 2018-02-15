@@ -419,7 +419,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             params.put("password", password);
             params.put("login_otp", otp);
             params.put("device_token", Data.deviceToken);
-            params.put("pushy_token", Data.pushyToken);
             params.put("device_type", Data.DEVICE_TYPE);
             params.put("device_name", Data.deviceName);
             params.put("app_version", "" + Data.appVersion);
@@ -501,7 +500,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                     Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
                                     Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
                                     startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
-                                    JSONParser.parsePushyInterval(activity, jObj);
                                     finish();
                                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                                 }

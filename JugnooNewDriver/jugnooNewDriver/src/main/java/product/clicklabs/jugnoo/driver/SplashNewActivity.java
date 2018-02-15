@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -30,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -51,7 +48,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -62,28 +58,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
-import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
-import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.State;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
-import product.clicklabs.jugnoo.driver.pushyToken.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -197,9 +187,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-		long interval = Prefs.with(this).getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
-		Pushy.setHeartbeatInterval((int) interval, this);
-		Pushy.listen(this);
+
 
 		setContentView(R.layout.activity_splash_new);
 
@@ -839,7 +827,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	public void getDeviceToken(){
 //	    progressBar1.setVisibility(View.VISIBLE);
 		Data.deviceToken = "";
-		Data.pushyToken = "";
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
@@ -982,7 +969,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			params.put("country", Data.country);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", Data.pushyToken);
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
@@ -1478,7 +1464,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", Data.pushyToken);
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
@@ -1573,7 +1558,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 											DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 										}
 
-										JSONParser.parsePushyInterval(activity, jObj);
 										Utils.deleteMFile();
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);

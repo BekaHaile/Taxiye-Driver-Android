@@ -92,7 +92,6 @@ public class SPLabels {
 	public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
     public static final String OSRM_ENABLED = "osrm_enabled";
 
-    public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 	public static final String SET_AUDIT_STATUS = "set_audit_status";
 
     public static final String GET_USL_STATUS = "get_usl_status";

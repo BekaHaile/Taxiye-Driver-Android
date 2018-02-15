@@ -136,7 +136,6 @@ public class Data {
 	public static final String DEVICE_TYPE = "0";
 	public static String deviceToken = "",
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
-	public static String pushyToken = "";
 	public static int appVersion;
 
 	public static Activity context = null;

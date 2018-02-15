@@ -199,7 +199,6 @@ public interface Constants {
 
 	String FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING = "free_state_update_time_period_non_charging";
 	String DRIVER_OFFLINE_PERIOD = "driver_offline_period";
-    long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
 
 
 	String EVENT_LR_SPEED_20PLUS_RESTART = "LR_SPEED_20PLUS_RESTART";
