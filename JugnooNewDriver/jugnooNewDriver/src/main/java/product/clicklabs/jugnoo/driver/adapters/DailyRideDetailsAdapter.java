@@ -127,6 +127,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				}
 
 
+
 				if(item.getStatus()!= null && (item.getStatus().equalsIgnoreCase("Ride Cancelled")
 						|| item.getStatus().equalsIgnoreCase("Delivery Cancelled"))){
 					((ViewHolderRide)holder).textViewStatus.setVisibility(View.VISIBLE);
@@ -229,8 +230,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					}
 				}
 			}else if(holder instanceof ViewHolderTotalAmount) {
+            	Double farePerKm = null;
 				if(dailyEarningResponse != null) {
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
+					farePerKm = dailyEarningResponse.getFarePerKm();
 					if(showCaptiveData){
 						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getKilometers(dailyEarningResponse.getTimeOnline(),activity));
 						((ViewHolderTotalAmount) holder).textViewRides.setText(dailyEarningResponse.getTotalTrips() + " " +  activity.getString(R.string.rides));
@@ -244,6 +247,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					}
 
 				} else if(invoiceDetailResponseNew != null) {
+					farePerKm = invoiceDetailResponseNew.getFarePerKm();
 					((ViewHolderTotalAmount) holder).dateTimeValue.setText(invoiceDetailResponseNew.getPeriod());
 					if(showCaptiveData){
 						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText( invoiceDetailResponseNew.getTotalDistanceTravelled());
@@ -257,6 +261,12 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					}
 
+				}
+				if(farePerKm!=null){
+					((ViewHolderTotalAmount) holder).textViewDailyEarning.setText(Utils.getAbsAmount(activity, farePerKm));
+					((ViewHolderTotalAmount) holder).textViewDailyEarning.setVisibility(View.VISIBLE);
+				}else{
+					((ViewHolderTotalAmount) holder).textViewDailyEarning.setVisibility(View.GONE);
 				}
 
 			}else if(holder instanceof ViewHolderRideParam){
@@ -337,7 +347,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     static class ViewHolderTotalAmount extends RecyclerView.ViewHolder {
 		public LinearLayout linearLayout;
-		public TextView dateTimeValue, textViewEarningsValue, textViewEarningsText, textViewInvoiceStatus,textViewRides;
+		public TextView dateTimeValue, textViewEarningsValue, textViewEarningsText, textViewInvoiceStatus,textViewRides,textViewDailyEarning;
         public ViewHolderTotalAmount(View itemView, Context context) {
             super(itemView);
 			linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
@@ -345,6 +355,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			dateTimeValue.setTypeface(Fonts.mavenRegular(context));
 			textViewEarningsValue = (TextView)itemView.findViewById(R.id.textViewEarningsValue);
 			textViewEarningsValue.setTypeface(Fonts.mavenRegular(context));
+			textViewDailyEarning = (TextView)itemView.findViewById(R.id.textViewDailyEarning);
+			textViewDailyEarning.setTypeface(Fonts.mavenRegular(context));
 			textViewRides = (TextView)itemView.findViewById(R.id.textViewRides);
 			textViewRides.setTypeface(Fonts.mavenRegular(context));
 			textViewEarningsText = (TextView)itemView.findViewById(R.id.textViewEarningsText);

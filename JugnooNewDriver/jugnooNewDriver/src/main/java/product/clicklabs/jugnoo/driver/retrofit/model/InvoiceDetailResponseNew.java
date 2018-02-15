@@ -43,6 +43,12 @@ public class InvoiceDetailResponseNew {
 	@SerializedName("daily_breakup")
 	@Expose
 	private List<DailyBreakup> dailyBreakup = new ArrayList<DailyBreakup>();
+	@SerializedName("fare_per_km")
+	private Double farePerKm;
+
+	public Double getFarePerKm() {
+		return farePerKm;
+	}
 
 	/**
 	 *

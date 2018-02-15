@@ -47,6 +47,12 @@ public class DailyEarningResponse {
 	@SerializedName("extras")
 	@Expose
 	private ExtrasData extrasData;
+	@SerializedName("fare_per_km")
+	private Double farePerKm;
+
+	public Double getFarePerKm() {
+		return farePerKm;
+	}
 
 	public String getTotalDistanceTravelled() {
 		return "abstract";

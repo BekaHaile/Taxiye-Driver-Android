@@ -29,7 +29,7 @@
         android:layout_marginTop="10px"
         android:text="@string/rupee_zero"
         android:textColor="@color/red_v2"
-        android:textSize="84px"/>
+        android:textSize="70px"/>
 
     <TextView
         android:id="@+id/textViewRides"
@@ -40,7 +40,19 @@
         android:layout_marginTop="10px"
         android:text="@string/rides"
         android:textColor="@color/red_v2"
-        android:textSize="84px"/>
+        android:textSize="70px"/>
+
+    <TextView
+        android:id="@+id/textViewDailyEarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:visibility="gone"
+        android:layout_marginTop="10px"
+        android:text="@string/rupee_zero"
+        android:textColor="@color/red_v2"
+        android:textSize="70px"/>
     <TextView
         android:id="@+id/textViewInvoiceStatus"
         android:layout_width="match_parent"
