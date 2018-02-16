@@ -308,7 +308,69 @@
                     android:layout_marginBottom="25px"
                     android:textColor="@color/red_v2"
                     android:textSize="70px"/>
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutWalletCaptive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="35px"
+                    android:paddingRight="35px"
+                    android:paddingTop="30px"
+                    android:visibility="gone"
+                    android:paddingBottom="30px"
+                    android:layout_marginBottom="25px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/bg_top_bottom_border_selector"
+                    android:gravity="center_vertical">
 
+
+                    <ImageView
+                        android:id="@+id/imageViewWalletBalanceCaptive"
+                        android:layout_width="56px"
+                        android:layout_height="56px"
+                        android:layout_marginRight="15px"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/wallet_balance" />
+
+
+                    <TextView
+                        android:id="@+id/textViewWalletBalanceCaptive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/imageViewWalletBalanceCaptive"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:text="@string/wallet_balance"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="36px" />
+
+
+                    <ImageView
+                        android:id="@+id/wallet_arrow_captive"
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:visibility="visible"
+                        android:layout_marginLeft="20px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/arrow_thick_new" />
+
+                    <TextView
+                        android:id="@+id/textViewWalletBalanceAmountCaptive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10px"
+                        android:layout_alignWithParentIfMissing="true"
+                        android:layout_toRightOf="@id/textViewWalletBalanceCaptive"
+                        android:layout_toLeftOf="@+id/wallet_arrow_captive"
+                        android:gravity="center_vertical|right"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/text_color"
+                        android:text="--"
+                        android:textSize="20px" />
+
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_marginLeft="35px"

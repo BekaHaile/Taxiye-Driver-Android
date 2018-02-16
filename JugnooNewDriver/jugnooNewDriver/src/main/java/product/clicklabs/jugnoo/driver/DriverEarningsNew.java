@@ -64,11 +64,11 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	LinearLayout  linearLayoutDriverReferral;
 	RelativeLayout relativeLayoutPayout ,
 			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative, relativeLayoutPrev,
-			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet, relativeLayoutNefy;
+			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet, relativeLayoutWalletCaptive,relativeLayoutNefy;
 	Button backBtn;
 	TextView textViewEstPayout, textViewInvPeriod,
 			title, textViewPayOutValue, textViewRideHistory, textViewNoChartData,
-			textViewWalletBalanceAmount, textViewWalletBalance, textViewNefy, textViewNefyAmount;
+			textViewWalletBalanceAmount,textViewWalletBalanceAmountCaptive, textViewWalletBalance,textViewWalletBalanceCaptive, textViewNefy, textViewNefyAmount;
 	TextView tvDistanceCaptive, tvDaysLeftCaptive, tvAmountCollectedCaptive;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
@@ -89,6 +89,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	private TextView tvTargetDistanceLabel;
 	private TextView tvTargetDistance;
 	private TextView tvAdjustedDistanceValue;
+	private View.OnClickListener relativeLayoutWalletListener;
+	private ImageView walletArrowCaptive;
 
 	@Override
 	protected void onStart() {
@@ -148,6 +150,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		relativelayoutRandom = (RelativeLayout) findViewById(R.id.relativelayoutRandom);
 		relativeLayoutRideHistory = (RelativeLayout) findViewById(R.id.relativeLayoutRideHistory);
 		relativeLayoutWallet = (RelativeLayout) findViewById(R.id.relativeLayoutWallet);
+		relativeLayoutWalletCaptive = (RelativeLayout) findViewById(R.id.relativeLayoutWalletCaptive);
 		relativeLayoutNefy = (RelativeLayout) findViewById(R.id.relativeLayoutNefy);
 		relativeLayoutPrev = (RelativeLayout) findViewById(R.id.relativeLayoutPrev);
 		relativeLayoutNext = (RelativeLayout) findViewById(R.id.relativeLayoutNext);
@@ -171,8 +174,13 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		textViewNefyAmount.setTypeface(Fonts.mavenRegular(this));
 		textViewWalletBalance = (TextView) findViewById(R.id.textViewWalletBalance);
 		textViewWalletBalance.setTypeface(Fonts.mavenBold(this));
+		textViewWalletBalanceCaptive = (TextView) findViewById(R.id.textViewWalletBalanceCaptive);
+		walletArrowCaptive = (ImageView) findViewById(R.id.wallet_arrow_captive);
+		textViewWalletBalanceCaptive.setTypeface(Fonts.mavenBold(this));
 		textViewWalletBalanceAmount = (TextView) findViewById(R.id.textViewWalletBalanceAmount);
 		textViewWalletBalanceAmount.setTypeface(Fonts.mavenRegular(this));
+		textViewWalletBalanceAmountCaptive = (TextView) findViewById(R.id.textViewWalletBalanceAmountCaptive);
+		textViewWalletBalanceAmountCaptive.setTypeface(Fonts.mavenRegular(this));
 		ImageView imageViewWalletBalance = (ImageView) findViewById(R.id.imageViewWalletBalance);
 		int color = Color.parseColor("#FFFFFF");
 		imageViewWalletBalance.setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -186,7 +194,33 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
 //		title.getPaint().setShader(textShader);
-
+		relativeLayoutWalletListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_RIDE_HISTORY);
+//				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
+				if (res != null && res.getRechargeOptions() != null) {
+					String data = new Gson().toJson(res.getRechargeOptions(), listType);
+					Intent intent = new Intent(DriverEarningsNew.this, WalletActivity.class);
+					intent.putExtra("data", data);
+					intent.putExtra("amount", res.getJugnooBalance());
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else {
+					if (!Data.isCaptive()) {
+						DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", "Unable to fetch wallet detail. Please try again",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        getEarningsDetails(DriverEarningsNew.this, 0, true);
+                                    }
+                                });
+					}
+				}
+			}
+		};
+		relativeLayoutWallet.setOnClickListener(relativeLayoutWalletListener);
+		relativeLayoutWalletCaptive.setOnClickListener(relativeLayoutWalletListener);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -274,30 +308,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			}
 		});
 
-		relativeLayoutWallet.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-//				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_RIDE_HISTORY);
-//				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
-				if(res != null && res.getRechargeOptions() != null) {
-					String data = new Gson().toJson(res.getRechargeOptions(), listType);
-					Intent intent = new Intent(DriverEarningsNew.this, WalletActivity.class);
-					intent.putExtra("data", data);
-					intent.putExtra("amount", res.getJugnooBalance());
-					startActivity(intent);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				}
-				else {
-					DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", "Unable to fetch wallet detail. Please try again",
-							new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									getEarningsDetails(DriverEarningsNew.this, 0, true);
-								}
-							});
-				}
-			}
-		});
+
 		textViewTripsLabel = (TextView)findViewById(R.id.textViewTripsText);
 		textViewTripsLabel.setText(getString(R.string.day_wise_breakup));
 		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
@@ -383,6 +394,17 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 					findViewById(R.id.rl_adjusted_distance).setVisibility(View.GONE);
 
 				}
+
+				if(driverEarningsResponse.getJugnooBalance()!=null){
+					relativeLayoutWalletCaptive.setVisibility(View.VISIBLE);
+					walletArrowCaptive.setVisibility(res != null && res.getRechargeOptions() != null?View.VISIBLE:View.GONE);
+					relativeLayoutWalletCaptive.setClickable(res != null && res.getRechargeOptions() != null);
+					setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()),textViewWalletBalanceCaptive,textViewWalletBalanceAmountCaptive,relativeLayoutWalletCaptive);
+
+				}else{
+					relativeLayoutWalletCaptive.setVisibility(View.GONE);
+				}
+
 
 			} else{
 				//Graph set up Only required for nonCaptive Users
@@ -481,7 +503,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 					dataset.setBarSpacePercent(percent);
 				}
 
-				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()));
+				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()),textViewWalletBalance,textViewWalletBalanceAmount,relativeLayoutWallet);
 
 				if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
 					relativeLayoutNefy.setVisibility(View.VISIBLE);
@@ -512,13 +534,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 	}
 
-	private void setWalletData(boolean walletClick, String amount) {
+	private void setWalletData(boolean walletClick, String amount,TextView textViewWalletBalance,TextView textViewWalletBalanceAmount,RelativeLayout relativeLayoutWallet) {
+
 		String text = getString(R.string.wallet_balance);
 		textViewWalletBalance.setText(text.toUpperCase());
 		String amountStr = getString(R.string.rupees_value_format, amount);
 		if(Double.parseDouble(amount)<0) {
 			amountStr = getString(R.string.rupees_value_format_negtive, amount.replace("-", ""));
-			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
+			textViewWalletBalance.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
 		} else if(Double.parseDouble(amount) < Data.MINI_BALANCE) {
 			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
 		} else {
