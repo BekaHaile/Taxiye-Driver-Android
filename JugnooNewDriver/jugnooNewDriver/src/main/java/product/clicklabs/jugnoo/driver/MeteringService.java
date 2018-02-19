@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -56,7 +57,12 @@ public class MeteringService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
-    	return Service.START_STICKY;
+		try {
+			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,""));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Service.START_STICKY;
     }
     
     
@@ -266,7 +272,7 @@ public class MeteringService extends Service {
     
     public static int METER_NOTIF_ID = 1212;
     
-	public static void generateNotification(Context context, String message) {
+	public static Notification generateNotification(Context context, String message) {
 		try {
 			long when = System.currentTimeMillis();
 			
@@ -292,9 +298,11 @@ public class MeteringService extends Service {
 			
 			Notification notification = builder.build();
 			notificationManager.notify(METER_NOTIF_ID, notification);
+			return notification;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
@@ -303,5 +311,17 @@ public class MeteringService extends Service {
 		notificationManager.cancel(METER_NOTIF_ID);
     }
     
-	
+	/*public static boolean checkForeground(Context context){
+		ActivityManager manager = (ActivityManager) context.getSystemService(
+				Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
+				Integer.MAX_VALUE)) {
+			if (service.foreground) {
+				Log.i(MeteringService.class.getSimpleName(),service.service.getClassName());
+//				return true;
+			}
+		}
+		return false;
+	}*/
+
 }

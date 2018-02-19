@@ -227,6 +227,12 @@ public class GpsDistanceCalculator {
 				@Override
 				public void onGPSLocationChanged(Location location) {
 					try {
+						try {
+							MyApplication.getInstance().writePathLogToFile("m", "location received from gps: "+location);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
 						if (location.getAccuracy() < MAX_ACCURACY) {
 							if (10 >= (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
 								if (MapUtils.distance(gsmLocation, location) < 2000) {
@@ -258,7 +264,6 @@ public class GpsDistanceCalculator {
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 								getWaitTimeFromSP(context), lastGPSLocation,
 								lastFusedLocation, totalHaversineDistance, true);
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
