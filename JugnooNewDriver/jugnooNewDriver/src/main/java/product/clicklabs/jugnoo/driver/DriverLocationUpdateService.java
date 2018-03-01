@@ -1,7 +1,9 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -22,6 +24,7 @@ public class DriverLocationUpdateService extends Service {
 	
 	LocationFetcherDriver locationFetcherDriver;
 
+	public static int DRIVER_UPDATE_SERVICE_NOTFI_ID = 1818;
 
 	public DriverLocationUpdateService() {
 	}
@@ -125,6 +128,12 @@ public class DriverLocationUpdateService extends Service {
 		else{
 		}
 
+		android.util.Log.i(DriverLocationUpdateService.class.getSimpleName(), "onStartCommand: ");
+		if(!isForegroundServiceRunning(this)){
+			dismissNotifcation();
+			startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,"You are online",DRIVER_UPDATE_SERVICE_NOTFI_ID));
+
+		}
     	return Service.START_STICKY;
     }
 
@@ -152,6 +161,7 @@ public class DriverLocationUpdateService extends Service {
 				setupLocationUpdateAlarm();
 			}
 			else{
+				android.util.Log.i("TAG", "onStart: here");
 				stopService(new Intent(this, DriverLocationUpdateService.class));
 			}
 
@@ -178,6 +188,7 @@ public class DriverLocationUpdateService extends Service {
 			} else{
 				stopService(new Intent(this, DriverLocationUpdateService.class));
     		}
+			dismissNotifcation();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -189,17 +200,29 @@ public class DriverLocationUpdateService extends Service {
 		if(locationFetcherDriver != null){
 			locationFetcherDriver.destroy();
 			locationFetcherDriver = null;
+
 		}
 	}
 
     @Override
     public void onDestroy() {
 		destroyLocationFetcher();
+
 		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
-        
-    }
+		dismissNotifcation();
+
+	}
+
+	private void dismissNotifcation() {
+		try {
+			NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManager.cancel(DRIVER_UPDATE_SERVICE_NOTFI_ID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void onTrimMemory(int level) {
@@ -247,6 +270,19 @@ public class DriverLocationUpdateService extends Service {
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
+
+	public static boolean isForegroundServiceRunning(Context context){
+		ActivityManager manager = (ActivityManager) context.getSystemService(
+				Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
+				Integer.MAX_VALUE)) {
+			if(service.foreground && DriverLocationUpdateService.class.getSimpleName().equals(service.service.getClassName())){
+				return true;
+			}
+
+		}
+		return false;
+	}
 
 
 }

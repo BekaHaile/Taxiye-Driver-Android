@@ -58,7 +58,7 @@ public class MeteringService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
 		try {
-			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,""));
+			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,"",METER_NOTIF_ID));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -227,7 +227,7 @@ public class MeteringService extends Service {
 									+ context.getResources().getString(R.string.km) + " "
 									+ "\n" + context.getResources().getString(R.string.ride_time)
 									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
-							generateNotification(context, message);
+							generateNotification(context, message,METER_NOTIF_ID);
 						}
 						if (HomeActivity.appInterruptHandler != null) {
 							HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,
@@ -272,7 +272,7 @@ public class MeteringService extends Service {
     
     public static int METER_NOTIF_ID = 1212;
     
-	public static Notification generateNotification(Context context, String message) {
+	public static Notification generateNotification(Context context, String message,int notificationId) {
 		try {
 			long when = System.currentTimeMillis();
 			
@@ -285,7 +285,7 @@ public class MeteringService extends Service {
 			
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(false);
-			builder.setContentTitle("Jugnoo Auto Ride");
+			builder.setContentTitle("Jugnoo Driver");
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -297,7 +297,7 @@ public class MeteringService extends Service {
 			
 			
 			Notification notification = builder.build();
-			notificationManager.notify(METER_NOTIF_ID, notification);
+			notificationManager.notify(notificationId, notification);
 			return notification;
 			
 		} catch (Exception e) {
@@ -311,17 +311,5 @@ public class MeteringService extends Service {
 		notificationManager.cancel(METER_NOTIF_ID);
     }
     
-	/*public static boolean checkForeground(Context context){
-		ActivityManager manager = (ActivityManager) context.getSystemService(
-				Context.ACTIVITY_SERVICE);
-		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
-				Integer.MAX_VALUE)) {
-			if (service.foreground) {
-				Log.i(MeteringService.class.getSimpleName(),service.service.getClassName());
-//				return true;
-			}
-		}
-		return false;
-	}*/
 
 }

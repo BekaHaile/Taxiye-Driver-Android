@@ -144,6 +144,7 @@ public class DriverLocationDispatcher {
 				wakeLock.release();
 			}
 			else{
+
 				context.stopService(new Intent(context, DriverLocationUpdateService.class));
 			}
 		}

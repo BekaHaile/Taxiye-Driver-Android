@@ -171,7 +171,7 @@ public class MyApplication extends Application {
     }
 
 
-    public void writePathLogToFile(final String suffix, final String text) {
+    public synchronized void writePathLogToFile(final String suffix, final String text) {
         new Thread(new Runnable() {
             @Override
             public void run() {

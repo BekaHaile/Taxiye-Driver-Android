@@ -75,8 +75,8 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						if(Prefs.with(context).getInt(Constants.IS_OFFLINE, 0) == 1){
 							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 									Prefs.with(context).getLong(Constants.OFFLINE_UPDATE_TIME_PERIOD, 180000l));
-							context.stopService(new Intent(context, DriverLocationUpdateService.class));
-							setAlarm(context);
+//							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+//							setAlarm(context);
 						} else {
 							if (Utils.isBatteryCharging(context)) {
 								//TODO save server fast time
@@ -121,8 +121,8 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						if((Utils.compareDouble(oldlocation.getLatitude(), location.getLatitude())==0)
 								&& (Utils.compareDouble(oldlocation.getLongitude(), location.getLongitude())==0)){
 							Database2.getInstance(context).insertUSLLog(Constants.EVENT_LRD_STALE_GPS_RESTART_SERVICE);
-							context.stopService(new Intent(context, DriverLocationUpdateService.class));
-							setAlarm(context);
+//							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+//							setAlarm(context);
 						}
 					}
 				}
