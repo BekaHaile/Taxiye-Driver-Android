@@ -541,7 +541,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		String amountStr = getString(R.string.rupees_value_format, amount);
 		if(Double.parseDouble(amount)<0) {
 			amountStr = getString(R.string.rupees_value_format_negtive, amount.replace("-", ""));
-			textViewWalletBalance.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
+			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
 		} else if(Double.parseDouble(amount) < Data.MINI_BALANCE) {
 			textViewWalletBalanceAmount.setText(amountStr + getString(R.string.low_balance), TextView.BufferType.SPANNABLE);
 		} else {

@@ -136,7 +136,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 	private static int PI_REQUEST_CODE = 1234;
 	private static final String RESTART_SERVICE = "product.clicklabs.jugnoo.driver.RESTART_SERVICE";
 
-	public void setAlarm(Context context) {
+	public static void setAlarm(Context context) {
 		boolean alarmUp = (PendingIntent.getBroadcast(context, PI_REQUEST_CODE,
 				new Intent(context, DriverServiceRestartReceiver.class).setAction(RESTART_SERVICE),
 				PendingIntent.FLAG_NO_CREATE) != null);
@@ -154,7 +154,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 	}
 
-	public void cancelAlarm(Context context) {
+	public static void cancelAlarm(Context context) {
 		Intent intent = new Intent(context, DriverServiceRestartReceiver.class);
 		intent.setAction(RESTART_SERVICE);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, PI_REQUEST_CODE,

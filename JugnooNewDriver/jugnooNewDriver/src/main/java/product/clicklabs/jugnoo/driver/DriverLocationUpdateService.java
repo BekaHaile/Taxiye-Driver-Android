@@ -129,8 +129,9 @@ public class DriverLocationUpdateService extends Service {
 		}
 
 		android.util.Log.i(DriverLocationUpdateService.class.getSimpleName(), "onStartCommand: ");
-		if(!isForegroundServiceRunning(this)){
-			dismissNotifcation();
+		dismissNotifcation();
+
+		if(/*!isForegroundServiceRunning(this) &&*/ Prefs.with(this).getInt(Constants.IS_OFFLINE, 1) != 1){
 			startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,"You are online",DRIVER_UPDATE_SERVICE_NOTFI_ID));
 
 		}
@@ -188,7 +189,7 @@ public class DriverLocationUpdateService extends Service {
 			} else{
 				stopService(new Intent(this, DriverLocationUpdateService.class));
     		}
-			dismissNotifcation();
+    		stopForeground(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -211,7 +212,7 @@ public class DriverLocationUpdateService extends Service {
 		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
-		dismissNotifcation();
+		stopForeground(true);
 
 	}
 
