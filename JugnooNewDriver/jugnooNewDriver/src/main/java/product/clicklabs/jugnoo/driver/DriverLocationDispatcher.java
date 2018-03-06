@@ -145,7 +145,7 @@ public class DriverLocationDispatcher {
 			}
 			else{
 
-				context.stopService(new Intent(context, DriverLocationUpdateService.class));
+				context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 			}
 		}
 		catch (RetrofitError retrofitError){

@@ -38,7 +38,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 				try {
 					if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
 						Database2.getInstance(context).updateDriverLastLocationTime();
-						context.startService(new Intent(context, DriverLocationUpdateService.class));
+						context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

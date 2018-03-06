@@ -3194,9 +3194,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								Prefs.with(HomeActivity.this).save(Constants.IS_OFFLINE, 1);
 								if(Prefs.with(HomeActivity.this).getInt(Constants.UPDATE_LOCATION_OFFLINE, 0) == 0) {
-									stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+									stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 								} else {
-									startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+									stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+									startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 								}
 								GCMIntentService.clearNotifications(HomeActivity.this);
 								GCMIntentService.stopRing(true, HomeActivity.this);
@@ -3213,7 +3214,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								linearLayoutJugnooOff.setVisibility(View.GONE);
 								jugnooOffText.setVisibility(View.GONE);
 								fetchHeatMapData(HomeActivity.this);
-								startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+								stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+								startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 							}
 						}
 
@@ -3711,7 +3713,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					if(Prefs.with(HomeActivity.this).getInt(Constants.UPDATE_LOCATION_OFFLINE, 0) ==1 || checkIfDriverOnline()){
-						startService(new Intent(this, DriverLocationUpdateService.class));
+						startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 					}
 
 					try {
@@ -3782,8 +3784,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					inRideZoom();
 					setPannelVisibility(false);
 					setDriverServiceRunOnOnlineBasis();
-					if (!Utils.isServiceRunning(HomeActivity.this, DriverLocationUpdateService.class)) {
-						startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					if (!Utils.isServiceRunning(getApplicationContext(), DriverLocationUpdateService.class)) {
+						startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 					}
 
 					if (map != null) {
@@ -3823,8 +3825,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					updateDriverServiceFast("yes");
 					setDriverServiceRunOnOnlineBasis();
-					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+					startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 					if (map != null) {
 						if(currentCustomerLocMarker != null){
@@ -3908,8 +3910,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					updateDriverServiceFast("yes");
 					inRideZoom();
 					setDriverServiceRunOnOnlineBasis();
-					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+					startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 					setPannelVisibility(false);
 					if (map != null) {
 						buttonDriverNavigationSetVisibility(View.GONE);
@@ -4038,7 +4040,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					updateDriverServiceFast("no");
 					SoundMediaPlayer.stopSound();
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
-					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 					stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
 					Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
 					setPannelVisibility(false);
@@ -4195,8 +4197,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					updateDriverServiceFast("no");
 					setDriverServiceRunOnOnlineBasis();
-					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+					startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 					setPannelVisibility(false);
 					GCMIntentService.clearNotifications(getApplicationContext());
 					GCMIntentService.stopRing(true, HomeActivity.this);
@@ -5511,7 +5513,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									map.clear();
 									drawHeatMapData(heatMapResponseGlobal);
 								}
-								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+								stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(),"");
 								nudgeRequestCancel(customerInfo);
@@ -7367,7 +7369,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				loggedOut = false;
 
 				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
-				stopService(new Intent(this, DriverLocationUpdateService.class));
+				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 				Intent intent = new Intent(HomeActivity.this, SplashNewActivity.class);
 				intent.putExtra("no_anim", "yes");
@@ -8260,7 +8262,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							  if (map != null) {
 								  map.clear();
 							  }
-							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+							  stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 							  reduceRideRequest(engagementId, EngagementStatus.ACCEPTED.getOrdinal(), message);
 							  reduceRideRequest(engagementId, EngagementStatus.ARRIVED.getOrdinal(), message);

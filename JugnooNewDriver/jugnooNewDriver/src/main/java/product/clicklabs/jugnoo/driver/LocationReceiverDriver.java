@@ -36,7 +36,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 					if (speed_1 > 20) {
 						Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
-						context.stopService(new Intent(context, DriverLocationUpdateService.class));
+						context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 						setAlarm(context);
 						Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_SPEED_20PLUS_RESTART);
 					} else {
@@ -75,7 +75,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						if(Prefs.with(context).getInt(Constants.IS_OFFLINE, 0) == 1){
 							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 									Prefs.with(context).getLong(Constants.OFFLINE_UPDATE_TIME_PERIOD, 180000l));
-//							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+//							context.stopService(new Intent(context.getApplicationContext(, DriverLocationUpdateService.class));
 //							setAlarm(context);
 						} else {
 							if (Utils.isBatteryCharging(context)) {
@@ -86,7 +86,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l)) {
 										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
-										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 										setAlarm(context);
 									}
 								} else {
@@ -95,14 +95,14 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l)) {
 										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
-										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 										setAlarm(context);
 									}
 								}
 							} else {
 								if (location.getAccuracy() > 200) {
 									Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()=" + location.getAccuracy());
-									context.stopService(new Intent(context, DriverLocationUpdateService.class));
+									context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 									setAlarm(context);
 									Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_LOC_BAD_ACCURACY_RESTART);
 								} else {
@@ -111,7 +111,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l)) {
 										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l));
-										context.stopService(new Intent(context, DriverLocationUpdateService.class));
+										context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 										setAlarm(context);
 									}
 								}
@@ -121,7 +121,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						if((Utils.compareDouble(oldlocation.getLatitude(), location.getLatitude())==0)
 								&& (Utils.compareDouble(oldlocation.getLongitude(), location.getLongitude())==0)){
 							Database2.getInstance(context).insertUSLLog(Constants.EVENT_LRD_STALE_GPS_RESTART_SERVICE);
-//							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+//							context.stopService(new Intent(context.getApplicationContext(, DriverLocationUpdateService.class));
 //							setAlarm(context);
 						}
 					}

@@ -496,7 +496,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                             } else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
                                 if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
                                     new JSONParser().parseAccessTokenLoginData(activity, jsonString);
-                                    startService(new Intent(activity, DriverLocationUpdateService.class));
+                                    startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                                     Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
                                     Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
                                     startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));

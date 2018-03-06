@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -37,8 +38,8 @@ public class DriverLocationUpdateService extends Service {
 	
 	@Override
     public void onCreate() {
-        
-    }
+
+	}
 
 
 	public static void updateServerData(final Context context){
@@ -121,6 +122,7 @@ public class DriverLocationUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
+
 		RestClient.setCurrentUrl("");
 
 		if(Utils.isServiceRunning(this, DriverLocationUpdateService.class)){
@@ -128,19 +130,28 @@ public class DriverLocationUpdateService extends Service {
 		else{
 		}
 
-		android.util.Log.i(DriverLocationUpdateService.class.getSimpleName(), "onStartCommand: ");
-		dismissNotifcation();
+		try {
+			int isOffline = getSharedPreferences(SPLabels.SETTINGS_SP,Context.MODE_MULTI_PROCESS).getInt(Constants.IS_OFFLINE, 1);
 
-		if(/*!isForegroundServiceRunning(this) &&*/ Prefs.with(this).getInt(Constants.IS_OFFLINE, 1) != 1){
-			startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,"You are online",DRIVER_UPDATE_SERVICE_NOTFI_ID));
+			Log.i("TAG", "onStartCommand: is Offline" +	isOffline );
 
+			if(isOffline == 0){
+                startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,"You are online",DRIVER_UPDATE_SERVICE_NOTFI_ID));
+            }else{
+                stopForeground(true);
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-    	return Service.START_STICKY;
+
+
+		return Service.START_STICKY;
     }
 
 	@Override
 	public void onStart(Intent intent, int startId) {
 		try{
+			Log.i("TAG", "onStart: here");
 			String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
 			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				updateServerData(this);
@@ -162,8 +173,8 @@ public class DriverLocationUpdateService extends Service {
 				setupLocationUpdateAlarm();
 			}
 			else{
-				android.util.Log.i("TAG", "onStart: here");
-				stopService(new Intent(this, DriverLocationUpdateService.class));
+
+				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 			}
 
 		} catch(Exception e){
@@ -187,7 +198,7 @@ public class DriverLocationUpdateService extends Service {
 				AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
 			} else{
-				stopService(new Intent(this, DriverLocationUpdateService.class));
+				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
     		}
     		stopForeground(true);
 		} catch (Exception e) {
@@ -207,12 +218,17 @@ public class DriverLocationUpdateService extends Service {
 
     @Override
     public void onDestroy() {
+		Log.i("TAG", "onDestroy: ");
 		destroyLocationFetcher();
 
 		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
-		stopForeground(true);
+		try {
+			stopForeground(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

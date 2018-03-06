@@ -11,7 +11,7 @@ public class DriverServiceRestartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        context.startService(new Intent(context, DriverLocationUpdateService.class));
+        context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
     }
 
 }
