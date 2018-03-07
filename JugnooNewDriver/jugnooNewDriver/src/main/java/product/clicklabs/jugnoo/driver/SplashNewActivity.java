@@ -1913,8 +1913,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
 			if(bundleHomePush != null)
 			intent.putExtras(bundleHomePush);
-			startActivity(intent);
-			ActivityCompat.finishAffinity(this);
+			if(HomeActivity.activity!=null){
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				finish();
+			}else{
+				startActivity(intent);
+				ActivityCompat.finishAffinity(this);
+			}
+
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 		else if(hasFocus && loginFailed){
