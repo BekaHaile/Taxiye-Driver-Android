@@ -381,38 +381,43 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 
 
+			if(WhiteLabelConstants.SHOW_SUPPORT_IN_RIDE_DETAIL){
+				if(extras.getTicketStatus() == 0){
+					relativeLayoutCreateTicket.setVisibility(View.GONE);
+				} else if(extras.getTicketStatus() == 1){
+					buttonReportIssue.setVisibility(View.VISIBLE);
+					textViewStatus.setVisibility(View.GONE);
+					textViewTicketDate.setVisibility(View.GONE);
 
-			if(extras.getTicketStatus() == 0){
+				} else if(extras.getTicketStatus() == 2){
+					buttonReportIssue.setVisibility(View.GONE);
+					textViewStatus.setVisibility(View.VISIBLE);
+					textViewTicketDate.setVisibility(View.VISIBLE);
+					textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.in_review));
+					textViewTicketDate.setText(extras.getTicketDate());
+					textViewStatus.setTextColor(getResources().getColor(R.color.status_pending));
+				} else if(extras.getTicketStatus() == 3){
+					buttonReportIssue.setVisibility(View.GONE);
+					textViewStatus.setVisibility(View.VISIBLE);
+					textViewTicketDate.setVisibility(View.VISIBLE);
+					textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.success));
+					textViewStatus.setTextColor(getResources().getColor(R.color.green_status));
+					textViewTicketDate.setText(extras.getTicketDate());
+				} else if(extras.getTicketStatus() == 4){
+					buttonReportIssue.setVisibility(View.GONE);
+					textViewStatus.setVisibility(View.VISIBLE);
+					textViewTicketDate.setVisibility(View.VISIBLE);
+					textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.rejected));
+					textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+					textViewTicketDate.setText(extras.getTicketDate());
+				}
+
+				buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
+			}else{
+				buttonReportIssue.setVisibility(View.GONE);
 				relativeLayoutCreateTicket.setVisibility(View.GONE);
-			} else if(extras.getTicketStatus() == 1){
-				buttonReportIssue.setVisibility(View.VISIBLE);
-				textViewStatus.setVisibility(View.GONE);
-				textViewTicketDate.setVisibility(View.GONE);
-
-			} else if(extras.getTicketStatus() == 2){
-				buttonReportIssue.setVisibility(View.GONE);
-				textViewStatus.setVisibility(View.VISIBLE);
-				textViewTicketDate.setVisibility(View.VISIBLE);
-				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.in_review));
-				textViewTicketDate.setText(extras.getTicketDate());
-				textViewStatus.setTextColor(getResources().getColor(R.color.status_pending));
-			} else if(extras.getTicketStatus() == 3){
-				buttonReportIssue.setVisibility(View.GONE);
-				textViewStatus.setVisibility(View.VISIBLE);
-				textViewTicketDate.setVisibility(View.VISIBLE);
-				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.success));
-				textViewStatus.setTextColor(getResources().getColor(R.color.green_status));
-				textViewTicketDate.setText(extras.getTicketDate());
-			} else if(extras.getTicketStatus() == 4){
-				buttonReportIssue.setVisibility(View.GONE);
-				textViewStatus.setVisibility(View.VISIBLE);
-				textViewTicketDate.setVisibility(View.VISIBLE);
-				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.rejected));
-				textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
-				textViewTicketDate.setText(extras.getTicketDate());
 			}
 
-			buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
 
 			textViewFromValue.setText(extras.getFrom());
 

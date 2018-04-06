@@ -302,7 +302,7 @@
                     android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_marginTop="5px"
-                    android:src="@drawable/earnings_v2"
+                    android:src="@drawable/icon_cash_xxx"
                     android:tag="mwar"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw

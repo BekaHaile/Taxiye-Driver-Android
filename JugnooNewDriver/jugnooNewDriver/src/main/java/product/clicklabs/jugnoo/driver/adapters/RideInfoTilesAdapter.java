@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -47,6 +48,9 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 
 
 		if(itr.getInfo() != null){
+			if(itr.getInfo()!=null && itr.getInfo().contains("Jugnoo")){
+				itr.setInfo(itr.getInfo().replace("Jugnoo", WhiteLabelConstants.app_name));
+			}
 			rideInfoViewHolder.textViewInfoText.setText(itr.getInfo());
 		} else {
 			rideInfoViewHolder.textViewInfoText.setVisibility(View.GONE);

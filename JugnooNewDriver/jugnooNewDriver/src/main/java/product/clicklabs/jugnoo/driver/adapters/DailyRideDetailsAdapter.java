@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
@@ -271,6 +272,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 			}else if(holder instanceof ViewHolderRideParam){
                 final DailyEarningItem param = items.get(position);
+
+                if(param!=null && param.getText()!=null && param.getText().contains("Jugnoo")){
+                	param.setText(param.getText().replace("Jugnoo", WhiteLabelConstants.app_name));
+				}
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
                 if(showCaptiveData){
 					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getTimeFromMins(activity, (int) param.getValue()));

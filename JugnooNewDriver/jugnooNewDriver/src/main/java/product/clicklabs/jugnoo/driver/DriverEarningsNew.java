@@ -321,7 +321,9 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 		}else{
 			getEarningsDetails(this, 0);
-			llGraphWithEarnings.setVisibility(View.VISIBLE);
+			if(WhiteLabelConstants.SHOW_INVOICES){
+				llGraphWithEarnings.setVisibility(View.VISIBLE);
+			}
 
 		}
 
@@ -373,6 +375,11 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			}
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
+
+
+			if(!WhiteLabelConstants.SHOW_INVOICES){
+				return;
+			}
 
 			if(Data.isCaptive()){
 				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
