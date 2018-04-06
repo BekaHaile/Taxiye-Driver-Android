@@ -101,8 +101,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					//Picasso.with(activity).load(notification.getNotificationImage()).into(holder.notificationImage);
 					//Picasso.with(activity).load(notification.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
 					Picasso.with(activity).load(notification.getNotificationImage())
-							.placeholder(R.drawable.ic_notification_placeholder)
-							.error(R.drawable.ic_notification_placeholder)
+							.placeholder(R.drawable.ic_notification_placeholder_drawable)
+							.error(R.drawable.ic_notification_placeholder_drawable)
 //                        .transform(new RoundedCornersTransformation(10, 0, RoundedCornersTransformation.CornerType.TOP))
 							.into(holder.imageViewNotification);
 				}

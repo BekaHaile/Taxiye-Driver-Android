@@ -5,18 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 

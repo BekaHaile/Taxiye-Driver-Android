@@ -85,6 +85,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static final long REQUEST_TIMEOUT = 120000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
+	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
+	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
+
 	public GCMIntentService() {
 	}
 
@@ -119,8 +122,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -166,8 +169,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -222,8 +225,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -322,8 +325,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -368,8 +371,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -416,8 +419,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 			Notification notification = builder.build();

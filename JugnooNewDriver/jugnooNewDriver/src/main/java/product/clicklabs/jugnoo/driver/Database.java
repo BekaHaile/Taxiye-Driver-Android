@@ -5,11 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Pair;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
 
 /**
  * Handles database related work
@@ -18,7 +13,7 @@ public class Database {																	// class for handling database related a
 
 	private static Database dbInstance;
 	
-	private static final String DATABASE_NAME = WhiteLabelConstants.app_name + "_database";						// declaring database variables
+	private static final String DATABASE_NAME = R.string.white_label_name + "_database";						// declaring database variables
 
 	private static final int DATABASE_VERSION = 2;
 

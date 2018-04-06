@@ -284,14 +284,14 @@ public class MeteringService extends Service {
 			
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(false);
-			builder.setContentTitle(context.getResources().getString(R.string.w_app_name));
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
 			
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), WhiteLabelConstants.NOTIFICATION_BIG_ICON));
-			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), GCMIntentService.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(GCMIntentService.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			
 			

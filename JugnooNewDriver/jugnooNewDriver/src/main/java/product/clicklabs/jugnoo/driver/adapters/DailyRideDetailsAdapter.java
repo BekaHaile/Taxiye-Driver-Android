@@ -17,7 +17,6 @@ import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;

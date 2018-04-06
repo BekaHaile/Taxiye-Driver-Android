@@ -22,7 +22,6 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.WalletActivity;
-import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.adapters.WalletTypeAdapter;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.datastructure.RechargeType;

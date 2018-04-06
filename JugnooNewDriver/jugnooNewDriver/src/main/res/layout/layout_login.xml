@@ -70,7 +70,7 @@
             android:layout_marginTop="32px"
             android:text="@string/GENERATE_OTP"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/buttons_on_boarding"
+            android:background="@drawable/buttons_on_boarding_drawable"
             android:textColor="@color/white"
             android:textSize="@dimen/button_text_size"/>
 

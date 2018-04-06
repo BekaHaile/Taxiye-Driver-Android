@@ -154,7 +154,7 @@
                     android:layout_height="35px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/jugnoo_on_icon"
+                    android:src="@drawable/jugnoo_side_menu_icon_drawable"
                     android:tag="mwar"/>
 
                 <TextView
