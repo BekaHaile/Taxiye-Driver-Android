@@ -163,7 +163,7 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 				});
 			}
 		} else {
-			openHelpData("No internet connection. Tap to retry.", true);
+			openHelpData(getString(R.string.no_internet), true);
 		}
 	}
 

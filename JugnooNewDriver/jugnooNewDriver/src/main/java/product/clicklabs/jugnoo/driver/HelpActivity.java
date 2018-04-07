@@ -268,11 +268,11 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	
 	public void openMailIntentToSupport(){
 		Intent email = new Intent(Intent.ACTION_SEND);
-		email.putExtra(Intent.EXTRA_EMAIL, new String[] { "support@jugnoo.in" });
-		email.putExtra(Intent.EXTRA_SUBJECT, "Jugnoo Support");
+		email.putExtra(Intent.EXTRA_EMAIL, new String[] { WhiteLabelConstants.SUPPORT_EMAIL });
+		email.putExtra(Intent.EXTRA_SUBJECT, WhiteLabelConstants.app_name +  getString(R.string.support));
 		email.putExtra(Intent.EXTRA_TEXT, "");
 		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, "Choose an Email client:"));
+		startActivity(Intent.createChooser(email, getString(R.string.choose_email_client)));
 	}
 	
 

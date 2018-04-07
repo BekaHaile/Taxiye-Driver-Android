@@ -254,7 +254,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
 				if (balance < 0) {
 					holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-					holder.textViewBalanceText.setText("Money to\nJugnoo");
+					holder.textViewBalanceText.setText(R.string.money_to_jugnoo);
 					holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 				} else {
@@ -379,7 +379,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
 				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Money to\nJugnoo");
+				holder.textViewBalanceText.setText(R.string.money_to_jugnoo);
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				if ("Failed".equalsIgnoreCase(rideInfo.status)) {
 					holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));

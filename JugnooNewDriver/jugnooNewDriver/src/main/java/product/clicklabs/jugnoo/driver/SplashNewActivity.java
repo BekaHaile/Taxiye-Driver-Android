@@ -2766,7 +2766,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								otp = message.split("\\ ")[0];
 							} else {
 								String[] arr = message.split("and\\ it\\ is\\ valid\\ till\\ ");
-								String[] arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ");
+								String[] arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ One\\ Time\\ Password\\ is\\ ");
 								otp = arr2[1];
 								otp = otp.replaceAll("\\ ", "");
 							}

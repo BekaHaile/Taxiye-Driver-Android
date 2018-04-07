@@ -209,7 +209,7 @@ public class NotificationTipsFragment extends Fragment {
 				});
 			}
 		} else {
-			openHelpData("No internet connection. Tap to retry.", true);
+			openHelpData(getString(R.string.no_internet), true);
 		}
 	}
 

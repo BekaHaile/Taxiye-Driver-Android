@@ -22,6 +22,7 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.WalletActivity;
+import product.clicklabs.jugnoo.driver.WhiteLabelConstants;
 import product.clicklabs.jugnoo.driver.adapters.WalletTypeAdapter;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.datastructure.RechargeType;
@@ -148,7 +149,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
             } else if(addressSize == 1) {
                 address = rechargeOptionList.get(position).getAddresses().get(0).getAddress();
             } else {
-                address = "Visit Jugnoo office in your city";
+                address = "Visit " + WhiteLabelConstants.app_name + " office in your city";
             }
             DialogPopup.alertPopup(walletActivity, "", address);
         }

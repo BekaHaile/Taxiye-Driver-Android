@@ -208,7 +208,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else {
 					if (!Data.isCaptive()) {
-						DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", "Unable to fetch wallet detail. Please try again",
+						DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", getString(R.string.unable_to_fetch_wallet),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

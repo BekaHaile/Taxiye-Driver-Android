@@ -81,7 +81,7 @@
         android:layout_height="98px"
         android:textSize="32px"
         android:visibility="gone"
-        android:text="message from Merchant"
+        android:text="@string/message_from_merchant"
         android:gravity="center"/>
 
     <ImageView
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_30"
-            android:text="message from vendor"
+            android:text="@string/Message_from_vendor"
             android:layout_centerInParent="true"
             android:textColor="@color/text_color_light"
             android:visibility="gone"

@@ -21,6 +21,7 @@ public interface WhiteLabelConstants {
 
     boolean SHOW_TERMS_IN_PROFILE = false;
     boolean SHOW_SUPPORT_IN_RIDE_DETAIL = false;
+    String SUPPORT_EMAIL = "support@jugnoo.in";
 
     //Remove tips to earn from notification
     //Invite & Earn Activity
