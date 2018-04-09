@@ -47,7 +47,7 @@
                 android:id="@+id/ll_graph_with_earnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="@integer/show_invoices"
                 android:background="@color/black_earnings_bg"
                 android:orientation="vertical">
 

@@ -285,15 +285,15 @@ public class Utils {
 		phoneNo = phoneNo.replace("#", "");
 		phoneNo = phoneNo.replace("-", "");
 		phoneNo = phoneNo.replace(".", "");
-		if (phoneNo.length() >= 9) {
-			phoneNo = phoneNo.substring(phoneNo.length() - 9, phoneNo.length());
+		if (phoneNo.length() >= 10) {
+			phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
 		}
 		return phoneNo;
 	}
 
 	public static boolean validPhoneNumber(String phoneNo) {
 		try {
-			if (!TextUtils.isEmpty(phoneNo) && phoneNo.length() >= 9) {
+			if (!TextUtils.isEmpty(phoneNo) && phoneNo.length() >= 10) {
 				if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
 					return false;
 				} else {

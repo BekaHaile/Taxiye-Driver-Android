@@ -97,7 +97,7 @@
                     android:text="@string/auto_detect_otp_failed"
                     android:textColor="@color/grey_dark"
                     android:textSize="30px"
-                    android:visibility="gone" />
+                    android:visibility="@integer/show_call_in_otp" />
 
 
                 <ImageView
@@ -107,7 +107,7 @@
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_missed_call"
                     android:tag="mwar"
-                    android:visibility="gone" />
+                    android:visibility="@integer/show_call_in_otp" />
 
 
                 <TextView
@@ -120,7 +120,7 @@
                     android:text="@string/give_misscall_to_verify"
                     android:textColor="@color/black_earnings_bg"
                     android:textSize="30px"
-                    android:visibility="gone" />
+                    android:visibility="@integer/show_call_in_otp" />
 
 
                 <TextView
@@ -132,7 +132,7 @@
                     android:text="@string/or"
                     android:textAllCaps="false"
                     android:textSize="32px"
-                    android:visibility="gone" />
+                    android:visibility="@integer/show_call_in_otp" />
 
                 <Button
                     android:id="@+id/enterOtpButton"
@@ -140,12 +140,12 @@
                     android:layout_marginTop="15dp"
                     android:layout_height="80px"
                     android:layout_gravity="center_horizontal"
+                    android:text="@string/enter_otp"
+                    android:textSize="30px"
+                    android:textColor="@color/new_orange"
                     android:layout_marginBottom="60px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
-
-                    android:text="@string/enter_otp"
-                    android:textColor="@color/new_orange"
-                    android:textSize="30px" />
+                    />
 
 
             </LinearLayout>

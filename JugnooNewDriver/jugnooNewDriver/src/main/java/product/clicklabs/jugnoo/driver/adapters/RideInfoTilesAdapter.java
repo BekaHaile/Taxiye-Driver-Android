@@ -49,7 +49,7 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 
 		if(itr.getInfo() != null){
 			if(itr.getInfo()!=null && itr.getInfo().contains("Jugnoo")){
-				itr.setInfo(itr.getInfo().replace("Jugnoo", WhiteLabelConstants.app_name));
+				itr.setInfo(itr.getInfo().replace("Jugnoo", context.getResources().getString(R.string.white_label_name)));
 			}
 			rideInfoViewHolder.textViewInfoText.setText(itr.getInfo());
 		} else {

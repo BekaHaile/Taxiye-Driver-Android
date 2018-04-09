@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="view_visible">0</integer> <!-- This is VISIBLE -->
+    <integer name="view_invisible">1</integer> <!-- This is INVISIBLE -->
+    <integer name="view_gone">2</integer> <!-- This is GONE -->
+
+
+
+    <string name="white_label_name">Jingo</string>
+    <string name="w_app_name">Jingo Drivers</string>
+    <string name="support_email">support@jingo.in</string>
+    <string name="support_phone_number">support@jingo.in</string>
+    <string name="customer_app_download_link">https://www.jingorides.com/</string>
+
+    <drawable name="jugnoo_on_icon">@drawable/autos_v2</drawable>
+    <drawable name="notification_big_icon">@drawable/jugnoo_icon</drawable>
+    <drawable name="notification_small_icon">@drawable/ic_notif</drawable>
+
+    <integer name="show_bank_details_in_profile">@integer/view_gone</integer>
+    <integer name="show_t_and_c">@integer/view_gone</integer>
+    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
+
+    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="show_call_in_otp">@integer/view_gone</integer>
+
+
+
+
+    <!--Login signup-->
+    <color name="bg_on_boarding">@color/white</color>
+    <drawable name="buttons_on_boarding">@drawable/button_bg_gradient</drawable>
+    <drawable name="splash_logo">@drawable/splash_logo</drawable>
+    <dimen name="splash_logo_height">400px</dimen>
+    <dimen name="splash_logo_width">400px</dimen>
+
+
+    <!--Jeanie Floating Service Icon-->
+     <drawable name="floating_icon">@mipmap/ic_launcher</drawable>
+
+    <!--Side Menu Properties-->
+    <integer name="show_invoices">@integer/view_gone</integer>
+    <integer name="show_driver_resources">@integer/view_gone</integer>
+
+
+    <bool name="show_support_ride_detail">false</bool>
+
+
+</resources>

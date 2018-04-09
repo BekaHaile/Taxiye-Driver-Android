@@ -37,7 +37,7 @@ public class Database2 {                                                        
 
 	private static Database2 dbInstance;
 
-	private static final String DATABASE_NAME = "jugnoo_database2";                        // declaring database variables
+	private static final String DATABASE_NAME = WhiteLabelConstants.app_name  +"_database2";                        // declaring database variables
 
 	private static final int DATABASE_VERSION = 2;
 

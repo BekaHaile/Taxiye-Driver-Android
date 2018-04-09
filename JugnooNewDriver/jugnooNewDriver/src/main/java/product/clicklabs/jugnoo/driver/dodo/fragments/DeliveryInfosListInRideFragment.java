@@ -118,7 +118,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Utils.openCallIntent(activity, deliveryInfos.getPickupData().getPhone());
-				Log.i("completeRingData", "+254715661149");
+				Log.i("completeRingData", Database2.getInstance(activity).getRingCompleteData());
 			}
 		});
 

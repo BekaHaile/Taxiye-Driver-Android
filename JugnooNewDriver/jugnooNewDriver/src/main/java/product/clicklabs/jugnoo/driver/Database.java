@@ -18,7 +18,7 @@ public class Database {																	// class for handling database related a
 
 	private static Database dbInstance;
 	
-	private static final String DATABASE_NAME = "jugnoo_database";						// declaring database variables
+	private static final String DATABASE_NAME = WhiteLabelConstants.app_name + "_database";						// declaring database variables
 
 	private static final int DATABASE_VERSION = 2;
 

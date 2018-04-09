@@ -420,7 +420,8 @@
                             android:text="@string/NA"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_28"
-                            android:visibility="visible" />
+                            android:visibility="visible"
+                        />
 
                     </LinearLayout>
 

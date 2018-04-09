@@ -469,6 +469,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="100px"
+                android:visibility="@integer/show_t_and_c"
                 android:layout_toRightOf="@+id/imageViewTandC"
                 android:textSize="28px"/>
 

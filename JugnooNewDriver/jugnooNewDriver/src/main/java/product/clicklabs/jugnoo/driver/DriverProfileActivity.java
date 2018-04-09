@@ -183,9 +183,7 @@ public class DriverProfileActivity extends BaseActivity {
 				FlurryEventLogger.event(FlurryEventNames.TERMS_OF_USE);
 			}
 		});
-		if(!WhiteLabelConstants.SHOW_TERMS_IN_PROFILE){
-			terms.setVisibility(View.GONE);
-		}
+
 	}
 
 

@@ -241,13 +241,12 @@ public class JSONParser implements Constants {
 		String accessToken = userData.getString("access_token");
 		double showDriverRating = userData.optDouble("showDriverRating");
 
-		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
+		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
 		String referralCode = userData.getString("referral_code");
 
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-				"Use my code " + referralCode + " to download Jingos customer App and earn jingo cash.\n" +
-						"Download it from here\nhttps://www.jingorides.com/");
+		context.getResources().getString(R.string.referal_sms_message,referralCode,context.getResources().getString(R.string.customer_app_download_link)));
 		String referralMessage = userData.optString("referral_message");
 		String referralButtonText = userData.optString("referral_button_text", "Share");
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
@@ -320,7 +319,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.END_RIDE_CUSTOM_TEXT, userData.optString("end_ride_custom_text", ""));
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
-		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking "+ context.getString(R.string.white_label_name)+" rides. So we are blocking you for some time");
 		Log.i("timeOut", timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled", 0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled", 0);
@@ -716,7 +715,7 @@ public class JSONParser implements Constants {
 			Data.userData.referralButtonText = preferredLangStrings.optString("referral_button_text", "Share");
 			Data.userData.referralDialogText = preferredLangStrings.optString("referral_dialog_text", "Please enter Customer Phone No.");
 			Data.userData.referralDialogHintText = preferredLangStrings.optString("referral_dialog_hint_text", "Phone No.");
-			Data.userData.timeoutMessage = preferredLangStrings.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+			Data.userData.timeoutMessage = preferredLangStrings.optString("timeout_message", "We have noticed that, you aren't taking "+ context.getString(R.string.white_label_name) + " rides. So we are blocking you for some time");
 
 		} catch (Exception e) {
 			e.printStackTrace();

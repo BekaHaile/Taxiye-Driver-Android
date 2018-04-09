@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -105,7 +106,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jingo");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -117,8 +118,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -152,7 +153,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jingo");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -164,8 +165,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -207,7 +208,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jingo");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
@@ -220,8 +221,8 @@ public class GCMIntentService extends IntentService {
 			}
 
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 
@@ -309,7 +310,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("jingos");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -320,8 +321,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -355,7 +356,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("jingos");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -366,8 +367,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
@@ -403,7 +404,7 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("jingos");
+			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
@@ -414,8 +415,8 @@ public class GCMIntentService extends IntentService {
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_notif));
-			builder.setSmallIcon(R.drawable.ic_notif);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),WhiteLabelConstants.NOTIFICATION_BIG_ICON));
+			builder.setSmallIcon(WhiteLabelConstants.NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 
 			Notification notification = builder.build();

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!DOCTYPE resources [
+<!DOCTYPE resources [
     <!ENTITY appname "Jingo">
     ]>
-
+<resources>
     <string name="app_name">&appname; Drivers</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -911,13 +909,14 @@
     <string name="driver_is_late">Driver is late</string>
     <string name="english">English</string>
     <string name="unable_to_fetch_wallet">Unable to fetch wallet detail. Please try again</string>
-    <string name="show_more">Show more</string>
     <string name="money_to_jugnoo">Money to Jugnoo</string>
-    <string name="support">Support</string>
-    <string name="choose_email_client">Choose an Email client:</string>
-    <string name="no_internet">No internet connection. Tap to retry.</string>
     <string name="no_internet">No internet connection. Tap to retry.</string>
 
+
+
+    <string name="visit_office_in_city">Visit &appname; office in your city</string>
+    <string name="support_subject">&appname;Support</string>
+    <string name="referal_sms_message">Use my code %1$s to download &appname; customer App and earn &appname; cash.\nDownload it from here\n %2$s </string>
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>

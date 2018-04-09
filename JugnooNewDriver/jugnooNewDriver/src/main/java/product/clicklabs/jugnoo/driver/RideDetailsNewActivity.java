@@ -381,7 +381,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 
 
-			if(WhiteLabelConstants.SHOW_SUPPORT_IN_RIDE_DETAIL){
+			if(getResources().getBoolean(R.bool.show_support_ride_detail)){
 				if(extras.getTicketStatus() == 0){
 					relativeLayoutCreateTicket.setVisibility(View.GONE);
 				} else if(extras.getTicketStatus() == 1){

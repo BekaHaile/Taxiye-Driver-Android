@@ -154,7 +154,7 @@
                     android:layout_height="35px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/autos_v2"
+                    android:src="@drawable/jugnoo_on_icon"
                     android:tag="mwar"/>
 
                 <TextView
@@ -322,6 +322,7 @@
                 android:id="@+id/paymentRL"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:visibility="@integer/show_invoices"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
@@ -410,6 +411,7 @@
                 android:id="@+id/relativeLayoutDocs"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:visibility="@integer/show_driver_resources"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
@@ -776,10 +778,10 @@
                 android:id="@+id/languagePrefrencesRl"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
-
+                android:visibility="@integer/show_language_control"
                 android:splitMotionEvents="false"
                 android:background="@drawable/background_tranparend_red_v2_selector"
-                android:visibility="visible">
+               >
 
                 <ImageView
                     android:id="@+id/imageViewLangPrefIcon"

@@ -274,7 +274,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
                 final DailyEarningItem param = items.get(position);
 
                 if(param!=null && param.getText()!=null && param.getText().contains("Jugnoo")){
-                	param.setText(param.getText().replace("Jugnoo", WhiteLabelConstants.app_name));
+                	param.setText(param.getText().replace("Jugnoo", activity.getResources().getString(R.string.white_label_name)));
 				}
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
                 if(showCaptiveData){

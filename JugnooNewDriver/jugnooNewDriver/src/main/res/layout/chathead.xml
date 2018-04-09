@@ -9,7 +9,7 @@
         android:id="@+id/chathead_img"
         android:layout_width="116px"
         android:layout_height="116px"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/floating_icon"
         android:tag="mwar"/>
 
 

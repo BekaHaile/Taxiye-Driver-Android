@@ -2147,56 +2147,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-			if(WhiteLabelConstants.SHOW_AUDITS && Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
 				auditRL.setVisibility(View.VISIBLE);
 			} else {
 				auditRL.setVisibility(View.GONE);
 			}
 
-			if(WhiteLabelConstants.SHOW_SUPPORT_IN_MENU && Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_SUPPORT_IN_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_SUPPORT_IN_MENU,0) == 1){
 				relativeLayoutSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutSupport.setVisibility(View.GONE);
 			}
 
-			if(WhiteLabelConstants.SHOW_PLANS_IN_MENU && Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1){
+			if( Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1){
 				relativeLayoutPlans.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutPlans.setVisibility(View.GONE);
 			}
 
-			if(WhiteLabelConstants.SHOW_RATE_CARD_IN_MENU && Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_RATE_CARD_IN_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_RATE_CARD_IN_MENU,0) == 1){
 				relativeLayoutRateCard.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutRateCard.setVisibility(View.GONE);
 			}
 
-			if(WhiteLabelConstants.SHOW_CALL_US_MENU &&Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
 				callUsRl.setVisibility(View.VISIBLE);
 			} else {
 				callUsRl.setVisibility(View.GONE);
 			}
-			if(WhiteLabelConstants.SHOW_IN_APP_CALL_US && Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1){
 				rlGetSupport.setVisibility(View.VISIBLE);
 			} else {
 				rlGetSupport.setVisibility(View.GONE);
 			}
-			if(WhiteLabelConstants.SHOW_INVOICES){
-				paymentsRl.setVisibility(View.VISIBLE);
-			} else {
-				paymentsRl.setVisibility(View.GONE);
-			}
-			if(WhiteLabelConstants.SHOW_LANGUAGE_PREFERENCES){
-				languagePrefrencesRl.setVisibility(View.VISIBLE);
-			} else {
-				languagePrefrencesRl.setVisibility(View.GONE);
-			}
 
-			if(WhiteLabelConstants.SHOW_DRIVER_RESOURCES){
-				relativeLayoutDocs.setVisibility(View.VISIBLE);
-			} else {
-				relativeLayoutDocs.setVisibility(View.GONE);
-			}
+
+
+
+
 
 
 
