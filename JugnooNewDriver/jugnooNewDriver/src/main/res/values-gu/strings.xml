@@ -47,7 +47,6 @@
     <string name="enter_valid_amount">માન્ય રકમ દાખલ કરો</string>
     <string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">ભાવ પત્રક </string>
-    <string name="about_3_text">પેહલા 2 કિમી:30રૂ.અને 2કિમી પછી 10/કિમી અને વેટીંગ સમય 1.50રૂ/મિનીટ 15 મિનીટ પછી </string>
     <string name="save_to_favorite">Save To Favorite</string>
     <string name="ride_in_progress">સવારી ચાલુ છે</string>
     <string name="assigning_driver">ડ્રાઈવર નિયુક્ત હોયે છે</string>
@@ -184,7 +183,6 @@
     <string name="change_phone_no_text">બદલેલો ફોને નો અંક એ જ છે જે પેલા હતા </string>
     <string name="local_positon_text">સ્થાન ની માહિતી નથી મડી સકતી </string>
     <string name="overall_position_text">સંપૂર્ણ  સ્થાન ની માહિતી નથી મળી સકતી </string>
-    <string name="cash_needed_text">રૂ .રોકડ ની જરૂરત છે </string>
     <string name="convenience_charges_text">વ્યાજબી ભાવ</string>
     <string name="code_empty">કોડે ખાલી ના રાખી સકાય </string>
     <string name="confirm_email_text">ઈમૈલ -ઓળખ માન્ય નથી કરી રહી </string>
@@ -231,7 +229,6 @@
     <string name="luggage_charge">સમાન નુ ભાઙૂ</string>
     <string name="login">પ્રવેશ</string>
     <string name="restart_phone">તમારો ફોન ફરીથી શરુ કરો</string>
-    <string name="money_to_take">પૈસા લેવા માટે રૂ</string>
     <string name="min_fare">ન્યુનત્તમ ભાઙૃ</string>
     <string name="meals_on">ભોજન પર</string>
     <string name="mail_us">અમ્ને ઇ મેલ કરો</string>
@@ -248,7 +245,6 @@
     <string name="name">નામ</string>
     <string name="name_colon">નામ:</string>
     <string name="overall_position">એકંદર સ્થિતિ</string>
-    <string name="of_upto_100">ના રૂ. 100 / -</string>
     <string name="some_amount">અમુક રકમ દાખલ કરો</string>
     <string name="less_amount">ઓછી રકમ દાખલ કરો</string>
     <string name="valid_amount">માન્ય રકમ દાખલ કરો</string>
@@ -279,7 +275,6 @@
     <string name="paid_cash">રોકડ માં ચુકવણી </string>
     <string name="ride_id">રાઇડ ID </string>
     <string name="Ride_id">રાઇડ ID </string>
-    <string name="rupees">રૂ.</string>
     <string name="ride_time2">રાઇડ સમય</string>
     <string name="rate">દર:</string>
     <string name="ride_in_progress_cant_logout">રાઈડ પ્રગતિ માં છે. જયારે તમે રાઈડ પૂરી કરશો ત્યારે લોગ ઓઉટ થશે</string>
@@ -321,7 +316,6 @@
     <string name="whatsapp_not_installed">WhatsApp સ્થાપિત થયેલ નથી</string>
     <string name="weekly">અઠવાડિક</string>
     <string name="will_revert_you">અમે ટૂંક સમયમાં તમે ઉમેરાઇ જશે</string>
-    <string name="cannot_add_less_than">તમે રકમ કરતાં ઓછી એ \ n રૂ ઉમેરી શકો છો.</string>
     <string name="your_position">તમારી પરિસ્થિતિ</string>
     <string name="your_overall_position">તમારી એકંદર સ્થિતિ</string>
     <string name="got_new_request">તમે એક નવી રાઈડ ની  વિનંતી મળી છે.</string>
@@ -335,7 +329,6 @@
     <string name="no_internet_tap_to_retry">કોઈ ઈન્ટરનેટ કનેકશન નથી ફરીથી પ્રયાસ કરવા માટે સ્ક્રીન ને સ્પર્શ કરો </string>
     <string name="no_rides">હાલમાં કોઈ સવારી નથી </string>
     <string name="pickup_location">આપનું પીકઅપ સ્થળ </string>
-    <string name="money_to_pay">પૈસા ચુકવવા માટે રૂ/-</string>
     <string name="money_to">જુગનૂ માટે પૈસા </string>
     <string name="start_ride_loc">રાઈડ સ્થળથી શરુ  </string>
     <string name="sec_left">સેકંડ બાકી </string>

@@ -41,7 +41,6 @@
 
     <string name="about_1_text">ಜುಗ್ನೂ ನಿಮಗೆ ಕೈಗೆಟುಕುವ ದರದಲ್ಲಿ ಪ್ರಯಾಣಿಕ ಸ್ನೇಹಿ ಸೇವೆಯನ್ನು ಮೈಸೊರಿನಲ್ಲಿ ಒದಗಿಸುತ್ತದೆ.ಖಂಡಿತವಾಗಿಯೂ ಕೈಗೆಟುಕುವ ದರ ಮತ್ತು ಒಳ್ಳೆಯಪ್ರಯಾಣಿಕ ಸ್ನೇಹಿ ಡೀಲ್ ಆಗಿರುತ್ತದೆ.</string>
     <string name="about_2_text">ದರ ಪಟ್ಟಿ</string>
-    <string name="about_3_text">ಮೊದಲ 2 ಕಿ.ಮೀ.: 30 \ ನಂತರ 2 ಕಿ.ಮೀ. ರೂ. 10 / ಕಿ.ಮೀ \ ಕಾಯುವ ಸಮಯ: 1.5 / 15 ನಿಮಿಷಗಳ ನಿಮಿಷ ನಂತರ.</string>
     <string name="email_id">ಈಮೇಲ್ ವಿಳಾಸ</string>
     <string name="confirm_email_id">ಈಮೇಲ್ ವಿಳಾಸ ದೃಢೀಕರಿಸಿ</string>
     <string name="password">ಪಾಸ್ವರ್ಡ್</string>
@@ -171,7 +170,6 @@
     <string name="change_phone_no_text">ಬದಲಾಯಿಸಿದ ದೂರವಾಣಿ ಸಂಖ್ಯೆ ಹಿಂದಿನದೇ ಆಗಿದೆ.</string>
     <string name="local_positon_text">ಸ್ಥಳೀಯ ಸ್ಥಾನದಲ್ಲಿ ಸಿಗುತ್ತಿಲ್ಲ</string>
     <string name="overall_position_text">ಒಟ್ಟಾರೆ ಸ್ಥಾನವನ್ನು ಸಿಗುತ್ತಿಲ್ಲ</string>
-    <string name="cash_needed_text">ನಗದು ಅಗತ್ಯವಿದೆ: ರೂ.</string>
     <string name="convenience_charges_text">ಗ್ರಾಹಕ ಅನುಕೂಲಕರ ಶುಲ್ಕಗಳು:</string>
     <string name="code_empty">ಕೋಡ್ ಖಾಲಿ ಬಿಡುವಂತಿಲ್ಲ</string>
     <string name="confirm_email_text">ದೃಢೀಕರಿಸಿದ ಇಮೇಲ್ ಸರಿಹೊಂದುತಿಲ್ಲ</string>
@@ -219,7 +217,6 @@
     <string name="luggage_charge">ಸಾಮಾನು ಚಾರ್ಜ್</string>
     <string name="login">ಒಳಬರುವು</string>
     <string name="restart_phone">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಫೋನ್ ಮರುಪ್ರಾರಂಭಿಸಿ</string>
-    <string name="money_to_take">ಪಡೆಯಬೇಕಾದ ಹಣ ರೂ.</string>
     <string name="min_fare">ಕನಿಷ್ಠ ಶುಲ್ಕ</string>
     <string name="meals_on">ಮೀಲ್ಸ್ ಆನ್</string>
     <string name="mail_us">ಮೈಲ್ ಕಳಿಸಿ</string>
@@ -240,7 +237,6 @@
     <string name="name_colon">ಹೆಸರು:</string>
     <string name="overall_position">
         ಒಟ್ಟಾರೆ ಸ್ಥಾನ</string>
-    <string name="of_upto_100">ರ ವರೆಗೆ ರೂ. 100 / -</string>
     <string name="some_amount">ದಯವಿಟ್ಟು ಹಣದ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="less_amount">ದಯವಿಟ್ಟು ಕಡಿಮೆಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="valid_amount">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
@@ -276,8 +272,6 @@
     <string name="ride_id">ಸವಾರಿ ಐಡಿ</string>
     <string name="Ride_id">ಸವಾರಿ ಐಡಿ</string>
 
-    <string name="rupees">
-        ರೂ.</string>
     <string name="ride_time2">ಸವಾರಿ ಸಮಯ:</string>
     <string name="rate">ದರ:</string>
     <string name="ride_in_progress_cant_logout">ಸವಾರಿ ಪ್ರಗತಿಯಲ್ಲಿದೆ.ನೀವು ಸವಾರಿ ಮುಕ್ತಾಯಗೊಂಡ ನಂತರವಷ್ಟೇ ನಿರ್ಗಮಿಸಬಹುದು.</string>
@@ -327,7 +321,6 @@
     <string name="whatsapp_not_installed">ವ್ಹಾಟ್ಸಪ್ಪ್ ಸ್ಥಾಪನೆಗೊಂಡಿಲ್ಲ</string>
     <string name="weekly">ಸಾಪ್ತಾಹಿಕ</string>
     <string name="will_revert_you">ನಾವು ಶೀಘ್ರದಲ್ಲೇ ಕರೆ ಮಾಡುತ್ತೇವೆ</string>
-    <string name="cannot_add_less_than">ನೀವು ಇದಕ್ಕಿಂತ ಕಡಿಮೆ \ N ರೂ ಸೇರಿಸಲಾಗುವುದಿಲ್ಲ.</string>
     <string name="your_position">ನಿಮ್ಮ ಸ್ಥಾನ</string>
     <string name="your_overall_position">ನಿಮ್ಮ ಒಟ್ಟಾರೆ ಸ್ಥಾನ</string>
     <string name="got_new_request">ನಿಮಗೆ ಹೊಸ ಸವಾರಿಯ ವಿನಂತಿಯಿದೆ</string>
@@ -341,7 +334,6 @@
     <string name="no_internet_tap_to_retry">ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕ ಇಲ್ಲ. ಮರುಪ್ರಯತ್ನಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
     <string name="no_rides">ಪ್ರಸ್ತುತ ಯಾವುದೇ ಸವಾರಿ ಇಲ್ಲ </string>
     <string name="pickup_location">ನಿಮ್ಮ ಪಿಕ್ ಅಪ್ ಸ್ಥಳ</string>
-    <string name="money_to_pay">ಪಾವತಿಸಬೇಕಾದ ಹಣ ರೂ.</string>
     <string name="money_to">ಜುಗ್ನೂಗೆ ಕೊಡಬೇಕಾದ ಹಣ </string>
     <string name="start_ride_loc">ಸವಾರಿ ಆರಂಭಿಸುವ ಸ್ಥಳ</string>
     <string name="sec_left">ಸೆಕೆ೦ಡು ಉಳಿದಿದೆ</string>

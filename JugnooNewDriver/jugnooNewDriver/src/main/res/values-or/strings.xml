@@ -44,7 +44,6 @@
 
     <string name="about_1_text">ଜୁଗ୍ନୁ ଆପଣଂକୁ ଭୁବନେଶ୍ବର ତ୍ରିକୋଣିୟ ସହର ଭିତରେ ଏକ ସସ୍ତା ଏଂବ ବନ୍ଧୁଜନକ ଯାତ୍ରା କରିବାରେ ସହଯ୍ୟ କରେ.ଦରରେ ସସ୍ତା ଏଂବ ଆପଣଂକର ବନ୍ଧୁଜନକ ଯାତ୍ରା ପାଇଁ  ନିସ୍ଚିତ ରୁପରେ ଏହା ଏକ ଅନୁକୁଳ ବନ୍ଧନ ଅଟେ.</string>
     <string name="about_2_text">ରେଟ୍ କାର୍ଡ୍</string>
-    <string name="about_3_text">ପ୍ରଥମ 2କିଲୋମିଟର 30ଟନ୍କା ଏବମ୍ ପରେ 2କିଲୋମିଟର କୁ 10/କିମି ଏବମ୍  ଅପେକ୍ଷା ସମୟ 1.5/ମିନିଟି 15 ମିନିଟି ପରେ</string>
     <string name="email_id">ଇମେଲ୍ ଆଇଡି</string>
     <string name="confirm_email_id">କନ୍ଫର୍ମ ଇମେଲ୍ ଆଇଡି</string>
     <string name="password">ପାସ୍ କୋଡ୍</string>
@@ -212,7 +211,6 @@
     <string name="luggage_charge">ଜିନିସର ଭଡା </string>
     <string name="login">ଲଗ୍-ଇନ୍</string>
     <string name="restart_phone">ଦୟାକରି ଫୋନ୍ ପୁଣିଥରେ ଷ୍ଟାର୍ଟ କରନ୍ତୁ</string>
-    <string name="money_to_take">ପଇସା ନେବେ:rs</string>
     <string name="min_fare">ସର୍ବନିମ୍ନ ଭଡା ର ମୁଲ୍ୟ </string>
     <string name="meals_on">ମିଲ୍ସ ଅନ </string>
     <string name="mail_us">ଆମକୁ ମେଲ କରନ୍ତୁ</string>
@@ -229,7 +227,6 @@
     <string name="name">ନାମ</string>
     <string name="name_colon">ନାମ:</string>
     <string name="overall_position">ସମୁଦାୟ ସ୍ତିତି</string>
-    <string name="of_upto_100">୧୦୦/- ଟନ୍କା ପର୍ଯନ୍ତ</string>
     <string name="some_amount">ଦୟାକରି କିଛି ପଇସା ଲେଖନ୍ତୁ </string>
     <string name="less_amount">ଦୟାକରି କମ ପଇସା ଲେଖନ୍ତୁ </string>
     <string name="valid_amount">ଦୟାକରି କିଛି ବୈଧ ରାସୀ ଜମା କରନ୍ତୁ </string>
@@ -261,7 +258,6 @@
     <string name="ride_id">ରାଇଡ଼ ଆଇଡ଼</string>
     <string name="Ride_id">ରାଇଡ଼ ଆଇଡ଼</string>
 
-    <string name="rupees">ଟଂକା</string>
     <string name="ride_time2">ରାଇଡ୍ ସମୟ:</string>
     <string name="rate">ଦାମ</string>
     <string name="ride_in_progress_cant_logout">ରାଇଡ୍ ଚାଲିଛି,ଆପଣ ରାଇଡ୍ ସେଶ ହେଲାପରେ ଲଗ୍-ଆଉଟ୍ କରିପାରିବେ</string>
@@ -304,7 +300,6 @@
     <string name="whatsapp_not_installed">ହ୍ଵଟସାପ୍ ଇନ୍-ସ୍ଟଲ୍ ହେଇନାହିଁ</string>
     <string name="weekly">ସପ୍ତାହିକ</string>
     <string name="will_revert_you">ଅମେ ଶିଘ୍ର ହିଁ ଅପଣନ୍କୁ ସୁଚନା ଦେବୁ</string>
-    <string name="cannot_add_less_than">ଅପଣ ଏହି ମୁଲ୍ୟ...ଠାରୁ କମ୍ ରାସି ଜମା କରି ପରିବେ ନାହିଁ</string>
     <string name="your_position">ଅପଣଂକ ସ୍ତିତି ରେ</string>
     <string name="your_overall_position">ଅପଣଂକ ସମ୍ପୁର୍ନ୍ନ ସ୍ତିତି </string>
     <string name="got_new_request">ଅପଣଂକୁ ଆଉ ଏକ ନୁଅ ରିକୁଏସ୍ଟ୍ ମିଳିଲା </string>
@@ -318,7 +313,6 @@
     <string name="no_internet_tap_to_retry">ଇନ୍ଟରନେଟ୍ କନେକ୍ସନ୍ ନହିଁ.ପୁନର୍ବାର ଚେସ୍ଟା କରିବାକୁ ଅପଣଂକ ଫୋନ୍ ର ସ୍କ୍ରିନ୍ କୁ ଛୁଅନ୍ତୁ</string>
     <string name="no_rides">ବର୍ତମାନ ସୁଧା କୌଣସି ରାଇଡ ନହିଁ</string>
     <string name="pickup_location">ଅପଣଂକ ପିକପ୍ ଲୋକେସନ୍</string>
-    <string name="money_to_pay">ଟଂକା ପେମେଣ୍ଟ୍ କରିବାର ଅଛି ଟ.</string>
     <string name="money_to">ଜୁଗ୍ନୁ ର ମୁଲ୍ୟ </string>
     <string name="start_ride_loc">ରଇଡ ଆରମ୍ଭ ର ଲୋକେସନ </string>
     <string name="sec_left">ସେକେଣ୍ଡ୍ ରହିଲା</string>
@@ -410,7 +404,6 @@
     <string name="you_have">ଆପଣଂକ ପାଖରେ</string>
     <string name="ride_request">ଭଡ଼ା ରିକୁଏସ୍ଟ୍</string>
     <string name="rating">ସ୍ଟାର୍-ମାର୍କ୍</string>
-    <string name="cash_needed_text">କ୍ୟାସ ଦରକାର୍: ଟଂକା</string>
     <string name="convenience_charges_text">ଗ୍ରାହକ ପାଇଁ ସୁବିଧା ମୁଲ୍ୟ:</string>
     <string name="customer_name">ଗ୍ରାହକ ର ନାମ:</string>
     <string name="terms">ନିୟମ</string>

@@ -46,7 +46,6 @@
 
 	<string name="about_1_text">Jugnoo आपको चंडीगढ़ षेत्र के भीतर एक अनुकूल और सस्ती  राइड  प्रदान में मदद करता है.\nदरों में सस्ती है, आप निश्चित रूप से एक अच्छा सौदा कर रहे हैं </string>
 	<string name="about_2_text">दर कार्ड</string>
-	<string name="about_3_text">सबसे पहले 2 किलोमीटर:रुपये 30 \n 2 किलोमीटर के बाद:रुपये 10 / किमी \n प्रतीक्षा काल: 15 मिनट के बाद रुपये 1.5 / मिनट</string>
 
 	<string name="email_id">ईमेल आईडी</string>
 	<string name="confirm_email_id">ईमेल आईडी की पुष्टि</string>
@@ -204,7 +203,6 @@
 	<string name="change_phone_no_text">तबदील किया गया फ़ोन नंबर पूर्व नंबर ही है। </string>
 	<string name="local_positon_text">स्थानीय स्थिति प्राप्त नहीं हो पा रही। </string>
 	<string name="overall_position_text"> स्थिति प्राप्त नहीं हो पा रही। </string>
-	<string name="cash_needed_text">नकदी की जरूरत : रु</string>
 	<string name="convenience_charges_text">ग्राहक के लिए सुविधा शुल्क: </string>
 	<string name="code_empty">कोड खली नहीं रख सकते </string>
 	<string name="confirm_email_text">पुष्टीकृत ई-मेल आईडी से मेल नहीं कर रहा है। </string>
@@ -260,7 +258,6 @@
 	<string name="login">लॉग इन करें</string>
 
 	<string name="restart_phone">कृपया फोन पुनः आरंभ करें</string>
-	<string name="money_to_take">राशि: रुपये</string>
 	<string name="min_fare">न्यूनतम कर</string>
 	<string name="meals_on">Meals ON</string>
 	<string name="mail_us">हमें मेल करें।</string>
@@ -279,7 +276,6 @@
 	<string name="name_colon">नाम :</string>
 
 	<string name="overall_position">संपूर्ण स्थिति</string>
-	<string name="of_upto_100">of upto Rs. 100/-</string>
 
 	<string name="some_amount">कुछ राशि प्रवेश करें</string>
 	<string name="less_amount">कम राशि प्रवेश करें</string>
@@ -312,7 +308,6 @@
 
 	<string name="ride_id">राइड आईडी</string>
 	<string name="Ride_id">राइड आईडी</string>
-	<string name="rupees">₹ </string>
 	<string name="ride_time2"> राइड समय: </string>
 	<string name="rate">रेट: </string>
 	<string name="ride_in_progress_cant_logout">राइड प्रगति में। आप राइड समाप्त होने क बाद लॉगआउट कर सकते हैं।  </string>
@@ -361,7 +356,6 @@
 	<string name="weekly">साप्ताहिक</string>
 	<string name="will_revert_you">हम जल्द ही आपसे सम्पर्क करेंगे </string>
 
-	<string name="cannot_add_less_than">आप \n ₹. कम राशि नहीं जोड़ सकते हैं</string>
 	<string name="your_position">आपकी स्तिथि </string>
 	<string name="your_overall_position">आपकी स्ओवरआल तिथि </string>
 	<string name="got_new_request">आपको  एक नया अनुरोध मिला है।</string>
@@ -376,7 +370,6 @@
 	<string name="no_internet_tap_to_retry">कोई इंटरनेट कनेक्शन नहीं। फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
 	<string name="no_rides">वर्तमान में कोई राइड नहीं </string>
 	<string name="pickup_location">आपका पिकअप स्थान </string>
-	<string name="money_to_pay">पैसे का भुगतान करने के लिए: Rs.</string>
 	<string name="money_to">पैसे Jugnoo को</string>
 	<string name="start_ride_loc">start ride location</string>
 

@@ -59,6 +59,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +70,8 @@ import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
@@ -1057,5 +1059,21 @@ public class Utils {
 			}
 
 		return time;
+	}
+
+	public static String formatCurrencyValue(String currency, double value){
+		if(TextUtils.isEmpty(currency)){
+			currency = "INR";
+		}
+		NumberFormat format = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+		format.setCurrency(Currency.getInstance(currency));
+		return format.format(value);
+	}
+	public static String formatCurrencyValue(String currency, String value){
+		try {
+			return formatCurrencyValue(currency, Double.parseDouble(value));
+		} catch (NumberFormatException e) {
+			return value;
+		}
 	}
 }

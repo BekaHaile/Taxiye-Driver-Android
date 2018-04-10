@@ -43,7 +43,6 @@
 
     <string name="about_1_text"></string>
     <string name="about_2_text">రేట్ కార్డు</string>
-    <string name="about_3_text">బేస్ ఫేర్ Rs.20, ప్రతి నిమిషానికి RS 1, ప్రతి km కి RS 6.</string>
     <string name="email_id">ఈమెయిలు ఐడి</string>
     <string name="confirm_email_id">కన్ఫర్మ్ ఈమెయిలు ఐడి</string>
     <string name="password">పాస్వర్డ్</string>
@@ -198,7 +197,6 @@
     </string>
     <string name="local_positon_text">స్థానిక స్థానం పొందడం సాధ్యం కాలేదు</string>
     <string name="overall_position_text">మొత్తం స్థానం పొందడం సాధ్యం కాలేదు</string>
-    <string name="cash_needed_text">నగదు అవసరం : రూపాయలు.</string>
     <string name="convenience_charges_text">వినియోగదారుని సౌలభ్యం ఫీజు:</string>
     <string name="code_empty">కోడ్ ఖాళీగా ఉండకూడదు</string>
     <string name="confirm_email_text">ఇమెయిల్ ఐడి నిర్ధారించండి , ఇది సరైనది కాదు</string>
@@ -250,7 +248,6 @@
     <string name="luggage_charge">లగేజీ ఛార్జ్</string>
     <string name="login">లాగిన్</string>
     <string name="restart_phone">మీ ఫోన్ రీస్టార్ట్ చేయండి</string>
-    <string name="money_to_take">తీసుకోవాల్సిన డబ్బులు</string>
     <string name="min_fare">కనీస చార్జ్</string>
     <string name="meals_on">మీల్స్ ఆన్</string>
     <string name="mail_us">మెయిల్ పంపండి</string>
@@ -269,7 +266,6 @@
     <string name="name">పేరు</string>
     <string name="name_colon">పేరు:</string>
     <string name="overall_position">మొత్తంమీద స్థానం</string>
-    <string name="of_upto_100">రూ.100 /- వరకు</string>
     <string name="some_amount">డబ్బు మొత్తం ఎంటర్ చేయండి</string>
     <string name="less_amount">తక్కువ మొత్తంలో నమోదు చేయండి</string>
     <string name="valid_amount">చెల్లుబాటు అయ్యే మొత్తాన్ని నమోదు చేయండి</string>
@@ -305,7 +301,6 @@
     <string name="ride_id">రైడ్ ఐడి</string>
     <string name="Ride_id">రైడ్ ఐడి</string>
 
-    <string name="rupees">రూ.</string>
     <string name="ride_time2">రైడ్ సమయం:</string>
     <string name="rate">రేటు:</string>
     <string name="ride_in_progress_cant_logout">రైడ్ ముగిసిన తరవాతనే మీరు లాగౌట్ చేయగలరు .</string>
@@ -354,7 +349,6 @@
     <string name="whatsapp_not_installed">WhatsApp ఇన్స్టాల్ చేయబడలేదు</string>
     <string name="weekly">వీక్లీ</string>
     <string name="will_revert_you">వీలైనంత త్వరగా మీకు ప్రతిస్పందిస్తాము</string>
-    <string name="cannot_add_less_than">మీరు Rs . కంటే తకువ అమౌంట్ ఆడ్ చేయలేరు.</string>
     <string name="your_position">మీ స్థానం</string>
     <string name="your_overall_position">మీ మొత్తంమీద స్థానం</string>
     <string name="got_new_request">మీకు కొత్త రిక్వెస్ట్ వచ్చింది.</string>
@@ -375,7 +369,6 @@
     </string>
     <string name="no_rides">ప్రస్తుతం సవారీలు లేవు</string>
     <string name="pickup_location">మీ పికప్ లొకేషన్</string>
-    <string name="money_to_pay">చెల్లించాల్సిన డబ్బు రూపాయలు.</string>
     <string name="money_to">జుగ్నూ మనీ</string>
     <string name="start_ride_loc">రైడ్ స్థానాన్ని మొదలు</string>
     <string name="sec_left">మిగిలిన సెకన్లు</string>

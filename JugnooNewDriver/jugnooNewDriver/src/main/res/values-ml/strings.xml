@@ -44,7 +44,6 @@
 
     <string name="about_1_text"></string>
     <string name="about_2_text">റേറ്റ് കാർഡ്‌ </string>
-    <string name="about_3_text">ആദ്യത്തെ 2km Rs 30. 2 km കഴിഞ്ഞുള്ള ഓരോ km Rs 10. Waiting Charge ആദ്യത്തെ 15 മിനിറ്റിനു ശേഷം Rs 1.5 ഓരോ മിനിറ്റിനും.</string>
     <string name="email_id">ഇ-മെയിൽ ഐഡി </string>
     <string name="confirm_email_id">ഇ-മെയിൽ ഐഡി കൺഫോം ചെയ്യുക </string>
     <string name="password">പാസ്സ്‌വേർഡ്‌ </string>
@@ -176,7 +175,6 @@
     <string name="change_phone_no_text">മാറ്റിയ  ഫോൺ നമ്പർ പഴയതു തന്നെ ആണ് </string>
     <string name="local_positon_text">പ്രാദേശിക സ്ഥാനം നിർണയിക്കാൻ കഴിയുന്നില്ല</string>
     <string name="overall_position_text">മൊത്തത്തിലുള്ള സ്ഥാനം കാണിക്കാൻ സാധികുന്നില്ല.</string>
-    <string name="cash_needed_text">ക്യാഷ് വേണ്ടത് : Rs </string>
     <string name="convenience_charges_text">ഉപഭോക്താവിന് ഉള്ള കൺവീനിയൻസ് ചാർജ് </string>
     <string name="code_empty">കോഡ് ആവശ്യമുണ്ട്</string>
     <string name="confirm_email_text">ഇമെയിൽ ശരിയായി  സ്ഥിരീകരിക്കുക </string>
@@ -223,7 +221,6 @@
     <string name="luggage_charge">ലഗേജ് ചാർജ്</string>
     <string name="login">ലോഗിൻ</string>
     <string name="restart_phone">നിങ്ങളുടെ ഫോൺ റീസ്റ്റാർട്ട്‌ ചെയ്യുക </string>
-    <string name="money_to_take">വേടിക്കേണ്ട തുക</string>
     <string name="min_fare">മിനിമം യാത്രാനിരക്ക്</string>
     <string name="meals_on">ഭക്ഷണം ON</string>
     <string name="mail_us">ഞങ്ങൾക്ക് മെയിൽ ചെയ്യു. </string>
@@ -240,7 +237,6 @@
     <string name="name">പേര്</string>
     <string name="name_colon">പേര് :</string>
     <string name="overall_position">മൊത്തത്തിലുള്ള സ്ഥാനം</string>
-    <string name="of_upto_100">Rs 100 /- വരെ </string>
     <string name="some_amount">ദയവായി ചില തുക നൽകുക</string>
     <string name="less_amount">ദയവായി കുറവ് തുക എന്റർ ചെയ്യുക</string>
     <string name="valid_amount">ദയവായി സാധുവായ തുക നൽകുക</string>
@@ -272,7 +268,6 @@
     <string name="ride_id">റൈഡ് ഐഡി</string>
     <string name="Ride_id">റൈഡ് ഐഡി</string>
 
-    <string name="rupees">രൂപ .</string>
     <string name="ride_time2">റൈഡ് സമയം :</string>
     <string name="rate">നിരക്ക് :</string>
     <string name="ride_in_progress_cant_logout">സവാരി പോയികൊണ്ട് ഇരിക്കുകയാണ്. സവാരി കഴിഞ്ഞാൽ മാത്രമേ നിങ്ങൾക്ക് ലോഗൌട്ട് ചെയ്യാൻ സാധിക്കു.</string>
@@ -317,7 +312,6 @@
     <string name="whatsapp_not_installed">വാട്ട്‌സാപ്പ് ഇൻസ്റ്റാൽ ചെയ്തിട്ടില്ല </string>
     <string name="weekly"> പ്രതിവാരം </string>
     <string name="will_revert_you">ഞങ്ങൾ ഉടനെ തന്നെ നിങ്ങൾക്ക് മറുപടി തരുന്നതായിരിക്കും </string>
-    <string name="cannot_add_less_than">നിങ്ങൾക്ക് ആഡ് ചെയ്യാൻ പറ്റുന്ന കുറഞ്ഞ തുക Rs</string>
     <string name="your_position">നിങ്ങളുടെ സ്ഥാനം</string>
     <string name="your_overall_position">നിങ്ങളുടെ മൊത്തത്തിലുള്ള സ്ഥാനം</string>
     <string name="got_new_request">നിങ്ങൾ ഒരു പുതിയ അഭ്യർത്ഥന ലഭിച്ചിരിക്കുന്നു</string>
@@ -331,7 +325,6 @@
     <string name="no_internet_tap_to_retry">ഇന്റർനെറ്റ് കണക്ഷൻ ഇല്ല. വീണ്ടും ശ്രമിക്കുന്നതിന് ടാപ്പ്‌ ചെയ്യുക  </string>
     <string name="no_rides">റൈഡുകൾ ഒന്നും നിലവിൽ ഇല്ല </string>
     <string name="pickup_location">നിങ്ങളുടെ പിക്കപ്പ് സ്ഥലം</string>
-    <string name="money_to_pay">കൊടുക്കേണ്ട പണം .Rs </string>
     <string name="money_to">ജുഗ്നൂവിനു കൊടുക്കേണ്ട പണം </string>
     <string name="start_ride_loc">സവാരി ആരംഭിക്കേണ്ട ലൊക്കേഷൻ</string>
     <string name="sec_left">ശേഷിക്കുന്ന നിമിഷങ്ങൾ</string>

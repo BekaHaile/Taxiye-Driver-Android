@@ -56,6 +56,7 @@ public class CustomerInfo {
 	private String color;
 	private PoolFare poolFare;
 	private DeliveryInfoInRideDetails deliveryInfoInRideDetails;
+	private String currency;
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -63,7 +64,7 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus){
+						int falseDeliveries, int orderId, int loadingStatus, String currency){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -105,6 +106,7 @@ public class CustomerInfo {
 		this.falseDeliveries = falseDeliveries;
 		this.orderId = orderId;
 		this.loadingStatus = loadingStatus;
+		this.currency = currency;
 	}
 
 
@@ -578,5 +580,13 @@ public class CustomerInfo {
 
 	public void setLoadingStatus(int loadingStatus) {
 		this.loadingStatus = loadingStatus;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 }
