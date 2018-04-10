@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.oldRegistration;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -483,7 +482,7 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 	
 	public void sendIntentToOtpScreen() {
 		OldOTPConfirmScreen.intentFromRegister = true;
-		OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
+		OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"", "");
 		startActivity(new Intent(OldRegisterScreen.this, OldOTPConfirmScreen.class));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -491,7 +490,7 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 
 
     public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
-        OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
+        OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"", "");
         OldRegisterScreen.multipleCaseJSON = jObj;
         if (Data.previousAccountInfoList == null) {
             Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();

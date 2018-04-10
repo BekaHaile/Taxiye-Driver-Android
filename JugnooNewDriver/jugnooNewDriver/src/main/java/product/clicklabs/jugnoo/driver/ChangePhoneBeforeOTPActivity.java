@@ -111,9 +111,10 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 					editTextNewPhoneNumber.requestFocus();
 					editTextNewPhoneNumber.setError(getStringText(R.string.Phone_number_not_empty));
 				} else {
-					phoneNoChanged = Utils.retrievePhoneNumberTenChars(phoneNoChanged);
+					String countryCode = Utils.getCountryCode(ChangePhoneBeforeOTPActivity.this);
+					phoneNoChanged = Utils.retrievePhoneNumberTenChars(countryCode, phoneNoChanged);
 					if (Utils.validPhoneNumber(phoneNoChanged)) {
-						phoneNoChanged = "+91" + phoneNoChanged;
+						phoneNoChanged = countryCode + phoneNoChanged;
 						if (previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)) {
 							editTextNewPhoneNumber.requestFocus();
 							editTextNewPhoneNumber.setError(getStringText(R.string.change_phone_no_text));

@@ -31,9 +31,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -68,7 +68,6 @@ import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -272,41 +271,6 @@ public class Utils {
 		return returnPhoneNo;
 	}
 
-
-	public static String retrievePhoneNumberTenChars(String phoneNo) {
-		phoneNo = phoneNo.replace(" ", "");
-		phoneNo = phoneNo.replace("(", "");
-		phoneNo = phoneNo.replace("/", "");
-		phoneNo = phoneNo.replace(")", "");
-		phoneNo = phoneNo.replace("N", "");
-		phoneNo = phoneNo.replace(",", "");
-		phoneNo = phoneNo.replace("*", "");
-		phoneNo = phoneNo.replace(";", "");
-		phoneNo = phoneNo.replace("#", "");
-		phoneNo = phoneNo.replace("-", "");
-		phoneNo = phoneNo.replace(".", "");
-		if (phoneNo.length() >= 10) {
-			phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
-		}
-		return phoneNo;
-	}
-
-	public static boolean validPhoneNumber(String phoneNo) {
-		try {
-			if (!TextUtils.isEmpty(phoneNo) && phoneNo.length() >= 10) {
-				if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
-					return false;
-				} else {
-					return isPhoneValid(phoneNo);
-				}
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
 
 
 	public static boolean isPhoneValid(CharSequence phone) {
@@ -1058,4 +1022,99 @@ public class Utils {
 
 		return time;
 	}
+
+	public static String getCountryCode(Context context) {
+
+		String CountryID = "";
+		String CountryZipCode = "";
+
+		TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		// getNetworkCountryIso
+		try {
+			CountryID = manager.getSimCountryIso().toUpperCase();
+			Log.e("CountryID", "=" + CountryID);
+			String[] rl = context.getResources().getStringArray(R.array.CountryCodes);
+			for (String aRl : rl) {
+				String[] g = aRl.split(",");
+				if (g[1].trim().equals(CountryID.trim())) {
+					CountryZipCode = g[0];
+					return CountryZipCode;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public static String getCountryCodeFromCountryIso(Context context, String countryIso) {
+		String CountryZipCode = "";
+		try {
+			String[] rl = context.getResources().getStringArray(R.array.CountryCodes);
+			for (String aRl : rl) {
+				String[] g = aRl.split(",");
+				if (g[1].trim().equals(countryIso.trim())) {
+					CountryZipCode = g[0];
+					return CountryZipCode;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	public static String getCountryIsoFromCode(Context context, String code) {
+		try {
+			String[] rl = context.getResources().getStringArray(R.array.CountryCodes);
+			for (String aRl : rl) {
+				String[] g = aRl.split(",");
+				if (g[0].trim().equals(code.trim())) {
+					return g[1];
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "IN";
+	}
+
+	public static String getSimCountryIso(Context context) {
+		String CountryID = "IN";
+		TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		// getNetworkCountryIso
+		try {
+			CountryID = manager.getSimCountryIso().toUpperCase();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return CountryID;
+	}
+
+	public static String retrievePhoneNumberTenChars(String countryCode, String phoneNo){
+		phoneNo = phoneNo.replace(" ", "");
+		phoneNo = phoneNo.replace("(", "");
+		phoneNo = phoneNo.replace("/", "");
+		phoneNo = phoneNo.replace(")", "");
+		phoneNo = phoneNo.replace("N", "");
+		phoneNo = phoneNo.replace(",", "");
+		phoneNo = phoneNo.replace("*", "");
+		phoneNo = phoneNo.replace(";", "");
+		phoneNo = phoneNo.replace("#", "");
+		phoneNo = phoneNo.replace("-", "");
+		phoneNo = phoneNo.replace(".", "");
+		phoneNo = phoneNo.replace(countryCode, "");
+		phoneNo = phoneNo.replace("+", "");
+		return phoneNo;
+	}
+
+	public static boolean validPhoneNumber(String phoneNo){
+		if(phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
+			return isPhoneValid(phoneNo);
+		}
+		else{
+			return false;
+		}
+	}
+
 }

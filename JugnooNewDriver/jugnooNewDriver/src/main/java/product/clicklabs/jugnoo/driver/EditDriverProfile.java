@@ -15,6 +15,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.picker.Country;
+import com.picker.CountryPicker;
+import com.picker.OnCountryPickerListener;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +31,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -40,7 +43,7 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 14/01/16.
  */
-public class EditDriverProfile extends BaseActivity {
+public class EditDriverProfile extends BaseFragmentActivity {
 	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;
@@ -49,7 +52,9 @@ public class EditDriverProfile extends BaseActivity {
 	ScrollView scrollView;
 
 	EditText editTextUserName, editTextPhone;
+	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
+	CountryPicker countryPicker;
 //	public static ProfileInfo openProfileInfo;
 
 
@@ -93,6 +98,8 @@ public class EditDriverProfile extends BaseActivity {
 		editTextUserName.setTypeface(Data.latoRegular(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		editTextPhone.setTypeface(Data.latoRegular(this));
+		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
+		tvCountryCode.setTypeface(Data.latoRegular(this));
 		TextViewAccNo = (TextView) findViewById(R.id.TextViewAccNo);
 		title.setTypeface(Data.latoRegular(this));
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
@@ -115,6 +122,20 @@ public class EditDriverProfile extends BaseActivity {
 		});
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+		countryPicker = new CountryPicker.Builder().with(this)
+				.listener(new OnCountryPickerListener() {
+					@Override
+					public void onSelectCountry(Country country) {
+						tvCountryCode.setText(country.getDialCode());
+					}
+				})
+				.build();
+		tvCountryCode.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				countryPicker.showDialog(getSupportFragmentManager());
+			}
+		});
 
 		if(DriverProfileActivity.openedProfileInfo != null){
 			TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
@@ -134,14 +155,14 @@ public class EditDriverProfile extends BaseActivity {
 						editTextPhone.requestFocus();
 						editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 					} else {
-						phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
+						phoneChanged = Utils.retrievePhoneNumberTenChars(tvCountryCode.getText().toString(), phoneChanged);
 						if (Utils.validPhoneNumber(phoneChanged)) {
-							phoneChanged = "+91" + phoneChanged;
+							phoneChanged = tvCountryCode.getText().toString() + phoneChanged;
 							if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged)) {
 								editTextPhone.requestFocus();
 								editTextPhone.setError(getResources().getString(R.string.changed_no_same_as_previous));
 							} else {
-								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
+								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
 							}
 						} else {
 							editTextPhone.requestFocus();
@@ -152,19 +173,13 @@ public class EditDriverProfile extends BaseActivity {
 					editTextPhone.requestFocus();
 					editTextPhone.setEnabled(true);
 					editTextPhone.setSelection(editTextPhone.getText().length());
+					tvCountryCode.setEnabled(true);
+					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
 					Utils.showSoftKeyboard(EditDriverProfile.this, editTextPhone);
 				}
 			}
 		});
 
-//		editTextUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//
-//			@Override
-//			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-//				imageViewEditName.performClick();
-//				return true;
-//			}
-//		});
 		editTextPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 			@Override
@@ -234,6 +249,7 @@ public class EditDriverProfile extends BaseActivity {
 		try {
 			editTextUserName.setEnabled(false);
 			editTextPhone.setEnabled(false);
+			tvCountryCode.setEnabled(false); tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
 			try {
 				Picasso.with(this).load(Data.userData.userImage)
 						.transform(new CircleTransform())
@@ -243,7 +259,8 @@ public class EditDriverProfile extends BaseActivity {
 
 			if (Data.userData != null) {
 				editTextUserName.setText(Data.userData.userName);
-				editTextPhone.setText(Data.userData.phoneNo);
+				editTextPhone.setText(Utils.retrievePhoneNumberTenChars(Data.userData.getCountryCode(), Data.userData.phoneNo));
+				tvCountryCode.setText(Data.userData.getCountryCode());
 			}
 
 
@@ -253,7 +270,7 @@ public class EditDriverProfile extends BaseActivity {
 	}
 
 
-	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
+	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode, final String countryCode) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.updating));
@@ -267,6 +284,7 @@ public class EditDriverProfile extends BaseActivity {
 
 			if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
 				params.put("updated_phone_no", updatedField);
+				params.put(Constants.KEY_UPDATED_COUNTRY_CODE, countryCode);
 			} else {
 				params.put("updated_user_name", updatedField);
 			}
@@ -288,6 +306,7 @@ public class EditDriverProfile extends BaseActivity {
 								if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
 									Intent intent = new Intent(activity, OTPConfirmScreen.class);
 									intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
+									intent.putExtra(Constants.KEY_COUNTRY_CODE, countryCode);
 									intent.putExtra(Constants.KNOWLARITY_NO, jObj.optString("knowlarity_missed_call_number",""));
 									activity.startActivity(intent);
 									activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);

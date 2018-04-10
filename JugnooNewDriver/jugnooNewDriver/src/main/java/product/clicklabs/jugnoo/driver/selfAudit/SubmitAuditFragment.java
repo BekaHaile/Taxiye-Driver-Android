@@ -25,11 +25,8 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
-import product.clicklabs.jugnoo.driver.NotificationCenterActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
-import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -238,9 +235,9 @@ public class SubmitAuditFragment extends Fragment {
 					phoneNoEt.requestFocus();
 					phoneNoEt.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 				} else {
-					phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
+					phoneChanged = Utils.retrievePhoneNumberTenChars(Utils.getCountryCode(activity), phoneChanged);
 					if (Utils.validPhoneNumber(phoneChanged)) {
-						phoneChanged = "+91" + phoneChanged;
+						phoneChanged = Utils.getCountryCode(activity) + phoneChanged;
 						if (auditStateResponse != null) {
 							if(auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(phoneChanged)) {
 								phoneNoEt.requestFocus();

@@ -847,6 +847,10 @@
     <string name="label_current_outstanding">    ବର୍ତମାନ ବାକିଥିବା ଆମାଉଣ୍ଟ:</string>
     <string name="label_available_plans">    ପ୍ଲାନ ଉପଲବ୍ଧ</string>
     <string name="title_plans_screen"> କମିସନ ନକଟିବା ରାଇଡ</string>
+    <string name="no_country_found">No country found</string>
+    <string name="error_no_countries_found">No Countries Found!</string>
+    <string name="country_picker_header">Select country</string>
+    <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
     <!--Strings for Subscription plans-->
 
 

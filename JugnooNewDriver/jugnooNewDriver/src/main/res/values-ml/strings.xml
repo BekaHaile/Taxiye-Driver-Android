@@ -827,6 +827,10 @@
     <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
+    <string name="no_country_found">No country found</string>
+    <string name="error_no_countries_found">No Countries Found!</string>
+    <string name="country_picker_header">Select country</string>
+    <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

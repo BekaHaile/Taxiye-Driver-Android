@@ -2,11 +2,9 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -63,7 +61,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber, btnOtpViaCall;
     LinearLayout layoutResendOtp, btnReGenerateOtp;
     String knowlarityMissedCallNumber = "";
-    String phoneNumberToVerify = "";
+    String phoneNumberToVerify = "", countryCode;
     public static String OTP_SCREEN_OPEN = null;
     boolean loginDataFetched = false;
 
@@ -134,9 +132,11 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
         phoneNumberToVerify = null;
+        countryCode = "+91";
 
         try {
             phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
+            countryCode = getIntent().getStringExtra(Constants.KEY_COUNTRY_CODE);
             if (emailRegisterData != null) {
                 if (emailRegisterData.phoneNo != null) {
                     phoneNoEt.setText(emailRegisterData.phoneNo);
@@ -191,7 +191,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                     if (phoneNumberToVerify == null) {
                         sendSignupValues(OTPConfirmScreen.this, otpCode);
                     } else {
-                        sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode);
+                        sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode, countryCode);
                     }
                     FlurryEventLogger.otpConfirmClick(otpCode);
                 } else {
@@ -358,7 +358,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
             RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.phoneNo, emailRegisterData.password,
                     Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
-                    Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
+                    Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, countryCode, new Callback<BookingHistoryResponse>() {
 
 
                         @Override
@@ -420,7 +420,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
     }
 
-    public void sendSignupValuesToEdit(final Activity activity, final String phoneNo, String otp) {
+    public void sendSignupValuesToEdit(final Activity activity, final String phoneNo, String otp, final String countryCode) {
         try {
             if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
                 DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -430,6 +430,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 params.put("access_token", Data.userData.accessToken);
                 params.put("is_access_token_new", "1");
                 params.put("phone_no", phoneNo);
+                params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("verification_token", otp);
 
                 Log.i("params", ">" + params);
@@ -454,6 +455,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                         public void onClick(View v) {
                                             performBackPressed();
                                             Data.userData.phoneNo = phoneNo;
+                                            Data.userData.setCountryCode(countryCode);
                                         }
                                     });
                                 } else {
@@ -494,6 +496,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 DialogPopup.showLoadingDialog(OTPConfirmScreen.this, getResources().getString(R.string.loading));
                 HashMap<String, String> params = new HashMap<>();
                 params.put("phone_no", phoneNo);
+                params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("login_type", "1");
                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 

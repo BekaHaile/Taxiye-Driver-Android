@@ -59,7 +59,8 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
-				&& !(this instanceof DriverDocumentActivity
+				&& !(this instanceof SplashNewActivity
+					|| this instanceof DriverDocumentActivity
 					|| this instanceof HelpActivity)) {
 			startActivity(new Intent(this, SplashNewActivity.class));
 			finish();

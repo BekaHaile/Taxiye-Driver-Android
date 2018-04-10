@@ -7,22 +7,17 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -67,7 +62,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     String knowlarityMissedCallNumber = "";
     public static String OTP_SCREEN_OPEN = null;
     List<String> categories = new ArrayList<>();
-    String phoneNo;
+    String phoneNo, countryCode;
 
 
     String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
@@ -110,6 +105,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         relative = (RelativeLayout) findViewById(R.id.relative);
         new ASSL(LoginViaOTP.this, relative, 1134, 720, false);
         phoneNo = getIntent().getStringExtra("phone_no");
+        countryCode = getIntent().getStringExtra(Constants.KEY_COUNTRY_CODE);
 
         otpEt = (EditText) findViewById(R.id.otpEt);
         otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -153,7 +149,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                 textViewOtpNumber.setText(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
                 loginViaOtp.performClick();
             } else if (getIntent().hasExtra("phone_no")) {
-                generateOTP(phoneNo);
+                generateOTP(phoneNo, countryCode);
             }
 
         } catch (Exception e) {
@@ -175,7 +171,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                 if ((Utils.validPhoneNumber(phoneNo))) {
 					otpEt.setText("");
 					otpEt.setError(null);
-                    generateOTP(phoneNo);
+                    generateOTP(phoneNo, countryCode);
                 }
             }
         });
@@ -293,12 +289,13 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
     }
 
-    public void generateOTP(final String phoneNo) {
+    public void generateOTP(final String phoneNo, final String countryCode) {
         try {
             if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
                 DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
                 HashMap<String, String> params = new HashMap<>();
-                params.put("phone_no", "+91" + phoneNo);
+                params.put("phone_no", countryCode + phoneNo);
+                params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("login_type", "1");
                 Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
                 Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());

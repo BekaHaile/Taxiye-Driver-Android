@@ -341,7 +341,6 @@ public class DriverPatymRecharge extends BaseActivity {
 				editTextPhone.requestFocus();
 				editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 			} else {
-				phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
 				if (Utils.validPhoneNumber(phoneChanged)) {
 					return true;
 				} else {
@@ -381,7 +380,7 @@ public class DriverPatymRecharge extends BaseActivity {
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText(getResources().getString(R.string.recharge_amount_for_customer, editTextCashAmount.getText() , editTextPhone.getText()));
+			textMessage.setText(getResources().getString(R.string.recharge_amount_for_customer, editTextCashAmount.getText().toString() , editTextPhone.getText().toString()));
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);

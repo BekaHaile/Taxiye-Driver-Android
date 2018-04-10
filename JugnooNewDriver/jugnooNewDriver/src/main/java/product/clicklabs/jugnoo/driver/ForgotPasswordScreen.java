@@ -115,9 +115,9 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 
 				}
 				else{
-					String phone = Utils.retrievePhoneNumberTenChars(phoneNumber);
+					String phone = Utils.retrievePhoneNumberTenChars(Utils.getCountryCode(ForgotPasswordScreen.this), phoneNumber);
 					if(Utils.validPhoneNumber(phone)){
-						forgotPasswordAsync(ForgotPasswordScreen.this, "+91"+phone);
+						forgotPasswordAsync(ForgotPasswordScreen.this, Utils.getCountryCode(ForgotPasswordScreen.this)+phone);
 						FlurryEventLogger.event(CHANGE_PASSWORD_ENTER_EMAIL);
 						FlurryEventLogger.event(CHANGE_PASSWORD);
 					}
