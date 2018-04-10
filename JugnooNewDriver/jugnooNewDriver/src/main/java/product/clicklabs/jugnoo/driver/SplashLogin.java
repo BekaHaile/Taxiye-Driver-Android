@@ -24,6 +24,7 @@ import android.widget.TextView.OnEditorActionListener;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -271,15 +272,8 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			e.printStackTrace();
 		}
 
-
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
+		Data.deviceToken = 	FirebaseInstanceId.getInstance().getToken();
+		Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 
 		try {
 			if (getIntent().hasExtra("previous_login_email")) {

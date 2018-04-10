@@ -238,5 +238,6 @@ public interface Constants {
     String END_RIDE_CUSTOM_TEXT = "end_ride_custom_text";
 
     String PLAN_ID = "plan_id";
+    String ACTION_DEVICE_TOKEN_UPDATED = "action.device_token_updated";
 }
 

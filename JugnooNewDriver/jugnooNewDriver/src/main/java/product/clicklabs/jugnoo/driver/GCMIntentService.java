@@ -29,6 +29,8 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,14 +79,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class GCMIntentService extends IntentService {
+public class GCMIntentService extends FirebaseMessagingService {
 
 	public static int PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public GCMIntentService() {
-		super("GcmIntentService");
 	}
 
 
@@ -443,9 +444,15 @@ public class GCMIntentService extends IntentService {
 
 
 	@Override
-	public void onHandleIntent(Intent intent) {
+	public void onMessageReceived(RemoteMessage remoteMessage) {
+//		super.onMessageReceived(remoteMessage);
+		onHandleIntent(remoteMessage);
+
+	}
+
+	public void onHandleIntent(RemoteMessage intent) {
 		try {
-			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+			Log.i("Recieved a gcm message arg1...", "," + intent.getData());
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -456,11 +463,11 @@ public class GCMIntentService extends IntentService {
 			if (!"".equalsIgnoreCase(accessToken)) {
 
 				try {
-					Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+					Log.i("Recieved a gcm message arg1...", "," + intent.getData());
 
-					if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
-
-						String message = intent.getExtras().getString("message");
+					if (!"".equalsIgnoreCase(intent.getData().get("message"))) {
+//						String message = String.valueOf(data.get(KEY_MESSAGE));
+						String message = intent.getData().get("message");
 
 						try {
 							JSONObject jObj = new JSONObject(message);
@@ -892,13 +899,12 @@ public class GCMIntentService extends IntentService {
 				} catch (Exception e) {
 					e.printStackTrace();
 
-					// Release the wake lock provided by the WakefulBroadcastReceiver.
-					GcmBroadcastReceiver.completeWakefulIntent(intent);
+
 
 				}
-			} else if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
+			} else if (!"".equalsIgnoreCase(intent.getData().get("message"))) {
 				try {
-					String message = intent.getExtras().getString("message");
+					String message = intent.getData().get("message");
 					JSONObject jObj = new JSONObject(message);
 					Log.i("push_notification", String.valueOf(jObj));
 					int flag = jObj.getInt(Constants.KEY_FLAG);

@@ -13,6 +13,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -99,16 +101,8 @@ public class DriverLocationUpdateService extends Service {
 
 		final String finalAccessToken = accessToken;
 		final String finalSERVER_URL = SERVER_URL;
-		new DeviceTokenGenerator(context).generateDeviceToken(context, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(String deviceToken) {
-				try {
-					Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		Database2.getInstance(context).insertDriverLocData(finalAccessToken,FirebaseInstanceId.getInstance().getToken(), finalSERVER_URL);
+
 
 		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
 				Context.MODE_PRIVATE).getString("pushy_registration_id", "");

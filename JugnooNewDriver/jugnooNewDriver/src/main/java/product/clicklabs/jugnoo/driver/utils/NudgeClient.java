@@ -54,7 +54,7 @@ public class NudgeClient {
 			props.put(Constants.KEY_CONTACTS, jArray);
 
 			subscriber.setProperties(props);
-			getGcmClient(context).initialize(subscriber);
+//			getGcmClient(context).initialize(subscriber);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,7 +62,7 @@ public class NudgeClient {
 
 
 	public static void trackEvent(Context context, String eventName, JSONObject map){
-		try {
+	/*	try {
 			if(map == null){
 				map = new JSONObject();
 			}
@@ -72,11 +72,11 @@ public class NudgeClient {
 			getGcmClient(context).track(activity);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public static void logout(Context context){
-		getGcmClient(context).clearRegistration();
+//		getGcmClient(context).clearRegistration();
 	}
 
 

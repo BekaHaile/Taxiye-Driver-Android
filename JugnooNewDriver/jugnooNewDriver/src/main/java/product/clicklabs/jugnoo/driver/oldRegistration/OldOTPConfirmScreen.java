@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -196,15 +197,8 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 			e.printStackTrace();
 		}
 
+		Data.deviceToken = FirebaseInstanceId.getInstance().getToken()  ;
 
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
 	}
 
 

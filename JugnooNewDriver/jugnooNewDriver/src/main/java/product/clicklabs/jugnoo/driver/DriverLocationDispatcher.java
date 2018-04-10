@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -127,7 +128,8 @@ public class DriverLocationDispatcher {
 
 								int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 								if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
-									String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
+									String deviceTokenNew =	FirebaseInstanceId.getInstance().getToken();
+									;
 									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 									sendLocationToServer(context);
 									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);

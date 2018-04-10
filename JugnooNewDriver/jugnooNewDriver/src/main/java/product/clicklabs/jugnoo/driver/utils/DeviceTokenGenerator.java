@@ -3,23 +3,20 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import product.clicklabs.jugnoo.driver.Data;
+
 import product.clicklabs.jugnoo.driver.SplashLogin;
 
 public class DeviceTokenGenerator {
 
-	GoogleCloudMessaging gcm;
 	String regId;
 
 	private static final String PROPERTY_REG_ID = "registration_id";
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 
 	public DeviceTokenGenerator(Context context) {
-		gcm = GoogleCloudMessaging.getInstance(context);
+
 	}
 
 
@@ -34,6 +31,7 @@ public class DeviceTokenGenerator {
 
 
 	private String getRegistrationId(Context context) {
+
 		final SharedPreferences prefs = getGCMPreferences(context);
 		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
 		if (registrationId.isEmpty()) {
@@ -53,26 +51,7 @@ public class DeviceTokenGenerator {
 	}
 
 	private void registerInBackground(final Context context, final IDeviceTokenReceiver deviceTokenReceiver) {
-		if (AppStatus.getInstance(context).isOnline(context)) {
-			if (gcm == null) {
-				gcm = GoogleCloudMessaging.getInstance(context);
-			}
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						regId = gcm.register(Data.GOOGLE_PROJECT_ID);
-						setRegistrationId(context, regId);
-					} catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						deviceTokenReceiver.deviceTokenReceived(regId);
-					}
-				}
-			}).start();
-		} else {
-			deviceTokenReceiver.deviceTokenReceived(regId);
-		}
+
 	}
 
 	private void setRegistrationId(Context context, String regId) {
@@ -103,22 +82,7 @@ public class DeviceTokenGenerator {
 	}
 
 	public String forceGenerateDeviceToken(Context context) {
-		try {
-			if (gcm == null) {
-				gcm = GoogleCloudMessaging.getInstance(context);
-			}
-			gcm.unregister();
-			regId = gcm.register(Data.GOOGLE_PROJECT_ID);
-			setRegistrationId(context, regId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (regId == null) {
-				regId = "not_found";
-			} else if (regId.equalsIgnoreCase("")) {
-				regId = "not_found";
-			}
-		}
+
 		return regId;
 	}
 

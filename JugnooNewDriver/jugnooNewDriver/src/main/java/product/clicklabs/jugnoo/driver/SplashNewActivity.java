@@ -3,8 +3,10 @@ package product.clicklabs.jugnoo.driver;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -19,7 +21,9 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -53,6 +57,7 @@ import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,12 +86,10 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -103,7 +106,7 @@ import retrofit.mime.TypedByteArray;
 public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
-
+	public final static String DEVICE_TOKEN_TAG = "DEVICE_TOKEN_TAG";
 	LinearLayout relative, linearLayoutSignUpIn, linearLayoutLoginSignupButtons, linearLayoutLogin;
 	RelativeLayout relativeLayoutSignup, relativeLayoutScrollStop;
 	RelativeLayout relativeLayoutJugnooLogo, relativeLayoutLS;
@@ -538,6 +541,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onClick(View v) {
 
+
 				String name = nameEt.getText().toString().trim();
 				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
@@ -823,45 +827,56 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 
 
-	
+	private Handler handler = new Handler();
+	private Runnable deviceTokenNotFoundRunnable = new Runnable() {
+		@Override
+		public void run() {
+
+			if(!SplashNewActivity.this.isFinishing()){
+				progressBar1.setVisibility(View.GONE);
+				DialogPopup.alertPopupWithListener(SplashNewActivity.this, "",
+						getString(R.string.device_token_not_found_message),
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								SplashNewActivity.this.finish();
+							}
+						});
+
+			}
+		}
+	};
 	public void getDeviceToken(){
 //	    progressBar1.setVisibility(View.VISIBLE);
 		Data.deviceToken = "";
-		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+		if(handler!=null){
+			handler.removeCallbacksAndMessages(null);
+		}
 
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						new Handler().postDelayed(new Runnable() {
+		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "getDeviceToken() " +  FirebaseInstanceId.getInstance().getToken());
 
-							@Override
-							public void run() {
-								Data.deviceToken = regId;
-								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-								checkForTokens();
-							}
-						}, 500);
-					}
-				});
+		if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getToken())){
+			Data.deviceToken = FirebaseInstanceId.getInstance().getToken();
+			Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+			checkForTokens();
+		}else {
+			//wait for broadcast
+			try {
+				LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		});
+			LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+			//give message after waiting for 5 Seconds
+			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
 
-//		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-//			@Override
-//			public void deviceTokenReceived(final String regId) {
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						Data.pushyToken = regId;
-//						checkForTokens();
-//					}
-//				});
-//			}
-//		});
+
+		}
+
+
 
 	}
+
 	private void checkForTokens(){
 
 		if(!"".equalsIgnoreCase(Data.deviceToken)){
@@ -914,7 +929,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
 		}
 
-		NudgeClient.getGcmClient(this);
+//		NudgeClient.getGcmClient(this);
 		
 		super.onResume();
 	}
@@ -1936,6 +1951,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		try {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
+		} catch (Exception e) {
+		}
         ASSL.closeActivity(relative);
         System.gc();
 	}
@@ -2814,6 +2833,30 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 	}
 
+public BroadcastReceiver deviceTokenReceiver = new BroadcastReceiver() {
+	@Override
+	public void onReceive(Context context, Intent intent) {
+			Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "onReceive: ");
+
+		if(intent.getAction()!=null && intent.getAction().equals(Constants.ACTION_DEVICE_TOKEN_UPDATED)){
+			Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "onReceive: going to call getDeviceToken()");
+
+			//FirebaseInstanceId.getInstance().getToken() has   a token
+			getDeviceToken();
+		}
+
+
+	}
+};
+	private IntentFilter intentFilter;
+
+	private IntentFilter deviceTokenReceiverFilter(){
+		if(intentFilter==null) {
+			intentFilter = new IntentFilter();
+			intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
+		}
+		return intentFilter;
+	}
 
 
 }

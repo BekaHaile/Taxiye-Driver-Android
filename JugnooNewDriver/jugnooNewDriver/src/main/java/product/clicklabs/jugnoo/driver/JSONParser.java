@@ -382,13 +382,13 @@ public class JSONParser implements Constants {
 		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 
 
-		try {
+		/*try {
 			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
 					Data.userData.getUserEmail(), Data.userData.phoneNo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+*/
 		return resp;
 	}
 

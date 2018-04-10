@@ -917,6 +917,7 @@
     <string name="visit_office_in_city">Visit &appname; office in your city</string>
     <string name="support_subject">&appname;Support</string>
     <string name="referal_sms_message">Use my code %1$s to download &appname; customer App and earn &appname; cash.\nDownload it from here\n %2$s </string>
+    <string name="device_token_not_found_message">There was a problem with with your device, please restart your app once to proceed</string>
     <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>

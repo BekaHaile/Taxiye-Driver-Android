@@ -30,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -296,13 +297,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
+		Data.deviceToken = FirebaseInstanceId.getInstance().getToken();
+
 
 		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override

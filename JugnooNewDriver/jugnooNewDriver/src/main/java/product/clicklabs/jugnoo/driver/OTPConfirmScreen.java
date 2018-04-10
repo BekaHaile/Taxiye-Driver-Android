@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
@@ -295,14 +296,8 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         }
 
         OTP_SCREEN_OPEN = "yes";
-        new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+        Data.deviceToken  =  FirebaseInstanceId.getInstance().getToken();
 
-            @Override
-            public void deviceTokenReceived(final String regId) {
-                Data.deviceToken = regId;
-                Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-            }
-        });
     }
 
 
