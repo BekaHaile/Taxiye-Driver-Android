@@ -233,22 +233,20 @@ public class DeliveryDetailsActivity extends BaseActivity {
 					textViewJugnooCutValue.setText(deliveryDetailResponse.getDetails().getJugnooCut());
 				}
 
-				textViewActualFare.setText(getResources().getString(R.string.rupee) + " " +
-						Utils.getDecimalFormatForMoney().format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getTotalFare()))));
-				textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " "
-						+ Utils.getDecimalFormatForMoney().format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getPaidInCash()))));
+				textViewActualFare.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails(),deliveryDetailResponse.getDetails().getTotalFare()));
+				textViewCustomerPaid.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails().getCurrencyUnit(),deliveryDetailResponse.getDetails().getPaidInCash()));
+
 
 				if (Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance())) < 0) {
-					textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " "
-							+ Utils.getDecimalFormatForMoney().
-							format(Math.abs(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance()))))));
+					textViewAccountBalance.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails().getCurrencyUnit(),
+							Math.abs(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance())))));
+
 					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
 					textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
 					textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
 				} else {
-					textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " +
-							Utils.getDecimalFormatForMoney().
-									format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance()))));
+					textViewAccountBalance.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails().getCurrencyUnit(),
+							deliveryDetailResponse.getDetails().getAccountBalance()));
 					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 					textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
 					textViewAccountBalanceText.setText(getResources().getString(R.string.account));

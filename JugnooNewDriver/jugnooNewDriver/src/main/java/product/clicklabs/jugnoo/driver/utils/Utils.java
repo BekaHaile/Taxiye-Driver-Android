@@ -74,6 +74,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 
 public class Utils {
@@ -1072,6 +1073,15 @@ public class Utils {
 	public static String formatCurrencyValue(String currency, String value){
 		try {
 			return formatCurrencyValue(currency, Double.parseDouble(value));
+		} catch (NumberFormatException e) {
+			return value;
+		}
+	}
+
+
+	public  static <T extends CurrencyModel>String formatCurrencyValue(T currencyModel, String value){
+		try {
+			return formatCurrencyValue(currencyModel.getCurrencyUnit(), Double.parseDouble(value));
 		} catch (NumberFormatException e) {
 			return value;
 		}
