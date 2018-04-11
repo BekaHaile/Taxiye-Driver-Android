@@ -165,8 +165,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 		if (rateCardResponse != null) {
 
-			textViewPickupChargesValues.setText(getResources().getString(R.string.rupee)
-					+ rateCardResponse.getRates().getPickupCharges());
+			textViewPickupChargesValues.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() , rateCardResponse.getRates().getPickupCharges()));
 
 			if(rateCardResponse.getRates().getPickupChargesThreshold() > 0){
 				textViewPickupChargesCond.setText(getResources().getString(R.string.applicable_after,
@@ -177,12 +176,9 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				textViewPickupChargesCondStar.setVisibility(View.GONE);
 			}
 
-			textViewBaseFareValue.setText(getResources().getString(R.string.rupee)
-					+ rateCardResponse.getRates().getBaseFare());
-			textViewDistancePKmValue.setText(getResources().getString(R.string.rupee)
-					+ rateCardResponse.getRates().getFarePerKm());
-			textViewTimePKmValue.setText(getResources().getString(R.string.rupee)
-					+ rateCardResponse.getRates().getFarePerMin());
+			textViewBaseFareValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getBaseFare()));
+			textViewDistancePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerKm()));
+			textViewTimePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerMin()));
 
 			if(rateCardResponse.getRates().getAfterThresholdDistance() > 0){
 				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
@@ -202,16 +198,16 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				linearLayoutDriverReferral.setVisibility(View.GONE);
 				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
 				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_customer));
-				textViewDriverReferralValue.setText(getResources().getString(R.string.rupee)+ dToCReferral);
+				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral));
 			} else if(dToCReferral == 0 && dToDReferral >0){
 				linearLayoutDriverReferral.setVisibility(View.GONE);
 				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
 				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_driver));
-				textViewDriverReferralValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
+				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
 			} else if(dToCReferral > 0 && dToDReferral > 0){
 				linearLayoutDriverReferral.setVisibility(View.VISIBLE);
-				textViewDtoCValue.setText(getResources().getString(R.string.rupee) + dToCReferral);
-				textViewDtoDValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
+				textViewDtoCValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral));
+				textViewDtoDValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
 			}
 
 		} else {

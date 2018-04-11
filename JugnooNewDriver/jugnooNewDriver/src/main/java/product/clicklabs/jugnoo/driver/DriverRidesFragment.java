@@ -248,7 +248,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					}
 				}
 
-				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
+				holder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(rideInfo.currency, Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid))));
 				holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
 				double balance = Double.parseDouble(rideInfo.accountBalance);
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
@@ -264,10 +264,10 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				}
 				holder.textViewAccountBalance.setVisibility(View.VISIBLE);
-				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance))));
+				holder.textViewAccountBalance.setText(Utils.formatCurrencyValue(rideInfo.currency, Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance)))));
 
 				holder.textViewActualFareFare.setVisibility(View.VISIBLE);
-				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
+				holder.textViewActualFareFare.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare))));
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
@@ -303,7 +303,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					}
 				}
 
-				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
+				holder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid))));
 				holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
 				double balance = Double.parseDouble(rideInfo.accountBalance);
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
@@ -319,10 +319,10 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				}
 				holder.textViewAccountBalance.setVisibility(View.VISIBLE);
-				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance))));
+				holder.textViewAccountBalance.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance)))));
 
 				holder.textViewActualFareFare.setVisibility(View.VISIBLE);
-				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
+				holder.textViewActualFareFare.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare))));
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
@@ -341,9 +341,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewTransTypeText.setText(activity.getStringText(R.string.referral));
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.textViewRideId.setText(getResources().getString(R.string.customer_id) + ": " + rideInfo.customerId);
-				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.referralAmount)));
-				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
-				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.referralAmount))));
+				holder.textViewActualFareFare.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.referralAmount))));
+				holder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble("0"))));
+				holder.textViewAccountBalance.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.referralAmount)))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				holder.textViewBalanceText.setText(activity.getStringText(R.string.account));
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
@@ -357,9 +357,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
 				holder.textViewTransTypeText.setText(activity.getStringText(R.string.phone_deduction));
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
-				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
-				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount))));
+				holder.textViewActualFareFare.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount))));
+				holder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble("0"))));
+				holder.textViewAccountBalance.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount)))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				holder.textViewBalanceText.setText("Money to\nJugnoo");
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
@@ -375,9 +375,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewTransTypeText.setText(activity.getStringText(R.string.paytm_transaction));
 				holder.textViewRideId.setText(activity.getStringText(R.string.phone_no) + rideInfo.phone);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
-				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
-				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount))));
+				holder.textViewActualFareFare.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount))));
+				holder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(rideInfo.currency,  Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount))));
+				holder.textViewAccountBalance.setText(Utils.formatCurrencyValue(rideInfo.currency, Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount)))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				holder.textViewBalanceText.setText(R.string.money_to_jugnoo);
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
@@ -446,20 +446,20 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut(),data.getCurrencyUnit());
 											} else if (data.getType().equalsIgnoreCase("delivery")) {
 												rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
 														data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut(),data.getCurrencyUnit());
 											} else if (data.getType().equalsIgnoreCase("referral")) {
-												rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
+												rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime(),data.getCurrencyUnit());
 											} else if (data.getType().equalsIgnoreCase("phone_deductions")) {
-												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime());
+												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(),data.getCurrencyUnit());
 											} else if (data.getType().equalsIgnoreCase("paytm_transaction")) {
-												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());
+												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone(),data.getCurrencyUnit());
 											}
 
 											if (rideInfo != null) {

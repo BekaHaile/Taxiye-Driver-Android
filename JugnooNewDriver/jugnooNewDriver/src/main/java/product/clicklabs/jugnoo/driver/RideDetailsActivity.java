@@ -37,7 +37,7 @@ public class RideDetailsActivity extends BaseActivity {
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
 
 
-	public static RideInfo openedRideInfo;
+ 	public static RideInfo openedRideInfo;
 
 	@Override
 	protected void onStart() {
@@ -204,19 +204,19 @@ public class RideDetailsActivity extends BaseActivity {
 			}
 			else{
 				relativeLayoutJugnooCut.setVisibility(View.GONE);
-				textViewJugnooCutValue.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.jugnooCut)));
+				textViewJugnooCutValue.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.jugnooCut));
 			}
 
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
+			textViewActualFare.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.actualFare));
+			textViewCustomerPaid.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.customerPaid));
 
 			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
+				textViewAccountBalance.setText((Utils.formatCurrencyValue(openedRideInfo.currency,Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
 			} else {
-				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
+				textViewAccountBalance.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.accountBalance));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalanceText.setText(getResources().getString(R.string.account));

@@ -55,6 +55,14 @@ public class DeliveryInfo {
 	}
 
 
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -213,9 +221,5 @@ public class DeliveryInfo {
 
 	public void setLoadUnload(int loadUnload) {
 		this.loadUnload = loadUnload;
-	}
-
-	public String getCurrency() {
-		return currency;
 	}
 }
