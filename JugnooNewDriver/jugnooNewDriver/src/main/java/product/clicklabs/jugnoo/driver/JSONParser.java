@@ -347,6 +347,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		String countryCode = userData.optString(Constants.KEY_COUNTRY_CODE, "+91");
 		Prefs.with(context).save(SP_USER_ID, userId);
 
 		return new UserData(accessToken, userData.getString("user_name"),
@@ -356,7 +357,8 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,isCaptiveDriver);
+				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
+				isCaptiveDriver, countryCode);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

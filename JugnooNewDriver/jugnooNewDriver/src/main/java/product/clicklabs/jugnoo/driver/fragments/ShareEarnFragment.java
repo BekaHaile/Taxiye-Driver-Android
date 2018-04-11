@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -23,11 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
+import com.picker.Country;
+import com.picker.CountryPicker;
+import com.picker.OnCountryPickerListener;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
@@ -140,7 +145,7 @@ public class ShareEarnFragment extends Fragment {
         System.gc();
     }
 
-    public void confirmCustomerNumberPopup(final Activity activity) {
+    public void confirmCustomerNumberPopup(final FragmentActivity activity) {
 
         try {
             final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -160,6 +165,22 @@ public class ShareEarnFragment extends Fragment {
             TextView textViewDialogTitle = (TextView) dialog.findViewById(R.id.textViewDialogTitle);
             textViewDialogTitle.setTypeface(Data.latoRegular(activity));
             final EditText customerNumber = (EditText) dialog.findViewById(R.id.customerNumber);
+            final TextView tvCountryCode = (TextView) dialog.findViewById(R.id.tvCountryCode);
+            tvCountryCode.setText(Utils.getCountryCode(activity));
+            final CountryPicker countryPicker = new CountryPicker.Builder().with(activity)
+                    .listener(new OnCountryPickerListener() {
+                        @Override
+                        public void onSelectCountry(Country country) {
+                            tvCountryCode.setText(country.getDialCode());
+                        }
+                    })
+                    .build();
+            tvCountryCode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    countryPicker.showDialog(activity.getSupportFragmentManager());
+                }
+            });
             customerNumber.setTypeface(Data.latoRegular(activity));
             customerNumber.setHint(Data.userData.referralDialogHintText);
             textViewDialogTitle.setText(Data.userData.referralDialogText);
@@ -178,12 +199,12 @@ public class ShareEarnFragment extends Fragment {
                             customerNumber.requestFocus();
                             customerNumber.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
                         } else {
-                            code = Utils.retrievePhoneNumberTenChars(code);
+                            code = Utils.retrievePhoneNumberTenChars(tvCountryCode.getText().toString(), code);
                             if (!Utils.validPhoneNumber(code)) {
                                 customerNumber.requestFocus();
                                 customerNumber.setError(getResources().getString(R.string.valid_phone_number));
                             } else {
-                                sendReferralMessage(activity, Data.userData.phoneNo.substring(0, 4) + "" + code);
+                                sendReferralMessage(activity, code, tvCountryCode.getText().toString());
                                 MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN + "_"
                                         + FirebaseEvents.SHARE + "_" + FirebaseEvents.CONFIRM_YES, null);
                                 dialog.dismiss();
@@ -239,7 +260,7 @@ public class ShareEarnFragment extends Fragment {
 
     }
 
-    public void sendReferralMessage(final Activity activity, String phone_no) {
+    public void sendReferralMessage(final Activity activity, String phone_no, String countryCode) {
         try {
             if (AppStatus.getInstance(activity).isOnline(activity)) {
 
@@ -249,6 +270,7 @@ public class ShareEarnFragment extends Fragment {
 
                 params.put("access_token", Data.userData.accessToken);
                 params.put("phone_no", phone_no);
+                params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 Log.i("params", "=" + params);
 
                 RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {

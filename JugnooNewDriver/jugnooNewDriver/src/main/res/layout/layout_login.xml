@@ -25,13 +25,24 @@
             android:orientation="horizontal"
             android:padding="2px">
 
-            <Spinner
-                android:id="@+id/spinner2"
+            <TextView
+                android:id="@+id/tvCountryCodeL"
                 android:layout_width="wrap_content"
-                android:layout_height="88px"
-                android:background="@null" />
-
-
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="+91"
+                android:textColor="@color/text_color"
+                android:textSize="17sp"
+                android:layout_marginStart="5dp"
+                android:drawableEnd="@drawable/ic_arrow_down_vector"
+                android:drawablePadding="3dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:tag="@string/dont_touch_me"
+                android:layout_centerVertical="true"
+                />
 
             <AutoCompleteTextView
                 android:id="@+id/phoneNoOPTEt"
@@ -44,7 +55,7 @@
                 android:background="@drawable/background_white"
                 android:hint="@string/phone_number"
                 android:inputType="number"
-                android:maxLength="10"
+                android:maxLength="14"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="34px"/>

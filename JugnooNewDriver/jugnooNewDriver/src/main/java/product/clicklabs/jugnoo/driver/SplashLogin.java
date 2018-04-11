@@ -1,13 +1,9 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,7 +31,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -536,7 +531,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			@Override
 			public void onClick(View v) {
 				OTPConfirmScreen.intentFromRegister = false;
-				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken,"");
+				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken,"", "");
 				startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);

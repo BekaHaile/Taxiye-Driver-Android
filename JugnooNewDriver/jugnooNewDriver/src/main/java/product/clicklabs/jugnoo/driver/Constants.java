@@ -239,6 +239,11 @@ public interface Constants {
 
     String PLAN_ID = "plan_id";
     String ACTION_DEVICE_TOKEN_UPDATED = "action.device_token_updated";
+
 	String KEY_CURRENCY = "currency";
+
+	String KEY_COUNTRY_CODE = "country_code";
+	String KEY_UPDATED_COUNTRY_CODE = "updated_country_code";
+
 }
 

@@ -13,6 +13,7 @@ public class UserData {
 	public String userId, userEmail, blockedAppPackageMessage;
 	private int deliveryEnabled, deliveryAvailable;
 	public Integer fareCachingLimit,isCaptiveDriver;
+	private String countryCode;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -22,7 +23,7 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver) {
+					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -65,6 +66,7 @@ public class UserData {
 		this.deliveryAvailable = deliveryAvailable;
 		this.fareCachingLimit = fareCachingLimit;
 		this.isCaptiveDriver = isCaptiveDriver;
+		this.countryCode = countryCode;
 	}
 
 	public String getUserId() {
@@ -97,5 +99,13 @@ public class UserData {
 
 	public void setDeliveryAvailable(int deliveryAvailable) {
 		this.deliveryAvailable = deliveryAvailable;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 }

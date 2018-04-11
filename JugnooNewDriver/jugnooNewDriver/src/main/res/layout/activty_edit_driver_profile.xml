@@ -152,13 +152,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="80px">
 
+                    <TextView
+                        android:id="@+id/tvCountryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="+91"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/text_color"
+                        android:textSize="17sp"
+                        android:drawableEnd="@drawable/ic_arrow_down_vector"
+                        android:drawablePadding="3dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:tag="@string/dont_touch_me"
+                        android:layout_centerVertical="true"
+                        />
+
                     <EditText
                         android:id="@+id/editTextPhone"
                         android:layout_width="match_parent"
                         android:layout_height="70px"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="42px"
+                        android:layout_marginLeft="5px"
                         android:layout_toLeftOf="@+id/imageViewEditPhone"
+                        android:layout_toEndOf="@+id/tvCountryCode"
                         android:background="#0000"
                         android:hint="@string/phone_number"
                         android:inputType="number"

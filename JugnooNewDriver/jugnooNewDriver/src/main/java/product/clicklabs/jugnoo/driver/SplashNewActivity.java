@@ -58,6 +58,9 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.picker.Country;
+import com.picker.CountryPicker;
+import com.picker.OnCountryPickerListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,7 +86,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -103,7 +106,7 @@ import retrofit.mime.TypedByteArray;
 
 //import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
-public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
+public class SplashNewActivity extends BaseFragmentActivity implements LocationUpdate, FlurryEventNames, OnCountryPickerListener {
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 	public final static String DEVICE_TOKEN_TAG = "DEVICE_TOKEN_TAG";
@@ -130,6 +133,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
 	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn, buttonRegister;
+	private TextView tvCountryCode, tvCountryCodeL;
 
 	static boolean loginDataFetched = false;
 
@@ -149,6 +153,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ArrayList<CityResponse.VehicleType> vehicleTypes = new ArrayList<>();
 	ArrayList<CityResponse.OfferingType> offeringTypes = new ArrayList<>();
 	ArrayList<CityResponse.City>newCities = new ArrayList<>();
+	private String countryCode;
 
 
 	public void resetFlags() {
@@ -174,6 +179,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 
 	Bundle bundleHomePush= new Bundle();
+
+	private CountryPicker countryPicker;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -278,6 +285,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
 		offeringType = (Spinner) findViewById(R.id.spinnerOfferingType);
+		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
+		tvCountryCodeL = (TextView) findViewById(R.id.tvCountryCodeL);
+		countryPicker =
+				new CountryPicker.Builder().with(this)
+						.listener(this)
+						.build();
 
 		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
 		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -289,6 +302,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
+
+
+		tvCountryCode.setText(Utils.getCountryCode(this));
+		tvCountryCodeL.setText(Utils.getCountryCode(this));
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -564,53 +581,26 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							phoneNoEt.requestFocus();
 							phoneNoEt.setError("Please enter phone number");
 						} else {
-							//TODO remove extra characters phoneNo
-							phoneNo = phoneNo.replace(" ", "");
-							phoneNo = phoneNo.replace("(", "");
-							phoneNo = phoneNo.replace("/", "");
-							phoneNo = phoneNo.replace(")", "");
-							phoneNo = phoneNo.replace("N", "");
-							phoneNo = phoneNo.replace(",", "");
-							phoneNo = phoneNo.replace("*", "");
-							phoneNo = phoneNo.replace(";", "");
-							phoneNo = phoneNo.replace("#", "");
-							phoneNo = phoneNo.replace("-", "");
-							phoneNo = phoneNo.replace(".", "");
-
-							if (phoneNo.length() >= 10) {
-								phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
-								if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
-									phoneNoEt.requestFocus();
-									phoneNoEt.setError("Please enter valid phone number");
-								} else {
-									phoneNo = "+91" + phoneNo;
-									if (isPhoneValid(phoneNo)) {
+							phoneNo = Utils.retrievePhoneNumberTenChars(getCountryCodeSelected(), phoneNo);
+							if (Utils.validPhoneNumber(phoneNo)) {
+									phoneNo = getCountryCodeSelected() + phoneNo;
 										if (cityposition != 0) {
 											if (vehiclePosition != 0) {
 												if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 													if (offeringPosition != 0) {
-														if (true) {
-
 															if (!"".equalsIgnoreCase(altPhoneNo)) {
-																if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
+																altPhoneNo = Utils.retrievePhoneNumberTenChars(getCountryCodeSelected(), altPhoneNo);
+																if (!Utils.validPhoneNumber(altPhoneNo)) {
 																	alternatePhoneNoEt.requestFocus();
 																	alternatePhoneNoEt.setError("Please enter valid phone number");
 																} else {
-																	altPhoneNo = "+91" + altPhoneNo;
-																	if (isPhoneValid(altPhoneNo)) {
-																		sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
-																	} else {
-																		alternatePhoneNoEt.requestFocus();
-																		alternatePhoneNoEt.setError("Please enter valid phone number");
-																	}
+																	altPhoneNo = getCountryCodeSelected() + altPhoneNo;
+																	sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode, getCountryCodeSelected());
 																}
 															} else {
-																sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
+																sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode, getCountryCodeSelected());
 															}
 															FlurryEventLogger.emailSignupClicked(emailId);
-														} else {
-															DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
-														}
 													} else {
 														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_offering));
 													}
@@ -623,12 +613,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 										} else {
 											DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_city));
 										}
-
-									} else {
-										phoneNoEt.requestFocus();
-										phoneNoEt.setError("Please enter valid phone number");
-									}
-								}
 							} else {
 								phoneNoEt.requestFocus();
 								phoneNoEt.setError("Please enter valid phone number");
@@ -640,6 +624,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 
 		});
+
+		View.OnClickListener countryCodeClickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				countryPicker.showDialog(getSupportFragmentManager());
+			}
+		};
+		tvCountryCode.setOnClickListener(countryCodeClickListener);
+		tvCountryCodeL.setOnClickListener(countryCodeClickListener);
 
 		btnGenerateOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -653,6 +646,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					phoneNoOPTEt.setEnabled(false);
 					Intent loginIntent = new Intent(SplashNewActivity.this, LoginViaOTP.class);
 					loginIntent.putExtra("phone_no",phoneNo);
+					loginIntent.putExtra(Constants.KEY_COUNTRY_CODE, getCountryCodeSelected());
 					startActivity(loginIntent);
 					finish();
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -954,7 +948,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 
 
-	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String altPhoneNo, final String city, final String referralCode) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String altPhoneNo, final String city, final String referralCode, final String countryCode) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -969,6 +963,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
+			params.put(Constants.KEY_COUNTRY_CODE, countryCode);
 			params.put("alt_phone_no", altPhoneNo);
 //			params.put("auto_num", autoNum);
 			params.put("city", String.valueOf(cityposition));
@@ -1025,19 +1020,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									SplashNewActivity.this.emailId = emailId;
 									SplashNewActivity.this.phoneNo = data.getPhoneNo();
 									SplashNewActivity.this.password = password;
+									SplashNewActivity.this.countryCode = countryCode;
 									SplashNewActivity.this.accessToken = data.getAccessToken();
 
 									sendToOtpScreen = true;
 								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
-
 									DialogPopup.alertPopup(activity, "", message);
-
-//									RegisterScreen.this.name = name;
-//									RegisterScreen.this.emailId = emailId;
-//									RegisterScreen.this.phoneNo = phoneNo;
-//									RegisterScreen.this.password = password;
-//									RegisterScreen.this.accessToken = "";
-//									parseDataSendToMultipleAccountsScreen(activity, jObj);
 								} else if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
 									onBackPressed();
 
@@ -1073,8 +1061,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	public void sendIntentToOtpScreen() {
 		OTPConfirmScreen.intentFromRegister = true;
-		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
-		startActivity(new Intent(SplashNewActivity.this, OTPConfirmScreen.class));
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum, countryCode);
+		startActivity(new Intent(SplashNewActivity.this, OTPConfirmScreen.class)
+				.putExtra(Constants.KEY_COUNTRY_CODE, countryCode));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
@@ -1206,7 +1195,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
     	}
     }
 
-	
+	@Override
+	public void onSelectCountry(Country country) {
+		tvCountryCode.setText(country.getDialCode());
+		tvCountryCodeL.setText(country.getDialCode());
+	}
+	private String getCountryCodeSelected(){
+    	if(state == State.LOGIN){
+    		return tvCountryCodeL.getText().toString();
+		}
+		return tvCountryCode.getText().toString();
+	}
+
+
 	class ShowAnimListener implements AnimationListener{
 		
 		public ShowAnimListener(){
