@@ -876,7 +876,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 										jObj.getString("customer_phone_no"),
 										jObj.getDouble("actual_fare"),
 										jObj.getDouble("paid_in_cash"),
-										jObj.getDouble("account_balance"));
+										jObj.getDouble("account_balance"),jObj.optString("currency"));
 								if (HomeActivity.appInterruptHandler != null) {
 									Intent intent1 = new Intent(this, SharingRidesActivity.class);
 									intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

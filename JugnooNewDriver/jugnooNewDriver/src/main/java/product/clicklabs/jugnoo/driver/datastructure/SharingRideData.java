@@ -8,9 +8,10 @@ public class SharingRideData {
 	public String sharingEngagementId, transactionDateTime, customerPhoneNumber;
 	public double actualFare, customerPaid, accountBalance;
 	public int completed;
+	private String currency;
 
 	public SharingRideData(String sharingEngagementId, String transactionDateTime, String customerPhoneNumber,
-						   double actualFare, double customerPaid, double accountBalance) {
+						   double actualFare, double customerPaid, double accountBalance,String currency) {
 
 		this.sharingEngagementId = sharingEngagementId;
 		this.transactionDateTime = transactionDateTime;
@@ -19,6 +20,7 @@ public class SharingRideData {
 		this.customerPaid =  customerPaid;
 		this.accountBalance = accountBalance;
 		this.completed = 0;
+		this.currency = currency;
 	}
 
 
@@ -32,5 +34,9 @@ public class SharingRideData {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public String getCurrency() {
+		return currency;
 	}
 }

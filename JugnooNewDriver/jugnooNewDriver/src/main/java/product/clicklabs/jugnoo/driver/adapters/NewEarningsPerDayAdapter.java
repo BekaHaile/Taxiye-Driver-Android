@@ -31,7 +31,7 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 	private RecyclerView recyclerView;
 	private  NewEarningsCallback newEarningsCallback;
 
-	public 	NewEarningsPerDayAdapter(Context context, List<DriverEarningsResponse.Earning> deliveryDetails,RecyclerView recyclerView,NewEarningsCallback newEarningsCallback) {
+	public NewEarningsPerDayAdapter(Context context, List<DriverEarningsResponse.Earning> deliveryDetails,RecyclerView recyclerView,NewEarningsCallback newEarningsCallback) {
 		this.deliveryDetails = deliveryDetails;
 		this.context = context;
 		this.recyclerView = recyclerView;
@@ -54,7 +54,7 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 					Utils.getKilometers(deliveryDetails.get(i).getDistance(),context));
 
 		}else{
-			rideInfoViewHolder.textViewDailyValue.setText(context.getResources().getString(R.string.rupee)+deliveryDetails.get(i).getEarnings());
+			rideInfoViewHolder.textViewDailyValue.setText(Utils.formatCurrencyValue(deliveryDetails.get(i).getCurrencyUnit(),deliveryDetails.get(i).getEarnings()));
 		}
 
 

@@ -807,7 +807,8 @@ public class JSONParser implements Constants {
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
 						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false,
 						jDelivery.optInt(KEY_FALSE_DELIVERY, 0),
-						jDelivery.optInt(KEY_IS_UNLOADING, 0));
+						jDelivery.optInt(KEY_IS_UNLOADING, 0),jDelivery.optString(KEY_CURRENCY));
+
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
@@ -833,7 +834,7 @@ public class JSONParser implements Constants {
 						jDelivery.optString(KEY_CANCEL_REASON, ""),
 						customerInfo.getDeliveryInfos().size(), false,
 						jDelivery.optInt(KEY_FALSE_DELIVERY, 0),
-						jDelivery.optInt(KEY_IS_UNLOADING, 0));
+						jDelivery.optInt(KEY_IS_UNLOADING, 0),jDelivery.optString(KEY_CURRENCY));
 				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
 				customerInfo.getDeliveryInfos().add(deliveryInfo);
 			}

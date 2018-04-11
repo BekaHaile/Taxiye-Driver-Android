@@ -232,7 +232,7 @@ public class DriverEarningsResponse extends CurrencyModel{
 	}
 
 
-	public class Earning {
+	public class Earning  extends CurrencyModel{
 
 		@SerializedName("earnings")
 		@Expose

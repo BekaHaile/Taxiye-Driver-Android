@@ -72,36 +72,36 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 		sharingRideViewHolder.textViewTimeValue.setText(DateOperations.getTimeAMPM(DateOperations.utcToLocalTZ(srd.transactionDateTime)));
 
 		sharingRideViewHolder.textViewPhoneValue.setText(Utils.hidePhoneNoString(srd.customerPhoneNumber));
-		sharingRideViewHolder.textViewActualFare.setText(context.getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(srd.actualFare));
+		sharingRideViewHolder.textViewActualFare.setText(Utils.formatCurrencyValue(srd.getCurrency(),srd.actualFare));
 
 		if(srd.customerPaid > 0){
-			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.customerPaid));
+			sharingRideViewHolder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(srd.getCurrency(),srd.customerPaid));
 			sharingRideViewHolder.textViewCustomerPaidText.setText(context.getResources().getString(R.string.take_cash));
 			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.red_status));
 			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.red_status));
 		}
 		else {
-			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(Math.abs(srd.customerPaid)));
+			sharingRideViewHolder.textViewCustomerPaid.setText(Utils.formatCurrencyValue(srd.getCurrency(),Math.abs(srd.customerPaid)));
 			sharingRideViewHolder.textViewCustomerPaidText.setText(context.getResources().getString(R.string.take_cash));
 			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.black));
 			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.black));
 		}
 
 		if(srd.accountBalance > 0){
-			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(Math.abs(srd.accountBalance)));
+			sharingRideViewHolder.textViewAccountBalance.setText(Utils.formatCurrencyValue(srd.getCurrency(),Math.abs(srd.accountBalance)));
 			sharingRideViewHolder.textViewAccountBalanceText.setText(context.getResources().getString(R.string.account));
 			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.green_status));
 			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.green_status));
 		}
 		else {
 			if(srd.accountBalance == 0){
-				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.accountBalance));
+				sharingRideViewHolder.textViewAccountBalance.setText(Utils.formatCurrencyValue(srd.getCurrency(),srd.accountBalance));
 				sharingRideViewHolder.textViewAccountBalanceText.setText(context.getResources().getString(R.string.account));
 				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.black));
 				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.black));
 			}
 			else{
-				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.accountBalance));
+				sharingRideViewHolder.textViewAccountBalance.setText(Utils.formatCurrencyValue(srd.getCurrency(),srd.accountBalance));
 				sharingRideViewHolder.textViewAccountBalanceText.setText("(-)"+context.getResources().getString(R.string.account));
 				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.red_status));
 				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.red_status));

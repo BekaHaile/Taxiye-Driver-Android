@@ -955,9 +955,9 @@ public class Utils {
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(amount));
+				showAmount = formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(amount));
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(Math.abs(amount)));
+				showAmount = "-"+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(Math.abs(amount)));
 			}
 			return showAmount;
 		} catch (Exception e) {

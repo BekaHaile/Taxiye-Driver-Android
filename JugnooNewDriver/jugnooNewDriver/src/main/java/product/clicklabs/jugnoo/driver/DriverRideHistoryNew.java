@@ -226,7 +226,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 											rideHistoryItems.add(new RideHistoryItem(dailyEarningResponse.getTrips().get(i).getDate(),
 													dailyEarningResponse.getTrips().get(i).getTime(), dailyEarningResponse.getTrips().get(i).getEarning(),
 													dailyEarningResponse.getTrips().get(i).getType(), dailyEarningResponse.getTrips().get(i).getStatus(),
-													dailyEarningResponse.getTrips().get(i).getExtras()));
+													dailyEarningResponse.getTrips().get(i).getExtras(),dailyEarningResponse.getTrips().get(i).getCurrencyUnit()));
 
 										}
 
