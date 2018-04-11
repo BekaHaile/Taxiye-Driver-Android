@@ -115,7 +115,7 @@
 
             <TextView
                 android:id="@+id/textViewAccountBalanceText"
-                android:layout_width="460px"
+                android:layout_width="wrap_content"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/bank_deposite"
@@ -124,6 +124,7 @@
             <TextView
                 android:id="@+id/textViewAccountBalance"
                 android:layout_width="140px"
+                android:layout_toRightOf="@id/textViewAccountBalanceText"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
@@ -141,7 +142,7 @@
 
             <TextView
                 android:id="@+id/textViewCustomerPaidText"
-                android:layout_width="460px"
+                android:layout_width="wrap_content"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/cash_collected"
@@ -149,8 +150,9 @@
                 android:textSize="34px"/>
             <TextView
                 android:id="@+id/textViewCustomerPaid"
-                android:layout_width="140px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/textViewCustomerPaidText"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="0000.00"
@@ -174,21 +176,22 @@
 
             <TextView
                 android:id="@+id/textViewActualFareText"
-                android:layout_width="440px"
+                android:layout_width="wrap_content"
                 android:layout_height="74px"
                 android:gravity="center_vertical"
                 android:text="@string/your_income"
                 android:textColor="@color/black"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
             <TextView
                 android:id="@+id/textViewActualFareValue"
+                android:layout_toRightOf="@id/textViewActualFareText"
                 android:layout_width="160px"
                 android:layout_height="74px"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="0000.00"
                 android:textColor="@color/black"
-                android:textSize="40px"/>
+                android:textSize="38px"/>
 
         </RelativeLayout>
 
