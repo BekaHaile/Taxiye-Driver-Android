@@ -923,15 +923,15 @@ public class Utils {
 		return resizedBitmap;
 	}
 
-	public static String getAbsAmount(Context context, double amount){
+	public static String getAbsAmount(Context context, double amount,String currency){
 		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 		String showAmount;
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(amount);
+				showAmount = Utils.formatCurrencyValue(currency,decimalFormatNoDecimal.format(amount));
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(Math.abs(amount));
+				showAmount = "-" +  Utils.formatCurrencyValue(currency,Math.abs(amount));
 			}
 			return showAmount;
 		} catch (Exception e) {
@@ -949,15 +949,15 @@ public class Utils {
 		return decimalFormatNoDecimal;
 	}
 
-	public static String getAbsWithDecimalAmount(Context context, double amount){
+	public static String getAbsWithDecimalAmount(Context context, double amount,String currencyUnit){
 
 		String showAmount;
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(amount);
+				showAmount = context.getResources().getString(R.string.rupee)+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(amount));
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(Math.abs(amount));
+				showAmount = "-"+context.getResources().getString(R.string.rupee)+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(Math.abs(amount)));
 			}
 			return showAmount;
 		} catch (Exception e) {

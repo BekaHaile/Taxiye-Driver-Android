@@ -14,4 +14,8 @@ public class CurrencyModel {
     public String getCurrencyUnit() {
         return currencyUnit;
     }
+
+    public void setCurrencyUnit(String currencyUnit) {
+        this.currencyUnit = currencyUnit;
+    }
 }

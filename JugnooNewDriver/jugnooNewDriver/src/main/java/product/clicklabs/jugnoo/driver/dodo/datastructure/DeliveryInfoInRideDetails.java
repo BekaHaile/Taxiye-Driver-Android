@@ -7,11 +7,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by aneeshbansal on 03/03/17.
  */
 
-public class DeliveryInfoInRideDetails {
+public class DeliveryInfoInRideDetails extends CurrencyModel {
 
 	@SerializedName("pickup_data")
 	@Expose

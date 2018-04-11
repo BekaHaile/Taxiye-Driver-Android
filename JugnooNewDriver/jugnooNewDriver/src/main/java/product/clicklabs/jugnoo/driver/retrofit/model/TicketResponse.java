@@ -9,6 +9,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 
 public class TicketResponse {
 
@@ -35,7 +37,7 @@ public class TicketResponse {
 		this.ticketData = ticketData;
 	}
 
-	public class TicketDatum {
+	public class TicketDatum extends CurrencyModel{
 
 		@SerializedName("ticket_id")
 		@Expose

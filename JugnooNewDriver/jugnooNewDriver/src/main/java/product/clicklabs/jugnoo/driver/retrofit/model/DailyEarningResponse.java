@@ -4,12 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 /**
  * Created by aneeshbansal on 20/09/16.
  */
-public class DailyEarningResponse {
+public class DailyEarningResponse extends CurrencyModel {
 
 	@SerializedName("date")
 	@Expose
@@ -233,7 +236,7 @@ public class DailyEarningResponse {
 		this.trips = trips;
 	}
 
-	public class DailyParam {
+	public class DailyParam extends CurrencyModel {
 
 		@SerializedName("text")
 		@Expose
@@ -241,6 +244,8 @@ public class DailyEarningResponse {
 		@SerializedName("value")
 		@Expose
 		private Double value;
+
+
 
 		/**
 		 *
@@ -281,7 +286,7 @@ public class DailyEarningResponse {
 	}
 
 
-	public class Trip {
+	public class Trip extends CurrencyModel {
 
 		@SerializedName("date")
 		@Expose

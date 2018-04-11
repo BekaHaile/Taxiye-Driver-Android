@@ -3526,7 +3526,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
-					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrency(), totalFare));
+					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), totalFare));
 
 
 					if(customerInfo.getIsDelivery() == 1){
@@ -3575,7 +3575,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					endRideInfoRl.setVisibility(View.VISIBLE);
-					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrency(), endRideData.toPay));
+					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), endRideData.toPay));
 
 
 					reviewReachedDistanceRl.setVisibility(View.VISIBLE);
@@ -4023,12 +4023,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								deliveryInfolistFragVisibility = true;
 								deliveryInfoInRideDetails.setDeliveryData(deliveryData);
 								customerInfo.setDeliveryInfoInRideDetails(deliveryInfoInRideDetails);
+								deliveryInfoInRideDetails.setCurrencyUnit(customerInfo.getCurrencyUnit());
 								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
 										getRelativeLayoutContainer(), deliveryInfoInRideDetails);
 								overridePendingTransition(R.anim.right_in, R.anim.right_out);
 							} else if (customerInfo.getDeliveryInfoInRideDetails() != null) {
 								relativeLayoutContainer.setVisibility(View.VISIBLE);
 								deliveryInfolistFragVisibility = true;
+								customerInfo.getDeliveryInfoInRideDetails().setCurrencyUnit(customerInfo.getCurrencyUnit());
 								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
 										getRelativeLayoutContainer(), customerInfo.getDeliveryInfoInRideDetails());
 								overridePendingTransition(R.anim.right_in, R.anim.right_out);

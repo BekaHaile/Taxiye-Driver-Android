@@ -429,7 +429,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			deliveryAddressListAdapter.notifyDataSetChanged();
 
 			if(Data.isCaptive()){
-				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
+				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash(),extras.getCurrencyUnit()));
 				imageViewSeprator.setVisibility(View.GONE);
 				findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
 				findViewById(R.id.rlIncome).setVisibility(View.GONE);
@@ -443,10 +443,10 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 				}
 
-				textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning()));
-				textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning()));
-				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
-				textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
+				textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning(),extras.getCurrencyUnit()));
+				textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning(),extras.getCurrencyUnit()));
+				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash(),extras.getCurrencyUnit()));
+				textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount(),extras.getCurrencyUnit()));
 				fareStructureInfos.addAll(extras.getRideParam());
 				rideInfoTilesAdapter.notifyDataSetChanged();
 
