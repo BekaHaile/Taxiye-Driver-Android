@@ -49,6 +49,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     private SubscriptionPlansAdapter subscriptionPlansAdapter;
     private TextView labelRecyclerView;
     private Double currentOutstandingAmount;
+    private String currency;
     private Handler handler = new Handler();
     private CardView cardViewPriceBreakup;
 
@@ -244,6 +245,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
     private  void setUpUI(FetchDriverPlansResponse dailyEarningResponse) {
 
         currentOutstandingAmount = dailyEarningResponse.getOutstandingAmount();
+        currency = dailyEarningResponse.getCurrencyUnit();
         ArrayList<PlanDetails> planDetails;
         boolean isActivePlanArray = false ;
         if(dailyEarningResponse.getActivePlanDetails()==null || dailyEarningResponse.getActivePlanDetails().size()==0){
@@ -266,6 +268,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
             if(dailyEarningResponse.getOutstandingAmount()!=null){
                 currentOutstandingAmount = dailyEarningResponse.getOutstandingAmount();
+                currency = dailyEarningResponse.getCurrencyUnit();
                /* String label = getString(R.string.label_current_outstanding) +" ";
                 String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(currentOutstandingAmount));
                 tvlabelOutstanding.setText(String.format("%s%s", label, amount));
@@ -313,7 +316,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
 
             if(dailyEarningResponse.getCurrentPlanSaving()!=null){
-                String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getCurrentPlanSaving()));
+                String amount =Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(),dailyEarningResponse.getCurrentPlanSaving());
                 String label = getString(R.string.label_current_savings) + " ";
                 SpannableString spannableString = new SpannableString(label + amount);
                 spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -325,7 +328,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
 
             if(dailyEarningResponse.getTotalSavings()!=null){
-                String amount =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(dailyEarningResponse.getTotalSavings()));
+                String amount =Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(),dailyEarningResponse.getTotalSavings());
                 String label = getString(R.string.label_total_savings) + " ";
                 SpannableString spannableString = new SpannableString(label + amount);
                 spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this,R.color.black)),0,label.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -421,18 +424,18 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             }else{
                 findViewById(R.id.layoutOutstandingBreakUp).setVisibility(View.VISIBLE);
                 findViewById(R.id.dividerBelowOutstandingBreakup).setVisibility(View.VISIBLE);
-                String value =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(currentOutstandingAmount));
+                String value =Utils.formatCurrencyValue(currency,currentOutstandingAmount);
                 ((TextView)findViewById(R.id.layoutOutstandingBreakUp).findViewById(R.id.tvValue)).setText(value);
             }
 
 
-            String planValue =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(planAmount));
+            String planValue =Utils.formatCurrencyValue(currency,planAmount);
             ((TextView)findViewById(R.id.layoutPlanBreakup).findViewById(R.id.tvValue)).setText(planValue);
             Double totalAmount = planAmount;
             if(currentOutstandingAmount!=null){
                 totalAmount+=currentOutstandingAmount;
             }
-            String totalValue =String.format("%s%s", getString(R.string.rupee), Utils.getDecimalFormatForMoney().format(totalAmount));
+            String totalValue =Utils.formatCurrencyValue(currency,totalAmount);
             ((TextView)findViewById(R.id.layoutTotalBreakUp).findViewById(R.id.tvValue)).setText(totalValue);
 
 

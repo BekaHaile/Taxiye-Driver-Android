@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 
 public class NewBookingHistoryRespose {
 
@@ -33,7 +35,7 @@ public class NewBookingHistoryRespose {
 		this.bookingData = bookingData;
 	}
 
-	public class BookingDatum {
+	public class BookingDatum extends CurrencyModel{
 
 		@SerializedName("type")
 		@Expose

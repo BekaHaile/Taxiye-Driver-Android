@@ -6,6 +6,8 @@ package product.clicklabs.jugnoo.driver.retrofit.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 public class InvoiceDetailResponse {
 
 	@SerializedName("invoiceDetails")
@@ -51,7 +53,7 @@ public class InvoiceDetailResponse {
 		this.flag = flag;
 	}
 
-	public class InvoiceDetails {
+	public class InvoiceDetails extends CurrencyModel{
 
 		@SerializedName("invoice_id")
 		@Expose

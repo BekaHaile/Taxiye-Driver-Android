@@ -20,11 +20,12 @@ public class DeliveryInfo {
 	private long waitTime = 0;
 	private boolean sate = false;
 	private String cancelReason;
+	private String currency;
 
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
 						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime,
-						String cancelReason, int index, boolean sate, int falseDelivery, int loadUnload) {
+						String cancelReason, int index, boolean sate, int falseDelivery, int loadUnload,String currency) {
 		this.id = id;
 		this.latLng = latLng;
 		this.customerName = customerName;
@@ -40,6 +41,7 @@ public class DeliveryInfo {
 		this.sate = sate;
 		this.falseDelivery = falseDelivery;
 		this.loadUnload = loadUnload;
+		this.currency = currency;
 	}
 
 	public void setReturnData(int totalDelivery, int delSuccess, int delFail){
@@ -52,6 +54,14 @@ public class DeliveryInfo {
 		this.id = id;
 	}
 
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
 	public int getId() {
 		return id;

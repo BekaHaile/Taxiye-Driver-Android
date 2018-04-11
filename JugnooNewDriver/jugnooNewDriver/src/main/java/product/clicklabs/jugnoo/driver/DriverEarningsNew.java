@@ -384,7 +384,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this));
 				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
 				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
-				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected()));
+				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected(),driverEarningsResponse.getCurrencyUnit()));
 				if(driverEarningsResponse.getPeriod()!=null){
 					dateTimeValue.setText(driverEarningsResponse.getPeriod());
 					dateTimeValue.setVisibility(View.VISIBLE);
@@ -416,7 +416,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				layoutCaptivePlanDetails.setVisibility(View.GONE);
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
-					textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
+					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(),driverEarningsResponse.getEarnings().get(0).getEarnings()));
 				} else {
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 				}

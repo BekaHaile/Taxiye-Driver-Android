@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by aneeshbansal on 06/10/15.
  */
@@ -36,7 +38,7 @@ public class SharedRideResponse {
 		this.bookingData = bookingData;
 	}
 
-	public class BookingData {
+	public class BookingData extends CurrencyModel {
 
 		@SerializedName("sharing_engagement_id")
 		@Expose

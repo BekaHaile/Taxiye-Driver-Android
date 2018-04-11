@@ -236,7 +236,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.rupee_green);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}
-				holder.textViewInvoiceFare.setText(Utils.getAbsAmount(getActivity(), invoiceInfo.fare));
+				holder.textViewInvoiceFare.setText(Utils.getAbsAmount(getActivity(), invoiceInfo.fare,invoiceInfo.getCurrencyUnit()));
 
 
 				if(Prefs.with(getActivity()).getInt(Constants.SHOW_INVOICE_DETAILS,0)==1) {
@@ -300,7 +300,8 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                                     for (int i = 0; i < invoiceHistoryResponse.getData().size(); i++) {
                                         InvoiceHistoryResponse.Datum data = invoiceHistoryResponse.getData().get(i);
                                         InvoiceInfo invoiceInfo = new InvoiceInfo(data.getInvoiceId(),data.getAmountToBePaid(),
-                                                data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus());
+                                                data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus()
+										,data.getCurrencyUnit());
                                         invoices.add(invoiceInfo);
                                     }
 

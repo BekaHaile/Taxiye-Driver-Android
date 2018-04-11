@@ -59,6 +59,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +70,11 @@ import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 
 public class Utils {
@@ -920,15 +923,15 @@ public class Utils {
 		return resizedBitmap;
 	}
 
-	public static String getAbsAmount(Context context, double amount){
+	public static String getAbsAmount(Context context, double amount,String currency){
 		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 		String showAmount;
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(amount);
+				showAmount = Utils.formatCurrencyValue(currency,decimalFormatNoDecimal.format(amount));
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(Math.abs(amount));
+				showAmount = "-" +  Utils.formatCurrencyValue(currency,Math.abs(amount));
 			}
 			return showAmount;
 		} catch (Exception e) {
@@ -946,15 +949,15 @@ public class Utils {
 		return decimalFormatNoDecimal;
 	}
 
-	public static String getAbsWithDecimalAmount(Context context, double amount){
+	public static String getAbsWithDecimalAmount(Context context, double amount,String currencyUnit){
 
 		String showAmount;
 
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(amount);
+				showAmount = formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(amount));
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+getDecimalFormatNoDecimal().format(Math.abs(amount));
+				showAmount = "-"+formatCurrencyValue(currencyUnit,getDecimalFormatNoDecimal().format(Math.abs(amount)));
 			}
 			return showAmount;
 		} catch (Exception e) {
@@ -1057,5 +1060,30 @@ public class Utils {
 			}
 
 		return time;
+	}
+
+	public static String formatCurrencyValue(String currency, double value){
+		if(TextUtils.isEmpty(currency)){
+			currency = "INR";
+		}
+		NumberFormat format = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+		format.setCurrency(Currency.getInstance(currency));
+		return format.format(value);
+	}
+	public static String formatCurrencyValue(String currency, String value){
+		try {
+			return formatCurrencyValue(currency, Double.parseDouble(value));
+		} catch (NumberFormatException e) {
+			return value;
+		}
+	}
+
+
+	public  static <T extends CurrencyModel>String formatCurrencyValue(T currencyModel, String value){
+		try {
+			return formatCurrencyValue(currencyModel.getCurrencyUnit(), Double.parseDouble(value));
+		} catch (NumberFormatException e) {
+			return value;
+		}
 	}
 }

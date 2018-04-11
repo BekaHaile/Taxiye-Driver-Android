@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -193,7 +194,7 @@ public class DriverAuditActivity extends BaseActivity {
 									} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 										try {
-											String textViewDriverName = "", textViewTitleBarDEI = "", accNo="", ifscCode = "", bankName="", bankLoc="";
+											String textViewDriverName = "", textViewTitleBarDEI = "", accNo="", ifscCode = "", bankName="", bankLoc="",currency="";
 											int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
 													textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
 											Integer textViewMonthlyValue = null ;
@@ -236,10 +237,14 @@ public class DriverAuditActivity extends BaseActivity {
 											if (jObj.has("bank_location")) {
 												bankLoc = jObj.getString("bank_location");
 											}
+											if (jObj.has("currency")) {
+												currency = jObj.getString("currency");
+											}
+
 											openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
 													textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,
 													textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI, accNo, ifscCode,
-													bankName, bankLoc);
+													bankName, bankLoc,currency);
 
 											setUserData();
 
@@ -302,7 +307,8 @@ public class DriverAuditActivity extends BaseActivity {
 
 
 				if(openedProfileInfo.textViewMonthlyValue!=null){
-					textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);
+//					textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);
+					textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency,openedProfileInfo.textViewMonthlyValue));
 					findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
 
 

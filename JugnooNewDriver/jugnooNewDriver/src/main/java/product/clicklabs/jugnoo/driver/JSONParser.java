@@ -512,6 +512,7 @@ public class JSONParser implements Constants {
 
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
+							String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
 
 
 							if(i == 0){
@@ -524,7 +525,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus);
+									orderId, loadingStatus, currency);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -806,7 +807,8 @@ public class JSONParser implements Constants {
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
 						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false,
 						jDelivery.optInt(KEY_FALSE_DELIVERY, 0),
-						jDelivery.optInt(KEY_IS_UNLOADING, 0));
+						jDelivery.optInt(KEY_IS_UNLOADING, 0),jDelivery.optString(KEY_CURRENCY));
+
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
@@ -832,7 +834,7 @@ public class JSONParser implements Constants {
 						jDelivery.optString(KEY_CANCEL_REASON, ""),
 						customerInfo.getDeliveryInfos().size(), false,
 						jDelivery.optInt(KEY_FALSE_DELIVERY, 0),
-						jDelivery.optInt(KEY_IS_UNLOADING, 0));
+						jDelivery.optInt(KEY_IS_UNLOADING, 0),jDelivery.optString(KEY_CURRENCY));
 				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
 				customerInfo.getDeliveryInfos().add(deliveryInfo);
 			}

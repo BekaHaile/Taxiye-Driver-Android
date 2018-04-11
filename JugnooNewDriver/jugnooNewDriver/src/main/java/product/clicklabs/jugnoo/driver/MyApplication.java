@@ -16,6 +16,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.util.Locale;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -234,4 +235,7 @@ public class MyApplication extends Application {
         DriverLocationUpdateService.updateServerData(context);
     }
 
+    public Locale getCurrentLocale(){
+        return getResources().getConfiguration().locale;
+    }
 }

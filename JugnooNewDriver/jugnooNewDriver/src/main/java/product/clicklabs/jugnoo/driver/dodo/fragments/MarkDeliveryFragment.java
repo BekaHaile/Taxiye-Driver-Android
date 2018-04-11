@@ -125,8 +125,7 @@ public class MarkDeliveryFragment extends Fragment {
 					DialogPopup.alertPopupTwoButtonsWithListeners(activity,
 							activity.getResources().getString(R.string.order_id) + ": " + deliveryInfo.getId(),
 							activity.getResources().getString(R.string.please_confirm_cash_taken)
-									+ " " + activity.getResources().getString(R.string.rupee)
-									+ Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()),
+									+ " " + Utils.formatCurrencyValue(deliveryInfo.getCurrency(),deliveryInfo.getAmount()),
 							activity.getResources().getString(R.string.confirm),
 							activity.getResources().getString(R.string.cancel),
 							new View.OnClickListener() {
@@ -201,8 +200,7 @@ public class MarkDeliveryFragment extends Fragment {
 					.indexOf(new DeliveryInfo(deliveryInfoId)));
 
 			textViewOrderId.setText(activity.getResources().getString(R.string.delivery_id)+": "+deliveryInfo.getId());
-			textViewAmount.setText(activity.getResources().getString(R.string.rupee)
-					+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
+			textViewAmount.setText(Utils.formatCurrencyValue(deliveryInfo.getCurrency(),deliveryInfo.getAmount()));
 			textViewCustomerName.setText(deliveryInfo.getCustomerName());
 			textViewCustomerAddress.setText(deliveryInfo.getDeliveryAddress());
 
@@ -222,8 +220,7 @@ public class MarkDeliveryFragment extends Fragment {
 				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
 				textViewStatusValue.setText(activity.getResources().getString(R.string.delivered));
 				textViewReturnReason.setText(activity.getResources().getString(R.string.cash_collected));
-				textViewReturnReasonValue.setText(activity.getResources().getString(R.string.rupee)
-						+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
+				textViewReturnReasonValue.setText(Utils.formatCurrencyValue(deliveryInfo.getCurrency(),deliveryInfo.getAmount()));
 			}
 			else{
 				linearLayoutGetDirections.setVisibility(View.VISIBLE);

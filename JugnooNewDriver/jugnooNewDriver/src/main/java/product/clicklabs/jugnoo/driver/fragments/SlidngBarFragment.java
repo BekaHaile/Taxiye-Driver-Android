@@ -293,7 +293,8 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
                                     for (int i = 0; i < invoiceHistoryResponse.getData().size(); i++) {
                                         InvoiceHistoryResponse.Datum data = invoiceHistoryResponse.getData().get(i);
                                         InvoiceInfo invoiceInfo = new InvoiceInfo(data.getInvoiceId(),data.getAmountToBePaid(),
-                                                data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus());
+                                                data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus()
+										,data.getCurrencyUnit());
                                         invoices.add(invoiceInfo);
                                     }
 

@@ -10,6 +10,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 
 public class InvoiceHistoryResponse {
 
@@ -56,7 +58,7 @@ public class InvoiceHistoryResponse {
 		this.flag = flag;
 	}
 
-	public class Datum {
+	public class Datum extends CurrencyModel{
 
 		@SerializedName("invoice_id")
 		@Expose

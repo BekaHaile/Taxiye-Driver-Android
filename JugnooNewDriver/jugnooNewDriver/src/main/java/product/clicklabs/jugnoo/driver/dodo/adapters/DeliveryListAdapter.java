@@ -142,21 +142,23 @@ public class DeliveryListAdapter extends PagerAdapter {
 		textViewCustomerDeliveryAddress.setText(onlyAddress);
 		int totalDeliveries = 0;
 		double totalCashCollected = 0;
+		String totalCashCollectedCurrency   = "";
 		for(DeliveryInfo deliveryInfo : tasksList){
 			if(deliveryInfo.getStatus() != DeliveryStatus.RETURN.getOrdinal()){
 				totalDeliveries++;
 			}
 			if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 				totalCashCollected = totalCashCollected + deliveryInfo.getAmount();
+				totalCashCollectedCurrency = deliveryInfo.getCurrency();
 			}
 		}
+
 		textViewListCount.setText(ordinal(position+1)+" "+ activity.getResources().getString(R.string.delivery)+":");
 
 		if(task.getAmount() > 0 ){
 			textViewCashCollected.setVisibility(View.VISIBLE);
 			textViewCashCollected.setText(activity.getResources().getString(R.string.cash_to_collected)
-					+ ": " + activity.getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
+					+ ": " + Utils.formatCurrencyValue(task.getCurrency(),task.getAmount()));
 		} else {
 			textViewCashCollected.setVisibility(View.GONE);
 		}
@@ -186,8 +188,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				call.setEnabled(false);
 				buttonMarkFailed.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
-				textViewCashCollected.setText(activity.getResources().getString(R.string.cash_collected)+": "+activity.getResources().getString(R.string.rupee)
-						+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
+				textViewCashCollected.setText(activity.getResources().getString(R.string.cash_collected)+": "+Utils.formatCurrencyValue(task.getCurrency(),task.getAmount()));
 				call.setVisibility(View.GONE);
 			}
 			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
@@ -214,8 +215,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 			buttonMarkFailed.setVisibility(View.GONE);
 			buttonMarkDeliver.setVisibility(View.GONE);
 			buttonMarkReturn.setVisibility(View.VISIBLE);
-			textViewCashCollected.setText(activity.getResources().getString(R.string.return_amount)+": "+activity.getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().format(totalCashCollected));
+			textViewCashCollected.setText(Utils.formatCurrencyValue(totalCashCollectedCurrency,totalCashCollected));
 		}
 
 
@@ -271,8 +271,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 					DialogPopup.alertPopupDeliveryTwoButtonsWithListeners(activity,
 							activity.getResources().getString(R.string.delivery_id) + ": " + Math.abs(orderId),
 							activity.getResources().getString(R.string.take_cash)
-									+ " " + activity.getResources().getString(R.string.rupee)
-									+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
+									+ " " +Utils.formatCurrencyValue(task.getCurrency(),task.getAmount()),
 							task.getCustomerName(), onlyAddress, itemDetails,
 							activity.getResources().getString(R.string.delivery_conf_new),
 							activity.getResources().getString(R.string.deliver),
@@ -301,8 +300,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				DialogPopup.alertPopupDeliveryReturnWithListeners(activity,
 						activity.getResources().getString(R.string.order_id) + ": " + task.getId(),
 						activity.getResources().getString(R.string.deposite_cash_1)
-								+ " " + activity.getResources().getString(R.string.rupee)
-								+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
+								+  Utils.formatCurrencyValue(task.getCurrency(),task.getAmount()),
 						task.getTotalDelivery(), task.getDelSuccess(), task.getDelFail(),
 						activity.getResources().getString(R.string.deposite_cash),
 						new View.OnClickListener() {

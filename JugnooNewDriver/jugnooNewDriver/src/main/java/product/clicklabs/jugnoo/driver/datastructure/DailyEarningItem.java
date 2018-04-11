@@ -16,10 +16,11 @@ public class DailyEarningItem {
 	private String status;
 	private double earning;
 	private Tile.Extras extras;
+	private String currencyUnit;
 
 	private DailyRideDetailsAdapter.ViewType viewType;
 
-	public DailyEarningItem(String text, double value, String time, String date, int type, String status, double earning, Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType) {
+	public DailyEarningItem(String text, double value, String time, String date, int type, String status, double earning, Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType, String currencyUnit) {
 		this.text = text;
 		this.value = value;
 		this.time = time;
@@ -29,6 +30,7 @@ public class DailyEarningItem {
 		this.earning = earning;
 		this.extras = extras;
 		this.viewType = viewType;
+		this.currencyUnit = currencyUnit;
 	}
 
 	public String getText() {
@@ -101,5 +103,9 @@ public class DailyEarningItem {
 
 	public void setExtras(Tile.Extras extras) {
 		this.extras = extras;
+	}
+
+	public String getCurrencyUnit() {
+		return currencyUnit;
 	}
 }

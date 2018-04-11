@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 /**
  * Created by gurmail on 09/10/17.
  */
-public class Tile {
+public class Tile  {
 
     @SerializedName("title")
     @Expose
@@ -167,7 +168,7 @@ public class Tile {
         this.extras = extras;
     }
 
-    public class Extras {
+    public class Extras extends CurrencyModel {
 
         @SerializedName("type")
         @Expose

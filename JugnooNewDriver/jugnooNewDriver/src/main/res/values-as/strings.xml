@@ -41,7 +41,6 @@
 
     <string name="about_1_text">জুগনোয়ে আপুনাক সহায় কৰে এটা বন্ধুত্বপূৰ্ণ আৰো কম খৰছৰ ভাড়া গুৱাহাটী মহানগৰীৰ ভিতৰত ।আৰো ইয়াৰ মূল্য বহুত কম,আৰো নিশ্বয়কে এটা ভাল আৰো বন্ধুত্ব সুলভ যাত্ৰা।</string>
     <string name="about_2_text">ৰেত কাৰ্দ</string>
-    <string name="about_3_text">প্ৰথম ২ কিঃমিঃ : Rs ৩০ টকা আৰো পিছৰ ২ কিঃমিঃ : Rs ১০টকা/ কিঃমিঃ, ৰখাৰ সময় : ১.৫/মিন ১৫ মিনিতৰ পিছত।</string>
     <string name="email_id">ইমেইল আইডি</string>
     <string name="confirm_email_id">ইমেইল আইডি নিশ্চিত কৰক</string>
     <string name="password">গোপন অংক</string>
@@ -180,7 +179,6 @@
     <string name="change_phone_no_text">সলনি কৰা ফোন নম্বৰতো আগৰ সতে একেই।</string>
     <string name="local_positon_text">লকেল স্থান নিদিষ্ট কৰিব পৰা নাই</string>
     <string name="overall_position_text">স্থান নিদিষ্ট কৰিব পৰা নাই</string>
-    <string name="cash_needed_text">নগদ প্ৰয়োজন: Rs.</string>
     <string name="convenience_charges_text">গ্ৰাহকৰ কনভেনিয়েঞ্ছ ছাৰ্জ :</string>
     <string name="code_empty">কদ খালি থাকিব নোৱৰি</string>
     <string name="confirm_email_text">নিশ্চিত কৰা ইমেইল আইডি মিলা নাই</string>
@@ -227,7 +225,6 @@
     <string name="luggage_charge">বস্তুৰ চাৰ্জ</string>
     <string name="login">লগইন</string>
     <string name="restart_phone">ফোন অ কৰি অন কৰক</string>
-    <string name="money_to_take">লবলগিয়া পইছা</string>
     <string name="min_fare">মিনিমাম ভাড়া</string>
     <string name="meals_on">মীলচ অন</string>
     <string name="mail_us">আমাক মেইল কৰক</string>
@@ -244,7 +241,6 @@
     <string name="name">নাম</string>
     <string name="name_colon">নাম:</string>
     <string name="overall_position">মুঠ স্থান</string>
-    <string name="of_upto_100">১০০ টকাৰ লৈকে</string>
     <string name="some_amount">অনু্গ্ৰহ কৰি যিকোনো সংখ্যা লিখক</string>
     <string name="less_amount">কম পৰিমাণ সংখ্যা লিখক</string>
     <string name="valid_amount">অনু্গ্ৰহ কৰি নিশ্চিত সংখ্যা লিখক</string>
@@ -276,7 +272,6 @@
     <string name="ride_id">ৰাইড আইডি</string>
     <string name="Ride_id">ৰাইড আইডি</string>
 
-    <string name="rupees">Rs</string>
     <string name="ride_time2">ৰাইডৰ সময়</string>
     <string name="rate">ৰেত</string>
     <string name="ride_in_progress_cant_logout">ৰাইড চলি আছে। ৰাইডৰটো শেষ হোৱাৰ পিছত হে লগ আউত কৰিব পাৰিব</string>
@@ -319,7 +314,6 @@
     <string name="whatsapp_not_installed">ওৱাতৰ্চআাপ ইনছট্ল কৰা হোৱা নাই</string>
     <string name="weekly">সাপ্তাহিক</string>
     <string name="will_revert_you">আমি অতি সোনকালে আমাৰ ফালৰ পৰা আপোনাক জনাম</string>
-    <string name="cannot_add_less_than">আপুনি ইমান এমাউন্তৰ তলত যোগ কৰিব নোৱাৰে/Rs</string>
     <string name="your_position">আপুনাৰ স্থান হল</string>
     <string name="your_overall_position">আপুনাৰ মুঠ স্থান হল</string>
     <string name="got_new_request">আপুনি এটা নতুন অনুৰোধ লাভ কৰিছে</string>
@@ -333,7 +327,6 @@
     <string name="no_internet_tap_to_retry">ইন্তাৰনেটৰ সংযোগ নাই।পুনৰ চেষ্টা কৰক</string>
     <string name="no_rides">এতিয়া কোনো ভাড়া নাই</string>
     <string name="pickup_location">আপুনাৰ ওঠাব লগা স্থান</string>
-    <string name="money_to_pay">দিবলগীয়া পইছা :Rs</string>
     <string name="money_to">জুগনোক দিবলগীয়া পইছা :Rs</string>
     <string name="start_ride_loc">আপোনি আৰম্ভ কৰা স্থান</string>
     <string name="sec_left">বা কি থকা চেকেন্দচ</string>

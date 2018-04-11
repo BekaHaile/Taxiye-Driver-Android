@@ -8,16 +8,21 @@ public class InvoiceInfo {
 	public String toTime;
 	public String generatedTime;
 	public String statusString;
+	public String currencyUnit;
 
+	public String getCurrencyUnit() {
+		return currencyUnit;
+	}
 
 	public InvoiceInfo(int id, double fare, String fromTime, String toTime,
-					    String generatedTime, String statusString) {
+					   String generatedTime, String statusString, String currencyUnit) {
 		this.id = id;
 		this.fare = fare;
 		this.fromTime = fromTime;
 		this.toTime = toTime;
 		this.generatedTime = generatedTime;
 		this.statusString = statusString;
+		this.currencyUnit = currencyUnit;
 	}
 
 

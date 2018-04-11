@@ -199,25 +199,19 @@ public class InvoiceDetailsActivity extends BaseActivity {
 			if(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision() ==null){
 				textViewJugnooCmsnValue.setText(getResources().getString(R.string.NA));
 			}else {
-				textViewJugnooCmsnValue.setText("-"+getResources().getString(R.string.rupee)
-						+ Utils.getDecimalFormatForMoney().format(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision()));
+				textViewJugnooCmsnValue.setText("-"+Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getJugnooCommision()));
 			}
 
 			if(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount() ==null){
 				textViewOutstandingAmntValue.setText(getResources().getString(R.string.NA));
 			}else {
-				textViewOutstandingAmntValue.setText("-"+getResources().getString(R.string.rupee)
-						+ Utils.getDecimalFormatForMoney().
-						format(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount()));
+				textViewOutstandingAmntValue.setText("-"+Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount()));
 			}
 
-			textViewReferralValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getReferralAmount());
+			textViewReferralValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getReferralAmount()));
 
 
-			textViewTotalAmntValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid()));
+			textViewTotalAmntValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid()));
 
 //			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
 //					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
@@ -226,42 +220,23 @@ public class InvoiceDetailsActivity extends BaseActivity {
 			if(invoiceDetailResponse.getInvoiceDetails().getManualCharges() < 0){
 				imageViewNegetive5.setVisibility(View.VISIBLE);
 				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.red_status));
-				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
-						+ Math.abs(invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
+				textViewManualAdjValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),Math.abs(invoiceDetailResponse.getInvoiceDetails().getManualCharges())));
 			}else {
 				imageViewNegetive5.setVisibility(View.GONE);
 				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.black));
-				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
-						+ Utils.getDecimalFormatForMoney().
-						format(invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
+				textViewManualAdjValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
 			}
 
 
-			textViewPhoneDeductionValue.setText("-"+getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions()));
-			textViewCancelSubsidyValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy()));
-			textViewPaidByJugnooValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo()));
-			textViewPaidUsingCstmrValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet()));
-			textViewPaidByCstmrValue.setText("-"+getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer()));
-			textViewPaytmCashValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getPaytmCash()));
+			textViewPhoneDeductionValue.setText("-"+Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions()));
+			textViewCancelSubsidyValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy()));
+			textViewPaidByJugnooValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo()));
+			textViewPaidUsingCstmrValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet()));
+			textViewPaidByCstmrValue.setText("-"+Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer()));
+			textViewPaytmCashValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getPaytmCash()));
 
-			textViewRideMoneyValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getRideMoney()));
-			textViewTotalJugnooAmntValue.setText(getResources().getString(R.string.rupee)
-					+ Utils.getDecimalFormatForMoney().
-					format(invoiceDetailResponse.getInvoiceDetails().getTotalAmount()));
+			textViewRideMoneyValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getRideMoney()));
+			textViewTotalJugnooAmntValue.setText(Utils.formatCurrencyValue(invoiceDetailResponse.getInvoiceDetails().getCurrencyUnit(),invoiceDetailResponse.getInvoiceDetails().getTotalAmount()));
 
 		} else {
 			performBackPressed();

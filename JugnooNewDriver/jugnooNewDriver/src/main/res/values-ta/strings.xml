@@ -46,8 +46,6 @@
         மலிவான கட்டணத்தில் எளிதான சவாரி கிடைத்தால் நன்மை தானே.
     </string>
     <string name="about_2_text">விலை அட்டை</string>
-    <string name="about_3_text">அடிப்படை கட்டணம்- ரூ 20+ ரூ 6 / கி மி + ரூ 1 / ஒரு நிமிடர்துக்கு
-    </string>
     <string name="email_id">இ-மெயில் ஐடி</string>
     <string name="confirm_email_id">இ-மெயில் ஐடி உறுதிப்படுத்தவும்</string>
     <string name="password">கடவுச்சொல்/பாஸ்வோர்ட்</string>
@@ -206,7 +204,6 @@
     </string>
     <string name="local_positon_text">உள்ளூர் நிலையை பெற முடியவில்லை</string>
     <string name="overall_position_text">ஒட்டுமொத்த நிலையை பெற முடியவில்லை</string>
-    <string name="cash_needed_text">பண தேவை: ரூ</string>
     <string name="convenience_charges_text">வாடிக்கையாளர் வசதிக்காக கட்டணம்:</string>
     <string name="code_empty">குறியீடு காலியாக இருக்க முடியாது</string>
     <string name="confirm_email_text">இ-மெயில் ஐ டி மாறுகிறது</string>
@@ -260,7 +257,6 @@
     <string name="luggage_charge">லகேஜ் கட்டணம்</string>
     <string name="login">லோக் இன்/பதிவு அமர்வு</string>
     <string name="restart_phone">உங்கள் தொலைபேசி மறுதொடக்கம் செய்யவும்</string>
-    <string name="money_to_take">வாங்க வேண்டிய பணம் : ரூ</string>
     <string name="min_fare">குறைந்தபட்ச கட்டணம்</string>
     <string name="meals_on">மீல்ஸ் ON</string>
     <string name="mail_us">இ-மெயில் அனுப்புங்கள்</string>
@@ -279,7 +275,6 @@
     <string name="name">பெயர்</string>
     <string name="name_colon">பெயர் :</string>
     <string name="overall_position">ஒட்டுமொத்த நிலை</string>
-    <string name="of_upto_100">ரூ.100 /- வரை</string>
     <string name="some_amount">தயவு செய்து கட்டணத்தை உள்ளிடவும்</string>
     <string name="less_amount">தயவு செய்து குறைந்த கட்டணத்தை உள்ளிடவும்</string>
     <string name="valid_amount">செல்லுபடியாகும் கட்டணத்தை உள்ளிடவும்</string>
@@ -317,7 +312,6 @@
     <string name="paid_cash">ரொக்கமாக வழங்கப்படும்</string>
     <string name="ride_id">சவாரி ஐ டி</string>
     <string name="Ride_id">சவாரி ஐ டி</string>
-    <string name="rupees">ரூ.</string>
     <string name="ride_time2">சவாரி நேரம்</string>
     <string name="rate">மதிப்பீடு</string>
     <string name="ride_in_progress_cant_logout">சவாரி ஓடிக்கொண்டிருக்கிறது . முடிந்த பின் தான்
@@ -371,7 +365,6 @@
     <string name="whatsapp_not_installed">Whatsapp நிறுவப்படவில்லை</string>
     <string name="weekly">வாராந்திர</string>
     <string name="will_revert_you">விரைவில் உங்களுக்கு பதிலளிக்க படும்</string>
-    <string name="cannot_add_less_than">தாங்கள் இந்த அளவுக்கு குறைவாக ரூ சேர்க்க முடியாது</string>
     <string name="your_position">உங்களது நிலை</string>
     <string name="your_overall_position">உங்களது ஒட்டுமொத்த நிலை</string>
     <string name="got_new_request">உங்களுக்கு ஒரு புதிய கோரிக்கை கிடைத்தது</string>
@@ -391,7 +384,6 @@
     <string name="no_internet_tap_to_retry">இணைய இணைப்பு இல்லை. மீண்டும் முயற்சி செய்யவும்</string>
     <string name="no_rides">தற்போது சவாரிகள் இல்லை</string>
     <string name="pickup_location">தங்களது பிக் அப் இடம்</string>
-    <string name="money_to_pay">பணம் செலுத்த : ரூ.</string>
     <string name="money_to">சுக்நூவின் பணம்</string>
     <string name="start_ride_loc">சவாரி தொடங்கும் இடம்</string>
     <string name="sec_left">மீதம் உள்ள நொடிகள்</string>

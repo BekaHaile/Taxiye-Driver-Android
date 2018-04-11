@@ -74,7 +74,7 @@ public class SharingRidesActivity extends BaseActivity {
 					jObj.getString("customer_phone_no"),
 					jObj.getDouble("actual_fare"),
 					jObj.getDouble("paid_in_cash"),
-					jObj.getDouble("account_balance"));
+					jObj.getDouble("account_balance"),jObj.optString("currency"));
 			if(!sharedRides.contains(sharingRideData)){
 				sharedRides.add(0, sharingRideData);
 				sharingRidesAdapter.notifyDataSetChanged();
@@ -189,7 +189,7 @@ public class SharingRidesActivity extends BaseActivity {
 							for (int i = 0; i < sharedRideResponse.getBookingData().size(); i++) {
 								SharedRideResponse.BookingData data = sharedRideResponse.getBookingData().get(i);
 								SharingRideData rideInfo = new SharingRideData(data.getSharingEngagementId(), data.getTransactionTime(),
-										data.getPhoneNo(), data.getActualFare(), data.getPaidInCash(), data.getAccountBalance());
+										data.getPhoneNo(), data.getActualFare(), data.getPaidInCash(), data.getAccountBalance(),data.getCurrencyUnit());
 								if(arr.contains(rideInfo.sharingEngagementId)){
 									rideInfo.completed = 1;
 								}

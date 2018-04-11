@@ -13,15 +13,16 @@ public class RideHistoryItem {
 	private int type;
 	private String status;
 	private Tile.Extras extras;
+	private String currencyUnit;
 
-
-	public RideHistoryItem(String date, String time, double earning, int type, String status, Tile.Extras extras) {
+	public RideHistoryItem(String date, String time, double earning, int type, String status, Tile.Extras extras,String currencyUnit) {
 		this.date = date;
 		this.time = time;
 		this.earning = earning;
 		this.type = type;
 		this.status = status;
 		this.extras = extras;
+		this.currencyUnit = currencyUnit;
 	}
 
 	public String getTime() {
@@ -70,5 +71,9 @@ public class RideHistoryItem {
 
 	public void setExtras(Tile.Extras extras) {
 		this.extras = extras;
+	}
+
+	public String getCurrencyUnit() {
+		return currencyUnit;
 	}
 }

@@ -6,11 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by aneeshbansal on 19/09/16.
  */
 
-public class DriverEarningsResponse {
+public class DriverEarningsResponse extends CurrencyModel{
 
 	@SerializedName("flag")
 	@Expose
@@ -230,7 +232,7 @@ public class DriverEarningsResponse {
 	}
 
 
-	public class Earning {
+	public class Earning  extends CurrencyModel{
 
 		@SerializedName("earnings")
 		@Expose

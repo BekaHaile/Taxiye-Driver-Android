@@ -4,11 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by Parminder Saini on 14/12/17.
  */
 
-public class FetchDriverPlansResponse {
+public class FetchDriverPlansResponse extends CurrencyModel{
 
     @SerializedName("flag")
     private  int flag;

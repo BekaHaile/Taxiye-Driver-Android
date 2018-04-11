@@ -104,7 +104,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 		}
 
 		textViewCashReq.setText(String.valueOf(activity.getResources().getString(R.string.cash_to_collected)
-				+": "+Utils.getAbsAmount(activity, deliveryInfos.getPickupData().getCashToCollect())));
+				+": "+Utils.getAbsAmount(activity, deliveryInfos.getPickupData().getCashToCollect(),deliveryInfos.getCurrencyUnit())));
 
 		helpBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

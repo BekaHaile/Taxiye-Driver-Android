@@ -4,7 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 /**
  * Created by aneeshbansal on 14/06/16.
@@ -57,7 +60,7 @@ public class DeliveryDetailResponse {
 		this.details = details;
 	}
 
-	public class Details {
+	public class Details extends CurrencyModel {
 
 		@SerializedName("time")
 		@Expose
@@ -104,6 +107,7 @@ public class DeliveryDetailResponse {
 		@SerializedName("to")
 		@Expose
 		private List<To> to = new ArrayList<To>();
+
 
 		/**
 		 *

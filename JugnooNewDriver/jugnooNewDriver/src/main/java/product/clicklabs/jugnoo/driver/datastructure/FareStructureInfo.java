@@ -3,8 +3,10 @@ package product.clicklabs.jugnoo.driver.datastructure;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
-public class FareStructureInfo {
+
+public class FareStructureInfo extends CurrencyModel {
 
 	@SerializedName("text")
 	@Expose

@@ -42,7 +42,6 @@
 
     <string name="about_1_text">&appname; helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">Rate card</string>
-    <string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
 
     <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
@@ -216,7 +215,6 @@
     <string name="change_phone_no_text">Changed Phone number is same as the previous one.</string>
     <string name="local_positon_text">Could not get local position</string>
     <string name="overall_position_text">Could not get overall position</string>
-    <string name="cash_needed_text">Cash Needed: Rs. </string>
     <string name="convenience_charges_text">Convenience charges for customer: </string>
     <string name="code_empty">Code can\'t be empty</string>
     <string name="confirm_email_text">Confirm email id doesn\'t match</string>
@@ -272,7 +270,6 @@
     <string name="login">Login</string>
 
     <string name="restart_phone">Please Restart Your Phone</string>
-    <string name="money_to_take">Money To take: Rs</string>
     <string name="min_fare">Min Fare</string>
     <string name="meals_on">Meals ON</string>
     <string name="mail_us">MAIL US</string>
@@ -290,7 +287,6 @@
     <string name="name">Name</string>
     <string name="name_colon">Name:</string>
     <string name="overall_position">Overall position</string>
-    <string name="of_upto_100">of upto Rs. 100/-</string>
 
     <string name="some_amount">Please enter some amount</string>
     <string name="less_amount">Please enter less amount</string>
@@ -324,7 +320,6 @@
     <string name="paid_cash">Paid in Cash</string>
 
     <string name="ride_id">Ride ID</string>
-    <string name="rupees">Rs.</string>
     <string name="ride_time2">Ride Time: </string>
     <string name="rate">Rate: </string>
     <string name="ride_in_progress_cant_logout">Ride in progress. You can logout only after the ride ends.</string>
@@ -372,7 +367,6 @@
     <string name="weekly">Weekly</string>
     <string name="will_revert_you">We will revert to you soon</string>
 
-    <string name="cannot_add_less_than">You cannot add amount less than \n Rs.</string>
     <string name="your_position">Your Position in</string>
     <string name="your_overall_position">Your Overall Position</string>
     <string name="got_new_request">You have got a new request.</string>
@@ -387,7 +381,6 @@
     <string name="no_internet_tap_to_retry">No Internet connection. Tap to retry</string>
     <string name="no_rides">No rides currently</string>
     <string name="pickup_location">Your Pickup Location</string>
-    <string name="money_to_pay">Money to pay: Rs.</string>
     <string name="money_to">Money to &appname;</string>
     <string name="start_ride_loc">start ride location</string>
 

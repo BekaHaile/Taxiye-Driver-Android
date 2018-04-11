@@ -1826,7 +1826,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										});
 									} else {
 										if (AppStatus.getInstance(activity).isOnline(activity)) {
-											String message = getResources().getString(R.string.amount_entered) + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
+											String message = getResources().getString(R.string.amount_entered) + Utils.formatCurrencyValue(customerInfo.getCurrencyUnit() , enteredMeterFare);
 											if (1 == customerInfo.luggageChargesApplicable) {
 												if (luggageCountAdded > 0) {
 													message = message + "\n" + luggageCountAdded + getResources().getString(R.string.luggage_added);
@@ -2117,7 +2117,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(maxDriverEarning>0) {
 						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 						String heading = getResources().getString(R.string.max_earning);
-						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(getResources().getString(R.string.rupee) +" "+maxDriverEarning)),false, true);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),maxDriverEarning))),false, true);
 					}
 			}
 
@@ -2480,8 +2480,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
-				textViewDriverEarningOnScreenValue.setText(getResources().getString(R.string.rupee) + Prefs.with(HomeActivity.this).
-						getString(Constants.DRIVER_RIDE_EARNING, ""));
+				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit() , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
 
 				textViewDriverEarningOnScreenDate.setText(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_DATE, ""));
 			} else {
@@ -3526,13 +3525,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
-					reviewFareValue.setText(getResources().getString(R.string.rupees) + " " + Utils.getDecimalFormatForMoney().format(totalFare));
+					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), totalFare));
 
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(getResources().getText(R.string.rupee) + " "
-								+ Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3553,8 +3551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(getResources().getText(R.string.rupee) + " "
-								+ Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3566,8 +3563,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					else{
 						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
-								+getResources().getText(R.string.rupee)+" "
-								+Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+								+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3575,7 +3571,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					endRideInfoRl.setVisibility(View.VISIBLE);
-					reviewFareValue.setText(getResources().getString(R.string.rupees) + " " + Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), endRideData.toPay));
 
 
 					reviewReachedDistanceRl.setVisibility(View.VISIBLE);
@@ -4023,12 +4019,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								deliveryInfolistFragVisibility = true;
 								deliveryInfoInRideDetails.setDeliveryData(deliveryData);
 								customerInfo.setDeliveryInfoInRideDetails(deliveryInfoInRideDetails);
+								deliveryInfoInRideDetails.setCurrencyUnit(customerInfo.getCurrencyUnit());
 								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
 										getRelativeLayoutContainer(), deliveryInfoInRideDetails);
 								overridePendingTransition(R.anim.right_in, R.anim.right_out);
 							} else if (customerInfo.getDeliveryInfoInRideDetails() != null) {
 								relativeLayoutContainer.setVisibility(View.VISIBLE);
 								deliveryInfolistFragVisibility = true;
+								customerInfo.getDeliveryInfoInRideDetails().setCurrencyUnit(customerInfo.getCurrencyUnit());
 								getTransactionUtils().openDeliveryInfoInRideFragment(HomeActivity.this,
 										getRelativeLayoutContainer(), customerInfo.getDeliveryInfoInRideDetails());
 								overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -4766,8 +4764,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {
-				driverIRFareValue.setText(getResources().getString(R.string.rupee) + " "
-						+ Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo, distance,
+				driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),getTotalFare(customerInfo, distance,
 						elapsedTime, waitTime, 0)));
 			}
 		} catch (Exception e) {
@@ -5089,8 +5086,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDeliveryFare.setVisibility(View.VISIBLE);
 //					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
-							+": "+getResources().getString(R.string.rupee)
-							+""+customerInfo.getCashOnDelivery());
+							+": "+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),customerInfo.getCashOnDelivery()));
 				} else {
 					holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
 //					holder.textViewDeliveryApprox.setVisibility(View.GONE);
@@ -5406,6 +5402,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",0));
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
+					String currency = jObj.optString(Constants.KEY_CURRENCY);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -5418,7 +5415,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 

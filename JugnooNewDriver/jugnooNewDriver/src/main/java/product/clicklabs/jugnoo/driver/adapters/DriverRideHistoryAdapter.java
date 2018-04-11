@@ -20,6 +20,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by aneesh on 10/4/15.
@@ -95,9 +96,9 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 					DateOperations.convertMonthDayViaFormat(itr.getDate()));
 
 			if (itr.getEarning() >= 0) {
-				holder.textViewInfoValue.setText(activity.getResources().getString(R.string.rupee) + itr.getEarning());
+				holder.textViewInfoValue.setText(Utils.formatCurrencyValue(itr.getCurrencyUnit(),itr.getEarning()));
 			} else {
-				holder.textViewInfoValue.setText("-" + activity.getResources().getString(R.string.rupee) + Math.abs(itr.getEarning()));
+				holder.textViewInfoValue.setText("-" +Utils.formatCurrencyValue(itr.getCurrencyUnit(),Math.abs(itr.getEarning())));
 			}
 
 
