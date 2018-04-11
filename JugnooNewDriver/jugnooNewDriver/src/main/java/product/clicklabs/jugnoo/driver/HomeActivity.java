@@ -1826,7 +1826,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										});
 									} else {
 										if (AppStatus.getInstance(activity).isOnline(activity)) {
-											String message = getResources().getString(R.string.amount_entered) + Utils.formatCurrencyValue(customerInfo.getCurrency() , enteredMeterFare);
+											String message = getResources().getString(R.string.amount_entered) + Utils.formatCurrencyValue(customerInfo.getCurrencyUnit() , enteredMeterFare);
 											if (1 == customerInfo.luggageChargesApplicable) {
 												if (luggageCountAdded > 0) {
 													message = message + "\n" + luggageCountAdded + getResources().getString(R.string.luggage_added);
@@ -2117,7 +2117,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(maxDriverEarning>0) {
 						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 						String heading = getResources().getString(R.string.max_earning);
-						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrency(),maxDriverEarning))),false, true);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),maxDriverEarning))),false, true);
 					}
 			}
 
@@ -2480,7 +2480,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
-				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrency() , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
+				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit() , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
 
 				textViewDriverEarningOnScreenDate.setText(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_DATE, ""));
 			} else {
@@ -3530,7 +3530,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrency(),endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3551,7 +3551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrency(),endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3563,7 +3563,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					else{
 						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
-								+Utils.formatCurrencyValue(customerInfo.getCurrency(),endRideData.toPay));
+								+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -4764,7 +4764,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {
-				driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrency(),getTotalFare(customerInfo, distance,
+				driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),getTotalFare(customerInfo, distance,
 						elapsedTime, waitTime, 0)));
 			}
 		} catch (Exception e) {
@@ -5086,7 +5086,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.textViewDeliveryFare.setVisibility(View.VISIBLE);
 //					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
 					holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
-							+": "+Utils.formatCurrencyValue(customerInfo.getCurrency(),customerInfo.getCashOnDelivery()));
+							+": "+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),customerInfo.getCashOnDelivery()));
 				} else {
 					holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
 //					holder.textViewDeliveryApprox.setVisibility(View.GONE);
