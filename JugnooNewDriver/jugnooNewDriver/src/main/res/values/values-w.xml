@@ -41,6 +41,7 @@
     <!--Side Menu Properties-->
     <integer name="show_invoices">@integer/view_gone</integer>
     <integer name="show_driver_resources">@integer/view_gone</integer>
+    <integer name="show_refer_earn">@integer/view_gone</integer>
 
 
     <bool name="show_support_ride_detail">false</bool>

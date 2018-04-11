@@ -530,6 +530,7 @@
                 android:id="@+id/inviteFriendRl"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:visibility="@integer/show_refer_earn"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
