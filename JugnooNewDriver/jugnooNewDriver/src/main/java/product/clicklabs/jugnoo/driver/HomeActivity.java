@@ -3525,12 +3525,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
-					reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), totalFare));
+					reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3551,7 +3551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
+						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3563,7 +3563,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					else{
 						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
-								+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),endRideData.toPay));
+								+Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -6470,7 +6470,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
-					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode);
+					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit());
 
 			try {
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);

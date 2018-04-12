@@ -628,6 +628,7 @@ public class JSONParser implements Constants {
 			for (int i = 0; i < jActiveRequests.length(); i++) {
 				JSONObject jActiveRequest = jActiveRequests.getJSONObject(i);
 				String requestEngagementId = jActiveRequest.getString("engagement_id");
+				String currency = jActiveRequest.getString(KEY_CURRENCY);
 				String requestUserId = jActiveRequest.getString("user_id");
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
@@ -694,7 +695,7 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist);
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -734,7 +735,7 @@ public class JSONParser implements Constants {
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"));
+					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY));
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -743,7 +744,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal());
+					PaymentMode.CASH.getOrdinal(),"");
 		}
 	}
 

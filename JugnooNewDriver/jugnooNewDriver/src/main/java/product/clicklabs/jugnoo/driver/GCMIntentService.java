@@ -521,6 +521,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double cashOnDelivery = jObj.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 									double estimatedDist = jObj.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
 									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
+									String currency = jObj.optString(Constants.KEY_CURRENCY, "");
 
 									ArrayList<String> dropPoints = new ArrayList<>();
 									if(jObj.has(Constants.KEY_DROP_POINTS)) {
@@ -579,7 +580,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist);
+												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId, changeRing);

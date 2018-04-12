@@ -117,7 +117,8 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
-						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist){
+						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
+						String currency){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -138,6 +139,7 @@ public class CustomerInfo {
 		this.estimatedDriverFare = estimatedDriverFare;
 		this.deliveryAddress = deliveryAddress;
 		this.estimatedDist = estimatedDist;
+		this.currencyUnit = currency;
 	}
 
 	public double getDryDistance() {

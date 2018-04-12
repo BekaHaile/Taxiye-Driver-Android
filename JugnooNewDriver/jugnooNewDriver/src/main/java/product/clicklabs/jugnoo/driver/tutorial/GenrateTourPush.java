@@ -88,6 +88,7 @@ public class GenrateTourPush {
 
                         if (entertainRequest) {
                             String engagementId = String.valueOf(jObj.getEngagementId());
+                            String currency = jObj.getCurrencyUnit();
                             String userId = String.valueOf(jObj.getUserId());
                             double latitude = jObj.getLatitude();
                             double longitude = jObj.getLongitude();
@@ -132,7 +133,8 @@ public class GenrateTourPush {
                                         Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
                                         referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
                                         isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-                                        new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, new ArrayList<String>(), 0d);
+                                        new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, new ArrayList<String>(),
+                                        0d,currency);
                                 Data.addCustomerInfo(customerInfo);
 
                                 startRing(context, engagementId, changeRing);

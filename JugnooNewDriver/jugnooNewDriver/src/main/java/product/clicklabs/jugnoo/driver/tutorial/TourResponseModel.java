@@ -3,6 +3,8 @@ package product.clicklabs.jugnoo.driver.tutorial;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by gurmail on 2/7/17.
  */
@@ -97,7 +99,7 @@ public class TourResponseModel {
     //-----------------------------------product.clicklabs.jugnoo.driver.tutorial.RequestResponse.java-----------------------------------
 
 
-    public class RequestResponse {
+    public class RequestResponse extends CurrencyModel {
 
         @SerializedName("is_pooled")
         @Expose
