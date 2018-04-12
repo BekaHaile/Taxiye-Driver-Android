@@ -5174,7 +5174,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else if(customerInfo.getIsDelivery() == 1){
 				holder.imageViewRequestType.setImageResource(R.drawable.ic_delivery_request);
 			} else{
-				holder.imageViewRequestType.setImageResource(R.drawable.ic_auto_request);
+				int vehicleType = Prefs.with(HomeActivity.this).getInt(SPLabels.VEHICLE_TYPE,0);
+				int vehicleTypeImage;
+				switch (vehicleType){
+					case 2:
+						vehicleTypeImage = R.drawable.ic_ride_accept_bike;
+						break;
+					case 3:
+						vehicleTypeImage = R.drawable.ic_ride_accept_taxi;
+						break;
+					case 6:
+						vehicleTypeImage = R.drawable.ic_ride_accept_transport;
+						break;
+					default:
+						vehicleTypeImage = R.drawable.ic_auto_request;
+						break;
+
+				}
+				holder.imageViewRequestType.setImageResource(vehicleTypeImage);
 			}
 
 
