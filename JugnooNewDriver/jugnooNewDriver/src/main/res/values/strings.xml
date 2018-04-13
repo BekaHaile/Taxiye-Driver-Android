@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE resources [
-    <!ENTITY appname "Sindbad">
+    <!ENTITY appname "Jingo">
     ]>
 <resources>
-    <string name="app_name">&appname; Drivers</string>
+    <string name="app_name">&appname; Rides</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
