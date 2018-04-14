@@ -95,7 +95,6 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PendingApiHit;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -982,7 +981,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
-
+			params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
 			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
 			} else {
@@ -2488,6 +2487,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("latitude", "" + Data.latitude);
 		params.put("longitude", "" + Data.longitude);
+		params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
 
 		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
