@@ -233,7 +233,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             public void onClick(View v) {
                 String otpCode = otpEt.getText().toString().trim();
                 if (otpCode.length() > 0) {
-                    sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNo), "", otpCode);
+                    sendLoginValues(LoginViaOTP.this, "", countryCode + String.valueOf(phoneNo), "", otpCode);
                 } else {
                     otpEt.requestFocus();
                     otpEt.setError(getResources().getString(R.string.code_empty));
@@ -246,7 +246,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
             @Override
             public void onClick(View v) {
-                sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNo), "", "99999");
+                sendLoginValues(LoginViaOTP.this, "", countryCode + String.valueOf(phoneNo), "", "99999");
             }
         });
 
