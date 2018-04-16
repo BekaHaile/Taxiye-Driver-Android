@@ -37,7 +37,7 @@ public class Database2 {                                                        
 
 	private static Database2 dbInstance;
 
-	private static final String DATABASE_NAME = R.string.white_label_name +"_database2";                        // declaring database variables
+	private static final String DATABASE_NAME = BuildConfig.APPLICATION_ID +"_database2";                        // declaring database variables
 
 	private static final int DATABASE_VERSION = 2;
 
