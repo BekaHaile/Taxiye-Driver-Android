@@ -26,8 +26,8 @@
         android:id="@+id/textViewInfoValue"
         android:layout_width="140px"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical|right"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical|end"
         android:text="0"
         android:textColor="@color/black_text_v2"
         android:textSize="34px"/>
@@ -36,7 +36,7 @@
         android:id="@+id/imageViewArrow"
         android:layout_width="23px"
         android:layout_height="15px"
-        android:layout_marginLeft="14px"
+        android:layout_marginStart="14px"
         android:layout_marginTop="14px"
         android:src="@drawable/audit_next_arrow"/>
 

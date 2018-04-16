@@ -33,7 +33,7 @@
                     android:id="@+id/textViewListCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30px"
+                    android:layout_marginStart="30px"
                     android:layout_marginTop="6px"
                     android:text="@string/NA"
                     android:textColor="@color/black_text_v2"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewListCount"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="30px"
+                    android:layout_marginStart="30px"
                     android:text="@string/NA"
                     android:textColor="@color/black_text_v2"
                     android:textSize="32px"
@@ -67,9 +67,9 @@
                     android:id="@+id/relativeLayoutCall"
                     android:layout_width="220px"
                     android:layout_height="72px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="36px"
+                    android:layout_marginEnd="36px"
                     android:background="@drawable/new_orange_btn_corner_normal"
                     android:visibility="visible">
 
@@ -78,7 +78,7 @@
                         android:layout_width="40px"
                         android:layout_height="40px"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15px"
+                        android:layout_marginStart="15px"
                         android:src="@drawable/call_icon_selector"/>
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -86,7 +86,7 @@
                         android:layout_width="130px"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="95px"
+                        android:layout_marginStart="95px"
                         android:text="@string/call"
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="42px"/>
@@ -98,8 +98,8 @@
                 android:id="@+id/imageViewSeprator"
                 android:layout_width="match_parent"
                 android:layout_height="2px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:background="@color/grey_light"/>
 
             <LinearLayout
@@ -119,7 +119,7 @@
                         android:id="@+id/textViewCustomerDeliveryAddress"
                         android:layout_width="592px"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30px"
+                        android:layout_marginStart="30px"
                         android:maxLines="3"
                         android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                         android:textColor="@color/black_text_v2"
@@ -130,7 +130,7 @@
                         android:id="@+id/textViewCashCollected"
                         android:layout_width="592px"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30px"
+                        android:layout_marginStart="30px"
                         android:layout_marginTop="12px"
                         android:text="lllllllllllllllllllllllllllllllllllllll"
                         android:textColor="@color/black_text_v2"
@@ -142,7 +142,7 @@
                         android:id="@+id/relativeLayoutLoading"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30px"
+                        android:layout_marginStart="30px"
                         android:layout_marginTop="12px">
                         
                         <ImageView
@@ -156,10 +156,10 @@
                             android:id="@+id/textViewUnLoading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/imageViewLoadingIcon"
+                            android:layout_toEndOf="@+id/imageViewLoadingIcon"
                             android:layout_centerVertical="true"
                             android:textColor="@color/black_text_v2"
-                            android:layout_marginLeft="8px"
+                            android:layout_marginStart="8px"
                             android:textSize="30px"
                             android:text="@string/unloading_req"/>
 
@@ -174,8 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12px"
-                android:layout_marginLeft="78px"
-                android:layout_marginRight="40px"
+                android:layout_marginStart="78px"
+                android:layout_marginEnd="40px"
                 android:layout_marginTop="44px"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -187,7 +187,7 @@
             <RelativeLayout
                 android:id="@+id/relativelayoutProgressInfo"
                 android:layout_width="wrap_content"
-                android:layout_marginLeft="8px"
+                android:layout_marginStart="8px"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15px"
                 android:visibility="gone">
@@ -214,8 +214,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="5px"
@@ -235,7 +235,7 @@
                     android:id="@+id/buttonMarkDeliver"
                     android:layout_width="300px"
                     android:layout_height="72px"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginStart="40px"
                     android:background="@drawable/new_orange_btn_normal_rounded"
                     android:text="@string/deliver"
                     android:textColor="@drawable/white_color_selector"

@@ -105,7 +105,7 @@
                             android:id="@+id/imageViewSep"
                             android:layout_width="2px"
                             android:layout_height="35px"
-                            android:layout_marginLeft="10px"
+                            android:layout_marginStart="10px"
                             android:background="@color/stroke_color_light" />
 
                         <ImageView
@@ -148,8 +148,8 @@
                     android:inputType="number"
                     android:maxLength="10"
                     android:paddingBottom="15px"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
+                    android:paddingStart="20px"
+                    android:paddingEnd="20px"
                     android:paddingTop="15px"
                     android:textColor="@color/black_text_v2"
                     android:textColorHint="@color/grey_light"

@@ -30,8 +30,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/update"
                 android:textColor="@color/new_orange"
                 android:textSize="50px" />
@@ -45,8 +45,8 @@
                 android:gravity="center"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="ands"
                 android:textColor="@color/black"
                 android:textSize="34px" />

@@ -58,7 +58,7 @@
                     android:layout_width="32px"
                     android:layout_height="32px"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="30px"
+                    android:layout_marginStart="30px"
                     android:src="@drawable/date_orange_icon"
                     android:tag="mwar"/>
 
@@ -67,8 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5px"
-                    android:layout_toRightOf="@+id/imageViewTime"
+                    android:layout_marginStart="5px"
+                    android:layout_toEndOf="@+id/imageViewTime"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
                     android:textColor="@color/new_orange"
@@ -80,9 +80,9 @@
                     android:id="@+id/imageViewRequestType"
                     android:layout_width="45px"
                     android:layout_height="45px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20px"
+                    android:layout_marginEnd="20px"
                     android:src="@drawable/request_fatafat"
                     android:tag="mwar"
                     />
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15px"
-                android:layout_marginLeft="30px"
+                android:layout_marginStart="30px"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:splitMotionEvents="false">
@@ -104,7 +104,7 @@
                     android:id="@+id/idValue"
                     android:layout_width="wrap_content"
                     android:layout_height="38px"
-                    android:layout_marginLeft="0px"
+                    android:layout_marginStart="0px"
                     android:singleLine="true"
                     android:text="@string/delivery_id"
                     android:textColor="@color/bg_grey_opaque"
@@ -114,7 +114,7 @@
                     android:id="@+id/distanceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="38px"
-                    android:layout_marginLeft="0px"
+                    android:layout_marginStart="0px"
                     android:singleLine="true"
                     android:layout_marginTop="4px"
                     android:text="Ride Distance: 5.6 Km"
@@ -127,7 +127,7 @@
                     android:id="@+id/rideTimeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="38px"
-                    android:layout_marginLeft="0px"
+                    android:layout_marginStart="0px"
                     android:singleLine="true"
                     android:text="Total Time: 10 min"
                     android:layout_marginTop="4px"
@@ -138,7 +138,7 @@
                     android:id="@+id/textViewReturnDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="38px"
-                    android:layout_marginLeft="0px"
+                    android:layout_marginStart="0px"
                     android:singleLine="true"
                     android:text="Return Distance: 4 Km"
                     android:layout_marginTop="4px"
@@ -151,7 +151,7 @@
                     android:id="@+id/textViewNoOfDeliveries"
                     android:layout_width="wrap_content"
                     android:layout_height="38px"
-                    android:layout_marginLeft="0px"
+                    android:layout_marginStart="0px"
                     android:singleLine="true"
                     android:layout_marginTop="4px"
                     android:text="No of Deliveries: 4 "
@@ -166,7 +166,7 @@
             android:layout_width="680px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="15px"
             android:layout_marginBottom="15px"
             android:layout_gravity="center_vertical"
@@ -182,7 +182,7 @@
                     android:layout_width="400px"
                     android:layout_height="42px"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
+                    android:layout_marginStart="38px"
                     android:text="@string/ride_fare"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -191,8 +191,8 @@
                     android:id="@+id/textViewRideFareRupee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewRideFareValue"
+                    android:layout_marginEnd="10px"
+                    android:layout_toStartOf="@+id/textViewRideFareValue"
                     android:gravity="center_vertical"
                     android:text="@string/rupee"
                     android:textColor="@color/black"
@@ -202,9 +202,9 @@
                     android:id="@+id/textViewRideFareValue"
                     android:layout_width="140px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:layout_marginEnd="40px"
                     android:text="00000.00"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -223,7 +223,7 @@
                     android:layout_width="400px"
                     android:layout_height="42px"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
+                    android:layout_marginStart="38px"
                     android:text="@string/delivery_fare"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -232,8 +232,8 @@
                     android:id="@+id/textViewDeliveryFareRupee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewDeliveryFareValue"
+                    android:layout_marginEnd="10px"
+                    android:layout_toStartOf="@+id/textViewDeliveryFareValue"
                     android:gravity="center_vertical"
                     android:text="@string/rupee"
                     android:textColor="@color/black"
@@ -243,9 +243,9 @@
                     android:id="@+id/textViewDeliveryFareValue"
                     android:layout_width="140px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:layout_marginEnd="40px"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -263,7 +263,7 @@
                     android:layout_width="400px"
                     android:layout_height="42px"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
+                    android:layout_marginStart="38px"
                     android:text="@string/return_subsidy"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -272,8 +272,8 @@
                     android:id="@+id/textViewReturnSubsidyRupee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewReturnSubsidyValue"
+                    android:layout_marginEnd="10px"
+                    android:layout_toStartOf="@+id/textViewReturnSubsidyValue"
                     android:gravity="center_vertical"
                     android:text="@string/rupee"
                     android:textColor="@color/black"
@@ -283,9 +283,9 @@
                     android:id="@+id/textViewReturnSubsidyValue"
                     android:layout_width="140px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:layout_marginEnd="40px"
                     android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -302,7 +302,7 @@
                     android:layout_width="400px"
                     android:layout_height="42px"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
+                    android:layout_marginStart="38px"
                     android:text="@string/jugnoo_cut"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
@@ -311,8 +311,8 @@
                     android:id="@+id/textViewJugnooCutRupee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewJugnooCutValue"
+                    android:layout_marginEnd="10px"
+                    android:layout_toStartOf="@+id/textViewJugnooCutValue"
                     android:gravity="center_vertical"
                     android:text="@string/rupee"
                     android:textColor="@color/red_status"
@@ -322,9 +322,9 @@
                     android:id="@+id/textViewJugnooCutValue"
                     android:layout_width="140px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:layout_marginEnd="40px"
                     android:text="0"
                     android:textColor="@color/red_status"
                     android:textSize="32px"/>
@@ -333,7 +333,7 @@
             <ImageView
                 android:layout_width="620px"
                 android:layout_height="5px"
-                android:layout_marginLeft="10px"
+                android:layout_marginStart="10px"
                 android:layout_marginBottom="5px"
                 android:background="@color/white"/>
 
@@ -343,7 +343,7 @@
             android:layout_width="680px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="15px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_orange_bordered">
@@ -556,7 +556,7 @@
                     <!--android:singleLine="true"-->
                     <!--android:visibility="gone"-->
                     <!--android:layout_marginTop="5px"-->
-                    <!--android:layout_toRightOf="@+id/imageViewVertical"-->
+                    <!--android:layout_toEndOf="@+id/imageViewVertical"-->
                     <!--android:text="@string/rupee_zero"-->
                     <!--android:textColor="@color/grey_ride_history"-->
                     <!--android:textSize="52px"/>-->
@@ -566,7 +566,7 @@
                     <!--android:layout_width="345px"-->
                     <!--android:layout_height="40px"-->
                     <!--android:layout_below="@+id/textViewAccountBalance"-->
-                    <!--android:layout_toRightOf="@+id/imageViewVertical"-->
+                    <!--android:layout_toEndOf="@+id/imageViewVertical"-->
                     <!--android:gravity="center"-->
                     <!--android:visibility="gone"-->
                     <!--android:singleLine="true"-->
@@ -587,8 +587,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32px"
-                android:layout_marginLeft="60px"
-                android:layout_marginRight="20px"
+                android:layout_marginStart="60px"
+                android:layout_marginEnd="20px"
                 android:splitMotionEvents="false">
 
                 <ImageView
@@ -602,7 +602,7 @@
                     android:id="@+id/textViewFromValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="70px"
+                    android:layout_marginStart="70px"
                     android:layout_marginBottom="0px"
                     android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
                     android:textColor="@color/bg_grey_opaque"
@@ -613,8 +613,8 @@
                 android:id="@+id/linearLayoutTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60px"
-                android:layout_marginRight="20px"
+                android:layout_marginStart="60px"
+                android:layout_marginEnd="20px"
                 android:splitMotionEvents="false">
 
                 <product.clicklabs.jugnoo.driver.utils.NonScrollListView

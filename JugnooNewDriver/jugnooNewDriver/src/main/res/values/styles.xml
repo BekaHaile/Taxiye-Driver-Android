@@ -46,7 +46,7 @@
     </style>
 
     <style name="AudioFileInfoOverlayText">
-        <item name="android:paddingLeft">4px</item>
+        <item name="android:paddingStart">4px</item>
         <item name="android:paddingBottom">4px</item>
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">12sp</item>
@@ -71,7 +71,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:padding">20px</item>
         <item name="android:src">@drawable/ic_back_selector</item>
-        <item name="android:layout_marginLeft">10px</item>
+        <item name="android:layout_marginStart">10px</item>
         <item name="android:tag">mwar</item>
     </style>
 

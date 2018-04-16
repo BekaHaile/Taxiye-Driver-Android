@@ -38,8 +38,8 @@
                 android:text="@string/alert"
                 android:textColor="@color/new_orange"
                 android:textSize="50px" 
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 
                 />
             
@@ -56,8 +56,8 @@
                 android:textColor="@color/black"
                 android:lineSpacingExtra="10px"
                 android:textSize="34px" 
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 
                 />
             
@@ -75,7 +75,7 @@
                         android:id="@+id/btnOk"
                         android:layout_width="180px"
                         android:layout_height="83px"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:background="@drawable/new_orange_btn_selector_rounded"
                         android:singleLine="true"
                         android:text="@string/ok"
@@ -89,7 +89,7 @@
                         android:id="@+id/btnNeutral"
                         android:layout_width="180px"
                         android:layout_height="83px"
-                        android:layout_marginRight="20px"
+                        android:layout_marginEnd="20px"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/green_btn_selector"
                         android:singleLine="true"
@@ -104,7 +104,7 @@
                         android:id="@+id/btnCancel"
                         android:layout_width="180px"
                         android:layout_height="83px"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:background="@drawable/new_menu_black_btn_selector_corner_rounded"
                         android:singleLine="true"
                         android:text="@string/cancel"

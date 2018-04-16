@@ -28,8 +28,8 @@
         android:id="@+id/imageViewSliderView"
         android:layout_width="95px"
         android:layout_height="95px"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="80px"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80px"
         android:src="@drawable/up_arrow_even_sahdow"/>
 
 

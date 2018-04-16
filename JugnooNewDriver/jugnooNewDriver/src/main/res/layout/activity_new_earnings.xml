@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="26px"
+                        android:layout_marginStart="26px"
                         android:text="@string/Today_earning"
                         android:textColor="@color/white"
                         android:textSize="36px" />
@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/arrow"
+                        android:layout_toStartOf="@+id/arrow"
                         android:text="Rs. NA"
                         android:textColor="@color/white"
                         android:textSize="84px" />
@@ -83,9 +83,9 @@
                         android:id="@+id/arrow"
                         android:layout_width="56px"
                         android:layout_height="48px"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="24px"
+                        android:layout_marginEnd="24px"
                         android:src="@drawable/arrow_today_earning_top" />
 
                 </RelativeLayout>
@@ -109,8 +109,8 @@
                         android:id="@+id/imageViewWalletBalance"
                         android:layout_width="56px"
                         android:layout_height="56px"
-                        android:layout_marginLeft="26px"
-                        android:layout_marginRight="26px"
+                        android:layout_marginStart="26px"
+                        android:layout_marginEnd="26px"
                         android:layout_centerVertical="true"
                         android:src="@drawable/wallet_balance" />
 
@@ -119,7 +119,7 @@
                         android:id="@+id/textViewWalletBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/imageViewWalletBalance"
+                        android:layout_toEndOf="@+id/imageViewWalletBalance"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
                         android:text="@string/wallet_balance"
@@ -132,19 +132,19 @@
                         android:id="@+id/wallet_arrow"
                         android:layout_width="23px"
                         android:layout_height="21px"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="48px"
+                        android:layout_marginEnd="48px"
                         android:src="@drawable/arrow_thick_new" />
 
                     <TextView
                         android:id="@+id/textViewWalletBalanceAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/wallet_arrow"
-                        android:gravity="center_vertical|right"
+                        android:layout_toStartOf="@+id/wallet_arrow"
+                        android:gravity="center_vertical|end"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="20px"
+                        android:layout_marginEnd="20px"
                         android:textColor="@color/white"
                         android:text="--"
                         android:textSize="20px" />
@@ -191,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="18px"
+                        android:layout_marginEnd="18px"
                         android:text="@string/no_data"
                         android:textColor="@color/white"
                         android:textSize="34px"
@@ -312,8 +312,8 @@
                     android:id="@+id/relativeLayoutWalletCaptive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="35px"
-                    android:paddingRight="35px"
+                    android:paddingStart="35px"
+                    android:paddingEnd="35px"
                     android:paddingTop="30px"
                     android:visibility="gone"
                     android:paddingBottom="30px"
@@ -327,7 +327,7 @@
                         android:id="@+id/imageViewWalletBalanceCaptive"
                         android:layout_width="56px"
                         android:layout_height="56px"
-                        android:layout_marginRight="15px"
+                        android:layout_marginEnd="15px"
                         android:layout_centerVertical="true"
                         android:src="@drawable/wallet_balance" />
 
@@ -336,7 +336,7 @@
                         android:id="@+id/textViewWalletBalanceCaptive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/imageViewWalletBalanceCaptive"
+                        android:layout_toEndOf="@+id/imageViewWalletBalanceCaptive"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
                         android:text="@string/wallet_balance"
@@ -350,8 +350,8 @@
                         android:layout_width="23px"
                         android:layout_height="21px"
                         android:visibility="visible"
-                        android:layout_marginLeft="20px"
-                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="20px"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/arrow_thick_new" />
 
@@ -359,11 +359,11 @@
                         android:id="@+id/textViewWalletBalanceAmountCaptive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10px"
+                        android:layout_marginStart="10px"
                         android:layout_alignWithParentIfMissing="true"
-                        android:layout_toRightOf="@id/textViewWalletBalanceCaptive"
-                        android:layout_toLeftOf="@+id/wallet_arrow_captive"
-                        android:gravity="center_vertical|right"
+                        android:layout_toEndOf="@id/textViewWalletBalanceCaptive"
+                        android:layout_toStartOf="@+id/wallet_arrow_captive"
+                        android:gravity="center_vertical|end"
                         android:layout_centerVertical="true"
                         android:textColor="@color/text_color"
                         android:text="--"
@@ -373,8 +373,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_marginLeft="35px"
-                    android:layout_marginRight="35px"
+                    android:layout_marginStart="35px"
+                    android:layout_marginEnd="35px"
                     android:layout_marginBottom="30px"
 
                     android:layout_width="match_parent"
@@ -391,16 +391,16 @@
                         android:id="@+id/tvTargetDistance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:gravity="right"
-                        android:layout_toRightOf="@id/tvTargetDistanceLabel"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="end"
+                        android:layout_toEndOf="@id/tvTargetDistanceLabel"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_marginLeft="35px"
-                    android:layout_marginRight="35px"
+                    android:layout_marginStart="35px"
+                    android:layout_marginEnd="35px"
                     android:layout_marginBottom="30px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -416,16 +416,16 @@
                         android:id="@+id/tvDaysLeft"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:layout_toRightOf="@id/tvDaysLeftLabel"
-                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:layout_toEndOf="@id/tvDaysLeftLabel"
+                        android:layout_alignParentEnd="true"
                         android:text="@string/days_left"
                         android:textColor="@color/text_color"
                         android:textSize="36px" />
                 </RelativeLayout>
                 <RelativeLayout
-                    android:layout_marginLeft="35px"
-                    android:layout_marginRight="35px"
+                    android:layout_marginStart="35px"
+                    android:layout_marginEnd="35px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -438,9 +438,9 @@
 
                     <TextView
                         android:id="@+id/tvAmountCollected"
-                        android:gravity="right"
-                        android:layout_toRightOf="@id/tvAmountCollectedLabel"
-                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:layout_toEndOf="@id/tvAmountCollectedLabel"
+                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/amount_collected"
@@ -452,8 +452,8 @@
                 <RelativeLayout
                     android:visibility="gone"
                     android:id="@+id/rl_adjusted_distance"
-                    android:layout_marginLeft="35px"
-                    android:layout_marginRight="35px"
+                    android:layout_marginStart="35px"
+                    android:layout_marginEnd="35px"
                     android:layout_marginTop="30px"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -467,9 +467,9 @@
 
                     <TextView
                         android:id="@+id/tvAdjustedDistanceValue"
-                        android:gravity="right"
-                        android:layout_toRightOf="@id/tvAdjustedDistanceLabel"
-                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:layout_toEndOf="@id/tvAdjustedDistanceLabel"
+                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
@@ -536,8 +536,8 @@
                         android:id="@+id/imageViewRideHistory"
                         android:layout_width="36px"
                         android:layout_height="31px"
-                        android:layout_marginLeft="54px"
-                        android:layout_marginRight="26px"
+                        android:layout_marginStart="54px"
+                        android:layout_marginEnd="26px"
                         android:layout_marginTop="12px"
                         android:src="@drawable/ride_history_icon" />
 
@@ -546,7 +546,7 @@
                         android:id="@+id/textViewRideHistory"
                         android:layout_width="wrap_content"
                         android:layout_height="55px"
-                        android:layout_toRightOf="@+id/imageViewRideHistory"
+                        android:layout_toEndOf="@+id/imageViewRideHistory"
                         android:gravity="center_vertical"
                         android:text="@string/ride_history_cap"
                         android:textColor="@color/black_text_v2"
@@ -556,8 +556,8 @@
                     <ImageView
                         android:layout_width="23px"
                         android:layout_height="21px"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="48px"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="48px"
                         android:layout_marginTop="14px"
                         android:src="@drawable/arrow_thick_new" />
 
@@ -587,8 +587,8 @@
                     android:id="@+id/imageViewNefy"
                     android:layout_width="56px"
                     android:layout_height="56px"
-                    android:layout_marginLeft="54px"
-                    android:layout_marginRight="26px"
+                    android:layout_marginStart="54px"
+                    android:layout_marginEnd="26px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/wallet_balance" />
 
@@ -597,7 +597,7 @@
                     android:id="@+id/textViewNefy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/imageViewNefy"
+                    android:layout_toEndOf="@+id/imageViewNefy"
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true"
                     android:text="Neft Pending"
@@ -610,19 +610,19 @@
                     android:id="@+id/nefy_arrow"
                     android:layout_width="23px"
                     android:layout_height="21px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="48px"
+                    android:layout_marginEnd="48px"
                     android:src="@drawable/arrow_thick_new" />
 
                 <TextView
                     android:id="@+id/textViewNefyAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/nefy_arrow"
-                    android:gravity="center_vertical|right"
+                    android:layout_toStartOf="@+id/nefy_arrow"
+                    android:gravity="center_vertical|end"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20px"
+                    android:layout_marginEnd="20px"
                     android:textColor="@color/black_text_v2"
                     android:text="--"
                     android:textSize="36px" />

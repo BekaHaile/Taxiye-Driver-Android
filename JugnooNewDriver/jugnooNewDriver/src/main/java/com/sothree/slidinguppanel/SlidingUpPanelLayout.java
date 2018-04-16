@@ -667,8 +667,8 @@ public class SlidingUpPanelLayout extends ViewGroup {
         if (getChildCount() == 0) {
             return;
         }
-        final int leftBound = getPaddingLeft();
-        final int rightBound = getWidth() - getPaddingRight();
+        final int startBound = getPaddingStart();
+        final int rightBound = getWidth() - getPaddingEnd();
         final int topBound = getPaddingTop();
         final int bottomBound = getHeight() - getPaddingBottom();
         final int left;
@@ -684,7 +684,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
             left = right = top = bottom = 0;
         }
         View child = getChildAt(0);
-        final int clampedChildLeft = Math.max(leftBound, child.getLeft());
+        final int clampedChildLeft = Math.max(startBound, child.getLeft());
         final int clampedChildTop = Math.max(topBound, child.getTop());
         final int clampedChildRight = Math.min(rightBound, child.getRight());
         final int clampedChildBottom = Math.min(bottomBound, child.getBottom());
@@ -755,7 +755,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
 
         int layoutHeight = heightSize - getPaddingTop() - getPaddingBottom();
-        int layoutWidth = widthSize - getPaddingLeft() - getPaddingRight();
+        int layoutWidth = widthSize - getPaddingStart() - getPaddingEnd();
 
         // First pass. Measure based on child LayoutParams width/height.
         for (int i = 0; i < childCount; i++) {
@@ -774,7 +774,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
                     height -= mPanelHeight;
                 }
 
-                width -= lp.leftMargin + lp.rightMargin;
+                width -= lp.getMarginStart() + lp.getMarginEnd();
             } else if (child == mSlideableView) {
                 // The slideable view should be aware of its top margin.
                 // See https://github.com/umano/AndroidSlidingUpPanel/issues/412.
@@ -811,7 +811,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int paddingLeft = getPaddingLeft();
+        final int paddingStart = getPaddingStart();
         final int paddingTop = getPaddingTop();
 
         final int childCount = getChildCount();
@@ -856,7 +856,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 }
             }
             final int childBottom = childTop + childHeight;
-            final int childLeft = paddingLeft + lp.leftMargin;
+            final int childLeft = paddingStart + lp.getMarginStart();
             final int childRight = childLeft + child.getMeasuredWidth();
 
             child.layout(childLeft, childTop, childRight, childBottom);

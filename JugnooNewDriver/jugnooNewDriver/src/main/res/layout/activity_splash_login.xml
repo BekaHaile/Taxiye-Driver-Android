@@ -67,13 +67,13 @@
                     android:layout_width="58px"
                     android:layout_height="64px"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="6px"
+                    android:layout_marginStart="6px"
                     android:background="@drawable/ic_email"/>
 
                 <ImageView
                     android:layout_width="2px"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="6px"
+                    android:layout_marginStart="6px"
                     android:background="@color/new_orange"/>
 
                 <AutoCompleteTextView
@@ -81,8 +81,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="2px"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="2px"
+                    android:layout_marginStart="10px"
+                    android:layout_marginEnd="2px"
                     android:layout_marginTop="2px"
                     android:background="@drawable/background_white"
                     android:hint="@string/phone_number_or_email"
@@ -105,13 +105,13 @@
                     android:layout_width="58px"
                     android:layout_height="64px"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="6px"
+                    android:layout_marginStart="6px"
                     android:background="@drawable/ic_password"/>
 
                 <ImageView
                     android:layout_width="2px"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="6px"
+                    android:layout_marginStart="6px"
                     android:background="@color/new_orange"/>
 
                 <EditText
@@ -119,8 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="2px"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginRight="2px"
+                    android:layout_marginStart="10px"
+                    android:layout_marginEnd="2px"
                     android:layout_marginTop="2px"
                     android:background="@drawable/background_white"
                     android:hint="@string/password"
@@ -174,8 +174,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15px"
-                    android:layout_marginRight="15px"
+                    android:layout_marginStart="15px"
+                    android:layout_marginEnd="15px"
                     android:text="or"
                     android:textColor="@color/new_orange"
                     android:textSize="40px"/>

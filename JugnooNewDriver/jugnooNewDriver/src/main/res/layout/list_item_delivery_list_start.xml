@@ -9,7 +9,7 @@
         android:id="@+id/imageViewDeliveryline1"
         android:layout_width="6px"
         android:layout_height="40px"
-        android:layout_marginLeft="42px"
+        android:layout_marginStart="42px"
         android:layout_below="@+id/imageViewDeliverycircle"
         android:background="@color/grey_light_delivery"/>
 
@@ -17,7 +17,7 @@
         android:id="@+id/imageViewDeliverycircle"
         android:layout_width="22px"
         android:layout_height="22px"
-        android:layout_marginLeft="34px"
+        android:layout_marginStart="34px"
         android:layout_marginTop="26px"
         android:src="@drawable/delivery_list_icon"/>
 
@@ -28,9 +28,9 @@
         android:textSize="@dimen/text_size_30"
         android:text="@string/delivery_start"
         android:textColor="@color/text_color_light"
-        android:layout_marginLeft="10px"
+        android:layout_marginStart="10px"
         android:layout_marginTop="20px"
-        android:layout_toRightOf="@+id/imageViewDeliverycircle"
+        android:layout_toEndOf="@+id/imageViewDeliverycircle"
         android:visibility="visible"
         />
 

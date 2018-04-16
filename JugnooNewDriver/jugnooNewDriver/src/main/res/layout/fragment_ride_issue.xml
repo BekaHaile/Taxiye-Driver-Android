@@ -14,7 +14,7 @@
             android:id="@+id/topBar"
             android:layout_width="720px"
             android:layout_height="96px"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@color/black_top_bar_bg" >
 
@@ -70,7 +70,7 @@
                     android:layout_height="310px"
                     android:layout_marginTop="50px"
                     android:background="@drawable/background_white_rounded_bordered"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:hint="@string/type_issue"
                     android:padding="20px"
                     android:scrollbars="vertical"

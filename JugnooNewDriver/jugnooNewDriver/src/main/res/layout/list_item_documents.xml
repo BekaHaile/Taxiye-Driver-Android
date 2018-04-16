@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
-                android:layout_marginLeft="52px"
+                android:layout_marginStart="52px"
                 android:text="@string/Document_type"
                 android:textColor="@color/document_text_color"
                 android:textSize="36px"
@@ -36,9 +36,9 @@
                 android:id="@+id/docRejected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12px"
+                android:layout_marginStart="12px"
                 android:layout_marginTop="42px"
-                android:layout_toRightOf="@+id/docType"
+                android:layout_toEndOf="@+id/docType"
                 android:text="@string/upload_again"
                 android:textColor="@color/red_status"
                 android:textSize="18px"
@@ -49,9 +49,9 @@
                 android:id="@+id/docRejectionReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18px"
+                android:layout_marginStart="18px"
                 android:layout_marginTop="32px"
-                android:layout_toRightOf="@+id/docType"
+                android:layout_toEndOf="@+id/docType"
                 android:text="@string/Requirement"
                 android:textColor="@color/red_status"
                 android:textSize="24px"
@@ -65,7 +65,7 @@
                 android:layout_below="@+id/docType"
                 android:layout_marginBottom="34px"
                 android:layout_marginTop="32px"
-                android:layout_marginLeft="52px"
+                android:layout_marginStart="52px"
                 android:text="@string/Requirement"
                 android:textColor="@color/grey_black_light"
                 android:textSize="24px"
@@ -75,9 +75,9 @@
                 android:id="@+id/imageViewUploadDoc"
                 android:layout_width="120px"
                 android:layout_height="120px"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
+                android:layout_marginEnd="20px"
                 android:src="@drawable/ic_addimage"/>
 
         </RelativeLayout>
@@ -86,7 +86,7 @@
             android:layout_width="680px"
             android:layout_height="2px"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="5px"
             android:background="@color/menu_black"
             android:visibility="gone"/>
@@ -106,8 +106,8 @@
                 android:layout_width="193px"
                 android:layout_height="193px"
                 android:layout_marginBottom="10px"
-                android:layout_marginLeft="44px"
-                android:layout_marginRight="28px"
+                android:layout_marginStart="44px"
+                android:layout_marginEnd="28px"
                 android:layout_marginTop="10px"
                 android:background="@drawable/add_img_selector"
                 android:orientation="vertical"
@@ -118,7 +118,7 @@
                     android:id="@+id/image_icon"
                     android:layout_width="60px"
                     android:layout_height="60px"
-                    android:layout_marginLeft="50px"
+                    android:layout_marginStart="50px"
                     android:layout_marginTop="24px"
                     android:background="@drawable/image_icon"
                     android:visibility="gone"/>
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginLeft="28px"
+                    android:layout_marginStart="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
                     android:textColor="@color/new_orange"
@@ -148,7 +148,7 @@
                 android:id="@+id/deleteImage1"
                 android:layout_width="48px"
                 android:layout_height="48px"
-                android:layout_marginLeft="197px"
+                android:layout_marginStart="197px"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="visible"/>
@@ -159,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/addImageLayout"
                 android:layout_marginTop="10px"
-                android:layout_marginLeft="52px">
+                android:layout_marginStart="52px">
 
                 <TextView
                     android:id="@+id/docStatus"
@@ -175,8 +175,8 @@
                     android:layout_width="23px"
                     android:layout_height="23px"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="8px"
-                    android:layout_toRightOf="@+id/docStatus"
+                    android:layout_marginStart="8px"
+                    android:layout_toEndOf="@+id/docStatus"
                     android:src="@drawable/orange_cross"
                     android:tag="mwar"
                     android:visibility="visible"/>
@@ -187,10 +187,10 @@
                 android:id="@+id/addImageLayout2"
                 android:layout_width="193px"
                 android:layout_height="193px"
-                android:layout_marginLeft="10px"
-                android:layout_marginRight="28px"
+                android:layout_marginStart="10px"
+                android:layout_marginEnd="28px"
                 android:layout_marginTop="10px"
-                android:layout_toRightOf="@+id/addImageLayout"
+                android:layout_toEndOf="@+id/addImageLayout"
                 android:background="@drawable/add_img_selector"
                 android:tag="mwar">
 
@@ -198,7 +198,7 @@
                     android:id="@+id/image_icon2"
                     android:layout_width="60px"
                     android:layout_height="60px"
-                    android:layout_marginLeft="50px"
+                    android:layout_marginStart="50px"
                     android:layout_marginTop="24px"
                     android:background="@drawable/image_icon"
                     android:visibility="gone"/>
@@ -208,7 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon2"
-                    android:layout_marginLeft="28px"
+                    android:layout_marginStart="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
                     android:textColor="@color/new_orange"
@@ -228,7 +228,7 @@
                 android:id="@+id/deleteImage2"
                 android:layout_width="48px"
                 android:layout_height="48px"
-                android:layout_marginLeft="433px"
+                android:layout_marginStart="433px"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="gone"/>
@@ -238,7 +238,7 @@
                 android:layout_width="203px"
                 android:layout_height="203px"
                 android:layout_marginTop="10px"
-                android:layout_toRightOf="@+id/addImageLayout2"
+                android:layout_toEndOf="@+id/addImageLayout2"
                 android:src="@drawable/add_img_dsble"
                 android:tag="mwar"
                 android:visibility="visible"/>
@@ -248,8 +248,8 @@
                 android:id="@+id/imageViewDocStatus"
                 android:layout_width="40px"
                 android:layout_height="40px"
-                android:layout_marginRight="60px"
-                android:layout_alignParentRight="true"
+                android:layout_marginEnd="60px"
+                android:layout_alignParentEnd="true"
                 android:src="@drawable/doc_uploaded"/>
 
 

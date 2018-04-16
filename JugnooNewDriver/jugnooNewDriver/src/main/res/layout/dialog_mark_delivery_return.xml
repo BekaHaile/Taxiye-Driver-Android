@@ -32,8 +32,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/id"
                 android:textColor="@color/black_text_v2"
                 android:textSize="24px"
@@ -50,8 +50,8 @@
                 android:text="@string/take_cash"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:textColor="@color/red_v2"
                 android:textSize="38px"/>
 
@@ -64,8 +64,8 @@
                 android:layout_marginBottom="22px"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingLeft="10px"
-                android:paddingRight="10px"
+                android:paddingStart="10px"
+                android:paddingEnd="10px"
                 android:text="@string/NA"
                 android:textColor="@color/black_text_v2"
                 android:textSize="30px"/>
@@ -75,8 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="2px"
                 android:background="@color/grey_light"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"/>
+                android:layout_marginStart="40px"
+                android:layout_marginEnd="40px"/>
 
             <LinearLayout
                 android:id="@+id/linearLayoutRideValues"
@@ -258,8 +258,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="2px"
                 android:background="@color/grey_light"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"/>
+                android:layout_marginStart="40px"
+                android:layout_marginEnd="40px"/>
 
             <TextView
                 android:id="@+id/textViewTakeConfMessage"
@@ -278,8 +278,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="45px"
-                android:layout_marginRight="45px"
+                android:layout_marginStart="45px"
+                android:layout_marginEnd="45px"
                 android:layout_marginBottom="25px"
                 android:splitMotionEvents="false"
                 >
@@ -302,7 +302,7 @@
                     android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     />
             </RelativeLayout>
 

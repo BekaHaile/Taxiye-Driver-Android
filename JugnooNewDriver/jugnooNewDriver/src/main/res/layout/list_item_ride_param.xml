@@ -4,8 +4,8 @@
               android:gravity="center"
               android:background="@color/white"
                 android:layout_width="match_parent"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
                 android:paddingBottom="15dp"
               android:layout_height="wrap_content">
     <TextView
@@ -22,9 +22,9 @@
         android:id="@+id/textViewInfoValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_toRightOf="@id/textViewInfoText"
-        android:layout_alignParentRight="true"
+        android:gravity="end"
+        android:layout_toEndOf="@id/textViewInfoText"
+        android:layout_alignParentEnd="true"
         android:text="0"
         android:textColor="@color/black_text_v2"
         android:textSize="17sp"/>

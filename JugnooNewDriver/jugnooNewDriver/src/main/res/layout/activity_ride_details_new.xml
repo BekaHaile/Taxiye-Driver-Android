@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginTop="10px"
-            android:layout_toRightOf="@+id/imageViewTime"
+            android:layout_toEndOf="@+id/imageViewTime"
             android:singleLine="true"
             android:text="23 June, 2014 18:88 AM"
             android:textColor="@color/grey_light_v2"
@@ -124,10 +124,10 @@
             <TextView
                 android:id="@+id/textViewAccountBalance"
                 android:layout_width="140px"
-                android:layout_toRightOf="@id/textViewAccountBalanceText"
+                android:layout_toEndOf="@id/textViewAccountBalanceText"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical|end"
                 android:text="0000.00"
                 android:textColor="@color/black_text_v2"
                 android:textSize="34px"/>
@@ -152,9 +152,9 @@
                 android:id="@+id/textViewCustomerPaid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/textViewCustomerPaidText"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
+                android:layout_toEndOf="@id/textViewCustomerPaidText"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical|end"
                 android:text="0000.00"
                 android:textColor="@color/black_text_v2"
                 android:textSize="34px"/>
@@ -184,11 +184,11 @@
                 android:textSize="38px"/>
             <TextView
                 android:id="@+id/textViewActualFareValue"
-                android:layout_toRightOf="@id/textViewActualFareText"
+                android:layout_toEndOf="@id/textViewActualFareText"
                 android:layout_width="160px"
                 android:layout_height="74px"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical|end"
                 android:text="0000.00"
                 android:textColor="@color/black"
                 android:textSize="38px"/>
@@ -208,8 +208,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginLeft="48px"
-            android:layout_marginRight="20px"
+            android:layout_marginStart="48px"
+            android:layout_marginEnd="20px"
             android:splitMotionEvents="false">
 
             <ImageView
@@ -224,7 +224,7 @@
                 android:id="@+id/textViewFromValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginBottom="0px"
                 android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
                 android:textColor="@color/bg_grey_opaque"
@@ -237,8 +237,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1px"
-            android:layout_marginLeft="48px"
-            android:layout_marginRight="20px"
+            android:layout_marginStart="48px"
+            android:layout_marginEnd="20px"
             android:splitMotionEvents="false">
 
             <product.clicklabs.jugnoo.driver.utils.NonScrollListView

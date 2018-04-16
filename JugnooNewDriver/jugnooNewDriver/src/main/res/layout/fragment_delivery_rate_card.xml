@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8px"
                 android:textAllCaps="true"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/base_fare"
                 android:textColor="@color/new_orange"
@@ -57,8 +57,8 @@
                 android:layout_below="@+id/textViewBeforeRide"
                 android:layout_marginTop="12px"
                 android:layout_marginBottom="30px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:textAllCaps="true"
                 android:text="@string/per_km_wo_brack"
@@ -99,8 +99,8 @@
                 android:layout_below="@+id/textViewPerKm"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/per_delivery"
                 android:textAllCaps="true"
@@ -141,8 +141,8 @@
                 android:layout_below="@+id/textViewPerDelivery"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/return_fare"
                 android:textAllCaps="true"
@@ -183,8 +183,8 @@
                 android:layout_below="@+id/textViewReturnFare"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -211,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/pick_up_wait_time"
                 android:textAllCaps="true"
@@ -226,8 +226,8 @@
                 android:layout_below="@+id/textViewPickupWaitTime"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -254,7 +254,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/accept_subsidy"
                 android:textAllCaps="true"
@@ -268,8 +268,8 @@
                 android:layout_below="@+id/textViewPickupDistanceFare"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -295,7 +295,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/loading_fare"
                 android:textAllCaps="true"
@@ -309,8 +309,8 @@
                 android:layout_below="@+id/textViewLoadingFare"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
@@ -336,7 +336,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8px"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/unloading_fare"
                 android:textAllCaps="true"
@@ -350,8 +350,8 @@
                 android:layout_below="@+id/textViewUnLoadingFare"
                 android:layout_marginBottom="30px"
                 android:layout_marginTop="12px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+                android:layout_marginStart="30px"
+                android:layout_marginEnd="30px"
                 android:orientation="vertical" />
 
             <ImageView
