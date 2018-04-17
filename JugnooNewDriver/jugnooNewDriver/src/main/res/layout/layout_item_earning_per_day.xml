@@ -44,7 +44,8 @@
             android:layout_height="10dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="7dp"
-            android:src="@drawable/arrow_thick_new" />
+            android:src="@drawable/arrow_thick_new"
+            android:rotationY="@integer/locale_mirror_flip" />
 
     </RelativeLayout>
 

@@ -59,7 +59,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="36px"
                 android:visibility="gone"
-                android:src="@drawable/arrow_thick_new"/>
+                android:src="@drawable/arrow_thick_new"
+                android:rotationY="@integer/locale_mirror_flip"/>
 
         </RelativeLayout>
 
@@ -79,7 +80,8 @@
                 android:id="@+id/relativeLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/textViewEmpty">
+                android:layout_toEndOf="@+id/textViewEmpty"
+                android:layout_toStartOf="@+id/rlValue">
 
                 <TextView
                     android:id="@+id/textView1Value"
@@ -92,7 +94,7 @@
 
                 <TextView
                     android:id="@+id/textView1"
-                    android:layout_width="450px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10px"
                     android:layout_toEndOf="@+id/textView1Value"
@@ -108,7 +110,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout1"
                 android:layout_marginTop="4px"
-                android:layout_toEndOf="@+id/textViewEmpty">
+                android:layout_toEndOf="@+id/textViewEmpty"
+                android:layout_toStartOf="@+id/rlValue">
 
                 <TextView
                     android:id="@+id/textView2Value"
@@ -121,7 +124,7 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="450px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10px"
                     android:layout_toEndOf="@+id/textView2Value"
@@ -134,6 +137,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rlValue"
                 android:layout_width="180px"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

@@ -41,7 +41,7 @@
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:layout_width="40dp"
             android:layout_height="40dp" />
     </android.support.constraint.ConstraintLayout>

@@ -2,18 +2,12 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="shadow_width">30dp</dimen>
-    <dimen name="actionbar_home_width">30dp</dimen>
     <dimen name="button_corner_radius">5dp</dimen>
     <dimen name="button_corner_radius_less">4dp</dimen>
     <dimen name="bg_corner_radius">10px</dimen>
-    <dimen name="image_bg_corner_radius">10px</dimen>
-    <dimen name="image_bg_stroke">2px</dimen>
     <dimen name="button_text_size">36px</dimen>
     <dimen name="button_text_size_large">42px</dimen>
     <dimen name="button_small_text_size">28px</dimen>
-    <dimen name="menu_width">495px</dimen>
     <dimen name="end_ride_details_text_size">32px</dimen>
 
     <!-- share leaderboard screen-->
@@ -34,17 +28,10 @@
     <dimen name="share_activity_text_margin_right">45px</dimen>
     <dimen name="share_activity_text_margin_top">62px</dimen>
     <dimen name="share_activity_data_text_margin_top">62px</dimen>
-    <dimen name="share_activity_first_rl_margin_top">62px</dimen>
 
 
-    <dimen name="text_size_68">68px</dimen>
-    <dimen name="text_size_60">60px</dimen>
-    <dimen name="text_size_54">54px</dimen>
-    <dimen name="text_size_50">50px</dimen>
     <dimen name="text_size_40">40px</dimen>
     <dimen name="text_size_42">42px</dimen>
-    <dimen name="text_size_44">44px</dimen>
-    <dimen name="text_size_38">38px</dimen>
     <dimen name="text_size_36">36px</dimen>
     <dimen name="text_size_34">34px</dimen>
     <dimen name="text_size_32">32px</dimen>
@@ -53,8 +40,6 @@
     <dimen name="text_size_26">26px</dimen>
     <dimen name="text_size_24">24px</dimen>
     <dimen name="text_size_22">22px</dimen>
-    <dimen name="text_size_20">20px</dimen>
-    <dimen name="text_size_18">18px</dimen>
 
     <dimen name="text_size_10_sp">10sp</dimen>
     <dimen name="text_size_14_sp">14sp</dimen>
@@ -64,16 +49,10 @@
 
 
 
-    <dimen name="button_width_big">400px</dimen>
     <dimen name="button_width_big_new">295px</dimen>
     <dimen name="button_width_big_extra_new">305px</dimen>
-    <dimen name="button_height">90px</dimen>
-    <dimen name="button_width_big_extra">430px</dimen>
     <dimen name="button_width_small">200px</dimen>
-    <dimen name="text_size_10">10dp</dimen>
-    <dimen name="text_size_9">9dp</dimen>
     <dimen name="text_size_8">6sp</dimen>
 
 
-    <dimen name="line_size">0.6dp</dimen>
 </resources>

@@ -74,7 +74,8 @@
         android:largeHeap="true"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        android:supportsRtl="true">
 
 
         <service

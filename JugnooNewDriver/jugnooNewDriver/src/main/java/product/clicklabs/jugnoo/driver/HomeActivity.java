@@ -347,7 +347,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer, relativeLayoutBatteryLow;
+			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -969,7 +969,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
 
-			relativeLayoutSelectCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutSelectCustomer);
 
 			btnHelp = (Button) findViewById(R.id.btnHelp);
 
@@ -6833,7 +6832,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -6988,7 +6987,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -7106,7 +7105,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
+				RelativeLayout frameLayout = (RelativeLayout) dialogEndRidePopup.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
 
 				WindowManager.LayoutParams layoutParams = dialogEndRidePopup.getWindow().getAttributes();

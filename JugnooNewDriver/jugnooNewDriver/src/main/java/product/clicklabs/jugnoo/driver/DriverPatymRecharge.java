@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -365,7 +366,7 @@ public class DriverPatymRecharge extends BaseActivity {
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();

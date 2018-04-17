@@ -147,6 +147,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="20dp"
                         android:src="@drawable/arrow_thick_new"
+                        android:rotationY="@integer/locale_mirror_flip"
                         android:tag="mwar" />
 
 

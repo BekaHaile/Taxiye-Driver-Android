@@ -19,7 +19,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:tag="mwar" />
 
         <TextView
@@ -86,7 +86,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="24px"
-                        android:src="@drawable/arrow_today_earning_top" />
+                        android:src="@drawable/arrow_today_earning_top"
+                        android:rotationY="@integer/locale_mirror_flip" />
 
                 </RelativeLayout>
 
@@ -135,7 +136,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="48px"
-                        android:src="@drawable/arrow_thick_new" />
+                        android:src="@drawable/arrow_thick_new"
+                        android:rotationY="@integer/locale_mirror_flip"/>
 
                     <TextView
                         android:id="@+id/textViewWalletBalanceAmount"
@@ -353,7 +355,8 @@
                         android:layout_marginStart="20px"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/arrow_thick_new" />
+                        android:src="@drawable/arrow_thick_new"
+                        android:rotationY="@integer/locale_mirror_flip" />
 
                     <TextView
                         android:id="@+id/textViewWalletBalanceAmountCaptive"
@@ -559,7 +562,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="48px"
                         android:layout_marginTop="14px"
-                        android:src="@drawable/arrow_thick_new" />
+                        android:src="@drawable/arrow_thick_new"
+                        android:rotationY="@integer/locale_mirror_flip" />
 
                 </RelativeLayout>
 
@@ -613,7 +617,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="48px"
-                    android:src="@drawable/arrow_thick_new" />
+                    android:src="@drawable/arrow_thick_new"
+                    android:rotationY="@integer/locale_mirror_flip" />
 
                 <TextView
                     android:id="@+id/textViewNefyAmount"

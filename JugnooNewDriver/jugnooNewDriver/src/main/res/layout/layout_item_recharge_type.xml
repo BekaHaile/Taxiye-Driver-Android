@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:drawableEnd="@drawable/arrow_thick_new"
+            android:rotationY="@integer/locale_mirror_flip"
             android:gravity="center_vertical"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"

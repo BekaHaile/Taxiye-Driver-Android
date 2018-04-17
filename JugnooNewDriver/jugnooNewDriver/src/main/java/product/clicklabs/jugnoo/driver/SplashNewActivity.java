@@ -1782,7 +1782,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, false);
 			
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -1855,7 +1855,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_customer_app);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, false);
 			
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -1973,7 +1973,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 				dialog.setContentView(R.layout.dialog_edittext);
 
-				FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+				RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
 				
 				WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -2131,7 +2131,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 					dialog.setContentView(R.layout.dialog_custom_three_buttons);
 
-					FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+					RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 					new ASSL(activity, frameLayout, 1134, 720, true);
 					
 					WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -2253,7 +2253,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 			etCode.setText(Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL));
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 
@@ -2396,7 +2396,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				restartPhoneDialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 				restartPhoneDialog.setContentView(R.layout.dialog_custom_one_button);
 	
-				FrameLayout frameLayout = (FrameLayout) restartPhoneDialog.findViewById(R.id.rv);
+				RelativeLayout frameLayout = (RelativeLayout) restartPhoneDialog.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
 	
 				WindowManager.LayoutParams layoutParams = restartPhoneDialog.getWindow().getAttributes();

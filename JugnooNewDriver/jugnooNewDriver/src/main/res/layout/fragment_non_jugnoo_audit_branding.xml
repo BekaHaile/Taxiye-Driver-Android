@@ -31,7 +31,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:src="@drawable/back_white_selector"
+            android:rotationY="@integer/locale_mirror_flip"/>
     </RelativeLayout>
 
 

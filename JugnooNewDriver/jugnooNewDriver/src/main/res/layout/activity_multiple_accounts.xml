@@ -34,7 +34,7 @@
                 android:layout_width="82px"
                 android:layout_height="82px"
                 android:layout_centerVertical="true"
-                android:background="@drawable/back_btn_selector"
+                android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
                 android:tag="mwar"/>
         </RelativeLayout>
 
@@ -145,7 +145,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="40px"
                         android:src="@drawable/arrow_icon_selector"
-                        android:tag="mwar" />
+                        android:tag="mwar"
+                        android:rotationY="@integer/locale_mirror_flip"/>
 
                     <ImageView
                         android:layout_width="match_parent"

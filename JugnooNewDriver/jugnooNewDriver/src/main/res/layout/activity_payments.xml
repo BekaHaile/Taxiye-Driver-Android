@@ -32,7 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10px"
             android:padding="20px"
-            android:background="@drawable/back_btn_selector"/>
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"/>
     </RelativeLayout>
 
     <ImageView

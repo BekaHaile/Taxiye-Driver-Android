@@ -18,7 +18,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:tag="mwar"/>
 
         <TextView
