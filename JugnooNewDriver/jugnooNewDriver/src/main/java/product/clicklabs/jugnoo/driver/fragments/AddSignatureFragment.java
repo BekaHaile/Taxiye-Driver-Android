@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
@@ -323,6 +324,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
                 DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("access_token", Data.userData.accessToken);
+                HomeUtil.putDefaultParams(params);
 
                 TypedFile typedFile;
                 typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);

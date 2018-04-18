@@ -76,6 +76,7 @@ public class FetchAndSendMessages extends AsyncTask<String, Integer, ArrayList<S
 				if(AppStatus.getInstance(context).isOnline(context)){
 					HashMap<String, String> params = new HashMap<>();
 					params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+					HomeUtil.putDefaultParams(params);
 					JSONArray jObj = new JSONArray();
 					for(String str : s){
 						jObj.put(str);
@@ -160,6 +161,7 @@ public class FetchAndSendMessages extends AsyncTask<String, Integer, ArrayList<S
 						jObj.put(str);
 					}
 					params.put(Constants.KEY_ANALYTICS_SMS_LIST, jObj.toString());
+					HomeUtil.putDefaultParams(params);
 
 					Log.i(TAG, "params before api=" + params);
 

@@ -240,7 +240,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 			params.put("device_model_name", android.os.Build.MODEL);
 			params.put("android_version", android.os.Build.VERSION.RELEASE);
 			params.put("access_token", Data.userData.accessToken);
-
+			HomeUtil.putDefaultParams(params);
 			RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
                 @Override
                 public void success(RegisterScreenResponse registerScreenResponse, Response response) {
@@ -292,7 +292,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("locale", conf.locale.toString());
 			params.put("access_token", Data.userData.accessToken);
-
+			HomeUtil.putDefaultParams(params);
 			RestClient.getApiServices().setPreferredLang(params, new Callback<RegisterScreenResponse>() {
                 @Override
                 public void success(RegisterScreenResponse registerScreenResponse, Response response) {

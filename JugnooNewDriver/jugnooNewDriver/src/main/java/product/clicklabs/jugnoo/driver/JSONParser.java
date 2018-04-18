@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -397,7 +398,10 @@ public class JSONParser implements Constants {
 	public String getUserStatus(Context context, String accessToken) {
 		String returnResponse = "";
 		try {
-			Response response = RestClient.getApiServices().getUserStatusRetro(accessToken);
+			HashMap<String, String> params = new HashMap<>();
+			params.put(KEY_ACCESS_TOKEN, accessToken);
+			HomeUtil.putDefaultParams(params);
+			Response response = RestClient.getApiServices().getUserStatusRetro(params);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 			Log.e("result of = user_status", "=" + result);

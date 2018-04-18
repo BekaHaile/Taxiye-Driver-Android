@@ -417,6 +417,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
+			HomeUtil.putDefaultParams(params);
 
 			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 				params.put("auto_n_cab_installed", "1");

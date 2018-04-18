@@ -13,6 +13,8 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
@@ -246,7 +248,11 @@ public class InvoiceDetailsActivity extends BaseActivity {
 
 	private void getInvoiceDetails(final Activity activity) {
 		try {
-			RestClient.getApiServices().invoiceDetail(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put("invoice_id", String.valueOf(invoice_id));
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().invoiceDetail(params, new Callback<InvoiceDetailResponse>() {
 				@Override
 				public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
 					try {

@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverEarningsNew;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.WalletActivity;
 import product.clicklabs.jugnoo.driver.adapters.WalletTransAadapter;
@@ -112,6 +113,7 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
                 map.put("app_version", ""+Data.appVersion);
                 map.put("client_id", ""+Data.CLIENT_ID);
                 map.put("login_type", ""+Data.LOGIN_TYPE);
+                HomeUtil.putDefaultParams(map);
 
                 DialogPopup.showLoadingDialog(walletActivity, walletActivity.getResources().getString(R.string.loading));
                 RestClient.getApiServices().getUserTransaction(map, new Callback<WalletTransactionResponse>() {

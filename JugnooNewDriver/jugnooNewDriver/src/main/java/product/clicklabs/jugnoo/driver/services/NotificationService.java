@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -107,6 +108,7 @@ public class NotificationService extends NotificationListenerService {
 
 			params.put("access_token", Data.userData.accessToken);
 			params.put("notifications", String.valueOf(notificationList));
+			HomeUtil.putDefaultParams(params);
 			Log.i("params", "=" + params);
 
 			RestClient.getApiServices().sendDriverPushes(params, new Callback<RegisterScreenResponse>() {

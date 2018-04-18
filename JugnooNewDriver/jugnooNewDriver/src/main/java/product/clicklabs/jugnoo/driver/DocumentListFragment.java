@@ -587,7 +587,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		try {
 			progressBar.setVisibility(View.VISIBLE);
 			String isRequired = String.valueOf(requirement);
-			RestClient.getApiServices().docRequest(accessToken, isRequired, Data.appVersion, new Callback<DocRequirementResponse>() {
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("access_token",accessToken);
+			params.put("login_documents", isRequired);
+			params.put("app_version", Data.appVersion+"");
+			HomeUtil.putDefaultParams(params);
+
+			RestClient.getApiServices().docRequest(params, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
@@ -890,6 +896,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				params.put("access_token", accessToken);
 				params.put("img_position", String.valueOf(coloum));
 				params.put("doc_type_num", String.valueOf(docNumType));
+				HomeUtil.putDefaultParams(params);
 
 				TypedFile typedFile;
 				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
@@ -967,7 +974,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				params.put("access_token", accessToken);
 				params.put("img_position", String.valueOf(coloum));
 				params.put("doc_type_num", String.valueOf(docNumType));
-
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().deleteImage(params, new Callback<DocRequirementResponse>() {
 					@Override

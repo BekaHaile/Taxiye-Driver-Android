@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -295,6 +296,7 @@ public class SelectAuditFragment extends Fragment {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("access_token", Data.userData.accessToken);
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().fetchAuditDetails(params, new Callback<AuditTypeResponse>() {
 					@Override
@@ -340,6 +342,7 @@ public class SelectAuditFragment extends Fragment {
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 				Log.i("params", "=" + params);
 
 				RestClient.getApiServices().fetchAuditTypeStatus(params, new Callback<AuditStateResponse>() {

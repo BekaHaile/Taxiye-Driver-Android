@@ -349,6 +349,7 @@ public class ContactsUploadService extends IntentService {
 
             //DialogPopup.showLoadingDialog(this, "Loading...");
             params.put("access_token", accessToken);
+            HomeUtil.putDefaultParams(params);
             Log.i("access_token and session_id", accessToken);
 
             try {

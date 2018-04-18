@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.LocationUpdate;
@@ -403,6 +404,7 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 			params.put("referral_code", "");
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
+			HomeUtil.putDefaultParams(params);
 
 			if(Utils.isDeviceRooted()){
 				params.put("device_rooted", "1");

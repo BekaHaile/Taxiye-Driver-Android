@@ -34,6 +34,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
@@ -271,6 +272,7 @@ public class ShareEarnFragment extends Fragment {
                 params.put("access_token", Data.userData.accessToken);
                 params.put("phone_no", phone_no);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
+                HomeUtil.putDefaultParams(params);
                 Log.i("params", "=" + params);
 
                 RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {

@@ -55,6 +55,7 @@ public class DriverTimeoutIntentService extends IntentService implements Constan
 			params.put("flag", "" + jugnooOnFlag);
 			params.put("business_id", "1");
 			params.put("timeout_penalty", "" + timeoutPenalty);
+			HomeUtil.putDefaultParams(params);
 
 			Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());

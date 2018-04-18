@@ -218,7 +218,10 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 	private void getRateCardDetails(final NewRateCardActivity activity) {
 		try {
-			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<RateCardResponse>() {
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("access_token", Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().rateCardDetail(params, new Callback<RateCardResponse>() {
 				@Override
 				public void success(RateCardResponse rateCardResponse, Response response) {
 					try {

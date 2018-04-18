@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -177,7 +179,10 @@ public class DriverAuditActivity extends BaseActivity {
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		try {
 			driverDetailsRLL.setVisibility(View.GONE);
-			RestClient.getApiServices().driverProfileInfo(Data.userData.accessToken,
+			HashMap<String, String> params = new HashMap<>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().driverProfileInfo(params,
 					new Callback<BookingHistoryResponse>() {
 						@Override
 						public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {

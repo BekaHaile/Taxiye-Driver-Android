@@ -2917,6 +2917,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 						params.put("business_id", "1");
+						HomeUtil.putDefaultParams(params);
 						if (toggleDelivery) {
 							params.put(KEY_DELIVERY_FLAG, "" + jugnooOnFlag);
 							if (Data.userData.autosAvailable == 1 && jugnooOnFlag == 0 && myLocation != null) {
@@ -3018,6 +3019,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					params.put("latitude", "" + latLng.latitude);
 					params.put("longitude", "" + latLng.longitude);
 					params.put("flag", "" + mode);
+					HomeUtil.putDefaultParams(params);
 
 					Response response = RestClient.getApiServices().toggleSharingMode(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -5292,6 +5294,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
+			HomeUtil.putDefaultParams(params);
 
 			if(customerInfo.getIsDeliveryPool() ==1){
 				params.put(KEY_RIDE_TYPE,"4");
@@ -5514,6 +5517,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
+			HomeUtil.putDefaultParams(params);
 			if(customerInfo.getIsDeliveryPool() ==1){
 				params.put(KEY_RIDE_TYPE,"4");
 			}
@@ -5590,6 +5594,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put(KEY_PICKUP_LONGITUDE, "" + driverAtPickupLatLng.longitude);
 				params.put(KEY_DRYRUN_DISTANCE, "" + customerRideDataGlobal.getDistance(HomeActivity.this));
 				params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().driverMarkArriveRideRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -5700,6 +5705,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_PICKUP_LATITUDE, String.valueOf(driverAtPickupLatLng.latitude));
 			params.put(KEY_PICKUP_LONGITUDE, String.valueOf(driverAtPickupLatLng.longitude));
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
+			HomeUtil.putDefaultParams(params);
 
 			Log.i("params", "=" + params);
 
@@ -5993,6 +5999,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
 		params.put("ride_distance_using_haversine", "" + decimalFormat.format(totalHaversineDistanceInKm));
+		HomeUtil.putDefaultParams(params);
 
 		enteredMeterFare = 0;
 
@@ -6561,6 +6568,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put(KEY_ENGAGEMENT_ID, String.valueOf(engagementId));
 				params.put(KEY_RIDE_PATH_DATA, rideDataStr);
+				HomeUtil.putDefaultParams(params);
 
 				Log.i(TAG, "driverUploadPathDataFileAsync params=" + params);
 
@@ -6594,6 +6602,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put(KEY_GIVEN_RATING, String.valueOf(givenRating));
 				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 				params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+				HomeUtil.putDefaultParams(params);
 
 				Log.i("params", "=" + params);
 
@@ -6656,6 +6665,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
+			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().logoutRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -6719,7 +6729,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				final long responseTime = System.currentTimeMillis();
-				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+				HashMap<String, String> params = new HashMap<>();
+				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				HomeUtil.putDefaultParams(params);
+				RestClient.getApiServices().getHeatMapAsync(params, new Callback<HeatMapResponse>() {
 					@Override
 					public void success(HeatMapResponse heatMapResponse, Response response) {
 						try {
@@ -8089,6 +8102,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 			params.put(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
 			params.put(KEY_CUSTOMER_ID, String.valueOf(Data.getCurrentCustomerInfo().getUserId()));
+			HomeUtil.putDefaultParams(params);
 
 			Log.i("params", "=" + params);
 
@@ -8651,6 +8665,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put(KEY_DISTANCE, String.valueOf(currentDropDist));
+				HomeUtil.putDefaultParams(params);
 
 				Log.i("params", "=" + params);
 
@@ -8763,6 +8778,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+				HomeUtil.putDefaultParams(params);
 				Log.i("params", "=" + params);
 
 				walletUpdateCallTime = System.currentTimeMillis();
@@ -9600,7 +9616,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private void getInfoTilesAsync(final Activity activity) {
 		try {
-			RestClient.getApiServices().getInfoTilesAsync(Data.userData.accessToken, new Callback<InfoTileResponse>() {
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().getInfoTilesAsync(params, new Callback<InfoTileResponse>() {
 				@Override
 				public void success(InfoTileResponse infoTileResponse, Response response) {
 					try {
@@ -9652,6 +9671,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("drop_latitude", String.valueOf(latLng.latitude));
 				params.put("drop_longitude", String.valueOf(latLng.longitude));
 				params.put("engagement_id", Data.getCurrentEngagementId());
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().updateDropLatLng(params, new Callback<InfoTileResponse>() {
 					@Override
@@ -10064,6 +10084,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("latitude", String.valueOf(latLng.latitude));
 				params.put("longitude", String.valueOf(latLng.longitude));
 				params.put("ride_type", "0");
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().getTourData(params, new Callback<TourResponseModel>() {
 					@Override
@@ -10164,6 +10185,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put("status", status);
 				params.put("training_id", trainingId);
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().updateDriverStatus(params, new Callback<UpdateTourStatusModel>() {
 					@Override
@@ -10254,6 +10276,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("start_from", "0");
+			HomeUtil.putDefaultParams(params);
 			//params.put("engagement_date", "" + date);
 
 

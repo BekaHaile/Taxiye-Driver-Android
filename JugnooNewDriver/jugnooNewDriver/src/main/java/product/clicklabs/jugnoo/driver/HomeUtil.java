@@ -44,7 +44,7 @@ public class HomeUtil {
 			HashMap<String, String> params = new HashMap<>();
 			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
 			params.put(Constants.KEY_PHONE_NO, Data.userData.phoneNo);
-
+			HomeUtil.putDefaultParams(params);
 			RestClient.getApiServices().scheduleCallDriver(params, new Callback<SettleUserDebt>() {
 				@Override
 				public void success(SettleUserDebt dailyEarningResponse, Response response) {
@@ -94,6 +94,10 @@ public class HomeUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void putDefaultParams(HashMap<String, String> params){
+		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
 	}
 
 }

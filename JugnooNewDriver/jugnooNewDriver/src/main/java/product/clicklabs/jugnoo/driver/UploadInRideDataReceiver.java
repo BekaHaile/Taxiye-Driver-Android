@@ -76,6 +76,7 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                 params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
                 params.put("wait_time", decimalFormatNoDecimal.format(waitTimeMinutes));
                 params.put("last_log_id", "" + lastLogId);
+                HomeUtil.putDefaultParams(params);
 
                 Response response = RestClient.getApiServices().updateInRideDataRetro(params);
                 if (response != null) {

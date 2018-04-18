@@ -31,8 +31,11 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
@@ -178,7 +181,13 @@ public class RideIssueFragment extends Fragment {
 	public void sendIssue(String message) {
 		try {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().sendIssue(accessToken, message, engagementId, "1", new Callback<DocRequirementResponse>() {
+			HashMap<String, String> params = new HashMap<String, String>();
+				params.put("support_feedback_text", message);
+				params.put("engagement_id", engagementId);
+				params.put("ticket_type", "1");
+				params.put("access_token", accessToken);
+				HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().sendIssue(params, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {

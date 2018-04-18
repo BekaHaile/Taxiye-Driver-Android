@@ -105,6 +105,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             params.put(Constants.KEY_PHONE_NO, Data.userData.phoneNo);
+            HomeUtil.putDefaultParams(params);
 
             RestClient.getApiServices().fetchDriverPlans(params, new Callback<FetchDriverPlansResponse>() {
                 @Override
@@ -174,6 +175,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             params.put(Constants.PLAN_ID, String.valueOf(planId));
+            HomeUtil.putDefaultParams(params);
 
 
             RestClient.getApiServices().initiatePlanSubscription(params, new Callback<InitiatePaymentResponse>() {

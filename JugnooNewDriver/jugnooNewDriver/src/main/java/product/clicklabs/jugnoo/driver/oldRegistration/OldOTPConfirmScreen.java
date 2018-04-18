@@ -22,9 +22,12 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.LocationUpdate;
@@ -256,11 +259,24 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 				Data.latitude = Data.locationFetcher.getLatitude();
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
+			HashMap<String, String> params = new HashMap<>();
+			params.put("email",emailRegisterData.emailId);
+			params.put("password",emailRegisterData.password);
+			params.put("device_token",Data.deviceToken);
+			params.put("device_type",Data.DEVICE_TYPE);
+			params.put("device_name",Data.deviceName);
+			params.put("app_version",Data.appVersion+"");
+			params.put("os_version",Data.osVersion);
+			params.put("country",Data.country);
+			params.put("unique_device_id",Data.uniqueDeviceId);
+			params.put("latitude",Data.latitude+"");
+			params.put("longitude",Data.longitude+"");
+			params.put("client_id",Data.CLIENT_ID);
+			params.put("login_type",Data.LOGIN_TYPE);
+			params.put("otp",otp);
+			HomeUtil.putDefaultParams(params);
 
-
-			RestClient.getApiServices().verifyOtpOldUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
-					Data.deviceToken,  Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
-					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
+			RestClient.getApiServices().verifyOtpOldUsingSignupFields(params, new Callback<BookingHistoryResponse>() {
 
 
 						@Override
@@ -316,8 +332,10 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-
-			RestClient.getApiServices().initiateOTPCall(phoneNo, new Callback<BookingHistoryResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("phone_no",phoneNo);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().initiateOTPCall(params, new Callback<BookingHistoryResponse>() {
 
 
 				@Override

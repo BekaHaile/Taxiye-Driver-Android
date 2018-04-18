@@ -429,6 +429,7 @@ public class DriverPatymRecharge extends BaseActivity {
 			params.put("access_token", Data.userData.accessToken);
 			params.put("receiver_phone", String.valueOf(editTextPhone.getText()));
 			params.put("amount", amount);
+			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().addCustomerCashRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override

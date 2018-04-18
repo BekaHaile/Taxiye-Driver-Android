@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -279,6 +280,7 @@ public class NonJugnooAuditFragment extends Fragment {
 				params.put("vehicle_no", autoNum);
 				params.put("audit_type", String.valueOf(auditType));
 				params.put("smart_phone_available", String.valueOf(smartPhoneAvailable));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().sendAuditDetails(params, new Callback<RegisterScreenResponse>() {
 					@Override

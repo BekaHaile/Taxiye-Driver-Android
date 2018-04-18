@@ -981,7 +981,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
+			HomeUtil.putDefaultParams(params);
 			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
 			} else {
@@ -1490,6 +1490,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				params.put("is_access_token_new", "1");
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
+				HomeUtil.putDefaultParams(params);
 
 				params.put("device_name", Utils.getDeviceName());
 				params.put("imei", DeviceUniqueID.getUniqueId(this));
@@ -2487,8 +2488,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("latitude", "" + Data.latitude);
 		params.put("longitude", "" + Data.longitude);
-		params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
-
+		HomeUtil.putDefaultParams(params);
 		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
@@ -2588,7 +2588,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				HashMap<String, String> params = new HashMap<>();
 				params.put("device_model_name", android.os.Build.MODEL);
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
-
+					HomeUtil.putDefaultParams(params);
 
 					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
 						@Override

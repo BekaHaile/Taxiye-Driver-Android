@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.NotificationCenterActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.NotificationAdapter;
@@ -145,6 +146,7 @@ public class NotificationMessagesFragment extends android.support.v4.app.Fragmen
 				} else{
 					params.put("offset", String.valueOf(myNotificationAdapter.getListSize()));
 				}
+				HomeUtil.putDefaultParams(params);
 
 
 				RestClient.getApiServices().notificationInbox(params, new Callback<NotificationInboxResponse>() {

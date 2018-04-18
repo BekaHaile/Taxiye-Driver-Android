@@ -15,6 +15,7 @@ import com.flurry.android.FlurryAgent;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
@@ -302,8 +303,13 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		try {
 			if (!(DeliveryDetailsActivity.this.checkIfUserDataNull() && AppStatus.getInstance(DeliveryDetailsActivity.this).isOnline(DeliveryDetailsActivity.this))) {
 				DialogPopup.showLoadingDialog(DeliveryDetailsActivity.this, DeliveryDetailsActivity.this.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
 
-				RestClient.getApiServices().deliveryDetails(Data.userData.accessToken, Data.LOGIN_TYPE, ride_id,
+				params.put("access_token", Data.userData.accessToken);
+				params.put("login_type", Data.LOGIN_TYPE);
+				params.put("ride_id", ride_id);
+				HomeUtil.putDefaultParams(params);
+				RestClient.getApiServices().deliveryDetails(params,
 						new Callback<DeliveryDetailResponse>() {
 							@Override
 							public void success(DeliveryDetailResponse deliveryDetailResponse, Response response) {

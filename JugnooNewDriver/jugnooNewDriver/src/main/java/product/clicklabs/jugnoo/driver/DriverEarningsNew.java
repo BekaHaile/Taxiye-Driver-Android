@@ -38,6 +38,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.NewEarningsPerDayAdapter;
@@ -579,11 +580,17 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			}
 
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("login_type", Data.LOGIN_TYPE);
+				params.put("invoice_id", invoiceId);
+				HomeUtil.putDefaultParams(params);
 			if(Data.isCaptive()){
-				RestClient.getApiServices().earningNewDetailsCaptive(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));
+				RestClient.getApiServices().earningNewDetailsCaptive(params, getCallbackEarningDetails(activity, walletClick));
 
 			}else{
-				RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, getCallbackEarningDetails(activity, walletClick));
+				RestClient.getApiServices().earningNewDetails(params, getCallbackEarningDetails(activity, walletClick));
 
 			}
 		} else {

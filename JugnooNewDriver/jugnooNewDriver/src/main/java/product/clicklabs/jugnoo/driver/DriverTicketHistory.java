@@ -191,6 +191,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("start_from", "" + ticketHistoryItems.size());
+				HomeUtil.putDefaultParams(params);
 
 			if(refresh){
 				ticketHistoryItems.clear();

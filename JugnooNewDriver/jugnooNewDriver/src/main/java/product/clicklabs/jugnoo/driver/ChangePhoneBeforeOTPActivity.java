@@ -181,6 +181,7 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 			params.put("access_token", accessToken);
 			params.put("is_access_token_new", "1");
 			params.put("updated_phone_no", updatedField);
+			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().updateUserProfileAPIRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override

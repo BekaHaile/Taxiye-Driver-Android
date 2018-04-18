@@ -190,7 +190,12 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				newRequirement =requirement;
 			}
 
-			RestClient.getApiServices().docSubmission(accessToken, String.valueOf(newRequirement), new Callback<DocRequirementResponse>() {
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+			params.put("login_documents", String.valueOf(newRequirement));
+			HomeUtil.putDefaultParams(params);
+
+			RestClient.getApiServices().docSubmission(params, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
@@ -306,6 +311,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 				params.put("device_name", Utils.getDeviceName());
 				params.put("imei", DeviceUniqueID.getUniqueId(this));
+				HomeUtil.putDefaultParams(params);
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");

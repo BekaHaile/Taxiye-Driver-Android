@@ -1479,6 +1479,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 					params.put("engagement_id", engagementId);
 					params.put("ack_timestamp", actTimeStamp);
 					params.put("network_name", networkName);
+					HomeUtil.putDefaultParams(params);
 
 
 					Response response = RestClient.getApiServices().sendRequestAckToServerRetro(params);
@@ -1523,7 +1524,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 					String encryptData = RSA.encryptWithPublicKeyStr(String.valueOf(params));
 //					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
-					Response response = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
+					HashMap<String, String> map = new HashMap<String, String>();
+					params.put("data", encryptData);
+					HomeUtil.putDefaultParams(map);
+					Response response = RestClient.getPushAckApiServices().sendPushAckToServerRetro(map);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);
@@ -1559,6 +1563,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 					params.put("network_name", networkName);
 					params.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
 					params.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
+					HomeUtil.putDefaultParams(params);
 
 					RestClient.getApiServices().sendHeartbeatAckToServerRetro(params, new Callback<RegisterScreenResponse>() {
 						@Override

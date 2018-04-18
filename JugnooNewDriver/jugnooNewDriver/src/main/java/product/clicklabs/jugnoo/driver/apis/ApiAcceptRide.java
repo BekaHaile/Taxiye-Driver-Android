@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -65,7 +66,7 @@ public class ApiAcceptRide {
 					params.put("app_version", "" + Utils.getAppVersion(activity));
 					params.put("is_accepting_perfect_ride", String.valueOf(perfectRide));
 
-
+					HomeUtil.putDefaultParams(params);
 
 					if (!"".equalsIgnoreCase(referenceId)) {
 						params.put("reference_id", referenceId);

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
@@ -418,7 +419,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 		try {
 
 			progressBar.setVisibility(View.VISIBLE);
-			RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("current_mode", ""+ 1);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().bookingHistory(params,
                     new Callback<NewBookingHistoryRespose>() {
                         @Override
                         public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {

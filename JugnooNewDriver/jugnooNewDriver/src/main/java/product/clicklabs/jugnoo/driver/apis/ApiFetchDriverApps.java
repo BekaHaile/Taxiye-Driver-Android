@@ -10,6 +10,7 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -39,7 +40,7 @@ public class ApiFetchDriverApps {
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("access_token", accessToken);
             params.put("app_list", String.valueOf(appList));
-
+            HomeUtil.putDefaultParams(params);
             RestClient.getApiServices().fetchAlldriverApps(params, new retrofit.Callback<RegisterScreenResponse>() {
                 @Override
                 public void success(RegisterScreenResponse registerScreenResponse, Response response) {

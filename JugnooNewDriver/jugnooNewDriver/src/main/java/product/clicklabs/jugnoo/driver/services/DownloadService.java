@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import java.io.File;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
@@ -103,8 +105,12 @@ public class DownloadService extends IntentService {
 
 	public void fetchNotificationData() {
 		try {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("file_caegory", Constants.JUGNOO_AUDIO);
+			HomeUtil.putDefaultParams(params);
 			NotificationAlarmResponse response = RestClient.getApiServices().
-					updateNotificationData(Data.userData.accessToken, Constants.JUGNOO_AUDIO);
+					updateNotificationData(params);
 
 			for (int i = 0; i < response.getLinks().size(); i++) {
 

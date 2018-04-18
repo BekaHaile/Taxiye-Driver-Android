@@ -354,11 +354,25 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 Data.latitude = Data.locationFetcher.getLatitude();
                 Data.longitude = Data.locationFetcher.getLongitude();
             }
+            HashMap<String, String> params = new HashMap<>();
+            params.put("phone_no",emailRegisterData.phoneNo);
+            params.put("password",emailRegisterData.password);
+            params.put("device_token",Data.deviceToken);
+            params.put("device_type",Data.DEVICE_TYPE);
+            params.put("device_name",Data.deviceName);
+            params.put("app_version",Data.appVersion+"");
+            params.put("os_version",Data.osVersion);
+            params.put("country",Data.country);
+            params.put("unique_device_id",Data.uniqueDeviceId);
+            params.put("latitude",Data.latitude+"");
+            params.put("longitude",Data.longitude+"");
+            params.put("client_id",Data.CLIENT_ID);
+            params.put("login_type",Data.LOGIN_TYPE);
+            params.put("otp",otp);
+            params.put("country_code",countryCode);
+            HomeUtil.putDefaultParams(params);
 
-
-            RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.phoneNo, emailRegisterData.password,
-                    Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
-                    Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, countryCode, new Callback<BookingHistoryResponse>() {
+            RestClient.getApiServices().verifyOtpUsingSignupFields(params , new Callback<BookingHistoryResponse>() {
 
 
                         @Override
@@ -432,6 +446,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 params.put("phone_no", phoneNo);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("verification_token", otp);
+                HomeUtil.putDefaultParams(params);
 
                 Log.i("params", ">" + params);
 
@@ -498,6 +513,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 params.put("phone_no", phoneNo);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("login_type", "1");
+                HomeUtil.putDefaultParams(params);
                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 
                 RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {

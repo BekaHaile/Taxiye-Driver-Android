@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -673,6 +674,7 @@ public class SubmitAuditFragment extends Fragment {
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().submitAuditImages(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -726,6 +728,7 @@ public class SubmitAuditFragment extends Fragment {
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 				Log.i("params", "=" + params);
 
 				RestClient.getApiServices().fetchAuditTypeStatus(params, new Callback<AuditStateResponse>() {
@@ -777,6 +780,7 @@ public class SubmitAuditFragment extends Fragment {
 				params.put("phone_no", phone);
 				params.put("vehicle_no", autoNum);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().sendAuditDetails(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -821,6 +825,7 @@ public class SubmitAuditFragment extends Fragment {
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().cancelAuditByDriver(params, new Callback<RegisterScreenResponse>() {
 					@Override

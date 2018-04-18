@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -124,9 +126,11 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 				textViewInfo.setVisibility(View.GONE);
 				webview.setVisibility(View.GONE);
 				loadHTMLContent("");
+				HashMap<String, String> params = new HashMap<>();
+				params.put("section", helpSection.getOrdinal()+"");
+				HomeUtil.putDefaultParams(params);
 
-
-				RestClient.getApiServices().getHelpSection(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().getHelpSection(params, new Callback<BookingHistoryResponse>() {
 
 
 					@Override

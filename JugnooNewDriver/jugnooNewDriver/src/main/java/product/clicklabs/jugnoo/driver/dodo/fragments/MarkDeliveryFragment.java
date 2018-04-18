@@ -20,6 +20,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -270,7 +271,7 @@ public class MarkDeliveryFragment extends Fragment {
 				params.put(Constants.KEY_DISTANCE, String.valueOf(distance));
 				params.put(Constants.KEY_RIDE_TIME, String.valueOf(deliveryTime/1000l));
 				params.put(Constants.KEY_WAIT_TIME, String.valueOf(waitTime/1000l));
-
+				HomeUtil.putDefaultParams(params);
 				RestClient.getApiServices().markDelivered(params,
 						new Callback<RegisterScreenResponse>() {
 							@Override

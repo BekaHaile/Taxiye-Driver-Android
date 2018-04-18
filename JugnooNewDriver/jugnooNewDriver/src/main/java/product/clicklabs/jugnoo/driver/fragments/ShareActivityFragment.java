@@ -14,7 +14,11 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -125,7 +129,11 @@ public class ShareActivityFragment extends Fragment {
 	public void getLeaderboardActivityCall() {
 		if(!((BaseFragmentActivity)activity).checkIfUserDataNull() && AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, Data.LOGIN_TYPE,
+			HashMap<String, String> params = new HashMap<>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put("login_type", Data.LOGIN_TYPE);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().leaderboardActivityServerCall(params,
 					new Callback<LeaderboardActivityResponse>() {
 						@Override
 						public void success(LeaderboardActivityResponse leaderboardActivityResponse, Response response) {

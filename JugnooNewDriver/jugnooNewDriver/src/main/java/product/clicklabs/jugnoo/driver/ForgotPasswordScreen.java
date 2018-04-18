@@ -20,6 +20,8 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -221,7 +223,10 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 
 	public void forgotPasswordAsync(final Activity activity, final String email){
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("phone_number", email);
+		HomeUtil.putDefaultParams(params);
+		RestClient.getApiServices().forgotpassword(params, new Callback<BookingHistoryResponse>() {
 			@Override
 			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
 				if(response != null) {

@@ -213,6 +213,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 			textViewInfoDisplay.setVisibility(View.GONE);
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
 			RestClient.getApiServices().getMissedRides(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {

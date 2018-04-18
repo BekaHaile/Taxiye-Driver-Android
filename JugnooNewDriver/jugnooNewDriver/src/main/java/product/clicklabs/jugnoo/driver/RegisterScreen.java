@@ -413,7 +413,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
+			HomeUtil.putDefaultParams(params);
 			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
 			} else {
