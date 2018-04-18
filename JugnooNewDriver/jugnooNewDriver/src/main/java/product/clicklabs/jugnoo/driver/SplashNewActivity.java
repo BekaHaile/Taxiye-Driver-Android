@@ -2538,7 +2538,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	public void showLanguagePreference() {
 
 		if (languagePrefStatus == 1 && State.SPLASH_LS == state) {
-			if(getResources().getInteger(R.integer.show_language_control)==0){
+			if(getResources().getInteger(R.integer.show_language_control)==getResources().getInteger(R.integer.view_visible)){
 				selectLanguageLl.setVisibility(View.VISIBLE);
 
 			}
@@ -2668,7 +2668,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
-				if(getResources().getInteger(R.integer.show_language_control)==0){
+				if(getResources().getInteger(R.integer.show_language_control)==getResources().getInteger(R.integer.view_visible)){
 					selectLanguageLl.setVisibility(View.VISIBLE);
 
 				}

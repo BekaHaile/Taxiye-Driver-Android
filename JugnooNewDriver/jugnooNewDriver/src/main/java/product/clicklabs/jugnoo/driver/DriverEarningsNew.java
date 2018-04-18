@@ -376,7 +376,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
 
 
-			if(getResources().getInteger(R.integer.show_invoices)!=0){
+			if(getResources().getInteger(R.integer.show_invoices)!=getResources().getInteger(R.integer.view_visible)){
 				return;
 			}
 
