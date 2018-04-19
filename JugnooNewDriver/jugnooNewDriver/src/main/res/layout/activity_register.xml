@@ -116,7 +116,6 @@
             <RelativeLayout
                 android:layout_width="630px"
                 android:layout_height="110px"
-                android:gravity="center_vertical"
                 >
 
                 <ImageView
@@ -124,16 +123,39 @@
                     android:layout_width="40px"
                     android:layout_height="40px"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginRight="48px"
+                    android:layout_marginRight="35px"
                     android:layout_marginTop="22px"
-                    android:background="@drawable/phone_icon"/>
+                    android:background="@drawable/phone_icon"
+                    android:layout_centerVertical="true"/>
 
+                <TextView
+                    android:id="@+id/tvCountryCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text=""
+                    android:hint="@string/code"
+                    android:textColor="@color/text_color"
+                    android:textSize="17sp"
+                    android:drawableEnd="@drawable/ic_arrow_down_vector"
+                    android:drawableRight="@drawable/ic_arrow_down_vector"
+                    android:drawablePadding="3dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:tag="@string/dont_touch_me"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageViewPhone"
+                    android:layout_toRightOf="@+id/imageViewPhone"
+                    />
 
                 <EditText
                     android:id="@+id/phoneNoEt"
-                    android:layout_width="525px"
+                    android:layout_width="match_parent"
                     android:layout_height="85px"
-                    android:layout_toRightOf="@+id/imageViewPhone"
+                    android:layout_toEndOf="@+id/tvCountryCode"
+                    android:layout_toRightOf="@+id/tvCountryCode"
                     android:background="@drawable/transparent"
                     android:hint="@string/phone_number"
                     android:inputType="number"

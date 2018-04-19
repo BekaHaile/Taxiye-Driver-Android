@@ -36,10 +36,8 @@ import product.clicklabs.jugnoo.driver.utils.AppConstants;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomCountDownTimer;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.OtpDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -132,7 +130,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
         phoneNumberToVerify = null;
-        countryCode = "+91";
+        countryCode = Utils.getCountryCode(this);
 
         try {
             phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);

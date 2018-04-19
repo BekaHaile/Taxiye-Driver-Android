@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.picker.Country;
@@ -151,6 +153,10 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE + "_2_" + FirebaseEvents.CONTACT_EDIT, null);
 				if (editTextPhone.isEnabled()) {
 					String phoneChanged = editTextPhone.getText().toString().trim();
+					if(TextUtils.isEmpty(tvCountryCode.getText().toString())){
+						Toast.makeText(EditDriverProfile.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+						return;
+					}
 					if ("".equalsIgnoreCase(phoneChanged)) {
 						editTextPhone.requestFocus();
 						editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
