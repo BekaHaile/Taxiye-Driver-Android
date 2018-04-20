@@ -52,6 +52,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -567,6 +568,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				String autoNum = vehicleNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				String altPhoneNo = alternatePhoneNoEt.getText().toString().trim();
+				if(TextUtils.isEmpty(getCountryCodeSelected())){
+					Toast.makeText(SplashNewActivity.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
@@ -637,6 +642,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			@Override
 			public void onClick(View v) {
 				String phoneNo = phoneNoOPTEt.getText().toString().trim();
+				if(TextUtils.isEmpty(getCountryCodeSelected())){
+					Toast.makeText(SplashNewActivity.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				if ("".equalsIgnoreCase(phoneNo)) {
 					phoneNoOPTEt.requestFocus();
 					phoneNoOPTEt.setError(getResources().getString(R.string.enter_phone_number));

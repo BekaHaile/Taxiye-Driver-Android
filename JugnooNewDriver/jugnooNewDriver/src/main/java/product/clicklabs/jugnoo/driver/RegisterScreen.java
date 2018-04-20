@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.picker.Country;
+import com.picker.CountryPicker;
+import com.picker.OnCountryPickerListener;
 
 import org.json.JSONObject;
 
@@ -36,7 +41,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -46,7 +51,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class RegisterScreen extends BaseActivity implements LocationUpdate{
+public class RegisterScreen extends BaseFragmentActivity implements LocationUpdate, OnCountryPickerListener{
 	
 	Button backBtn;
 	TextView title;
@@ -59,6 +64,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	TextView textViewTandC;
 	ImageView imageViewTandC;
 //	RelativeLayout isOwnedRelative, isRentedRelative;
+	private TextView tvCountryCode;
+	private CountryPicker countryPicker;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
@@ -113,6 +120,12 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
+		tvCountryCode.setText(Utils.getCountryCode(this));
+		countryPicker =
+				new CountryPicker.Builder().with(this)
+						.listener(this)
+						.build();
 
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -188,6 +201,11 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 //				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
+				String countryCode = tvCountryCode.getText().toString().trim();
+				if(TextUtils.isEmpty(countryCode)){
+					Toast.makeText(RegisterScreen.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
@@ -220,13 +238,13 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									phoneNoEt.requestFocus();
 									phoneNoEt.setError("Please enter valid phone number");
 								} else {
-									phoneNo = "+91" + phoneNo;
+									phoneNo = countryCode + phoneNo;
 									if (isPhoneValid(phoneNo)) {
 										if (cityposition != 0) {
 											if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 												if (vehiclePosition != 0) {
 													if(tandc) {
-														sendSignupValues(RegisterScreen.this, name, phoneNo, password, referralCode);
+														sendSignupValues(RegisterScreen.this, name, phoneNo, countryCode, password, referralCode);
 														FlurryEventLogger.emailSignupClicked(emailId);
 													} else {
 														DialogPopup.alertPopup(RegisterScreen.this, "", getResources().getString(R.string.select_tandc));
@@ -258,6 +276,13 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		});
 
+		View.OnClickListener countryCodeClickListener = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				countryPicker.showDialog(getSupportFragmentManager());
+			}
+		};
+		tvCountryCode.setOnClickListener(countryCodeClickListener);
 
 
 
@@ -381,7 +406,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 //	Retrofit
 
-	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city, final String referralCode) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String countryCode, final String city, final String referralCode) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -396,6 +421,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
+			params.put(Constants.KEY_COUNTRY_CODE, countryCode);
 //			params.put("auto_num", autoNum);
 			params.put("city", String.valueOf(cityposition));
 			params.put("latitude", "" + Data.latitude);
@@ -644,6 +670,11 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			return convertView;
 		}
 
+	}
+
+	@Override
+	public void onSelectCountry(Country country) {
+		tvCountryCode.setText(country.getDialCode());
 	}
 
 }

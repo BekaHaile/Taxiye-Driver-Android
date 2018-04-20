@@ -25,7 +25,6 @@ import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -58,7 +57,6 @@ public class BaseActivity extends Activity {
 				&& !(this instanceof LoginViaOTP
 					|| this instanceof MultipleAccountsActivity
 					|| this instanceof OTPConfirmScreen
-					|| this instanceof RegisterScreen
 					|| this instanceof OldOTPConfirmScreen
 					|| this instanceof OldRegisterScreen
 					|| this instanceof RequestDuplicateRegistrationActivity
