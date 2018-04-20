@@ -136,7 +136,7 @@ public class DriverLocationUpdateService extends Service {
 			Log.i("TAG", "onStartCommand: is Offline" +	isOffline );
 
 			if(isOffline == 0){
-                startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,"You are online",DRIVER_UPDATE_SERVICE_NOTFI_ID));
+                startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,getString(R.string.update_location_notif_label),DRIVER_UPDATE_SERVICE_NOTFI_ID));
             }else{
                 stopForeground(true);
             }
