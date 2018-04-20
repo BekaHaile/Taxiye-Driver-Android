@@ -891,6 +891,7 @@
     <string name="target_distance">Target Distance</string>
     <string name="cash_collected_from_user">Cash collected from user</string>
     <string name="adjusted_distance">Adjusted Distance</string>
+
     <string name="type_message_here">Type your message here</string>
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
@@ -914,6 +915,10 @@
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
     <string name="code">Code</string>
     <string name="please_select_country_code">Please select country code</string>
+
+    <string name="metering_service_notif_label">Ride in progress</string>
+    <string name="update_location_notif_label">You are online</string>
+
 
     <string-array name="CountryCodes">
         <item>+93,AF</item>
