@@ -171,11 +171,11 @@ public class Data {
 			userData = null;
 			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
 
-			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+			AuthKeySaver.writeAuthToFile("");
+			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			Editor editor = pref.edit();
 			editor.clear();
 			editor.apply();
-			AuthKeySaver.writeAuthToFile("");
 		} catch(Exception e){
 			e.printStackTrace();
 		}
