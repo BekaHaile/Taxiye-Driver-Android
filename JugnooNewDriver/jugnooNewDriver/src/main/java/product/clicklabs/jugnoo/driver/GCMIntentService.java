@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,7 +12,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -461,7 +459,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			String SHARED_PREF_NAME1 = "myPref", SP_ACCESS_TOKEN_KEY = "access_token";
 
-			SharedPreferences pref1 = getSharedPreferences(SHARED_PREF_NAME1, 0);
+			SharedPreferences pref1 = getSharedPreferences(SHARED_PREF_NAME1, Context.MODE_PRIVATE);
 			final String accessToken = pref1.getString(SP_ACCESS_TOKEN_KEY, "");
 			if (!"".equalsIgnoreCase(accessToken)) {
 

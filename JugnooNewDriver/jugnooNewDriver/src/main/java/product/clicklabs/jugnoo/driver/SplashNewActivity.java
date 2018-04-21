@@ -2035,7 +2035,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
                                         new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = preferences.edit();
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_1_SERVER_URL);
                                                 editor.commit();
@@ -2046,7 +2046,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
                                         new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = preferences.edit();
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_2_SERVER_URL);
                                                 editor.commit();
@@ -2057,7 +2057,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
                                         new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = preferences.edit();
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_3_SERVER_URL);
                                                 editor.commit();
@@ -2156,7 +2156,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
 					
 					
-					SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+					SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 					String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 					
 					if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
@@ -2185,7 +2185,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					btnOk.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 							SharedPreferences.Editor editor = preferences.edit();
 							editor.putString(Data.SP_SERVER_LINK, Data.LIVE_SERVER_URL);
 							editor.commit();
@@ -2199,7 +2199,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					btnNeutral.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 							SharedPreferences.Editor editor = preferences.edit();
 							editor.putString(Data.SP_SERVER_LINK, Data.DEV_SERVER_URL);
 							editor.commit();
@@ -2285,7 +2285,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 						etCode.setError("URL can't be empty.");
 					} else {
 						Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, code);
-						SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+						SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 						SharedPreferences.Editor editor = preferences.edit();
 						editor.putString(Data.SP_SERVER_LINK, code);
 						editor.commit();

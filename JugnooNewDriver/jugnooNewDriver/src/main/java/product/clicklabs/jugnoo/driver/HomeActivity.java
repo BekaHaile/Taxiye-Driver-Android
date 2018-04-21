@@ -1463,7 +1463,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
 			if (link.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
@@ -7789,7 +7789,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 
 			try {
-				SharedPreferences pref = cont.getSharedPreferences("myPref", 0);
+				SharedPreferences pref = cont.getSharedPreferences("myPref", Context.MODE_PRIVATE);
 				Editor editor = pref.edit();
 				editor.clear();
 				editor.commit();
@@ -7803,7 +7803,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void run() {
-					SharedPreferences pref = cont.getSharedPreferences("myPref", 0);
+					SharedPreferences pref = cont.getSharedPreferences("myPref", Context.MODE_PRIVATE);
 					Editor editor = pref.edit();
 					editor.clear();
 					editor.commit();
