@@ -274,7 +274,7 @@
             android:name=".DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
-            android:process=":DriverLocationUpdateService"></service>
+            ></service>
 
         <activity
             android:name=".DeliveryDetailsActivity"
@@ -351,7 +351,7 @@
             android:name=".DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
-            android:process=":DriverLocationUpdateService" />
+             />
         <service
             android:name=".services.DownloadService"
             android:enabled="true"

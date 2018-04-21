@@ -766,7 +766,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		});
 
 
-		Data.generateKeyHash(SplashNewActivity.this);
+//		Data.generateKeyHash(SplashNewActivity.this);
 		
 		
 		try {																						// to get AppVersion, OS version, country code and device name

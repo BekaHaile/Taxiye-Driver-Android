@@ -103,13 +103,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
 		tvCountryCode.setTypeface(Data.latoRegular(this));
 		TextViewAccNo = (TextView) findViewById(R.id.TextViewAccNo);
-		title.setTypeface(Data.latoRegular(this));
+		TextViewAccNo.setTypeface(Data.latoRegular(this));
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
-		title.setTypeface(Data.latoRegular(this));
+		textViewIFSC.setTypeface(Data.latoRegular(this));
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
-		title.setTypeface(Data.latoRegular(this));
+		textViewBankName.setTypeface(Data.latoRegular(this));
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
-		title.setTypeface(Data.latoRegular(this));
+		textViewBankLoc.setTypeface(Data.latoRegular(this));
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
