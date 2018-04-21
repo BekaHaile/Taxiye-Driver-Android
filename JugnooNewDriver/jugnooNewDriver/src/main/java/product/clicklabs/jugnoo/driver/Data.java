@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
+import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -173,7 +174,8 @@ public class Data {
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 			Editor editor = pref.edit();
 			editor.clear();
-			editor.commit();
+			editor.apply();
+			AuthKeySaver.writeAuthToFile("");
 		} catch(Exception e){
 			e.printStackTrace();
 		}
