@@ -83,8 +83,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static final long REQUEST_TIMEOUT = 120000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
-	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
-	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
+	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
+	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_big_drawable;
 
 	public GCMIntentService() {
 	}

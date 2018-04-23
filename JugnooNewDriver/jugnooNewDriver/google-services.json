@@ -1,47 +1,55 @@
 {
   "project_info": {
-    "project_number": "204360948031",
-    "firebase_url": "https://jingos-78429.firebaseio.com",
-    "project_id": "jingos-78429",
-    "storage_bucket": "jingos-78429.appspot.com"
+    "project_number": "598314612987",
+    "firebase_url": "https://jingo-cust.firebaseio.com",
+    "project_id": "jingo-cust",
+    "storage_bucket": "jingo-cust.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:204360948031:android:66ba4cae46d449a0",
+        "mobilesdk_app_id": "1:598314612987:android:66ba4cae46d449a0",
         "android_client_info": {
           "package_name": "production.jingos.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "204360948031-mig0i9uvje0k8bvbf4fe87sd5kfm90du.apps.googleusercontent.com",
+          "client_id": "598314612987-e154l6bev27k4rqlnq6b5e76umdltn7n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "production.jingos.customer",
-            "certificate_hash": "32031a8c87e112337d565114576a2f56a4587e52"
+            "certificate_hash": "3753c6185ebeb69501fa419c43be81b8469d2390"
           }
         },
         {
-          "client_id": "204360948031-14lq93stbb1kpbpkhcusbsracerfu3ad.apps.googleusercontent.com",
+          "client_id": "598314612987-6aeo6g5fn57gkp5igfsvu11gpfop8ebq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "production.jingos.customer",
-            "certificate_hash": "fdf071c5f1e9318ac811df588a55085e4c5a6f11"
+            "certificate_hash": "87914682838fc8e70369b102dd89fd8eea9e4009"
           }
         },
         {
-          "client_id": "204360948031-4scattcu43l308rkc6aa8suo39tiql8k.apps.googleusercontent.com",
+          "client_id": "598314612987-5tn48egh6pu6lknh0v2mos0j2c5u05lo.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "204360948031-e5s2qvlpsa26jhcgoulnpl7gftibk1cr.apps.googleusercontent.com",
+          "client_id": "598314612987-tvdkgip6ioheucqe8clu8s7cnjil15kl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "production.jingos.customer",
+            "certificate_hash": "b06b38fa4081311ca320d75a82da7bf396d3d7c2"
+          }
+        },
+        {
+          "client_id": "598314612987-kkv5oggrfi6376937lk7ukubt0vbttgf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAW6KKvMLvv2KD9fJYvYCgP3aUN5ufZsJk"
+          "current_key": "AIzaSyDWJIBt2XjtRvhHC9mpSyD6otrmpMMSr9s"
         }
       ],
       "services": {
@@ -52,7 +60,14 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "204360948031-4scattcu43l308rkc6aa8suo39tiql8k.apps.googleusercontent.com",
+              "client_id": "598314612987-jl5pgt8dmlll7fqb9qls2ud5msvvigtn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jingoRides.Jingos"
+              }
+            },
+            {
+              "client_id": "598314612987-5tn48egh6pu6lknh0v2mos0j2c5u05lo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -64,24 +79,24 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:204360948031:android:8abc750aaf179aa8",
+        "mobilesdk_app_id": "1:598314612987:android:8abc750aaf179aa8",
         "android_client_info": {
           "package_name": "production.product.jingos.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "204360948031-4scattcu43l308rkc6aa8suo39tiql8k.apps.googleusercontent.com",
+          "client_id": "598314612987-5tn48egh6pu6lknh0v2mos0j2c5u05lo.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "204360948031-e5s2qvlpsa26jhcgoulnpl7gftibk1cr.apps.googleusercontent.com",
+          "client_id": "598314612987-kkv5oggrfi6376937lk7ukubt0vbttgf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAW6KKvMLvv2KD9fJYvYCgP3aUN5ufZsJk"
+          "current_key": "AIzaSyDWJIBt2XjtRvhHC9mpSyD6otrmpMMSr9s"
         }
       ],
       "services": {
