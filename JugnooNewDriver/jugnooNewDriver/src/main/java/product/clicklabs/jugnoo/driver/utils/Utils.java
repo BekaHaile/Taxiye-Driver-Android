@@ -294,21 +294,21 @@ public class Utils {
 			if (dir != null && dir.isDirectory()) {
 				deleteDir(dir);
 			}
-		} catch (Exception e) {
+		} catch (Exception ignored) {
 		}
 	}
 
-	public static boolean deleteDir(File dir) {
+	private static boolean deleteDir(File dir) {
 		if (dir != null && dir.isDirectory()) {
 			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir(new File(dir, children[i]));
+			for (String aChildren : children) {
+				boolean success = deleteDir(new File(dir, aChildren));
 				if (!success) {
 					return false;
 				}
 			}
 		}
-		return dir.delete();
+		return dir == null || dir.delete();
 	}
 
 
@@ -811,26 +811,12 @@ public class Utils {
 				String[] children = appDir.list();
 				for (String s : children) {
 					if (!s.equals("lib")) {
-						deleteAppData(new File(appDir, s));
+						deleteDir(new File(appDir, s));
 						Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
 					}
 				}
 			}
 		}
-	}
-
-	public static boolean deleteAppData(File dir) {
-		if (dir != null && dir.isDirectory()) {
-			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir(new File(dir, children[i]));
-				if (!success) {
-					return false;
-				}
-			}
-		}
-
-		return dir.delete();
 	}
 
 	public static boolean fetchUserInstalledApps(Context context, String packageName){

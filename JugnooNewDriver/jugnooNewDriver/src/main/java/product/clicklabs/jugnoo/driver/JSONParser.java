@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,6 +34,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -65,16 +67,22 @@ public class JSONParser implements Constants {
 
 
 	public static void saveAccessToken(Context context, String accessToken) {
-		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+		AuthKeySaver.writeAuthToFile(accessToken);
+		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		Editor editor = pref.edit();
 		editor.putString(Data.SP_ACCESS_TOKEN_KEY, accessToken);
-		editor.commit();
+		editor.apply();
 	}
 
 	public static Pair<String, String> getAccessTokenPair(Context context) {
-		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		String accessToken = pref.getString(Data.SP_ACCESS_TOKEN_KEY, "");
 		String isAccessTokenNew = "1";
+
+		if(TextUtils.isEmpty(accessToken)){
+			accessToken = AuthKeySaver.readAuthFromFile();
+		}
+
 		return new Pair<String, String>(accessToken, isAccessTokenNew);
 	}
 
