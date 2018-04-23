@@ -19,10 +19,12 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.InvoiceInfo;
@@ -273,7 +275,11 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
 	private void getInvoiceHistory(final Activity activity) {
 		progressBar.setVisibility(View.VISIBLE);
 		try {
-			RestClient.getApiServices().invoiceHistory(Data.userData.accessToken, "1", new Callback<InvoiceHistoryResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put("current_mode", "1");
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().invoiceHistory(params, new Callback<InvoiceHistoryResponse>() {
                         @Override
                         public void success(InvoiceHistoryResponse invoiceHistoryResponse, Response response) {
                             try {

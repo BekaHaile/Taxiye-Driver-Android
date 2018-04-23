@@ -15,7 +15,10 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -399,7 +402,12 @@ public class EarningsFragment extends Fragment {
 		try {
 			if (!((BaseFragmentActivity)activity).checkIfUserDataNull() && AppStatus.getInstance(activity).isOnline(activity)) {
                 DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-                RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("login_type", Data.LOGIN_TYPE);
+				HomeUtil.putDefaultParams(params);
+                RestClient.getApiServices().earningDetails(params,
                         new Callback<EarningsDetailResponse>() {
                             @Override
                             public void success(EarningsDetailResponse earningsDetailResponse, Response response) {

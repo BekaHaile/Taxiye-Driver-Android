@@ -58,7 +58,7 @@ public class MeteringService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
 		try {
-			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,"",METER_NOTIF_ID));
+			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,getString(R.string.metering_service_notif_label),METER_NOTIF_ID));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

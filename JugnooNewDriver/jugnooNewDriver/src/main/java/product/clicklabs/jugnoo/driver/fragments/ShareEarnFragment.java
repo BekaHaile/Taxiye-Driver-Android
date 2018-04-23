@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.KeyEvent;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.picker.Country;
@@ -34,6 +36,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
@@ -195,6 +198,10 @@ public class ShareEarnFragment extends Fragment {
                 public void onClick(View view) {
                     try {
                         String code = customerNumber.getText().toString().trim();
+                        if(TextUtils.isEmpty(tvCountryCode.getText().toString())){
+                            Toast.makeText(activity, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         if ("".equalsIgnoreCase(code)) {
                             customerNumber.requestFocus();
                             customerNumber.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
@@ -271,6 +278,7 @@ public class ShareEarnFragment extends Fragment {
                 params.put("access_token", Data.userData.accessToken);
                 params.put("phone_no", phone_no);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
+                HomeUtil.putDefaultParams(params);
                 Log.i("params", "=" + params);
 
                 RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {

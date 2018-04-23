@@ -47,6 +47,7 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -530,6 +531,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				params.put("access_token", Data.userData.accessToken);
 				params.put("image_type", String.valueOf(imageType));
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 				TypedFile typedFile;
 				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
 				Log.i("selfaudit", String.valueOf(typedFile) + params);
@@ -602,6 +604,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().cancelAuditByDriver(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -649,6 +652,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				params.put("access_token", Data.userData.accessToken);
 				params.put("image_type", String.valueOf(imageType));
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 
 				RestClient.getApiServices().skipImageToServer(params, new Callback<DocRequirementResponse>() {
 					@Override

@@ -172,6 +172,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("region_ids", String.valueOf(destination));
+			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().updateDriverRegion(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -208,7 +209,10 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 	public void fetchDestinationData(final Activity activity) {
 		try {
-			RestClient.getApiServices().getDestinationData(Data.userData.accessToken, new Callback<DestinationDataResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().getDestinationData(params, new Callback<DestinationDataResponse>() {
 				@Override
 				public void success(DestinationDataResponse destinationDataResponse, Response response) {
 					try {

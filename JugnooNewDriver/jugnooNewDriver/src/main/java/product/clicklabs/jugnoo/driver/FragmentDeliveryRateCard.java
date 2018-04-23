@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -269,7 +271,10 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 	private void getRateCardDetails(final NewRateCardActivity activity) {
 		try {
-			RestClient.getApiServices().deliveryRateCardDetail(Data.userData.accessToken, new Callback<DeliveryRateCardResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().deliveryRateCardDetail(params, new Callback<DeliveryRateCardResponse>() {
 				@Override
 				public void success(DeliveryRateCardResponse rateCardResponse, Response response) {
 					try {

@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -34,7 +35,6 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -347,7 +347,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
-		String countryCode = userData.optString(Constants.KEY_COUNTRY_CODE, "+91");
+		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
 
 		return new UserData(accessToken, userData.getString("user_name"),
@@ -397,7 +397,10 @@ public class JSONParser implements Constants {
 	public String getUserStatus(Context context, String accessToken) {
 		String returnResponse = "";
 		try {
-			Response response = RestClient.getApiServices().getUserStatusRetro(accessToken);
+			HashMap<String, String> params = new HashMap<>();
+			params.put(KEY_ACCESS_TOKEN, accessToken);
+			HomeUtil.putDefaultParams(params);
+			Response response = RestClient.getApiServices().getUserStatusRetro(params);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 			Log.e("result of = user_status", "=" + result);

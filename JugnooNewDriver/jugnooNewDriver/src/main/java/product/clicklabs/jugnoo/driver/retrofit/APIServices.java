@@ -54,13 +54,12 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/booking_history")
-	void bookingHistory(@Field("access_token") String accessToken,
-						@Field("current_mode") String currentMode,
+	void bookingHistory(@FieldMap Map<String, String> params,
 						Callback<NewBookingHistoryRespose> callback);
 
 	@FormUrlEncoded
 	@POST("/share_ride_history")
-	void getSharedRidesAsync(@Field("access_token") String accessToken,
+	void getSharedRidesAsync(@FieldMap Map<String, String> params,
 							 Callback<SharedRideResponse> callback);
 
 	@FormUrlEncoded
@@ -70,72 +69,43 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")
-	void forgotpassword(@Field("phone_number") String phoneNumber,
+	void forgotpassword(@FieldMap Map<String, String> params,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/driver/show/leader_board")
-	void driverLeaderBoard(@Field("access_token") String accessToken,
+	void driverLeaderBoard(@FieldMap Map<String, String> params,
 						   Callback<DriverLeaderBoard> callback);
 
 	@FormUrlEncoded
 	@POST("/get_information")
-	void gethelp(@Field("section") int section,
-				 @Field("login_type") String loginType,
+	void gethelp(@FieldMap Map<String, String> params,
 				 Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_information")
-	void getHelpSection(@Field("section") int section,
+	void getHelpSection(@FieldMap Map<String, String> params,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_information")
-	void getHelpSectionNew(@Field("section") int section,
-						   @Field("locale") String locale,
+	void getHelpSectionNew(@FieldMap Map<String, String> params,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/send_otp_via_call")
-	void initiateOTPCall(@Field("phone_no") String phoneNo,
+	void initiateOTPCall(@FieldMap Map<String, String> params,
 						 Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/verify_otp_for_driver")
-	void verifyOtpUsingSignupFields(@Field("phone_no") String email,
-									@Field("password") String password,
-									@Field("device_token") String deviceToken,
-									@Field("device_type") String deviceType,
-									@Field("device_name") String deviceName,
-									@Field("app_version") int appVersion,
-									@Field("os_version") String osVersion,
-									@Field("country") String Country,
-									@Field("unique_device_id") String uniqueDeviceId,
-									@Field("latitude") double latitude,
-									@Field("longitude") double longitude,
-									@Field("client_id") String clientId,
-									@Field("login_type") String loginType,
-									@Field("otp") String Otp,
-									@Field("country_code") String countryCode,
+	void verifyOtpUsingSignupFields(@FieldMap Map<String, String> params,
 									Callback<BookingHistoryResponse> callback);
 
 
 	@FormUrlEncoded
 	@POST("/verify_otp")
-	void verifyOtpOldUsingSignupFields(@Field("email") String email,
-									@Field("password") String password,
-									@Field("device_token") String deviceToken,
-									@Field("device_type") String deviceType,
-									@Field("device_name") String deviceName,
-									@Field("app_version") int appVersion,
-									@Field("os_version") String osVersion,
-									@Field("country") String Country,
-									@Field("unique_device_id") String uniqueDeviceId,
-									@Field("latitude") double latitude,
-									@Field("longitude") double longitude,
-									@Field("client_id") String clientId,
-									@Field("login_type") String loginType,
-									@Field("otp") String Otp,
+	void verifyOtpOldUsingSignupFields(@FieldMap Map<String, String> params,
 									Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
@@ -204,7 +174,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_current_user_status")
-	Response getUserStatusRetro(@Field("access_token") String accessToken);
+	Response getUserStatusRetro(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/update_user_profile")
@@ -255,7 +225,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/driver_profile")
-	void driverProfileInfo(@Field("access_token") String accessToken,
+	void driverProfileInfo(@FieldMap Map<String, String> params,
 						   Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
@@ -265,7 +235,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/heat_map_data")
-	void getHeatMapAsync(@Field("access_token") String accessToken,
+	void getHeatMapAsync(@FieldMap Map<String, String> params,
 						 Callback<HeatMapResponse> callback);
 
 	@FormUrlEncoded
@@ -275,14 +245,12 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/driver/show/leader_board")
-	void leaderboardServerCall(@Field("access_token") String accessToken,
-							   @Field("client_id") String clientId,
+	void leaderboardServerCall(@FieldMap Map<String, String> params,
 							   Callback<NewLeaderBoard> callback);
 
 	@FormUrlEncoded
 	@POST("/driver/referrals/get_activity")
-	void leaderboardActivityServerCall(@Field("access_token") String accessToken,
-									   @Field("login_type") String loginType,
+	void leaderboardActivityServerCall(@FieldMap Map<String, String> params,
 									   Callback<LeaderboardActivityResponse> callback);
 
 	@FormUrlEncoded
@@ -336,12 +304,11 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/fetch_media_data")
-	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
-													 @Field("file_category") String fileType);
+	NotificationAlarmResponse updateNotificationData(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/fetch_driver_regions")
-	void getDestinationData(@Field("access_token") String accessToken,
+	void getDestinationData(@FieldMap Map<String, String> params,
 						 Callback<DestinationDataResponse> callback);
 
 	@FormUrlEncoded
@@ -369,20 +336,17 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_all_invoices_for_driver")
-	void invoiceHistory(@Field("access_token") String accessToken,
-						@Field("current_mode") String currentMode,
+	void invoiceHistory(@FieldMap Map<String, String> params,
 						Callback<InvoiceHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_invoice_details")
-	void invoiceDetail(@Field("access_token") String accessToken,
-						@Field("invoice_id") String invoiceId,
+	void invoiceDetail(@FieldMap Map<String, String> params,
 						Callback<InvoiceDetailResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/v2/get_invoice_details\n")
-	void invoiceDetailNew(@Field("access_token") String accessToken,
-					   @Field("invoice_id") String invoiceId,
+	void invoiceDetailNew(@FieldMap Map<String, String> params,
 					   Callback<InvoiceDetailResponseNew> callback);
 
 	@FormUrlEncoded
@@ -397,29 +361,22 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_driver_earnings")
-	void earningDetails(@Field("access_token") String accessToken,
-									   @Field("login_type") String loginType,
+	void earningDetails(@FieldMap Map<String, String> params,
 									   Callback<EarningsDetailResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/v2/get_driver_earnings")
-	void earningNewDetails(@Field("access_token") String accessToken,
-						@Field("login_type") String loginType,
-						   @Field("invoice_id") String invoiceId,
+	void earningNewDetails(@FieldMap Map<String, String> params,
 						Callback<DriverEarningsResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_captive_driver_earnings")
-	void earningNewDetailsCaptive(@Field("access_token") String accessToken,
-						@Field("login_type") String loginType,
-						   @Field("invoice_id") String invoiceId,
+	void earningNewDetailsCaptive(@FieldMap Map<String, String> params,
 						Callback<DriverEarningsResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/delivery_details")
-	void deliveryDetails(@Field("access_token") String accessToken,
-						@Field("login_type") String loginType,
-						 @Field("ride_id") String rideId,
+	void deliveryDetails(@FieldMap Map<String, String> params,
 						Callback<DeliveryDetailResponse> callback);
 
 	@FormUrlEncoded
@@ -467,14 +424,12 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/show_rate_card")
-	void rateCardDetail(@Field("access_token") String accessToken,
+	void rateCardDetail(@FieldMap Map<String, String> params,
 					   Callback<RateCardResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_required_docs")
-	void docRequest(@Field("access_token") String accessToken,
-					@Field("login_documents") String isRequired,
-					@Field("app_version") int appVersion,
+	void docRequest(@FieldMap Map<String, String> params,
 					Callback<DocRequirementResponse> callback);
 
 	@Multipart
@@ -508,8 +463,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/verify_document_status")
-	void docSubmission(@Field("access_token") String accessToken,
-					   @Field("login_documents") String requirement,
+	void docSubmission(@FieldMap Map<String, String> params,
 					Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded
@@ -519,7 +473,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/show_tiles")
-	void getInfoTilesAsync(@Field("access_token") String accessToken,
+	void getInfoTilesAsync(@FieldMap Map<String, String> params,
 							 Callback<InfoTileResponse> callback);
 //	@FormUrlEncoded
 	@POST("/driver/push/ack")
@@ -572,10 +526,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/generate_driver_support_ticket")
-	void sendIssue(@Field("access_token") String accessToken,
-				   @Field("support_feedback_text") String message,
-				   @Field("engagement_id") String engagementId,
-				   @Field("ticket_type") String ticketType,
+	void sendIssue(@FieldMap Map<String, String> params,
 					Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded
@@ -604,7 +555,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/show_delivery_rate_card")
-	void deliveryRateCardDetail(@Field("access_token") String accessToken,
+	void deliveryRateCardDetail(@FieldMap Map<String, String> params,
 						Callback<DeliveryRateCardResponse> callback);
 
 	@FormUrlEncoded

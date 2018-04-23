@@ -19,6 +19,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
 import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -60,6 +61,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
 				&& !(this instanceof SplashNewActivity
+					|| this instanceof RegisterScreen
 					|| this instanceof DriverDocumentActivity
 					|| this instanceof HelpActivity)) {
 			startActivity(new Intent(this, SplashNewActivity.class));

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DocumentListFragment;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.TransactionUtils;
@@ -194,6 +195,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("audit_type", String.valueOf(auditType));
+				HomeUtil.putDefaultParams(params);
 				Log.i("params", "=" + params);
 
 				RestClient.getApiServices().fetchAuditTypeStatus(params, new Callback<AuditStateResponse>() {

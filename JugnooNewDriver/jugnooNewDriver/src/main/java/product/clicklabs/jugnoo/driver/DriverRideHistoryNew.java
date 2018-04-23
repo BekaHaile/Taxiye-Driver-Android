@@ -197,6 +197,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 			params.put("access_token", Data.userData.accessToken);
 			params.put("start_from", "" + rideHistoryItems.size());
 			params.put("engagement_date", "" + date);
+			HomeUtil.putDefaultParams(params);
 
 			if(refresh){
 				rideHistoryItems.clear();

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -28,7 +29,7 @@ public class ApiSendCallLogs {
 			params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 			params.put("eng_id", engagementId);
 			params.put(Constants.KEY_CALL_LOGS, Utils.getCallDetails(activity, phoneNumber));
-
+			HomeUtil.putDefaultParams(params);
 			Log.i("params", "=" + params);
 
 			RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {

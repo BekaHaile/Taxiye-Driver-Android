@@ -195,6 +195,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 				params.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
 				params.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
 				params.put(Constants.KEY_CANCELLATION_REASON, reason);
+				HomeUtil.putDefaultParams(params);
 
 				if (Data.getCustomerInfo(engagementId) != null) {
 					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCustomerInfo(engagementId).getReferenceId()));

@@ -80,6 +80,7 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
 							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
+							HomeUtil.putDefaultParams(nameValuePairs);
 							if(Double.parseDouble(Utils.getActualBatteryPer(context)) < 20d && Utils.isBatteryChargingNew(context) == 0){
 								Intent batteryLow = new Intent(Constants.ALERT_BATTERY_LOW);
 								context.sendBroadcast(batteryLow);
@@ -223,6 +224,7 @@ public class DriverLocationDispatcher {
 								nameValuePairs.put(Constants.KEY_PICKUP_LATITUDE, String.valueOf(location.getLatitude()));
 								nameValuePairs.put(Constants.KEY_PICKUP_LONGITUDE, String.valueOf(location.getLongitude()));
 								nameValuePairs.put(Constants.KEY_REFERENCE_ID, String.valueOf(engagementSPData.getReferenceId()));
+								HomeUtil.putDefaultParams(nameValuePairs);
 
 								RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
 								engagementSPData.setStatus(EngagementStatus.ARRIVED.getOrdinal());

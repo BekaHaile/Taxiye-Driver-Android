@@ -10,6 +10,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -43,7 +44,7 @@ public class ApiSendRingCountData {
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
 				params.put(Constants.KEY_RING_COUNT, ringCountData);
-
+				HomeUtil.putDefaultParams(params);
 				Log.i("params", "=" + params);
 
 				RestClient.getApiServices().sendRingCountData(params, new retrofit.Callback<RegisterScreenResponse>() {

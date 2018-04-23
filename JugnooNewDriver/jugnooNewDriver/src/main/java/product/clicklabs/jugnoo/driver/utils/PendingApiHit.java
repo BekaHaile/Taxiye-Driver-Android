@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
@@ -25,6 +26,7 @@ public class PendingApiHit {
         try {
             if (AppStatus.getInstance(context).isOnline(context)) {
                 Response response = null;
+                HomeUtil.putDefaultParams(pendingAPICall.nameValuePairs);
                 if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
                     response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
                 }

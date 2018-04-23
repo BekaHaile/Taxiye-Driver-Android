@@ -207,6 +207,7 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 			params.put("user_message", ""+messageStr);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
+			HomeUtil.putDefaultParams(params);
 
 			try {
 				if (OldRegisterScreen.multipleCaseJSON != null) {

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverTimeoutCheck;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -42,6 +43,7 @@ public class ApiRejectRequest {
 			params.put("access_token", accessToken);
 			params.put("customer_id", customerId);
 			params.put("engagement_id", engagementId);
+			HomeUtil.putDefaultParams(params);
 
 			if (!"".equalsIgnoreCase(referenceId)) {
 				params.put("reference_id", referenceId);

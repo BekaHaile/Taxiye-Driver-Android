@@ -138,6 +138,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                         if(locationDataArr.length() > 0){
                             nameValuePairs.put("engagement_ids", engagementsJsonArray.toString());
                             nameValuePairs.put("locations", locationDataArr.toString());
+                            HomeUtil.putDefaultParams(nameValuePairs);
 
                             Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
                             String result = new String(((TypedByteArray)response.getBody()).getBytes());

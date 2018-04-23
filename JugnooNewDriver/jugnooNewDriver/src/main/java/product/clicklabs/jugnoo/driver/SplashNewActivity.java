@@ -52,6 +52,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -567,6 +568,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				String autoNum = vehicleNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				String altPhoneNo = alternatePhoneNoEt.getText().toString().trim();
+				if(TextUtils.isEmpty(getCountryCodeSelected())){
+					Toast.makeText(SplashNewActivity.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
@@ -637,6 +642,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			@Override
 			public void onClick(View v) {
 				String phoneNo = phoneNoOPTEt.getText().toString().trim();
+				if(TextUtils.isEmpty(getCountryCodeSelected())){
+					Toast.makeText(SplashNewActivity.this, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show();
+					return;
+				}
 				if ("".equalsIgnoreCase(phoneNo)) {
 					phoneNoOPTEt.requestFocus();
 					phoneNoOPTEt.setError(getResources().getString(R.string.enter_phone_number));
@@ -981,7 +990,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
+			HomeUtil.putDefaultParams(params);
 			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
 			} else {
@@ -1490,6 +1499,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				params.put("is_access_token_new", "1");
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
+				HomeUtil.putDefaultParams(params);
 
 				params.put("device_name", Utils.getDeviceName());
 				params.put("imei", DeviceUniqueID.getUniqueId(this));
@@ -2487,8 +2497,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("latitude", "" + Data.latitude);
 		params.put("longitude", "" + Data.longitude);
-		params.put(Constants.KEY_OPERATOR_TOKEN,getString(R.string.white_label_key));
-
+		HomeUtil.putDefaultParams(params);
 		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
@@ -2538,7 +2547,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	public void showLanguagePreference() {
 
 		if (languagePrefStatus == 1 && State.SPLASH_LS == state) {
-			if(getResources().getInteger(R.integer.show_language_control)==0){
+			if(getResources().getInteger(R.integer.show_language_control)==getResources().getInteger(R.integer.view_visible)){
 				selectLanguageLl.setVisibility(View.VISIBLE);
 
 			}
@@ -2588,7 +2597,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				HashMap<String, String> params = new HashMap<>();
 				params.put("device_model_name", android.os.Build.MODEL);
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
-
+					HomeUtil.putDefaultParams(params);
 
 					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
 						@Override
@@ -2668,7 +2677,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
-				if(getResources().getInteger(R.integer.show_language_control)==0){
+				if(getResources().getInteger(R.integer.show_language_control)==getResources().getInteger(R.integer.view_visible)){
 					selectLanguageLl.setVisibility(View.VISIBLE);
 
 				}

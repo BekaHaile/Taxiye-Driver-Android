@@ -22,6 +22,7 @@ import com.flurry.android.FlurryAgent;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -288,10 +289,13 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 				textViewInfoDisplay.setVisibility(View.GONE);
 				helpWebview.setVisibility(View.GONE);
 				loadHTMLContent("");
+				HashMap<String, String> params = new HashMap<>();
+				params.put("section", helpSection.getOrdinal()+"");
+				params.put("login_type", "1");
+				HomeUtil.putDefaultParams(params);
 
 
-
-				RestClient.getApiServices().gethelp(helpSection.getOrdinal(),"1", new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().gethelp(params, new Callback<BookingHistoryResponse>() {
 
 
 					@Override

@@ -210,6 +210,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				params.put("access_token", Data.userData.accessToken);
 				params.put("start_from", "" + 0);
 				params.put("engagement_date", "" + date);
+				HomeUtil.putDefaultParams(params);
 				if(earning!=null && earning.getLastInvoiceDate()!=null){
 					params.put("last_invoice_date", "" + earning.getLastInvoiceDate());
 				}
@@ -305,7 +306,11 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().invoiceDetailNew(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponseNew>() {
+				HashMap<String, String> params = new HashMap<>();
+				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put("invoice_id", String.valueOf(invoice_id));
+				HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().invoiceDetailNew(params, new Callback<InvoiceDetailResponseNew>() {
 				@Override
 				public void success(InvoiceDetailResponseNew invoiceDetailResponse, Response response) {
 					try {

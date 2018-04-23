@@ -10,6 +10,7 @@ import product.clicklabs.jugnoo.driver.BlankActivityForDialog;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.SharingRidesActivity;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -82,6 +83,7 @@ public class ApiAcceptRideServices extends IntentService {
 					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(referenceId));
 					params.put(Constants.KEY_IS_POOLED, String.valueOf(isPooled));
 					params.put(Constants.KEY_IS_DELIVERY, String.valueOf(isDelivery));
+					HomeUtil.putDefaultParams(params);
 					if(isDeliveryPool ==1){
 						params.put(Constants.KEY_RIDE_TYPE,"4");
 					}

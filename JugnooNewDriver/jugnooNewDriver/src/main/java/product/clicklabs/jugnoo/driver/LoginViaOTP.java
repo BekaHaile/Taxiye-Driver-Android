@@ -297,6 +297,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                 params.put("phone_no", countryCode + phoneNo);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
                 params.put("login_type", "1");
+                HomeUtil.putDefaultParams(params);
                 Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
                 Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 
@@ -427,6 +428,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
             params.put("client_id", Data.CLIENT_ID);
             params.put("login_type", Data.LOGIN_TYPE);
             params.put("locale", conf.locale.toString());
+            HomeUtil.putDefaultParams(params);
 
 
             if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {

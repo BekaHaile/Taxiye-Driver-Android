@@ -20,8 +20,11 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -166,9 +169,12 @@ public class NotificationTipsFragment extends Fragment {
 				textViewInfo.setVisibility(View.GONE);
 				webview.setVisibility(View.GONE);
 				loadHTMLContent("");
+				HashMap<String, String> params = new HashMap<>();
+				params.put("section",8+"");
+				params.put("locale", conf.locale.toString());
+				HomeUtil.putDefaultParams(params);
 
-
-				RestClient.getApiServices().getHelpSectionNew(8,conf.locale.toString(),
+				RestClient.getApiServices().getHelpSectionNew(params,
 						new Callback<BookingHistoryResponse>() {
 
 					@Override

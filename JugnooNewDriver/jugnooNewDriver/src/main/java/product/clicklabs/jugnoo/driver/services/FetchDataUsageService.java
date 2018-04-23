@@ -27,6 +27,7 @@ import java.util.zip.GZIPOutputStream;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -151,6 +152,7 @@ public class FetchDataUsageService extends Service {
 					try {
 						params.put("data", dataUsage);
 						params.put("access_token", Data.userData.accessToken);
+						HomeUtil.putDefaultParams(params);
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -190,6 +192,7 @@ public class FetchDataUsageService extends Service {
 					try {
 						params.put("data", dataUsage);
 						params.put("access_token", Data.userData.accessToken);
+						HomeUtil.putDefaultParams(params);
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

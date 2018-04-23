@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapter;
@@ -167,7 +168,10 @@ public class SharingRidesActivity extends BaseActivity {
 	private void getSharedRidesAsync(final Activity activity) {
 		try {
 			swipeRefreshLayoutShareRides.setRefreshing(true);
-			RestClient.getApiServices().getSharedRidesAsync(Data.userData.accessToken, new Callback<SharedRideResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			HomeUtil.putDefaultParams(params);
+			RestClient.getApiServices().getSharedRidesAsync(params, new Callback<SharedRideResponse>() {
 				@Override
 				public void success(SharedRideResponse sharedRideResponse, Response response) {
 					try {

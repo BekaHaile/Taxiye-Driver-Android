@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -61,6 +62,7 @@ public final class UpdateTutStatusService extends Service {
                 params.put("access_token", accessToken);
                 params.put("status", status);
                 params.put("training_id", trainingId);
+                HomeUtil.putDefaultParams(params);
 
                 Log.i(TAG, "params before api=" + params);
 
