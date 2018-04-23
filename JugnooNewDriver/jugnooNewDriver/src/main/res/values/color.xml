@@ -183,4 +183,7 @@
     <color name="case_added">#00af5a</color>
     <color name="case_deducted">#ff6c6c</color>
 
+    <color name="text_color_splash">#595968</color>
+    <color name="text_color_splash_heading">#3b3738</color>
+
 </resources>

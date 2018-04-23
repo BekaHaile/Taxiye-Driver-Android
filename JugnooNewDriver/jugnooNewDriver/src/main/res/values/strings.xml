@@ -918,6 +918,10 @@
 
     <string name="metering_service_notif_label">Ride in progress</string>
     <string name="update_location_notif_label">You are online</string>
+    <string name="cd_jugnoo_logo">Jugnoo Logo</string>
+    <string name="label_edt_phone">Please enter your phone number</string>
+    <string name="hint_edt_phone">Phone number</string>
+    <string name="btn_text_OTP">GENERATE OTP</string>
 
 
     <string-array name="CountryCodes">
