@@ -2788,14 +2788,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	public void setBidForEngagementAPI(int engagementId, String bidValue) {
+	public void setBidForEngagementAPI(final CustomerInfo customerInfo, final double bidValue) {
 
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 			HashMap<String, String> params = new HashMap<>();
 			params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
-			params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(engagementId));
-			params.put(Constants.KEY_BID_VALUE, bidValue);
+			params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+			params.put(Constants.KEY_BID_VALUE, String.valueOf(bidValue));
 			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().setBidForEngagement(params, new retrofit.Callback<SettleUserDebt>() {
@@ -2808,7 +2808,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()) {
 							HomeActivity.logoutUser(activity);
 						} else if(flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()){
-							DialogPopup.alertPopup(activity, "", jObj.getString(Constants.KEY_MESSAGE));
+//							DialogPopup.alertPopup(activity, "", jObj.getString(Constants.KEY_MESSAGE));
+							customerInfo.setBidPlaced(1);
+							customerInfo.setBidValue(bidValue);
+							driverRequestListAdapter.notifyDataSetChanged();
 						} else {
 							DialogPopup.alertPopup(activity, "", JSONParser.getServerMessage(jObj));
 						}
@@ -4920,11 +4923,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType, imageViewDeliveryList;
 		LinearLayout relative, linearLayoutDeliveryParams;
-		RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD;
+		RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD, rlAcceptCancel;
 		ProgressBar progressBarRequest;
 		int id;
 		LinearLayout linearLayoutRideValues, llPlaceBid;
 		EditText etPlaceBid;
+		TextView tvPlaceBidCurrency, tvPlaceBid;
 		DriverRequestListAdapter.MyCustomEditTextListener myCustomEditTextListener;
 	}
 
@@ -5059,6 +5063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
+				holder.rlAcceptCancel = (RelativeLayout) convertView.findViewById(R.id.rlAcceptCancel);
 
 				holder.linearLayoutRideValues = (LinearLayout) convertView.findViewById(R.id.linearLayoutRideValues);
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
@@ -5087,6 +5092,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
 
 				holder.llPlaceBid = (LinearLayout) convertView.findViewById(R.id.llPlaceBid);
+				holder.tvPlaceBidCurrency = (TextView) convertView.findViewById(R.id.tvPlaceBidCurrency);
+				holder.tvPlaceBid = (TextView) convertView.findViewById(R.id.tvPlaceBid);
 				holder.etPlaceBid = (EditText) convertView.findViewById(R.id.etPlaceBid);
 				holder.myCustomEditTextListener = new MyCustomEditTextListener();
 				holder.etPlaceBid.addTextChangedListener(holder.myCustomEditTextListener);
@@ -5273,13 +5280,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			holder.myCustomEditTextListener.updatePosition(position);
+			holder.tvPlaceBidCurrency.setText(Utils.getCurrencySymbol(customerInfo.getCurrencyUnit()));
 			holder.etPlaceBid.setText(bidValues.get(position));
 			holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
 			if(customerInfo.isReverseBid()){
 				holder.llPlaceBid.setVisibility(View.VISIBLE);
+				holder.buttonAcceptRide.setText(R.string.bid);
+				if(customerInfo.isBidPlaced()){
+					holder.rlAcceptCancel.setVisibility(View.GONE);
+					holder.tvPlaceBid.setText(R.string.bid_placed);
+					holder.etPlaceBid.setVisibility(View.GONE);
+					holder.tvPlaceBidCurrency.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
+				} else {
+					holder.rlAcceptCancel.setVisibility(View.VISIBLE);
+					holder.tvPlaceBid.setText(R.string.place_bid);
+					holder.etPlaceBid.setVisibility(View.VISIBLE);
+				}
 				holder.etPlaceBid.requestFocus();
 			} else {
 				holder.llPlaceBid.setVisibility(View.GONE);
+				holder.buttonAcceptRide.setText(R.string.accept);
+				holder.rlAcceptCancel.setVisibility(View.VISIBLE);
 			}
 
 
@@ -5312,7 +5333,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.YES, null);
 							CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 							if(customerInfo1.isReverseBid()){
-								setBidForEngagementAPI(customerInfo1.getEngagementId(), bidValues.get(holder.id));
+								if(TextUtils.isEmpty(bidValues.get(holder.id))){
+									Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
+									return;
+								}
+								setBidForEngagementAPI(customerInfo1, Double.parseDouble(bidValues.get(holder.id)));
 							} else {
 								acceptRequestFunc(customerInfo1);
 							}

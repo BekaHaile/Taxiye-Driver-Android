@@ -58,7 +58,8 @@ public class CustomerInfo {
 	private ReverseBidFare reverseBidFare;
 	private DeliveryInfoInRideDetails deliveryInfoInRideDetails;
 	private String currencyUnit;
-	private int reverseBid;
+	private int reverseBid, bidPlaced;
+	private double bidValue;
 
 
 	/**
@@ -129,7 +130,7 @@ public class CustomerInfo {
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
-						String currency, int reverseBid){
+						String currency, int reverseBid, int bidPlaced, double bidValue){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -152,6 +153,8 @@ public class CustomerInfo {
 		this.estimatedDist = estimatedDist;
 		this.currencyUnit = currency;
 		this.reverseBid = reverseBid;
+		this.bidPlaced = bidPlaced;
+		this.bidValue = bidValue;
 	}
 
 	public double getDryDistance() {
@@ -618,5 +621,21 @@ public class CustomerInfo {
 
 	public void setReverseBidFare(ReverseBidFare reverseBidFare) {
 		this.reverseBidFare = reverseBidFare;
+	}
+
+	public boolean isBidPlaced() {
+		return bidPlaced == 1;
+	}
+
+	public void setBidPlaced(int bidPlaced) {
+		this.bidPlaced = bidPlaced;
+	}
+
+	public double getBidValue() {
+		return bidValue;
+	}
+
+	public void setBidValue(double bidValue) {
+		this.bidValue = bidValue;
 	}
 }

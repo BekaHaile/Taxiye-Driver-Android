@@ -822,6 +822,9 @@
     <string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
     <string name="place_bid">Place Bid</string>
+    <string name="please_enter_some_value">Please enter some value</string>
+    <string name="bid">Bid</string>
+    <string name="bid_placed">Bid Placed</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
