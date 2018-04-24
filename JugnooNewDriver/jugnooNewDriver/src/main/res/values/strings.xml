@@ -918,6 +918,7 @@
 
     <string name="metering_service_notif_label">Ride in progress</string>
     <string name="update_location_notif_label">You are online</string>
+    <string name="place_bid">Place Bid</string>
 
 
     <string-array name="CountryCodes">

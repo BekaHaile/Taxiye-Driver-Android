@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
+import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -563,7 +564,7 @@ public class JSONParser implements Constants {
 								e.printStackTrace();
 							}
 
-							parsePoolFare(jObjCustomer, customerInfo);
+							parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
 
 							Data.addCustomerInfo(customerInfo);
 
@@ -692,6 +693,7 @@ public class JSONParser implements Constants {
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 				double estimatedDist = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
+				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -706,7 +708,7 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency);
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency, reverseBid);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -886,7 +888,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	public static void parsePoolFare(JSONObject jObjCustomer, CustomerInfo customerInfo){
+	public static void parsePoolOrReverseBidFare(JSONObject jObjCustomer, CustomerInfo customerInfo){
 		try {
 			if(jObjCustomer.has(KEY_POOL_FARE)){
 				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
@@ -899,6 +901,11 @@ public class JSONParser implements Constants {
 				double discountPercentage = jPoolFare.optDouble(KEY_DISCOUNT_PERCENTAGE, 0);
 				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
 				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
+			}
+			if(jObjCustomer.has(KEY_REVERSE_BID_FARE)){
+				JSONObject jFare = jObjCustomer.optJSONObject(KEY_REVERSE_BID_FARE);
+				double fare = jFare.optDouble(KEY_FARE);
+				customerInfo.setReverseBidFare(new ReverseBidFare(fare));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,8 +1,6 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -29,7 +26,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -202,7 +198,6 @@ public class NonJugnooAuditFragment extends Fragment {
 							vehicleNoEt.requestFocus();
 							vehicleNoEt.setError("Please enter auto number");
 						} else {
-							//TODO remove extra characters phoneNo
 							phoneNo = phoneNo.replace(" ", "");
 							phoneNo = phoneNo.replace("(", "");
 							phoneNo = phoneNo.replace("/", "");

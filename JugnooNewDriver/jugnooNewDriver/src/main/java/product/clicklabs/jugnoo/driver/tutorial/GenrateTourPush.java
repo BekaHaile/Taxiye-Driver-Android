@@ -9,10 +9,7 @@ import android.os.Vibrator;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -134,7 +131,7 @@ public class GenrateTourPush {
                                         referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
                                         isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
                                         new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, new ArrayList<String>(),
-                                        0d,currency);
+                                        0d,currency, 0);
                                 Data.addCustomerInfo(customerInfo);
 
                                 startRing(context, engagementId, changeRing);

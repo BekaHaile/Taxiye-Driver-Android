@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.retrofit.model.PushAckAPIService;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -83,8 +84,11 @@ public class RestClient {
 			RestAdapter.Builder builder = new RestAdapter.Builder()
 					.setEndpoint(url)
 					.setClient(new Ok3Client(getOkHttpClient()))
-					.setLog(fooLog)
 					.setLogLevel(RestAdapter.LogLevel.FULL);
+
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
 
 			RestAdapter restAdapter = builder.build();
 			API_SERVICES = restAdapter.create(APIServices.class);

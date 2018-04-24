@@ -219,7 +219,6 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 							phoneNoEt.requestFocus();
 							phoneNoEt.setError("Please enter phone number");
 						} else {
-							//TODO remove extra characters phoneNo
 							phoneNo = phoneNo.replace(" ", "");
 							phoneNo = phoneNo.replace("(", "");
 							phoneNo = phoneNo.replace("/", "");

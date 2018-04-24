@@ -246,5 +246,9 @@ public interface Constants {
 	String KEY_UPDATED_COUNTRY_CODE = "updated_country_code";
 	String KEY_OPERATOR_TOKEN = "operator_token";
 
+	String KEY_REVERSE_BID = "reverse_bid";
+	String KEY_REVERSE_BID_FARE = "reverse_bid_fare";
+	String KEY_BID_VALUE = "bid_value";
+	String KEY_MESSAGE = "message";
 }
 

@@ -868,6 +868,7 @@
     <string name="error_no_countries_found">No Countries Found!</string>
     <string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
+    <string name="place_bid">Place Bid</string>
     <!--Strings for Subscription plans-->
 
 
