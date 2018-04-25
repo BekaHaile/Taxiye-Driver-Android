@@ -30,7 +30,6 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
-
 public class MyApplication extends Application {
     public static final String TAG = MyApplication.class
             .getSimpleName();

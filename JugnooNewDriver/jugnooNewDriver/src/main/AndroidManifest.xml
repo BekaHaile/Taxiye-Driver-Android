@@ -93,7 +93,7 @@
             </intent-filter>
         </service>
         <activity
-            android:name=".SplashNewActivity"
+            android:name=".ui.DriverSplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>

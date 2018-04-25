@@ -23,6 +23,7 @@ import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 
 /**
  * Created by aneeshbansal on 09/05/16.
@@ -60,17 +61,19 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
-				&& !(this instanceof SplashNewActivity
+				&& !(this instanceof DriverSplashActivity
 					|| this instanceof RegisterScreen
 					|| this instanceof DriverDocumentActivity
 					|| this instanceof HelpActivity)) {
-			startActivity(new Intent(this, SplashNewActivity.class));
+			// TODO: 25/04/18 IMP
+			startActivity(new Intent(this, DriverSplashActivity.class));
 			finish();
 			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			return true;
 		} else {
 			return false;
 		}
+
 	}
 
 	public void sendToSplash(){

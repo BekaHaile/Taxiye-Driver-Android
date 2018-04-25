@@ -1,9 +1,11 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,19 +18,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.firebase.iid.FirebaseInstanceId
-import product.clicklabs.jugnoo.driver.Constants
-import product.clicklabs.jugnoo.driver.Data
-import product.clicklabs.jugnoo.driver.R
-import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.Utils
-
+import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
+import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
+import product.clicklabs.jugnoo.driver.utils.*
+import retrofit.Callback
+import retrofit.RetrofitError
+import retrofit.client.Response
+import retrofit.mime.TypedByteArray
+import java.util.HashMap
 
 class SplashFragment() : Fragment() {
 
     val TAG = SplashFragment::class.simpleName;
-    private val handler  = Handler();
     private val intentFilter = IntentFilter();
+    private var waitingForDeviceToken = false;
+    private val handler = Handler()
+    private val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
     init{
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
     }
@@ -50,6 +64,8 @@ class SplashFragment() : Fragment() {
             if (intent.action != null && intent.action == Constants.ACTION_DEVICE_TOKEN_UPDATED) {
                 Log.i(TAG, "Firebase service emitted deviceToken");
 
+                checkForDeviceToken(true);
+
             }
 
 
@@ -57,8 +73,11 @@ class SplashFragment() : Fragment() {
     }
 
     var deviceTokenRunnable:Runnable  =  Runnable(){
-        DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
-                , { this@SplashFragment.activity.finish(); })
+        if(waitingForDeviceToken){
+            DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
+                    , { this@SplashFragment.activity.finish(); })
+        }
+
     }
 
     override fun onAttach(context: Context?) {
@@ -70,25 +89,8 @@ class SplashFragment() : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater?.inflate(R.layout.frag_splash,container,false);
-
-
         checkForBatteryOptimisation();
-        setLoginData();
-
-
-        if(FirebaseInstanceId.getInstance().getToken()!=null){
-            //Go ahead with server calls
-
-        }else{
-            LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter);
-            //Register a receiver to get DeviceToken and wait
-
-        }
-
-
-
-
-
+        checkForDeviceToken(false);
         return rootView;
     }
 
@@ -103,14 +105,7 @@ class SplashFragment() : Fragment() {
         return false;
     }
 
-    private fun setLoginData() {
-        try {
-            Data.generateKeyHash(this@SplashFragment.activity);
-            Data.filldetails(this@SplashFragment.activity);
-        } catch (e: Exception) {
-            Log.e(TAG,e.localizedMessage);
-        }
-    }
+
 
     private fun checkForBatteryOptimisation() {
         try {
@@ -130,14 +125,222 @@ class SplashFragment() : Fragment() {
         }
     }
 
+
+
     private fun pushAPIs(context: Context?){
         if(isMockLocationEnabled())return;
+                executePending().
+                retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; }).
+                subscribeOn(Schedulers.newThread()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe({ accessTokenLogin(this@SplashFragment.activity); })
+    }
+
+
+    fun executePending(): Observable<Boolean> {
+
+        return Observable.create(ObservableOnSubscribe {
+            val pendingAPICalls = Database2.getInstance(context).allPendingAPICalls
+            for (pendingAPICall in pendingAPICalls) {
+                Log.e(TAG, "pendingApiCall=$pendingAPICall")
+                PendingApiHit().startAPI(context, pendingAPICall)
+            }
+            val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount;
+             it.onNext(pendingApisCount<=0);
+
+        })
+    }
+
+    fun accessTokenLogin(activity: Activity) {
+
+        val accPair = JSONParser.getAccessTokenPair(activity)
+        val responseTime = System.currentTimeMillis()
+        val conf = resources.configuration
+        if (!"".equals(accPair.first, ignoreCase = true)) {
+            if (AppStatus.getInstance(activity.getApplicationContext()).isOnline(activity.getApplicationContext())) {
+
+
+                if (Data.locationFetcher != null) {
+                    Data.latitude = Data.locationFetcher.latitude
+                    Data.longitude = Data.locationFetcher.longitude
+                }
+                val params = HashMap<String, String>()
+
+                params["access_token"] = accPair.first
+                params["device_token"] = Data.deviceToken
+
+                params["latitude"] = "" + Data.latitude
+                params["longitude"] = "" + Data.longitude
+
+                params["locale"] = conf.locale.toString()
+                params["app_version"] = "" + Data.appVersion
+                params["device_type"] = Data.DEVICE_TYPE
+                params["unique_device_id"] = Data.uniqueDeviceId
+                params["is_access_token_new"] = "1"
+                params["client_id"] = Data.CLIENT_ID
+                params["login_type"] = Data.LOGIN_TYPE
+                HomeUtil.putDefaultParams(params)
+
+                params["device_name"] = Utils.getDeviceName()
+                params["imei"] = DeviceUniqueID.getUniqueId(activity)
+
+                if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
+                    params["auto_n_cab_installed"] = "1"
+                } else {
+                    params["auto_n_cab_installed"] = "0"
+                }
+
+
+                if (Utils.isAppInstalled(activity, Data.UBER_APP)) {
+                    params["uber_installed"] = "1"
+                } else {
+                    params["uber_installed"] = "0"
+                }
+
+                if (Utils.telerickshawInstall(activity)) {
+                    params["telerickshaw_installed"] = "1"
+                } else {
+                    params["telerickshaw_installed"] = "0"
+                }
+
+                if (Utils.olaInstall(activity)) {
+                    params["ola_installed"] = "1"
+                } else {
+                    params["ola_installed"] = "0"
+                }
+
+                if (Utils.isDeviceRooted()) {
+                    params["device_rooted"] = "1"
+                } else {
+                    params["device_rooted"] = "0"
+                }
 
 
 
+                RestClient.getApiServices().accessTokenLoginRetro(params, object : Callback<RegisterScreenResponse> {
+                    override fun success(registerScreenResponse: RegisterScreenResponse, response: Response) {
+                        try {
+                            val jsonString = String((response.body as TypedByteArray).bytes)
+                            val jObj: JSONObject
+                            jObj = JSONObject(jsonString)
+                            val flag = jObj.getInt("flag")
+                            val message = JSONParser.getServerMessage(jObj)
 
+                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
+                                    DialogPopup.alertPopup(activity, "", message)
+                                } else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
+                                    DialogPopup.alertPopup(activity, "", message)
+                                } else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
+                                    if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+                                        //										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+                                        var resp: String
+                                        try {
+                                            resp = JSONParser().parseAccessTokenLoginData(activity, jsonString)
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                            resp = Constants.SERVER_TIMEOUT
+                                        }
+
+                                        if (resp.contains(Constants.SERVER_TIMEOUT)) {
+                                            DialogPopup.alertPopup(activity, "", message)
+                                        } else {
+                                        }
+
+                                        Utils.deleteMFile()
+                                        Utils.clearApplicationData(activity)
+                                        FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE)
+
+                                    }
+                                } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+                                    JSONParser.saveAccessToken(activity, jObj.getString("access_token"))
+                                    val intent = Intent(activity, DriverDocumentActivity::class.java)
+                                    intent.putExtra("access_token", jObj.getString("access_token"))
+                                    intent.putExtra("in_side", false)
+                                    intent.putExtra("doc_required", 3)
+                                    startActivity(intent)
+                                } else {
+                                    DialogPopup.alertPopup(activity, "", message)
+                                }
+                            }
+                        } catch (exception: Exception) {
+                            exception.printStackTrace()
+                            DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG)
+                        }
+
+                    }
+
+                    override fun failure(error: RetrofitError) {
+
+                        DialogPopup.dismissLoadingDialog()
+                        DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG)
+
+                    }
+                })
+
+            } else {
+                DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
+            }
+        }else{
+
+
+
+        }
 
     }
+
+
+
+    private fun checkForDeviceToken(calledFromOnResume: Boolean) {
+        if(FirebaseInstanceId.getInstance().getToken()!=null){
+            //Go ahead with server calls
+
+            if (waitingForDeviceToken) {
+                try {
+                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+                } catch (e: Exception) {
+                    Log.e(TAG,"DeviceToken Receiver was not registered")
+                }
+                handler.removeCallbacksAndMessages(null)
+                waitingForDeviceToken = false
+            }
+
+            if(waitingForDeviceToken || !calledFromOnResume){
+                pushAPIs(this@SplashFragment.activity);
+
+            }
+
+
+
+
+
+        }else{
+            waitingForDeviceToken = true;
+            LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter);
+            handler.postDelayed(deviceTokenRunnable, DEVICE_TOKEN_WAIT_TIME);
+            //Register a receiver to get DeviceToken and wait
+
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        checkForDeviceToken(false);
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(waitingForDeviceToken){
+            LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+            handler.removeCallbacksAndMessages(null)
+        }
+    }
+
+
+
+
 
 
 }

@@ -30,9 +30,34 @@
         android:layout_height="wrap_content" />
 
 
+    <TextView
+        android:id="@+id/tvCountryCodeL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:background="@drawable/edittext_background"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:includeFontPadding="false"
+        android:text=""
+        android:hint="@string/code"
+        android:textColor="@color/text_color"
+        android:textSize="17sp"
+        android:layout_marginStart="5dp"
+        android:drawableEnd="@drawable/ic_arrow_down_vector"
+        android:drawablePadding="3dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:tag="@string/dont_touch_me"
+        android:layout_centerVertical="true" />
+
+
+
     <EditText
         android:id="@+id/edt_phone"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:maxLines="1"
         android:drawablePadding="5dp"
         android:padding="8dp"
@@ -42,8 +67,7 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
         android:background="@drawable/edittext_background"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tvCountryCodeL"
         android:layout_height="wrap_content" />
 
 
