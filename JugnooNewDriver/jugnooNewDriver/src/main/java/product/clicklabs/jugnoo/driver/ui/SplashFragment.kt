@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
@@ -43,6 +44,7 @@ class SplashFragment() : Fragment() {
     private var waitingForDeviceToken = false;
     private val handler = Handler()
     private val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
+
     init{
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
     }

@@ -522,6 +522,7 @@
     <string name="ride_complete">Ride Completed</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP_ul"><u>Resend OTP</u>></string>
     <string name="return_reasons">Reasons of Return</string>
 
     <string name="accepted">Accepted</string>
@@ -922,6 +923,7 @@
     <string name="label_edt_phone">Please enter your phone number</string>
     <string name="hint_edt_phone">Phone number</string>
     <string name="btn_text_OTP">GENERATE OTP</string>
+    <string name="enter_one_time_pwd">Enter One Time Password</string>
 
 
     <string-array name="CountryCodes">

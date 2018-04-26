@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
@@ -27,11 +27,17 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.()->FragmentT
     beginTransaction().func().commit();
 }
 
+
+
 fun <T : View> Activity.bind(@IdRes res : Int) : Lazy<T> {
     @Suppress("UNCHECKED_CAST")
     return lazy(LazyThreadSafetyMode.NONE){ findViewById(res) as T }
 }
 
+fun <T : View> Fragment.bind(@IdRes res : Int,view :View?) : Lazy<T> {
+    @Suppress("UNCHECKED_CAST")
+    return lazy(LazyThreadSafetyMode.NONE){ view?.findViewById(res) as T }
+}
 
 
 class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
@@ -109,6 +115,12 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
 
         supportFragmentManager.inTransaction{
             replace(container.id,LoginFragment.newInstance(Bundle())).addToBackStack(LoginFragment::class.simpleName);
+        }
+    }
+    public fun addLoginViaOTPScreen(){
+
+        supportFragmentManager.inTransaction{
+            replace(container.id,OTPConfirmFragment.newInstance(Bundle())).addToBackStack(OTPConfirmFragment::class.simpleName);
         }
     }
 }
