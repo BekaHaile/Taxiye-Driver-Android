@@ -245,6 +245,7 @@ public interface Constants {
 	String KEY_COUNTRY_CODE = "country_code";
 	String KEY_UPDATED_COUNTRY_CODE = "updated_country_code";
 	String KEY_OPERATOR_TOKEN = "operator_token";
+	String LOGIN_TYPE = "login_type";
 
 }
 

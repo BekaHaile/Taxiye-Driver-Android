@@ -3,14 +3,15 @@ package product.clicklabs.jugnoo.driver.retrofit.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+
 /**
  * Created by aneeshbansal on 09/09/15.
  */
 
-public class RegisterScreenResponse {
+public class RegisterScreenResponse extends FeedCommonResponse {
 
-	@Expose
-	private Integer flag;
+
 	@SerializedName("phone_no")
 	@Expose
 	private String phoneNo;
@@ -20,22 +21,6 @@ public class RegisterScreenResponse {
 	@SerializedName("user_email")
 	@Expose
 	private String userEmail;
-	@Expose
-	private String error;
-
-	/**
-	 * @return The flag
-	 */
-	public Integer getFlag() {
-		return flag;
-	}
-
-	/**
-	 * @param flag The flag
-	 */
-	public void setFlag(Integer flag) {
-		this.flag = flag;
-	}
 
 	/**
 	 * @return The phoneNo
@@ -79,18 +64,6 @@ public class RegisterScreenResponse {
 		this.userEmail = userEmail;
 	}
 
-	/**
-	 * @return The error
-	 */
-	public String getError() {
-		return error;
-	}
 
-	/**
-	 * @param error The error
-	 */
-	public void setError(String error) {
-		this.error = error;
-	}
 
 }
