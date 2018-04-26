@@ -29,7 +29,7 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 				if (timeDiff >= 6 * MINUTE) {
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_SIX.getOrdinal());
 
-					SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+					SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 					if(preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL).equalsIgnoreCase(Data.LIVE_SERVER_URL)){
 						SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true);
 					} else {

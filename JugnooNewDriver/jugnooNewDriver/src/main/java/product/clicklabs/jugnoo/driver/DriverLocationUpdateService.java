@@ -11,14 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -70,7 +67,7 @@ public class DriverLocationUpdateService extends Service {
 		
 		SERVER_URL = DEFAULT_SERVER_URL;
 		
-		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_SHARED_PREF_NAME, 0);
+		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		String link = preferences.getString(SP_SERVER_LINK, DEFAULT_SERVER_URL);
 		
 		if(link.equalsIgnoreCase(TRIAL_SERVER_URL)){
@@ -96,7 +93,7 @@ public class DriverLocationUpdateService extends Service {
 		}
 
 		
-		SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_NAME, 0);
+		SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		accessToken = pref.getString(SP_ACCESS_TOKEN_KEY, "");
 
 		final String finalAccessToken = accessToken;
@@ -125,7 +122,7 @@ public class DriverLocationUpdateService extends Service {
 		}
 
 		try {
-			int isOffline = getSharedPreferences(SPLabels.SETTINGS_SP,Context.MODE_MULTI_PROCESS).getInt(Constants.IS_OFFLINE, 1);
+			int isOffline = getSharedPreferences(SPLabels.SETTINGS_SP,Context.MODE_PRIVATE).getInt(Constants.IS_OFFLINE, 1);
 
 			Log.i("TAG", "onStartCommand: is Offline" +	isOffline );
 
