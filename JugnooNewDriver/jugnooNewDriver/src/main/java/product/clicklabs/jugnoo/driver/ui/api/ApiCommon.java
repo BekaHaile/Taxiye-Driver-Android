@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import product.clicklabs.jugnoo.driver.Constants;
+
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
@@ -22,7 +20,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
-import retrofit.mime.TypedString;
 
 /**
  * Created by Parminder Singh on 3/27/17.
@@ -145,7 +142,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
 							apiCommonCallback.onSuccess(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag());
                         } else if(feedCommonResponse.getFlag()==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()){
                             apiCommonCallback.onFinish();
-                            HomeActivity.logoutUser(activity);
+                            HomeActivity.logoutUser(activity, null);
 						}else{
                             apiCommonCallback.onFinish();
                             if (!apiCommonCallback.onError(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag())) {
@@ -206,6 +203,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
         switch (apiName) {
             case GENERATE_OTP:
                 RestClient.getApiServices().generateOtpK(params,callback);
+                break;
+            case GET_CITIES:
+                RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

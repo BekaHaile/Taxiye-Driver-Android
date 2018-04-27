@@ -5,5 +5,6 @@ package product.clicklabs.jugnoo.driver.ui.api;
  */
 public  enum ApiName {
     GENERATE_OTP,
-    VERIFY_OTP
+    VERIFY_OTP,
+    GET_CITIES
 }

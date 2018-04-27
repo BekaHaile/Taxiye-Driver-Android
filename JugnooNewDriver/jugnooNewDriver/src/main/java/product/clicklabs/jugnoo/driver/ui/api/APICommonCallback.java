@@ -10,19 +10,25 @@ import retrofit.RetrofitError;
 
 public abstract class APICommonCallback<T extends FeedCommonResponse> {
 
-    public abstract boolean onNotConnected();
+    public boolean onNotConnected(){
+        return false;
+    }
 
-    public abstract boolean onException(Exception e);
+    public boolean onException(Exception e){
+        return false;
+    }
 
 
     public abstract void onSuccess(T t, String message, int flag);
 
     public abstract boolean onError(T t, String message, int flag);
 
-    public abstract boolean onFailure(RetrofitError error);
+    public boolean onFailure(RetrofitError error){
+        return false;
+    }
 
 
-    public abstract void onDialogClick();
+    public void onDialogClick(){}
 
 
     public void onFinish() {

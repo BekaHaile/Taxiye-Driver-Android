@@ -7,15 +7,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+
 /**
  * Created by aneeshbansal on 29/01/16.
  */
-public class CityResponse implements Serializable {
+public class CityResponse extends FeedCommonResponse implements Serializable {
 
 
-	@SerializedName("flag")
-	@Expose
-	private Integer flag;
 	@SerializedName("cities")
 	@Expose
 	private List<City> cities = new ArrayList<City>();
@@ -25,23 +24,12 @@ public class CityResponse implements Serializable {
 	@SerializedName("current_city")
 	@Expose
 	private String currentCity;
+	@SerializedName("current_city_id")
+	@Expose
+	private String currentCityId;
 	@SerializedName("offering_types")
 	@Expose
 	private List<OfferingType> offeringTypes = null;
-
-	/**
-	 * @return The flag
-	 */
-	public Integer getFlag() {
-		return flag;
-	}
-
-	/**
-	 * @param flag The flag
-	 */
-	public void setFlag(Integer flag) {
-		this.flag = flag;
-	}
 
 	/**
 	 * @return The currentCity
@@ -99,6 +87,14 @@ public class CityResponse implements Serializable {
 
 	public void setOfferingTypes(List<OfferingType> offeringTypes) {
 		this.offeringTypes = offeringTypes;
+	}
+
+	public String getCurrentCityId() {
+		return currentCityId;
+	}
+
+	public void setCurrentCityId(String currentCityId) {
+		this.currentCityId = currentCityId;
 	}
 
 	public class City implements Serializable{
