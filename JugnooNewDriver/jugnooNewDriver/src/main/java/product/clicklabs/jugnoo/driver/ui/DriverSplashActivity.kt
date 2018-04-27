@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
+import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import io.fabric.sdk.android.Fabric
@@ -59,6 +60,7 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
         super.onCreate(savedInstanceState)
         Fabric.with(this,Crashlytics());
         setContentView(R.layout.driver_splash_activity);
+        FlurryAgent.init(this, Data.FLURRY_KEY)
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
         setLoginData();
@@ -74,7 +76,7 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
         if(savedInstanceState==null){
 
             supportFragmentManager.inTransaction{
-                add(container.id,SplashFragment.newInstance(Bundle())).addToBackStack(SplashFragment::class.simpleName);
+                add(container.id,SplashFragment.newInstance(Bundle()),SplashFragment::class.simpleName);
             }
 
 
@@ -114,13 +116,17 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
     public fun addPhoneNumberScreen(){
 
         supportFragmentManager.inTransaction{
-            replace(container.id,LoginFragment.newInstance(Bundle())).addToBackStack(LoginFragment::class.simpleName);
+            remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)).
+            add(container.id,LoginFragment(),LoginFragment::class.simpleName).addToBackStack(LoginFragment::class.simpleName);
         }
     }
-    public fun addLoginViaOTPScreen(){
+    public fun addLoginViaOTPScreen(phone:String,countryCode:String,missedCallNumber:String?){
 
         supportFragmentManager.inTransaction{
-            replace(container.id,OTPConfirmFragment.newInstance(Bundle())).addToBackStack(OTPConfirmFragment::class.simpleName);
+            add(container.id,OTPConfirmFragment.newInstance(phone,countryCode,missedCallNumber),OTPConfirmFragment::class.simpleName).
+                    addToBackStack(OTPConfirmFragment::class.simpleName).
+                    hide(supportFragmentManager.findFragmentByTag(supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount-1).name))
+
         }
     }
 }

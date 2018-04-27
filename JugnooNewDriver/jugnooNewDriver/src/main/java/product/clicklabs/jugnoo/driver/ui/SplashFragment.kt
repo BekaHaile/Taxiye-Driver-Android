@@ -52,6 +52,7 @@ class SplashFragment() : Fragment() {
 
     companion object {
 
+
         fun newInstance(arguments: Bundle?): SplashFragment{
             val splashFragment = SplashFragment();
             splashFragment.arguments=arguments;
@@ -66,7 +67,7 @@ class SplashFragment() : Fragment() {
             if (intent.action != null && intent.action == Constants.ACTION_DEVICE_TOKEN_UPDATED) {
                 Log.i(TAG, "Firebase service emitted deviceToken");
 
-                checkForDeviceToken(true);
+                 checkForDeviceToken(true);
 
             }
 
@@ -285,7 +286,7 @@ class SplashFragment() : Fragment() {
             }
         }else{
 
-
+            (activity as DriverSplashActivity).addPhoneNumberScreen()
 
         }
 
@@ -328,7 +329,7 @@ class SplashFragment() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        checkForDeviceToken(false);
+        checkForDeviceToken(true);
 
     }
 

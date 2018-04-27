@@ -22,6 +22,10 @@ public class RegisterScreenResponse extends FeedCommonResponse {
 	@Expose
 	private String userEmail;
 
+	@SerializedName("knowlarity_missed_call_number")
+	@Expose
+	private String missedCallNumber;
+
 	/**
 	 * @return The phoneNo
 	 */
@@ -64,6 +68,7 @@ public class RegisterScreenResponse extends FeedCommonResponse {
 		this.userEmail = userEmail;
 	}
 
-
-
+	public String getMissedCallNumber() {
+		return missedCallNumber;
+	}
 }

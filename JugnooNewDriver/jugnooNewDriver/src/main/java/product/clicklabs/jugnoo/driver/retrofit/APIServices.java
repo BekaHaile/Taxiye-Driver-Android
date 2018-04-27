@@ -301,6 +301,10 @@ public interface APIServices {
 	@POST("/generate_login_otp")
 	void generateOtp(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+@FormUrlEncoded
+	@POST("/generate_login_otp")
+	void generateOtpK(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_media_data")

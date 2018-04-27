@@ -5,12 +5,16 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -40,6 +44,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
     private boolean putAccessToken = true;
     private boolean isCancelled;
     private boolean isErrorCancellable = true;
+    private boolean checkForTrivialErrors = true;
 
     public boolean isInProgress() {
         return isInProgress;
@@ -79,6 +84,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
     public ApiCommon<T> putAccessToken(boolean putAccessToken) {
         this.putAccessToken = putAccessToken;
+        return this;
+    }
+    public ApiCommon<T> checkForTrivialErrors(boolean check){
+        this.checkForTrivialErrors = check;
         return this;
     }
 
@@ -130,21 +139,24 @@ public class ApiCommon<T extends FeedCommonResponse> {
                         return;
 
                     try {
-                        if (feedCommonResponse.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+
+                        if (!isTrivialError(feedCommonResponse.getFlag())) {
                             apiCommonCallback.onFinish();
 							apiCommonCallback.onSuccess(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag());
-
-						} else {
+                        } else if(feedCommonResponse.getFlag()==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()){
                             apiCommonCallback.onFinish();
-							if (!apiCommonCallback.onError(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag())) {
-								DialogPopup.alertPopup(activity, "", feedCommonResponse.getMessage());
-							}
-						}
+                            HomeActivity.logoutUser(activity);
+						}else{
+                            apiCommonCallback.onFinish();
+                            if (!apiCommonCallback.onError(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag())) {
+                                retryDialog(feedCommonResponse.getMessage());
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         apiCommonCallback.onFinish();
                         if (!apiCommonCallback.onException(e)) {
-                            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+                            retryDialog( Data.CHECK_INTERNET_MSG);
                         }
                     }
 
@@ -162,7 +174,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
                     error.printStackTrace();
                     apiCommonCallback.onFinish();
                     if (!apiCommonCallback.onFailure(error)) {
-                        DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+                        retryDialog( Data.CHECK_INTERNET_MSG);
                     }
 
 
@@ -177,13 +189,13 @@ public class ApiCommon<T extends FeedCommonResponse> {
         }
 
 
-        if(putAccessToken){
+        /*f(putAccessToken){
             if(isMultiPartRequest){
                 multipartTypedOutput.addPart(Constants.KEY_ACCESS_TOKEN, new TypedString(Data.userData.accessToken));
             } else {
                params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             }
-        }
+        }*/
 
 
 
@@ -192,6 +204,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
         }
         setInProgress(true);
         switch (apiName) {
+            case GENERATE_OTP:
+                RestClient.getApiServices().generateOtpK(params,callback);
+                break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
 
@@ -200,12 +215,17 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
     }
 
+    public static boolean isTrivialError(int flag){
+        return  flag ==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() || flag==ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal()
+                || flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal();
+    }
+
     private void retryDialog(String message) {
         DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 apiCommonCallback.onDialogClick();
-            }
+         }
         });
 
     }
@@ -214,8 +234,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
         return isCancelled;
     }
 
+
     public void setCancelled(boolean cancelled) {
         isCancelled = cancelled;
     }
+
 
 }
