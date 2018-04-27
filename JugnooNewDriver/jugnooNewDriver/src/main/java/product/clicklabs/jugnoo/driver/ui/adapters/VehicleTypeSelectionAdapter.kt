@@ -16,6 +16,10 @@ class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
                                   private var vehicleTypes: ArrayList<CityResponse.VehicleType>)
     : RecyclerView.Adapter<VehicleTypeSelectionAdapter.ViewHolderVehicle>(), ItemListener {
+
+
+    var currentSelectedPos = -1;
+
     override fun getItemCount(): Int {
         return vehicleTypes.size
     }
@@ -45,7 +49,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         var clRoot: ConstraintLayout = convertView.findViewById(R.id.clRoot) as ConstraintLayout
         var ivVehicle: ImageView = convertView.findViewById(R.id.ivVehicle) as ImageView
         var ivVehicleTick: ImageView = convertView.findViewById(R.id.ivVehicleTick) as ImageView
-        var id: Int = 0
+
 
         init{
             clRoot.setOnClickListener { v -> itemListener.onClickItem(convertView, v); }
@@ -55,8 +59,19 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     override fun onClickItem(parentView: View?, childView: View?) {
         val pos = recyclerView.getChildAdapterPosition(parentView);
         if(pos != RecyclerView.NO_POSITION){
-            vehicleTypes[pos].isSelected = !vehicleTypes[pos].isSelected;
-            notifyDataSetChanged();
+
+            if(currentSelectedPos>=0 && currentSelectedPos<vehicleTypes.size){
+                vehicleTypes[currentSelectedPos].isSelected = false;
+                notifyItemChanged(currentSelectedPos)
+
+            }
+
+           if(currentSelectedPos!=pos){
+               vehicleTypes[pos].isSelected = true;
+               currentSelectedPos = pos;
+               notifyItemChanged(currentSelectedPos);
+           }
+
         }
     }
 }

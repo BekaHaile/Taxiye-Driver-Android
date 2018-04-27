@@ -15,6 +15,7 @@ import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -72,6 +73,24 @@ class LoginFragment:Fragment() {
             params.put(Constants.KEY_PHONE_NO, countryCode + phoneNo)
             params.put(Constants.KEY_COUNTRY_CODE, countryCode)
             params.put(Constants.LOGIN_TYPE, "1")
+            params[Constants.KEY_COUNTRY_CODE] = countryCode
+            params["device_token"] = Data.deviceToken
+            params["unique_device_id"] = Data.uniqueDeviceId
+            params["device_name"] = Data.deviceName
+            params["device_type"] = Data.DEVICE_TYPE
+            params["app_version"] = "" + Data.appVersion
+            params["os_version"] = Data.osVersion
+            params["latitude"] = "" + Data.latitude
+            params["longitude"] = "" + Data.longitude
+            params["login_type"] = Data.LOGIN_TYPE
+            if (Utils.isDeviceRooted()) {
+                params["device_rooted"] = "1"
+            } else {
+                params["device_rooted"] = "0"
+            }
+
+
+
             Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
             Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
             ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP,object : APICommonCallback<RegisterScreenResponse>(){
@@ -85,7 +104,7 @@ class LoginFragment:Fragment() {
 
                 override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                     if(flag==ApiResponseFlags.ACTION_COMPLETE.getOrdinal()){
-                        (activity as DriverSplashActivity).addLoginViaOTPScreen(countryCode,phoneNo,t?.missedCallNumber);
+                        (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo,countryCode,t?.missedCallNumber);
                     }else{
                         DialogPopup.alertPopup(activity,"",message);
                     }

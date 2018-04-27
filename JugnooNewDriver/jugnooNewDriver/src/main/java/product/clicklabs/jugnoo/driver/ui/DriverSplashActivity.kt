@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
 import android.app.Activity
+import android.content.Context
 import android.location.Location
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -15,10 +16,8 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GooglePlayServicesUtil
 import io.fabric.sdk.android.Fabric
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
-import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.LocationInit
-import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels
+import product.clicklabs.jugnoo.driver.utils.*
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -27,6 +26,8 @@ import product.clicklabs.jugnoo.driver.utils.Log
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.()->FragmentTransaction){
     beginTransaction().func().commit();
 }
+
+infix fun Int.with(x: Int) = this.or(x)
 
 
 
@@ -58,6 +59,7 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate, SplashFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         Fabric.with(this,Crashlytics());
         setContentView(R.layout.driver_splash_activity);
         FlurryAgent.init(this, Data.FLURRY_KEY)
@@ -76,7 +78,8 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate, SplashFragment
         if(savedInstanceState==null){
 
             supportFragmentManager.inTransaction{
-                add(container.id,SplashFragment.newInstance(Bundle()),SplashFragment::class.simpleName);
+                add(container.id,SplashFragment.newInstance(Bundle()),SplashFragment::class.simpleName)
+
             }
 
 
@@ -116,8 +119,7 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate, SplashFragment
     public fun addPhoneNumberScreen(){
 
         supportFragmentManager.inTransaction{
-            remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)).
-            add(container.id,LoginFragment(),LoginFragment::class.simpleName).addToBackStack(LoginFragment::class.simpleName);
+            replace(container.id,LoginFragment(),LoginFragment::class.simpleName).addToBackStack(LoginFragment::class.simpleName);
         }
     }
     public fun addLoginViaOTPScreen(phone:String,countryCode:String,missedCallNumber:String?){
