@@ -120,7 +120,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
 
                             String errorMessage = jObj.getString("error");
                             if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                HomeActivity.logoutUser(context);
+                                HomeActivity.logoutUser(context, null);
                             } else {
                                 DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
                             }
@@ -190,7 +190,7 @@ public class JugnooSubscriptionActivity extends BaseFragmentActivity implements 
                         if (!jObj.isNull("error")) {
                             String errorMessage = jObj.getString("error");
                             if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                HomeActivity.logoutUser(context);
+                                HomeActivity.logoutUser(context, null);
                             } else {
                                 DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
                             }

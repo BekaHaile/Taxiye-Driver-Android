@@ -32,12 +32,10 @@ import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -289,7 +287,7 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
                                 if (!jObj.isNull("error")) {
                                     String errorMessage = jObj.getString("error");
                                     if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                        HomeActivity.logoutUser(activity);
+                                        HomeActivity.logoutUser(activity, null);
                                     } else {
                                         updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
                                     }

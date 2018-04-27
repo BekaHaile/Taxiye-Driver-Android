@@ -33,7 +33,6 @@ import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.LocationUpdate;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
@@ -42,11 +41,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -287,7 +283,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 								jObj = new JSONObject(jsonString);
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 									if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if (ApiResponseFlags.AUTH_VERIFICATION_FAILURE.getOrdinal() == flag) {

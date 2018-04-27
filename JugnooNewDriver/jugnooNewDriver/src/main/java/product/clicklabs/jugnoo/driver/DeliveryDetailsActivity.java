@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -17,21 +16,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -320,7 +313,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 									jObj = new JSONObject(jsonString);
 									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 									String message = JSONParser.getServerMessage(jObj);
-									if (!SplashNewActivity.checkIfTrivialAPIErrors(DeliveryDetailsActivity.this, jObj, flag)) {
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(DeliveryDetailsActivity.this, jObj, flag, null)) {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 											DeliveryDetailsActivity.this.deliveryDetailResponse = deliveryDetailResponse;
 											update();

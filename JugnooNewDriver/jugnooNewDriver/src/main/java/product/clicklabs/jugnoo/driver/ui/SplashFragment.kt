@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,12 +17,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.firebase.iid.FirebaseInstanceId
-import io.reactivex.*
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
@@ -35,7 +32,7 @@ import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
-import java.util.HashMap
+import java.util.*
 
 class SplashFragment() : Fragment() {
 
@@ -44,6 +41,7 @@ class SplashFragment() : Fragment() {
     private var waitingForDeviceToken = false;
     private val handler = Handler()
     private val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
+    var mListener:InteractionListener?=null;
 
     init{
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
@@ -83,10 +81,13 @@ class SplashFragment() : Fragment() {
 
     }
 
+
     override fun onAttach(context: Context?) {
         super.onAttach(context);
-        if(context is DriverSplashActivity){
-
+        if(context is InteractionListener){
+            mListener = context;
+        } else {
+            throw IllegalArgumentException(TAG+" Interaction listener required");
         }
     }
 
@@ -229,7 +230,7 @@ class SplashFragment() : Fragment() {
                             val flag = jObj.getInt("flag")
                             val message = JSONParser.getServerMessage(jObj)
 
-                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, logoutCallback)) {
                                 if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
                                     DialogPopup.alertPopup(activity, "", message)
                                 } else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
@@ -285,9 +286,16 @@ class SplashFragment() : Fragment() {
                 DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
             }
         }else{
+            mListener?.openPhoneLoginScreen();
+        }
 
-            (activity as DriverSplashActivity).addPhoneNumberScreen()
+    }
 
+
+    private var logoutCallback = object: LogoutCallback {
+        override fun redirectToSplash(): Boolean {
+            mListener?.openPhoneLoginScreen();
+            return false;
         }
 
     }
@@ -343,7 +351,9 @@ class SplashFragment() : Fragment() {
 
 
 
-
+    interface InteractionListener{
+        fun openPhoneLoginScreen();
+    }
 
 
 }

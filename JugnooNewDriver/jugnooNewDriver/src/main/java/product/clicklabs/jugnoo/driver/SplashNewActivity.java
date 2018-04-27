@@ -85,6 +85,7 @@ import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -1011,7 +1012,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
 									DialogPopup.alertPopup(activity, "", message);
@@ -1552,7 +1553,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
 									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();
@@ -2457,11 +2458,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		}
 	}
 	
-	public static boolean checkIfTrivialAPIErrors(Activity activity, JSONObject jObj, int flag){
+	public static boolean checkIfTrivialAPIErrors(Activity activity, JSONObject jObj, int flag, LogoutCallback callback){
 		try {
 			if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
 				DialogPopup.dismissLoadingDialog();
-				HomeActivity.logoutUser(activity);
+				HomeActivity.logoutUser(activity, callback);
 				return true;
 			}
 			else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){

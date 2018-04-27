@@ -465,7 +465,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 						int flag = jObj.getInt("flag");
 						String message = JSONParser.getServerMessage(jObj);
 
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 							if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
 								DialogPopup.alertPopup(activity, "", message);
 							}

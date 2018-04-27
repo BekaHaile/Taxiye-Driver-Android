@@ -14,7 +14,6 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -193,7 +192,7 @@ public class DriverAuditActivity extends BaseActivity {
 								jObj = new JSONObject(jsonString);
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 									if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {

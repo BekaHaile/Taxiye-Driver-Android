@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +26,6 @@ import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
-import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.InvoiceInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
@@ -296,7 +294,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                                 if (!jObj.isNull("error")) {
                                     String errorMessage = jObj.getString("error");
                                     if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                        HomeActivity.logoutUser(activity);
+                                        HomeActivity.logoutUser(activity, null);
                                     } else {
                                         updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
                                     }

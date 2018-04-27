@@ -238,7 +238,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 						int flag = jObj.getInt("flag");
 						String message = JSONParser.getServerMessage(jObj);
 						if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
-							HomeActivity.logoutUser(activity);
+							HomeActivity.logoutUser(activity, null);
 						}
 						else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
 							DialogPopup.alertPopup(activity, "", message);

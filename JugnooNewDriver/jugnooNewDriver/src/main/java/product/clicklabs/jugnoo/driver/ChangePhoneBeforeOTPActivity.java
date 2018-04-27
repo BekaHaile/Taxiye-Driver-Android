@@ -196,7 +196,7 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 							flag = jObj.getInt("flag");
 						}
 						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {

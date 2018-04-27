@@ -474,7 +474,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                         int flag = jObj.getInt("flag");
                         String message = JSONParser.getServerMessage(jObj);
 
-                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                             if (ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", message);
                             } else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {

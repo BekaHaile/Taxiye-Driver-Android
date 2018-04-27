@@ -460,7 +460,7 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
 									DialogPopup.alertPopup(activity, "", message);

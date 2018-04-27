@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,11 +19,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Handler;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.DriverEarningsNew;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
@@ -480,7 +477,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 									JSONObject jObj = new JSONObject(jsonString);
 									int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 									String message = JSONParser.getServerMessage(jObj);
-									if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
 											deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);

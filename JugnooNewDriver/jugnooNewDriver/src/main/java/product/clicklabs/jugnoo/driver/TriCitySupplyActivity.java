@@ -10,28 +10,20 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.DestinationOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -184,7 +176,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 						jObj = new JSONObject(jsonString);
 						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 								performBackPressed();
@@ -221,7 +213,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 						jObj = new JSONObject(jsonString);
 						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								destinationDataResponseGlobal = destinationDataResponse;
 								parseDestinationData(destinationDataResponseGlobal);

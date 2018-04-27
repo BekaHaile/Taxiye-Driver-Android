@@ -4,15 +4,11 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
-import com.kbeanie.imagechooser.api.ChosenImage;
 
 import org.json.JSONObject;
 
@@ -20,7 +16,6 @@ import java.io.File;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -207,7 +202,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag, null)) {
 
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									if(!inSideApp) {
@@ -361,7 +356,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
 									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();

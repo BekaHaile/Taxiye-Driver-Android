@@ -41,7 +41,7 @@ fun <T : View> Fragment.bind(@IdRes res : Int,view :View?) : Lazy<T> {
 }
 
 
-class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
+class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate, SplashFragment.InteractionListener{
 
     private val TAG = SplashFragment::class.simpleName;
     private val container by bind<FrameLayout>(R.id.container_layout)
@@ -128,6 +128,10 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate{
                     hide(supportFragmentManager.findFragmentByTag(supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount-1).name))
 
         }
+    }
+
+    override fun openPhoneLoginScreen() {
+        addPhoneNumberScreen();
     }
 }
 

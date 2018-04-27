@@ -6,11 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.hardware.Camera;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +27,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
@@ -43,21 +40,17 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
-import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -603,7 +596,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							}
 						} else {
 							imgPixel = docRequirementResponse.getImgPixel();
@@ -912,7 +905,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
 
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
@@ -988,7 +981,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
 
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);

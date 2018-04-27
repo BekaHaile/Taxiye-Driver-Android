@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.apis;
 
 import android.app.Activity;
-import android.content.Intent;
 
 
 import org.json.JSONObject;
@@ -9,7 +8,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.DriverTimeoutCheck;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -60,7 +58,7 @@ public class ApiRejectRequest {
 							String errorMessage = jObj.getString("error");
 
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else {
 								DialogPopup.alertPopup(activity, "", errorMessage);
 							}

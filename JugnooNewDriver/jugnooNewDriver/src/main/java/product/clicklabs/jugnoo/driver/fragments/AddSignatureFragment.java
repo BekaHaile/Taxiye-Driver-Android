@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,19 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
-import com.kbeanie.imagechooser.api.ChosenImage;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -45,7 +40,6 @@ import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -58,7 +52,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
-import retrofit.mime.TypedString;
 
 
 public class AddSignatureFragment extends Fragment implements View.OnClickListener,
@@ -340,7 +333,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
                                 int flag = jObj.getInt("flag");
                                 String message = JSONParser.getServerMessage(jObj);
 
-                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
                                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {

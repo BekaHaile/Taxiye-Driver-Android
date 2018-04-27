@@ -3,11 +3,10 @@
     <!ENTITY appname "Jugnoo">
     ]>
 <resources>
-    <string name="app_name">&appname; Drivers</string>
+    <string name="app_name">&appname;
+        Drivers</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
-
 
 
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
@@ -37,7 +36,8 @@
 
     <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
-    <string name="about_1_text">&appname; helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
+    <string name="about_1_text">&appname;
+        helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">Rate card</string>
 
     <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
@@ -94,7 +94,8 @@
     <string name="update">Update</string>
 
     <string name="driver_mode">Driver Mode</string>
-    <string name="jugnoo_on">&appname; ON</string>
+    <string name="jugnoo_on">&appname;
+        ON</string>
     <string name="driver_type">Driver Type</string>
     <string name="ride_type">Ride Type</string>
     <string name="invite_friends">Invite Friends</string>
@@ -254,10 +255,13 @@
     <string name="create_new_account_msg">If you would still like to create a new account</string>
     <string name="not_recived_otp">I didn\'t receive the OTP</string>
 
-    <string name="jugnoo_cash">&appname; Cash</string>
+    <string name="jugnoo_cash">&appname;
+        Cash</string>
     <string name="jugnoo">&appname;</string>
-    <string name="jugnoo_off">&appname; OFF</string>
-    <string name="jugnoo_cut">&appname; Cut</string>
+    <string name="jugnoo_off">&appname;
+        OFF</string>
+    <string name="jugnoo_cut">&appname;
+        Cut</string>
 
     <string name="loading">Loading ...</string>
     <string name="local_position">Local position</string>
@@ -346,7 +350,8 @@
     <string name="amount_entered">The amount entered is</string>
     <string name="time">Time</string>
     <string name="time_new">Time /n</string>
-    <string name="jugnoo_ride_over">&appname; ride over</string>
+    <string name="jugnoo_ride_over">&appname;
+        ride over</string>
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="title">Title</string>
@@ -390,7 +395,9 @@
     <string name="Scheduled_Ride_Pickup">Scheduled Ride Pickup: </string>
 
 
-    <string name="referral_msg">"Use my code %1$s to download &appname; customer App and earn &appname; cash.\n Download it from here\nhttp://smarturl.it/&appname;</string>
+    <string name="referral_msg">"Use my code %1$s to download &appname;
+        customer App and earn &appname;
+        cash.\n Download it from here\nhttp://smarturl.it/&appname;</string>
     <string name="no_of_account">accounts have already been created on this device</string>
     <string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
     <string name="select_reason">Please select one reason</string>
@@ -398,7 +405,8 @@
     <string name="send">Send</string>
 
     <string name="wait_here">Wait here...</string>
-    <string name="use_jugnoo_fare">USE &appname; FARE</string>
+    <string name="use_jugnoo_fare">USE &appname;
+        FARE</string>
     <string name="view_account">View Account</string>
     <string name="hint_created_multiple_account">You have already created 2 accounts from this device. Please explain the reason for creating a new account.</string>
     <string name="convenience_charge">Convenience Charge</string>
@@ -451,7 +459,8 @@
     <string name="upcoming_invoice">Upcoming Invoice</string>
     <string name="current_invoice">Current Invoice</string>
     <string name="Outstanding_amnt">Previous invoice adjustments</string>
-    <string name="jugnoo_cmsn">&appname; Commission</string>
+    <string name="jugnoo_cmsn">&appname;
+        Commission</string>
     <string name="Manual_adjustment">Manual Adjustment</string>
     <string name="referral_amount">Referral Amount</string>
     <string name="phone_deduction">Phone Deduction</string>
@@ -651,7 +660,8 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="Audit">AUDIT</string>
-    <string name="non_jugnoo_auto_branding">NON &appname; AUTO BRANDING</string>
+    <string name="non_jugnoo_auto_branding">NON &appname;
+        AUTO BRANDING</string>
 
     <string name="auto_from_front">Auto From Front</string>
     <string name="auto_from_back">Auto From Back</string>
@@ -664,7 +674,8 @@
     <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
     <string name="has_smart_phone">The driver has a smart phone</string>
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON &appname; AUTO AUDIT</string>
+    <string name="non_jugnoo_auto_audit">NON &appname;
+        AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="self_audit_caps">SELF AUDIT</string>
     <string name="audit_required">Audit Required</string>
@@ -745,7 +756,8 @@
     <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
-    <string name="reg_as_driver"><u>Register as a &appname; DRIVER</u></string>
+    <string name="reg_as_driver"><u>Register as a &appname;
+        DRIVER</u></string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as DRIVER</string>
     <string name="distance_lower">Distance</string>
@@ -758,7 +770,8 @@
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
     <string name="image">image</string>
-    <string name="tutorial_accept_ride">Turn &appname; on to start accepting rides</string>
+    <string name="tutorial_accept_ride">Turn &appname;
+        on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
@@ -798,7 +811,8 @@
     <string name="pickup_from">Pickup From:</string>
     <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
-    <string name="turn_jugnooo_for_training">Please turn &appname; On</string>
+    <string name="turn_jugnooo_for_training">Please turn &appname;
+        On</string>
     <string name="delivery_1">Delivery 1</string>
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
@@ -833,7 +847,8 @@
     <string name="needed">Needed</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
-    <string name="keep_jugnoo_on">Keep your &appname; ON to earn more</string>
+    <string name="keep_jugnoo_on">Keep your &appname;
+        ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">Please update your WebView to latest version.</string>
@@ -905,10 +920,12 @@
     <string name="no_internet">No internet connection. Tap to retry.</string>
 
 
-
-    <string name="visit_office_in_city">Visit &appname; office in your city</string>
+    <string name="visit_office_in_city">Visit &appname;
+        office in your city</string>
     <string name="support_subject">&appname;Support</string>
-    <string name="referal_sms_message">Use my code %1$s to download &appname; customer App and earn &appname; cash.\nDownload it from here\n %2$s </string>
+    <string name="referal_sms_message">Use my code %1$s to download &appname;
+        customer App and earn &appname;
+        cash.\nDownload it from here\n %2$s </string>
     <string name="device_token_not_found_message">There was a problem with with your device, please restart your app once to proceed</string>
     <string name="no_country_found">No country found</string>
     <string name="error_no_countries_found">No Countries Found!</string>
@@ -924,6 +941,10 @@
     <string name="hint_edt_phone">Phone number</string>
     <string name="btn_text_OTP">GENERATE OTP</string>
     <string name="enter_one_time_pwd">Enter One Time Password</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="select_vehicle_type">Select vehicle type</string>
+    <string name="continue_text">Continue</string>
+    <string name="by_signing_you_agree">By Signing up you agree to our</string>
 
 
     <string-array name="CountryCodes">
@@ -1135,7 +1156,13 @@
         <item>+263,ZW</item>
     </string-array>
 
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string
+        name="hello_blank_fragment">
+        Hello
+        blank
+        fragment
+    </string>
 
 
 </resources>

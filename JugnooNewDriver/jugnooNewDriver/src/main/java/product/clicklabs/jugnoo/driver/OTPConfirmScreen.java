@@ -381,7 +381,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                 jObj = new JSONObject(jsonString);
                                 int flag = jObj.getInt("flag");
                                 String message = JSONParser.getServerMessage(jObj);
-                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                     if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
                                         DialogPopup.alertPopup(activity, "", message);
                                     } else if (ApiResponseFlags.AUTH_VERIFICATION_FAILURE.getOrdinal() == flag) {
@@ -456,7 +456,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                             String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
                             JSONObject jObj = new JSONObject(responseStr);
                             int flag = jObj.getInt("flag");
-                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                 if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
                                     String error = jObj.getString("error");
                                     DialogPopup.dialogBanner(activity, error);

@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -186,7 +185,7 @@ public class NotificationTipsFragment extends Fragment {
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								} else {
 									openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 								}

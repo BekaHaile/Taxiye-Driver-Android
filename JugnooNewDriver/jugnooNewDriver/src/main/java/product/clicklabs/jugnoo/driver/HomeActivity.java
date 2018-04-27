@@ -160,10 +160,11 @@ import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
 import product.clicklabs.jugnoo.driver.tutorial.Crouton;
-import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
+import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
+import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -5355,7 +5356,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
-			if(!SplashNewActivity.checkIfTrivialAPIErrors(this, jObj, flag)){
+			if(!SplashNewActivity.checkIfTrivialAPIErrors(this, jObj, flag, null)){
 				if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
 					Data.fareStructure = JSONParser.parseFareObject(jObj);
 					Data.fareStructure.fareFactor = jObj.optDouble(KEY_FARE_FACTOR, 1);
@@ -5530,7 +5531,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						JSONObject jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 								String log = jObj.getString("log");
 								DialogPopup.alertPopup(activity, "", "" + log);
@@ -5605,7 +5606,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
@@ -5718,7 +5719,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_STARTED.getOrdinal());
 						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
 
 								Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
@@ -6116,7 +6117,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					String errorMessage = jObj.getString("error");
 
 					if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-						HomeActivity.logoutUser(activity);
+						HomeActivity.logoutUser(activity, null);
 					} else {
 						DialogPopup.alertPopup(activity, "", errorMessage);
 					}
@@ -6676,7 +6677,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.getInt("flag");
 						if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
-							HomeActivity.logoutUser(activity);
+							HomeActivity.logoutUser(activity, null);
 						} else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
 							String errorMessage = jObj.getString("error");
 							DialogPopup.alertPopup(activity, "", errorMessage);
@@ -6744,7 +6745,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
 							Log.i("fetchHeatmapData", ">message=" + message);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
 									heatMapResponseGlobal = heatMapResponse;
 									drawHeatMapData(heatMapResponseGlobal);
@@ -7785,7 +7786,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	public static void logoutUser(final Activity cont) {
+	public static void logoutUser(final Activity cont, final LogoutCallback callback) {
 		try {
 
 			try {
@@ -7817,13 +7818,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						public void onClick(DialogInterface dialog, int which) {
 							try {
 								dialog.dismiss();
-								Intent intent = new Intent(cont, SplashNewActivity.class);
-								intent.putExtra("no_anim", "yes");
-								cont.startActivity(intent);
-								cont.finish();
-								cont.overridePendingTransition(
-										R.anim.left_in,
-										R.anim.left_out);
+								if(callback == null || callback.redirectToSplash()){
+									Intent intent = new Intent(cont, SplashNewActivity.class);
+									intent.putExtra("no_anim", "yes");
+									cont.startActivity(intent);
+									cont.finish();
+									cont.overridePendingTransition(
+											R.anim.left_in,
+											R.anim.left_out);
+								}
 							} catch (Exception e) {
 								Log.i("excption logout",
 										e.toString());
@@ -8119,7 +8122,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.getInt("flag");
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", errorMessage);
 							} else {
@@ -9630,7 +9633,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else {
 								updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
@@ -9686,7 +9689,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
@@ -10100,7 +10103,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								handleTourView(false, "");
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								if(isTourFlag) {
@@ -10200,7 +10203,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								Log.e("isTourFlag1", String.valueOf(isTourFlag));
@@ -10292,7 +10295,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(HomeActivity.this);
+									HomeActivity.logoutUser(HomeActivity.this, null);
 								} else {
 									Toast.makeText(HomeActivity.this, getString(R.string.error_occured_tap_to_retry), Toast.LENGTH_SHORT).show();
 									//updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);

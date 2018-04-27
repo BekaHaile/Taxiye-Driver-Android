@@ -228,7 +228,7 @@ public class DriverProfileActivity extends BaseActivity {
                                 jObj = new JSONObject(jsonString);
                                 int flag = jObj.getInt("flag");
                                 String message = JSONParser.getServerMessage(jObj);
-                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                     if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
                                         DialogPopup.alertPopup(activity, "", message);
                                     } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {

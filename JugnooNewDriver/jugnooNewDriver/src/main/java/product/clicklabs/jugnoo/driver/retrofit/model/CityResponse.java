@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -164,6 +162,7 @@ public class CityResponse implements Serializable {
 		@Expose
 		private Integer vehicleType;
 
+		private boolean selected;
 
 		public VehicleType(String vehicleName, Integer vehicleType) {
 			this.vehicleName = vehicleName;
@@ -206,6 +205,13 @@ public class CityResponse implements Serializable {
 			this.vehicleType = vehicleType;
 		}
 
+		public boolean isSelected() {
+			return selected;
+		}
+
+		public void setSelected(boolean selected) {
+			this.selected = selected;
+		}
 	}
 
 	public class OfferingType implements Serializable {

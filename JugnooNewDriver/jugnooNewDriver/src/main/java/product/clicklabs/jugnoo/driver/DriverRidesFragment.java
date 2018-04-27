@@ -435,7 +435,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 									if (!jObj.isNull("error")) {
 										String errorMessage = jObj.getString("error");
 										if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-											HomeActivity.logoutUser(activity);
+											HomeActivity.logoutUser(activity, null);
 										} else {
 											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 										}

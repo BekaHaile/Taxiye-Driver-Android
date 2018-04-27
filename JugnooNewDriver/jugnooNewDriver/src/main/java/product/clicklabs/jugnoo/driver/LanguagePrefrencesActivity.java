@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,7 +250,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
                         if (!jObj.isNull("error")) {
                             String errorMessage = jObj.getString("error");
                             if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                HomeActivity.logoutUser(activity);
+                                HomeActivity.logoutUser(activity, null);
                             } else {
                                 updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
                             }

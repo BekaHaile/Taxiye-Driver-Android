@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -418,7 +416,7 @@ public class EarningsFragment extends Fragment {
                                     jObj = new JSONObject(jsonString);
                                     int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
                                     String message = JSONParser.getServerMessage(jObj);
-                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                         if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                                             EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
                                             update();
