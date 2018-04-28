@@ -272,5 +272,6 @@ public interface Constants {
 	String KEY_REVERSE_BID_FARE = "reverse_bid_fare";
 	String KEY_BID_VALUE = "bid_value";
 	String KEY_MESSAGE = "message";
+
 }
 
