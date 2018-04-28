@@ -4,8 +4,6 @@ package product.clicklabs.jugnoo.driver.services;
  * Created by aneeshbansal on 04/02/16.
  */
 
-import android.app.AlertDialog;
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +15,12 @@ import android.support.annotation.Nullable;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.GZIPOutputStream;
 
-import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.HomeUtil;
@@ -33,7 +29,6 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedFile;
 
 public class FetchDataUsageService extends Service {
 
@@ -155,7 +150,6 @@ public class FetchDataUsageService extends Service {
 						HomeUtil.putDefaultParams(params);
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -195,7 +189,6 @@ public class FetchDataUsageService extends Service {
 						HomeUtil.putDefaultParams(params);
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

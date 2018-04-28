@@ -13,7 +13,6 @@ public class PowerCheckReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent arg1) {
-		// TODO Auto-generated method stub
 		Prefs.with(context).save(Constants.POWER_OFF_INITIATED, true);
 	}
 }

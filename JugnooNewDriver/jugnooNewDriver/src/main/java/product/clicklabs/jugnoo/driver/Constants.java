@@ -264,5 +264,10 @@ public interface Constants {
 	String KEY_MENU = "menu";
 	String KEY_TAG = "tag";
 	String CHAT_SUPPORT = "chat_support";
+	String KEY_REVERSE_BID = "reverse_bid";
+	String KEY_BID_PLACED = "bid_placed";
+	String KEY_REVERSE_BID_FARE = "reverse_bid_fare";
+	String KEY_BID_VALUE = "bid_value";
+	String KEY_MESSAGE = "message";
 }
 

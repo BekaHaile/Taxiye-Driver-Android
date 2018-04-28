@@ -194,12 +194,7 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/grey_light"
-            android:layout_marginTop="8px"
-            android:layout_marginBottom="8px"/>
+
 
         <LinearLayout
             android:id="@+id/linearLayoutDeliveryParams"
@@ -208,6 +203,13 @@
             android:gravity="center"
             android:visibility="visible"
             android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/grey_light"
+                android:layout_marginTop="8px"
+                android:layout_marginBottom="8px"/>
 
             <TextView
                 android:id="@+id/textViewEstimatedFareValue"
@@ -325,7 +327,63 @@
             android:text="@string/drop_points"
             android:textSize="26px"/>
 
+
+        <LinearLayout
+            android:id="@+id/llPlaceBid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:tag="@string/dont_touch_me"
+            android:visibility="visible"
+            >
+
+            <TextView
+                android:id="@+id/tvPlaceBid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/place_bid"
+                android:textSize="14sp"
+                android:layout_marginTop="5dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                >
+                <TextView
+                    android:id="@+id/tvPlaceBidCurrency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    />
+
+            <EditText
+                android:id="@+id/etPlaceBid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:padding="4dp"
+                android:textSize="20sp"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color_light"
+                android:gravity="center_horizontal"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:layout_marginBottom="5dp"
+                android:hint="00.00"
+                />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <RelativeLayout
+            android:id="@+id/rlAcceptCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20px"

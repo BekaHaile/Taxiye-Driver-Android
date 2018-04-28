@@ -38,10 +38,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -207,7 +205,6 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
                                         phoneNoEt.requestFocus();
                                         phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
                                     } else {
-                                        //TODO remove extra characters phoneNo
                                         phoneNo = phoneNo.replace(" ", "");
                                         phoneNo = phoneNo.replace("(", "");
                                         phoneNo = phoneNo.replace("/", "");
