@@ -359,6 +359,14 @@ public class JSONParser implements Constants {
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
 
+		Prefs.with(context).save(Constants.LANGUAGE_PREFERENCE_IN_MENU, userData.optInt(LANGUAGE_PREFERENCE_IN_MENU, 1));
+		Prefs.with(context).save(Constants.INVITE_FRIENDS_IN_MENU, userData.optInt(INVITE_FRIENDS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.DRIVER_RESOURCES_IN_MENU, userData.optInt(DRIVER_RESOURCES_IN_MENU, 1));
+		Prefs.with(context).save(Constants.SUPER_DRIVERS_IN_MENU, userData.optInt(SUPER_DRIVERS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.INVOICES_IN_MENU, userData.optInt(INVOICES_IN_MENU, 1));
+		Prefs.with(context).save(Constants.EARNINGS_IN_MENU, userData.optInt(EARNINGS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.BANK_DETAILS_IN_EDIT_PROFILE, userData.optInt(BANK_DETAILS_IN_EDIT_PROFILE, 1));
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,

@@ -247,5 +247,12 @@ public interface Constants {
 	String KEY_UPDATED_COUNTRY_CODE = "updated_country_code";
 	String KEY_OPERATOR_TOKEN = "operator_token";
 
+	String LANGUAGE_PREFERENCE_IN_MENU = "language_preference_in_menu";
+	String INVITE_FRIENDS_IN_MENU = "invite_friends_in_menu";
+	String DRIVER_RESOURCES_IN_MENU = "driver_resources_in_menu";
+	String SUPER_DRIVERS_IN_MENU = "super_drivers_in_menu";
+	String INVOICES_IN_MENU = "invoices_in_menu";
+	String EARNINGS_IN_MENU = "earnings_in_menu";
+	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
 }
 

@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -57,6 +58,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
+	private LinearLayout bankDetailsLLayout;
 //	public static ProfileInfo openProfileInfo;
 
 
@@ -113,6 +115,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
+
+		bankDetailsLLayout = (LinearLayout) findViewById(R.id.bankDetailsLLayout);
+		if(Prefs.with(this).getInt(Constants.BANK_DETAILS_IN_EDIT_PROFILE, 1) == 1){
+			bankDetailsLLayout.setVisibility(View.VISIBLE);
+		} else {
+			bankDetailsLLayout.setVisibility(View.GONE);
+		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 

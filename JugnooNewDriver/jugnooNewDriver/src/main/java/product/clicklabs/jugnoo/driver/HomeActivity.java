@@ -2184,7 +2184,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				rlGetSupport.setVisibility(View.GONE);
 			}
-
+			if(Prefs.with(HomeActivity.this).getInt(Constants.LANGUAGE_PREFERENCE_IN_MENU, 1) == 1){
+				languagePrefrencesRl.setVisibility(View.VISIBLE);
+			} else {
+				languagePrefrencesRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.INVITE_FRIENDS_IN_MENU, 1) == 1){
+				inviteFriendRl.setVisibility(View.VISIBLE);
+			} else {
+				inviteFriendRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_RESOURCES_IN_MENU, 1) == 1){
+				relativeLayoutDocs.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutDocs.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SUPER_DRIVERS_IN_MENU, 1) == 1){
+				relativeLayoutSuperDrivers.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutSuperDrivers.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.INVOICES_IN_MENU, 1) == 1){
+				paymentsRl.setVisibility(View.VISIBLE);
+			} else {
+				paymentsRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.EARNINGS_IN_MENU, 1) == 1){
+				earningsRL.setVisibility(View.VISIBLE);
+			} else {
+				earningsRL.setVisibility(View.GONE);
+			}
 
 
 
