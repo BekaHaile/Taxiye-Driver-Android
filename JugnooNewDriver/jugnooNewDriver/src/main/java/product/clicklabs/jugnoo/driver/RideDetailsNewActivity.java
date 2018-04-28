@@ -37,7 +37,6 @@ import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
@@ -412,7 +411,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 					textViewTicketDate.setText(extras.getTicketDate());
 				}
 
-				buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
+				buttonGetSupport.setVisibility(Prefs.with(RideDetailsNewActivity.this).getInt(Constants.SHOW_IN_APP_CALL_US,0) == 1 ? View.VISIBLE : View.GONE);
 			}else{
 				buttonReportIssue.setVisibility(View.GONE);
 				relativeLayoutCreateTicket.setVisibility(View.GONE);

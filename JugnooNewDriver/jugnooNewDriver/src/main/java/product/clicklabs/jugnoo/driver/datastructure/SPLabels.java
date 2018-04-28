@@ -92,7 +92,6 @@ public class SPLabels {
 	public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
     public static final String OSRM_ENABLED = "osrm_enabled";
 
-	public static final String SET_AUDIT_STATUS = "set_audit_status";
 
     public static final String GET_USL_STATUS = "get_usl_status";
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
@@ -112,20 +111,14 @@ public class SPLabels {
 	public static final String CHAT_SIZE = "chat_size";
 
     // for tutorial screen
-    public static final String IS_TUTORIAL_SHOWN = "set_driver_tutorial_status";
     public static final String SET_TRAINING_ID = "training_id";
     public static final String SET_DRIVER_TOUR_STATUS = "tour_status";
     // for tour pref data
     public static final String PREF_TRAINING_ACCESS_TOKEN = "tour_access_token";
     public static final String PREF_TRAINING_ID = "pref_training_id";
 
-	public static final String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
 	public static final String SHOW_SUPPORT_IN_RESOURCES = "show_support_in_resources";
-	public static final String SHOW_CALL_US_MENU = "show_call_us_menu";
-	public static final String SHOW_IN_APP_CALL_US = "show_in_app_call_us";
 	public static final String MENU_OPTION_VISIBILITY = "menu_option_visibility";
 	public static final String VEHICLE_TYPE = "vehicle_type";
 
-    public static final String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
-    public static final String SHOW_RATE_CARD_IN_MENU = "show_rate_card_in_menu";
 }

@@ -1042,7 +1042,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			try {
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SET_DRIVER_TUTORIAL_STATUS, 0) == 1){
 				relativeLayoutTour.setVisibility(View.GONE);
 			} else {
 				relativeLayoutTour.setVisibility(View.GONE);
@@ -2150,36 +2150,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SELF_AUDIT_BUTTON_STATUS,0) == 1){
 				auditRL.setVisibility(View.VISIBLE);
 			} else {
 				auditRL.setVisibility(View.GONE);
 			}
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_SUPPORT_IN_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_SUPPORT_IN_MENU,0) == 1){
 				relativeLayoutSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutSupport.setVisibility(View.GONE);
 			}
 
-			if( Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_PLANS_IN_MENU,0) == 1){
+			if( Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU,0) == 1){
 				relativeLayoutPlans.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutPlans.setVisibility(View.GONE);
 			}
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_RATE_CARD_IN_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_RATE_CARD_IN_MENU,0) == 1){
 				relativeLayoutRateCard.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutRateCard.setVisibility(View.GONE);
 			}
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_CALL_US_MENU,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_CALL_US_MENU,0) == 1){
 				callUsRl.setVisibility(View.VISIBLE);
 			} else {
 				callUsRl.setVisibility(View.GONE);
 			}
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SHOW_IN_APP_CALL_US,0) == 1){
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_IN_APP_CALL_US,0) == 1){
 				rlGetSupport.setVisibility(View.VISIBLE);
 			} else {
 				rlGetSupport.setVisibility(View.GONE);
