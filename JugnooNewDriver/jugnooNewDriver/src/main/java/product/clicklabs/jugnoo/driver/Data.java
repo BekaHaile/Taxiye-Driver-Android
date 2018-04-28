@@ -10,6 +10,9 @@ import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.util.Base64;
 
+import com.fugu.CaptureUserData;
+import com.fugu.FuguColorConfig;
+import com.fugu.FuguConfig;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -26,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
+import product.clicklabs.jugnoo.driver.fugu.FuguColorConfigStrings;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -470,6 +474,53 @@ public class Data {
 	}
 	public static void setCaptive(boolean isCaptiveDriver){
 		Data.userData.isCaptiveDriver = isCaptiveDriver?1:0;
+	}
+
+	public static CaptureUserData getFuguUserData(Context context) {
+		if (Data.userData == null)
+			return null;
+
+		return new CaptureUserData.Builder()
+				.userUniqueKey(Data.userData.userId)
+				.fullName(Data.userData.userName)
+				.phoneNumber(Data.userData.phoneNo)
+				.latitude(LocationFetcher.getSavedLatFromSP(context))
+				.longitude(LocationFetcher.getSavedLngFromSP(context))
+				.build();
+	}
+
+	public static  void initFugu(Activity activity,CaptureUserData captureUserData) {
+		if (Data.userData!= null && captureUserData != null) {
+			FuguConfig.init(1, activity.getString(R.string.fugu_app_key), activity, "test", captureUserData, BuildConfig.APPLICATION_ID + ".provider");
+
+//			FuguConfig.getInstance().setHomeUpIndicatorDrawableId(R.drawable.ic_profile);
+
+			FuguColorConfig fuguColorConfig = new FuguColorConfig.Builder()
+					.fuguActionBarBg(FuguColorConfigStrings.FUGU_ACTION_BAR_BG)
+					.fuguActionBarText(FuguColorConfigStrings.FUGU_ACTION_BAR_TEXT)
+					.fuguBgMessageYou(FuguColorConfigStrings.FUGU_BG_MESSAGE_YOU)
+					.fuguBgMessageFrom(FuguColorConfigStrings.FUGU_BG_MESSAGE_FROM)
+					.fuguPrimaryTextMsgYou(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_YOU)
+					.fuguMessageRead(FuguColorConfigStrings.FUGU_MESSAG_EREAD)
+					.fuguPrimaryTextMsgFrom(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_FROM)
+					.fuguSecondaryTextMsgYou(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_YOU)
+					.fuguSecondaryTextMsgFrom(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_FROM)
+					.fuguTextColorPrimary(FuguColorConfigStrings.FUGU_TEXT_COLOR_PRIMARY)
+					.fuguChannelDateText(FuguColorConfigStrings.FUGU_CHANNEL_DATE_TEXT)
+					.fuguChatBg(FuguColorConfigStrings.FUGU_CHAT_BG)
+					.fuguBorderColor(FuguColorConfigStrings.FUGU_BORDER_COLOR)
+					.fuguChatDateText(FuguColorConfigStrings.FUGU_CHAT_DATE_TEXT)
+					.fuguThemeColorPrimary(FuguColorConfigStrings.FUGU_THEME_COLOR_PRIMARY)
+					.fuguThemeColorSecondary(FuguColorConfigStrings.FUGU_THEME_COLOR_SECONDARY)
+					.fuguTypeMessageBg(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_BG)
+					.fuguTypeMessageHint(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_HINT)
+					.fuguTypeMessageText(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_TEXT)
+					.fuguChannelBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+					.fuguChannelItemBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+					.build();
+
+			FuguConfig.getInstance().setColorConfig(fuguColorConfig);
+		}
 	}
 
 

@@ -44,6 +44,7 @@ public interface Constants {
     String KEY_PHONE = "phone";
     String KEY_CONTACTS = "contacts";
     String KEY_USER_ID = "user_id";
+    String KEY_USER_IDENTIFIER = "user_identifier";
     String SP_USER_ID = "sp_user_id";
 
     String KEY_LATITUDE = "latitude";
