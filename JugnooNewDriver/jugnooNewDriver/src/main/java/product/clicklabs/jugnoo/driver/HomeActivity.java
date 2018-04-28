@@ -2117,7 +2117,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(maxDriverEarning>0) {
 						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 						String heading = getResources().getString(R.string.max_earning);
-						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),maxDriverEarning))),false, true);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",
+								getResources().getString(R.string.max_earning_ins,
+										String.valueOf(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(KEY_CURRENCY, "INR"),
+												maxDriverEarning))),false, true);
 					}
 			}
 
@@ -2181,7 +2184,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				rlGetSupport.setVisibility(View.GONE);
 			}
-
+			if(Prefs.with(HomeActivity.this).getInt(Constants.LANGUAGE_PREFERENCE_IN_MENU, 1) == 1){
+				languagePrefrencesRl.setVisibility(View.VISIBLE);
+			} else {
+				languagePrefrencesRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.INVITE_FRIENDS_IN_MENU, 1) == 1){
+				inviteFriendRl.setVisibility(View.VISIBLE);
+			} else {
+				inviteFriendRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_RESOURCES_IN_MENU, 1) == 1){
+				relativeLayoutDocs.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutDocs.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SUPER_DRIVERS_IN_MENU, 1) == 1){
+				relativeLayoutSuperDrivers.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutSuperDrivers.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.INVOICES_IN_MENU, 1) == 1){
+				paymentsRl.setVisibility(View.VISIBLE);
+			} else {
+				paymentsRl.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.EARNINGS_IN_MENU, 1) == 1){
+				earningsRL.setVisibility(View.VISIBLE);
+			} else {
+				earningsRL.setVisibility(View.GONE);
+			}
 
 
 
@@ -2480,7 +2512,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
-				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit() , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
+				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING_CURRENCY, "INR") , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
 
 				textViewDriverEarningOnScreenDate.setText(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_DATE, ""));
 			} else {
@@ -6177,6 +6209,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					try {
 						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING, jObj.optString("driver_ride_earning", ""));
+						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING_CURRENCY, jObj.optString(Constants.KEY_CURRENCY, "INR"));
 						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
 
 						if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, ""))) {

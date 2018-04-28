@@ -320,6 +320,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.AVERAGE_DRIVER_EARNING, userData.optInt("average_driver_earning", 0));
 		Prefs.with(context).save(Constants.AVERAGE_EARNING_DAYS, userData.optInt("average_earning_days", 0));
 
+		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, "INR"));
 		Prefs.with(context).save(Constants.DIFF_MAX_EARNING, userData.optInt("diff_max_earning", 0));
 		Prefs.with(context).save(Constants.UPDATE_LOCATION_OFFLINE, userData.optInt("update_location_offline", 0));
 		Prefs.with(context).save(Constants.OFFLINE_UPDATE_TIME_PERIOD, userData.optLong("offline_update_time_period", 180000));
@@ -357,6 +358,14 @@ public class JSONParser implements Constants {
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
+
+		Prefs.with(context).save(Constants.LANGUAGE_PREFERENCE_IN_MENU, userData.optInt(LANGUAGE_PREFERENCE_IN_MENU, 1));
+		Prefs.with(context).save(Constants.INVITE_FRIENDS_IN_MENU, userData.optInt(INVITE_FRIENDS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.DRIVER_RESOURCES_IN_MENU, userData.optInt(DRIVER_RESOURCES_IN_MENU, 1));
+		Prefs.with(context).save(Constants.SUPER_DRIVERS_IN_MENU, userData.optInt(SUPER_DRIVERS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.INVOICES_IN_MENU, userData.optInt(INVOICES_IN_MENU, 1));
+		Prefs.with(context).save(Constants.EARNINGS_IN_MENU, userData.optInt(EARNINGS_IN_MENU, 1));
+		Prefs.with(context).save(Constants.BANK_DETAILS_IN_EDIT_PROFILE, userData.optInt(BANK_DETAILS_IN_EDIT_PROFILE, 1));
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,

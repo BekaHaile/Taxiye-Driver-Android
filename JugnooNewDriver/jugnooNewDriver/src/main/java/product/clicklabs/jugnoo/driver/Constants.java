@@ -186,6 +186,7 @@ public interface Constants {
 	String KEY_DISCOUNT_PERCENTAGE = "discount_percentage";
 	String KEY_POOL_DROP_RADIUS = "pool_drop_radius";
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
+    String DRIVER_RIDE_EARNING_CURRENCY = "driver_ride_earning_currency";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
@@ -246,5 +247,12 @@ public interface Constants {
 	String KEY_UPDATED_COUNTRY_CODE = "updated_country_code";
 	String KEY_OPERATOR_TOKEN = "operator_token";
 
+	String LANGUAGE_PREFERENCE_IN_MENU = "language_preference_in_menu";
+	String INVITE_FRIENDS_IN_MENU = "invite_friends_in_menu";
+	String DRIVER_RESOURCES_IN_MENU = "driver_resources_in_menu";
+	String SUPER_DRIVERS_IN_MENU = "super_drivers_in_menu";
+	String INVOICES_IN_MENU = "invoices_in_menu";
+	String EARNINGS_IN_MENU = "earnings_in_menu";
+	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
 }
 

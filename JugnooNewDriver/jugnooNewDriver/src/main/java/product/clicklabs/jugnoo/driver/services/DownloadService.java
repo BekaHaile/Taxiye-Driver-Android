@@ -107,7 +107,7 @@ public class DownloadService extends IntentService {
 		try {
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
-			params.put("file_caegory", Constants.JUGNOO_AUDIO);
+			params.put("file_category", Constants.JUGNOO_AUDIO);
 			HomeUtil.putDefaultParams(params);
 			NotificationAlarmResponse response = RestClient.getApiServices().
 					updateNotificationData(params);
