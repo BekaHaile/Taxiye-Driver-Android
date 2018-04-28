@@ -54,6 +54,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -222,6 +223,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		};
 		relativeLayoutWallet.setOnClickListener(relativeLayoutWalletListener);
 		relativeLayoutWalletCaptive.setOnClickListener(relativeLayoutWalletListener);
+
+		if(Prefs.with(this).getInt(Constants.WALLET_BALANCE_IN_EARNING, 1) == 1){
+			relativeLayoutWallet.setVisibility(View.VISIBLE);
+		} else {
+			relativeLayoutWallet.setVisibility(View.GONE);
+		}
+
+
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
