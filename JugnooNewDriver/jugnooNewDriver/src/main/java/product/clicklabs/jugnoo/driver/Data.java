@@ -38,8 +38,6 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class Data {
 	
-	//TODO change flurry key
-	//H8Y94ND8GPQTKKG5R2VY
 	public static final String STATIC_FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
     public static final int MINI_BALANCE = 50;
 

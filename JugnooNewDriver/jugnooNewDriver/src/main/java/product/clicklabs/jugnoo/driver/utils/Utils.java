@@ -1014,6 +1014,13 @@ public class Utils {
 		return time;
 	}
 
+	public static String getCurrencySymbol(String currencyCode) {
+		if(TextUtils.isEmpty(currencyCode)){
+			currencyCode = "INR";
+		}
+		Currency currency = Currency.getInstance(currencyCode);
+		return currency.getSymbol();
+	}
 
 	public static String formatCurrencyValue(String currency, double value){
 		if(TextUtils.isEmpty(currency)){

@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-import product.clicklabs.jugnoo.driver.utils.Utils;
-
 import com.google.android.gms.maps.model.LatLng;
+
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LatLngPair {
 
@@ -35,7 +35,6 @@ public class LatLngPair {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return source + " " + destination + " " + deltaDistance;
     }
 
