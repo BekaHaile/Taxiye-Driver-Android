@@ -254,5 +254,15 @@ public interface Constants {
 	String INVOICES_IN_MENU = "invoices_in_menu";
 	String EARNINGS_IN_MENU = "earnings_in_menu";
 	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
+	String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
+	String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
+	String SELF_AUDIT_BUTTON_STATUS = "self_audit_button_status";
+	String SHOW_CALL_US_MENU = "show_call_us_menu";
+	String SHOW_IN_APP_CALL_US = "show_in_app_call_us";
+	String SHOW_RATE_CARD_IN_MENU = "show_rate_card_in_menu";
+	String SET_DRIVER_TUTORIAL_STATUS = "set_driver_tutorial_status";
+	String KEY_MENU = "menu";
+	String KEY_TAG = "tag";
+	String CHAT_SUPPORT = "chat_support";
 }
 

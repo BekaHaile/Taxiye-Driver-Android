@@ -13,7 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -274,15 +276,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_SUSCRIBER_KEY, userData.optString("pubnub_subscribe_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
-		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
-
-		Prefs.with(context).save(SPLabels.IS_TUTORIAL_SHOWN, userData.optInt("set_driver_tutorial_status", 0));
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
-		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_MENU, userData.optInt("show_support_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_PLANS_IN_MENU, userData.optInt("show_plans_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_RATE_CARD_IN_MENU, userData.optInt("show_rate_card_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_CALL_US_MENU, userData.optInt("show_call_us_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_IN_APP_CALL_US, userData.optInt("show_in_app_call_us", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
 		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
 
@@ -359,13 +353,7 @@ public class JSONParser implements Constants {
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
 
-		Prefs.with(context).save(Constants.LANGUAGE_PREFERENCE_IN_MENU, userData.optInt(LANGUAGE_PREFERENCE_IN_MENU, 1));
-		Prefs.with(context).save(Constants.INVITE_FRIENDS_IN_MENU, userData.optInt(INVITE_FRIENDS_IN_MENU, 1));
-		Prefs.with(context).save(Constants.DRIVER_RESOURCES_IN_MENU, userData.optInt(DRIVER_RESOURCES_IN_MENU, 1));
-		Prefs.with(context).save(Constants.SUPER_DRIVERS_IN_MENU, userData.optInt(SUPER_DRIVERS_IN_MENU, 1));
-		Prefs.with(context).save(Constants.INVOICES_IN_MENU, userData.optInt(INVOICES_IN_MENU, 1));
-		Prefs.with(context).save(Constants.EARNINGS_IN_MENU, userData.optInt(EARNINGS_IN_MENU, 1));
-		Prefs.with(context).save(Constants.BANK_DETAILS_IN_EDIT_PROFILE, userData.optInt(BANK_DETAILS_IN_EDIT_PROFILE, 1));
+		parseSideMenu(context, userData);
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
@@ -916,5 +904,39 @@ public class JSONParser implements Constants {
 
 
 
+	private static void parseSideMenu(Context context, JSONObject userData){
+		String keys[] = new String[]{
+				Constants.LANGUAGE_PREFERENCE_IN_MENU,
+				Constants.INVITE_FRIENDS_IN_MENU,
+				Constants.DRIVER_RESOURCES_IN_MENU,
+				Constants.SUPER_DRIVERS_IN_MENU,
+				Constants.INVOICES_IN_MENU,
+				Constants.EARNINGS_IN_MENU,
+				Constants.BANK_DETAILS_IN_EDIT_PROFILE,
+				Constants.SHOW_PLANS_IN_MENU,
+				Constants.SHOW_SUPPORT_IN_MENU,
+				Constants.SELF_AUDIT_BUTTON_STATUS,
+				Constants.SHOW_CALL_US_MENU,
+				Constants.SHOW_IN_APP_CALL_US,
+				Constants.SHOW_RATE_CARD_IN_MENU,
+				Constants.SET_DRIVER_TUTORIAL_STATUS,
+				Constants.SHOW_NOTIFICATION_TIPS,
+				Constants.CHAT_SUPPORT
+		};
+		List<String> keysArr = Arrays.asList(keys);
+		for(String key : keysArr){
+			Prefs.with(context).save(key, 0);
+		}
+
+		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
+		for(int i=0; i<menu.length(); i++){
+			JSONObject menuItem = menu.optJSONObject(i);
+			Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
+		}
+	}
+
+	public static boolean isChatSupportEnabled(Context context){
+		return Prefs.with(context).getInt(Constants.CHAT_SUPPORT, 0) == 1;
+	}
 
 }
