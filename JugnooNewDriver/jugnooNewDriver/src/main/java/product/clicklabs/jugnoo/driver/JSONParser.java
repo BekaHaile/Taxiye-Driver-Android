@@ -931,7 +931,8 @@ public class JSONParser implements Constants {
 				Constants.SHOW_RATE_CARD_IN_MENU,
 				Constants.SET_DRIVER_TUTORIAL_STATUS,
 				Constants.SHOW_NOTIFICATION_TIPS,
-				Constants.CHAT_SUPPORT
+				Constants.CHAT_SUPPORT,
+				Constants.WALLET_BALANCE_IN_EARNING
 		};
 		List<String> keysArr = Arrays.asList(keys);
 		for(String key : keysArr){
@@ -939,6 +940,9 @@ public class JSONParser implements Constants {
 		}
 
 		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
+		if(menu == null){
+			menu = new JSONArray();
+		}
 		for(int i=0; i<menu.length(); i++){
 			JSONObject menuItem = menu.optJSONObject(i);
 			Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
