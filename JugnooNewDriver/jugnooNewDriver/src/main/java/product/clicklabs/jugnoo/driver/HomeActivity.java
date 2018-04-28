@@ -2117,7 +2117,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(maxDriverEarning>0) {
 						DialogPopup.alertPopup(HomeActivity.this,"", getResources().getString(R.string.cancel));
 						String heading = getResources().getString(R.string.max_earning);
-						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",getResources().getString(R.string.max_earning_ins, String.valueOf(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),maxDriverEarning))),false, true);
+						DialogPopup.driverEarningPopup(HomeActivity.this, heading,"",
+								getResources().getString(R.string.max_earning_ins,
+										String.valueOf(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(KEY_CURRENCY, "INR"),
+												maxDriverEarning))),false, true);
 					}
 			}
 
@@ -2480,7 +2483,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
-				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit() , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
+				textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING_CURRENCY, "INR") , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
 
 				textViewDriverEarningOnScreenDate.setText(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_DATE, ""));
 			} else {
@@ -6177,6 +6180,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					try {
 						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING, jObj.optString("driver_ride_earning", ""));
+						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING_CURRENCY, jObj.optString(Constants.KEY_CURRENCY, "INR"));
 						Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
 
 						if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, ""))) {

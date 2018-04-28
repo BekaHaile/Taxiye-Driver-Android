@@ -186,6 +186,7 @@ public interface Constants {
 	String KEY_DISCOUNT_PERCENTAGE = "discount_percentage";
 	String KEY_POOL_DROP_RADIUS = "pool_drop_radius";
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
+    String DRIVER_RIDE_EARNING_CURRENCY = "driver_ride_earning_currency";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
