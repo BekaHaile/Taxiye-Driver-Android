@@ -7,22 +7,19 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommon
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.Prefs
@@ -36,20 +33,25 @@ class LoginFragment:Fragment() {
 
 
     val TAG = LoginFragment::class.simpleName;
-    var  rootView:View? = null;
+    lateinit var rootView:View
+    lateinit var spinner:Spinner
+    lateinit var selectedLanguage:String
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater?.inflate(R.layout.frag_login,container,false);
+        selectedLanguage = (activity as DriverSplashActivity).selectedLanguage;
+        spinner  = rootView?.findViewById(R.id.language_spinner) as Spinner
+        val tvCountryCode by bind<TextView>(R.id.tvCountryCode,rootView)
+        val edtPhoneNo by bind<EditText>(R.id.edt_phone,rootView) ;
+        val btnGenerateOtp by bind<Button>(R.id.btn_gen_otp,rootView) ;
 
-         val tvCountryCode by bind<TextView>(R.id.tvCountryCode,rootView) ;
-         val edtPhoneNo by bind<EditText>(R.id.edt_phone,rootView) ;
-         val btnGenerateOtp by bind<Button>(R.id.btn_gen_otp,rootView) ;
-         val countryPicker = CountryPicker.Builder().with(activity).listener(object: OnCountryPickerListener{
+        val countryPicker = CountryPicker.Builder().with(activity).listener(object: OnCountryPickerListener{
                     override fun onSelectCountry(country: Country?) {
                         tvCountryCode.setText(country?.dialCode) ;
                     }
                 }).build()
+
         tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager)})
         btnGenerateOtp.setOnClickListener(View.OnClickListener {
             val phoneNo:String = edtPhoneNo.text.trim().toString();
@@ -68,6 +70,7 @@ class LoginFragment:Fragment() {
                 return@OnClickListener;
 
             }
+
 
             val params = HashMap<String, String>()
             params.put(Constants.KEY_PHONE_NO, countryCode + phoneNo)
@@ -129,11 +132,62 @@ class LoginFragment:Fragment() {
             }
             )
 
-            //hit for phone number
+
         })
 
+        getLanguageList();
 
         return rootView;
+    }
+
+    private fun getLanguageList() {
+        val params = HashMap<String, String>()
+        params["device_model_name"] = android.os.Build.MODEL
+        params["android_version"] = android.os.Build.VERSION.RELEASE
+        HomeUtil.putDefaultParams(params)
+
+        ApiCommonKotlin<DriverLanguageResponse>(activity).execute(params,ApiName.GET_LANGUAGES,object : APICommonCallbackKotlin<DriverLanguageResponse>(){
+            override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
+
+
+                if(t?.languageList!=null && t.languageList.size>0){
+                 val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity,android.R.layout.simple_spinner_item,t.languageList)
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.setAdapter(dataAdapter)
+                    spinner.visibility = View.VISIBLE;
+
+                    if(!t.languageList.contains(selectedLanguage)){
+                        t.languageList.add(selectedLanguage);
+                    }
+                    spinner.setSelection(t.languageList.indexOf(selectedLanguage))
+                    spinner.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener{
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            val item = parent?.getItemAtPosition(position).toString();
+                            if(!item.equals(selectedLanguage,ignoreCase = true))
+                            {
+                                (activity as DriverSplashActivity).updateLanguage(selectedLanguage);
+                            }
+                        }
+
+                    })
+
+
+                }else{
+                    spinner.visibility = View.GONE;
+                }
+
+
+            }
+
+            override fun onError(t: DriverLanguageResponse?, message: String?, flag: Int): Boolean {
+                return false;
+            }
+
+        })
     }
 
 

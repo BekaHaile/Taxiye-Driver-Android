@@ -1629,8 +1629,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
-		}
-		else{
+		} else{
 
 			fetchLanguageList();
 

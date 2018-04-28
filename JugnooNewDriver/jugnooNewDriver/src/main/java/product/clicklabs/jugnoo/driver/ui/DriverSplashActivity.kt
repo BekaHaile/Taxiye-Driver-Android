@@ -53,6 +53,7 @@ class DriverSplashActivity:BaseFragmentActivity(),LocationUpdate, SplashFragment
             Data.latitude = location.latitude;
             Data.longitude = location.longitude;
         }
+
     }
 
 

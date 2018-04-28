@@ -33,7 +33,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		updateLanguage();
+		updateLanguage(null);
 		updateStatusBar();
 	}
 
@@ -82,28 +82,32 @@ public class BaseFragmentActivity extends FragmentActivity {
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
-
-	public void updateLanguage(){
-		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
+	public String selectedLanguage="English";
+	public void updateLanguage(String language){
+		if(language==null){
+			selectedLanguage = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"English");
+			}else{
+			selectedLanguage = language;
+		}
 		String languageToLoad;
 
-		if (item.equalsIgnoreCase("English")) {
+		if (selectedLanguage.equalsIgnoreCase("English")) {
 			languageToLoad = "en";
-		} else if (item.equalsIgnoreCase("हिन्दी")) {
+		} else if (selectedLanguage.equalsIgnoreCase("हिन्दी")) {
 			languageToLoad = "hi";
-		} else if (item.equalsIgnoreCase("ગુજરાતી")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ગુજરાતી")) {
 			languageToLoad = "gu";
-		} else if (item.equalsIgnoreCase("ଓଡ଼ିଆ")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ଓଡ଼ିଆ")) {
 			languageToLoad = "or";
-		} else if (item.equalsIgnoreCase("മലയാളം")) {
+		} else if (selectedLanguage.equalsIgnoreCase("മലയാളം")) {
 			languageToLoad = "ml";
-		} else if (item.equalsIgnoreCase("தமிழ்")) {
+		} else if (selectedLanguage.equalsIgnoreCase("தமிழ்")) {
 			languageToLoad = "ta";
-		} else if (item.equalsIgnoreCase("తెలుగు")) {
+		} else if (selectedLanguage.equalsIgnoreCase("తెలుగు")) {
 			languageToLoad = "te";
-		} else if (item.equalsIgnoreCase("ಕನ್ನಡ")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ಕನ್ನಡ")) {
 			languageToLoad = "kn";
-		} else if (item.equalsIgnoreCase("অসমীয়া")) {
+		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
 		} else {
 			languageToLoad = "en";
