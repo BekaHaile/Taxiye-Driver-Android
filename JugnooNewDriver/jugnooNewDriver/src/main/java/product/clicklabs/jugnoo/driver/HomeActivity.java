@@ -5228,7 +5228,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(holder.textViewEstimatedFareValue.getVisibility() == View.GONE
-				&& holder.textViewEstimatedFareValue.getVisibility() == View.GONE
+				&& holder.textViewEstimatedDist.getVisibility() == View.GONE
 				&& holder.textViewRequestDetails.getVisibility() == View.GONE){
 				holder.linearLayoutDeliveryParams.setVisibility(View.GONE);
 			} else {
