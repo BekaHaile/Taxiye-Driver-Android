@@ -915,6 +915,11 @@ public class JSONParser implements Constants {
 
 
 	private static void parseSideMenu(Context context, JSONObject userData){
+		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
+		if(menu == null){
+			return;
+		}
+
 		String keys[] = new String[]{
 				Constants.LANGUAGE_PREFERENCE_IN_MENU,
 				Constants.INVITE_FRIENDS_IN_MENU,
@@ -939,7 +944,6 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(key, 0);
 		}
 
-		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
 		if(menu == null){
 			menu = new JSONArray();
 		}
