@@ -2829,6 +2829,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 			params.put(Constants.KEY_BID_VALUE, String.valueOf(bidValue));
 			HomeUtil.putDefaultParams(params);
+			DialogPopup.showLoadingDialog(this, getStringText(R.string.loading));
 
 			RestClient.getApiServices().setBidForEngagement(params, new retrofit.Callback<SettleUserDebt>() {
 				@Override
@@ -2851,11 +2852,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
+					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} else {
