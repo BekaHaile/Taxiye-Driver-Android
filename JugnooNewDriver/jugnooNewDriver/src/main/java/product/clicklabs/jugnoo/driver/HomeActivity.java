@@ -2845,6 +2845,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							customerInfo.setBidPlaced(1);
 							customerInfo.setBidValue(bidValue);
 							driverRequestListAdapter.notifyDataSetChanged();
+							GCMIntentService.clearNotifications(getApplicationContext());
+							GCMIntentService.stopRing(false, HomeActivity.this);
 						} else {
 							DialogPopup.alertPopup(activity, "", JSONParser.getServerMessage(jObj));
 						}
