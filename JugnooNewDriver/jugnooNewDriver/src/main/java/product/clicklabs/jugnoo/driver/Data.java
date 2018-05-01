@@ -481,7 +481,7 @@ public class Data {
 			return null;
 
 		return new CaptureUserData.Builder()
-				.userUniqueKey(Data.userData.userId)
+				.userUniqueKey(Data.userData.getUserIdentifier())
 				.fullName(Data.userData.userName)
 				.phoneNumber(Data.userData.phoneNo)
 				.latitude(LocationFetcher.getSavedLatFromSP(context))

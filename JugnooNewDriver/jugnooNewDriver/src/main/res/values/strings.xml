@@ -922,6 +922,7 @@
     <string name="please_enter_some_value">Please enter some value</string>
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
+    <string name="chat_support">Chat Support</string>
 
 
     <string-array name="CountryCodes">

@@ -110,4 +110,12 @@ public class UserData {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
+
+	public String getUserIdentifier() {
+		return userIdentifier;
+	}
+
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
+	}
 }
