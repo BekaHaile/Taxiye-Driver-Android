@@ -879,7 +879,7 @@
             android:textSize="@dimen/text_size_24"
             android:gravity="center"
             android:visibility="visible"
-            android:background="@drawable/circle_white_stroke_theme"/>
+            android:background="@drawable/circle_white_stroke_grey"/>
 
     </RelativeLayout>
 

@@ -44,6 +44,7 @@ public interface Constants {
     String KEY_PHONE = "phone";
     String KEY_CONTACTS = "contacts";
     String KEY_USER_ID = "user_id";
+    String KEY_USER_IDENTIFIER = "user_identifier";
     String SP_USER_ID = "sp_user_id";
 
     String KEY_LATITUDE = "latitude";
@@ -266,11 +267,13 @@ public interface Constants {
 	String CHAT_SUPPORT = "chat_support";
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
-
+	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
 	String KEY_REVERSE_BID = "reverse_bid";
 	String KEY_BID_PLACED = "bid_placed";
 	String KEY_REVERSE_BID_FARE = "reverse_bid_fare";
 	String KEY_BID_VALUE = "bid_value";
 	String KEY_MESSAGE = "message";
+	String KEY_INITIAL_BID_VALUE = "initial_bid_value";
+	String KEY_FUGU_APP_KEY = "fugu_app_key";
 }
 

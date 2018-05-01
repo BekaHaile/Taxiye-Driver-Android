@@ -1,12 +1,16 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.fugu.CaptureUserData;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -351,6 +355,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
 
@@ -364,7 +369,7 @@ public class JSONParser implements Constants {
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
-				isCaptiveDriver, countryCode);
+				isCaptiveDriver, countryCode,userIdentifier);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -389,6 +394,21 @@ public class JSONParser implements Constants {
 		parseCancellationReasons(jObj,context);
 		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 
+		try {
+
+
+			if(isChatSupportEnabled(context)){
+
+				CaptureUserData captureUserData = Data.getFuguUserData(context);
+				if(captureUserData!=null){
+					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
+					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
+				}
+
+			}
+			} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		/*try {
 			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
@@ -693,6 +713,7 @@ public class JSONParser implements Constants {
 				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 				int bidPlaced = jActiveRequest.optInt(Constants.KEY_BID_PLACED, 0);
 				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
+				double initialBidValue = jActiveRequest.optInt(Constants.KEY_INITIAL_BID_VALUE, 10);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -708,7 +729,7 @@ public class JSONParser implements Constants {
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue);
 
 				Data.addCustomerInfo(customerInfo);
 
