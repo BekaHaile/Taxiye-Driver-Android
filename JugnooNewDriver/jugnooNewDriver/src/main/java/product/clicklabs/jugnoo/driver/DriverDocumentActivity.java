@@ -92,7 +92,15 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				docSubmission();
+
+				DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+						getString(R.string.i_agree),"", new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								docSubmission();
+
+							}
+						},null,true,false);
 			}
 		});
 		backBtn.setOnClickListener(new View.OnClickListener() {

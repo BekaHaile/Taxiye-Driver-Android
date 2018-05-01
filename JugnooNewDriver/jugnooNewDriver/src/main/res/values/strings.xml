@@ -922,6 +922,8 @@
     <string name="please_enter_some_value">Please enter some value</string>
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
+    <string name="documents_authentication">I accept that documents uploaded by me are true and correct. I understand that any attempt of providing incorrect, misleading information or fake documents will lead to my immediate black listing from the &appname; platform. &appname; platform reserves the right to take the matter to the law enforcement authorities in case of forged documents.</string>
+    <string name="i_agree">I agree</string>
 
 
     <string-array name="CountryCodes">
