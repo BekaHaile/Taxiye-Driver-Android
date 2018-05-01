@@ -713,6 +713,7 @@ public class JSONParser implements Constants {
 				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 				int bidPlaced = jActiveRequest.optInt(Constants.KEY_BID_PLACED, 0);
 				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
+				double initialBidValue = jActiveRequest.optInt(Constants.KEY_INITIAL_BID_VALUE, 10);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -728,7 +729,7 @@ public class JSONParser implements Constants {
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue);
 
 				Data.addCustomerInfo(customerInfo);
 

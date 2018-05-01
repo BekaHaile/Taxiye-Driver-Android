@@ -351,32 +351,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 >
-                <TextView
-                    android:id="@+id/tvPlaceBidCurrency"
+                <LinearLayout
+                    android:id="@+id/llMinus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:padding="4dp"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginEnd="15dp"
+                    >
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circle_white_stroke_grey_selector"
+                        android:text="-"
+                        android:gravity="center"
+                        android:textColor="@color/theme_color"
+                        android:textSize="30sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reduce_by_10"
+                        android:textSize="10sp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_horizontal"
+                        />
+
+                </LinearLayout>
+
+                <product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
+                    android:id="@+id/etPlaceBid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:background="@drawable/background_white_rounded_bordered"
+                    android:padding="7dp"
+                    android:textSize="21sp"
+                    android:textColor="@color/text_color"
+                    android:textColorHint="@color/text_color_light"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:maxLength="10"
+                    android:hint="0"
+                    android:layout_marginTop="2dp"
+                    android:drawablePadding="0dp"
                     />
 
-            <EditText
-                android:id="@+id/etPlaceBid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_white_rounded_bordered"
-                android:padding="4dp"
-                android:textSize="20sp"
-                android:textColor="@color/text_color"
-                android:textColorHint="@color/text_color_light"
-                android:gravity="center_horizontal"
-                android:inputType="numberDecimal"
-                android:maxLength="10"
-                android:hint="00.00"
-                />
+                <LinearLayout
+                    android:id="@+id/llPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="15dp"
+                    >
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circle_white_stroke_grey_selector"
+                        android:text="+"
+                        android:gravity="center"
+                        android:textColor="@color/theme_color"
+                        android:textSize="26sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/increase_by_10"
+                        android:textSize="10sp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_horizontal"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -26,6 +26,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -191,6 +192,7 @@ import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -4986,9 +4988,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		ProgressBar progressBarRequest;
 		int id;
 		LinearLayout linearLayoutRideValues, llPlaceBid;
-		EditText etPlaceBid;
-		TextView tvPlaceBidCurrency, tvPlaceBid;
+		PrefixedEditText etPlaceBid;
+		TextView tvPlaceBid;
 		DriverRequestListAdapter.MyCustomEditTextListener myCustomEditTextListener;
+		LinearLayout llMinus, llPlus;
 	}
 
 	public void firebaseScreenEvent(String event){
@@ -5056,7 +5059,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			this.customerInfos.addAll(customerInfos);
 			bidValues = new ArrayList<>();
 			for(int i=0; i<this.customerInfos.size(); i++){
-				bidValues.add("");
+				bidValues.add(Utils.getDecimalFormatForMoney().format(customerInfos.get(i).getInitialBidValue()));
 			}
 			if(this.customerInfos.size() == 0){
 				Utils.hideSoftKeyboard(HomeActivity.this, textViewAutosOn);
@@ -5151,11 +5154,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
 
 				holder.llPlaceBid = (LinearLayout) convertView.findViewById(R.id.llPlaceBid);
-				holder.tvPlaceBidCurrency = (TextView) convertView.findViewById(R.id.tvPlaceBidCurrency);
 				holder.tvPlaceBid = (TextView) convertView.findViewById(R.id.tvPlaceBid);
-				holder.etPlaceBid = (EditText) convertView.findViewById(R.id.etPlaceBid);
+				holder.etPlaceBid = (PrefixedEditText) convertView.findViewById(R.id.etPlaceBid);
+				holder.etPlaceBid.setPrefixTextColor(ContextCompat.getColor(HomeActivity.this, R.color.text_color));
 				holder.myCustomEditTextListener = new MyCustomEditTextListener();
 				holder.etPlaceBid.addTextChangedListener(holder.myCustomEditTextListener);
+				holder.llMinus = (LinearLayout) convertView.findViewById(R.id.llMinus);
+				holder.llPlus = (LinearLayout) convertView.findViewById(R.id.llPlus);
+				holder.llMinus.setTag(holder);
+				holder.llPlus.setTag(holder);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
@@ -5339,7 +5346,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			holder.myCustomEditTextListener.updatePosition(position);
-			holder.tvPlaceBidCurrency.setText(Utils.getCurrencySymbol(customerInfo.getCurrencyUnit()));
 			holder.etPlaceBid.setText(bidValues.get(position));
 			holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
 			if(customerInfo.isReverseBid()){
@@ -5348,12 +5354,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if(customerInfo.isBidPlaced()){
 					holder.rlAcceptCancel.setVisibility(View.GONE);
 					holder.tvPlaceBid.setText(R.string.bid_placed);
-					holder.etPlaceBid.setVisibility(View.GONE);
-					holder.tvPlaceBidCurrency.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
+					holder.etPlaceBid.setEnabled(false);
+					holder.etPlaceBid.setCompoundDrawables(null, null, null, null);
+					holder.etPlaceBid.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
+					holder.llMinus.setVisibility(View.GONE);
+					holder.llPlus.setVisibility(View.GONE);
 				} else {
 					holder.rlAcceptCancel.setVisibility(View.VISIBLE);
 					holder.tvPlaceBid.setText(R.string.place_bid);
-					holder.etPlaceBid.setVisibility(View.VISIBLE);
+					holder.etPlaceBid.setPrefix(Utils.getCurrencySymbol(customerInfo.getCurrencyUnit()));
+					holder.etPlaceBid.setEnabled(true);
+					holder.llMinus.setVisibility(View.VISIBLE);
+					holder.llPlus.setVisibility(View.VISIBLE);
 				}
 				holder.etPlaceBid.requestFocus();
 			} else {
@@ -5423,6 +5435,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 							rejectRequestFuncCall(customerInfo1);
 							FlurryEventLogger.event(RIDE_CANCELLED);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
+			holder.llMinus.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					try {
+						holder = (ViewHolderDriverRequest) v.getTag();
+						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+						double finalValue = Double.parseDouble(bidValues.get(holder.id)) - customerInfo1.getInitialBidValue()*0.1d;
+						if(finalValue > 0) {
+							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
+							notifyDataSetChanged();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			holder.llPlus.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					try {
+						holder = (ViewHolderDriverRequest) v.getTag();
+						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+						double finalValue = Double.parseDouble(bidValues.get(holder.id)) + customerInfo1.getInitialBidValue()*0.1d;
+						if(finalValue > 0) {
+							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
+							notifyDataSetChanged();
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
