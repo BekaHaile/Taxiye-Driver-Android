@@ -332,6 +332,15 @@ public class Utils {
 		return decimalFormatMoney;
 	}
 
+	private static DecimalFormat decimalFormatMoney2Dec;
+
+	public static DecimalFormat getDecimalFormatForMoney2Dec() {
+		if (decimalFormatMoney2Dec == null) {
+			decimalFormatMoney2Dec = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
+		}
+		return decimalFormatMoney2Dec;
+	}
+
 	private static DecimalFormat decimalFormat;
 
 	public static DecimalFormat getDecimalFormat() {
