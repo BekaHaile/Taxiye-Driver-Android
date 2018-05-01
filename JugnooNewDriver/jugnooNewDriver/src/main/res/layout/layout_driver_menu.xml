@@ -467,6 +467,34 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/relativeLayoutChatSupport"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewChatSupportIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewChatSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewChatSupportIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/chat_support"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/relativeLayoutSupport"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
