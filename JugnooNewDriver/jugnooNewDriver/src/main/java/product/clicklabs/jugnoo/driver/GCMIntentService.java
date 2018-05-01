@@ -593,7 +593,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
-									if (HomeActivity.appInterruptHandler != null) {
+									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),

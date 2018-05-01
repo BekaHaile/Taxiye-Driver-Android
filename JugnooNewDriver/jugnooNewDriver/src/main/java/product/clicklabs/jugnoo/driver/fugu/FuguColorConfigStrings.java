@@ -2,8 +2,8 @@ package product.clicklabs.jugnoo.driver.fugu;
 
 public interface FuguColorConfigStrings {
 
- String FUGU_ACTION_BAR_BG = "#FFFFFF";
- String FUGU_ACTION_BAR_TEXT = "#595868";
+ String FUGU_ACTION_BAR_BG = "#232937";
+ String FUGU_ACTION_BAR_TEXT = "#FFFFFF";
  String FUGU_BG_MESSAGE_YOU = "#595868";
  String FUGU_BG_MESSAGE_FROM = "#FFFFFF";
  String FUGU_PRIMARY_TEXT_MSG_YOU = "#FFFFFF";

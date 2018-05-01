@@ -4640,7 +4640,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onResume() {
 		super.onResume();
 
-		HomeActivity.appInterruptHandler = HomeActivity.this;
 
 		if (!checkIfUserDataNull()) {
 			setUserData();
@@ -4824,7 +4823,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			ASSL.closeActivity(drawerLayout);
 
-			appInterruptHandler = null;
 
 			Database2.getInstance(this).close();
 			unregisterReceiver(broadcastReceiver);
@@ -5365,7 +5363,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.llMinus.setVisibility(View.VISIBLE);
 					holder.llPlus.setVisibility(View.VISIBLE);
 					try {
-						holder.etPlaceBid.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(bidValues.get(position))));
+						holder.etPlaceBid.setText(Utils.getDecimalFormatForMoney2Dec().format(Double.parseDouble(bidValues.get(position))));
 					} catch (Exception e) {
 						holder.etPlaceBid.setText("");
 					}
