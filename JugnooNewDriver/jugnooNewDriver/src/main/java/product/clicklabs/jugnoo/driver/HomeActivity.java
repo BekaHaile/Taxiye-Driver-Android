@@ -5346,8 +5346,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			holder.myCustomEditTextListener.updatePosition(position);
-			holder.etPlaceBid.setText(bidValues.get(position));
-			holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
 			if(customerInfo.isReverseBid()){
 				holder.llPlaceBid.setVisibility(View.VISIBLE);
 				holder.buttonAcceptRide.setText(R.string.bid);
@@ -5366,8 +5364,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.etPlaceBid.setEnabled(true);
 					holder.llMinus.setVisibility(View.VISIBLE);
 					holder.llPlus.setVisibility(View.VISIBLE);
+					try {
+						holder.etPlaceBid.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(bidValues.get(position))));
+					} catch (Exception e) {
+						holder.etPlaceBid.setText("");
+					}
 				}
-				holder.etPlaceBid.requestFocus();
+				holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
 			} else {
 				holder.llPlaceBid.setVisibility(View.GONE);
 				holder.buttonAcceptRide.setText(R.string.accept);
@@ -5450,7 +5453,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						holder = (ViewHolderDriverRequest) v.getTag();
 						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 						double finalValue = Double.parseDouble(bidValues.get(holder.id)) - customerInfo1.getInitialBidValue()*0.1d;
-						if(finalValue > 0) {
+						if(finalValue > 0.0) {
 							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
 							notifyDataSetChanged();
 						}
@@ -5467,7 +5470,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						holder = (ViewHolderDriverRequest) v.getTag();
 						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 						double finalValue = Double.parseDouble(bidValues.get(holder.id)) + customerInfo1.getInitialBidValue()*0.1d;
-						if(finalValue > 0) {
+						if(finalValue > 0.0) {
 							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
 							notifyDataSetChanged();
 						}

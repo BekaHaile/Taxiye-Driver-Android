@@ -399,7 +399,9 @@
                     android:maxLength="10"
                     android:hint="0"
                     android:layout_marginTop="2dp"
-                    android:drawablePadding="0dp"
+                    android:drawablePadding="4dp"
+                    android:focusableInTouchMode="true"
+                    android:descendantFocusability="beforeDescendants"
                     />
 
                 <LinearLayout
