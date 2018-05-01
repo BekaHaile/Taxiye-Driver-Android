@@ -66,7 +66,11 @@
     <uses-permission android:name="${applicationId}.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <application
+
+
+
+
+<application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
@@ -76,6 +80,16 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
+
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="${applicationId}"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths"/>
+    </provider>
 
         <service
             android:name=".GCMIntentService"

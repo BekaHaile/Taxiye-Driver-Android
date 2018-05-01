@@ -26,6 +26,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -85,7 +86,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
 	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
-
+	FuguNotificationConfig fuguNotificationConfig = new FuguNotificationConfig();
 	public GCMIntentService() {
 	}
 
@@ -449,6 +450,19 @@ public class GCMIntentService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 //		super.onMessageReceived(remoteMessage);
+
+		if (fuguNotificationConfig.isFuguNotification(remoteMessage.getData())) {
+			fuguNotificationConfig.setSmallIcon(R.mipmap.ic_launcher);
+			//your icon drawable
+			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
+			fuguNotificationConfig.setNotificationSoundEnabled(true);
+			fuguNotificationConfig.setPriority(NotificationCompat.PRIORITY_HIGH);
+			fuguNotificationConfig.showNotification(getApplicationContext(),
+					remoteMessage.getData());
+			return;
+		}
+
+
 		onHandleIntent(remoteMessage);
 
 	}
@@ -543,6 +557,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									int reverseBid = jObj.optInt(Constants.KEY_REVERSE_BID, 0);
 									int bidPlaced = jObj.optInt(Constants.KEY_BID_PLACED, 0);
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
+									double initialBidValue = jObj.optInt(Constants.KEY_INITIAL_BID_VALUE, 10);
 									long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -584,7 +599,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
-												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue);
+												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId, changeRing);

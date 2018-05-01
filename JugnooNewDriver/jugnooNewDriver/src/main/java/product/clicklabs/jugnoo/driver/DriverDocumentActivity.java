@@ -4,15 +4,11 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
-import com.kbeanie.imagechooser.api.ChosenImage;
 
 import org.json.JSONObject;
 
@@ -20,7 +16,6 @@ import java.io.File;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -92,7 +87,15 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				docSubmission();
+
+				DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+						getString(R.string.i_agree),"", new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								docSubmission();
+
+							}
+						},null,true,false);
 			}
 		});
 		backBtn.setOnClickListener(new View.OnClickListener() {

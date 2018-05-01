@@ -131,7 +131,7 @@ public class GenrateTourPush {
                                         referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
                                         isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
                                         new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, new ArrayList<String>(),
-                                        0d,currency, 0, 0, 0);
+                                        0d,currency, 0, 0, 0, 10);
                                 Data.addCustomerInfo(customerInfo);
 
                                 startRing(context, engagementId, changeRing);
