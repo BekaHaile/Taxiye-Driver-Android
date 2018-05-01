@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.Base64;
 
 import com.fugu.CaptureUserData;
@@ -489,9 +490,17 @@ public class Data {
 				.build();
 	}
 
-	public static  void initFugu(Activity activity,CaptureUserData captureUserData) {
+	public static  void initFugu(Activity activity, CaptureUserData captureUserData, String keyFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
-			FuguConfig.init(1, activity.getString(R.string.fugu_app_key), activity, "test", captureUserData, BuildConfig.APPLICATION_ID + ".provider");
+			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+				String fuguKey = activity.getString(R.string.fugu_app_key);
+				if(!TextUtils.isEmpty(keyFromServer)){
+					fuguKey = keyFromServer;
+				}
+				FuguConfig.init(1, fuguKey, activity, "live", captureUserData, BuildConfig.APPLICATION_ID + ".provider");
+			} else {
+				FuguConfig.init(1, activity.getString(R.string.fugu_app_key_test), activity, "test", captureUserData, BuildConfig.APPLICATION_ID + ".provider");
+			}
 
 //			FuguConfig.getInstance().setHomeUpIndicatorDrawableId(R.drawable.ic_profile);
 

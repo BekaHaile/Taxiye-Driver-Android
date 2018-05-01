@@ -402,7 +402,7 @@ public class JSONParser implements Constants {
 				CaptureUserData captureUserData = Data.getFuguUserData(context);
 				if(captureUserData!=null){
 					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
-					Data.initFugu((Activity) context, captureUserData);
+					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
 				}
 
 			}
