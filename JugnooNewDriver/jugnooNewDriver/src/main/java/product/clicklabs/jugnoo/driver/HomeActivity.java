@@ -63,6 +63,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.fugu.FuguConfig;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -233,7 +235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport,relativeLayoutPlans;
+	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport, relativeLayoutChatSupport,relativeLayoutPlans;
 	TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 	LinearLayout rlGetSupport;
 
@@ -597,6 +599,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText.setText(getResources().getText(R.string.call_us));
 
 			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
+			relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
 			relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
@@ -1316,6 +1319,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Intent intent = new Intent(HomeActivity.this, DriverTicketHistory.class);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+			relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
+
+
 				}
 			});
 			relativeLayoutPlans.setOnClickListener(new OnClickListener() {
@@ -2161,6 +2172,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutSupport.setVisibility(View.GONE);
 			}
 
+			if(Prefs.with(HomeActivity.this).getInt(Constants.CHAT_SUPPORT,0) == 1){
+				relativeLayoutChatSupport.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutChatSupport.setVisibility(View.GONE);
+			}
+
 			if( Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU,0) == 1){
 				relativeLayoutPlans.setVisibility(View.VISIBLE);
 			} else {
@@ -2242,6 +2259,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			getInfoTilesAsync(HomeActivity.this);
 		}
 
+		try {
+			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

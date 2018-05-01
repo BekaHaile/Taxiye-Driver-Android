@@ -14,6 +14,7 @@ public class UserData {
 	private int deliveryEnabled, deliveryAvailable;
 	public Integer fareCachingLimit,isCaptiveDriver;
 	private String countryCode;
+	private String userIdentifier;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -23,8 +24,9 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode) {
+					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier) {
 
+		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -107,5 +109,13 @@ public class UserData {
 
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
+	}
+
+	public String getUserIdentifier() {
+		return userIdentifier;
+	}
+
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
 	}
 }
