@@ -323,6 +323,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.DIFF_MAX_EARNING, userData.optInt("diff_max_earning", 0));
 		Prefs.with(context).save(Constants.UPDATE_LOCATION_OFFLINE, userData.optInt("update_location_offline", 0));
 		Prefs.with(context).save(Constants.OFFLINE_UPDATE_TIME_PERIOD, userData.optLong("offline_update_time_period", 180000));
+//		Prefs.with(context).save(Constants.SHOW_AGREEMENT_SCREEN, userData.optInt("agreement_status", 1));
 
 		Prefs.with(context).save(Constants.END_RIDE_CUSTOM_TEXT, userData.optString("end_ride_custom_text", ""));
 

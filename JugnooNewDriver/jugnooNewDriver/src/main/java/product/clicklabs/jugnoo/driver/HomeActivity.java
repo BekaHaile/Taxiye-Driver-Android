@@ -440,6 +440,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CustomerInfo openedCustomerInfo;
 	private boolean rideCancelledByCustomer = false;
 	private String cancelationMessage = "";
+	private static  final  int REQUEST_CODE_TERMS_ACCEPT = 0x234;
 
 
 	private CustomerInfo getOpenedCustomerInfo(){
@@ -3040,7 +3041,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 						JSONObject jObj = new JSONObject(result);
-						String message = JSONParser.getServerMessage(jObj);
+						final String message = JSONParser.getServerMessage(jObj);
 						if (jObj.has(KEY_FLAG)) {
 							int flag = jObj.getInt(KEY_FLAG);
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
@@ -3060,7 +3061,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 								resetSharedPrefs();
 								showDialogFromBackground(message);
-							} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+							} else if(ApiResponseFlags.TNC_NOT_ACCEPTED.getOrdinal()==flag){
+								runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										DialogPopup.alertPopupWithListener(activity,"",message, new OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												DialogPopup.dismissLoadingDialog();
+												Intent intent = new Intent(HomeActivity.this,HelpActivity.class);
+												intent.putExtra(Constants.ASK_USER_CONFIRMATION,true);
+												startActivityForResult(intent, REQUEST_CODE_TERMS_ACCEPT);
+												overridePendingTransition(R.anim.right_in, R.anim.right_out);
+											}
+										});
+
+									}
+								});
+
+
+
+							}else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
 								Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
 								intent.putExtra("access_token", Data.userData.accessToken);
 								intent.putExtra("in_side", true);
@@ -7667,6 +7688,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
 			super.onActivityResult(requestCode, resultCode, data);
+
+			if(requestCode==REQUEST_CODE_TERMS_ACCEPT){
+					if(resultCode==RESULT_OK){
+						//relativeLayoutAutosOn.performClick();
+					}
+
+				return;
+			}
+
+
+
 			if(requestCode == 12){
 				boolean state = data.getBooleanExtra("result", true);
 				if(deliveryInfolistFragVisibility && state){
