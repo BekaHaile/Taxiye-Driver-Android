@@ -5387,7 +5387,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getEstimatedTripDistance() > 0.0){
 				holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
 				holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
-						Utils.getDecimalFormat1Dec().format(customerInfo.getEstimatedTripDistance())));
+						Utils.getDecimalFormatForMoney2Dec().format(customerInfo.getEstimatedTripDistance()/1000d)));
 			} else {
 				holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
 			}
