@@ -1,16 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import com.fugu.CaptureUserData;
-import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -395,21 +391,21 @@ public class JSONParser implements Constants {
 		parseCancellationReasons(jObj,context);
 		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 
-		try {
-
-
-			if(isChatSupportEnabled(context)){
-
-				CaptureUserData captureUserData = Data.getFuguUserData(context);
-				if(captureUserData!=null){
-					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
-					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
-				}
-
-			}
-			} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//
+//
+//			if(isChatSupportEnabled(context)){
+//
+//				CaptureUserData captureUserData = Data.getFuguUserData(context);
+//				if(captureUserData!=null){
+//					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
+//					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
+//				}
+//
+//			}
+//			} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 		/*try {
 			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
