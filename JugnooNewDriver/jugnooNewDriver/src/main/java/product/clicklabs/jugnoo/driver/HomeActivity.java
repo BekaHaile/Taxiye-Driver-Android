@@ -4990,6 +4990,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		TextView tvPlaceBid;
 		DriverRequestListAdapter.MyCustomEditTextListener myCustomEditTextListener;
 		LinearLayout llMinus, llPlus;
+		TextView tvDecrease, tvIncrease;
+		TextView textViewEstimatedTripDistance;
 	}
 
 	public void firebaseScreenEvent(String event){
@@ -5007,13 +5009,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	class DriverRequestListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
-		ViewHolderDriverRequest holder;
 
 		ArrayList<CustomerInfo> customerInfos;
 		ArrayList<String> bidValues;
 
 		Handler handlerRefresh;
 		Runnable runnableRefresh;
+		float percent;
 
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -5032,6 +5034,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			};
 			handlerRefresh.postDelayed(runnableRefresh, 10000);
 			bidValues = new ArrayList<>();
+			percent = Prefs.with(HomeActivity.this).getFloat(Constants.BID_INCREMENT_PERCENT, 10f);
 		}
 
 		@Override
@@ -5089,7 +5092,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
+			ViewHolderDriverRequest holder;
 			if (convertView == null) {
 
 				holder = new ViewHolderDriverRequest();
@@ -5099,6 +5102,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress);
 				holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedTripDistance = (TextView) convertView.findViewById(R.id.textViewEstimatedTripDistance);
+				holder.textViewEstimatedTripDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
 				holder.textViewRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewEstimatedDist = (TextView) convertView.findViewById(R.id.textViewEstimatedDist);
@@ -5161,6 +5166,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.llPlus = (LinearLayout) convertView.findViewById(R.id.llPlus);
 				holder.llMinus.setTag(holder);
 				holder.llPlus.setTag(holder);
+				holder.tvDecrease = (TextView) convertView.findViewById(R.id.tvDecrease);
+				holder.tvIncrease = (TextView) convertView.findViewById(R.id.tvIncrease);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
@@ -5369,10 +5376,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 				}
 				holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
+				holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
+				holder.tvIncrease.setText(getString(R.string.increase_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
 			} else {
 				holder.llPlaceBid.setVisibility(View.GONE);
 				holder.buttonAcceptRide.setText(R.string.accept);
 				holder.rlAcceptCancel.setVisibility(View.VISIBLE);
+			}
+
+			if(customerInfo.getEstimatedTripDistance() > 0.0){
+				holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
+				holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
+						Utils.getDecimalFormat1Dec().format(customerInfo.getEstimatedTripDistance())));
+			} else {
+				holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
 			}
 
 
@@ -5382,7 +5399,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						if (DriverScreenMode.D_INITIAL == driverScreenMode) {
-							holder = (ViewHolderDriverRequest) v.getTag();
+							ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
 							CustomerInfo customerInfo = customerInfos.get(holder.id);
 							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), MAP_ANIMATION_TIME, null);
 							FlurryEventLogger.event(RIDE_CHECKED);
@@ -5398,7 +5415,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						holder = (ViewHolderDriverRequest) v.getTag();
+						ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
 						if(isTourFlag) {
 							setTourOperation(2);
 						} else {
@@ -5426,7 +5443,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						holder = (ViewHolderDriverRequest) v.getTag();
+						ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
 						if(isTourFlag) {
 
 							tourCompleteApi("2", String.valueOf(tourResponseModel.responses.requestResponse.getEngagementId()), 1);
@@ -5447,38 +5464,37 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					try {
-						holder = (ViewHolderDriverRequest) v.getTag();
-						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-						double finalValue = Double.parseDouble(bidValues.get(holder.id)) - customerInfo1.getInitialBidValue()*0.1d;
-						if(finalValue > 0.0) {
-							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
-							notifyDataSetChanged();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					modifyBidValue(v, false);
 				}
 			});
 			holder.llPlus.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					try {
-						holder = (ViewHolderDriverRequest) v.getTag();
-						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-						double finalValue = Double.parseDouble(bidValues.get(holder.id)) + customerInfo1.getInitialBidValue()*0.1d;
-						if(finalValue > 0.0) {
-							bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
-							notifyDataSetChanged();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					modifyBidValue(v, true);
 				}
 			});
 
 			return convertView;
+		}
+
+		private void modifyBidValue(View v, boolean plus) {
+			try {
+				ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
+				CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+				double finalValue = Double.parseDouble(bidValues.get(holder.id));
+				if(plus) {
+					finalValue = finalValue + customerInfo1.getInitialBidValue() * (((double) percent) / 100d);
+				} else {
+					finalValue = finalValue - customerInfo1.getInitialBidValue() * (((double) percent) / 100d);
+				}
+				if(finalValue > 0.0) {
+					bidValues.set(holder.id, String.valueOf(Utils.getDecimalFormatForMoney().format(finalValue)));
+					notifyDataSetChanged();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		private class MyCustomEditTextListener implements TextWatcher {

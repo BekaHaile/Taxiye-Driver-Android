@@ -340,6 +340,14 @@ public class Utils {
 		}
 		return decimalFormatMoney2Dec;
 	}
+	private static DecimalFormat decimalFormat1Dec;
+
+	public static DecimalFormat getDecimalFormat1Dec() {
+		if (decimalFormat1Dec == null) {
+			decimalFormat1Dec = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+		}
+		return decimalFormat1Dec;
+	}
 
 	private static DecimalFormat decimalFormat;
 

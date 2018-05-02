@@ -341,6 +341,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
+		Prefs.with(context).save(Constants.BID_INCREMENT_PERCENT, (float)userData.optDouble(Constants.BID_INCREMENT_PERCENT, 10d));
 
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
@@ -713,7 +714,8 @@ public class JSONParser implements Constants {
 				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
 				int bidPlaced = jActiveRequest.optInt(Constants.KEY_BID_PLACED, 0);
 				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
-				double initialBidValue = jActiveRequest.optInt(Constants.KEY_INITIAL_BID_VALUE, 10);
+				double initialBidValue = jActiveRequest.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10);
+				double estimatedTripDistance = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -729,7 +731,7 @@ public class JSONParser implements Constants {
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance);
 
 				Data.addCustomerInfo(customerInfo);
 

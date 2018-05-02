@@ -275,5 +275,7 @@ public interface Constants {
 	String KEY_MESSAGE = "message";
 	String KEY_INITIAL_BID_VALUE = "initial_bid_value";
 	String KEY_FUGU_APP_KEY = "fugu_app_key";
+	String KEY_ESTIMATED_TRIP_DISTANCE = "estimated_trip_distance";
+	String BID_INCREMENT_PERCENT = "bid_increment_percent";
 }
 
