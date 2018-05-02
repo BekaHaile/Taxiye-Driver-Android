@@ -924,11 +924,15 @@
     <string name="bid_placed">Bid Placed</string>
     <string name="reduce_by_10">Reduce\nby 10%</string>
     <string name="increase_by_10">Increase\nby 10%</string>
+    <string name="reduce_by_format">Reduce\nby %s</string>
+    <string name="increase_by_format">Increase\nby %s</string>
     <string name="documents_authentication">I accept that documents uploaded by me are true and correct. I understand that any attempt of providing incorrect, misleading information or fake documents will lead to my immediate black listing from the &appname; platform. &appname; platform reserves the right to take the matter to the law enforcement authorities in case of forged documents.</string>
     <string name="i_agree">I agree</string>
     <string name="dont_agree">I disagree</string>
     <string name="chat_support">Chat Support</string>
     <string name="t_and_c_login">By submitting OTP here and logging in the app you accept the <a href="https://jugnoo.in/sg/terms/driver/">Terms and Conditions </a> of Jugnoo. Please do not go further, if these are not OK with you.</string>
+    <string name="estimated_distance_format">Estimated Distance: %skm</string>
+
 
     <string-array name="CountryCodes">
         <item>+93,AF</item>
