@@ -889,6 +889,12 @@ public class GCMIntentService extends FirebaseMessagingService {
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
 										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class, null);
 							}
+							else if (PushFlags.MPESA_DRIVER_SUCCESS_PUSH.getOrdinal() == flag) {
+								Intent mpesaPush = new Intent(Constants.UPDATE_MPESA_PRICE);
+								mpesaPush.putExtra("to_pay", jObj.getString("to_pay"));
+								sendBroadcast(mpesaPush);
+
+							}
 
 							String message1 = jObj.optString("message", " ");
 							savePush(jObj, flag, title, message1);

@@ -2082,8 +2082,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 
-
-			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
+            IntentFilter intentFilter = new IntentFilter();
+			intentFilter.addAction(Constants.ACTION_UPDATE_RIDE_EARNING);
+			intentFilter.addAction(Constants.UPDATE_MPESA_PRICE);
+			HomeActivity.this.registerReceiver(broadcastReceiver, intentFilter);
 			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
 			HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
 			HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
@@ -2217,6 +2219,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+		    if(intent.getAction().equalsIgnoreCase(Constants.UPDATE_MPESA_PRICE)){
+		        endRideData.toPay=Double.parseDouble(intent.getStringExtra("to_pay"));
+                takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay)); ;
+            }
 			HomeActivity.this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
