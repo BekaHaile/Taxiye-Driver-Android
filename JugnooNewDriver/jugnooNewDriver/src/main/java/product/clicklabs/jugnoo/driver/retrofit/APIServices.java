@@ -583,5 +583,10 @@ public interface APIServices {
 	void setBidForEngagement(@FieldMap Map<String, String> params,
 							 Callback<SettleUserDebt> callback);
 
+	@FormUrlEncoded
+	@POST("/set_agreement_status")
+	void agreeTerms(@FieldMap Map<String, String> params,
+							 Callback<SettleUserDebt> callback);
+
 
 }

@@ -46,6 +46,17 @@
                     android:text="Sector 28, Chandigarh"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size_32"/>
+                <TextView
+                    android:id="@+id/textViewEstimatedTripDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text=""
+                    android:textColor="@color/text_color_light"
+                    android:textSize="26px"
+                    android:layout_marginBottom="6px"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 
@@ -374,6 +385,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tvDecrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/reduce_by_10"
@@ -423,6 +435,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tvIncrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/increase_by_10"

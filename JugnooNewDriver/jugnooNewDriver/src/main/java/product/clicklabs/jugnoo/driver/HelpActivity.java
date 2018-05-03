@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -24,12 +25,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -41,7 +46,7 @@ import retrofit.mime.TypedByteArray;
 public class HelpActivity extends BaseFragmentActivity implements FlurryEventNames {
 	
 	
-	LinearLayout relative;
+	RelativeLayout relative;
 	
 	Button backBtn;
 	TextView title;
@@ -57,6 +62,8 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	
 	ArrayList<HelpSection> helpSections = new ArrayList<HelpSection>();
 	HelpSection selectedHelpSection;
+	private LinearLayout layoutConfirmation;
+	private String countryCode;
 
 	// *****************************Used for flurry work***************//
 	@Override
@@ -77,7 +84,8 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
 		
-		relative = (LinearLayout) findViewById(R.id.relative);
+		relative = (RelativeLayout) findViewById(R.id.relative);
+		layoutConfirmation = (LinearLayout)findViewById(R.id.layout_confirmation);
 		new ASSL(HelpActivity.this, relative, 1134, 720, false);
 		
 		
@@ -107,12 +115,13 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		});
 
 
+
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (selectedHelpSection != null) {
-					getHelpAsync(HelpActivity.this, selectedHelpSection);
+					getHelpAsync(HelpActivity.this, selectedHelpSection, false);
 				}
 			}
 		});
@@ -129,13 +138,77 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		
 		//helpListAdapter.notifyDataSetChanged();
 
-		getHelpAsync(HelpActivity.this, helpSections.get(4));
+		if(Data.userData!=null){
+			countryCode = Data.userData.getCountryCode();
+
+		}
+
+		if(getIntent().getExtras()!=null && getIntent().hasExtra(Constants.ASK_USER_CONFIRMATION)){
+			findViewById(R.id.btn_agree).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					agreeTermsAndSwitchToHome();
+				}
+			});
+			findViewById(R.id.btn_disagree).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					setResult(Activity.RESULT_CANCELED,intent);
+					finish();
+				}
+			});
+			getHelpAsync(HelpActivity.this, helpSections.get(4), true);
+
+
+		}else{
+			getHelpAsync(HelpActivity.this, helpSections.get(4), false);
+
+		}
+
 		title.setText(getResources().getString(R.string.terms));
 
 	}
-	
-	
-	public void openHelpData(HelpSection helpSection, String data, boolean errorOccured) {
+
+	private void agreeTermsAndSwitchToHome() {
+		if(!AppStatus.getInstance(HelpActivity.this).isOnline(HelpActivity.this))
+			return;
+
+		DialogPopup.showLoadingDialog(HelpActivity.this,getString(R.string.loading));
+		HashMap<String,String> params = new HashMap<>();
+		params.put("access_token",Data.userData.accessToken);
+		params.put("i_agree",String.valueOf(1));
+		HomeUtil.putDefaultParams(params);
+		RestClient.getApiServices().agreeTerms(params, new Callback<SettleUserDebt>() {
+			@Override
+			public void success(SettleUserDebt registerScreenResponse, Response response) {
+
+				if(HelpActivity.this.isFinishing())
+					return;
+
+				DialogPopup.dismissLoadingDialog();
+
+				if(registerScreenResponse.getFlag()== ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+					Intent intent = new Intent();
+					setResult(Activity.RESULT_OK,intent);
+					finish();
+				}else{
+					DialogPopup.alertPopup(HelpActivity.this,"",registerScreenResponse.getMessage());
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.dismissLoadingDialog();
+
+				DialogPopup.alertPopup(HelpActivity.this,"",getString(R.string.some_error_occured));
+			}
+		});
+	}
+
+
+	public void openHelpData(HelpSection helpSection, String data, boolean errorOccured, boolean showConfirmationViewOnLoad) {
 		if (errorOccured) {
 			textViewInfoDisplay.setVisibility(View.VISIBLE);
 			textViewInfoDisplay.setText(data);
@@ -143,17 +216,26 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		} else {
 			textViewInfoDisplay.setVisibility(View.GONE);
 			helpWebview.setVisibility(View.VISIBLE);
-			loadHTMLContent(data);
+			loadHTMLContent(data,showConfirmationViewOnLoad);
 		}
 		selectedHelpSection = helpSection;
 		title.setText(getResources().getString(R.string.terms));
 
 	}
 	
-	public void loadHTMLContent(String data){
+	public void loadHTMLContent(String data, final boolean showConfirmationViewOnLoad){
 		final String mimeType = "text/html";
         final String encoding = "UTF-8";
         helpWebview.loadDataWithBaseURL("", data, mimeType, encoding, "");
+        helpWebview.setWebViewClient(new WebViewClient(){
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				if(view!=null && !HelpActivity.this.isFinishing() && showConfirmationViewOnLoad){
+					layoutConfirmation.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 	}
 	
 	
@@ -228,27 +310,27 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 								break;
 
 							case FAQ:
-								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
 								FlurryEventLogger.event(FAQS);
 								break;
 
 							case ABOUT:
-								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
 								FlurryEventLogger.event(ABOUT_JUGNOO);
 								break;
 
 							case TERMS:
-								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
 								FlurryEventLogger.event(TERMS_OF_USE);
 								break;
 
 							case PRIVACY:
-								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
 								FlurryEventLogger.event(PRIVACY_POLICY);
 								break;
 
 							default:
-								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
 								FlurryEventLogger.event(helpSections.get(holder.id).getName());
 
 
@@ -281,17 +363,20 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	// Retrofit
 
 
-	public void getHelpAsync(final Activity activity, final HelpSection helpSection) {
+	public void getHelpAsync(final Activity activity, final HelpSection helpSection, final boolean showAgreeButtonsOnLoad) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 				helpExpandedRl.setVisibility(View.VISIBLE);
 				progressBarHelp.setVisibility(View.VISIBLE);
 				textViewInfoDisplay.setVisibility(View.GONE);
 				helpWebview.setVisibility(View.GONE);
-				loadHTMLContent("");
+				loadHTMLContent("",false);
 				HashMap<String, String> params = new HashMap<>();
 				params.put("section", helpSection.getOrdinal()+"");
 				params.put("login_type", "1");
+				if(countryCode!=null){
+					params.put("country_code",countryCode);
+				}
 				HomeUtil.putDefaultParams(params);
 
 
@@ -309,16 +394,16 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 									HomeActivity.logoutUser(activity);
 								} else {
-									openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
+									openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true, false);
 								}
 							} else {
 								String data = jObj.getString("data");
-								openHelpData(helpSection, data, false);
+								openHelpData(helpSection, data, false, showAgreeButtonsOnLoad);
 							}
 
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
+							openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true, false);
 						}
 						progressBarHelp.setVisibility(View.GONE);
 					}
@@ -326,13 +411,13 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 					@Override
 					public void failure(RetrofitError error) {
 						progressBarHelp.setVisibility(View.GONE);
-						openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
+						openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true, false);
 
 					}
 				});
 			}
 			else {
-				openHelpData(helpSection, getResources().getString(R.string.no_internet_tap_to_retry), true);
+				openHelpData(helpSection, getResources().getString(R.string.no_internet_tap_to_retry), true, false);
 			}
 	}
 

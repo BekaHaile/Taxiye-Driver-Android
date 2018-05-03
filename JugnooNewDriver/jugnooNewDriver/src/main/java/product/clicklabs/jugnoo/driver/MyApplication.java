@@ -8,7 +8,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -30,7 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
     public static final String TAG = MyApplication.class
             .getSimpleName();
 
