@@ -22,6 +22,9 @@ public class RateCardResponse {
 	@SerializedName("rates")
 	@Expose
 	private Rates rates;
+	@SerializedName("information")
+	@Expose
+	private String information;
 
 	/**
 	 *
@@ -75,6 +78,14 @@ public class RateCardResponse {
 	 */
 	public void setRates(Rates rates) {
 		this.rates = rates;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
 	}
 
 	public class Rates extends CurrencyModel{
