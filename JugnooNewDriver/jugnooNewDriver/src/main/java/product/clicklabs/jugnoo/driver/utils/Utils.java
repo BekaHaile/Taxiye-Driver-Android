@@ -33,7 +33,6 @@ import android.os.Environment;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -984,9 +983,8 @@ public class Utils {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Spanned fromHtml(String html) {
-		Spanned result;
-		result = Html.fromHtml(html);
+	public static CharSequence fromHtml(String html) {
+		CharSequence result = trimHTML(Html.fromHtml(html));
 		return result;
 	}
 

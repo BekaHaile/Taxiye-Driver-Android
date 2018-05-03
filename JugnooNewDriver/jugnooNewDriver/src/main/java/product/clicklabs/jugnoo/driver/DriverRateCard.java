@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -35,6 +36,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar;
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
+	LinearLayout llBeforeRide, llInRide;
 	
 	NewRateCardActivity activity;
 	private View rootView;
@@ -110,6 +112,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(activity));
 
+		llBeforeRide = (LinearLayout) rootView.findViewById(R.id.llBeforeRide);
+		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
 		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
 		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
 
@@ -117,6 +121,14 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		imageViewHorizontal7 = (ImageView) rootView.findViewById(R.id.imageViewHorizontal7);
 
 		getRateCardDetails(activity);
+
+		relativeLayoutNoData.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getRateCardDetails(activity);
+			}
+		});
+
 		return rootView;
 	}
 
@@ -190,9 +202,13 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				textViewDtoDValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
 			}
 
-			if(!TextUtils.isEmpty(rateCardResponse.getInformation())){
+			llBeforeRide.setVisibility(rateCardResponse.getRates().getPickupChargesEnabled() == 1
+					? View.VISIBLE : View.GONE);
+			llInRide.setVisibility(rateCardResponse.getRates().getInRideChargesEnabled() == 1
+					? View.VISIBLE : View.GONE);
+			if(!TextUtils.isEmpty(rateCardResponse.getRates().getRateCardInformation())){
 				textViewSpecialInfo.setVisibility(View.VISIBLE);
-				textViewSpecialInfo.setText(rateCardResponse.getInformation());
+				textViewSpecialInfo.setText(Utils.fromHtml(rateCardResponse.getRates().getRateCardInformation()));
 			} else {
 				textViewSpecialInfo.setVisibility(View.GONE);
 			}
@@ -208,6 +224,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
 			HomeUtil.putDefaultParams(params);
+			DialogPopup.showLoadingDialog(activity, getString(R.string.loading));
 			RestClient.getApiServices().rateCardDetail(params, new Callback<RateCardResponse>() {
 				@Override
 				public void success(RateCardResponse rateCardResponse, Response response) {
@@ -228,11 +245,13 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 						exception.printStackTrace();
 						relativeLayoutNoData.setVisibility(View.VISIBLE);
 					}
+					DialogPopup.dismissLoadingDialog();
 				}
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
 					relativeLayoutNoData.setVisibility(View.VISIBLE);
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} catch (Exception e) {

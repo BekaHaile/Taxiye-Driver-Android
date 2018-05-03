@@ -23,19 +23,21 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
         android:visibility="visible"
         android:padding="4px">
 
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/llBeforeRide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30px"
-            android:layout_marginTop="30px">
+            android:layout_marginTop="30px"
+            android:orientation="vertical"
+            >
 
 
             <TextView
@@ -47,15 +49,15 @@
                 android:text="@string/before_ride"
                 android:textColor="@color/new_orange"
                 android:textSize="40px"
+                android:layout_marginLeft="30px"
 
                 />
 
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="140px"
-            android:layout_marginLeft="40px"
+            android:layout_marginLeft="45px"
             android:layout_marginRight="40px"
             android:layout_marginBottom="20px"
             android:gravity="center_vertical">
@@ -117,16 +119,16 @@
         </RelativeLayout>
 
         <ImageView
-        android:id="@+id/imageViewHorizontal3"
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:layout_centerVertical="true"
         android:background="@color/darker_grey_v2"/>
 
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llInRide"
             android:layout_width="match_parent"
-            android:layout_height="350px"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30px"
             android:orientation="vertical">
 
@@ -291,14 +293,13 @@
                 android:textSize="24px"
                 />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/darker_grey_v2"
+                android:layout_marginTop="30px"/>
         </LinearLayout>
 
-        <ImageView
-        android:id="@+id/imageViewHorizontal2"
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:layout_centerVertical="true"
-        android:background="@color/darker_grey_v2"/>
 
         <TextView
             android:id="@+id/textViewSpecialInfo"

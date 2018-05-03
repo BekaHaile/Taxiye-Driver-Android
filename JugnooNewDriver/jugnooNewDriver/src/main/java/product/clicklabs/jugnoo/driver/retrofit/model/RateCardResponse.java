@@ -22,9 +22,6 @@ public class RateCardResponse {
 	@SerializedName("rates")
 	@Expose
 	private Rates rates;
-	@SerializedName("information")
-	@Expose
-	private String information;
 
 	/**
 	 *
@@ -80,13 +77,6 @@ public class RateCardResponse {
 		this.rates = rates;
 	}
 
-	public String getInformation() {
-		return information;
-	}
-
-	public void setInformation(String information) {
-		this.information = information;
-	}
 
 	public class Rates extends CurrencyModel{
 
@@ -117,6 +107,15 @@ public class RateCardResponse {
 		@SerializedName("fare_per_km_after_threshold")
 		@Expose
 		private Double getAfterThresholdValue;
+		@SerializedName("rate_card_info")
+		@Expose
+		private String rateCardInformation;
+		@SerializedName("pickup_charges_enabled")
+		@Expose
+		private int pickupChargesEnabled;
+		@SerializedName("in_ride_charges_enabled")
+		@Expose
+		private int inRideChargesEnabled;
 
 		/**
 		 *
@@ -258,6 +257,31 @@ public class RateCardResponse {
 
 		public void setGetAfterThresholdValue(Double getAfterThresholdValue) {
 			this.getAfterThresholdValue = getAfterThresholdValue;
+		}
+
+
+		public String getRateCardInformation() {
+			return rateCardInformation;
+		}
+
+		public void setRateCardInformation(String rateCardInformation) {
+			this.rateCardInformation = rateCardInformation;
+		}
+
+		public int getPickupChargesEnabled() {
+			return pickupChargesEnabled;
+		}
+
+		public void setPickupChargesEnabled(int pickupChargesEnabled) {
+			this.pickupChargesEnabled = pickupChargesEnabled;
+		}
+
+		public int getInRideChargesEnabled() {
+			return inRideChargesEnabled;
+		}
+
+		public void setInRideChargesEnabled(int inRideChargesEnabled) {
+			this.inRideChargesEnabled = inRideChargesEnabled;
 		}
 	}
 
