@@ -13,11 +13,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
+import kotlinx.android.synthetic.main.dialog_edittext.*
+import kotlinx.android.synthetic.main.frag_login_test.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
@@ -26,37 +29,38 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
-import product.clicklabs.jugnoo.driver.utils.DialogPopup.dialog
 import retrofit.RetrofitError
 import java.lang.Exception
 import java.util.*
 
 class LoginFragment : Fragment() {
 
-    lateinit var parentActivity: Activity
+    private lateinit var parentActivity: Activity
     val TAG = LoginFragment::class.simpleName
     lateinit var rootView: View
-    lateinit var spinner: Spinner
     lateinit var selectedLanguage: String
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.frag_login_test, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.frag_login_test, container, false)
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
-        spinner = rootView?.findViewById(R.id.language_spinner) as Spinner
-        val tvCountryCode by bind<TextView>(R.id.tvCountryCode, rootView)
-        val edtPhoneNo by bind<EditText>(R.id.edt_phone, rootView)
-        val btnGenerateOtp by bind<Button>(R.id.btn_gen_otp, rootView)
+
+        rootView.imageView.setOnLongClickListener {
+            confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
+            FlurryEventLogger.debugPressed("no_token")
+            return@setOnLongClickListener false
+        }
 
         val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener {
             override fun onSelectCountry(country: Country?) {
-                tvCountryCode.text = country?.dialCode
+                rootView.tvCountryCode.text = country?.dialCode
             }
         }).build()
-        tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
-        btnGenerateOtp.setOnClickListener(View.OnClickListener {
-            val phoneNo: String = edtPhoneNo.text.trim().toString()
-            val countryCode: String = tvCountryCode.text.trim().toString()
+
+        rootView.tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+        rootView.btnGenerateOtp.setOnClickListener(View.OnClickListener {
+            val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
+            val countryCode: String = rootView.tvCountryCode.text.trim().toString()
             if (phoneNo.length < 0) {
                 return@OnClickListener
             }
@@ -74,9 +78,9 @@ class LoginFragment : Fragment() {
 
 
             val params = HashMap<String, String>()
-            params.put(Constants.KEY_PHONE_NO, countryCode + phoneNo)
-            params.put(Constants.KEY_COUNTRY_CODE, countryCode)
-            params.put(Constants.LOGIN_TYPE, "1")
+            params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
+            params[Constants.KEY_COUNTRY_CODE] = countryCode
+            params[Constants.LOGIN_TYPE] = "1"
             params[Constants.KEY_COUNTRY_CODE] = countryCode
             params["device_token"] = Data.deviceToken
             params["unique_device_id"] = Data.uniqueDeviceId
@@ -128,12 +132,7 @@ class LoginFragment : Fragment() {
                 override fun onDialogClick() {
 
                 }
-
-
-            }
-            )
-
-
+            })
         })
 
         getLanguageList()
@@ -154,14 +153,14 @@ class LoginFragment : Fragment() {
                 if (t?.languageList != null && t.languageList.size > 0) {
                     val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = dataAdapter
-                    spinner.visibility = View.VISIBLE
+                    rootView.language_spinner.adapter = dataAdapter
+                    rootView.language_spinner.visible()
 
                     if (!t.languageList.contains(selectedLanguage)) {
                         t.languageList.add(selectedLanguage)
                     }
-                    spinner.setSelection(t.languageList.indexOf(selectedLanguage))
-                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    rootView.language_spinner.setSelection(t.languageList.indexOf(selectedLanguage))
+                    rootView.language_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onNothingSelected(parent: AdapterView<*>?) {
 
                         }
@@ -172,12 +171,10 @@ class LoginFragment : Fragment() {
                                 (activity as DriverSplashActivity).updateLanguage(selectedLanguage)
                             }
                         }
-
                     }
 
-
                 } else {
-                    spinner.visibility = View.GONE
+                    rootView.language_spinner.gone()
                 }
 
 
@@ -191,53 +188,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun confirmDebugPasswordPopup(mode: DriverDebugOpenMode) {
+        val title = if (DriverDebugOpenMode.DEBUG == mode) "Confirm Debug Password" else "Confirm Register Password"
 
-        val codeDialog = Dialog(parentActivity, android.R.style.Theme_Translucent_NoTitleBar)
-        dialog.window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
-        dialog.setContentView(R.layout.dialog_edittext)
-
-        val frameLayout = dialog.findViewById(R.id.rv) as FrameLayout
-        ASSL(activity, frameLayout, 1134, 720, true)
-
-        val layoutParams = dialog.window!!.attributes
-        layoutParams.dimAmount = 0.6f
-
-        with(dialog) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            setCancelable(true)
-            setCanceledOnTouchOutside(true)
-        }
-
-        val textHead = dialog.findViewById(R.id.textHead) as TextView
-        textHead.typeface = Data.latoRegular(parentActivity)
-
-        val textMessage = dialog.findViewById(R.id.textMessage) as TextView
-        textMessage.typeface = Data.latoRegular(parentActivity)
-
-        val etCode = dialog.findViewById(R.id.etCode) as EditText
-        etCode.typeface = Data.latoRegular(parentActivity)
-
-        textHead.text = if (DriverDebugOpenMode.DEBUG == mode) "Confirm Debug Password" else "Confirm Register Password"
-        textMessage.gone()
-
-        val btnConfirm = dialog.findViewById(R.id.btnConfirm) as Button
-        btnConfirm.typeface = Data.latoRegular(parentActivity)
-        btnConfirm.setOnClickListener {
-            val code = etCode.text.toString().trim()
-
-            if (code.isBlank()) {
-                etCode.requestFocus()
-                etCode.error = "Code can't be empty."
-            } else {
-                if (DriverDebugOpenMode.DEBUG == mode && Data.DEBUG_PASSWORD == code) {
-                    dialog.dismiss()
-                    changeServerLinkPopup()
-
-                }
-            }
-        }
-
-        codeDialog.show()
+        openEditTextDialog(parentActivity,
+                title = title, errorMessage = "Code can't be empty.",
+                onTextValidated = { if (DriverDebugOpenMode.DEBUG == mode && Data.DEBUG_PASSWORD == it) changeServerLinkPopup() })
     }
 
     private fun setServerLink(link: String) {
@@ -262,81 +217,76 @@ class LoginFragment : Fragment() {
         }
 
         DialogPopup.alertPopupThreeButtonsWithListeners(activity, "", textMessage, "LIVE", "DEV", "CUSTOM",
-                { setServerLink(Data.LIVE_SERVER_URL) }, { Data.DEV_SERVER_URL },
+                { setServerLink(Data.LIVE_SERVER_URL) }, { setServerLink(Data.DEV_SERVER_URL) },
                 {
-                    saveCustomURLDialog(parentActivity, InputType.TYPE_CLASS_TEXT, "Custom URL", "Please enter Custom URL", "URL can't be empty.", { code ->
-                        Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, code)
-                        val editor = preferences.edit()
-                        editor.putString(Data.SP_SERVER_LINK, code)
-                        editor.commit()
+                    openEditTextDialog(parentActivity,
+                            inputType = InputType.TYPE_CLASS_TEXT,
+                            defaultEditTextData = Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL),
+                            title = "Custom URL",
+                            message = "Please enter Custom URL",
+                            errorMessage = "URL can't be empty.",
+                            onTextValidated = { link ->
+                                Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, link)
+                                val editor = preferences.edit()
+                                editor.putString(Data.SP_SERVER_LINK, link)
+                                editor.commit()
 
-                        MyApplication.getInstance().initializeServerURLAndRestClient(activity)
-                        dialog.dismiss()
-                    })
+                                MyApplication.getInstance().initializeServerURLAndRestClient(activity)
+                            })
                 }, true, true)
+
+
     }
 
-    private fun saveCustomURLDialog(activity: Activity, inputType: Int, title: String, message: String, errorMessage: String, onClick: (String) -> Unit) {
+    private fun openEditTextDialog(activity: Activity,
+                                   inputType: Int = InputType.TYPE_CLASS_NUMBER,
+                                   defaultEditTextData: String = "", title: String = "", message: String = "",
+                                   errorMessage: String = "", onTextValidated: ((String) -> Unit)? = null) {
+
 
         val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
-        dialog.window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
-        dialog.setContentView(R.layout.dialog_edittext)
 
-        val layoutParams = dialog.window!!.attributes
-        layoutParams.dimAmount = 0.6f
-        dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
+        with(dialog) {
+            window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
+            setContentView(R.layout.dialog_edittext)
+            val layoutParams = dialog.window!!.attributes
+            layoutParams.dimAmount = 0.6f
 
+            window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setCancelable(true)
+            setCanceledOnTouchOutside(true)
 
-        val textHead = dialog.findViewById(R.id.textHead) as TextView
-        textHead.typeface = Data.latoRegular(activity)
-        val textMessage = dialog.findViewById(R.id.textMessage) as TextView
-        textMessage.typeface = Data.latoRegular(activity)
-        val etCode = dialog.findViewById(R.id.etCode) as EditText
-        etCode.typeface = Data.latoRegular(activity)
+            textHead.typeface = Data.latoRegular(activity)
+            textMessage.typeface = Data.latoRegular(activity)
+            etCode.typeface = Data.latoRegular(activity)
 
-        etCode.inputType = inputType
-        etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
+            etCode.inputType = inputType
+            etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
 
-        etCode.setText(Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL))
+            etCode.setText(defaultEditTextData)
 
-        val frameLayout = dialog.findViewById(R.id.rv) as FrameLayout
-        ASSL(activity, frameLayout, 1134, 720, true)
+            ASSL(activity, rv, 1134, 720, true)
+            rv.setOnClickListener { dismiss() }
 
+            textHead.text = title
+            if (message.isBlank()) textMessage.gone() else textMessage.text = message
 
-        textHead.text = title
-        if (message.isBlank()) textMessage.gone() else textMessage.text = message
-
-        val btnConfirm = dialog.findViewById(R.id.btnConfirm) as Button
-        btnConfirm.typeface = Data.latoRegular(activity)
-
-        btnConfirm.setOnClickListener {
-            val code = etCode.text.toString().trim()
-            if ("".equals(code, ignoreCase = true)) {
-                etCode.requestFocus()
-                etCode.error = errorMessage
-            } else {
-                onClick.invoke(code)
-            }
-        }
-
-
-        etCode.setOnEditorActionListener({ _, actionId, _ ->
-            val result = actionId and EditorInfo.IME_MASK_ACTION
-            when (result) {
-                EditorInfo.IME_ACTION_DONE -> btnConfirm.performClick()
-
-                EditorInfo.IME_ACTION_NEXT -> {
+            btnConfirm.typeface = Data.latoRegular(activity)
+            btnConfirm.setOnClickListener {
+                val code = etCode.text.toString().trim()
+                if ("".equals(code, ignoreCase = true)) {
+                    etCode.requestFocus()
+                    etCode.error = errorMessage
+                } else {
+                    onTextValidated?.invoke(code)
+                    dismiss()
                 }
             }
-            true
-        })
 
-        dialog.findViewById(R.id.rv).setOnClickListener { dialog.dismiss() }
+            show()
+            etCode.setSelection(etCode.text.length)
 
-        dialog.show()
-        etCode.setSelection(etCode.text.length)
+        }
     }
 
     override fun onAttach(context: Context?) {

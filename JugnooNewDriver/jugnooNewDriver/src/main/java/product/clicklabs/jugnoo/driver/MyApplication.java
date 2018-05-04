@@ -46,7 +46,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        Fabric.with(this, new Crashlytics());
+      //  Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {

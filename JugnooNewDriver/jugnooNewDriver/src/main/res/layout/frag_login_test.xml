@@ -14,7 +14,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:background="@null"
         android:popupBackground="@drawable/background_white_rounded_orange_bordered"
         android:textAlignment="center"
         android:visibility="visible"
@@ -83,7 +82,7 @@
         app:layout_constraintTop_toTopOf="@id/glPhone"/>
 
     <EditText
-        android:id="@+id/edt_phone"
+        android:id="@+id/edtPhoneNo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -107,7 +106,7 @@
 
 
     <Button
-        android:id="@+id/btn_gen_otp"
+        android:id="@+id/btnGenerateOtp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
