@@ -622,16 +622,16 @@ public class DialogPopup {
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
                     listenerPositive.onClick(view);
+					dialog.dismiss();
                 }
             });
 
             btnNeutral.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
                     listenerNeutral.onClick(view);
+					dialog.dismiss();
                 }
             });
 
@@ -639,8 +639,8 @@ public class DialogPopup {
 
                 @Override
                 public void onClick(View v) {
-                    dialog.dismiss();
                     listenerNegative.onClick(v);
+					dialog.dismiss();
                 }
             });
 
