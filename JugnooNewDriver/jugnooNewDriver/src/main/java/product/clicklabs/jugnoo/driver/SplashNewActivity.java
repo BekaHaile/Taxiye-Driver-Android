@@ -1938,7 +1938,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
 			if(bundleHomePush != null)
 			intent.putExtras(bundleHomePush);
-//			intent.putExtra(Constants.FUGU_CHAT_BUNDLE,getIntent().getExtras());
+			intent.putExtra(Constants.FUGU_CHAT_BUNDLE,getIntent().getExtras());
 			if(HomeActivity.activity!=null){
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);

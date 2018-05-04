@@ -64,6 +64,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.fugu.FuguConfig;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -1326,7 +1328,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
+					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
 
 
 				}
@@ -2175,7 +2177,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(Prefs.with(HomeActivity.this).getInt(Constants.CHAT_SUPPORT,0) == 1){
-				relativeLayoutChatSupport.setVisibility(View.GONE);
+				relativeLayoutChatSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutChatSupport.setVisibility(View.GONE);
 			}
@@ -2261,11 +2263,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			getInfoTilesAsync(HomeActivity.this);
 		}
 
-//		try {
-//			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
