@@ -2,9 +2,7 @@ package product.clicklabs.jugnoo.driver.apis;
 
 import android.os.AsyncTask;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -12,8 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -73,7 +71,7 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 	@Override
 	protected String doInBackground(String... params) {
 		try {
-			Response response = RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+			Response response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
 			return new String(((TypedByteArray)response.getBody()).getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -180,6 +180,7 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -2368,7 +2369,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			firebaseJugnooDeliveryHomeEvent(ITEM_RIDE + "_" + pos);
 		} else if (infoTileResponse.getDeepIndex() == 2) {
 			Calendar c = Calendar.getInstance();
-			System.out.println("Current time => " + c.getTime());
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedDate = df.format(c.getTime());
 			Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
@@ -6121,7 +6121,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						|| MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
 					double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
 					try {
-						Response responseR = RestClient.getGoogleApiServices().getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
+						Response responseR = GoogleRestApis.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
 								dropLatitude + "," + dropLongitude, false, "driving", false);
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 						JSONObject jsonObject = new JSONObject(response);
@@ -7609,7 +7609,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.v("displacement", "" + displacement);
 					Log.v("displacement speed", "" + endDisplacementSpeed);
 
-					Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(source.latitude + "," + source.longitude,
+					Response responseR = GoogleRestApis.getDistanceMatrix(source.latitude + "," + source.longitude,
 							destination.latitude + "," + destination.longitude, "EN", false, false);
 					String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 

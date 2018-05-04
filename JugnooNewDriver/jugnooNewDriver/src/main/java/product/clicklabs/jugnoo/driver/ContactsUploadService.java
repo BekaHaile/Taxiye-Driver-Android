@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,14 +18,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.ContactBean;
 import product.clicklabs.jugnoo.driver.utils.ContactsEntityBean;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -215,7 +216,6 @@ public class ContactsUploadService extends IntentService {
 
         set.addAll(list);
 
-        System.out.println("\n***** After removing duplicates *******\n");
 
         final ArrayList<ContactBean> newList = new ArrayList<ContactBean>(set);
         Log.v("newList size", "--->" + newList.size());
@@ -329,7 +329,6 @@ public class ContactsUploadService extends IntentService {
                     contactsObj.put("all_contacts", jsonArray);
 
                     String jsonStr = contactsObj.toString();
-                    System.out.println("jsonString: " + jsonStr);
 
 
                     // Call Api

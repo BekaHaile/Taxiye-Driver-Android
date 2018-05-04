@@ -638,7 +638,6 @@ public class Database2 {                                                        
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_BEARING, "" + location.getBearing());
 			long rowId = database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
-			Log.e("insert successful", "= rowId =" + rowId);
 
 		} catch (Exception e) {
 			try {

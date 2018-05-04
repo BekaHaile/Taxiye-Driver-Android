@@ -64,7 +64,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
@@ -116,7 +116,7 @@ public class RestClient {
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint("http://maps.googleapis.com/maps/api")
+				.setEndpoint("https://maps.googleapis.com")
 				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
@@ -181,7 +181,6 @@ public class RestClient {
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-//				.setEndpoint("https://test.jugnoo.in:8095")
 				.setEndpoint("https://prod-autos-api.jugnoo.in:4010")
 				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)

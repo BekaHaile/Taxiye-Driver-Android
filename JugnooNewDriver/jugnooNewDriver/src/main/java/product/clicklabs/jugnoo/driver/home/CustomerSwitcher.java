@@ -1,12 +1,10 @@
 package product.clicklabs.jugnoo.driver.home;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
