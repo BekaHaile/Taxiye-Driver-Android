@@ -167,8 +167,9 @@ class LoginFragment : Fragment() {
 
                         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                             val item = parent?.getItemAtPosition(position).toString()
-                            if (!item.equals(selectedLanguage, ignoreCase = true)) {
-                                (activity as DriverSplashActivity).updateLanguage(selectedLanguage)
+                            if (!item.equals(selectedLanguage, true)) {
+                                selectedLanguage = item
+                                (activity as DriverSplashActivity).updateLanguage(item)
                             }
                         }
                     }
@@ -176,8 +177,6 @@ class LoginFragment : Fragment() {
                 } else {
                     rootView.language_spinner.gone()
                 }
-
-
             }
 
             override fun onError(t: DriverLanguageResponse?, message: String?, flag: Int): Boolean {
