@@ -20,7 +20,7 @@ import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.dialog_edittext.*
-import kotlinx.android.synthetic.main.frag_login_test.view.*
+import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.frag_login_test, container, false)
+        rootView = inflater.inflate(R.layout.frag_login, container, false)
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
 
         rootView.imageView.setOnLongClickListener {
@@ -51,11 +51,7 @@ class LoginFragment : Fragment() {
             return@setOnLongClickListener false
         }
 
-        val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener {
-            override fun onSelectCountry(country: Country?) {
-                rootView.tvCountryCode.text = country?.dialCode
-            }
-        }).build()
+        val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
 
         rootView.tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
         rootView.btnGenerateOtp.setOnClickListener(View.OnClickListener {
@@ -91,12 +87,7 @@ class LoginFragment : Fragment() {
             params["latitude"] = "" + Data.latitude
             params["longitude"] = "" + Data.longitude
             params["login_type"] = Data.LOGIN_TYPE
-            if (Utils.isDeviceRooted()) {
-                params["device_rooted"] = "1"
-            } else {
-                params["device_rooted"] = "0"
-            }
-
+            params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
 
 
             Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
@@ -291,5 +282,10 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         parentActivity = context as Activity
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        ( parentActivity as DriverSplashActivity).setToolbarVisibility(false)
+        super.onHiddenChanged(hidden)
     }
 }

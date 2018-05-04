@@ -1,12 +1,13 @@
 package product.clicklabs.jugnoo.driver.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -28,22 +29,23 @@ import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
-import java.util.HashMap
+import java.util.*
 
 
-class OTPConfirmFragment:Fragment() {
+class OTPConfirmFragment : Fragment() {
 
-    private lateinit var countryCode:String
-    private  var missedCallNumber:String?=null
-    private lateinit var phoneNumber:String
-    private var otpDialog:OtpDialog?=null
-    private var countDownTimer:CountDownTimer?=null
+    private lateinit var countryCode: String
+    private var missedCallNumber: String? = null
+    private lateinit var phoneNumber: String
+    private var otpDialog: OtpDialog? = null
+    private var countDownTimer: CountDownTimer? = null
 
-    private lateinit var tvResendOTP:TextView
-    private lateinit var btnSubmit:Button
-    private lateinit var tvCall:TextView
-    private lateinit var edtOTP:EditText
-    private lateinit var labelNumber:TextView
+    private lateinit var tvResendOTP: TextView
+    private lateinit var btnSubmit: Button
+    private lateinit var tvCall: TextView
+    private lateinit var edtOTP: EditText
+    private lateinit var labelNumber: TextView
+    private lateinit var parentActivity : Activity
 
 
     companion object {
@@ -52,13 +54,13 @@ class OTPConfirmFragment:Fragment() {
         const val KEY_COUNTRY_CODE = "country_code"
         const val MISSED_CALL_NUMBER = "miss_call_number"
 
-        fun newInstance(phoneNumber: String,countryCode: String,missedCallNumber: String?): OTPConfirmFragment{
+        fun newInstance(phoneNumber: String, countryCode: String, missedCallNumber: String?): OTPConfirmFragment {
             val otpConfirmFragment = OTPConfirmFragment()
-            val bundle= Bundle()
-            bundle.putString(KEY_PHONE_NUMBER,phoneNumber)
-            bundle.putString(KEY_COUNTRY_CODE,countryCode)
-            if(missedCallNumber!=null) bundle.putString(MISSED_CALL_NUMBER,missedCallNumber)
-            otpConfirmFragment.arguments=bundle
+            val bundle = Bundle()
+            bundle.putString(KEY_PHONE_NUMBER, phoneNumber)
+            bundle.putString(KEY_COUNTRY_CODE, countryCode)
+            if (missedCallNumber != null) bundle.putString(MISSED_CALL_NUMBER, missedCallNumber)
+            otpConfirmFragment.arguments = bundle
             return otpConfirmFragment
         }
 
@@ -69,17 +71,16 @@ class OTPConfirmFragment:Fragment() {
         super.onCreate(savedInstanceState)
         phoneNumber = arguments.getString(KEY_PHONE_NUMBER)
         countryCode = arguments.getString(KEY_COUNTRY_CODE)
-        if(arguments.containsKey(MISSED_CALL_NUMBER))missedCallNumber = arguments.getString(MISSED_CALL_NUMBER)
+        if (arguments.containsKey(MISSED_CALL_NUMBER)) missedCallNumber = arguments.getString(MISSED_CALL_NUMBER)
     }
-
-
-
-
 
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.frag_otp_confirm,container,false)
+        val rootView = inflater?.inflate(R.layout.frag_otp_confirm, container, false)
+
+        (parentActivity as DriverSplashActivity).setToolbarText(getString(R.string.verification))
+        (parentActivity as DriverSplashActivity).setToolbarVisibility(true)
 
         btnSubmit = rootView?.findViewById(R.id.btn_submit) as Button
         tvResendOTP = rootView.findViewById(R.id.tv_resend_otp) as TextView
@@ -88,31 +89,33 @@ class OTPConfirmFragment:Fragment() {
         edtOTP = rootView.findViewById(R.id.edt_otp_number) as EditText
 
         labelNumber.text = "$countryCode $phoneNumber"
-        tvResendOTP.setPaintFlags(labelNumber.getPaintFlags() with  (Paint.UNDERLINE_TEXT_FLAG));
+        tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
 
-        tvResendOTP.setOnClickListener({generateOTP()})
-        btnSubmit.setOnClickListener({verifyOTP(edtOTP.text.toString())})
+        tvResendOTP.setOnClickListener({ generateOTP() })
+        btnSubmit.setOnClickListener({ verifyOTP(edtOTP.text.toString()) })
         tvCall.setOnClickListener({
-            if (missedCallNumber!=null && missedCallNumber!!.length>0) {
+            if (missedCallNumber != null && missedCallNumber!!.isNotEmpty()) {
 
                 DialogPopup.alertPopupTwoButtonsWithListeners(this@OTPConfirmFragment.activity, "",
                         resources.getString(R.string.give_missed_call_dialog_text),
                         resources.getString(R.string.call_us),
                         resources.getString(R.string.cancel),
                         {
-                           /* btnLogin.setVisibility(View.VISIBLE)
-                            layoutResendOtp.setVisibility(View.GONE)
-                            btnReGenerateOtp.setVisibility(View.GONE)*/
+                            /* btnLogin.setVisibility(View.VISIBLE)
+                             layoutResendOtp.setVisibility(View.GONE)
+                             btnReGenerateOtp.setVisibility(View.GONE)*/
                             Utils.openCallIntent(this@OTPConfirmFragment.activity, missedCallNumber)
-                        }, { }, false, false) } })
-        labelNumber.setOnTouchListener(object: View.OnTouchListener {
+                        }, { }, false, false)
+            }
+        })
+        labelNumber.setOnTouchListener(object : View.OnTouchListener {
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
 
-                val DRAWABLE_RIGHT = 2;
+                val DRAWABLE_RIGHT = 2
 
-                if(event?.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(event.getRawX() >= (labelNumber.getRight() - labelNumber.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                if (event?.action == MotionEvent.ACTION_DOWN) {
+                    if (event.rawX >= (labelNumber.right - labelNumber.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
 
                         activity.onBackPressed()
 
@@ -123,7 +126,7 @@ class OTPConfirmFragment:Fragment() {
                 return false
             }
 
-        });
+        })
 
 
         showCountDownPopup()
@@ -134,7 +137,7 @@ class OTPConfirmFragment:Fragment() {
     private fun showCountDownPopup() {
         val builder = OtpDialog.Builder(activity)
                 .purpose(AppConstants.OperationType.CALL)
-                .isNumberExist(missedCallNumber!=null)
+                .isNumberExist(missedCallNumber != null)
                 .listener({ purpose, backpack ->
                     if (purpose == AppConstants.OperationType.CALL) {
 
@@ -197,8 +200,7 @@ class OTPConfirmFragment:Fragment() {
     }
 
 
-
-    private fun verifyOTP(otp:String){
+    private fun verifyOTP(otp: String) {
 
         if (AppStatus.getInstance(activity.applicationContext).isOnline(activity.applicationContext)) {
             val dialogLoading = DialogPopup.showLoadingDialog(activity, resources.getString(R.string.loading), true)
@@ -212,7 +214,7 @@ class OTPConfirmFragment:Fragment() {
             val params = HashMap<String, String>()
 
 
-            params["phone_no"] = countryCode+phoneNumber
+            params["phone_no"] = countryCode + phoneNumber
             params["login_otp"] = otp
             params["device_token"] = Data.deviceToken
             params["device_type"] = Data.DEVICE_TYPE
@@ -271,7 +273,7 @@ class OTPConfirmFragment:Fragment() {
                         val flag = jObj.getInt("flag")
                         val message = JSONParser.getServerMessage(jObj)
 
-                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag,null)) {
+                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                             if (ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", message)
                             } else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {
@@ -326,7 +328,7 @@ class OTPConfirmFragment:Fragment() {
         }
     }
 
-    private fun generateOTP(){
+    private fun generateOTP() {
 
         val params = HashMap<String, String>()
         params.put(Constants.KEY_PHONE_NO, countryCode + phoneNumber)
@@ -334,7 +336,7 @@ class OTPConfirmFragment:Fragment() {
         params.put(Constants.LOGIN_TYPE, "1")
         Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
         Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-        ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP,object : APICommonCallback<RegisterScreenResponse>(){
+        ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }
@@ -344,11 +346,11 @@ class OTPConfirmFragment:Fragment() {
             }
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
-                if(flag==ApiResponseFlags.ACTION_COMPLETE.ordinal){
-                   missedCallNumber = t?.missedCallNumber
+                if (flag == ApiResponseFlags.ACTION_COMPLETE.ordinal) {
+                    missedCallNumber = t?.missedCallNumber
                     showCountDownPopup()
-                }else{
-                    DialogPopup.alertPopup(activity,"",message)
+                } else {
+                    DialogPopup.alertPopup(activity, "", message)
                 }
 
 
@@ -375,8 +377,10 @@ class OTPConfirmFragment:Fragment() {
     }
 
 
-
-
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        parentActivity = context as Activity
+    }
 
 }
 
