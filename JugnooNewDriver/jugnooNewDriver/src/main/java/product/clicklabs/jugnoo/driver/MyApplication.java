@@ -19,6 +19,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
@@ -46,6 +47,7 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         mInstance = this;
         FirebaseApp.initializeApp(this);
+        Paper.init(this);
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.

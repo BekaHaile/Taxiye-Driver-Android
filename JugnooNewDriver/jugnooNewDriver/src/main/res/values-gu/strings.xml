@@ -561,7 +561,7 @@
     <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
     <string name="this_week">આ અઠવાડિયે</string>
     <string name="outstanding_amount1">બાદ બાકી થઇ ગયું </string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">અંદાજિત ચૂકવણી</string>
     <string name="this_week_cap">આ અઠવાડિયે</string>
