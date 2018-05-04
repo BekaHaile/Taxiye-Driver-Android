@@ -709,7 +709,7 @@
 
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
     <string name="upload_again">Upload Again</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
 
     <string name="ride_history_cap">RIDE HISTORY</string>

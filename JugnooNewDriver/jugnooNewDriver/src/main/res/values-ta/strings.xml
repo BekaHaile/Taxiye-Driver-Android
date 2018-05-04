@@ -719,7 +719,7 @@
     <string name="pls_enter_some_msg">தயவு செய்து பிரச்சினை நுழைக்க</string>
 
     <string name="self_enroled">Self Enroled</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="delivery_fare">Delivery Fare</string>
     <string name="return_subsidy">Return Subsidy</string>

@@ -184,7 +184,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
 				textViewDifferentialPricingEnable.setText(getResources().getString(R.string.diffrential_pricing_rate,
 						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance()),
-						String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue())));
+						Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue()))));
 			}
 
 

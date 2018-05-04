@@ -567,7 +567,7 @@
     <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
     <string name="this_week">এই সপ্তাহ</string>
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">আনুমানিক পৰিশোধ</string>
     <string name="this_week_cap">এই সপ্তাহ</string>

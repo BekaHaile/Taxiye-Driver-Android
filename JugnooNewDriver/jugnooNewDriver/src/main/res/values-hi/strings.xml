@@ -691,7 +691,7 @@
 	<string name="this_week_cap">इस सप्ताह</string>
 	<string name="ride_history_cap">सवारी इतिहास</string>
 
-	<string name="diffrential_pricing_rate">बाद %1$s िमी, दूरी शुल्क देना होगा \u20B9 %2$s/किमी</string>
+	<string name="diffrential_pricing_rate">बाद %1$s िमी, दूरी शुल्क देना होगा %2$s/किमी</string>
 
 	<string name="payment_sent">भुगतान भेज दिया</string>
 	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
