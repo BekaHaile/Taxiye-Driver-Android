@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -128,8 +127,7 @@ public class MapUtils {
 				language = "en";
 			}
 
-			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
-					language, false);
+			Response response = GoogleRestApis.geocode(latLng.latitude + "," + latLng.longitude, language);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
 
