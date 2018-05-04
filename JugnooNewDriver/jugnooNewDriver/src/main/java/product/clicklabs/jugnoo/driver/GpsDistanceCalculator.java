@@ -27,9 +27,8 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -424,7 +423,6 @@ public class GpsDistanceCalculator {
 	private synchronized boolean addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation) {
 		try {
 			final double displacement = MapUtils.distance(lastLatLng, currentLatLng);
-			Log.e("Min disp",Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)));
 			if (Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)))) == 1
 					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1) {
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
@@ -529,7 +527,7 @@ public class GpsDistanceCalculator {
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
-				Response response = RestClient.getGoogleApiServices().getDirections(source.latitude + "," + source.longitude,
+				Response response = GoogleRestApis.getDirections(source.latitude + "," + source.longitude,
 						destination.latitude + "," + destination.longitude, false, "driving", false);
 				return new String(((TypedByteArray) response.getBody()).getBytes());
 			} catch (Exception e) {
@@ -719,7 +717,6 @@ public class GpsDistanceCalculator {
 
 		try {
 			long waitTimeFromSP = Long.parseLong(Prefs.with(context).getString(SPLabels.WAIT_TIME, "0"));
-			Log.e("invalid long",Database2.getInstance(context).getWaitTimeFromDB());
 			long waitTimeFromDB = Long.parseLong(Database2.getInstance(context).getWaitTimeFromDB());
 
 			if (waitTimeFromDB >= waitTimeFromSP) {

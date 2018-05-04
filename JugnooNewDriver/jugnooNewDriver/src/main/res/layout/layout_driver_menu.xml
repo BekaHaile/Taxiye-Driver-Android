@@ -471,9 +471,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="84px"
                 android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false"
-                android:visibility="gone"
-                >
+                android:splitMotionEvents="false">
 
                 <ImageView
                     android:id="@+id/imageViewChatSupportIcon"

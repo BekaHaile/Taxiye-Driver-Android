@@ -37,8 +37,7 @@ public class AppStatus {
 					&& networkInfo.isConnected();
 			return connected;
 
-		} catch (Exception e) {
-			System.out.println("CheckConnectivity Exception: " + e.getMessage());
+		} catch (Exception ignored) {
 		}
 		return connected;
 	}

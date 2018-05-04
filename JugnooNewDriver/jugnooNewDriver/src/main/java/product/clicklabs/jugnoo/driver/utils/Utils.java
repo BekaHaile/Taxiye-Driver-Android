@@ -33,7 +33,6 @@ import android.os.Environment;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +88,7 @@ public class Utils {
 	 * -1 if d1 < d2 &
 	 * 0 if d1 == d2
 	 */
+	private static final  String TAG = Utils.class.getName();
 	public static int compareDouble(double d1, double d2) {
 		if (d1 == d2) {
 			return 0;
@@ -299,6 +299,10 @@ public class Utils {
 	}
 
 	private static boolean deleteDir(File dir) {
+		if (dir != null && (dir.getName().equals("lib") || dir.getName().contains("io.paperdb"))){
+			Log.i(TAG,"Attempt to Delete "+dir+" stopped!");
+			return true;
+		}
 		if (dir != null && dir.isDirectory()) {
 			String[] children = dir.list();
 			for (String aChildren : children) {
@@ -827,9 +831,11 @@ public class Utils {
 			if (appDir.exists()) {
 				String[] children = appDir.list();
 				for (String s : children) {
-					if (!s.equals("lib")) {
+					if (!s.equals("lib") && !s.contains("io.paperdb")) {
 						deleteDir(new File(appDir, s));
 						Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+					}else  {
+						Log.i(TAG,"Attempt to Delete "+ s + " stopped!");
 					}
 				}
 			}
@@ -984,9 +990,8 @@ public class Utils {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Spanned fromHtml(String html) {
-		Spanned result;
-		result = Html.fromHtml(html);
+	public static CharSequence fromHtml(String html) {
+		CharSequence result = trimHTML(Html.fromHtml(html));
 		return result;
 	}
 

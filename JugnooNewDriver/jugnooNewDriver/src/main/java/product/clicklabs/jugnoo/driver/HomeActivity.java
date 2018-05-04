@@ -64,6 +64,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.fugu.FuguConfig;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -180,6 +182,7 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -1325,7 +1328,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
+					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
 
 
 				}
@@ -2174,7 +2177,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(Prefs.with(HomeActivity.this).getInt(Constants.CHAT_SUPPORT,0) == 1){
-				relativeLayoutChatSupport.setVisibility(View.GONE);
+				relativeLayoutChatSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutChatSupport.setVisibility(View.GONE);
 			}
@@ -2260,11 +2263,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			getInfoTilesAsync(HomeActivity.this);
 		}
 
-//		try {
-//			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -2368,7 +2371,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			firebaseJugnooDeliveryHomeEvent(ITEM_RIDE + "_" + pos);
 		} else if (infoTileResponse.getDeepIndex() == 2) {
 			Calendar c = Calendar.getInstance();
-			System.out.println("Current time => " + c.getTime());
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedDate = df.format(c.getTime());
 			Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
@@ -6121,7 +6123,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						|| MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
 					double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
 					try {
-						Response responseR = RestClient.getGoogleApiServices().getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
+						Response responseR = GoogleRestApis.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
 								dropLatitude + "," + dropLongitude, false, "driving", false);
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 						JSONObject jsonObject = new JSONObject(response);
@@ -7609,7 +7611,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.v("displacement", "" + displacement);
 					Log.v("displacement speed", "" + endDisplacementSpeed);
 
-					Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(source.latitude + "," + source.longitude,
+					Response responseR = GoogleRestApis.getDistanceMatrix(source.latitude + "," + source.longitude,
 							destination.latitude + "," + destination.longitude, "EN", false, false);
 					String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 
