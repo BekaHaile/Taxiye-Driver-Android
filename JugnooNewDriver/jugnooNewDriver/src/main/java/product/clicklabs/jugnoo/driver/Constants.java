@@ -248,5 +248,6 @@ public interface Constants {
 	String LOGIN_TYPE = "login_type";
 	String KEY_VEHICLE_TYPES = "vehicle_types";
 
+	String INTENT_ACTION_NEW_MESSAGE = "product.clicklabs.jugnoo.driver.INTENT_ACTION_NEW_MESSAGE";
 }
 

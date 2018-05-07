@@ -2,12 +2,15 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
+import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -390,6 +393,25 @@ class OTPConfirmFragment : Fragment() {
         super.onAttach(context)
         parentActivity = context as Activity
     }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(activity).registerReceiver(broadcastReceiver,
+                IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(broadcastReceiver)
+    }
+
+    private var broadcastReceiver:BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if(intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
+                retrieveOTPFromSMS(intent)
+            }
+        }
+    };
 
 }
 
