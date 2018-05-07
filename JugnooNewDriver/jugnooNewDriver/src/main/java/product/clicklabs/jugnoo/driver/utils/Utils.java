@@ -1155,7 +1155,7 @@ public class Utils {
 	}
 
 	public static boolean validPhoneNumber(String phoneNo){
-		if(phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
+		if(phoneNo != null && phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
 			return isPhoneValid(phoneNo);
 		}
 		else{
