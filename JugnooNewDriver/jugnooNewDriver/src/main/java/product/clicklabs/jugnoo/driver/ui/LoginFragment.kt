@@ -116,13 +116,6 @@ class LoginFragment : Fragment() {
                     return false
                 }
 
-                override fun onFailure(error: RetrofitError?): Boolean {
-                    return false
-                }
-
-                override fun onDialogClick() {
-
-                }
             })
         })
 
@@ -137,7 +130,7 @@ class LoginFragment : Fragment() {
         params["android_version"] = android.os.Build.VERSION.RELEASE
         HomeUtil.putDefaultParams(params)
 
-        ApiCommonKotlin<DriverLanguageResponse>(activity).execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
+        ApiCommonKotlin<DriverLanguageResponse>(activity).showLoader(false).execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
             override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
 

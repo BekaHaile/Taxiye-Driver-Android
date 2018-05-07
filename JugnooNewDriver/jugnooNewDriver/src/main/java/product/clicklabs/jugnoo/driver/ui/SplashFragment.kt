@@ -37,11 +37,12 @@ import java.util.*
 
 class SplashFragment() : Fragment() {
 
-    val TAG = SplashFragment::class.simpleName;
+
+
+    private val TAG = SplashFragment::class.simpleName;
     private val intentFilter = IntentFilter();
     private var waitingForDeviceToken = false;
     private val handler = Handler()
-    private val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
     var mListener:InteractionListener?=null;
     private lateinit var parentActivity : Activity
 
@@ -49,17 +50,12 @@ class SplashFragment() : Fragment() {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
     }
 
-
     companion object {
-
-
-        fun newInstance(arguments: Bundle?): SplashFragment{
-            val splashFragment = SplashFragment();
-            splashFragment.arguments=arguments;
-            return splashFragment;
-        }
+        private const val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
 
     }
+
+
 
     var deviceTokenReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -67,7 +63,7 @@ class SplashFragment() : Fragment() {
             if (intent.action != null && intent.action == Constants.ACTION_DEVICE_TOKEN_UPDATED) {
                 Log.i(TAG, "Firebase service emitted deviceToken");
 
-                 checkForDeviceToken(true);
+                 checkForDeviceToken(false);
 
             }
 
@@ -330,10 +326,11 @@ class SplashFragment() : Fragment() {
                     Log.e(TAG,"DeviceToken Receiver was not registered")
                 }
                 handler.removeCallbacksAndMessages(null)
-                waitingForDeviceToken = false
+
             }
 
             if(waitingForDeviceToken || !calledFromOnResume){
+                waitingForDeviceToken = false
                 pushAPIs(this@SplashFragment.activity);
 
             }

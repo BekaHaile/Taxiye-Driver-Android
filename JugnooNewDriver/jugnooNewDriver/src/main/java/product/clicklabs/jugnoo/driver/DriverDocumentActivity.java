@@ -130,11 +130,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
-		if(!inSideApp) {
+		/*if(!inSideApp) {
 			JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
 			Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
 			startActivity(intent);
-		}
+		}*/
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}

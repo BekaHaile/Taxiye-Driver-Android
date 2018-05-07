@@ -51,6 +51,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvVehicleTypes"
             android:layout_width="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/spacing_grid_recycler_view"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
@@ -101,7 +103,7 @@
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse"/>
 
     </android.support.constraint.ConstraintLayout>

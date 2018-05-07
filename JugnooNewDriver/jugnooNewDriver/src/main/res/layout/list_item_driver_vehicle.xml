@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/ivVehicleTick"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:src="@drawable/delivery_green_tick"
         app:layout_constraintTop_toBottomOf="@+id/ivVehicle"
         app:layout_constraintStart_toEndOf="@+id/ivVehicle"

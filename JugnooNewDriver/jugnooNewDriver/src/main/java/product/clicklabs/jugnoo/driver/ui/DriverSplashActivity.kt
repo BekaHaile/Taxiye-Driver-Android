@@ -79,7 +79,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (savedInstanceState == null) {
 
             supportFragmentManager.inTransaction {
-                add(container.id, SplashFragment.newInstance(Bundle()), SplashFragment::class.simpleName)
+                add(container.id, SplashFragment())
 
             }
 
@@ -132,7 +132,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         }
     }
-
     fun openDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransaction {
             add(container.id, DriverSetupFragment.newInstance(accessToken),

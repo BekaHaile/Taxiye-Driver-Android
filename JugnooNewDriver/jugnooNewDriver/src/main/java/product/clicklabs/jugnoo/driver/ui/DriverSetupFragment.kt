@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.ui
 
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,7 +27,7 @@ import product.clicklabs.jugnoo.driver.utils.*
 
 
 class DriverSetupFragment : Fragment() {
-    private lateinit var parentActivity: Activity
+    private lateinit var parentActivity: DriverSplashActivity
 
     private lateinit var accessToken: String
     private lateinit var cityId: String
@@ -69,16 +68,19 @@ class DriverSetupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // TODO change screen name
-        (parentActivity as DriverSplashActivity).setToolbarText(getString(R.string.verification))
-        (parentActivity as DriverSplashActivity).setToolbarVisibility(true)
+        parentActivity.setToolbarText(getString(R.string.verification))
+        parentActivity.setToolbarVisibility(true)
 
-        // TODO check fonts earlier, replace latoLight with mavenLight(missing)
+        // TODO check fonts , replace latoLight with mavenLight(missing)
         (view?.findViewById(R.id.tvEnterName) as TextView?)?.typeface = Fonts.latoLight(activity)
         editTextName = view?.findViewById(R.id.editTextName) as EditText
         editTextName.typeface = Fonts.mavenRegular(activity)
         (view.findViewById(R.id.tvSelectVehicle) as TextView?)?.typeface = Fonts.latoLight(activity)
+
         rvVehicleTypes = view.findViewById(R.id.rvVehicleTypes) as RecyclerView
         rvVehicleTypes.layoutManager = GridLayoutManager(activity, 3)
+        rvVehicleTypes.addItemDecoration(ItemOffsetDecoration(parentActivity, R.dimen.spacing_grid_recycler_view));
+
         bContinue = view.findViewById(R.id.bContinue) as Button
         bContinue.typeface = Fonts.mavenRegular(activity)
         bCancel = view.findViewById(R.id.bCancel) as Button
@@ -135,7 +137,6 @@ class DriverSetupFragment : Fragment() {
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
                     Log.d("", t.message)
-
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
                             openDocumentUploadActivity()
@@ -145,20 +146,13 @@ class DriverSetupFragment : Fragment() {
                             DialogPopup.alertPopup(activity, "", message)
                         }
 
-                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() ->{}
-//                            // TODO navigate back to login screen
+                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal()  ->{
+                            DialogPopup.alertPopupWithListener(activity, "", message, {
+                                parentActivity.openPhoneLoginScreen()
+                                parentActivity.setToolbarVisibility(false)
+                         })
 
-//                            DialogPopup.alertPopupWithListener(activity, "", message, {
-//                                (parentActivity as DriverSplashActivity).openPhoneLoginScreen()
-//                            })
-
-                        ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> (parentActivity as DriverSplashActivity).onBackPressed()
-
-                        else -> DialogPopup.alertPopupWithListener(activity, "", message, {
-                            // TODO navigate back to otp  screen
-
-//                            (parentActivity as DriverSplashActivity).onBackPressed()
-                        })
+                        }else -> DialogPopup.alertPopup(activity, "", message)
                     }
                 }
             }
@@ -205,6 +199,6 @@ class DriverSetupFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        parentActivity = context as Activity
+        parentActivity = context as DriverSplashActivity
     }
 }

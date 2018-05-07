@@ -7819,6 +7819,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							try {
 								dialog.dismiss();
 								if(callback == null || callback.redirectToSplash()){
+									// TODO: 07/05/18 Handle Driver Splash check
 									Intent intent = new Intent(cont, SplashNewActivity.class);
 									intent.putExtra("no_anim", "yes");
 									cont.startActivity(intent);
