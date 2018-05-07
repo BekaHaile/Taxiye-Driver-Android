@@ -7,11 +7,13 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.driver_splash_activity.*
@@ -65,9 +67,11 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
         setLoginData()
-        setToolbar()
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setToolbarVisibility(false)
 
-        val resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(applicationContext)
+        val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
         if (resp != ConnectionResult.SUCCESS) {
             Log.e(TAG, "=$resp")
             DialogPopup.showGooglePlayErrorAlert(this@DriverSplashActivity)
@@ -136,19 +140,17 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         addPhoneNumberScreen()
     }
 
-    private fun setToolbar() {
-        tvTitle.typeface = Data.latoRegular(this)
-        ivback.setOnClickListener {
-            onBackPressed()
-        }
-    }
-
     fun setToolbarText(title: String) {
-        tvTitle.text = title
+        toolbar.title = title
     }
 
     fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
 }

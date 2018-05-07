@@ -138,7 +138,7 @@ class OTPConfirmFragment : Fragment() {
         val builder = OtpDialog.Builder(activity)
                 .purpose(AppConstants.OperationType.CALL)
                 .isNumberExist(missedCallNumber != null)
-                .listener({ purpose, backpack ->
+                .listener({ purpose, _ ->
                     if (purpose == AppConstants.OperationType.CALL) {
 
                     } else if (purpose == AppConstants.OperationType.ENTER_OTP) {

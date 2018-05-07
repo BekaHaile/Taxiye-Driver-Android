@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -28,7 +29,7 @@ import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 /**
  * Created by aneeshbansal on 09/05/16.
  */
-public class BaseFragmentActivity extends FragmentActivity {
+public class BaseFragmentActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
