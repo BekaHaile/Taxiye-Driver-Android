@@ -7,5 +7,6 @@ public  enum ApiName {
     GENERATE_OTP,
     VERIFY_OTP,
     GET_CITIES,
-    GET_LANGUAGES
+    GET_LANGUAGES,
+    REGISTER_DRIVER
 }

@@ -14,24 +14,29 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
-                                  private var vehicleTypes: ArrayList<CityResponse.VehicleType>)
+                                  private var vehicleTypes: MutableList<CityResponse.VehicleType>)
     : RecyclerView.Adapter<VehicleTypeSelectionAdapter.ViewHolderVehicle>(), ItemListener {
 
 
-    var currentSelectedPos = -1;
+    private var currentSelectedPos = -1;
+
+    fun getCurrentSelectedVehicle(): CityResponse.VehicleType? {
+        return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes.size) null
+        else vehicleTypes[currentSelectedPos]
+    }
 
     override fun getItemCount(): Int {
         return vehicleTypes.size
     }
 
-    fun setList(vehicleTypes: ArrayList<CityResponse.VehicleType>){
+    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>) {
         this.vehicleTypes = vehicleTypes
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ViewHolderVehicle, i: Int) {
         val vehicle = vehicleTypes[i]
-        val imageRes: Int = when(vehicle.vehicleType) {
+        val imageRes: Int = when (vehicle.vehicleType) {
             VehicleTypeValue.BIKES.value -> R.drawable.ic_ride_accept_bike
             VehicleTypeValue.TAXI.value -> R.drawable.ic_ride_accept_taxi
             else -> R.drawable.ic_auto_request
@@ -51,27 +56,28 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         var ivVehicleTick: ImageView = convertView.findViewById(R.id.ivVehicleTick) as ImageView
 
 
-        init{
+        init {
             clRoot.setOnClickListener { v -> itemListener.onClickItem(convertView, v); }
         }
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
         val pos = recyclerView.getChildAdapterPosition(parentView);
-        if(pos != RecyclerView.NO_POSITION){
+        if (pos != RecyclerView.NO_POSITION) {
 
-            if(currentSelectedPos>=0 && currentSelectedPos<vehicleTypes.size){
+            if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes.size) {
                 vehicleTypes[currentSelectedPos].isSelected = false;
                 notifyItemChanged(currentSelectedPos)
 
             }
 
-           if(currentSelectedPos!=pos){
-               vehicleTypes[pos].isSelected = true;
-               currentSelectedPos = pos;
-               notifyItemChanged(currentSelectedPos);
-           }
+            if (currentSelectedPos != pos) {
+                vehicleTypes[pos].isSelected = true;
+                currentSelectedPos = pos;
+                notifyItemChanged(currentSelectedPos);
+            }
 
         }
     }
+
 }

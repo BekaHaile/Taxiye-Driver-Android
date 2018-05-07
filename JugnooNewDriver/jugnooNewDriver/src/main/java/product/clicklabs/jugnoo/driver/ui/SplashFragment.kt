@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
@@ -42,6 +43,7 @@ class SplashFragment() : Fragment() {
     private val handler = Handler()
     private val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
     var mListener:InteractionListener?=null;
+    private lateinit var parentActivity : Activity
 
     init{
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
@@ -84,6 +86,7 @@ class SplashFragment() : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context);
+        parentActivity = context as Activity
         if(context is InteractionListener){
             mListener = context;
         } else {
@@ -249,6 +252,18 @@ class SplashFragment() : Fragment() {
                                         if (resp.contains(Constants.SERVER_TIMEOUT)) {
                                             DialogPopup.alertPopup(activity, "", message)
                                         } else {
+                                            val intent = Intent(parentActivity, HomeActivity::class.java)
+                                            if (arguments != null)
+                                                intent.putExtras(arguments)
+                                            if (HomeActivity.activity != null) {
+                                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                                startActivity(intent)
+                                            } else {
+                                                startActivity(intent)
+                                                ActivityCompat.finishAffinity(parentActivity)
+                                            }
+
+                                            parentActivity.overridePendingTransition(R.anim.right_in, R.anim.right_out)
                                         }
 
                                         Utils.deleteMFile()
@@ -257,12 +272,14 @@ class SplashFragment() : Fragment() {
 
                                     }
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-                                    JSONParser.saveAccessToken(activity, jObj.getString("access_token"))
-                                    val intent = Intent(activity, DriverDocumentActivity::class.java)
-                                    intent.putExtra("access_token", jObj.getString("access_token"))
-                                    intent.putExtra("in_side", false)
-                                    intent.putExtra("doc_required", 3)
-                                    startActivity(intent)
+                                    val accessToken = jObj.getString("access_token")
+                                    JSONParser.saveAccessToken(activity, accessToken)
+//                                    val intent = Intent(activity, DriverDocumentActivity::class.java)
+//                                    intent.putExtra("access_token", jObj.getString("access_token"))
+//                                    intent.putExtra("in_side", false)
+//                                    intent.putExtra("doc_required", 3)
+//                                    startActivity(intent)
+                                    (parentActivity as DriverSplashActivity).addDriverSetupFragment(accessToken)
                                 } else {
                                     DialogPopup.alertPopup(activity, "", message)
                                 }

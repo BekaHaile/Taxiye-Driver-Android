@@ -24,7 +24,7 @@ public class CityResponse extends FeedCommonResponse implements Serializable {
 	@SerializedName("current_city")
 	@Expose
 	private String currentCity;
-	@SerializedName("current_city_id")
+	@SerializedName("city_id" )
 	@Expose
 	private String currentCityId;
 	@SerializedName("offering_types")

@@ -45,7 +45,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var tvCall: TextView
     private lateinit var edtOTP: EditText
     private lateinit var labelNumber: TextView
-    private lateinit var parentActivity : Activity
+    private lateinit var parentActivity: Activity
 
 
     companion object {
@@ -294,14 +294,23 @@ class OTPConfirmFragment : Fragment() {
                                     activity.finish()
                                     activity.overridePendingTransition(R.anim.right_in, R.anim.right_out)
                                 }
-                            } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-                                JSONParser.saveAccessToken(activity, jObj.getString("access_token"))
-                                val intent = Intent(activity, DriverDocumentActivity::class.java)
-                                intent.putExtra("access_token", jObj.getString("access_token"))
-                                intent.putExtra("in_side", false)
-                                intent.putExtra("doc_required", 3)
-                                Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
-                                startActivity(intent)
+                            }
+//                            else if () {
+//                                (parentActivity as DriverSplashActivity)
+//                                        .openDriverSetupFragment(jObj.getJSONObject("login").getString("access_token"), countryCode, phoneNumber)
+//                            }
+                            else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+                                val accessToken = jObj.getString("access_token")
+                                JSONParser.saveAccessToken(activity, accessToken)
+//                                val intent = Intent(activity, DriverDocumentActivity::class.java)
+//                                intent.putExtra("access_token", jObj.getString("access_token"))
+//                                intent.putExtra("in_side", false)
+//                                intent.putExtra("doc_required", 3)
+//                                Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
+//                                startActivity(intent)
+
+                                (parentActivity as DriverSplashActivity)
+                                        .openDriverSetupFragment(accessToken)
                             } else {
                                 DialogPopup.alertPopup(activity, "", message)
                             }

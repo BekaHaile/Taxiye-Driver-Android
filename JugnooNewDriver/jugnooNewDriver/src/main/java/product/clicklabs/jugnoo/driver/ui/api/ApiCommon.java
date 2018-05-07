@@ -207,6 +207,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
             case GET_CITIES:
                 RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
                 break;
+            case REGISTER_DRIVER:
+                RestClient.getApiServices().updateDriverInfo(params, callback);
+                break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
 

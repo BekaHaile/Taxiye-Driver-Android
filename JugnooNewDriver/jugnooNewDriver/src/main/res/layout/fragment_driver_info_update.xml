@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp"
-        >
+        android:padding="24dp">
 
 
         <TextView
@@ -26,25 +26,25 @@
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_edit_text_start_drawable"
             android:hint="@string/name"
             android:inputType="textPersonName"
             android:padding="13dp"
-            android:drawablePadding="5dp"
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
-            android:layout_marginTop="8dp"
             />
 
         <TextView
             android:id="@+id/tvSelectVehicle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/select_vehicle_type"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
-            android:layout_marginTop="20dp"
             />
 
 
@@ -52,9 +52,9 @@
             android:id="@+id/rvVehicleTypes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle"
             />
 
 
@@ -62,40 +62,48 @@
             android:id="@+id/bContinue"
             android:layout_width="146dp"
             android:layout_height="42dp"
-            android:text="@string/continue_text"
-            android:background="@drawable/orange_btn_selector"
-            android:textColor="@color/white"
-            android:textAllCaps="true"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"
+            android:background="@drawable/orange_btn_selector"
+            android:text="@string/continue_text"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes"
             />
 
         <Button
             android:id="@+id/bCancel"
             android:layout_width="146dp"
             android:layout_height="42dp"
-            android:text="@string/cancel"
+            android:layout_marginTop="16dp"
             android:background="@drawable/menu_black_btn_selector"
-            android:textColor="@color/white"
+            android:text="@string/cancel"
             android:textAllCaps="true"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes"
-            android:layout_marginTop="16dp"
             />
 
         <TextView
             android:id="@+id/tvTermsOfUse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_horizontal"
             android:text="@string/by_signing_you_agree"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
-            android:layout_marginTop="14dp"
-            android:gravity="center_horizontal"
             />
 
+        <android.support.constraint.Group
+            android:id="@+id/groupView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse"/>
+
     </android.support.constraint.ConstraintLayout>
+
 </android.support.v4.widget.NestedScrollView>

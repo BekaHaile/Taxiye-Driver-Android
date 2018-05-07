@@ -7,17 +7,14 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.GooglePlayServicesUtil
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.driver_splash_activity.*
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
 
@@ -118,7 +115,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
-    fun addPhoneNumberScreen() {
+    private fun addPhoneNumberScreen() {
 
         supportFragmentManager.inTransaction {
             replace(container.id, LoginFragment(), LoginFragment::class.simpleName).addToBackStack(LoginFragment::class.simpleName)
@@ -133,6 +130,22 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                     .hide(supportFragmentManager.findFragmentByTag(supportFragmentManager
                             .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name))
 
+        }
+    }
+
+    fun openDriverSetupFragment(accessToken: String) {
+        supportFragmentManager.inTransaction {
+            add(container.id, DriverSetupFragment.newInstance(accessToken),
+                    OTPConfirmFragment::class.simpleName).addToBackStack(DriverSetupFragment::class.simpleName)
+                    .hide(supportFragmentManager.findFragmentByTag(supportFragmentManager
+                            .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name))
+
+        }
+    }
+
+    fun addDriverSetupFragment(accessToken: String) {
+        supportFragmentManager.inTransaction {
+            replace(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName).addToBackStack(DriverSetupFragment::class.simpleName)
         }
     }
 
@@ -153,5 +166,16 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         return true
     }
 
+    override fun onBackPressed() {
+        // TODO use proper method for creating the user flow
+        if (supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.findFragmentByTag(supportFragmentManager
+                        .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name) is DriverSetupFragment) {
+            addPhoneNumberScreen()
+            setToolbarVisibility(false)
+
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
 

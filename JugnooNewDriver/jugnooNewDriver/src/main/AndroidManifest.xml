@@ -440,12 +440,10 @@
 
         <activity
             android:name=".BlankActivityForDialog"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DriverDocumentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:screenOrientation="portrait"/>
 
         <service android:name=".sticky.GeanieView" />
 

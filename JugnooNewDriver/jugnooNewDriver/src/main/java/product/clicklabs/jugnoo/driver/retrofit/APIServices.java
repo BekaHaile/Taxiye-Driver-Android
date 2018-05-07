@@ -588,5 +588,10 @@ public interface APIServices {
 	void initiatePlanSubscription(@FieldMap Map<String, String> params,
 						  Callback<InitiatePaymentResponse> callback);
 
+    @FormUrlEncoded
+    @POST("/update_driver_info")
+    void updateDriverInfo(@FieldMap Map<String, String> params,
+                              Callback<RegisterScreenResponse> callback);
+
 
 }
