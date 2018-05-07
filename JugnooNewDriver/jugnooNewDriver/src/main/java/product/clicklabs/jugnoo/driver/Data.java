@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.fugu.FuguColorConfigStrings;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -180,7 +181,7 @@ public class Data {
 			Editor editor = pref.edit();
 			editor.clear();
 			editor.apply();
-
+			Prefs.with(context).save(Constants.IS_OFFLINE, 1);
 			FuguConfig.clearFuguData((Activity) context);
 		} catch(Exception e){
 			e.printStackTrace();
