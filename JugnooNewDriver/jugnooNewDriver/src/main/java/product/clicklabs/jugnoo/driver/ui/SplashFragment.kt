@@ -149,7 +149,13 @@ class SplashFragment() : Fragment() {
                 PendingApiHit().startAPI(context, pendingAPICall)
             }
             val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount;
-             it.onNext(pendingApisCount<=0);
+
+            if(pendingApisCount <= 0) {
+
+                it.onNext(pendingApisCount<=0);
+            } else {
+                it.onError(Throwable("Pending apis count"))
+            }
 
         })
     }

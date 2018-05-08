@@ -18,7 +18,7 @@ import product.clicklabs.jugnoo.driver.utils.*
  * Created by Parminder Saini on 16/04/18.
  */
 
-class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener {
+class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener  {
 
     private val TAG = SplashFragment::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
@@ -93,22 +93,21 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private fun addPhoneNumberScreen() {
 
         supportFragmentManager.inTransaction {
-            replace(container.id, LoginFragment(), LoginFragment::class.simpleName).addToBackStack(LoginFragment::class.simpleName)
+            replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
         }
     }
 
     fun addLoginViaOTPScreen(phone: String, countryCode: String, missedCallNumber: String?) {
 
-        supportFragmentManager.inTransaction {
+        supportFragmentManager.inTransactionWithAnimation {
             add(container.id, OTPConfirmFragment.newInstance(phone, countryCode, missedCallNumber),
                     OTPConfirmFragment::class.simpleName).addToBackStack(OTPConfirmFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(supportFragmentManager
-                            .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name))
+                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
 
         }
     }
     fun openDriverSetupFragment(accessToken: String) {
-        supportFragmentManager.inTransaction {
+        supportFragmentManager.inTransactionWithAnimation {
             add(container.id, DriverSetupFragment.newInstance(accessToken),
                     OTPConfirmFragment::class.simpleName).addToBackStack(DriverSetupFragment::class.simpleName)
                     .hide(supportFragmentManager.findFragmentByTag(supportFragmentManager
@@ -118,8 +117,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     fun addDriverSetupFragment(accessToken: String) {
-        supportFragmentManager.inTransaction {
-            replace(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName).addToBackStack(DriverSetupFragment::class.simpleName)
+        supportFragmentManager.inTransactionWithAnimation {
+            replace(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
         }
     }
 
@@ -145,11 +144,11 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
 
-    fun setToolbarText(title: String) {
+    override fun setToolbarText(title: String) {
         toolbar.title = title
     }
 
-    fun setToolbarVisibility(isVisible: Boolean) {
+    override fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
     }
 
@@ -160,8 +159,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onBackPressed() {
         // TODO use proper method for creating the user flow
-        if (supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.findFragmentByTag(supportFragmentManager
-                        .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name) is DriverSetupFragment) {
+        if (supportFragmentManager.backStackEntryCount == 0 && supportFragmentManager
+                        .findFragmentByTag(DriverSetupFragment::class.simpleName) is DriverSetupFragment) {
+            JSONParser.saveAccessToken(this,"")
             addPhoneNumberScreen()
             setToolbarVisibility(false)
 
@@ -170,7 +170,12 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     }
 
+}
 
+interface ToolbarChangeListener {
 
+    fun setToolbarText(title :String)
+
+    fun setToolbarVisibility(isVisible: Boolean)
 }
 

@@ -27,6 +27,7 @@ class DriverSetupFragment : Fragment() {
 
     private lateinit var accessToken: String
     private lateinit var cityId: String
+    private lateinit var toolbarChangeListener: ToolbarChangeListener
 
     private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
 
@@ -59,9 +60,8 @@ class DriverSetupFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO change screen name
-        parentActivity.setToolbarText(getString(R.string.verification))
-        parentActivity.setToolbarVisibility(true)
+        toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
+        toolbarChangeListener.setToolbarVisibility(true)
 
         // TODO check fonts , replace latoLight with mavenLight(missing)
         tvEnterName.typeface = Fonts.latoLight(activity)
@@ -84,6 +84,14 @@ class DriverSetupFragment : Fragment() {
 
         getCitiesAPI();
 
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        if (!hidden) {
+            toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
+            toolbarChangeListener.setToolbarVisibility(true)
+        }
+        super.onHiddenChanged(hidden)
     }
 
     private fun validateData(): Boolean {
@@ -192,5 +200,6 @@ class DriverSetupFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
+        toolbarChangeListener = context as ToolbarChangeListener
     }
 }

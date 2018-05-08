@@ -39,11 +39,13 @@ class LoginFragment : Fragment() {
     val TAG = LoginFragment::class.simpleName
     lateinit var rootView: View
     lateinit var selectedLanguage: String
+    private lateinit var toolbarChangeListener: ToolbarChangeListener
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
+        toolbarChangeListener.setToolbarVisibility(false)
 
         rootView.imageView.setOnLongClickListener {
             confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
@@ -275,10 +277,11 @@ class LoginFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         parentActivity = context as Activity
+        toolbarChangeListener = context as ToolbarChangeListener
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
-        ( parentActivity as DriverSplashActivity).setToolbarVisibility(false)
+        toolbarChangeListener.setToolbarVisibility(false)
         super.onHiddenChanged(hidden)
     }
 }

@@ -42,7 +42,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var phoneNumber: String
     private var otpDialog: OtpDialog? = null
     private var countDownTimer: CountDownTimer? = null
-
+    private lateinit var toolbarChangeListener: ToolbarChangeListener
     private lateinit var tvResendOTP: TextView
     private lateinit var btnSubmit: Button
     private lateinit var tvCall: TextView
@@ -82,8 +82,8 @@ class OTPConfirmFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater?.inflate(R.layout.frag_otp_confirm, container, false)
 
-        (parentActivity as DriverSplashActivity).setToolbarText(getString(R.string.verification))
-        (parentActivity as DriverSplashActivity).setToolbarVisibility(true)
+        toolbarChangeListener.setToolbarText(getString(R.string.verification))
+        toolbarChangeListener.setToolbarVisibility(true)
 
         btnSubmit = rootView?.findViewById(R.id.btn_submit) as Button
         tvResendOTP = rootView.findViewById(R.id.tv_resend_otp) as TextView
@@ -388,10 +388,20 @@ class OTPConfirmFragment : Fragment() {
         //hit for phone number
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            toolbarChangeListener.setToolbarText(getString(R.string.verification))
+            toolbarChangeListener.setToolbarVisibility(true)
+        }
+
+    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         parentActivity = context as Activity
+        toolbarChangeListener = context as ToolbarChangeListener
     }
 
     override fun onResume() {
@@ -405,9 +415,9 @@ class OTPConfirmFragment : Fragment() {
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(broadcastReceiver)
     }
 
-    private var broadcastReceiver:BroadcastReceiver = object : BroadcastReceiver(){
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if(intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
+            if (intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
                 retrieveOTPFromSMS(intent)
             }
         }
