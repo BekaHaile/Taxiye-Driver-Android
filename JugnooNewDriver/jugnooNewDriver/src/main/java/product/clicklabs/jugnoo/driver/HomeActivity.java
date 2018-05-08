@@ -64,8 +64,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
-import com.fugu.FuguConfig;
-import com.fugu.FuguNotificationConfig;
+import com.fugu.HippoConfig;
+import com.fugu.HippoNotificationConfig;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -1334,8 +1334,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
-
+					// TODO: 08/05/18 revert
+					HippoConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
+//					HippoConfig.getInstance().showTicketSupport(null);
 
 				}
 			});
@@ -2276,7 +2277,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		try {
-			FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
+			HippoNotificationConfig.handleHippoPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

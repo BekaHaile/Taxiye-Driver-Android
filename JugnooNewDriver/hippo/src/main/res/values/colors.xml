@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fugu_action_bar_bg">#627de3</color>
+    <color name="fugu_action_bar_text">#ffffff</color>
+    <color name="fugu_bg_msg_you">#ffffff</color>
+    <color name="fugu_bg_msg_from">#e8ecfc</color>
+    <color name="fugu_primary_text_msg_you">#2c2333</color>
+    <color name="fugu_message_read">#627de3</color>
+    <color name="fugu_primary_text_msg_from">#2c2333</color>
+    <color name="fugu_secondary_text_msg_you">#8e8e8e</color>
+    <color name="fugu_secondary_text_msg_from">#8e8e8e</color>
+    <color name="fugu_secondary_text_msg_from_name">#627de3</color>
+    <color name="fugu_drawable_color">#8c8c8c</color>
+    <color name="fugu_text_color_primary">#2c2333</color>
+    <color name="fugu_channel_date_text">#88838c</color>
+    <color name="fugu_chat_bg">#f8f9ff</color>
+    <color name="fugu_border_color">#dce0e6</color>
+    <color name="fugu_chat_date_text">#51445c</color>
+    <color name="fugu_theme_color_primary">#627de3</color>
+    <color name="fugu_theme_color_primary_pressed">#99627de3</color>
+    <color name="fugu_theme_color_secondary">#6cc64d</color>
+    <color name="fugu_type_message_bg">#ffffff</color>
+    <color name="fugu_type_message_hint">#8e8e8e</color>
+    <color name="fugu_type_message_text">#2c2333</color>
+    <color name="fugu_channel_bg">#ffffff</color>
+    <color name="fugu_white_50">#33ffffff</color>
+    <color name="fugu_blur_black">#20000000</color>
+    <color name="fugu_action_divider_color">#979797</color>
+    <color name="fugu_divider_light">#f5f5f5</color>
+
+
+    <!--> unread message counter text and background colors<!-->
+    <color name="white">#FFFFFF</color>
+    <color name="red">#dd171e</color>
+    <color name="orange">#FFFF00</color>
+    <color name="fugu_jugnoo_orange">#FD7945</color>
+    <!-->End Here<!-->
+
+    <color name="fugu_transparent">#44949494</color>
+    <color name="fugu_attachment_dialog_text">#3f3f3f</color>
+    <color name="fugu_attachment_dialog_text_pressed">#773f3f3f</color>
+    <color name="fugu_connecting">#FFA500</color>
+    <color name="fugu_not_connected">#FF0000</color>
+    <color name="fugu_connected">#00FF00</color>
+
+    <color name="fugu_white">#ffffff</color>
+    <color name="fugu_support_text">#596161</color>
+    <color name="fugu_support_description">#858585</color>
+    <color name="fugu_new_chat_color">#353542</color>
+</resources>
