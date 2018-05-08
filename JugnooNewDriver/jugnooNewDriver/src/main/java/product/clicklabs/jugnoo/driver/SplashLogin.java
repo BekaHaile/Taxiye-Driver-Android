@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -92,7 +93,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		try{
 			if(getIntent().hasExtra("type")){
 				if(getIntent().getStringExtra("type").equalsIgnoreCase("cancel")){
-					Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
+					Intent intent = new Intent(SplashLogin.this, DriverSplashActivity.class);
 					intent.putExtras(getIntent().getExtras());
 					startActivity(intent);
 					finish();
@@ -368,7 +369,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		}
 		else {
 
-			Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
+			Intent intent = new Intent(SplashLogin.this, DriverSplashActivity.class);
 			intent.putExtra("no_anim", "yes");
 			startActivity(intent);
 			finish();

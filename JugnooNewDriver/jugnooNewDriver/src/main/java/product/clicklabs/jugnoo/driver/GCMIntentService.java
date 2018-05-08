@@ -62,6 +62,7 @@ import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -100,7 +101,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			Log.v("message", "," + message);
 
-			Intent notificationIntent = new Intent(context, SplashNewActivity.class);
+			Intent notificationIntent = new Intent(context, DriverSplashActivity.class);
 
 
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -200,7 +201,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			Intent notificationIntent = new Intent();
 			if (HomeActivity.appInterruptHandler == null) {
-				notificationIntent.setClass(context, SplashNewActivity.class);
+				notificationIntent.setClass(context, DriverSplashActivity.class);
 			} else {
 				notificationIntent.setClass(context, HomeActivity.class);
 			}
@@ -246,7 +247,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			} else {
 
 				if (perfectRide == 1) {
-					Intent intentAccKill = new Intent(context, SplashNewActivity.class);
+					Intent intentAccKill = new Intent(context, DriverSplashActivity.class);
 					intentAccKill.putExtra("type", "accept");
 					intentAccKill.putExtra("engagement_id", engagementId);
 					intentAccKill.putExtra("referrence_id", referenceId);
@@ -270,7 +271,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 				}
 
 
-				Intent intentCancKill = new Intent(context, SplashNewActivity.class);
+				Intent intentCancKill = new Intent(context, DriverSplashActivity.class);
 				intentCancKill.putExtra("type", "cancel");
 				intentCancKill.putExtra("engagement_id", engagementId);
 				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -621,7 +622,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 												startActivity(newIntent);
 											}
 										} else {
-											Intent homeScreen = new Intent(this, SplashNewActivity.class);
+											Intent homeScreen = new Intent(this, DriverSplashActivity.class);
 											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											startActivity(homeScreen);
 										}
@@ -697,7 +698,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								}
 							} else if (PushFlags.CHANGE_JUGNOO_AVAILABILITY.getOrdinal() == flag) {
 								if (HomeActivity.appInterruptHandler != null) {
-									Intent openApp = new Intent(this, SplashNewActivity.class);
+									Intent openApp = new Intent(this, DriverSplashActivity.class);
 									openApp.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 									startActivity(openApp);
 								}
@@ -716,7 +717,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									if (HomeActivity.appInterruptHandler != null) {
 										notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
 									} else {
-										notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, DriverSplashActivity.class, null);
 									}
 								}
 								if (sendAck) {
@@ -729,7 +730,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
 									HomeActivity.appInterruptHandler.showDialogFromPush(message1);
 								} else {
-									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+									notificationManagerCustomID(this, title, message1, PROMOTION_ID, DriverSplashActivity.class, null);
 								}
 
 							} else if (PushFlags.DISPLAY_AUDIT_IMAGE.getOrdinal() == flag) {
@@ -887,7 +888,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								}
 								notificationManagerCustomID(this, title, getResources().getString(R.string.sharing_payment_recieved)
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
-										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class, null);
+										Integer.parseInt(sharingRideData.sharingEngagementId), DriverSplashActivity.class, null);
 							}
 
 							String message1 = jObj.optString("message", " ");
@@ -1064,7 +1065,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //										context.startActivity(newIntent);
 //									}
 //								} else {
-//									Intent homeScreen = new Intent(context, SplashNewActivity.class);
+//									Intent homeScreen = new Intent(context, DriverSplashActivity.class);
 //									homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //									context.startActivity(homeScreen);
 //								}
@@ -1630,15 +1631,15 @@ public class GCMIntentService extends FirebaseMessagingService {
 			// execution of result of Long time consuming operation
 			try {
 				if (result == null) {
-					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, DriverSplashActivity.class,
 							null);
 				} else {
-					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, DriverSplashActivity.class,
 							result);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+				notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, DriverSplashActivity.class,
 						null);
 			}
 		}

@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 
 /**
  * Created by clicklabs on 7/3/15.
@@ -71,7 +72,7 @@ public class BaseActivity extends Activity {
 	}
 
 	public void sendToSplash(){
-		startActivity(new Intent(this, SplashNewActivity.class));
+		startActivity(new Intent(this, DriverSplashActivity.class));
 		finish();
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}

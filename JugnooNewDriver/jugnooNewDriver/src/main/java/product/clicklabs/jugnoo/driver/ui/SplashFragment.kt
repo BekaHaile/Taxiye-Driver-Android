@@ -248,18 +248,9 @@ class SplashFragment() : Fragment() {
                                         if (resp.contains(Constants.SERVER_TIMEOUT)) {
                                             DialogPopup.alertPopup(activity, "", message)
                                         } else {
-                                            val intent = Intent(parentActivity, HomeActivity::class.java)
-                                            if (arguments != null)
-                                                intent.putExtras(arguments)
-                                            if (HomeActivity.activity != null) {
-                                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                                startActivity(intent)
-                                            } else {
-                                                startActivity(intent)
-                                                ActivityCompat.finishAffinity(parentActivity)
-                                            }
 
-                                            parentActivity.overridePendingTransition(R.anim.right_in, R.anim.right_out)
+                                            mListener?.goToHomeScreen()
+
                                         }
 
                                         Utils.deleteMFile()
@@ -270,11 +261,6 @@ class SplashFragment() : Fragment() {
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(activity, accessToken)
-//                                    val intent = Intent(activity, DriverDocumentActivity::class.java)
-//                                    intent.putExtra("access_token", jObj.getString("access_token"))
-//                                    intent.putExtra("in_side", false)
-//                                    intent.putExtra("doc_required", 3)
-//                                    startActivity(intent)
                                     (parentActivity as DriverSplashActivity).addDriverSetupFragment(accessToken)
                                 } else {
                                     DialogPopup.alertPopup(activity, "", message)
@@ -367,6 +353,8 @@ class SplashFragment() : Fragment() {
 
     interface InteractionListener{
         fun openPhoneLoginScreen();
+
+        fun goToHomeScreen()
     }
 
 

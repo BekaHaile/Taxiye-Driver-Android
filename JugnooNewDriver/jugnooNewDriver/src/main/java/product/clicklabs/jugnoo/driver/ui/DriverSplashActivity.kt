@@ -1,7 +1,9 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
@@ -125,6 +127,24 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         addPhoneNumberScreen()
     }
 
+    override fun goToHomeScreen() {
+        val intent = Intent(this, HomeActivity::class.java)
+        if (getIntent().extras != null){
+            intent.putExtras(getIntent().extras)
+
+        }
+        if (HomeActivity.activity != null) {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        } else {
+            startActivity(intent)
+            ActivityCompat.finishAffinity(this)
+        }
+
+        overridePendingTransition(R.anim.right_in, R.anim.right_out)
+    }
+
+
     fun setToolbarText(title: String) {
         toolbar.title = title
     }
@@ -149,5 +169,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             super.onBackPressed()
         }
     }
+
+
+
 }
 

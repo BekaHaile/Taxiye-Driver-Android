@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 
@@ -35,7 +36,7 @@ public class BlankActivityForDialog extends Activity{
         });
 
         if(getIntent().hasExtra("wakeUp")){
-			Intent homeScreen = new Intent(this, SplashNewActivity.class);
+			Intent homeScreen = new Intent(this, DriverSplashActivity.class);
 			startActivity(homeScreen);
 			finish();
         }

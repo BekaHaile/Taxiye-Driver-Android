@@ -164,6 +164,7 @@ import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -2068,7 +2069,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				} else {
 					finish();
-					startActivity(new Intent(this, SplashNewActivity.class));
+					startActivity(new Intent(this, DriverSplashActivity.class));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -7407,7 +7408,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
-				Intent intent = new Intent(HomeActivity.this, SplashNewActivity.class);
+				Intent intent = new Intent(HomeActivity.this, DriverSplashActivity.class);
 				intent.putExtra("no_anim", "yes");
 				startActivity(intent);
 				finish();
@@ -7820,7 +7821,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								dialog.dismiss();
 								if(callback == null || callback.redirectToSplash()){
 									// TODO: 07/05/18 Handle Driver Splash check
-									Intent intent = new Intent(cont, SplashNewActivity.class);
+									Intent intent = new Intent(cont, DriverSplashActivity.class);
 									intent.putExtra("no_anim", "yes");
 									cont.startActivity(intent);
 									cont.finish();

@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
@@ -531,7 +532,7 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 	
 	
 	public void performBackPressed(){
-		Intent intent = new Intent(OldRegisterScreen.this, SplashNewActivity.class);
+		Intent intent = new Intent(OldRegisterScreen.this, DriverSplashActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();

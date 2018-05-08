@@ -132,7 +132,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	public void performbackPressed() {
 		/*if(!inSideApp) {
 			JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-			Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
+			Intent intent = new Intent(DriverDocumentActivity.this, DriverSplashActivity.class);
 			startActivity(intent);
 		}*/
 		finish();

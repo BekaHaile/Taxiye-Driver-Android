@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.GeniePositonsSaver;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -300,7 +301,7 @@ public class GeanieView extends Service {
 										startActivity(newIntent);
 										stopSelf();
 									} else {
-										Intent homeScreen = new Intent(GeanieView.this, SplashNewActivity.class);
+										Intent homeScreen = new Intent(GeanieView.this, DriverSplashActivity.class);
 										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(homeScreen);
 										stopSelf();

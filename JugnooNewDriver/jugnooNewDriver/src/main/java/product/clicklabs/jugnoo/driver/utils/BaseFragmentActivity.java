@@ -78,7 +78,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 	}
 
 	public void sendToSplash(){
-		startActivity(new Intent(this, SplashNewActivity.class));
+		startActivity(new Intent(this, DriverSplashActivity.class));
 		finish();
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
