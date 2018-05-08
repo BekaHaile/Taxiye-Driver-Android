@@ -91,7 +91,7 @@ class SplashFragment() : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.frag_splash,container,false);
+        val rootView = container?.inflate(R.layout.frag_splash);
         checkForBatteryOptimisation();
         checkForDeviceToken(false);
         return rootView;

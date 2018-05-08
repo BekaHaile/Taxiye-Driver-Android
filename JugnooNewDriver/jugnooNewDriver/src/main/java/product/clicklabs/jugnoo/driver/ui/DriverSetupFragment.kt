@@ -6,13 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
@@ -34,12 +30,8 @@ class DriverSetupFragment : Fragment() {
 
     private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
 
-    private lateinit var editTextName: EditText
-    private lateinit var bContinue: Button
-    private lateinit var bCancel: Button
 
-    private lateinit var rvVehicleTypes: RecyclerView
-    private lateinit var adapter: VehicleTypeSelectionAdapter
+    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, vehicleTypes) }
 
     companion object {
         @JvmStatic
@@ -60,7 +52,7 @@ class DriverSetupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_driver_info_update, container, false)
+        return container?.inflate(R.layout.fragment_driver_info_update)
     }
 
 
@@ -72,26 +64,25 @@ class DriverSetupFragment : Fragment() {
         parentActivity.setToolbarVisibility(true)
 
         // TODO check fonts , replace latoLight with mavenLight(missing)
-        (view?.findViewById(R.id.tvEnterName) as TextView?)?.typeface = Fonts.latoLight(activity)
-        editTextName = view?.findViewById(R.id.editTextName) as EditText
+        tvEnterName.typeface = Fonts.latoLight(activity)
         editTextName.typeface = Fonts.mavenRegular(activity)
-        (view.findViewById(R.id.tvSelectVehicle) as TextView?)?.typeface = Fonts.latoLight(activity)
+        tvSelectVehicle.typeface = Fonts.latoLight(activity)
 
-        rvVehicleTypes = view.findViewById(R.id.rvVehicleTypes) as RecyclerView
-        rvVehicleTypes.layoutManager = GridLayoutManager(activity, 3)
-        rvVehicleTypes.addItemDecoration(ItemOffsetDecoration(parentActivity, R.dimen.spacing_grid_recycler_view));
 
-        bContinue = view.findViewById(R.id.bContinue) as Button
         bContinue.typeface = Fonts.mavenRegular(activity)
-        bCancel = view.findViewById(R.id.bCancel) as Button
-        bCancel.typeface = Fonts.mavenRegular(activity)
+        bContinue.setOnClickListener { if (validateData()) registerDriver() }
 
-        adapter = VehicleTypeSelectionAdapter(activity, rvVehicleTypes, vehicleTypes);
-        rvVehicleTypes.adapter = adapter;
+        bCancel.typeface = Fonts.mavenRegular(activity)
+        bCancel.setOnClickListener { parentActivity.onBackPressed() }
+
+
+        with(rvVehicleTypes) {
+            layoutManager = GridLayoutManager(activity, 3)
+            addItemDecoration(ItemOffsetDecoration(parentActivity, R.dimen.spacing_grid_recycler_view));
+            adapter = this@DriverSetupFragment.adapter
+        }
 
         getCitiesAPI();
-        bContinue.setOnClickListener { if (validateData()) registerDriver() }
-        bCancel.setOnClickListener { parentActivity.onBackPressed()}
 
     }
 
@@ -146,13 +137,14 @@ class DriverSetupFragment : Fragment() {
                             DialogPopup.alertPopup(activity, "", message)
                         }
 
-                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal()  ->{
+                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
                             DialogPopup.alertPopupWithListener(activity, "", message, {
                                 parentActivity.openPhoneLoginScreen()
                                 parentActivity.setToolbarVisibility(false)
-                         })
+                            })
 
-                        }else -> DialogPopup.alertPopup(activity, "", message)
+                        }
+                        else -> DialogPopup.alertPopup(activity, "", message)
                     }
                 }
             }
@@ -165,9 +157,10 @@ class DriverSetupFragment : Fragment() {
     }
 
     private fun getCitiesAPI() {
-        val params = HashMap<String, String>()
-        params.put(Constants.KEY_LATITUDE, Data.latitude.toString())
-        params.put(Constants.KEY_LONGITUDE, Data.longitude.toString())
+        val params = hashMapOf(
+                Constants.KEY_LATITUDE to Data.latitude.toString(),
+                Constants.KEY_LONGITUDE to Data.longitude.toString())
+
         HomeUtil.putDefaultParams(params)
 
         ApiCommon<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
@@ -180,19 +173,18 @@ class DriverSetupFragment : Fragment() {
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
                 groupView.gone()
-                DialogPopup.alertPopupWithListener(parentActivity, "",
-                        message ?: "", { getCitiesAPI() })
+                DialogPopup.alertPopupWithListener(parentActivity, "", message, { getCitiesAPI() })
                 return false;
             }
         })
-
     }
 
     private fun openDocumentUploadActivity() {
-        val intent = Intent(activity, DriverDocumentActivity::class.java)
-        intent.putExtra("access_token", accessToken)
-        intent.putExtra("in_side", false)
-        intent.putExtra("doc_required", 3)
+        val intent = Intent(activity, DriverDocumentActivity::class.java).apply {
+            putExtra("access_token", accessToken)
+            putExtra("in_side", false)
+            putExtra("doc_required", 3)
+        }
         Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
         startActivity(intent)
     }

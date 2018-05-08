@@ -1,13 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
-import android.app.Activity
 import android.location.Location
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
@@ -22,28 +16,10 @@ import product.clicklabs.jugnoo.driver.utils.*
  * Created by Parminder Saini on 16/04/18.
  */
 
-inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-    beginTransaction().func().commit()
-}
-
-infix fun Int.with(x: Int) = this.or(x)
-
-
-fun <T : View> Activity.bind(@IdRes res: Int): Lazy<T> {
-    @Suppress("UNCHECKED_CAST")
-    return lazy(LazyThreadSafetyMode.NONE) { findViewById(res) as T }
-}
-
-fun <T : View> Fragment.bind(@IdRes res: Int, view: View?): Lazy<T> {
-    @Suppress("UNCHECKED_CAST")
-    return lazy(LazyThreadSafetyMode.NONE) { view?.findViewById(res) as T }
-}
-
-
 class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener {
 
     private val TAG = SplashFragment::class.simpleName
-    private val container by bind<FrameLayout>(R.id.container_layout)
+    private val container by bind<FrameLayout>(R.id.container)
 
 
     override fun onLocationChanged(location: Location?, priority: Int) {
@@ -53,7 +29,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +59,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             }
 
         }
-
-
     }
 
     private fun setLoginData() {

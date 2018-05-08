@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.frag_login, container, false)
+        rootView = container?.inflate(R.layout.frag_login)!!
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
 
         rootView.imageView.setOnLongClickListener {
