@@ -360,7 +360,7 @@
 
     <string name="updating">Updating ...</string>
     <string name="user_cancel_request">User has canceled the request</string>
-    <string name="verification">VERIFICATION</string>
+    <string name="verification">Verification</string>
     <string name="verify_me">Verify Me</string>
 
     <string name="waiting_for_location">Waiting for location...</string>
@@ -759,7 +759,7 @@
     <string name="reg_as_driver"><u>Register as a &appname;
         DRIVER</u></string>
     <string name="driver_app">DRIVER APPLICATION</string>
-    <string name="register_as_driver">Register as DRIVER</string>
+    <string name="register_as_driver">Register as Driver</string>
     <string name="distance_lower">Distance</string>
     <string name="please_drop_customer_delivery">End %s\'s Delivery</string>
     <string name="please_start_customer_delivery">Start %s\'s Delivery</string>
