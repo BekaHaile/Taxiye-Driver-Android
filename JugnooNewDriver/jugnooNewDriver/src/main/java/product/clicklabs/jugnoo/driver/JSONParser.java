@@ -565,23 +565,7 @@ public class JSONParser implements Constants {
 								parseReturnDeliveryInfos(jObjCustomer, customerInfo);
 							}
 
-							try {
-								if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
-									double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
-									double dropLongitude = jObjCustomer.getDouble(KEY_OP_DROP_LONGITUDE);
-									if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-										customerInfo.setDropLatLng(null);
-									} else {
-										customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
-									}
-								}
-								if(jObjCustomer.has(KEY_DROP_ADDRESS)){
-									customerInfo.setDropAddress(jObjCustomer.getString(KEY_DROP_ADDRESS));
-								}
-
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							updateDropAddressLatlng(jObjCustomer, customerInfo);
 
 							parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
 
@@ -620,6 +604,26 @@ public class JSONParser implements Constants {
 		}
 
 		return "";
+	}
+
+	public static void updateDropAddressLatlng(JSONObject jObjCustomer, CustomerInfo customerInfo) {
+		try {
+			if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
+				double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
+				double dropLongitude = jObjCustomer.getDouble(KEY_OP_DROP_LONGITUDE);
+				if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
+					customerInfo.setDropLatLng(null);
+				} else {
+					customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
+				}
+			}
+			if(jObjCustomer.has(KEY_DROP_ADDRESS)){
+				customerInfo.setDropAddress(jObjCustomer.getString(KEY_DROP_ADDRESS));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void parsePerfectRideData(Context context, JSONObject jObjCustomer){

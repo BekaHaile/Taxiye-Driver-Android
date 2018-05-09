@@ -301,6 +301,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout driverStartRideMainRl;
 	public Button driverStartRideBtn, buttonMarkArrived;
 	public Button driverCancelRideBtn;
+	public TextView tvDropAddressToggleView;
+	public Button bDropAddressToggle;
 
 
 	//In ride layout
@@ -786,6 +788,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
 			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverCancelRideBtn.setText(getStringText(R.string.cancel));
+			tvDropAddressToggleView = (TextView) findViewById(R.id.tvDropAddressToggleView);
+			tvDropAddressToggleView.setTypeface(Data.latoRegular(this));
+			bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
+			bDropAddressToggle.setTypeface(Data.latoRegular(this));
 
 
 			//In ride layout
@@ -2052,6 +2058,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			bDropAddressToggle.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					tvDropAddressToggleView.setVisibility(tvDropAddressToggleView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+				}
+			});
 
 //			distanceReset2.setOnClickListener(new OnClickListener() {
 //				@Override
@@ -3953,6 +3965,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				case D_ARRIVED:
 
+					tvDropAddressToggleView.setVisibility(View.GONE);
+					bDropAddressToggle.setVisibility(View.GONE);
 					updateDriverServiceFast("yes");
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
@@ -4037,6 +4051,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				case D_START_RIDE:
 
+					tvDropAddressToggleView.setVisibility(View.GONE);
+					bDropAddressToggle.setVisibility(View.GONE);
 					updateDriverServiceFast("yes");
 					inRideZoom();
 					setDriverServiceRunOnOnlineBasis();
@@ -4169,6 +4185,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				case D_IN_RIDE:
 
+					tvDropAddressToggleView.setVisibility(View.GONE);
+					bDropAddressToggle.setVisibility(View.GONE);
 					updateDriverServiceFast("no");
 					SoundMediaPlayer.stopSound();
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
@@ -5715,6 +5733,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency);
+
+					JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 
 					JSONParser.parsePoolOrReverseBidFare(jObj, customerInfo);
 
