@@ -18,11 +18,15 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     : RecyclerView.Adapter<VehicleTypeSelectionAdapter.ViewHolderVehicle>(), ItemListener {
 
 
-    private var currentSelectedPos = -1;
+    private var currentSelectedPos = -1
 
     fun getCurrentSelectedVehicle(): CityResponse.VehicleType? {
         return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes.size) null
         else vehicleTypes[currentSelectedPos]
+    }
+
+    fun setCurrentSelectedPos(pos: Int) {
+        currentSelectedPos = pos
     }
 
     override fun getItemCount(): Int {
@@ -37,10 +41,13 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     override fun onBindViewHolder(holder: ViewHolderVehicle, i: Int) {
         val vehicle = vehicleTypes[i]
         val imageRes: Int = when (vehicle.vehicleType) {
+            VehicleTypeValue.AUTOS.value -> R.drawable.ic_auto_request
             VehicleTypeValue.BIKES.value -> R.drawable.ic_ride_accept_bike
             VehicleTypeValue.TAXI.value -> R.drawable.ic_ride_accept_taxi
+            VehicleTypeValue.MINI_TRUCK.value -> R.drawable.ic_ride_accept_mini_truck
+            VehicleTypeValue.E_RICK.value -> R.drawable.ic_ride_accept_erick
             else -> R.drawable.ic_auto_request
-        };
+        }
         holder.ivVehicle.setImageResource(imageRes)
         holder.ivVehicleTick.setImageResource(if (vehicle.isSelected) R.drawable.ic_tick_green_20 else R.drawable.circle_grey_stroke_theme)
     }

@@ -32,6 +32,17 @@
                 android:textSize="36px"
             />
 
+            <ImageView
+                android:id="@+id/ivInfo"
+                android:layout_width="14dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_doc_info"
+                android:layout_toEndOf="@id/docType"
+                android:layout_marginStart="4dp"
+                android:layout_alignBottom="@id/docType"
+                android:layout_alignTop="@id/docType"
+                />
+
             <TextView
                 android:id="@+id/docRejected"
                 android:layout_width="wrap_content"
@@ -241,7 +252,7 @@
                 android:layout_toRightOf="@+id/addImageLayout2"
                 android:src="@drawable/add_img_dsble"
                 android:tag="mwar"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
 
             <ImageView

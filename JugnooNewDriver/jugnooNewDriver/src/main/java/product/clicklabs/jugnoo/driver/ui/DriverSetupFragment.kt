@@ -3,9 +3,17 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
@@ -82,8 +91,30 @@ class DriverSetupFragment : Fragment() {
             adapter = this@DriverSetupFragment.adapter
         }
 
-        getCitiesAPI();
+        getCitiesAPI()
+        setupTermsAndConditionsTextView()
 
+    }
+
+    private fun setupTermsAndConditionsTextView() {
+        val ss = SpannableString(getString(R.string.by_signing_you_agree))
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                startActivity(Intent(parentActivity, HelpActivity::class.java))
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        val start = 31
+        val end = 49
+        ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.new_orange1)), start, end, 0);
+        tvTermsOfUse.text = ss
+        tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
+        tvTermsOfUse.highlightColor = Color.TRANSPARENT
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -174,8 +205,21 @@ class DriverSetupFragment : Fragment() {
         ApiCommon<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
+                vehicleTypes.removeAt(0)
                 cityId = t.currentCityId
-                adapter.setList(vehicleTypes);
+
+                var defaultIndex : Int = -1
+
+                for ((index, item) in vehicleTypes.withIndex()) {
+                    if (item.vehicleType == VehicleTypeValue.AUTOS.value) {
+                        item.isSelected = true
+                        defaultIndex = index
+                        break
+                    }
+                }
+
+                adapter.setList(vehicleTypes)
+                adapter.setCurrentSelectedPos(defaultIndex)
                 groupView.visible()
             }
 

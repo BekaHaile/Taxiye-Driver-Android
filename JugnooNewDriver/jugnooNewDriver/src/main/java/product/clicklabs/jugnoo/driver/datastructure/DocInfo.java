@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class DocInfo {
 
-	public String docType;
+	public String docType,instructions;
 	public Integer docTypeNum, docCount, isEditable;
 	public Integer docRequirement;
 	public String status, reason;
@@ -14,7 +14,7 @@ public class DocInfo {
 	private File file, file1;
 
 	public DocInfo(String docType, Integer docTypeNum, Integer docRequirement,
-				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable) {
+				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable, String instructions) {
 		this.docType = docType;
 		this.docTypeNum = docTypeNum;
 		this.docRequirement = docRequirement;
@@ -34,6 +34,7 @@ public class DocInfo {
 				this.url.add(null);
 			}
 		}
+		this.instructions = instructions;
 	}
 
 	public File getFile() {

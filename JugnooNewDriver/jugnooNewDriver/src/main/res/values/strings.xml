@@ -944,7 +944,7 @@
     <string name="please_enter_your_name">Please enter your name</string>
     <string name="select_vehicle_type">Select vehicle type</string>
     <string name="continue_text">Continue</string>
-    <string name="by_signing_you_agree">By Signing up you agree to our</string>
+    <string name="by_signing_you_agree">By Signing up you agree to our <u>Terms &amp; Conditions</u></string>
 
 
     <string-array name="CountryCodes">

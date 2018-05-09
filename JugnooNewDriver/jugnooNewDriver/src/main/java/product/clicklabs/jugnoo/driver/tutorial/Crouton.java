@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 
 /**
- * Displays information in a non-invasive context related manner. Like
+ * Displays ic_doc_info in a non-invasive context related manner. Like
  * {@link android.widget.Toast}, but better.
  * <p/>
  * <b>Important: </b>

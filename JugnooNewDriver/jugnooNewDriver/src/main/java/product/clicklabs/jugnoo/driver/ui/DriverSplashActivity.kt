@@ -11,6 +11,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.driver_splash_activity.*
+import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
 
@@ -42,7 +43,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
         setLoginData()
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setToolbarVisibility(false)
 
         val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
@@ -145,17 +145,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
 
     override fun setToolbarText(title: String) {
-        toolbar.title = title
+        toolbar.tvToolbar.text = title
+        toolbar.btBackToolbar.setOnClickListener { onBackPressed() }
     }
 
     override fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
 
     override fun onBackPressed() {
         // TODO use proper method for creating the user flow

@@ -55,6 +55,7 @@ class LoginFragment : Fragment() {
 
         val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
 
+        rootView.tvCountryCode.text = Utils.getCountryCode(parentActivity)
         rootView.tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
         rootView.btnGenerateOtp.setOnClickListener(View.OnClickListener {
             val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()

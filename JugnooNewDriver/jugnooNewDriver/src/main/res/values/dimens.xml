@@ -77,5 +77,5 @@
 
     <dimen name="line_size">0.6dp</dimen>
 
-    <dimen name="spacing_grid_recycler_view">16dp</dimen>
+    <dimen name="spacing_grid_recycler_view">8dp</dimen>
 </resources>

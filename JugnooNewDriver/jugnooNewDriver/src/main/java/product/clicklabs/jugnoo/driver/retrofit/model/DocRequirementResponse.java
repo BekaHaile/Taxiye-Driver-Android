@@ -100,6 +100,9 @@ public class DocRequirementResponse {
 		@SerializedName("reason")
 		@Expose
 		private String reason;
+		@SerializedName("instructions")
+		@Expose
+		private String instructions;
 
 		/**
 		 *
@@ -226,6 +229,14 @@ public class DocRequirementResponse {
 			this.reason = reason;
 		}
 
+		/**
+		 * Getter for instructions
+		 *
+		 * @return : Returns the value of instructions
+		 */
+		public String getInstructions() {
+			return instructions;
+		}
 	}
 
 }

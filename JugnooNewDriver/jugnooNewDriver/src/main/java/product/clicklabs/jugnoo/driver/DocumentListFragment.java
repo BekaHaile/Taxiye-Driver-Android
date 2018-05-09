@@ -145,7 +145,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		RelativeLayout relative, relativeLayoutImageStatus;
 		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
-				imageViewDocStatusImage, imageViewAddImageDisabled;
+				imageViewDocStatusImage, imageViewAddImageDisabled, ivInfo;
 		int id;
 	}
 
@@ -193,6 +193,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
 				holder.imageViewDocStatusImage = (ImageView) convertView.findViewById(R.id.imageViewDocStatusImage);
 				holder.imageViewAddImageDisabled = (ImageView) convertView.findViewById(R.id.imageViewAddImageDisabled);
+				holder.ivInfo = (ImageView) convertView.findViewById(R.id.ivInfo);
 
 				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
 				holder.deleteImage1.setTag(holder);
@@ -230,7 +231,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder = (ViewHolderDriverDoc) convertView.getTag();
 			}
 
-			DocInfo docInfo = docs.get(position);
+			final DocInfo docInfo = docs.get(position);
 
 			holder.id = position;
 
@@ -556,16 +557,23 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			});
 
-			if(holder.deleteImage2.getVisibility() == View.VISIBLE){
-				holder.imageViewAddImageDisabled.setVisibility(View.VISIBLE);
-			} else {
-				holder.imageViewAddImageDisabled.setVisibility(View.GONE);
-			}
+			holder.ivInfo.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(final View view) {
+					DialogPopup.alertPopup(activity, "", docInfo.instructions);
+				}
+			});
+//			if(holder.deleteImage2.getVisibility() == View.VISIBLE){
+//				holder.imageViewAddImageDisabled.setVisibility(View.VISIBLE);
+//			} else {
+//				holder.imageViewAddImageDisabled.setVisibility(View.GONE);
+//			}
 
 			return convertView;
 		}
 
 	}
+
 
 
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -604,7 +612,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),data.getInstructions());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
