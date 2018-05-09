@@ -7,7 +7,6 @@ package com.fugu.utils;
  */
 public class FuguLog {
 
-    // TODO: 03/04/18 Set PRINT false with going live
     private static final boolean PRINT = false; // true for printing and false
     // for not
 

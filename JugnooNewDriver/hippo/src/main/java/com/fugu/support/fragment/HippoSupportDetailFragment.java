@@ -285,12 +285,16 @@ public class HippoSupportDetailFragment extends BaseFragment implements View.OnC
             SendQueryChat queryChat = new SendQueryChat(SupportKeys.SupportQueryType.QUERY, category,
                     transactionId, CommonData.getUserUniqueKey(), supportResponses.getSupportId(),
                     pathList, message, successMsg);
-            queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
+            if(supportResponses.getContent().getSubHeading() != null && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText())) {
+                queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
+            }
             supportDetailView.sendQuery(queryChat);
         } else if (id == R.id.buttonChat) {
             SendQueryChat queryChat = new SendQueryChat(SupportKeys.SupportQueryType.CHAT, category,
                     transactionId, CommonData.getUserUniqueKey(), supportResponses.getSupportId(), pathList);
-            queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
+            if(supportResponses.getContent().getSubHeading() != null && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText())) {
+                queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
+            }
 
             supportDetailView.sendQuery(queryChat);
         } else if (id == R.id.buttonCall) {

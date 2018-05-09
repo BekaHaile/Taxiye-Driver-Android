@@ -66,6 +66,7 @@ import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.fugu.HippoConfig;
 import com.fugu.HippoNotificationConfig;
+import com.fugu.HippoTicketAttributes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -162,6 +163,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.support.SupportMailActivity;
+import product.clicklabs.jugnoo.driver.support.SupportOptionsActivity;
 import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
 import product.clicklabs.jugnoo.driver.tutorial.Crouton;
 import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
@@ -238,7 +241,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl, relativeLayoutSupport, relativeLayoutChatSupport,relativeLayoutPlans;
+	RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl,
+			relativeLayoutSupport, relativeLayoutChatSupport,relativeLayoutPlans, rlSupportMain,
+			rlSupportTicket, rlMailSupport;
 	TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 	LinearLayout rlGetSupport;
 
@@ -606,7 +611,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
 			relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
+			rlMailSupport = (RelativeLayout) findViewById(R.id.rlMailSupport);
+			rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
+			rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
 			relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
+
+			((TextView) findViewById(R.id.textViewPlans)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.textViewSupportMain)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.textViewChatSupport)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.textViewMailSupport)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1334,10 +1349,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO: 08/05/18 revert
 					HippoConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
-//					HippoConfig.getInstance().showTicketSupport(null);
-
+				}
+			});
+			rlSupportMain.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, SupportOptionsActivity.class));
+				}
+			});
+			rlMailSupport.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, SupportMailActivity.class));
+				}
+			});
+			rlSupportTicket.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try {
+						HippoTicketAttributes.Builder builder = new HippoTicketAttributes.Builder();
+						if(Data.userData != null){
+							builder.setFaqName(Data.userData.getHippoTicketFAQ());
+						}
+						HippoConfig.getInstance().showTicketSupport(builder.build());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 			relativeLayoutPlans.setOnClickListener(new OnClickListener() {
@@ -2193,6 +2231,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutChatSupport.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutChatSupport.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SUPPORT_MAIN,0) == 1){
+				rlSupportMain.setVisibility(View.VISIBLE);
+			} else {
+				rlSupportMain.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.TICKET_SUPPORT,0) == 1){
+				rlSupportTicket.setVisibility(View.VISIBLE);
+			} else {
+				rlSupportTicket.setVisibility(View.GONE);
+			}
+			if(Prefs.with(HomeActivity.this).getInt(Constants.MAIL_SUPPORT,0) == 1){
+				rlMailSupport.setVisibility(View.VISIBLE);
+			} else {
+				rlMailSupport.setVisibility(View.GONE);
 			}
 
 			if( Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU,0) == 1){

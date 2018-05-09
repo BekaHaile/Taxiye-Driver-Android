@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.fugu.FuguColorConfigStrings;
+import product.clicklabs.jugnoo.driver.support.SupportOption;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -469,6 +470,14 @@ public class Data {
 		}
 	}
 
+	public static ArrayList<SupportOption> getSupportOptions() {
+		return supportOptions;
+	}
+
+	public static void setSupportOptions(ArrayList<SupportOption> supportOptions) {
+		Data.supportOptions = supportOptions;
+	}
+
 	public static interface TxnType {
 		public static final int CREDITED = 1;
 		public static final int DEBITED = 2;
@@ -494,17 +503,19 @@ public class Data {
 				.build();
 	}
 
-	public static  void initFugu(Activity activity, CaptureUserData captureUserData, String keyFromServer) {
-		// TODO: 08/05/18 consider appType
+	public static  void initFugu(Activity activity, CaptureUserData captureUserData,
+								 String keyFromServer, int appTypeFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
 			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-				String fuguKey = activity.getString(R.string.fugu_app_key);
-				if(!TextUtils.isEmpty(keyFromServer)){
-					fuguKey = keyFromServer;
+				if(TextUtils.isEmpty(keyFromServer)){
+					keyFromServer = activity.getString(R.string.fugu_app_key);
 				}
-				HippoConfig.init(1, fuguKey, activity, "live", captureUserData, activity.getString(R.string.file_provider));
+				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
 			} else {
-				HippoConfig.init(1, activity.getString(R.string.fugu_app_key_test), activity, "test", captureUserData, activity.getString(R.string.file_provider));
+				if(TextUtils.isEmpty(keyFromServer)){
+					keyFromServer = activity.getString(R.string.fugu_app_key_test);
+				}
+				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "test", captureUserData, activity.getString(R.string.file_provider));
 			}
 
 //			FuguConfig.getInstance().setHomeUpIndicatorDrawableId(R.drawable.ic_profile);
@@ -537,5 +548,6 @@ public class Data {
 		}
 	}
 
+	private static ArrayList<SupportOption> supportOptions;
 
 }

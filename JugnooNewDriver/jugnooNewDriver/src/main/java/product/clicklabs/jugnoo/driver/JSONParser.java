@@ -41,6 +41,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.support.SupportOption;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -257,6 +258,9 @@ public class JSONParser implements Constants {
 		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
+		String driverSupportEmail = userData.optString(Constants.DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email));
+		String driverSupportEmailSubject = userData.optString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, context.getString(R.string.support_email_subject));
+		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.hippo_support_faq_name_default));
 		String referralCode = userData.getString("referral_code");
 
 
@@ -339,7 +343,6 @@ public class JSONParser implements Constants {
 
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
-		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
 		Prefs.with(context).save(Constants.BID_INCREMENT_PERCENT, (float)userData.optDouble(Constants.BID_INCREMENT_PERCENT, 10d));
@@ -371,7 +374,8 @@ public class JSONParser implements Constants {
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
-				isCaptiveDriver, countryCode,userIdentifier);
+				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
+				hippoTicketFAQ);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -404,7 +408,9 @@ public class JSONParser implements Constants {
 				CaptureUserData captureUserData = Data.getFuguUserData(context);
 				if(captureUserData!=null){
 					HippoNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
-					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
+					Data.initFugu((Activity) context, captureUserData,
+							jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
+							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 1));
 				}
 
 			}
@@ -941,7 +947,6 @@ public class JSONParser implements Constants {
 	}
 
 
-
 	private static void parseSideMenu(Context context, JSONObject userData){
 		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
 		if(menu == null){
@@ -965,24 +970,46 @@ public class JSONParser implements Constants {
 				Constants.SET_DRIVER_TUTORIAL_STATUS,
 				Constants.SHOW_NOTIFICATION_TIPS,
 				Constants.CHAT_SUPPORT,
-				Constants.WALLET_BALANCE_IN_EARNING
+				Constants.WALLET_BALANCE_IN_EARNING,
+				Constants.SUPPORT_MAIN,
+				Constants.TICKET_SUPPORT,
+				Constants.MAIL_SUPPORT
 		};
 		List<String> keysArr = Arrays.asList(keys);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
 		}
 
-		if(menu == null){
-			menu = new JSONArray();
-		}
+		ArrayList<SupportOption> supportOptions = new ArrayList<>();
 		for(int i=0; i<menu.length(); i++){
 			JSONObject menuItem = menu.optJSONObject(i);
-			Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
+			if(menuItem.optInt(Constants.KEY_SHOW_IN_ACCOUNT, 0) == 1) {
+				supportOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME),
+						menuItem.optString(Constants.KEY_TAG)));
+			} else {
+				Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
+			}
 		}
+		Data.setSupportOptions(supportOptions);
 	}
 
 	public static boolean isChatSupportEnabled(Context context){
-		return Prefs.with(context).getInt(Constants.CHAT_SUPPORT, 0) == 1;
+		if(Prefs.with(context).getInt(Constants.CHAT_SUPPORT, 0) == 1
+				|| Prefs.with(context).getInt(Constants.TICKET_SUPPORT, 0) == 1){
+			return true;
+		}
+
+		boolean fuguInSupport = false;
+		if(Data.getSupportOptions() != null){
+			for(SupportOption supportOption : Data.getSupportOptions()){
+				if(supportOption.getTag().equalsIgnoreCase(Constants.CHAT_SUPPORT)
+						|| supportOption.getTag().equalsIgnoreCase(Constants.TICKET_SUPPORT)){
+					fuguInSupport = true;
+					break;
+				}
+			}
+		}
+		return fuguInSupport;
 	}
 
 }

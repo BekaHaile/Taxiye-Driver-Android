@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -239,5 +240,13 @@ public class MyApplication extends MultiDexApplication {
 
     public Locale getCurrentLocale(){
         return getResources().getConfiguration().locale;
+    }
+
+    private Toast toast;
+    public Toast getToast(){
+        return toast;
+    }
+    public void setToast(Toast toast){
+        this.toast = toast;
     }
 }
