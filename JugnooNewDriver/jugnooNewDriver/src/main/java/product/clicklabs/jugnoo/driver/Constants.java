@@ -278,5 +278,7 @@ public interface Constants {
 	String ASK_USER_CONFIRMATION = "ask_user_confirmation";
 	String KEY_ESTIMATED_TRIP_DISTANCE = "estimated_trip_distance";
 	String BID_INCREMENT_PERCENT = "bid_increment_percent";
+
+
 }
 
