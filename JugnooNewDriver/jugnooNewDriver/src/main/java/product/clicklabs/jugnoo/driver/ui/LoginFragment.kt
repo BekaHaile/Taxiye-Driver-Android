@@ -18,9 +18,7 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.picker.Country
 import com.picker.CountryPicker
-import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
@@ -31,11 +29,22 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
-import retrofit.RetrofitError
 import java.lang.Exception
 import java.util.*
 
 class LoginFragment : Fragment() {
+
+    companion object {
+        private const val IS_SHARED_TRANSITION_ENABLED = "is_shared_transition_enabled"
+
+        fun newInstance(isSharedTransitionEnabled: Boolean): LoginFragment {
+            return LoginFragment().apply {
+                arguments = Bundle().apply {
+                    putBoolean(IS_SHARED_TRANSITION_ENABLED, isSharedTransitionEnabled)
+                }
+            }
+        }
+    }
 
     private lateinit var parentActivity: Activity
     val TAG = LoginFragment::class.simpleName
@@ -47,7 +56,8 @@ class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
+        if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         }
 

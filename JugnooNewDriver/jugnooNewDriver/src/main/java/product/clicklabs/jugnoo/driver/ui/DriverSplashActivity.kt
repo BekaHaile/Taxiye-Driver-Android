@@ -2,9 +2,10 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.content.Intent
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.view.ViewCompat
+import android.view.View
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
@@ -20,7 +21,7 @@ import product.clicklabs.jugnoo.driver.utils.*
  * Created by Parminder Saini on 16/04/18.
  */
 
-class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener  {
+class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
 
     private val TAG = SplashFragment::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
@@ -57,7 +58,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (savedInstanceState == null) {
 
             supportFragmentManager.inTransaction {
-                add(container.id, SplashFragment(),SplashFragment::class.simpleName)
+                add(container.id, SplashFragment(), SplashFragment::class.simpleName)
 
             }
 
@@ -91,14 +92,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
-    private fun addPhoneNumberScreen() {
+    private fun addPhoneNumberScreen(enableSharedTransition: Boolean, view: View?) {
 
-        val image = (supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName) as SplashFragment).getLogoImage()
-        supportFragmentManager.inTransaction {
-
-            addSharedElement(image, ViewCompat.getTransitionName(image))
-                    .setAllowOptimization(true)
-                    .replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && enableSharedTransition && view != null) {
+            supportFragmentManager.inTransactionWithSharedTransition(view, {
+                setAllowOptimization(true)
+                        .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
+            })
+        } else {
+            supportFragmentManager.inTransaction {
+                setAllowOptimization(true)
+                        .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+            }
         }
     }
 
@@ -111,6 +116,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         }
     }
+
     fun openDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, DriverSetupFragment.newInstance(accessToken),
@@ -127,13 +133,13 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     }
 
-    override fun openPhoneLoginScreen() {
-        addPhoneNumberScreen()
+    override fun openPhoneLoginScreen(enableSharedTransition: Boolean, sharedView: View?) {
+        addPhoneNumberScreen(enableSharedTransition, sharedView)
     }
 
     override fun goToHomeScreen() {
         val intent = Intent(this, HomeActivity::class.java)
-        if (getIntent().extras != null){
+        if (getIntent().extras != null) {
             intent.putExtras(getIntent().extras)
 
         }
@@ -163,8 +169,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         // TODO use proper method for creating the user flow
         if (supportFragmentManager.backStackEntryCount == 0 && supportFragmentManager
                         .findFragmentByTag(DriverSetupFragment::class.simpleName) is DriverSetupFragment) {
-            JSONParser.saveAccessToken(this,"")
-            addPhoneNumberScreen()
+            JSONParser.saveAccessToken(this, "")
+            addPhoneNumberScreen(false, null)
             setToolbarVisibility(false)
 
         } else {
@@ -176,7 +182,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
 interface ToolbarChangeListener {
 
-    fun setToolbarText(title :String)
+    fun setToolbarText(title: String)
 
     fun setToolbarVisibility(isVisible: Boolean)
 }

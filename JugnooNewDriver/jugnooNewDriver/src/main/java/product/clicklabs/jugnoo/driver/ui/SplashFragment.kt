@@ -35,6 +35,7 @@ import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class SplashFragment() : Fragment() {
 
@@ -136,7 +137,7 @@ class SplashFragment() : Fragment() {
                 executePending().
                 retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; }).
                 subscribeOn(Schedulers.newThread()).
-                observeOn(AndroidSchedulers.mainThread()).
+                observeOn(AndroidSchedulers.mainThread()).debounce(1000,TimeUnit.MILLISECONDS).
                 subscribe({ accessTokenLogin(this@SplashFragment.activity); })
     }
 
@@ -292,7 +293,7 @@ class SplashFragment() : Fragment() {
                 DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
             }
         }else{
-            mListener?.openPhoneLoginScreen();
+            mListener?.openPhoneLoginScreen(true, imageView);
         }
 
     }
@@ -300,7 +301,7 @@ class SplashFragment() : Fragment() {
 
     private var logoutCallback = object: LogoutCallback {
         override fun redirectToSplash(): Boolean {
-            mListener?.openPhoneLoginScreen();
+            mListener?.openPhoneLoginScreen(true, imageView);
             return false;
         }
 
@@ -359,7 +360,7 @@ class SplashFragment() : Fragment() {
     fun getLogoImage() = imageView
 
     interface InteractionListener{
-        fun openPhoneLoginScreen();
+        fun openPhoneLoginScreen(enableSharedTransition: Boolean = false, sharedView: View? = null)
 
         fun goToHomeScreen()
     }

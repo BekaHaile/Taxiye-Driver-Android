@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.utils
 
 import android.app.Activity
+import android.os.Build
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -9,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import product.clicklabs.jugnoo.driver.R
-
 
 // ========================= VIEW VISIBILITY =========================
 
@@ -48,6 +48,12 @@ fun <T : View> Fragment.bind(@IdRes res: Int, view: View?): Lazy<T> {
 
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
     beginTransaction().func().commit()
+}
+
+inline fun FragmentManager.inTransactionWithSharedTransition(view: View, func: FragmentTransaction.() -> FragmentTransaction) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        beginTransaction().addSharedElement(view,view.transitionName).func().commit()
+    }
 }
 
 inline fun FragmentManager.inTransactionWithAnimation(func: FragmentTransaction.() -> FragmentTransaction) {
