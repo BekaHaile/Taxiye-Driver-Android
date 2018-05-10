@@ -938,7 +938,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 											docs.get(index).setFile1(photoFile);
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
-
+										checkForDocumentsSubmit();
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1007,6 +1007,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
+										docs.get(index).status = "-1";
 										driverDocumentListAdapter.notifyDataSetChanged();
 
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
@@ -1086,6 +1087,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		} catch (Exception e) {
 			e.printStackTrace();
 			return bm;
+		}
+	}
+
+	private void checkForDocumentsSubmit(){
+		boolean mandatoryDocsSubmitted = true;
+		for(DocInfo docInfo : docs){
+			if((docInfo.docRequirement.equals(1)
+					|| docInfo.docRequirement.equals(3)
+					|| docInfo.docRequirement.equals(4))
+					&&
+					(!docInfo.status.equalsIgnoreCase("uploaded")
+						&& !docInfo.status.equalsIgnoreCase("4"))){
+				mandatoryDocsSubmitted = false;
+				break;
+			}
+		}
+		if(mandatoryDocsSubmitted){
+			DialogPopup.dialogBanner(activity,
+					activity.getString(R.string.please_press_submit_button), null, 5000,
+					R.color.white, R.color.red_v2);
 		}
 	}
 

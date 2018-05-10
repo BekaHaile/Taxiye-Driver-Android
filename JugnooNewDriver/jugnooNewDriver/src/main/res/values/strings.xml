@@ -932,6 +932,7 @@
     <string name="chat_support">Chat Support</string>
     <string name="t_and_c_login">By submitting OTP here and logging in the app you accept the <a href="https://jugnoo.in/sg/terms/driver/">Terms and Conditions </a> of Jugnoo. Please do not go further, if these are not OK with you.</string>
     <string name="estimated_distance_format">Estimated Distance: %skm</string>
+    <string name="please_press_submit_button">Please press submit button</string>
 
 
     <string-array name="CountryCodes">
