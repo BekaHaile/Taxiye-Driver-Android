@@ -52,7 +52,7 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
 
 inline fun FragmentManager.inTransactionWithSharedTransition(view: View, func: FragmentTransaction.() -> FragmentTransaction) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        beginTransaction().addSharedElement(view,view.transitionName).func().commit()
+        beginTransaction().addSharedElement(view, view.transitionName).func().commit()
     }
 }
 

@@ -4,8 +4,10 @@ package product.clicklabs.jugnoo.driver.ui
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.text.InputType
 import android.text.TextUtils
@@ -20,6 +22,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.picker.CountryPicker
 import kotlinx.android.synthetic.main.dialog_edittext.*
+import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -301,5 +304,19 @@ class LoginFragment : Fragment() {
     override fun onHiddenChanged(hidden: Boolean) {
         toolbarChangeListener.setToolbarVisibility(false)
         super.onHiddenChanged(hidden)
+    }
+
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+
+        with(rootView){
+            tvLabel.text = getString(R.string.label_edt_phone)
+            edtPhoneNo.hint = getString(R.string.hint_edt_phone)
+            btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+        }
+
+        // animate
+        TransitionManager.beginDelayedTransition(root)
     }
 }

@@ -907,7 +907,11 @@
     <string name="bid_placed">Bid Placed</string>
     <!--Strings for Subscription plans-->
 
-
+	<!--login with phone-->
+	<string name="label_edt_phone">कृपया अपना फोन नंबर दर्ज करें</string>
+	<string name="hint_edt_phone">फोन नंबर</string>
+	<string name="code">कोड</string>
+	<string name="btn_text_OTP">ओटीपी उत्पन्न करें</string>
 
 
 

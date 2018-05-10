@@ -122,6 +122,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		config.locale = locale;
 		getBaseContext().getResources().updateConfiguration(config,
 				getBaseContext().getResources().getDisplayMetrics());
+		onConfigurationChanged(config);
 	}
 
 
