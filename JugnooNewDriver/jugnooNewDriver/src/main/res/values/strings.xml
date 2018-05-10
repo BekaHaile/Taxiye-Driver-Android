@@ -936,6 +936,9 @@
 
 
     <string name="stripe_connect_title">Stripe</string>
+    <string name="stripe_success_message">Your stripe account has been configured successfully.</string>
+    <string name="stripe_error_message">Oops! There was a problem configuring your stripe account.</string>
+
 
     <string-array name="CountryCodes">
         <item>+93,AF</item>

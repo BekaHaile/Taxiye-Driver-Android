@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.net.UrlQuerySanitizer;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -54,11 +55,29 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
                     Log.i(TAG,"success "+url);
                     Log.i(TAG,"auth code= "+sanitizer.getValue("code"));
                     Log.i(TAG,"auth state= "+sanitizer.getValue("state"));
-                    Toast.makeText(StripeConnectActivity.this,"Sorry an error occured",Toast.LENGTH_LONG).show();
+                    String message = sanitizer.getValue("message");
+                    if(message==null){
+                        message = getString(R.string.stripe_success_message);
+                    }
+                    DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            StripeConnectActivity.this.finish();
+                        }
+                    });
               }else{
                     Log.i(TAG,"failure "+url);
-                    Toast.makeText(StripeConnectActivity.this,"Sorry an error occured",Toast.LENGTH_LONG).show();
-                    finish();
+                    String message = sanitizer.getValue("error");
+                    if(message==null){
+                        message = getString(R.string.stripe_error_message);
+                    }
+                    DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            StripeConnectActivity.this.finish();
+                        }
+                    });
+
 
                 }
 
@@ -107,6 +126,9 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
         if(webView!=null && webView.canGoBack()) {
             webView.goBack();
         } else {
+            if(webView!=null){
+                webView.destroy();
+            }
             super.onBackPressed();
         }
     }
