@@ -31,9 +31,9 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 
 					SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 					if(preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL).equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-						SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true);
+						SoundMediaPlayer.startSound(context, R.raw.cancel_ring3, 1, true);
 					} else {
-						SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, false);
+						SoundMediaPlayer.startSound(context, R.raw.cancel_ring3, 1, false);
 					}
 
 					FlurryEventLogger.gpsStatus(context, "Device Restart");

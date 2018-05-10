@@ -4450,7 +4450,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (reachedDestination && playStartRideAlarmFinal
 						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
 					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert), 7000);
-					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 100, true);
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 5, true);
 					playStartRideAlarmFinal = false;
 				}
 				if (reachedDestination && playStartRideAlarm

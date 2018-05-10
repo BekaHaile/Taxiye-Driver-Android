@@ -694,7 +694,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 4, true);
+								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancel_ring3, 1, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));

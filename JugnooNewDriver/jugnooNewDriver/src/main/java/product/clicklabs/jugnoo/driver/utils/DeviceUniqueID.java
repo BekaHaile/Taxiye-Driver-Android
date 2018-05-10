@@ -3,6 +3,8 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
+import product.clicklabs.jugnoo.driver.BuildConfig;
+
 public class DeviceUniqueID {
 
 	public static String getUniqueId(Context context){
@@ -11,10 +13,10 @@ public class DeviceUniqueID {
 			String imei = telephonyManager.getDeviceId();
 			Log.e("imei", "="+imei);
             if(imei != null && !imei.isEmpty()){
-                return imei;
+                return imei + (BuildConfig.DEBUG ? "mn" : "");
             }
             else{
-                return android.os.Build.SERIAL;
+                return android.os.Build.SERIAL + (BuildConfig.DEBUG ? "mn" : "");
             }
 		} catch (Exception e) {
 			e.printStackTrace();
