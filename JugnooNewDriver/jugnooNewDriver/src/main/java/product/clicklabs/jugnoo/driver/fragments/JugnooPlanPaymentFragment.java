@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,13 +24,11 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
  * create an instance of this fragment.
  */
 public class JugnooPlanPaymentFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private String mParam3;
@@ -51,7 +48,6 @@ public class JugnooPlanPaymentFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment JugnooPlanPaymentFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static JugnooPlanPaymentFragment newInstance(String param1, String param2,String param3) {
         JugnooPlanPaymentFragment fragment = new JugnooPlanPaymentFragment();
         Bundle args = new Bundle();
@@ -120,7 +116,6 @@ public class JugnooPlanPaymentFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more ic_doc_info.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(boolean isSuccess);
     }
 

@@ -23,6 +23,7 @@ public class DocRequirementResponse {
 	@Expose
 	private int imgPixel;
 
+
 	/**
 	 * @return The flag
 	 */
@@ -103,6 +104,10 @@ public class DocRequirementResponse {
 		@SerializedName("instructions")
 		@Expose
 		private String instructions;
+
+		public String getInstructions() {
+			return instructions;
+		}
 
 		/**
 		 *
@@ -229,14 +234,6 @@ public class DocRequirementResponse {
 			this.reason = reason;
 		}
 
-		/**
-		 * Getter for instructions
-		 *
-		 * @return : Returns the value of instructions
-		 */
-		public String getInstructions() {
-			return instructions;
-		}
 	}
 
 }

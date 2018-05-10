@@ -11,7 +11,7 @@
         android:id="@+id/ivVehicle"
         android:layout_width="56dp"
         android:layout_height="48dp"
-        android:background="@drawable/background_white_rounded_orange_bordered"
+        android:background="@color/white"
         />
 
     <ImageView

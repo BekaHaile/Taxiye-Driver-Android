@@ -1,19 +1,25 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.fugu.CaptureUserData;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -28,6 +34,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
+import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -274,15 +281,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_SUSCRIBER_KEY, userData.optString("pubnub_subscribe_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
-		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
-
-		Prefs.with(context).save(SPLabels.IS_TUTORIAL_SHOWN, userData.optInt("set_driver_tutorial_status", 0));
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
-		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_MENU, userData.optInt("show_support_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_PLANS_IN_MENU, userData.optInt("show_plans_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_RATE_CARD_IN_MENU, userData.optInt("show_rate_card_in_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_CALL_US_MENU, userData.optInt("show_call_us_menu", 0));
-		Prefs.with(context).save(SPLabels.SHOW_IN_APP_CALL_US, userData.optInt("show_in_app_call_us", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
 		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
 
@@ -320,9 +319,11 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.AVERAGE_DRIVER_EARNING, userData.optInt("average_driver_earning", 0));
 		Prefs.with(context).save(Constants.AVERAGE_EARNING_DAYS, userData.optInt("average_earning_days", 0));
 
+		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, "INR"));
 		Prefs.with(context).save(Constants.DIFF_MAX_EARNING, userData.optInt("diff_max_earning", 0));
 		Prefs.with(context).save(Constants.UPDATE_LOCATION_OFFLINE, userData.optInt("update_location_offline", 0));
 		Prefs.with(context).save(Constants.OFFLINE_UPDATE_TIME_PERIOD, userData.optLong("offline_update_time_period", 180000));
+//		Prefs.with(context).save(Constants.SHOW_AGREEMENT_SCREEN, userData.optInt("agreement_status", 1));
 
 		Prefs.with(context).save(Constants.END_RIDE_CUSTOM_TEXT, userData.optString("end_ride_custom_text", ""));
 
@@ -341,6 +342,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
+		Prefs.with(context).save(Constants.BID_INCREMENT_PERCENT, (float)userData.optDouble(Constants.BID_INCREMENT_PERCENT, 10d));
 
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
@@ -355,8 +357,11 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(SP_USER_ID, userId);
+
+		parseSideMenu(context, userData);
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
@@ -366,7 +371,7 @@ public class JSONParser implements Constants {
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
-				isCaptiveDriver, countryCode);
+				isCaptiveDriver, countryCode,userIdentifier);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -391,6 +396,21 @@ public class JSONParser implements Constants {
 		parseCancellationReasons(jObj,context);
 		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 
+		try {
+
+
+			if(isChatSupportEnabled(context)){
+
+				CaptureUserData captureUserData = Data.getFuguUserData(context);
+				if(captureUserData!=null){
+					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
+					Data.initFugu((Activity) context, captureUserData, jLoginObject.optString(Constants.KEY_FUGU_APP_KEY));
+				}
+
+			}
+			} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		/*try {
 			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
@@ -563,7 +583,7 @@ public class JSONParser implements Constants {
 								e.printStackTrace();
 							}
 
-							parsePoolFare(jObjCustomer, customerInfo);
+							parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
 
 							Data.addCustomerInfo(customerInfo);
 
@@ -692,6 +712,11 @@ public class JSONParser implements Constants {
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 				double estimatedDist = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_DISTANCE, 0d);
+				int reverseBid = jActiveRequest.optInt(Constants.KEY_REVERSE_BID, 0);
+				int bidPlaced = jActiveRequest.optInt(Constants.KEY_BID_PLACED, 0);
+				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
+				double initialBidValue = jActiveRequest.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10);
+				double estimatedTripDistance = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -706,7 +731,8 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency);
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -886,7 +912,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	public static void parsePoolFare(JSONObject jObjCustomer, CustomerInfo customerInfo){
+	public static void parsePoolOrReverseBidFare(JSONObject jObjCustomer, CustomerInfo customerInfo){
 		try {
 			if(jObjCustomer.has(KEY_POOL_FARE)){
 				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
@@ -900,6 +926,11 @@ public class JSONParser implements Constants {
 				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
 				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
 			}
+			if(jObjCustomer.has(KEY_REVERSE_BID_FARE)){
+				JSONObject jFare = jObjCustomer.optJSONObject(KEY_REVERSE_BID_FARE);
+				double fare = jFare.optDouble(KEY_FARE);
+				customerInfo.setReverseBidFare(new ReverseBidFare(fare));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -907,5 +938,47 @@ public class JSONParser implements Constants {
 
 
 
+	private static void parseSideMenu(Context context, JSONObject userData){
+		JSONArray menu = userData.optJSONArray(Constants.KEY_MENU);
+		if(menu == null){
+			return;
+		}
+
+		String keys[] = new String[]{
+				Constants.LANGUAGE_PREFERENCE_IN_MENU,
+				Constants.INVITE_FRIENDS_IN_MENU,
+				Constants.DRIVER_RESOURCES_IN_MENU,
+				Constants.SUPER_DRIVERS_IN_MENU,
+				Constants.INVOICES_IN_MENU,
+				Constants.EARNINGS_IN_MENU,
+				Constants.BANK_DETAILS_IN_EDIT_PROFILE,
+				Constants.SHOW_PLANS_IN_MENU,
+				Constants.SHOW_SUPPORT_IN_MENU,
+				Constants.SELF_AUDIT_BUTTON_STATUS,
+				Constants.SHOW_CALL_US_MENU,
+				Constants.SHOW_IN_APP_CALL_US,
+				Constants.SHOW_RATE_CARD_IN_MENU,
+				Constants.SET_DRIVER_TUTORIAL_STATUS,
+				Constants.SHOW_NOTIFICATION_TIPS,
+				Constants.CHAT_SUPPORT,
+				Constants.WALLET_BALANCE_IN_EARNING
+		};
+		List<String> keysArr = Arrays.asList(keys);
+		for(String key : keysArr){
+			Prefs.with(context).save(key, 0);
+		}
+
+		if(menu == null){
+			menu = new JSONArray();
+		}
+		for(int i=0; i<menu.length(); i++){
+			JSONObject menuItem = menu.optJSONObject(i);
+			Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
+		}
+	}
+
+	public static boolean isChatSupportEnabled(Context context){
+		return Prefs.with(context).getInt(Constants.CHAT_SUPPORT, 0) == 1;
+	}
 
 }

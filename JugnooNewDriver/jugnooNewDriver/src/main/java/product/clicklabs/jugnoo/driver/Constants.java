@@ -44,6 +44,7 @@ public interface Constants {
     String KEY_PHONE = "phone";
     String KEY_CONTACTS = "contacts";
     String KEY_USER_ID = "user_id";
+    String KEY_USER_IDENTIFIER = "user_identifier";
     String SP_USER_ID = "sp_user_id";
 
     String KEY_LATITUDE = "latitude";
@@ -186,6 +187,7 @@ public interface Constants {
 	String KEY_DISCOUNT_PERCENTAGE = "discount_percentage";
 	String KEY_POOL_DROP_RADIUS = "pool_drop_radius";
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
+    String DRIVER_RIDE_EARNING_CURRENCY = "driver_ride_earning_currency";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
@@ -249,5 +251,35 @@ public interface Constants {
 	String KEY_VEHICLE_TYPES = "vehicle_types";
 
 	String INTENT_ACTION_NEW_MESSAGE = "product.clicklabs.jugnoo.driver.INTENT_ACTION_NEW_MESSAGE";
+	String LANGUAGE_PREFERENCE_IN_MENU = "language_preference_in_menu";
+	String INVITE_FRIENDS_IN_MENU = "invite_friends_in_menu";
+	String DRIVER_RESOURCES_IN_MENU = "driver_resources_in_menu";
+	String SUPER_DRIVERS_IN_MENU = "super_drivers_in_menu";
+	String INVOICES_IN_MENU = "invoices_in_menu";
+	String EARNINGS_IN_MENU = "earnings_in_menu";
+	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
+	String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
+	String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
+	String SELF_AUDIT_BUTTON_STATUS = "self_audit_button_status";
+	String SHOW_CALL_US_MENU = "show_call_us_menu";
+	String SHOW_IN_APP_CALL_US = "show_in_app_call_us";
+	String SHOW_RATE_CARD_IN_MENU = "show_rate_card_in_menu";
+	String SET_DRIVER_TUTORIAL_STATUS = "set_driver_tutorial_status";
+	String KEY_MENU = "menu";
+	String KEY_TAG = "tag";
+	String CHAT_SUPPORT = "chat_support";
+	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
+
+	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
+	String KEY_REVERSE_BID = "reverse_bid";
+	String KEY_BID_PLACED = "bid_placed";
+	String KEY_REVERSE_BID_FARE = "reverse_bid_fare";
+	String KEY_BID_VALUE = "bid_value";
+	String KEY_MESSAGE = "message";
+	String KEY_INITIAL_BID_VALUE = "initial_bid_value";
+	String KEY_FUGU_APP_KEY = "fugu_app_key";
+	String ASK_USER_CONFIRMATION = "ask_user_confirmation";
+	String KEY_ESTIMATED_TRIP_DISTANCE = "estimated_trip_distance";
+	String BID_INCREMENT_PERCENT = "bid_increment_percent";
 }
 

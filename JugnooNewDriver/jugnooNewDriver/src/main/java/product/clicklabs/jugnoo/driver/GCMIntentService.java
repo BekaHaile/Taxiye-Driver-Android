@@ -26,6 +26,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -86,7 +87,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
 	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
-
+	FuguNotificationConfig fuguNotificationConfig = new FuguNotificationConfig();
 	public GCMIntentService() {
 	}
 
@@ -190,7 +191,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	@SuppressWarnings("deprecation")
 	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId,
 													   int referenceId, String userId, int perfectRide,
-													   int isPooled, int isDelivery, int isDeliveryPool) {
+													   int isPooled, int isDelivery, int isDeliveryPool, int reverseBid) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -229,54 +230,56 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setContentIntent(intent);
 
 
-			if (HomeActivity.appInterruptHandler != null) {
-				Intent intentAcc = new Intent(context, HomeActivity.class);
-				intentAcc.putExtra("type", "accept");
-				intentAcc.putExtra("engagement_id", engagementId);
-				intentAcc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
-				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
-
-				Intent intentCanc = new Intent(context, HomeActivity.class);
-				intentCanc.putExtra("type", "cancel");
-				intentCanc.putExtra("engagement_id", engagementId);
-				intentCanc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
-				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
-
-			} else {
-
-				if (perfectRide == 1) {
-					Intent intentAccKill = new Intent(context, DriverSplashActivity.class);
-					intentAccKill.putExtra("type", "accept");
-					intentAccKill.putExtra("engagement_id", engagementId);
-					intentAccKill.putExtra("referrence_id", referenceId);
-					intentAccKill.putExtra("user_id", userId);
-					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+			if(reverseBid != 1) {
+				if (HomeActivity.appInterruptHandler != null) {
+					Intent intentAcc = new Intent(context, HomeActivity.class);
+					intentAcc.putExtra("type", "accept");
+					intentAcc.putExtra("engagement_id", engagementId);
+					intentAcc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 					builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+
+					Intent intentCanc = new Intent(context, HomeActivity.class);
+					intentCanc.putExtra("type", "cancel");
+					intentCanc.putExtra("engagement_id", engagementId);
+					intentCanc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+					builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
+
 				} else {
-					Intent intentAccKill = new Intent(context, ApiAcceptRideServices.class);
-					intentAccKill.putExtra("type", "accept");
-					intentAccKill.putExtra("engagement_id", engagementId);
-					intentAccKill.putExtra("referrence_id", referenceId);
-					intentAccKill.putExtra(Constants.KEY_IS_POOLED, isPooled);
-					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY, isDelivery);
-					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY_POOL, isDeliveryPool);
-					intentAccKill.putExtra("user_id", userId);
-					Log.i("accceptRideGCM Logs", "" + engagementId + " " + userId + " " + referenceId);
-					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					PendingIntent pendingIntentAccept = PendingIntent.getService(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
-					builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+
+					if (perfectRide == 1) {
+						Intent intentAccKill = new Intent(context, DriverSplashActivity.class);
+						intentAccKill.putExtra("type", "accept");
+						intentAccKill.putExtra("engagement_id", engagementId);
+						intentAccKill.putExtra("referrence_id", referenceId);
+						intentAccKill.putExtra("user_id", userId);
+						intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+						builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+					} else {
+						Intent intentAccKill = new Intent(context, ApiAcceptRideServices.class);
+						intentAccKill.putExtra("type", "accept");
+						intentAccKill.putExtra("engagement_id", engagementId);
+						intentAccKill.putExtra("referrence_id", referenceId);
+						intentAccKill.putExtra(Constants.KEY_IS_POOLED, isPooled);
+						intentAccKill.putExtra(Constants.KEY_IS_DELIVERY, isDelivery);
+						intentAccKill.putExtra(Constants.KEY_IS_DELIVERY_POOL, isDeliveryPool);
+						intentAccKill.putExtra("user_id", userId);
+						Log.i("accceptRideGCM Logs", "" + engagementId + " " + userId + " " + referenceId);
+						intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+						PendingIntent pendingIntentAccept = PendingIntent.getService(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+						builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+					}
+
+
+					Intent intentCancKill = new Intent(context, DriverSplashActivity.class);
+					intentCancKill.putExtra("type", "cancel");
+					intentCancKill.putExtra("engagement_id", engagementId);
+					intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+					builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 				}
-
-
-				Intent intentCancKill = new Intent(context, DriverSplashActivity.class);
-				intentCancKill.putExtra("type", "cancel");
-				intentCancKill.putExtra("engagement_id", engagementId);
-				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
-				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 			}
 
 
@@ -448,6 +451,19 @@ public class GCMIntentService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 //		super.onMessageReceived(remoteMessage);
+
+		if (fuguNotificationConfig.isFuguNotification(remoteMessage.getData())) {
+			fuguNotificationConfig.setSmallIcon(R.mipmap.ic_launcher);
+			//your icon drawable
+			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
+			fuguNotificationConfig.setNotificationSoundEnabled(true);
+			fuguNotificationConfig.setPriority(NotificationCompat.PRIORITY_HIGH);
+			fuguNotificationConfig.showNotification(getApplicationContext(),
+					remoteMessage.getData());
+			return;
+		}
+
+
 		onHandleIntent(remoteMessage);
 
 	}
@@ -539,6 +555,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									String startTimeLocal = DateOperations.utcToLocal(startTime);
 									String endTime = jObj.optString(Constants.KEY_END_TIME, "");
+									int reverseBid = jObj.optInt(Constants.KEY_REVERSE_BID, 0);
+									int bidPlaced = jObj.optInt(Constants.KEY_BID_PLACED, 0);
+									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
+									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
+									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
 									long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -574,12 +595,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
-									if (HomeActivity.appInterruptHandler != null) {
+									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints, estimatedDist,currency);
+												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
+												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId, changeRing);
@@ -592,14 +614,14 @@ public class GCMIntentService extends FirebaseMessagingService {
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool);
+												isPooled, isDelivery, isDeliveryPool, reverseBid);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool);
+												isPooled, isDelivery, isDeliveryPool, reverseBid);
 										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
@@ -1126,7 +1148,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (vibrator.hasVibrator()) {
+			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
 						1350, 3900,
 						1350, 3900,
@@ -1142,6 +1164,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				if(!BuildConfig.DEBUG)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 				if(ringType == 1){
 					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
@@ -1182,7 +1205,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (vibrator.hasVibrator()) {
+			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
 						1350, 3900,
 						1350, 3900,
@@ -1198,6 +1221,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			if(!BuildConfig.DEBUG)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			Log.i("Music Path", "" + file);
 			mediaPlayer = MediaPlayer.create(context, Uri.parse(file));
@@ -1227,7 +1251,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-			if (vibrator.hasVibrator()) {
+			if (!BuildConfig.DEBUG && vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
 						1350, 3900,
 						1350, 3900,
@@ -1517,7 +1541,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 						params.put("ack_timestamp", actTimeStamp);
 
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 

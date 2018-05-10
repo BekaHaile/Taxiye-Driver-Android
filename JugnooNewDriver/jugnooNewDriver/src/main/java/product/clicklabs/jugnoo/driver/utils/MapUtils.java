@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -59,39 +58,9 @@ public class MapUtils {
 	
 	
 	//http://maps.googleapis.com/maps/api/directions/json?origin=30.7342187,76.78088307&destination=30.74571777,76.78635478&sensor=false&mode=driving&alternatives=false
-	public static String makeDirectionsURL(LatLng source, LatLng destination) {
-		StringBuilder urlString = new StringBuilder();
-		urlString.append("http://maps.googleapis.com/maps/api/directions/json");
-		urlString.append("?origin=");// from
-		urlString.append(Double.toString(source.latitude));
-		urlString.append(",");
-		urlString.append(Double.toString(source.longitude));
-		urlString.append("&destination=");// to
-		urlString.append(Double.toString(destination.latitude));
-		urlString.append(",");
-		urlString.append(Double.toString(destination.longitude));
-		urlString.append("&sensor=false&mode=driving&alternatives=false");
-		return urlString.toString();
-	}
-	
-	
+
 	//http://maps.googleapis.com/maps/api/distancematrix/json?origins=30.75,76.78&destinations=30.78,76.79&language=EN&sensor=false
-	
-	public static String makeDistanceMatrixURL(LatLng source, LatLng destination){
-        StringBuilder urlString = new StringBuilder();
-        urlString.append("http://maps.googleapis.com/maps/api/distancematrix/json");
-        urlString.append("?origins=");// from
-        urlString.append(Double.toString(source.latitude));
-        urlString.append(",");
-        urlString.append(Double.toString(source.longitude));
-        urlString.append("&destinations=");// to
-        urlString.append(Double.toString(destination.latitude));
-        urlString.append(",");
-        urlString.append(Double.toString(destination.longitude));
-        urlString.append("&language=EN&sensor=false&alternatives=false");
-        return urlString.toString();
-	}
-	
+
 	
 	
 	public static List<LatLng> decodeDirectionsPolyline(String encoded) {
@@ -158,8 +127,7 @@ public class MapUtils {
 				language = "en";
 			}
 
-			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
-					language, false);
+			Response response = GoogleRestApis.geocode(latLng.latitude + "," + latLng.longitude, language);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
 

@@ -719,7 +719,7 @@
     <string name="pls_enter_some_msg">தயவு செய்து பிரச்சினை நுழைக்க</string>
 
     <string name="self_enroled">Self Enroled</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="delivery_fare">Delivery Fare</string>
     <string name="return_subsidy">Return Subsidy</string>
@@ -918,6 +918,10 @@
     <string name="error_no_countries_found">No Countries Found!</string>
     <string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
+    <string name="place_bid">Place Bid</string>
+    <string name="please_enter_some_value">Please enter some value</string>
+    <string name="bid">Bid</string>
+    <string name="bid_placed">Bid Placed</string>
     <!--Strings for Subscription plans-->
 
 

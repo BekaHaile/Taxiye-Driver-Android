@@ -206,7 +206,6 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
                                         phoneNoEt.requestFocus();
                                         phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
                                     } else {
-                                        //TODO remove extra characters phoneNo
                                         phoneNo = phoneNo.replace(" ", "");
                                         phoneNo = phoneNo.replace("(", "");
                                         phoneNo = phoneNo.replace("/", "");

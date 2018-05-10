@@ -10,20 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
-import product.clicklabs.jugnoo.driver.adapters.NotificationFragmentAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RateCardFragmentAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
-import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
-import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
@@ -85,6 +77,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 		tabs.setBackgroundColor(getResources().getColor(R.color.black_top_bar_bg));
+		tabs.setVisibility(rateCardFragmentAdapter.getCount() > 1 ? View.VISIBLE : View.GONE);
 
 //		try {
 //			if(getIntent().getExtras().getInt("trick_page") ==1){

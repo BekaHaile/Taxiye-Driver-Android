@@ -79,7 +79,6 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 //							setAlarm(context);
 						} else {
 							if (Utils.isBatteryCharging(context)) {
-								//TODO save server fast time
 								if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 									// Do something for lollipop and above versions
 									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
@@ -106,7 +105,6 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 									setAlarm(context);
 									Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_LOC_BAD_ACCURACY_RESTART);
 								} else {
-									//TODO save server normal time
 									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
 											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l)) {
 										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,

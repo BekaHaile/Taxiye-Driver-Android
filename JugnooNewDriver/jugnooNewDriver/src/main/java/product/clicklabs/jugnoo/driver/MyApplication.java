@@ -4,10 +4,10 @@ package product.clicklabs.jugnoo.driver;
  * Created by aneeshbansal on 17/03/16.
  */
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
+import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
@@ -30,7 +31,8 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
-public class MyApplication extends Application {
+
+public class MyApplication extends MultiDexApplication {
     public static final String TAG = MyApplication.class
             .getSimpleName();
 
@@ -48,6 +50,7 @@ public class MyApplication extends Application {
         mInstance = this;
       //  Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
+        Paper.init(this);
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
