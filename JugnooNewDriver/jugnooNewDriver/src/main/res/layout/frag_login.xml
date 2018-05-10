@@ -34,6 +34,7 @@
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
+            android:transitionName="logoTransition"
             android:layout_height="wrap_content"
             android:src="@drawable/splash_driver_logo"
             app:layout_constraintBottom_toTopOf="@+id/tvLabel"

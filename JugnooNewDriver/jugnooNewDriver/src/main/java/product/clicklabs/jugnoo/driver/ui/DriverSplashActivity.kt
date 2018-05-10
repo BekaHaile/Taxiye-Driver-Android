@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.view.ViewCompat
 import android.widget.FrameLayout
 import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
@@ -56,7 +57,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (savedInstanceState == null) {
 
             supportFragmentManager.inTransaction {
-                add(container.id, SplashFragment())
+                add(container.id, SplashFragment(),SplashFragment::class.simpleName)
 
             }
 
@@ -92,8 +93,12 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     private fun addPhoneNumberScreen() {
 
+        val image = (supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName) as SplashFragment).getLogoImage()
         supportFragmentManager.inTransaction {
-            replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
+
+            addSharedElement(image, ViewCompat.getTransitionName(image))
+                    .setAllowOptimization(true)
+                    .replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
         }
     }
 

@@ -4,10 +4,12 @@ package product.clicklabs.jugnoo.driver.ui
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.InputType
 import android.text.TextUtils
+import android.transition.TransitionInflater
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,11 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        }
+
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 

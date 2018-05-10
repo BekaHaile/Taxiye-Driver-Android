@@ -23,6 +23,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.frag_splash.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -355,7 +356,7 @@ class SplashFragment() : Fragment() {
         }
     }
 
-
+    fun getLogoImage() = imageView
 
     interface InteractionListener{
         fun openPhoneLoginScreen();
