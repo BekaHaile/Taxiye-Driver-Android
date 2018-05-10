@@ -247,6 +247,20 @@ public class CustomerSwitcher {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
 					}
+					if(customerInfo.getDropLatLng() != null) {
+						activity.bDropAddressToggle.setVisibility(View.VISIBLE);
+						activity.tvDropAddressToggleView.setText(R.string.loading);
+						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
+							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
+									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+											activity.tvDropAddressToggleView, null)).execute();
+						} else {
+							activity.tvDropAddressToggleView.setText(customerInfo.getDropAddress());
+						}
+					} else {
+						activity.bDropAddressToggle.setVisibility(View.GONE);
+						activity.tvDropAddressToggleView.setVisibility(View.GONE);
+					}
 				}
 			}
 			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
