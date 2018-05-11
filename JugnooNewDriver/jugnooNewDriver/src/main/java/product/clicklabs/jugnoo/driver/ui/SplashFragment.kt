@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
@@ -19,10 +18,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.iid.FirebaseInstanceId
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.frag_splash.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
@@ -47,6 +46,8 @@ class SplashFragment() : Fragment() {
     private val handler = Handler()
     var mListener:InteractionListener?=null;
     private lateinit var parentActivity : Activity
+    private val behaviourSubject by lazy { executePending() }
+    private var disposable : Disposable? = null
 
     init{
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
@@ -134,33 +135,34 @@ class SplashFragment() : Fragment() {
 
 
     private fun pushAPIs(context: Context?){
-        if(isMockLocationEnabled())return
-                executePending().
+        if(isMockLocationEnabled()) return
+
+          behaviourSubject.
                 retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; }).
                 subscribeOn(Schedulers.newThread()).
                 observeOn(AndroidSchedulers.mainThread()).debounce(1000,TimeUnit.MILLISECONDS).
-                subscribe({ accessTokenLogin(this@SplashFragment.activity) }, { Log.d(TAG, "pushAPIs : ${it.message}") })
+                subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
     }
 
 
-    fun executePending(): Observable<Boolean> {
+    fun executePending(): BehaviorSubject<Boolean> {
 
-        return Observable.create(ObservableOnSubscribe {
-            val pendingAPICalls = Database2.getInstance(context).allPendingAPICalls
-            for (pendingAPICall in pendingAPICalls) {
-                Log.e(TAG, "pendingApiCall=$pendingAPICall")
-                PendingApiHit().startAPI(context, pendingAPICall)
-            }
-            val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount;
+        val subject =  BehaviorSubject.create<Boolean>()
 
-            if(pendingApisCount <= 0) {
+        val pendingAPICalls = Database2.getInstance(context).allPendingAPICalls
+        for (pendingAPICall in pendingAPICalls) {
+            Log.e(TAG, "pendingApiCall=$pendingAPICall")
+            PendingApiHit().startAPI(context, pendingAPICall)
+        }
+        val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount;
 
-                it.onNext(pendingApisCount<=0);
-            } else {
-                it.onError(Throwable("Pending apis count"))
-            }
+        if(pendingApisCount <= 0) {
 
-        })
+            subject.onComplete()
+        } else {
+            subject.onError(Throwable("Pending apis count"))
+        }
+        return subject
     }
 
     fun accessTokenLogin(activity: Activity) {
@@ -350,6 +352,10 @@ class SplashFragment() : Fragment() {
         if(waitingForDeviceToken){
             LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
             handler.removeCallbacksAndMessages(null)
+        }
+
+       if (disposable != null && !disposable!!.isDisposed){
+            disposable?.dispose()
         }
     }
 
