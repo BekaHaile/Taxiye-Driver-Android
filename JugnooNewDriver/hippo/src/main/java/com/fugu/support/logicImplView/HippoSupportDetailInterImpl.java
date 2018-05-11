@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import com.fugu.model.FuguCreateConversationParams;
-import com.fugu.model.FuguCreateConversationResponse;
 import com.fugu.retrofit.APIError;
 import com.fugu.retrofit.ResponseResolver;
 import com.fugu.retrofit.RestClient;
 import com.fugu.support.Utils.CommonSupportParam;
 import com.fugu.support.callback.HippoSupportDetailInter;
 import com.fugu.support.model.Category;
+import com.fugu.support.model.SupportTicketResponse;
 import com.fugu.support.model.callbackModel.SendQueryChat;
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class HippoSupportDetailInterImpl implements HippoSupportDetailInter {
                 transactionId, userUniqueId, supportId, pathList, textboxMsg, "");
 
         RestClient.getApiInterface().createTicket(submitQueryParams)
-                .enqueue(new ResponseResolver<FuguCreateConversationResponse>(activity, true, false) {
+                .enqueue(new ResponseResolver<SupportTicketResponse>(activity, true, false) {
 
                     @Override
-                    public void success(FuguCreateConversationResponse fuguCreateConversationResponse) {
+                    public void success(SupportTicketResponse fuguCreateConversationResponse) {
                         Toast.makeText(activity, successMsg, Toast.LENGTH_SHORT).show();
                         onFinishedListener.onSuccess();
                     }

@@ -10,8 +10,7 @@ import com.fugu.model.FuguGetMessageResponse;
 import com.fugu.model.FuguPutUserDetailsResponse;
 import com.fugu.model.FuguUploadImageResponse;
 import com.fugu.support.model.SupportResponse;
-
-import org.json.JSONObject;
+import com.fugu.support.model.SupportTicketResponse;
 
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -75,6 +73,6 @@ public interface ApiInterface {
     Call<SupportResponse> sendSupportQuery(@FieldMap Map<String, Object> map);
 
     @POST("/api/support/createConversation")
-    Call<FuguCreateConversationResponse> createTicket(@Body FuguCreateConversationParams obj);
+    Call<SupportTicketResponse> createTicket(@Body FuguCreateConversationParams obj);
 
 }
