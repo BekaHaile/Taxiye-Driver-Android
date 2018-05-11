@@ -631,6 +631,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
+							checkForDocumentsSubmit();
 
 						}
 					} catch (Exception exception) {
