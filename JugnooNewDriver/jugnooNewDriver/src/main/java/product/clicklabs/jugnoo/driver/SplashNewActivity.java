@@ -44,7 +44,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -260,7 +259,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
 
 		buttonLogin.setVisibility(View.VISIBLE);
-		buttonRegister.setVisibility(View.VISIBLE);
+		buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 		buttonRegisterTookan.setVisibility(View.GONE);
 
 		viewInitJugnoo.setVisibility(View.VISIBLE);
@@ -308,6 +307,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
 		tvCountryCodeL.setText(Utils.getCountryCode(this));
+
+		textViewLoginRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -1635,7 +1636,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			fetchLanguageList();
 
 			buttonLogin.setVisibility(View.VISIBLE);
-			buttonRegister.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 //			toggleRegistrationButton();
 		}
 
@@ -1644,7 +1645,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	public void toggleRegistrationButton(){
 		if((registerViaTooken == RegisterOption.BOTH_TOOKAN_SELF_REGISTER.getOrdinal()
 				|| registerViaTooken == RegisterOption.ONLY_SELF_REGISTER.getOrdinal())) {
-			buttonRegister.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 		}
 	}
 

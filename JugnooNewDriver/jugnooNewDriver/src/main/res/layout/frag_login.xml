@@ -39,7 +39,7 @@
             android:padding="4dp"
             android:popupBackground="@drawable/background_white_rounded_orange_bordered"
             android:textAlignment="center"
-            android:visibility="visible"
+            android:visibility="@integer/show_language_control"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

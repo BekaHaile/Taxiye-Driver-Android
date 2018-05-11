@@ -10,13 +10,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
-import android.transition.Transition
 import android.support.transition.TransitionManager
-import android.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.text.InputType
 import android.text.TextUtils
-import android.transition.TransitionInflater
+import android.transition.Transition
+import android.transition.TransitionSet
 import android.util.TypedValue
 import android.view.*
 import android.widget.AdapterView
@@ -26,7 +25,6 @@ import android.widget.Toast
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
-import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
@@ -35,7 +33,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
 
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
-        if(activity is SplashFragment.InteractionListener){
+        if (activity is SplashFragment.InteractionListener) {
             mListener = activity;
         }
     }
@@ -157,7 +157,7 @@ class LoginFragment : Fragment() {
 
                     override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                         if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber,t?.otpLength)
+                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
                         } else {
                             DialogPopup.alertPopup(activity, "", message)
                         }
@@ -216,11 +216,10 @@ class LoginFragment : Fragment() {
 
                         setLanguageLoading(text = -1, showText = false, showProgress = false)
 
-                        val dataAdapter: ArrayAdapter<String>
-                                = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
+                        val dataAdapter: ArrayAdapter<String> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
-                        rootView.language_spinner.visible()
+                        if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) rootView.language_spinner.visible() else rootView.language_spinner.gone()
 
                         if (!t.languageList.contains(selectedLanguage)) {
                             t.languageList.add(selectedLanguage)
@@ -401,8 +400,18 @@ class LoginFragment : Fragment() {
         with(rootView) {
 
 
-            if (showProgress) progressLanguage.visible() else progressLanguage.gone()
-            if (showText) tvLanguage.visible() else tvLanguage.gone()
+            if (showProgress
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+                progressLanguage.visible()
+            } else {
+                progressLanguage.gone()
+            }
+            if (showText
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+                tvLanguage.visible()
+            } else {
+                tvLanguage.gone()
+            }
 
             tvLanguage.isClickable = isClickable
             if (text != -1) tvLanguage.text = getString(text)
@@ -453,7 +462,7 @@ class LoginFragment : Fragment() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view: View = super.getView(position, convertView, parent)
-            if(view is TextView) {
+            if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)
             }
 
@@ -461,10 +470,9 @@ class LoginFragment : Fragment() {
         }
 
 
-
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view: View = super.getDropDownView(position, convertView, parent)
-            if(view is TextView) {
+            if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)
             }
 
