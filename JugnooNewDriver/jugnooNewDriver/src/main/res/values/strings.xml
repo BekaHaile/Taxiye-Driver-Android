@@ -939,6 +939,8 @@
     <string name="support_tickets">Support Tickets</string>
     <string name="please_press_submit_button">Please press submit button</string>
     <string name="drop">Drop</string>
+    <string name="hide">Hide</string>
+    <string name="drop_location">Drop\nLocation</string>
 
 
     <string-array name="CountryCodes">

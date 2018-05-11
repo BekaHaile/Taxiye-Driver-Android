@@ -65,6 +65,7 @@ public class SupportMailActivity extends BaseActivity implements View.OnClickLis
 							new String[]{Data.userData.getDriverSupportEmail()},
 							Data.userData.getDriverSupportEmailSubject(),
 							etMessage.getText().toString().trim());
+					etMessage.setText("");
 				}
 				break;
 		}

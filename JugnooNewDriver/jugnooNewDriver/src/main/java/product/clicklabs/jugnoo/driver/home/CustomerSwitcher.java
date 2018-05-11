@@ -249,6 +249,7 @@ public class CustomerSwitcher {
 					}
 					if(customerInfo.getDropLatLng() != null) {
 						activity.bDropAddressToggle.setVisibility(View.VISIBLE);
+						activity.bDropAddressToggle.setText(R.string.drop_location);
 						activity.tvDropAddressToggleView.setText(R.string.loading);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
