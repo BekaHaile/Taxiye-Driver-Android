@@ -10,10 +10,9 @@
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
         android:id="@+id/root"
-        android:layout_height="match_parent"
-        android:background="@color/white">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <Spinner
             android:id="@+id/language_spinner"
@@ -32,12 +31,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+
+        <ProgressBar
+            android:id="@+id/progressLanguage"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="@id/language_spinner"
+            app:layout_constraintEnd_toStartOf="@id/language_spinner"
+            app:layout_constraintTop_toTopOf="@id/language_spinner"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:textColor="@color/new_orange"
+            android:text="Languages"
+            app:layout_goneMarginEnd="8dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/progressLanguage"
+            app:layout_constraintEnd_toStartOf="@id/progressLanguage"
+            app:layout_constraintTop_toTopOf="@id/progressLanguage"/>
+
+
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:transitionName="logoTransition"
             android:layout_height="wrap_content"
             android:src="@drawable/splash_driver_logo"
+            android:transitionName="logoTransition"
             app:layout_constraintBottom_toTopOf="@+id/tvLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,17 +105,17 @@
             android:id="@+id/tvCountryCode"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
             android:drawableEnd="@drawable/ic_arrow_down_vector"
             android:drawablePadding="3dp"
+            android:gravity="center"
             android:hint="@string/code"
             android:includeFontPadding="false"
+            android:paddingBottom="2dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
             android:text=""
             android:textColor="@color/text_color"
-            android:gravity="center"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/background"
             app:layout_constraintStart_toStartOf="@id/background"

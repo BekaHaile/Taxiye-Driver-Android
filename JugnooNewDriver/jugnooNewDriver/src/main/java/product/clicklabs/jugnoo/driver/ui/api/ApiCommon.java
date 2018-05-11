@@ -116,9 +116,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
             apiCommonCallback.onFinish();
             if (!apiCommonCallback.onNotConnected()) {
                 DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-                return;
-            }
 
+            }
+            return;
         }
 
 

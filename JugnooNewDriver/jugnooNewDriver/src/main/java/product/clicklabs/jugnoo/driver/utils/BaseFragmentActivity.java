@@ -85,9 +85,10 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
 	public String selectedLanguage="English";
 	public void updateLanguage(String language){
-		if(language==null){
+		if(language == null) {
 			selectedLanguage = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"English");
-			}else{
+		} else {
+			Prefs.with(this).save(SPLabels.SELECTED_LANGUAGE, language);
 			selectedLanguage = language;
 		}
 		String languageToLoad;

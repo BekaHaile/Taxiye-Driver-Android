@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.text.InputType
@@ -58,7 +59,6 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
-
         val applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
         if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
@@ -67,130 +67,147 @@ class LoginFragment : Fragment() {
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
-        rootView.imageView.setOnLongClickListener {
-            confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
-            FlurryEventLogger.debugPressed("no_token")
-            return@setOnLongClickListener false
-        }
-
         val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
 
-        rootView.tvCountryCode.text = Utils.getCountryCode(parentActivity)
-        rootView.tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
-        rootView.btnGenerateOtp.setOnClickListener(View.OnClickListener {
-            val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
-            val countryCode: String = rootView.tvCountryCode.text.trim().toString()
-            if (phoneNo.length < 0) {
-                return@OnClickListener
+        with(rootView) {
+            imageView.setOnLongClickListener {
+                confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
+                FlurryEventLogger.debugPressed("no_token")
+                return@setOnLongClickListener false
             }
-
-            if (TextUtils.isEmpty(countryCode)) {
-                Toast.makeText(this@LoginFragment.activity, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-
-            if (!Utils.validPhoneNumber(phoneNo)) {
-                Toast.makeText(this@LoginFragment.activity, getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
-                return@OnClickListener
-
-            }
-
-
-            val params = HashMap<String, String>()
-            params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
-            params[Constants.KEY_COUNTRY_CODE] = countryCode
-            params[Constants.LOGIN_TYPE] = "1"
-            params[Constants.KEY_COUNTRY_CODE] = countryCode
-            params["device_token"] = Data.deviceToken
-            params["unique_device_id"] = Data.uniqueDeviceId
-            params["device_name"] = Data.deviceName
-            params["device_type"] = Data.DEVICE_TYPE
-            params["app_version"] = "" + Data.appVersion
-            params["os_version"] = Data.osVersion
-            params["latitude"] = "" + Data.latitude
-            params["longitude"] = "" + Data.longitude
-            params["login_type"] = Data.LOGIN_TYPE
-            params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
-
-
-            Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
-            Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-            ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
-                override fun onNotConnected(): Boolean {
-                    return false
+            tvCountryCode.text = Utils.getCountryCode(parentActivity)
+            tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+            btnGenerateOtp.setOnClickListener(View.OnClickListener {
+                val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
+                val countryCode: String = rootView.tvCountryCode.text.trim().toString()
+                if (phoneNo.length < 0) {
+                    return@OnClickListener
                 }
 
-                override fun onException(e: Exception?): Boolean {
-                    return false
+                if (TextUtils.isEmpty(countryCode)) {
+                    Toast.makeText(this@LoginFragment.activity, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
+                    return@OnClickListener
                 }
 
-                override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
-                    if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                        (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber)
-                    } else {
-                        DialogPopup.alertPopup(activity, "", message)
+                if (!Utils.validPhoneNumber(phoneNo)) {
+                    Toast.makeText(this@LoginFragment.activity, getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
+                    return@OnClickListener
+
+                }
+
+
+                val params = HashMap<String, String>()
+                params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
+                params[Constants.KEY_COUNTRY_CODE] = countryCode
+                params[Constants.LOGIN_TYPE] = "1"
+                params[Constants.KEY_COUNTRY_CODE] = countryCode
+                params["device_token"] = Data.deviceToken
+                params["unique_device_id"] = Data.uniqueDeviceId
+                params["device_name"] = Data.deviceName
+                params["device_type"] = Data.DEVICE_TYPE
+                params["app_version"] = "" + Data.appVersion
+                params["os_version"] = Data.osVersion
+                params["latitude"] = "" + Data.latitude
+                params["longitude"] = "" + Data.longitude
+                params["login_type"] = Data.LOGIN_TYPE
+                params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
+
+
+                Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
+                Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
+                ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+                    override fun onNotConnected(): Boolean {
+                        return false
                     }
 
+                    override fun onException(e: Exception?): Boolean {
+                        return false
+                    }
 
-                }
+                    override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
+                        if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber)
+                        } else {
+                            DialogPopup.alertPopup(activity, "", message)
+                        }
 
-                override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
 
-                    return false
-                }
+                    }
 
+                    override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
+
+                        return false
+                    }
+
+                })
             })
-        })
+            tvLanguage.setOnClickListener { getLanguageList(true) }
 
-        getLanguageList()
+//            progressLanguage.getProgressDrawable()
+//                    .setColorFilter(ContextCompat.getColor(getActivity(),R.color.new_orange), PorterDuff.Mode.MULTIPLY)
+        }
+
+        getLanguageList(false)
 
         return rootView
     }
 
-    private fun getLanguageList() {
+    private fun getLanguageList(showError: Boolean) {
         val params = HashMap<String, String>()
         params["device_model_name"] = android.os.Build.MODEL
         params["android_version"] = android.os.Build.VERSION.RELEASE
         HomeUtil.putDefaultParams(params)
 
-        ApiCommonKotlin<DriverLanguageResponse>(activity).showLoader(false).execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
-            override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
+        setLanguageLoading(text = R.string.languages)
 
-                if (t?.languageList != null && t.languageList.size > 0) {
-                    val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    rootView.language_spinner.adapter = dataAdapter
-                    rootView.language_spinner.visible()
+        ApiCommonKotlin<DriverLanguageResponse>(activity).showLoader(false).checkForActionComplete(true)
+                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
+                    override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
-                    if (!t.languageList.contains(selectedLanguage)) {
-                        t.languageList.add(selectedLanguage)
-                    }
-                    rootView.language_spinner.setSelection(t.languageList.indexOf(selectedLanguage))
-                    rootView.language_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
+                        if (t?.languageList == null || t.languageList.size == 0) {
+                            onError(t, getString(R.string.select_language), flag)
+                            return;
                         }
 
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            val item = parent?.getItemAtPosition(position).toString()
-                            if (!item.equals(selectedLanguage, true)) {
-                                selectedLanguage = item
-                                (activity as DriverSplashActivity).updateLanguage(item)
+                        setLanguageLoading(showText = false, showProgress = false)
+
+                        val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        rootView.language_spinner.adapter = dataAdapter
+                        rootView.language_spinner.visible()
+
+                        if (!t.languageList.contains(selectedLanguage)) {
+                            t.languageList.add(selectedLanguage)
+                        }
+                        rootView.language_spinner.setSelection(t.languageList.indexOf(selectedLanguage))
+                        rootView.language_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                            }
+
+                            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                val item = parent?.getItemAtPosition(position).toString()
+                                if (!item.equals(selectedLanguage, true)) {
+                                    selectedLanguage = item
+                                    (activity as DriverSplashActivity).updateLanguage(item)
+                                }
                             }
                         }
+
                     }
 
-                } else {
-                    rootView.language_spinner.gone()
-                }
-            }
+                    override fun onError(t: DriverLanguageResponse?, message: String?, flag: Int): Boolean {
+                        rootView.language_spinner.gone()
+                        setLanguageLoading(text = R.string.select_language, showProgress = false, isClickable = true)
+                        return !showError
+                    }
 
-            override fun onError(t: DriverLanguageResponse?, message: String?, flag: Int): Boolean {
-                return false
-            }
-
-        })
+                    override fun onNotConnected(): Boolean {
+                        setLanguageLoading(text = R.string.select_language, showProgress = false, isClickable = true)
+                        return !showError;
+                    }
+                })
     }
 
     private fun confirmDebugPasswordPopup(mode: DriverDebugOpenMode) {
@@ -310,13 +327,30 @@ class LoginFragment : Fragment() {
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
 
-        with(rootView){
+        with(rootView) {
             tvLabel.text = getString(R.string.label_edt_phone)
             edtPhoneNo.hint = getString(R.string.hint_edt_phone)
             btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+//            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
         }
 
         // animate
         TransitionManager.beginDelayedTransition(root)
     }
+
+    private fun setLanguageLoading(@StringRes text: Int = (R.string.language_english_text), showErrorImage: Boolean = false,
+                                   showText: Boolean = true, showProgress: Boolean = true, isClickable: Boolean = false) {
+        with(rootView) {
+
+
+            tvLanguage.isClickable = isClickable
+            tvLanguage.text = getString(text)
+//            tvLanguage.tag = text
+            tvLanguage.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                    if (showErrorImage) R.drawable.retry_icon_black else 0, 0)
+            if (showProgress) progressLanguage.visible() else progressLanguage.gone()
+            if (showText) tvLanguage.visible() else tvLanguage.gone()
+        }
+    }
+//    onEnter
 }

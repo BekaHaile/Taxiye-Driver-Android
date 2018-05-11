@@ -5,13 +5,12 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import com.crashlytics.android.Crashlytics
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.driver_splash_activity.*
 import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
@@ -37,14 +36,19 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Fabric.with(this, Crashlytics())
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
         FlurryAgent.init(this, Data.FLURRY_KEY)
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
         setLoginData()
         setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+        }
+
         setToolbarVisibility(false)
 
         val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
@@ -154,10 +158,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
 
-
     override fun setToolbarText(title: String) {
         toolbar.tvToolbar.text = title
-        toolbar.btBackToolbar.setOnClickListener { onBackPressed() }
     }
 
     override fun setToolbarVisibility(isVisible: Boolean) {
@@ -178,6 +180,15 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if (item?.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 }
 
 interface ToolbarChangeListener {

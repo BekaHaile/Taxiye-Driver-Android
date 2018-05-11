@@ -94,8 +94,9 @@ class SplashFragment() : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = container?.inflate(R.layout.frag_splash);
+        waitingForDeviceToken = true;
+        //todo Snackbar for no internet
         checkForBatteryOptimisation();
-        checkForDeviceToken(false);
         return rootView;
     }
 
@@ -133,12 +134,12 @@ class SplashFragment() : Fragment() {
 
 
     private fun pushAPIs(context: Context?){
-        if(isMockLocationEnabled())return;
+        if(isMockLocationEnabled())return
                 executePending().
                 retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; }).
                 subscribeOn(Schedulers.newThread()).
                 observeOn(AndroidSchedulers.mainThread()).debounce(1000,TimeUnit.MILLISECONDS).
-                subscribe({ accessTokenLogin(this@SplashFragment.activity); })
+                subscribe({ accessTokenLogin(this@SplashFragment.activity) }, { Log.d(TAG, "pushAPIs : ${it.message}") })
     }
 
 
@@ -290,7 +291,9 @@ class SplashFragment() : Fragment() {
                 })
 
             } else {
-                DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
+                DialogPopup.alertPopupWithListener(activity, "", Data.CHECK_INTERNET_MSG,{
+                    this@SplashFragment.activity.finish();
+                })
             }
         }else{
             mListener?.openPhoneLoginScreen(true, imageView);
@@ -320,17 +323,10 @@ class SplashFragment() : Fragment() {
                     Log.e(TAG,"DeviceToken Receiver was not registered")
                 }
                 handler.removeCallbacksAndMessages(null)
-
-            }
-
-            if(waitingForDeviceToken || !calledFromOnResume){
                 waitingForDeviceToken = false
                 pushAPIs(this@SplashFragment.activity);
 
             }
-
-
-
 
 
         }else{
