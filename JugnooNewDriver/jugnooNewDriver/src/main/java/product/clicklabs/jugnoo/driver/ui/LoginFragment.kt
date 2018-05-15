@@ -7,8 +7,13 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
+import android.support.constraint.ConstraintSet
+import android.transition.Transition
 import android.support.transition.TransitionManager
+import android.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.text.InputType
 import android.text.TextUtils
@@ -61,7 +66,12 @@ class LoginFragment : Fragment() {
         rootView = container?.inflate(R.layout.frag_login)!!
         val applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
         if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+            // animate logo using shared transitions and then onEnd animate other view's visibility
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+            addTransitionEndListenerAndAnimateView()
+        } else {
+            // animate other view's visibility
+            animateViews()
         }
 
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
@@ -115,6 +125,7 @@ class LoginFragment : Fragment() {
 
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
+                Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
                 ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
                     override fun onNotConnected(): Boolean {
                         return false
@@ -147,8 +158,6 @@ class LoginFragment : Fragment() {
 //                    .setColorFilter(ContextCompat.getColor(getActivity(),R.color.new_orange), PorterDuff.Mode.MULTIPLY)
         }
 
-        getLanguageList(false)
-
         return rootView
     }
 
@@ -167,7 +176,7 @@ class LoginFragment : Fragment() {
 
                         if (t?.languageList == null || t.languageList.size == 0) {
                             onError(t, getString(R.string.select_language), flag)
-                            return;
+                            return
                         }
 
                         setLanguageLoading(showText = false, showProgress = false)
@@ -205,7 +214,7 @@ class LoginFragment : Fragment() {
 
                     override fun onNotConnected(): Boolean {
                         setLanguageLoading(text = R.string.select_language, showProgress = false, isClickable = true)
-                        return !showError;
+                        return !showError
                     }
                 })
     }
@@ -316,6 +325,22 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         parentActivity = context as Activity
         toolbarChangeListener = context as ToolbarChangeListener
+
+//        val transitionSet = sharedElementEnterTransition as TransitionSet
+//        if (transitionSet != null) {
+//            transitionSet!!.addListener(object : Transition.TransitionListener {
+//                override fun onTransitionEnd(@NonNull transition: Transition) {
+//                    // remove listener as otherwise there are side-effects
+//                    transition.removeListener(this)
+//                    // do something here
+//                }
+//
+//                override fun onTransitionStart(@NonNull transition: Transition) {}
+//                override fun onTransitionCancel(@NonNull transition: Transition) {}
+//                override fun onTransitionPause(@NonNull transition: Transition) {}
+//                override fun onTransitionResume(@NonNull transition: Transition) {}
+//            })
+//        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -335,7 +360,7 @@ class LoginFragment : Fragment() {
         }
 
         // animate
-        TransitionManager.beginDelayedTransition(root)
+        TransitionManager.beginDelayedTransition(constraint)
     }
 
     private fun setLanguageLoading(@StringRes text: Int = (R.string.language_english_text), showErrorImage: Boolean = false,
@@ -352,5 +377,41 @@ class LoginFragment : Fragment() {
             if (showText) tvLanguage.visible() else tvLanguage.gone()
         }
     }
-//    onEnter
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun addTransitionEndListenerAndAnimateView() {
+        val sharedElementEnterTransition = sharedElementEnterTransition as TransitionSet
+        sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(transition: Transition) {
+                Log.d("LoginFragment", "onEnd")
+                animateViews()
+            }
+
+            override fun onTransitionResume(transition: Transition) {}
+
+            override fun onTransitionPause(transition: Transition) {}
+
+            override fun onTransitionCancel(transition: Transition) {}
+
+            override fun onTransitionStart(transition: Transition) {}
+        })
+
+    }
+
+    private fun animateViews() {
+        getLanguageList(false)
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(rootView.constraint)
+
+        constraintSet.setVisibility(R.id.tvLabel, ConstraintSet.VISIBLE)
+        constraintSet.setVisibility(R.id.background, ConstraintSet.VISIBLE)
+        constraintSet.setVisibility(R.id.tvCountryCode, ConstraintSet.VISIBLE)
+        constraintSet.setVisibility(R.id.edtPhoneNo, ConstraintSet.VISIBLE)
+        constraintSet.setVisibility(R.id.btnGenerateOtp, ConstraintSet.VISIBLE)
+
+        TransitionManager.beginDelayedTransition(rootView.constraint);
+        constraintSet.applyTo(rootView.constraint);
+
+
+    }
 }

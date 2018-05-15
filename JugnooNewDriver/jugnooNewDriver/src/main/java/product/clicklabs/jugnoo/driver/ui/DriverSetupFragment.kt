@@ -204,11 +204,15 @@ class DriverSetupFragment : Fragment() {
 
         ApiCommon<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
+                if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.getFlag()) {
+                    onError(t, t.message, t.flag)
+                    return
+                }
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
                 vehicleTypes.removeAt(0)
                 cityId = t.currentCityId
 
-                var defaultIndex : Int = -1
+                var defaultIndex: Int = -1
 
                 for ((index, item) in vehicleTypes.withIndex()) {
                     if (item.vehicleType == VehicleTypeValue.AUTOS.value) {

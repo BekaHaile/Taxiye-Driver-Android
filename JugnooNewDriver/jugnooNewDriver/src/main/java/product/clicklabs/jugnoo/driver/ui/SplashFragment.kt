@@ -359,8 +359,6 @@ class SplashFragment() : Fragment() {
         }
     }
 
-    fun getLogoImage() = imageView
-
     interface InteractionListener{
         fun openPhoneLoginScreen(enableSharedTransition: Boolean = false, sharedView: View? = null)
 
