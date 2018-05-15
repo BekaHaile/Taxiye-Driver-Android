@@ -204,7 +204,7 @@ class OTPConfirmFragment : Fragment() {
 
 
     private fun verifyOTP(otp: String) {
-
+        Utils.hideSoftKeyboard(parentActivity, edtOTP)
         if (AppStatus.getInstance(activity.applicationContext).isOnline(activity.applicationContext)) {
             val dialogLoading = DialogPopup.showLoadingDialog(activity, resources.getString(R.string.loading), true)
             val conf = resources.configuration

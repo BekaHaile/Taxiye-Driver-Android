@@ -139,6 +139,7 @@ class DriverSetupFragment : Fragment() {
     }
 
     private fun registerDriver() {
+        Utils.hideSoftKeyboard(parentActivity, editTextName)
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
                 "user_name" to editTextName.text.trim().toString(),

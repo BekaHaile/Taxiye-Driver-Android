@@ -47,12 +47,12 @@ fun <T : View> Fragment.bind(@IdRes res: Int, view: View?): Lazy<T> {
 // ========================= FRAGMENT MANAGER TRANSACTIONS =========================
 
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-    beginTransaction().func().commit()
+    beginTransaction().func().commitAllowingStateLoss()
 }
 
 inline fun FragmentManager.inTransactionWithSharedTransition(view: View, func: FragmentTransaction.() -> FragmentTransaction) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        beginTransaction().addSharedElement(view, view.transitionName).func().commit()
+        beginTransaction().addSharedElement(view, view.transitionName).func().commitAllowingStateLoss()
     }
 }
 
@@ -60,7 +60,7 @@ inline fun FragmentManager.inTransactionWithAnimation(func: FragmentTransaction.
     beginTransaction()
             .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
             .func()
-            .commit()
+            .commitAllowingStateLoss()
 }
 
 infix fun Int.with(x: Int) = this.or(x)

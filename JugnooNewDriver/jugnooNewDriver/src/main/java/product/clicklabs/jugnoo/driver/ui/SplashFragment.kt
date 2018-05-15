@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.v4.app.Fragment
@@ -19,10 +18,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.frag_splash.*
+import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -36,25 +38,25 @@ import retrofit.mime.TypedByteArray
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class SplashFragment() : Fragment() {
+class SplashFragment : Fragment() {
 
 
 
-    private val TAG = SplashFragment::class.simpleName;
-    private val intentFilter = IntentFilter();
-    private var waitingForDeviceToken = false;
-    private val handler = Handler()
-    var mListener:InteractionListener?=null;
+    private val TAG = SplashFragment::class.simpleName
+    private val intentFilter = IntentFilter()
+    private var mListener:InteractionListener?=null
     private lateinit var parentActivity : Activity
     private val behaviourSubject by lazy { executePending() }
+    private val deviceTokenObservable by lazy { PublishSubject.create<Void>() }
     private var disposable : Disposable? = null
+    private val compositeDisposable by lazy { CompositeDisposable() }
 
-    init{
-        intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED);
+    init {
+        intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
     }
 
     companion object {
-        private const val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L;
+        private const val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L
 
     }
 
@@ -64,52 +66,52 @@ class SplashFragment() : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
 
             if (intent.action != null && intent.action == Constants.ACTION_DEVICE_TOKEN_UPDATED) {
-                Log.i(TAG, "Firebase service emitted deviceToken");
+                Log.i(TAG, "Firebase service emitted deviceToken")
 
-                 checkForDeviceToken(false);
-
+                if (FirebaseInstanceId.getInstance().token != null) {
+                    deviceTokenObservable.onComplete()
+                }
             }
-
-
         }
     }
-
-    var deviceTokenRunnable:Runnable  =  Runnable(){
-        if(waitingForDeviceToken){
-            DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
-                    , { this@SplashFragment.activity.finish(); })
-        }
-
-    }
-
 
     override fun onAttach(context: Context?) {
-        super.onAttach(context);
+        super.onAttach(context)
         parentActivity = context as Activity
         if(context is InteractionListener){
-            mListener = context;
+            mListener = context
         } else {
-            throw IllegalArgumentException(TAG+" Interaction listener required");
+            throw IllegalArgumentException(TAG+" Interaction listener required")
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = container?.inflate(R.layout.frag_splash);
-        waitingForDeviceToken = true;
+        val rootView = container?.inflate(R.layout.frag_splash)
+
         //todo Snackbar for no internet
-        checkForBatteryOptimisation();
-        return rootView;
+        checkForBatteryOptimisation()
+
+
+        compositeDisposable.add(deviceTokenObservable
+                .timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({},{ showTokenNotFoundDialog()},{
+                    pushAPIs(this@SplashFragment.activity)
+                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+                }))
+
+        return rootView
     }
 
     private fun isMockLocationEnabled():Boolean{
         if (Utils.mockLocationEnabled(Data.locationFetcher.locationUnchecked)) {
             DialogPopup.alertPopupWithListener(this@SplashFragment.activity, "", resources.getString(R.string.disable_mock_location)) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                activity.finish();
+                activity.finish()
             }
-            return true;
+            return true
         }
-        return false;
+        return false
     }
 
 
@@ -117,10 +119,10 @@ class SplashFragment() : Fragment() {
     private fun checkForBatteryOptimisation() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val packageName = (this.activity.packageName);
-                val pm = this.activity.getSystemService(Context.POWER_SERVICE) as PowerManager;
+                val packageName = (this.activity.packageName)
+                val pm = this.activity.getSystemService(Context.POWER_SERVICE) as PowerManager
                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    val intent = Intent();
+                    val intent = Intent()
                     intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                     intent.data = Uri.parse("package:$packageName")
                     startActivity(intent)
@@ -137,11 +139,13 @@ class SplashFragment() : Fragment() {
     private fun pushAPIs(context: Context?){
         if(isMockLocationEnabled()) return
 
-          behaviourSubject.
-                retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; }).
-                subscribeOn(Schedulers.newThread()).
-                observeOn(AndroidSchedulers.mainThread()).debounce(1000,TimeUnit.MILLISECONDS).
-                subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
+        disposable = behaviourSubject.
+                retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
+                  .subscribeOn(Schedulers.newThread())
+                  //.delay(1000,TimeUnit.MILLISECONDS)
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
+        compositeDisposable.add(disposable!!)
     }
 
 
@@ -154,7 +158,7 @@ class SplashFragment() : Fragment() {
             Log.e(TAG, "pendingApiCall=$pendingAPICall")
             PendingApiHit().startAPI(context, pendingAPICall)
         }
-        val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount;
+        val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount
 
         if(pendingApisCount <= 0) {
 
@@ -171,7 +175,7 @@ class SplashFragment() : Fragment() {
         val responseTime = System.currentTimeMillis()
         val conf = resources.configuration
         if (!"".equals(accPair.first, ignoreCase = true)) {
-            if (AppStatus.getInstance(activity.getApplicationContext()).isOnline(activity.getApplicationContext())) {
+            if (AppStatus.getInstance(activity.applicationContext).isOnline(activity.applicationContext)) {
 
 
                 if (Data.locationFetcher != null) {
@@ -294,11 +298,11 @@ class SplashFragment() : Fragment() {
 
             } else {
                 DialogPopup.alertPopupWithListener(activity, "", Data.CHECK_INTERNET_MSG,{
-                    this@SplashFragment.activity.finish();
+                    this@SplashFragment.activity.finish()
                 })
             }
         }else{
-            mListener?.openPhoneLoginScreen(true, imageView);
+            mListener?.openPhoneLoginScreen(true, imageView)
         }
 
     }
@@ -306,55 +310,31 @@ class SplashFragment() : Fragment() {
 
     private var logoutCallback = object: LogoutCallback {
         override fun redirectToSplash(): Boolean {
-            mListener?.openPhoneLoginScreen(true, imageView);
-            return false;
-        }
-
-    }
-
-
-
-    private fun checkForDeviceToken(calledFromOnResume: Boolean) {
-        if(FirebaseInstanceId.getInstance().getToken()!=null){
-            //Go ahead with server calls
-
-            if (waitingForDeviceToken) {
-                try {
-                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
-                } catch (e: Exception) {
-                    Log.e(TAG,"DeviceToken Receiver was not registered")
-                }
-                handler.removeCallbacksAndMessages(null)
-                waitingForDeviceToken = false
-                pushAPIs(this@SplashFragment.activity);
-
-            }
-
-
-        }else{
-            waitingForDeviceToken = true;
-            LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter);
-            handler.postDelayed(deviceTokenRunnable, DEVICE_TOKEN_WAIT_TIME);
-            //Register a receiver to get DeviceToken and wait
-
+            mListener?.openPhoneLoginScreen(true, imageView)
+            return false
         }
     }
 
+    private fun showTokenNotFoundDialog(){
+        DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
+                , { this@SplashFragment.activity.finish(); })
+    }
 
     override fun onResume() {
         super.onResume()
-        checkForDeviceToken(true);
 
+        if (FirebaseInstanceId.getInstance().token != null) {
+            deviceTokenObservable.onComplete()
+        } else {
+            LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        if(waitingForDeviceToken){
-            LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
-            handler.removeCallbacksAndMessages(null)
-        }
 
-       if (disposable != null && !disposable!!.isDisposed){
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+        if (disposable != null && !disposable!!.isDisposed) {
             disposable?.dispose()
         }
     }
@@ -365,5 +345,17 @@ class SplashFragment() : Fragment() {
         fun goToHomeScreen()
     }
 
+    override fun onDestroy() {
+        if (!compositeDisposable.isDisposed){
+            disposable?.dispose()
+        }
+        try {
+            LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+        }
+        catch (e : Exception){
+            Log.d(TAG, "onDestroy: ${e.message}")
+        }
+        super.onDestroy()
+    }
 
 }

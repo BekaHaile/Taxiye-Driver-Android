@@ -399,7 +399,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun animateViews() {
-        getLanguageList(false)
+
         val constraintSet = ConstraintSet()
         constraintSet.clone(rootView.constraint)
 
