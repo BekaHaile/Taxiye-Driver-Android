@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvAttachmentType"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:clickable="true"
+        android:drawableLeft="@drawable/camera_icon"
+        android:drawablePadding="@dimen/fugu_padding_10"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/fugu_padding_10"
+        android:text="@string/fugu_camera"
+        android:textColor="@color/fugu_attachment_dialog_text_selector"
+        android:textSize="@dimen/fugu_text_size_large" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fugu_border_width"
+        android:background="@color/fugu_border_color" />
+</LinearLayout>

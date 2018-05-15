@@ -215,7 +215,7 @@
     <string name="convenience_charges_text">Convenience charges for customer: </string>
     <string name="code_empty">Code can\'t be empty</string>
     <string name="confirm_email_text">Confirm email id doesn\'t match</string>
-    <string name="choose_email_client">Choose an Email client:</string>
+    <string name="choose_email_client">Choose an Email app:</string>
     <string name="select_time_error_text">Cannot select time before current time</string>
     <string name="call_me">CALL ME</string>
     <string name="change_phone_no">CHANGE PHONE NUMBER</string>
@@ -269,7 +269,7 @@
     <string name="restart_phone">Please Restart Your Phone</string>
     <string name="min_fare">Min Fare</string>
     <string name="meals_on">Meals ON</string>
-    <string name="mail_us">MAIL US</string>
+    <string name="mail_us">Mail us</string>
     <string name="message">MESSAGE</string>
 
     <string name="no">No</string>
@@ -932,6 +932,15 @@
     <string name="chat_support">Chat Support</string>
     <string name="t_and_c_login">By submitting OTP here and logging in the app you accept the <a href="https://jugnoo.in/sg/terms/driver/">Terms and Conditions </a> of Jugnoo. Please do not go further, if these are not OK with you.</string>
     <string name="estimated_distance_format">Estimated Distance: %skm</string>
+    <string name="action_not_supported">Action not supported</string>
+    <string name="send_us_a_mail">Send us a mail</string>
+    <string name="issue_description">Issue description</string>
+    <string name="please_enter_something">Please enter something</string>
+    <string name="support_tickets">Support Tickets</string>
+    <string name="please_press_submit_button">Please press submit button</string>
+    <string name="drop">Drop</string>
+    <string name="hide">Hide</string>
+    <string name="drop_location">Drop\nLocation</string>
 
 
     <string-array name="CountryCodes">

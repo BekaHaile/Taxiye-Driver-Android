@@ -1,0 +1,109 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="FuguTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Progress Dialog styles-->
+    <declare-styleable name="ProgressWheel">
+        <attr name="matProg_progressIndeterminate" format="boolean" />
+        <attr name="matProg_barColor" format="color" />
+        <attr name="matProg_rimColor" format="color" />
+        <attr name="matProg_rimWidth" format="dimension" />
+        <attr name="matProg_spinSpeed" format="float" />
+        <attr name="matProg_barSpinCycleTime" format="integer" />
+        <attr name="matProg_circleRadius" format="dimension" />
+        <attr name="matProg_fillRadius" format="boolean" />
+        <attr name="matProg_barWidth" format="dimension" />
+        <attr name="matProg_linearProgress" format="boolean" />
+    </declare-styleable>
+
+    <style name="Theme.AppCompat.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <!-- Dialog  application theme. -->
+    <style name="FuguDialogTheme" parent="Theme.AppCompat.Translucent">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorAccent">@android:color/black</item>
+        <item name="android:windowIsFloating">true</item>
+
+    </style>
+
+    <!-- beat animation styles -->
+    <style name="AVLoadingIndicatorView">
+        <item name="minWidth">30dp</item>
+        <item name="maxWidth">30dp</item>
+        <item name="minHeight">30dp</item>
+        <item name="maxHeight">30dp</item>
+        <item name="indicatorName">com.fugu.utils.beatAnimation.BallPulseIndicator</item>
+    </style>
+
+    <style name="AVLoadingIndicatorView.Large">
+        <item name="minWidth">76dip</item>
+        <item name="maxWidth">76dip</item>
+        <item name="minHeight">76dip</item>
+        <item name="maxHeight">76dip</item>
+        <item name="indicatorName">com.fugu.utils.beatAnimation.BallPulseIndicator</item>
+    </style>t
+
+    <style name="AVLoadingIndicatorView.Small">
+        <item name="minWidth">24dip</item>
+        <item name="maxWidth">24dip</item>
+        <item name="minHeight">24dip</item>
+        <item name="maxHeight">24dip</item>
+        <item name="indicatorName">com.fugu.utils.beatAnimation.BallPulseIndicator</item>
+    </style>
+
+    <style name="hippo"/>
+
+    <style name="hippo.text" parent="hippo">
+        <item name="android:textSize">@dimen/fugu_text_size_intermediate</item>
+        <item name="android:layout_marginLeft">@dimen/fugu_margin_10</item>
+        <item name="android:layout_marginRight">@dimen/fugu_margin_10</item>
+        <item name="android:layout_marginBottom">@dimen/fugu_margin_5</item>
+        <item name="android:layout_marginTop">@dimen/fugu_margin_5</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="hippo.subtitle" parent="hippo.text">
+        <item name="android:textSize">@dimen/fugu_text_size_large</item>
+        <item name="android:textColor">@color/fugu_support_text</item>
+
+    </style>
+
+    <style name="primary_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!--<item name="android:background">@drawable/fugu_main_btn_selector</item>-->
+        <item name="android:textAppearance">@style/hippo.text</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/fugu_text_size_normal</item>
+        <!--<item name="android:layout_marginLeft">@dimen/fugu_margin_10</item>
+        <item name="android:layout_marginRight">@dimen/fugu_margin_10</item>
+        <item name="android:paddingLeft">@dimen/fugu_padding_10</item>
+        <item name="android:paddingRight">@dimen/fugu_padding_10</item>-->
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="hippo.Edittext" parent="hippo">
+        <item name="android:textSize">@dimen/fugu_text_size_medium</item>
+        <item name="android:layout_marginLeft">@dimen/fugu_margin_10</item>
+        <item name="android:layout_marginRight">@dimen/fugu_margin_10</item>
+        <item name="android:layout_marginBottom">@dimen/fugu_margin_5</item>
+        <item name="android:layout_marginTop">@dimen/fugu_margin_5</item>
+        <item name="android:textColorHint">@color/fugu_type_message_hint</item>
+        <item name="android:textColor">@color/fugu_type_message_text</item>
+    </style>
+
+
+
+</resources>

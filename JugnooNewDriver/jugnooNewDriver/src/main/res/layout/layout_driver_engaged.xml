@@ -257,64 +257,42 @@
         <!-- start ride layout-->
         <RelativeLayout
             android:id="@+id/driverStartRideMainRl"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12px"
             android:layout_gravity="center_horizontal"
             android:splitMotionEvents="false"
             android:visibility="visible">
 
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/driverStartRideBtn"-->
-                <!--android:layout_width="410px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_marginLeft="25px"-->
-                <!--android:background="@drawable/new_orange_btn_selector_rounded"-->
-                <!--android:text="@string/start_ride"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="@dimen/button_text_size"/>-->
-
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/buttonMarkArrived"-->
-                <!--android:layout_width="410px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_marginLeft="25px"-->
-                <!--android:background="@drawable/new_orange_btn_normal_rounded"-->
-                <!--android:text="@string/arrived"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="@dimen/button_text_size"/>-->
-
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/driverCancelRideBtn"-->
-                <!--android:layout_width="240px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_marginRight="15px"-->
-                <!--android:background="@drawable/new_menu_black_btn_selector_rounded"-->
-                <!--android:text="@string/cancel"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="32px"/>-->
-
-
 
             <LinearLayout
                 android:id="@+id/linearLayoutDeliveryItem"
-                android:layout_width="720px"
-                android:layout_height="375px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:visibility="visible"
                 android:orientation="vertical">
                 <ImageView
-                    android:id="@+id/customerInfoLine4"
                     android:layout_width="match_parent"
                     android:layout_height="40px"
                     android:layout_below="@+id/inRideCustomerInfoRl"
                     android:background="@drawable/shadow_up_light"/>
                 <LinearLayout
-                    android:layout_width="720px"
-                    android:layout_height="335px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvDropAddressToggleView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:tag="@string/dont_touch_me"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_white_bottom_border_only"
+                        android:visibility="gone"
+                        />
 
                     <RelativeLayout
                         android:id="@+id/linearLayoutDeliveryItemHeader"
@@ -325,23 +303,43 @@
                         <TextView
                             android:id="@+id/textViewCustomerName"
                             android:layout_width="430px"
+                            android:layout_alignParentStart="true"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30px"
                             android:layout_centerVertical="true"
                             android:text="@string/NA"
                             android:textSize="32px"
                             android:visibility="visible"
-                            android:textColor="@color/black_text_v2"/>
+                            android:textColor="@color/black_text_v2"
+                            android:layout_toStartOf="@+id/bDropAddressToggle"
+                            />
+
+                        <Button
+                            android:id="@+id/bDropAddressToggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:text="@string/drop"
+                            android:textSize="13sp"
+                            android:tag="@string/dont_touch_me"
+                            android:layout_toStartOf="@+id/relativeLayoutCall"
+                            android:textColor="@drawable/white_color_selector"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/new_orange_btn_corner_selector"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:visibility="gone"
+
+                            />
 
                         <RelativeLayout
                             android:id="@+id/relativeLayoutCall"
-                            android:layout_width="226px"
+                            android:layout_width="170px"
                             android:layout_height="74px"
                             android:layout_marginRight="25px"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:visibility="visible"
-                            android:background="@drawable/new_orange_btn_corner_normal">
+                            android:background="@drawable/new_orange_btn_corner_selector">
 
                             <ImageView
                                 android:id="@+id/driverCallIcon"

@@ -50,18 +50,21 @@
                 android:layout_gravity="bottom"
                 android:background="@color/new_orange"/>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="52px"
                 android:layout_marginBottom="52px"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
 
                 <LinearLayout
                     android:id="@+id/LAyoutGallery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginRight="140px">
 
                     <ImageView
                         android:id="@+id/image_gallery"
@@ -90,7 +93,6 @@
                     android:id="@+id/LayoutCamera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="228px"
                     android:orientation="vertical">
 
                     <ImageView
@@ -116,7 +118,7 @@
                         android:visibility="visible"/>
                 </LinearLayout>
 
-            </RelativeLayout>
+            </LinearLayout>
 
 
             <Button

@@ -12,8 +12,8 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.fugu.CaptureUserData;
-import com.fugu.FuguColorConfig;
-import com.fugu.FuguConfig;
+import com.fugu.HippoColorConfig;
+import com.fugu.HippoConfig;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -31,9 +31,11 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.fugu.FuguColorConfigStrings;
+import product.clicklabs.jugnoo.driver.support.SupportOption;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -42,31 +44,31 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  *
  */
 public class Data {
-	
+
 	public static final String STATIC_FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
     public static final int MINI_BALANCE = 50;
 
     public static String FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
-	
+
 	public static final String INVALID_ACCESS_TOKEN = "invalid access token";
-	
+
 	public static final String DEBUG_PASSWORD = "3131", REGISTER_PASSWORD = "1485",
                                 DEBUG_PASSWORD_TEST = "4343";
-	
+
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
 
-	
-	
-	
+
+
+
 	// dev review http://107.21.79.63:4001
 	//Dev staged :  "http://54.81.229.172:7000";
-	
+
 	// Dev staged :   http://54.81.229.172:8000
-	
+
 	// Dev Trial :   http://54.81.229.172:8001
-	
+
 	// live 1st:    http://dev.jugnoo.in:3000
 	// live 2nd:    http://dev.jugnoo.in:4000
 	// live 3rd:    http://dev.jugnoo.in:4002
@@ -77,13 +79,13 @@ public class Data {
 	// live 10th:    https://dev.jugnoo.in:4010
 	// live 12th:    https://dev.jugnoo.in:4012     app versions: 126, 127, 128, 129, 130
 	// live 13th:    https://dev.jugnoo.in:4013
-	
+
 	//iOS 4012
 	//
 	// Dev new dispatcher :   https://54.81.229.172:8012
-	
+
 	//https://test.jugnoo.in:8012 to http://54.173.65.120:9000
-	
+
 	//TODO
 	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
 	public static final String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
@@ -101,7 +103,7 @@ public class Data {
 //for live
 
 
-	
+
 	public static String SERVER_URL = DEFAULT_SERVER_URL;
 
 
@@ -111,31 +113,31 @@ public class Data {
 	public static final String CLIENT_ID = "EEBUOvQq7RRJBxJm";
 	public static final String LOGIN_TYPE = "1";
 
-	
-	
-	
+
+
+
 	public static final String SERVER_ERROR_MSG = "Connection lost. Please try again later.";
 	public static final String SERVER_NOT_RESOPNDING_MSG = "Connection lost. Please try again later.";
 	public static final String TOUR_FAILED_MSG = "Connection lost. Please try again.";
 	public static final String CHECK_INTERNET_MSG = "Check your internet connection.";
 	public static final String GADDAR_JUGNOO_APP = "com.autoncab.driver";
 	public static final String UBER_APP = "com.ubercab.driver";
-	
+
 	public static final String GOOGLE_PROJECT_ID = "506849624961";
 
 
-	
-	public static double latitude, longitude;
-	
 
-	
-	
-	
-	
+	public static double latitude, longitude;
+
+
+
+
+
+
 	public static UserData userData;
-	
+
 	public static LocationFetcher locationFetcher;
-	
+
 
 	public static final String DEVICE_TYPE = "0";
 	public static String deviceToken = "",
@@ -143,22 +145,22 @@ public class Data {
 	public static int appVersion;
 
 	public static Activity context = null;
-	
+
 	public static ArrayList<CancelOption> cancelOptionsList;
 	public static ArrayList<DeliveryReturnOption> deliveryReturnOptionList;
 
 	public static String dEngagementId = "";
 
 	private static ArrayList<CustomerInfo> assignedCustomerInfos = new ArrayList<>();
-	
 
 
-	
+
+
 	public static LatLng nextPickupLatLng;
 	public static String nextCustomerName;
 
 
-	
+
 	public static FareStructure fareStructure;
 
     public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<>();
@@ -166,9 +168,9 @@ public class Data {
 	public static JSONArray blockAppPackageNameList;
 
 	public static boolean appMinimized = false;
-	
-	
-	
+
+
+
 	public static void clearDataOnLogout(Context context){
 		try{
 			userData = null;
@@ -180,18 +182,18 @@ public class Data {
 			Editor editor = pref.edit();
 			editor.clear();
 			editor.apply();
-
-			FuguConfig.clearFuguData((Activity) context);
+			Prefs.with(context).save(Constants.IS_OFFLINE, 1);
+			HippoConfig.clearHippoData((Activity) context);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	//Ud5ggfKqOCYcpGV+0KijA3ZJW+c=
 	public static void generateKeyHash(Context context){
 		try { // single sign-on for fb application
@@ -209,11 +211,11 @@ public class Data {
 			Log.e("error:", "," + e.toString());
 		}
 	}
-	
-	
-	
+
+
+
 	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy, digitalRegular, latoSemiBold;																// fonts declaration
-	
+
 
 	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
 		if (latoRegular == null) {
@@ -221,8 +223,8 @@ public class Data {
 		}
 		return latoRegular;
 	}
-	
-	
+
+
 	public static Typeface museoSlab(Context appContext) {
 		if (museoSlab == null) {
 			museoSlab = Typeface.createFromAsset(appContext.getAssets(), "fonts/museo_slab.otf");
@@ -468,6 +470,14 @@ public class Data {
 		}
 	}
 
+	public static ArrayList<SupportOption> getSupportOptions() {
+		return supportOptions;
+	}
+
+	public static void setSupportOptions(ArrayList<SupportOption> supportOptions) {
+		Data.supportOptions = supportOptions;
+	}
+
 	public static interface TxnType {
 		public static final int CREDITED = 1;
 		public static final int DEBITED = 2;
@@ -493,47 +503,51 @@ public class Data {
 				.build();
 	}
 
-	public static  void initFugu(Activity activity, CaptureUserData captureUserData, String keyFromServer) {
+	public static  void initFugu(Activity activity, CaptureUserData captureUserData,
+								 String keyFromServer, int appTypeFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
 			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-				String fuguKey = activity.getString(R.string.fugu_app_key);
-				if(!TextUtils.isEmpty(keyFromServer)){
-					fuguKey = keyFromServer;
+				if(TextUtils.isEmpty(keyFromServer)){
+					keyFromServer = activity.getString(R.string.fugu_app_key);
 				}
-				FuguConfig.init(1, fuguKey, activity, "live", captureUserData, activity.getString(R.string.file_provider));
+				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
 			} else {
-				FuguConfig.init(1, activity.getString(R.string.fugu_app_key_test), activity, "test", captureUserData, activity.getString(R.string.file_provider));
+				if(TextUtils.isEmpty(keyFromServer)){
+					keyFromServer = activity.getString(R.string.fugu_app_key_test);
+				}
+				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "test", captureUserData, activity.getString(R.string.file_provider));
 			}
 
 //			FuguConfig.getInstance().setHomeUpIndicatorDrawableId(R.drawable.ic_profile);
 
-			FuguColorConfig fuguColorConfig = new FuguColorConfig.Builder()
-					.fuguActionBarBg(FuguColorConfigStrings.FUGU_ACTION_BAR_BG)
-					.fuguActionBarText(FuguColorConfigStrings.FUGU_ACTION_BAR_TEXT)
-					.fuguBgMessageYou(FuguColorConfigStrings.FUGU_BG_MESSAGE_YOU)
-					.fuguBgMessageFrom(FuguColorConfigStrings.FUGU_BG_MESSAGE_FROM)
-					.fuguPrimaryTextMsgYou(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_YOU)
-					.fuguMessageRead(FuguColorConfigStrings.FUGU_MESSAG_EREAD)
-					.fuguPrimaryTextMsgFrom(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_FROM)
-					.fuguSecondaryTextMsgYou(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_YOU)
-					.fuguSecondaryTextMsgFrom(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_FROM)
-					.fuguTextColorPrimary(FuguColorConfigStrings.FUGU_TEXT_COLOR_PRIMARY)
-					.fuguChannelDateText(FuguColorConfigStrings.FUGU_CHANNEL_DATE_TEXT)
-					.fuguChatBg(FuguColorConfigStrings.FUGU_CHAT_BG)
-					.fuguBorderColor(FuguColorConfigStrings.FUGU_BORDER_COLOR)
-					.fuguChatDateText(FuguColorConfigStrings.FUGU_CHAT_DATE_TEXT)
-					.fuguThemeColorPrimary(FuguColorConfigStrings.FUGU_THEME_COLOR_PRIMARY)
-					.fuguThemeColorSecondary(FuguColorConfigStrings.FUGU_THEME_COLOR_SECONDARY)
-					.fuguTypeMessageBg(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_BG)
-					.fuguTypeMessageHint(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_HINT)
-					.fuguTypeMessageText(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_TEXT)
-					.fuguChannelBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
-					.fuguChannelItemBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+			HippoColorConfig fuguColorConfig = new HippoColorConfig.Builder()
+					.hippoActionBarBg(FuguColorConfigStrings.FUGU_ACTION_BAR_BG)
+					.hippoActionBarText(FuguColorConfigStrings.FUGU_ACTION_BAR_TEXT)
+					.hippoBgMessageYou(FuguColorConfigStrings.FUGU_BG_MESSAGE_YOU)
+					.hippoBgMessageFrom(FuguColorConfigStrings.FUGU_BG_MESSAGE_FROM)
+					.hippoPrimaryTextMsgYou(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_YOU)
+					.hippoMessageRead(FuguColorConfigStrings.FUGU_MESSAG_EREAD)
+					.hippoPrimaryTextMsgFrom(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_FROM)
+					.hippoSecondaryTextMsgYou(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_YOU)
+					.hippoSecondaryTextMsgFrom(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_FROM)
+					.hippoTextColorPrimary(FuguColorConfigStrings.FUGU_TEXT_COLOR_PRIMARY)
+					.hippoChannelDateText(FuguColorConfigStrings.FUGU_CHANNEL_DATE_TEXT)
+					.hippoChatBg(FuguColorConfigStrings.FUGU_CHAT_BG)
+					.hippoBorderColor(FuguColorConfigStrings.FUGU_BORDER_COLOR)
+					.hippoChatDateText(FuguColorConfigStrings.FUGU_CHAT_DATE_TEXT)
+					.hippoThemeColorPrimary(FuguColorConfigStrings.FUGU_THEME_COLOR_PRIMARY)
+					.hippoThemeColorSecondary(FuguColorConfigStrings.FUGU_THEME_COLOR_SECONDARY)
+					.hippoTypeMessageBg(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_BG)
+					.hippoTypeMessageHint(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_HINT)
+					.hippoTypeMessageText(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_TEXT)
+					.hippoChannelBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+					.hippoChannelItemBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
 					.build();
 
-			FuguConfig.getInstance().setColorConfig(fuguColorConfig);
+			HippoConfig.getInstance().setColorConfig(fuguColorConfig);
 		}
 	}
 
+	private static ArrayList<SupportOption> supportOptions;
 
 }

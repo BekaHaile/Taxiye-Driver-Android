@@ -59,6 +59,7 @@ import retrofit.mime.TypedFile;
 
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
+	private static final String BRANDING_IMAGE = "Branding Image";
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
@@ -626,11 +627,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),data.getInstructions());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
+										data.getInstructions(), data.getGalleryRestricted());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
+							checkForDocumentsSubmit();
 
 						}
 					} catch (Exception exception) {
@@ -702,6 +705,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Data.latoRegular(activity));
 
+			DocInfo docInfo = docs.get(index);
+			if((docInfo.getGalleryRestricted() == null
+					&& docInfo.docType.toLowerCase().contains(BRANDING_IMAGE.toLowerCase()))
+					|| (docInfo.getGalleryRestricted() != null
+						&& docInfo.getGalleryRestricted() == 1)){
+				chooseImageFromCamera();
+				return;
+			}
 
 
 			LayoutGallery.setOnClickListener(new View.OnClickListener() {
@@ -938,7 +949,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 											docs.get(index).setFile1(photoFile);
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
-
+										checkForDocumentsSubmit();
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1007,6 +1018,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
+										docs.get(index).status = "-1";
 										driverDocumentListAdapter.notifyDataSetChanged();
 
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
@@ -1086,6 +1098,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		} catch (Exception e) {
 			e.printStackTrace();
 			return bm;
+		}
+	}
+
+	private void checkForDocumentsSubmit(){
+		boolean mandatoryDocsSubmitted = true;
+		for(DocInfo docInfo : docs){
+			if((docInfo.docRequirement.equals(1)
+					|| docInfo.docRequirement.equals(3)
+					|| docInfo.docRequirement.equals(4))
+					&&
+					(!docInfo.status.equalsIgnoreCase("uploaded")
+						&& !docInfo.status.equalsIgnoreCase("4"))){
+				mandatoryDocsSubmitted = false;
+				break;
+			}
+		}
+		if(mandatoryDocsSubmitted){
+			DialogPopup.dialogBanner(activity,
+					activity.getString(R.string.please_press_submit_button), null, 5000,
+					R.color.white, R.color.red_v2);
 		}
 	}
 

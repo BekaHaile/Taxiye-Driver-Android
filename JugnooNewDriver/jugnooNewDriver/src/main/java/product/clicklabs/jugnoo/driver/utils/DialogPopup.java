@@ -12,6 +12,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -918,10 +919,11 @@ public class DialogPopup {
 //	}
 
 	public static void dialogBanner(Activity activity, String message) {
-		dialogBannerWithCancelListener(activity, message, null, 5000);
+		dialogBanner(activity, message, null, 5000, 0, 0);
 	}
 
-	public static void dialogBannerWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
+	public static void dialogBanner(Activity activity, String message, final View.OnClickListener onClickListener,
+									long timeToDismiss, int textColorRes, int textBgColorRes){
 		try {
 			dismissAlertPopup();
 //
@@ -937,6 +939,12 @@ public class DialogPopup {
 
 			TextView textViewBanner = (TextView) dialog.findViewById(R.id.textViewBanner); textViewBanner.setTypeface(Data.latoRegular(activity));
 			textViewBanner.setText(message);
+			if(textColorRes > 0){
+				textViewBanner.setTextColor(ContextCompat.getColor(activity, textColorRes));
+			}
+			if(textBgColorRes > 0){
+				textViewBanner.setBackgroundColor(ContextCompat.getColor(activity, textBgColorRes));
+			}
 
 			linearLayout.setOnClickListener(new View.OnClickListener() {
 

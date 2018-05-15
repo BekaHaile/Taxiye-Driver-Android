@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -31,7 +31,8 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 	private Context context;
 	
 	private static final int LOCATION_PI_ID = 6978;
-	
+
+	private Handler handler;
 	
 	
 	/**
@@ -40,6 +41,7 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 	 */
 	public LocationFetcherDriver(Context context, long requestInterval){
 		this.context = context;
+		this.handler = new Handler();
 		if(requestInterval >= 10000) {
 			this.requestInterval = requestInterval;
 		} else {
@@ -130,11 +132,20 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 		googleApiClient.connect();
 	}
 
-	protected void startLocationUpdates(long interval) {
-		createLocationRequest(interval);
-		Intent intent = new Intent(context, LocationReceiverDriver.class);
-		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
+	protected void startLocationUpdates(final long interval) {
+		if(googleApiClient.isConnected()) {
+			createLocationRequest(interval);
+			Intent intent = new Intent(context, LocationReceiverDriver.class);
+			locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
+		} else {
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					startLocationUpdates(interval);
+				}
+			}, 5000);
+		}
 	}
 
 
