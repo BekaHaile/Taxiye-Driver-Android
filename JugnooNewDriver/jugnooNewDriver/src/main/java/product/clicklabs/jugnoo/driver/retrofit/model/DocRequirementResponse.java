@@ -104,6 +104,9 @@ public class DocRequirementResponse {
 		@SerializedName("instructions")
 		@Expose
 		private String instructions;
+		@SerializedName("gallery_restricted")
+		@Expose
+		private Integer galleryRestricted;
 
 		public String getInstructions() {
 			return instructions;
@@ -234,6 +237,13 @@ public class DocRequirementResponse {
 			this.reason = reason;
 		}
 
+		public Integer getGalleryRestricted() {
+			return galleryRestricted;
+		}
+
+		public void setGalleryRestricted(Integer galleryRestricted) {
+			this.galleryRestricted = galleryRestricted;
+		}
 	}
 
 }

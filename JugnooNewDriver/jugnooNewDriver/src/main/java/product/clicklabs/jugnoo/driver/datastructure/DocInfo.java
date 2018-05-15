@@ -13,9 +13,11 @@ public class DocInfo {
 	public ArrayList<String> url;
 	private File file, file1;
 	private String docInstructions;
+	private Integer galleryRestricted;
 
 	public DocInfo(String docType, Integer docTypeNum, Integer docRequirement,
-				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable, String docInstructions) {
+				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable,
+				   String docInstructions, Integer galleryRestricted) {
 		this.docType = docType;
 		this.docTypeNum = docTypeNum;
 		this.docRequirement = docRequirement;
@@ -36,6 +38,7 @@ public class DocInfo {
 				this.url.add(null);
 			}
 		}
+		this.galleryRestricted = galleryRestricted;
 	}
 
 	public File getFile() {
@@ -56,5 +59,13 @@ public class DocInfo {
 
 	public String getDocInstructions() {
 		return docInstructions;
+	}
+
+	public Integer getGalleryRestricted() {
+		return galleryRestricted;
+	}
+
+	public void setGalleryRestricted(Integer galleryRestricted) {
+		this.galleryRestricted = galleryRestricted;
 	}
 }

@@ -59,6 +59,7 @@ import retrofit.mime.TypedFile;
 
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
+	private static final String BRANDING_IMAGE = "Branding Image";
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
@@ -626,7 +627,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),data.getInstructions());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
+										data.getInstructions(), data.getGalleryRestricted());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
@@ -703,6 +705,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Data.latoRegular(activity));
 
+			DocInfo docInfo = docs.get(index);
+			if((docInfo.getGalleryRestricted() == null
+					&& docInfo.docType.toLowerCase().contains(BRANDING_IMAGE.toLowerCase()))
+					|| (docInfo.getGalleryRestricted() != null
+						&& docInfo.getGalleryRestricted() == 1)){
+				chooseImageFromCamera();
+				return;
+			}
 
 
 			LayoutGallery.setOnClickListener(new View.OnClickListener() {
