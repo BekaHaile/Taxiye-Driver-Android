@@ -60,11 +60,14 @@ class LoginFragment : Fragment() {
     lateinit var rootView: View
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
+    private var isSharedTransitionStarted = false;
+    private var applyTransition = false;
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
-        val applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
+        applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
+        sharedElementEnterTransition
         if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // animate logo using shared transitions and then onEnd animate other view's visibility
             sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
@@ -159,6 +162,14 @@ class LoginFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if(applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isSharedTransitionStarted){
+            isSharedTransitionStarted = false
+            animateViews();
+        }
     }
 
     private fun getLanguageList(showError: Boolean) {
@@ -383,7 +394,6 @@ class LoginFragment : Fragment() {
         val sharedElementEnterTransition = sharedElementEnterTransition as TransitionSet
         sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
-                Log.d("LoginFragment", "onEnd")
                 animateViews()
             }
 
@@ -393,12 +403,15 @@ class LoginFragment : Fragment() {
 
             override fun onTransitionCancel(transition: Transition) {}
 
-            override fun onTransitionStart(transition: Transition) {}
+            override fun onTransitionStart(transition: Transition) {
+                isSharedTransitionStarted = true;
+            }
         })
 
     }
 
     private fun animateViews() {
+        getLanguageList(false)
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(rootView.constraint)

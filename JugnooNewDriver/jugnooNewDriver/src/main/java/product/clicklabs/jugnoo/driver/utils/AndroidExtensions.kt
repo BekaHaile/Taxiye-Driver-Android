@@ -13,6 +13,8 @@ import product.clicklabs.jugnoo.driver.R
 
 // ========================= VIEW VISIBILITY =========================
 
+const val TAG =  "AndroidExtensions"
+
 fun View.gone() {
     visibility = View.GONE
 }
@@ -52,7 +54,18 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
 
 inline fun FragmentManager.inTransactionWithSharedTransition(view: View, func: FragmentTransaction.() -> FragmentTransaction) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        beginTransaction().addSharedElement(view, view.transitionName).func().commitAllowingStateLoss()
+
+        try {
+            beginTransaction().addSharedElement(view, view.transitionName).func().commit()
+        } catch (e: Exception) {
+            Log.e(TAG,"inTransactionWithSharedTransition Transacting using stateLoss" + e)
+
+            beginTransaction().func().commitAllowingStateLoss()
+        }
+
+    }else{
+        beginTransaction().func().commitAllowingStateLoss()
+
     }
 }
 
