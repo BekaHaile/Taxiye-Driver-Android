@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.utils
 import android.app.Activity
 import android.os.Build
 import android.support.annotation.IdRes
+import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -13,7 +14,7 @@ import product.clicklabs.jugnoo.driver.R
 
 // ========================= VIEW VISIBILITY =========================
 
-const val TAG =  "AndroidExtensions"
+const val TAG = "AndroidExtensions"
 
 fun View.gone() {
     visibility = View.GONE
@@ -52,21 +53,9 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
     beginTransaction().func().commitAllowingStateLoss()
 }
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 inline fun FragmentManager.inTransactionWithSharedTransition(view: View, func: FragmentTransaction.() -> FragmentTransaction) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-        try {
-            beginTransaction().addSharedElement(view, view.transitionName).func().commit()
-        } catch (e: Exception) {
-            Log.e(TAG,"inTransactionWithSharedTransition Transacting using stateLoss" + e)
-
-            beginTransaction().func().commitAllowingStateLoss()
-        }
-
-    }else{
-        beginTransaction().func().commitAllowingStateLoss()
-
-    }
+        beginTransaction().addSharedElement(view, view.transitionName).func().commit()
 }
 
 inline fun FragmentManager.inTransactionWithAnimation(func: FragmentTransaction.() -> FragmentTransaction) {

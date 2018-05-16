@@ -99,10 +99,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private fun addPhoneNumberScreen(enableSharedTransition: Boolean, view: View?) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && enableSharedTransition && view != null) {
-            supportFragmentManager.inTransactionWithSharedTransition(view, {
-                setAllowOptimization(true)
-                        .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
-            })
+            try {
+                supportFragmentManager.inTransactionWithSharedTransition(view, {
+                    setAllowOptimization(true)
+                            .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
+                })
+            } catch (e: Exception) {
+
+                supportFragmentManager.inTransaction {
+                    setAllowOptimization(true)
+                            .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                }
+            }
         } else {
             supportFragmentManager.inTransaction {
                 setAllowOptimization(true)

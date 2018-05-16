@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
 import android.support.constraint.ConstraintSet
@@ -60,14 +59,12 @@ class LoginFragment : Fragment() {
     lateinit var rootView: View
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
-    private var isSharedTransitionStarted = false;
     private var applyTransition = false;
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = container?.inflate(R.layout.frag_login)!!
         applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
-        sharedElementEnterTransition
         if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // animate logo using shared transitions and then onEnd animate other view's visibility
             sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
@@ -164,14 +161,6 @@ class LoginFragment : Fragment() {
         return rootView
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if(applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isSharedTransitionStarted){
-            isSharedTransitionStarted = false
-            animateViews();
-        }
-    }
-
     private fun getLanguageList(showError: Boolean) {
         val params = HashMap<String, String>()
         params["device_model_name"] = android.os.Build.MODEL
@@ -181,7 +170,7 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKotlin<DriverLanguageResponse>(activity).showLoader(false).checkForActionComplete(true)
+        ApiCommonKt<DriverLanguageResponse>(activity = activity, showLoader = true, checkForActionComplete = true)
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
@@ -336,22 +325,6 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         parentActivity = context as Activity
         toolbarChangeListener = context as ToolbarChangeListener
-
-//        val transitionSet = sharedElementEnterTransition as TransitionSet
-//        if (transitionSet != null) {
-//            transitionSet!!.addListener(object : Transition.TransitionListener {
-//                override fun onTransitionEnd(@NonNull transition: Transition) {
-//                    // remove listener as otherwise there are side-effects
-//                    transition.removeListener(this)
-//                    // do something here
-//                }
-//
-//                override fun onTransitionStart(@NonNull transition: Transition) {}
-//                override fun onTransitionCancel(@NonNull transition: Transition) {}
-//                override fun onTransitionPause(@NonNull transition: Transition) {}
-//                override fun onTransitionResume(@NonNull transition: Transition) {}
-//            })
-//        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -403,9 +376,7 @@ class LoginFragment : Fragment() {
 
             override fun onTransitionCancel(transition: Transition) {}
 
-            override fun onTransitionStart(transition: Transition) {
-                isSharedTransitionStarted = true;
-            }
+            override fun onTransitionStart(transition: Transition) {}
         })
 
     }
