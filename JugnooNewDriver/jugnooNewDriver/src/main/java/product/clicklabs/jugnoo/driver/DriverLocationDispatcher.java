@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
@@ -23,8 +22,6 @@ import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
-import product.clicklabs.jugnoo.driver.services.FetchMFileService;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -49,8 +46,11 @@ public class DriverLocationDispatcher {
 			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-				WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
-				wakeLock.acquire();
+				WakeLock wakeLock = null;
+				if (powerManager != null) {
+					wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
+					wakeLock.acquire(5000);
+				}
 				
 				String accessToken = Database2.getInstance(context).getDLDAccessToken();
 				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
@@ -63,8 +63,8 @@ public class DriverLocationDispatcher {
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 								DriverScreenMode.D_INITIAL.getOrdinal());
-						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000)/2l;
-						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000)/2l;
+						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000)/2L;
+						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000)/2L;
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 						Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_RECEIVED);
@@ -130,7 +130,7 @@ public class DriverLocationDispatcher {
 								int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 								if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
 									String deviceTokenNew =	FirebaseInstanceId.getInstance().getToken();
-									;
+
 									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 									sendLocationToServer(context);
 									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
@@ -144,7 +144,9 @@ public class DriverLocationDispatcher {
 					}
 				}
 				checkForMarkArrived(context, location, accessToken);
-				wakeLock.release();
+				if (wakeLock != null) {
+					wakeLock.release();
+				}
 			}
 			else{
 
@@ -154,7 +156,6 @@ public class DriverLocationDispatcher {
 		catch (RetrofitError retrofitError){
 			try {
 				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_RETRO);
-				updateDriverLocationFalier(context);
 				long diff1 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 				if(diff1 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
 					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
@@ -172,7 +173,6 @@ public class DriverLocationDispatcher {
 		catch (Exception e) {
 			try {
 				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_GENERIC);
-				updateDriverLocationFalier(context);
 				long diff2 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 				if(diff2 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
 					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
@@ -189,15 +189,7 @@ public class DriverLocationDispatcher {
 		}
 	}
 
-	public void updateDriverLocationFalier(final Context context){
-		try {
-//			Thread.sleep(2000);
-//			sendLocationToServer(context);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 
 
 	private void checkForMarkArrived(Context context, Location location, String accessToken){

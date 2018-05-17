@@ -268,6 +268,8 @@ public interface Constants {
 	String KEY_MENU = "menu";
 	String KEY_TAG = "tag";
 	String CHAT_SUPPORT = "chat_support";
+	String TICKET_SUPPORT = "ticket_support";
+	String MAIL_SUPPORT = "mail_support";
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
 	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
@@ -278,8 +280,14 @@ public interface Constants {
 	String KEY_MESSAGE = "message";
 	String KEY_INITIAL_BID_VALUE = "initial_bid_value";
 	String KEY_FUGU_APP_KEY = "fugu_app_key";
+	String KEY_FUGU_APP_TYPE = "fugu_app_type";
 	String ASK_USER_CONFIRMATION = "ask_user_confirmation";
 	String KEY_ESTIMATED_TRIP_DISTANCE = "estimated_trip_distance";
 	String BID_INCREMENT_PERCENT = "bid_increment_percent";
+	String DRIVER_SUPPORT_EMAIL = "driver_support_email";
+	String DRIVER_SUPPORT_EMAIL_SUBJECT = "driver_support_email_subject";
+	String SUPPORT_MAIN = "support_main";
+	String HIPPO_TICKET_FAQ_NAME = "hippo_ticket_faq_name";
+	String KEY_SHOW_IN_ACCOUNT = "show_in_account";
 }
 

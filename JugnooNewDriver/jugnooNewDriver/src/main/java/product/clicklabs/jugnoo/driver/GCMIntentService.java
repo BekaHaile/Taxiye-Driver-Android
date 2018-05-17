@@ -26,7 +26,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
-import com.fugu.FuguNotificationConfig;
+import com.fugu.HippoNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -83,11 +83,12 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static int PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
+	private static final long WAKELOCK_TIMEOUT = 5000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
 	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
-	FuguNotificationConfig fuguNotificationConfig = new FuguNotificationConfig();
+	HippoNotificationConfig fuguNotificationConfig = new HippoNotificationConfig();
 	public GCMIntentService() {
 	}
 
@@ -128,11 +129,16 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(1, notification);
+			if (notificationManager != null) {
+				notificationManager.notify(1, notification);
+			}
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+			WakeLock wl;
+			if (pm != null) {
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl.acquire(WAKELOCK_TIMEOUT);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -175,11 +181,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(1, notification);
+			if (notificationManager != null) {
+				notificationManager.notify(1, notification);
+			}
 
-//			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-//			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-//			wl.acquire(15000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -286,12 +291,17 @@ public class GCMIntentService extends FirebaseMessagingService {
 			Notification notification = builder.build();
 
 			Prefs.with(context).save(SPLabels.NOTIFICATION_ID, Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0) + 1);
-			notificationManager.notify(Integer.parseInt(engagementId), notification);
+			if (notificationManager != null) {
+				notificationManager.notify(Integer.parseInt(engagementId), notification);
+			}
 
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+			WakeLock wl;
+			if (pm != null) {
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl.acquire(WAKELOCK_TIMEOUT);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -333,10 +343,15 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
 			Notification notification = builder.build();
-			notificationManager.notify(notificationId, notification);
+			if (notificationManager != null) {
+				notificationManager.notify(notificationId, notification);
+			}
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+			WakeLock wl;
+			if (pm != null) {
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl.acquire(WAKELOCK_TIMEOUT);
+			}
 
 
 
@@ -382,10 +397,15 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			Notification notification = builder.build();
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+			WakeLock wl;
+			if (pm != null) {
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl.acquire(WAKELOCK_TIMEOUT);
+			}
 
-			notificationManager.notify(notificationId, notification);
+			if (notificationManager != null) {
+				notificationManager.notify(notificationId, notification);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -426,11 +446,16 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setContentIntent(intent);
 
 			Notification notification = builder.build();
-			notificationManager.notify(notificationId, notification);
+			if (notificationManager != null) {
+				notificationManager.notify(notificationId, notification);
+			}
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+			WakeLock wl;
+			if (pm != null) {
+				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+				wl.acquire(WAKELOCK_TIMEOUT);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -441,7 +466,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static void clearNotifications(Context context) {
 		try {
 			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.cancelAll();
+			if (notificationManager != null) {
+				notificationManager.cancelAll();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -452,7 +479,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 //		super.onMessageReceived(remoteMessage);
 
-		if (fuguNotificationConfig.isFuguNotification(remoteMessage.getData())) {
+		if (fuguNotificationConfig.isHippoNotification(remoteMessage.getData())) {
 			fuguNotificationConfig.setSmallIcon(R.mipmap.ic_launcher);
 			//your icon drawable
 			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
@@ -560,7 +587,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
 									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
 									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
-									long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+									long requestTimeOutMillis;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
 										long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
@@ -695,7 +722,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 4, true);
+								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancel_ring3, 1, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
@@ -783,9 +810,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String uuid = jObj.getString("uuid");
 									sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
 									MyApplication.getInstance().logEvent(FirebaseEvents.HEARTBEAT_REC+"_", null);
-									Map<String, String> articleParams = new HashMap<String, String>();
+									Map<String, String> articleParams = new HashMap<>();
 									articleParams.put("heatbeat_id", uuid);
-									try {MyApplication.getInstance().trackEvent("Driver", "heartbeat", uuid, articleParams);} catch (Exception e) {}
+									try {MyApplication.getInstance().trackEvent("Driver", "heartbeat", uuid, articleParams);} catch (Exception ignored) {}
 
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -892,9 +919,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									Intent setChatCount = new Intent(Constants.ALERT_CHARGING);
 									setChatCount.putExtra("type", 1);
 									sendBroadcast(setChatCount);
-								} else {
-									// Nothing
-								}
+								}  // Nothing
+
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
 										jObj.getString("transaction_time"),
@@ -933,7 +959,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 					JSONObject jObj = new JSONObject(message);
 					Log.i("push_notification", String.valueOf(jObj));
 					int flag = jObj.getInt(Constants.KEY_FLAG);
-					String title = jObj.optString(Constants.KEY_TITLE, "Jugnoo");
 					if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 						String otp = jObj.getString("message");
 						if (OTPConfirmScreen.OTP_SCREEN_OPEN != null) {

@@ -1,0 +1,48 @@
+<resources>
+
+    <string name="fugu_app_name">Fugu</string>
+    <string name="fugu_unable_to_connect_internet">Unable to connect to the internet</string>
+    <string name="fugu_no_internet_connection_retry">No Internet Connection \nTap to retry</string>
+    <string name="fugu_new_conversation">New Conversation</string>
+    <string name="fugu_loading">Loading...</string>
+    <string name="fugu_powered_by">Powered by </string>
+    <string name="fugu_text">Fugu</string>
+    <string name="hippo_text">Hippo</string>
+    <string name="fugu_menu_retry">Refresh</string>
+
+    <string name="fugu_pick_image_from">Attach image using</string>
+    <string name="fugu_camera">Camera</string>
+    <string name="fugu_gallery">Gallery</string>
+    <string name="fugu_pdf">PDF</string>
+    <string name="fugu_no_gallery">Gallery not found in this phone.</string>
+    <string name="fugu_permission_was_not_granted_text">The permission was not granted</string>
+    <string name="fugu_retry">Retry</string>
+    <string name="fugu_empty" translatable="false"></string>
+    <string name="fugu_attachment">Attachment Image</string>
+    <string name="fugu_send_message"> Type a message...</string>
+    <string name="fugu_cancel">Cancel</string>
+    <string name="fugu_file_not_found">Sorry this file is no longer available on your device</string>
+    <string name="fugu_support">Support</string>
+    <string name="space">&#160;</string>
+    <string name="could_not_send_message">Could not send your message</string>
+    <string name="tap_to_retry">Tap to <u>Retry</u>&#160;</string>
+    <string name="no_internet_cancel">| <u>Cancel</u></string>
+    <string name="fugu_not_connected_to_internet">Not connected to Internet</string>
+    <string name="fugu_connecting">Connecting ...</string>
+    <string name="fugu_connected">Connected</string>
+    <string name="create_conversation">createConversation</string>
+    <string name="fugu_network_change">Network connectivity change</string>
+    <string name="fugu_problem_fetching_image">Problem in fetching image...</string>
+    <string name="fugu_file_path">file path</string>
+    <string name="could_not_read_from_source">Could not read from source</string>
+    <string name="action_settings">Settings</string>
+    <string name="fugu_leave_comment">Leave a comment</string>
+    <string name="fugu_no_data_found">No data found</string>
+    <string name="fugu_empty_field_textbox">Field can\'t be empty</string>
+    <string name="hippo_message_sucessfully">Your request has been submitted successfully</string>
+
+    <!--<string name="hippo_uniqueId_channel_name">%s# %s_%d</string>-->
+    <!--<string name="hippo_channel_name">%s# %s</string>-->
+    <string name="fugu_text_all">All</string>
+    <string name="fugu_no_conversations">No conversations yet!</string>
+</resources>

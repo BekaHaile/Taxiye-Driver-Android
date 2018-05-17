@@ -1,1 +1,1 @@
-include ':jugnooNewDriver'
+include ':jugnooNewDriver', ':hippo'

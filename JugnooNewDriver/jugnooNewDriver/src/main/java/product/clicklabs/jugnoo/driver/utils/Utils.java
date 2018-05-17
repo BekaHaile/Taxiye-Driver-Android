@@ -40,6 +40,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
@@ -1155,7 +1156,7 @@ public class Utils {
 	}
 
 	public static boolean validPhoneNumber(String phoneNo){
-		if(phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
+		if(phoneNo != null && phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
 			return isPhoneValid(phoneNo);
 		}
 		else{
@@ -1163,5 +1164,28 @@ public class Utils {
 		}
 	}
 
+	public static void showToast(Context context, String string){
+		showToast(context, string, Toast.LENGTH_SHORT);
+	}
+	public static void showToast(Context context, String string, int duration){
+		try {
+			if(MyApplication.getInstance().getToast() != null){
+				MyApplication.getInstance().getToast().cancel();
+			}
+			MyApplication.getInstance().setToast(Toast.makeText(context, string, duration));
+			MyApplication.getInstance().getToast().show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void openMailIntent(Activity activity, String[] to, String subject, String body){
+		Intent email = new Intent(Intent.ACTION_SEND);
+		email.putExtra(Intent.EXTRA_EMAIL, to);
+		email.putExtra(Intent.EXTRA_SUBJECT, subject);
+		email.putExtra(Intent.EXTRA_TEXT, body); //
+		email.setType("message/rfc822");
+		activity.startActivity(Intent.createChooser(email, activity.getString(R.string.choose_email_client)));
+	}
 
 }
