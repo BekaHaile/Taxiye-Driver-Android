@@ -450,8 +450,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".DriverDocumentActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:screenOrientation="portrait"/>
 
         <service android:name=".sticky.GeanieView"/>
 

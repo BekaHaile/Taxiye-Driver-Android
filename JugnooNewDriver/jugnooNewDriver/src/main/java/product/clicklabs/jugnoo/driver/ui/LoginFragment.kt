@@ -179,7 +179,7 @@ class LoginFragment : Fragment() {
                             return
                         }
 
-                        setLanguageLoading(showText = false, showProgress = false)
+                        setLanguageLoading(text = -1, showText = false, showProgress = false)
 
                         val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -347,18 +347,19 @@ class LoginFragment : Fragment() {
         TransitionManager.beginDelayedTransition(constraint)
     }
 
-    private fun setLanguageLoading(@StringRes text: Int = (R.string.language_english_text), showErrorImage: Boolean = false,
+    private fun setLanguageLoading(@StringRes text: Int, showErrorImage: Boolean = false,
                                    showText: Boolean = true, showProgress: Boolean = true, isClickable: Boolean = false) {
         with(rootView) {
 
 
+            if (showProgress) progressLanguage.visible() else progressLanguage.gone()
+            if (showText) tvLanguage.visible() else tvLanguage.gone()
+
             tvLanguage.isClickable = isClickable
-            tvLanguage.text = getString(text)
+            if (text != -1) tvLanguage.text = getString(text)
 //            tvLanguage.tag = text
             tvLanguage.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                     if (showErrorImage) R.drawable.retry_icon_black else 0, 0)
-            if (showProgress) progressLanguage.visible() else progressLanguage.gone()
-            if (showText) tvLanguage.visible() else tvLanguage.gone()
         }
     }
 
