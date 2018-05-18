@@ -16,69 +16,92 @@ public class GoogleRestApis {
 
 	public static Response getDirections(String originLatLng, String destLatLng, Boolean sensor,
 										 String mode, Boolean alternatives){
-		String urlToSign = "/maps/api/directions/json?" +
-				"origin="+originLatLng
-				+"&destination="+destLatLng
-				+"&sensor="+sensor
-				+"&mode="+mode
-				+"&alternatives="+alternatives
-				+"&client="+BuildConfig.MAPS_CLIENT;
-		String googleSignature = null;
-		try {
-			googleSignature = generateGoogleSignature(urlToSign);
-		} catch (Exception ignored) {}
+		if(BuildConfig.MAPS_APIS_SIGN) {
+			String urlToSign = "/maps/api/directions/json?" +
+					"origin=" + originLatLng
+					+ "&destination=" + destLatLng
+					+ "&sensor=" + sensor
+					+ "&mode=" + mode
+					+ "&alternatives=" + alternatives
+					+ "&client=" + BuildConfig.MAPS_CLIENT;
+			String googleSignature = null;
+			try {
+				googleSignature = generateGoogleSignature(urlToSign);
+			} catch (Exception ignored) {
+			}
 
-		return RestClient.getGoogleApiServices().getDirections(originLatLng, destLatLng,
-				sensor, mode, alternatives, BuildConfig.MAPS_CLIENT, googleSignature);
+			return RestClient.getGoogleApiServices().getDirections(originLatLng, destLatLng,
+					sensor, mode, alternatives, BuildConfig.MAPS_CLIENT, googleSignature);
+		} else {
+			return RestClient.getGoogleApiServices().getDirections(originLatLng, destLatLng,
+					sensor, mode, alternatives, BuildConfig.MAPS_BROWSER_KEY);
+		}
 	}
 
 	public static Response getDistanceMatrix(String originLatLng, String destLatLng, String language,
 											 Boolean sensor, Boolean alternatives){
-		String urlToSign = "/maps/api/distancematrix/json?" +
-				"origins="+originLatLng
-				+"&destinations="+destLatLng
-				+"&language="+language
-				+"&sensor="+sensor
-				+"&alternatives="+alternatives
-				+"&client="+BuildConfig.MAPS_CLIENT;
-		String googleSignature = null;
-		try {
-			googleSignature = generateGoogleSignature(urlToSign);
-		} catch (Exception ignored) {}
+		if(BuildConfig.MAPS_APIS_SIGN) {
+			String urlToSign = "/maps/api/distancematrix/json?" +
+					"origins=" + originLatLng
+					+ "&destinations=" + destLatLng
+					+ "&language=" + language
+					+ "&sensor=" + sensor
+					+ "&alternatives=" + alternatives
+					+ "&client=" + BuildConfig.MAPS_CLIENT;
+			String googleSignature = null;
+			try {
+				googleSignature = generateGoogleSignature(urlToSign);
+			} catch (Exception ignored) {
+			}
 
-		return RestClient.getGoogleApiServices().getDistanceMatrix(originLatLng, destLatLng, language,
-				sensor, alternatives, BuildConfig.MAPS_CLIENT, googleSignature);
+			return RestClient.getGoogleApiServices().getDistanceMatrix(originLatLng, destLatLng, language,
+					sensor, alternatives, BuildConfig.MAPS_CLIENT, googleSignature);
+		} else {
+			return RestClient.getGoogleApiServices().getDistanceMatrix(originLatLng, destLatLng, language,
+					sensor, alternatives, BuildConfig.MAPS_BROWSER_KEY);
+		}
 	}
 
 	public static Response geocode(String latLng, String language){
-		String urlToSign = "/maps/api/geocode/json?" +
-				"latlng="+latLng
-				+"&language="+language
-				+"&sensor="+false
-				+"&client="+BuildConfig.MAPS_CLIENT;
-		String googleSignature = null;
-		try {
-			googleSignature = generateGoogleSignature(urlToSign);
-		} catch (Exception ignored) {}
+		if(BuildConfig.MAPS_APIS_SIGN) {
+			String urlToSign = "/maps/api/geocode/json?" +
+					"latlng=" + latLng
+					+ "&language=" + language
+					+ "&sensor=" + false
+					+ "&client=" + BuildConfig.MAPS_CLIENT;
+			String googleSignature = null;
+			try {
+				googleSignature = generateGoogleSignature(urlToSign);
+			} catch (Exception ignored) {
+			}
 
-		return RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_CLIENT, googleSignature);
+			return RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_CLIENT, googleSignature);
+		} else {
+			return RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_BROWSER_KEY);
+		}
 	}
 
 
 	public static Response getDirectionsWaypoints(String strOrigin, String strDestination, String strWaypoints){
-		String urlToSign = "/maps/api/directions/json?" +
-				"origin="+strOrigin
-				+"&destination="+strDestination
-				+"&waypoints="+strWaypoints
-				+"&client="+BuildConfig.MAPS_CLIENT;
-		String googleSignature = null;
-		try {
-			googleSignature = generateGoogleSignature(urlToSign);
-		} catch (Exception ignored) {}
+		if(BuildConfig.MAPS_APIS_SIGN) {
+			String urlToSign = "/maps/api/directions/json?" +
+					"origin=" + strOrigin
+					+ "&destination=" + strDestination
+					+ "&waypoints=" + strWaypoints
+					+ "&client=" + BuildConfig.MAPS_CLIENT;
+			String googleSignature = null;
+			try {
+				googleSignature = generateGoogleSignature(urlToSign);
+			} catch (Exception ignored) {
+			}
 
 
-		return RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination,
-				strWaypoints, BuildConfig.MAPS_CLIENT, googleSignature);
+			return RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination,
+					strWaypoints, BuildConfig.MAPS_CLIENT, googleSignature);
+		} else {
+			return RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination,
+					strWaypoints, BuildConfig.MAPS_BROWSER_KEY);
+		}
 	}
 
 	private static String generateGoogleSignature(String urlToSign) throws NoSuchAlgorithmException,
