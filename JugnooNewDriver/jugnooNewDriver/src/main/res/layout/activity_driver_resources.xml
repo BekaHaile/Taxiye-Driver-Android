@@ -3,7 +3,9 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+    android:background="@color/white"
+    >
 
     <RelativeLayout
         android:id="@+id/topRl"
@@ -176,6 +178,46 @@
             android:layout_marginBottom="2px"
             android:layout_marginTop="36px"
             android:background="@color/grey_light"/>
+
+        <RelativeLayout
+            android:id="@+id/rlBrandingImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/dont_touch_me"
+            android:background="@drawable/bg_white_grey_light_selector"
+            >
+
+            <TextView
+                android:id="@+id/tvBrandingImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="17dp"
+                android:paddingTop="17dp"
+                android:text="@string/branding_images"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="17sp"
+                android:visibility="visible"
+                android:layout_marginStart="18dp"
+                />
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="18dp"
+                android:src="@drawable/arrow_thick_new"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvBrandingImages"
+                android:background="@color/grey_light"
+                android:layout_marginEnd="6dp"
+                />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

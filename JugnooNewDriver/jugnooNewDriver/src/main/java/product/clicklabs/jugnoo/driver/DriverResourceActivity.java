@@ -52,6 +52,9 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		imageView2 = (ImageView) findViewById(R.id.imageView2);
 		imageView3 = (ImageView) findViewById(R.id.imageView3);
 
+		RelativeLayout rlBrandingImages = (RelativeLayout) findViewById(R.id.rlBrandingImages);
+		((TextView)findViewById(R.id.tvBrandingImages)).setTypeface(Data.latoRegular(this));
+
 		linearLayoutResources.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,6 +83,19 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 			}
 		});
 
+		rlBrandingImages.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(DriverResourceActivity.this, DriverDocumentActivity.class);
+				intent.putExtra("access_token",Data.userData.accessToken);
+				intent.putExtra("in_side", true);
+				intent.putExtra("doc_required", 0);
+				intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+
 		if(Prefs.with(DriverResourceActivity.this).getInt(Constants.SET_DRIVER_TUTORIAL_STATUS, 0) == 1){
 			linearLayoutTraining.setVisibility(View.VISIBLE);
 			imageView2.setVisibility(View.VISIBLE);
@@ -94,6 +110,12 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		} else {
 			linearLayoutSupport.setVisibility(View.GONE);
 			imageView3.setVisibility(View.GONE);
+		}
+
+		if(Prefs.with(this).getInt(Constants.BRANDING_IMAGE, 0) == 1){
+			rlBrandingImages.setVisibility(View.VISIBLE);
+		} else {
+			rlBrandingImages.setVisibility(View.GONE);
 		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
