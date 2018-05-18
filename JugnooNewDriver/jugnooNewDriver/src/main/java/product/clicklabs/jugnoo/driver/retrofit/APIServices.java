@@ -578,5 +578,15 @@ public interface APIServices {
 	void initiatePlanSubscription(@FieldMap Map<String, String> params,
 						  Callback<InitiatePaymentResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/set_bid_for_engagement")
+	void setBidForEngagement(@FieldMap Map<String, String> params,
+							 Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/set_agreement_status")
+	void agreeTerms(@FieldMap Map<String, String> params,
+							 Callback<SettleUserDebt> callback);
+
 
 }

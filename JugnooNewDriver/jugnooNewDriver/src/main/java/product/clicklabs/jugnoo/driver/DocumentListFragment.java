@@ -6,11 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.hardware.Camera;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +27,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
@@ -43,21 +40,17 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
-import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -66,6 +59,7 @@ import retrofit.mime.TypedFile;
 
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
+	private static final String BRANDING_IMAGE = "Branding Image";
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
@@ -152,7 +146,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		RelativeLayout relative, relativeLayoutImageStatus;
 		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
-				imageViewDocStatusImage, imageViewAddImageDisabled;
+				imageViewDocStatusImage, imageViewAddImageDisabled,imageViewInfo;
 		int id;
 	}
 
@@ -200,6 +194,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
 				holder.imageViewDocStatusImage = (ImageView) convertView.findViewById(R.id.imageViewDocStatusImage);
 				holder.imageViewAddImageDisabled = (ImageView) convertView.findViewById(R.id.imageViewAddImageDisabled);
+				holder.imageViewInfo = (ImageView) convertView.findViewById(R.id.imageViewInfo);
 
 				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
 				holder.deleteImage1.setTag(holder);
@@ -446,11 +441,32 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docType.setTextColor(getResources().getColor(R.color.document_text_color));
 			}
 
+			holder.docType.setTag(holder);
+			holder.imageViewInfo.setTag(holder);
+			if(docInfo.getDocInstructions()==null){
+				holder.imageViewInfo.setVisibility(View.GONE);
+				holder.docType.setOnClickListener(null);
+
+			}else{
+				holder.imageViewInfo.setVisibility(View.VISIBLE);
+				View.OnClickListener onClickListener = new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+						DialogPopup.alertPopup(activity,docs.get(holder.id).docType,docs.get(holder.id).getDocInstructions(),true,false);
+					}
+				};
+				holder.docType.setOnClickListener(onClickListener);
+				holder.imageViewInfo.setOnClickListener(onClickListener);
+
+			}
+
+
 			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
 				docInfo.isExpended = false;
 			}
 
-			holder.relativeLayoutSelectPicture.setOnClickListener(new View.OnClickListener() {
+			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
@@ -611,11 +627,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
+										data.getInstructions(), data.getGalleryRestricted());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
+							checkForDocumentsSubmit();
 
 						}
 					} catch (Exception exception) {
@@ -687,6 +705,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Data.latoRegular(activity));
 
+			DocInfo docInfo = docs.get(index);
+			if((docInfo.getGalleryRestricted() == null
+					&& docInfo.docType.toLowerCase().contains(BRANDING_IMAGE.toLowerCase()))
+					|| (docInfo.getGalleryRestricted() != null
+						&& docInfo.getGalleryRestricted() == 1)){
+				chooseImageFromCamera();
+				return;
+			}
 
 
 			LayoutGallery.setOnClickListener(new View.OnClickListener() {
@@ -776,7 +802,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 
 				Log.v("onImageChosen called", "onImageChosen called");
 				try {
@@ -924,7 +949,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 											docs.get(index).setFile1(photoFile);
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
-
+										checkForDocumentsSubmit();
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -993,6 +1018,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
+										docs.get(index).status = "-1";
 										driverDocumentListAdapter.notifyDataSetChanged();
 
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
@@ -1072,6 +1098,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		} catch (Exception e) {
 			e.printStackTrace();
 			return bm;
+		}
+	}
+
+	private void checkForDocumentsSubmit(){
+		boolean mandatoryDocsSubmitted = true;
+		for(DocInfo docInfo : docs){
+			if((docInfo.docRequirement.equals(1)
+					|| docInfo.docRequirement.equals(3)
+					|| docInfo.docRequirement.equals(4))
+					&&
+					(!docInfo.status.equalsIgnoreCase("uploaded")
+						&& !docInfo.status.equalsIgnoreCase("4"))){
+				mandatoryDocsSubmitted = false;
+				break;
+			}
+		}
+		if(mandatoryDocsSubmitted){
+			DialogPopup.dialogBanner(activity,
+					activity.getString(R.string.please_press_submit_button), null, 5000,
+					R.color.white, R.color.red_v2);
 		}
 	}
 

@@ -58,7 +58,6 @@ public class GeanieView extends Service {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(GeanieView.this);
@@ -153,7 +152,6 @@ public class GeanieView extends Service {
 
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
 
 							isLongclick = true;
 							showCloseView();

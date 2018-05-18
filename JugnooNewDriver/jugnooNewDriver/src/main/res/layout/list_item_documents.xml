@@ -18,6 +18,7 @@
             android:id="@+id/relativeLayoutSelectPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="52px"
             android:background="@drawable/background_white_white_dark_selector"
             android:gravity="center_horizontal">
 
@@ -26,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
-                android:layout_marginLeft="52px"
+
                 android:text="@string/Document_type"
                 android:textColor="@color/document_text_color"
                 android:textSize="36px"
@@ -65,16 +66,28 @@
                 android:layout_below="@+id/docType"
                 android:layout_marginBottom="34px"
                 android:layout_marginTop="32px"
-                android:layout_marginLeft="52px"
                 android:text="@string/Requirement"
                 android:textColor="@color/grey_black_light"
                 android:textSize="24px"
             />
 
+
+            <ImageView
+                android:id="@+id/imageViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10px"
+                android:layout_marginTop="10px"
+                android:paddingTop="20px"
+                android:paddingRight="10px"
+                android:layout_below="@id/docType"
+                android:layout_toRightOf="@id/docRequirement"
+                android:src="@drawable/ic_information"/>
+
             <ImageView
                 android:id="@+id/imageViewUploadDoc"
-                android:layout_width="120px"
-                android:layout_height="120px"
+                android:layout_width="150px"
+                android:layout_height="150px"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20px"

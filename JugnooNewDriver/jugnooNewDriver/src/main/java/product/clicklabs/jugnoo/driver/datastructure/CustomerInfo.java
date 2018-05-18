@@ -55,10 +55,18 @@ public class CustomerInfo {
 
 	private String color;
 	private PoolFare poolFare;
+	private ReverseBidFare reverseBidFare;
 	private DeliveryInfoInRideDetails deliveryInfoInRideDetails;
 	private String currencyUnit;
+	private int reverseBid, bidPlaced;
+	private double bidValue;
+	private double initialBidValue;
+	private double estimatedTripDistance;
 
 
+	/**
+	 * For accepted customers
+	 */
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
@@ -110,15 +118,21 @@ public class CustomerInfo {
 	}
 
 
+	/**
+	 * For finding customer from array
+	 */
 	public CustomerInfo(int engagementId){
 		this.engagementId = engagementId;
 	}
 
+	/**
+	 * For customer requests
+	 */
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
-						String currency){
+						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -140,6 +154,11 @@ public class CustomerInfo {
 		this.deliveryAddress = deliveryAddress;
 		this.estimatedDist = estimatedDist;
 		this.currencyUnit = currency;
+		this.reverseBid = reverseBid;
+		this.bidPlaced = bidPlaced;
+		this.bidValue = bidValue;
+		this.initialBidValue = initialBidValue;
+		this.estimatedTripDistance = estimatedTripDistance;
 	}
 
 	public double getDryDistance() {
@@ -590,5 +609,53 @@ public class CustomerInfo {
 
 	public void setCurrencyUnit(String currencyUnit) {
 		this.currencyUnit = currencyUnit;
+	}
+
+	public boolean isReverseBid() {
+		return reverseBid == 1;
+	}
+
+	public void setReverseBid(int reverseBid) {
+		this.reverseBid = reverseBid;
+	}
+
+	public ReverseBidFare getReverseBidFare() {
+		return reverseBidFare;
+	}
+
+	public void setReverseBidFare(ReverseBidFare reverseBidFare) {
+		this.reverseBidFare = reverseBidFare;
+	}
+
+	public boolean isBidPlaced() {
+		return bidPlaced == 1;
+	}
+
+	public void setBidPlaced(int bidPlaced) {
+		this.bidPlaced = bidPlaced;
+	}
+
+	public double getBidValue() {
+		return bidValue;
+	}
+
+	public void setBidValue(double bidValue) {
+		this.bidValue = bidValue;
+	}
+
+	public double getInitialBidValue() {
+		return initialBidValue;
+	}
+
+	public void setInitialBidValue(double initialBidValue) {
+		this.initialBidValue = initialBidValue;
+	}
+
+	public double getEstimatedTripDistance() {
+		return estimatedTripDistance;
+	}
+
+	public void setEstimatedTripDistance(double estimatedTripDistance) {
+		this.estimatedTripDistance = estimatedTripDistance;
 	}
 }

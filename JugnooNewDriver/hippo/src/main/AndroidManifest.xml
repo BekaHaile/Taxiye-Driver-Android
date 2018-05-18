@@ -1,0 +1,62 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.fugu">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <!-- Permissions to use CAMERA -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Permissions to use CAMERA with AUTO-FOCUS -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- Write Files -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <receiver android:name=".receiver.FuguNetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activity.FuguChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FuguTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <!--android:launchMode="singleTask"-->
+
+        </activity>
+
+        <activity
+            android:name=".activity.FuguChannelsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FuguTheme" />
+
+        <activity android:name=".support.HippoSupportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FuguTheme" />
+
+        <service
+            android:name="com.fugu.service.FuguPushIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".service.FuguOnClearFromRecentService"
+            android:stopWithTask="false" />
+        <!--<meta-data-->
+        <!--android:name="io.fabric.ApiKey"-->
+        <!--android:value="9a344ba4644c7661f8ee12e1e5573f21396bbaf0" />-->
+    </application>
+
+</manifest>

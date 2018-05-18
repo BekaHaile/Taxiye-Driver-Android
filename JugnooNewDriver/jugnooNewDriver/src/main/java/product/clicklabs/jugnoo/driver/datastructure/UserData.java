@@ -14,6 +14,9 @@ public class UserData {
 	private int deliveryEnabled, deliveryAvailable;
 	public Integer fareCachingLimit,isCaptiveDriver;
 	private String countryCode;
+	private String userIdentifier;
+	private String driverSupportEmail, driverSupportEmailSubject;
+	private String hippoTicketFAQ;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -23,8 +26,10 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode) {
+					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier,
+					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ) {
 
+		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -67,6 +72,9 @@ public class UserData {
 		this.fareCachingLimit = fareCachingLimit;
 		this.isCaptiveDriver = isCaptiveDriver;
 		this.countryCode = countryCode;
+		this.driverSupportEmail = driverSupportEmail;
+		this.driverSupportEmailSubject = driverSupportEmailSubject;
+		this.hippoTicketFAQ = hippoTicketFAQ;
 	}
 
 	public String getUserId() {
@@ -107,5 +115,37 @@ public class UserData {
 
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
+	}
+
+	public String getUserIdentifier() {
+		return userIdentifier;
+	}
+
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
+	}
+
+	public String getDriverSupportEmail() {
+		return driverSupportEmail;
+	}
+
+	public void setDriverSupportEmail(String driverSupportEmail) {
+		this.driverSupportEmail = driverSupportEmail;
+	}
+
+	public String getDriverSupportEmailSubject() {
+		return driverSupportEmailSubject;
+	}
+
+	public void setDriverSupportEmailSubject(String driverSupportEmailSubject) {
+		this.driverSupportEmailSubject = driverSupportEmailSubject;
+	}
+
+	public String getHippoTicketFAQ() {
+		return hippoTicketFAQ;
+	}
+
+	public void setHippoTicketFAQ(String hippoTicketFAQ) {
+		this.hippoTicketFAQ = hippoTicketFAQ;
 	}
 }

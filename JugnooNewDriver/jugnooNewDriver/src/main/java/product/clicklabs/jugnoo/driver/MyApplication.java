@@ -4,10 +4,11 @@ package product.clicklabs.jugnoo.driver;
  * Created by aneeshbansal on 17/03/16.
  */
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.multidex.MultiDexApplication;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -19,6 +20,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 import java.util.Map;
 
+import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
@@ -29,7 +31,7 @@ import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     public static final String TAG = MyApplication.class
             .getSimpleName();
 
@@ -46,6 +48,7 @@ public class MyApplication extends Application {
         super.onCreate();
         mInstance = this;
         FirebaseApp.initializeApp(this);
+        Paper.init(this);
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
@@ -237,5 +240,13 @@ public class MyApplication extends Application {
 
     public Locale getCurrentLocale(){
         return getResources().getConfiguration().locale;
+    }
+
+    private Toast toast;
+    public Toast getToast(){
+        return toast;
+    }
+    public void setToast(Toast toast){
+        this.toast = toast;
     }
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.retrofit.model.PushAckAPIService;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -63,7 +64,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
@@ -83,8 +84,11 @@ public class RestClient {
 			RestAdapter.Builder builder = new RestAdapter.Builder()
 					.setEndpoint(url)
 					.setClient(new Ok3Client(getOkHttpClient()))
-					.setLog(fooLog)
 					.setLogLevel(RestAdapter.LogLevel.FULL);
+
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
 
 			RestAdapter restAdapter = builder.build();
 			API_SERVICES = restAdapter.create(APIServices.class);
@@ -112,7 +116,7 @@ public class RestClient {
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint("http://maps.googleapis.com/maps/api")
+				.setEndpoint("https://maps.googleapis.com")
 				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
@@ -177,7 +181,6 @@ public class RestClient {
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-//				.setEndpoint("https://test.jugnoo.in:8095")
 				.setEndpoint("https://prod-jingos.jugnoo.in:4010")
 				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)

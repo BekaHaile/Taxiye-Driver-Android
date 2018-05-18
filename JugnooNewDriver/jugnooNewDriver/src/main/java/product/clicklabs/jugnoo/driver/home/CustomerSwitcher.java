@@ -1,12 +1,10 @@
 package product.clicklabs.jugnoo.driver.home;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -248,6 +246,21 @@ public class CustomerSwitcher {
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
+					}
+					if(customerInfo.getDropLatLng() != null) {
+						activity.bDropAddressToggle.setVisibility(View.VISIBLE);
+						activity.bDropAddressToggle.setText(R.string.drop_location);
+						activity.tvDropAddressToggleView.setText(R.string.loading);
+						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
+							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
+									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+											activity.tvDropAddressToggleView, null)).execute();
+						} else {
+							activity.tvDropAddressToggleView.setText(customerInfo.getDropAddress());
+						}
+					} else {
+						activity.bDropAddressToggle.setVisibility(View.GONE);
+						activity.tvDropAddressToggleView.setVisibility(View.GONE);
 					}
 				}
 			}

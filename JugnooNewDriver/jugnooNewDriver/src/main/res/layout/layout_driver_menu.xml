@@ -466,6 +466,152 @@
 
             </RelativeLayout>
 
+
+            <RelativeLayout
+                android:id="@+id/callUsRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewCallIcon"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/call_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/callUsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewCallIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/call_us"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/rlGetSupport"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false"
+                android:gravity="center_vertical"
+                android:tag="@string/dont_touch_me"
+                >
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="19dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/call_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvGetSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="@string/get_support_call"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlMailSupport"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewMailSupportIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewMailSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewMailSupportIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/mail_us"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutChatSupport"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewChatSupportIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewChatSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewChatSupportIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/chat_support"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSupportTicket"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewSupportTicketIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewSupportTicket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewSupportTicketIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/support_tickets"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutSupport"
                 android:layout_width="match_parent"
@@ -488,6 +634,35 @@
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageViewSupportIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/support"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSupportMain"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewSupportMainIcon"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_support_menu"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewSupportMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewSupportMainIcon"
                     android:layout_marginLeft="8px"
                     android:text="@string/support"
                     android:textColor="@color/white"
@@ -646,62 +821,6 @@
             </RelativeLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/callUsRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false">
-
-                <ImageView
-                    android:id="@+id/imageViewCallIcon"
-                    android:layout_width="56px"
-                    android:layout_height="38px"
-                    android:layout_marginLeft="20px"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/call_v2"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/callUsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewCallIcon"
-                    android:layout_marginLeft="8px"
-                    android:text="@string/call_us"
-                    android:textColor="@color/white"
-                    android:textSize="36px"/>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/rlGetSupport"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false"
-                android:gravity="center_vertical"
-                android:tag="@string/dont_touch_me"
-                >
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="19dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/call_v2"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/tvGetSupport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:text="@string/get_support_call"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"/>
-
-            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutDestination"

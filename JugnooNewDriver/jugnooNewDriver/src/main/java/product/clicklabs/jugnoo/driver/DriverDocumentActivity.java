@@ -4,15 +4,11 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
-import com.kbeanie.imagechooser.api.ChosenImage;
 
 import org.json.JSONObject;
 
@@ -20,7 +16,6 @@ import java.io.File;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -57,7 +52,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	boolean inSideApp = false;
 	int requirement;
 	public static int temp = 0;
-	DialogPopup dialogLogin = new DialogPopup();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +86,15 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				docSubmission();
+
+				DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+						getString(R.string.i_agree),"", new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								docSubmission();
+
+							}
+						},null,true,false);
 			}
 		});
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -208,11 +210,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							String message = JSONParser.getServerMessage(jObj);
 
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
-
+								DialogPopup.dismissLoadingDialog();
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
-										dialogLogin.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 									} else {
 										Prefs.with(DriverDocumentActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, jObj.optString("display_message", ""));
 										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
@@ -258,7 +259,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 								} else {
 									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
 								}
-								DialogPopup.dismissLoadingDialog();
 							}
 						} else {
 							DialogPopup.dismissLoadingDialog();
@@ -268,7 +268,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 						DialogPopup.alertPopup(DriverDocumentActivity.this, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
 					}
-					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
@@ -349,7 +348,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 					params.put("device_rooted", "0");
 				}
 
-
+				DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 
 				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -462,7 +461,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				intent.putExtras(bundleHomePush);
 			startActivity(intent);
 			ActivityCompat.finishAffinity(this);
-			dialogLogin.dismissLoadingDialog();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 //		else if(hasFocus && loginFailed){

@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
-import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
-import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -11,43 +9,62 @@ import retrofit.http.Query;
  */
 public interface GoogleAPIServices {
 
-	// sensor=false&mode=driving&alternatives=false
-	@GET("/directions/json")
-	Response getDirections(@Query("origin") String originLatLng,
-						   @Query("destination") String destLatLng,
+	@GET("/maps/api/directions/json")
+	Response getDirections(@Query(value = "origin", encodeValue = false) String originLatLng,
+						   @Query(value = "destination", encodeValue = false) String destLatLng,
 						   @Query("sensor") Boolean sensor,
 						   @Query("mode") String mode,
-						   @Query("alternatives") Boolean alternatives);
+						   @Query("alternatives") Boolean alternatives,
+						   @Query("client") String client,
+						   @Query(value = "signature", encodeValue = false) String signature);
+	@GET("/maps/api/directions/json")
+	Response getDirections(@Query(value = "origin", encodeValue = false) String originLatLng,
+						   @Query(value = "destination", encodeValue = false) String destLatLng,
+						   @Query("sensor") Boolean sensor,
+						   @Query("mode") String mode,
+						   @Query("alternatives") Boolean alternatives,
+						   @Query("key") String key);
 
-	@GET("/directions/json")
-	void getDirections(@Query("origin") String originLatLng,
-					   @Query("destination") String destLatLng,
-					   @Query("sensor") Boolean sensor,
-					   @Query("mode") String mode,
-					   @Query("alternatives") Boolean alternatives, Callback<SettleUserDebt> callback);
-
-	// language=EN&sensor=false&alternatives=false
-	@GET("/distancematrix/json")
-	Response getDistanceMatrix(@Query("origins") String originLatLng,
-							   @Query("destinations") String destLatLng,
+	@GET("/maps/api/distancematrix/json")
+	Response getDistanceMatrix(@Query(value = "origins", encodeValue = false) String originLatLng,
+							   @Query(value = "destinations", encodeValue = false) String destLatLng,
 							   @Query("language") String language,
 							   @Query("sensor") Boolean sensor,
-							   @Query("alternatives") Boolean alternatives);
+							   @Query("alternatives") Boolean alternatives,
+							   @Query("client") String client,
+							   @Query(value = "signature", encodeValue = false) String signature);
+	@GET("/maps/api/distancematrix/json")
+	Response getDistanceMatrix(@Query(value = "origins", encodeValue = false) String originLatLng,
+							   @Query(value = "destinations", encodeValue = false) String destLatLng,
+							   @Query("language") String language,
+							   @Query("sensor") Boolean sensor,
+							   @Query("alternatives") Boolean alternatives,
+							   @Query("key") String key);
 
 
-	@GET("/geocode/json")
-	Response geocode(@Query("latlng") String latLng,
+	@GET("/maps/api/geocode/json")
+	Response geocode(@Query(value = "latlng", encodeValue = false) String latLng,
 					 @Query("language") String language,
-					 @Query("sensor") Boolean sensor);
+					 @Query("sensor") Boolean sensor,
+					 @Query("client") String client,
+					 @Query(value = "signature", encodeValue = false) String signature);
+	@GET("/maps/api/geocode/json")
+	Response geocode(@Query(value = "latlng", encodeValue = false) String latLng,
+					 @Query("language") String language,
+					 @Query("sensor") Boolean sensor,
+					 @Query("key") String key);
 
-	@GET("/directions/json")
-	Response getDirectionsWaypoints(@Query("origin") String originLatLng,
-						   			@Query("destination") String destLatLng,
-						   			@Query(value = "waypoints", encodeValue = false) String waypoints);
+	@GET("/maps/api/directions/json")
+	Response getDirectionsWaypoints(@Query(value = "origin", encodeValue = false) String originLatLng,
+									@Query(value = "destination", encodeValue = false) String destLatLng,
+									@Query(value = "waypoints", encodeValue = false) String waypoints,
+									@Query("client") String client,
+									@Query(value = "signature", encodeValue = false) String signature);
+	@GET("/maps/api/directions/json")
+	Response getDirectionsWaypoints(@Query(value = "origin", encodeValue = false) String originLatLng,
+									@Query(value = "destination", encodeValue = false) String destLatLng,
+									@Query(value = "waypoints", encodeValue = false) String waypoints,
+									@Query("key") String key);
 
-//	,
-//	@Query("sensor") Boolean sensor,
-//	@Query("mode") String mode,
-//	@Query("alternatives") Boolean alternatives
 
 }

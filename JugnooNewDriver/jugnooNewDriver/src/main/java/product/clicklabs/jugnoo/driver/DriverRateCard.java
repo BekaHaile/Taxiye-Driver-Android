@@ -1,49 +1,26 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
-import com.flurry.android.FlurryAgent;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -58,6 +35,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
 			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar;
 	ImageView imageViewHorizontal7;
+	TextView textViewSpecialInfo;
+	LinearLayout llBeforeRide, llInRide;
 	
 	NewRateCardActivity activity;
 	private View rootView;
@@ -133,10 +112,23 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(activity));
 
+		llBeforeRide = (LinearLayout) rootView.findViewById(R.id.llBeforeRide);
+		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
+		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
+		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
+
 		relativeLayoutDriverReferralSingle = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDriverReferralSingle);
 		imageViewHorizontal7 = (ImageView) rootView.findViewById(R.id.imageViewHorizontal7);
 
 		getRateCardDetails(activity);
+
+		relativeLayoutNoData.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getRateCardDetails(activity);
+			}
+		});
+
 		return rootView;
 	}
 
@@ -210,6 +202,17 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				textViewDtoDValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
 			}
 
+			llBeforeRide.setVisibility(rateCardResponse.getRates().getPickupChargesEnabled() == 1
+					? View.VISIBLE : View.GONE);
+			llInRide.setVisibility(rateCardResponse.getRates().getInRideChargesEnabled() == 1
+					? View.VISIBLE : View.GONE);
+			if(!TextUtils.isEmpty(rateCardResponse.getRates().getRateCardInformation())){
+				textViewSpecialInfo.setVisibility(View.VISIBLE);
+				textViewSpecialInfo.setText(Utils.fromHtml(rateCardResponse.getRates().getRateCardInformation()));
+			} else {
+				textViewSpecialInfo.setVisibility(View.GONE);
+			}
+
 		} else {
 			performBackPressed();
 		}
@@ -221,6 +224,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
 			HomeUtil.putDefaultParams(params);
+			DialogPopup.showLoadingDialog(activity, getString(R.string.loading));
 			RestClient.getApiServices().rateCardDetail(params, new Callback<RateCardResponse>() {
 				@Override
 				public void success(RateCardResponse rateCardResponse, Response response) {
@@ -241,11 +245,13 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 						exception.printStackTrace();
 						relativeLayoutNoData.setVisibility(View.VISIBLE);
 					}
+					DialogPopup.dismissLoadingDialog();
 				}
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
 					relativeLayoutNoData.setVisibility(View.VISIBLE);
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} catch (Exception e) {

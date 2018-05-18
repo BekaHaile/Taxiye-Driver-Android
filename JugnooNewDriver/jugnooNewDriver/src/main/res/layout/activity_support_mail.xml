@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <include layout="@layout/layout_titlebar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+
+        >
+
+        <TextView
+            android:id="@+id/tvSendUsMail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/send_us_a_mail"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"/>
+
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:hint="@string/issue_description"
+            android:inputType="textMultiLine"
+            android:maxHeight="160dp"
+            android:minHeight="120dp"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color_light"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            />
+
+        <Button
+            android:id="@+id/bSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/new_orange_btn_selector_rounded"
+            android:text="@string/submit"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="16sp"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

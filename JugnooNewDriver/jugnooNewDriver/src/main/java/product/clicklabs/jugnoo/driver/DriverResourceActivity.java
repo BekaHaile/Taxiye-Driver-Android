@@ -80,7 +80,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 			}
 		});
 
-		if(Prefs.with(DriverResourceActivity.this).getInt(SPLabels.IS_TUTORIAL_SHOWN, 0) == 1){
+		if(Prefs.with(DriverResourceActivity.this).getInt(Constants.SET_DRIVER_TUTORIAL_STATUS, 0) == 1){
 			linearLayoutTraining.setVisibility(View.VISIBLE);
 			imageView2.setVisibility(View.VISIBLE);
 		} else {

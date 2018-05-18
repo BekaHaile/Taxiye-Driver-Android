@@ -33,7 +33,6 @@ import android.os.Environment;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
@@ -89,6 +89,7 @@ public class Utils {
 	 * -1 if d1 < d2 &
 	 * 0 if d1 == d2
 	 */
+	private static final  String TAG = Utils.class.getName();
 	public static int compareDouble(double d1, double d2) {
 		if (d1 == d2) {
 			return 0;
@@ -299,6 +300,10 @@ public class Utils {
 	}
 
 	private static boolean deleteDir(File dir) {
+		if (dir != null && (dir.getName().equals("lib") || dir.getName().contains("io.paperdb"))){
+			Log.i(TAG,"Attempt to Delete "+dir+" stopped!");
+			return true;
+		}
 		if (dir != null && dir.isDirectory()) {
 			String[] children = dir.list();
 			for (String aChildren : children) {
@@ -330,6 +335,23 @@ public class Utils {
 			decimalFormatMoney = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 		}
 		return decimalFormatMoney;
+	}
+
+	private static DecimalFormat decimalFormatMoney2Dec;
+
+	public static DecimalFormat getDecimalFormatForMoney2Dec() {
+		if (decimalFormatMoney2Dec == null) {
+			decimalFormatMoney2Dec = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
+		}
+		return decimalFormatMoney2Dec;
+	}
+	private static DecimalFormat decimalFormat1Dec;
+
+	public static DecimalFormat getDecimalFormat1Dec() {
+		if (decimalFormat1Dec == null) {
+			decimalFormat1Dec = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+		}
+		return decimalFormat1Dec;
 	}
 
 	private static DecimalFormat decimalFormat;
@@ -810,9 +832,11 @@ public class Utils {
 			if (appDir.exists()) {
 				String[] children = appDir.list();
 				for (String s : children) {
-					if (!s.equals("lib")) {
+					if (!s.equals("lib") && !s.contains("io.paperdb")) {
 						deleteDir(new File(appDir, s));
 						Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+					}else  {
+						Log.i(TAG,"Attempt to Delete "+ s + " stopped!");
 					}
 				}
 			}
@@ -967,9 +991,8 @@ public class Utils {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Spanned fromHtml(String html) {
-		Spanned result;
-		result = Html.fromHtml(html);
+	public static CharSequence fromHtml(String html) {
+		CharSequence result = trimHTML(Html.fromHtml(html));
 		return result;
 	}
 
@@ -1014,6 +1037,13 @@ public class Utils {
 		return time;
 	}
 
+	public static String getCurrencySymbol(String currencyCode) {
+		if(TextUtils.isEmpty(currencyCode)){
+			currencyCode = "INR";
+		}
+		Currency currency = Currency.getInstance(currencyCode);
+		return currency.getSymbol();
+	}
 
 	public static String formatCurrencyValue(String currency, double value){
 		if(TextUtils.isEmpty(currency)){
@@ -1126,7 +1156,7 @@ public class Utils {
 	}
 
 	public static boolean validPhoneNumber(String phoneNo){
-		if(phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
+		if(phoneNo != null && phoneNo.length() >= 7 && phoneNo.length() <= 14 && checkIfOnlyDigits(phoneNo)){
 			return isPhoneValid(phoneNo);
 		}
 		else{
@@ -1134,5 +1164,28 @@ public class Utils {
 		}
 	}
 
+	public static void showToast(Context context, String string){
+		showToast(context, string, Toast.LENGTH_SHORT);
+	}
+	public static void showToast(Context context, String string, int duration){
+		try {
+			if(MyApplication.getInstance().getToast() != null){
+				MyApplication.getInstance().getToast().cancel();
+			}
+			MyApplication.getInstance().setToast(Toast.makeText(context, string, duration));
+			MyApplication.getInstance().getToast().show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void openMailIntent(Activity activity, String[] to, String subject, String body){
+		Intent email = new Intent(Intent.ACTION_SEND);
+		email.putExtra(Intent.EXTRA_EMAIL, to);
+		email.putExtra(Intent.EXTRA_SUBJECT, subject);
+		email.putExtra(Intent.EXTRA_TEXT, body); //
+		email.setType("message/rfc822");
+		activity.startActivity(Intent.createChooser(email, activity.getString(R.string.choose_email_client)));
+	}
 
 }
