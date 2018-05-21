@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -65,7 +66,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
 		driverRidesListAdapter = new DriverRidesListAdapter();
@@ -164,29 +165,29 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				convertView = mInflater.inflate(R.layout.list_item_ride_history, null);
 
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue);
-				holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.dateTimeValue.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewCustomerPaidtext = (TextView) convertView.findViewById(R.id.textViewCustomerPaidtext);
-				holder.textViewCustomerPaidtext.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewCustomerPaidtext.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId);
-				holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewRideId.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString);
-				holder.textViewStatusString.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewStatusString.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewActualFareFare = (TextView) convertView.findViewById(R.id.textViewActualFareFare);
-				holder.textViewActualFareFare.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewActualFareFare.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewCustomerPaid = (TextView) convertView.findViewById(R.id.textViewCustomerPaid);
-				holder.textViewCustomerPaid.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewCustomerPaid.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewAccountBalance = (TextView) convertView.findViewById(R.id.textViewAccountBalance);
-				holder.textViewAccountBalance.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewAccountBalance.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.distanceValue = (TextView) convertView.findViewById(R.id.distanceValue);
-				holder.distanceValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.distanceValue.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue);
-				holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.rideTimeValue.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue);
-				holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.waitTimeValue.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewBalanceText = (TextView) convertView.findViewById(R.id.textViewBalanceText);
-				holder.textViewBalanceText.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewBalanceText.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewTransTypeText = (TextView) convertView.findViewById(R.id.textViewTransTypeText);
-				holder.textViewTransTypeText.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewTransTypeText.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 

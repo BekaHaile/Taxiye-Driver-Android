@@ -20,6 +20,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 /**
@@ -103,13 +104,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 			super(itemView);
 
 			relative = (RelativeLayout) itemView.findViewById(R.id.relative);
-			chatTextYou = (TextView) itemView.findViewById(R.id.chat_txt_you);chatTextYou.setTypeface(Data.latoRegular(context));
-			chatTimeYou = (TextView) itemView.findViewById(R.id.chat_time_you);chatTimeYou.setTypeface(Data.latoRegular(context));
+			chatTextYou = (TextView) itemView.findViewById(R.id.chat_txt_you);chatTextYou.setTypeface(Fonts.mavenRegular(context));
+			chatTimeYou = (TextView) itemView.findViewById(R.id.chat_time_you);chatTimeYou.setTypeface(Fonts.mavenRegular(context));
 			userIconYou = (ImageView) itemView.findViewById(R.id.usr_icon_you);
 			layoutYou = (RelativeLayout) itemView.findViewById(R.id.layout_you);
 
-			chatTextMe = (TextView) itemView.findViewById(R.id.chat_txt_me);chatTextMe.setTypeface(Data.latoRegular(context));
-			chatTimeMe = (TextView) itemView.findViewById(R.id.chat_time_me);chatTimeMe.setTypeface(Data.latoRegular(context));
+			chatTextMe = (TextView) itemView.findViewById(R.id.chat_txt_me);chatTextMe.setTypeface(Fonts.mavenRegular(context));
+			chatTimeMe = (TextView) itemView.findViewById(R.id.chat_time_me);chatTimeMe.setTypeface(Fonts.mavenRegular(context));
 			userIconMe = (ImageView) itemView.findViewById(R.id.usr_icon_me);
 			layoutMe = (RelativeLayout) itemView.findViewById(R.id.layout_me);
 

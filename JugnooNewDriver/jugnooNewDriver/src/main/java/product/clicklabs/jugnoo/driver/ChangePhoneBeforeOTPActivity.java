@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -69,16 +70,16 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewTitle.setText(getStringText(R.string.change_phone_no));
 		textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp);
-		textViewChangePhoneNoHelp.setTypeface(Data.latoRegular(this));
+		textViewChangePhoneNoHelp.setTypeface(Fonts.mavenRegular(this));
 		textViewChangePhoneNoHelp.setText(getStringText(R.string.enter_new_phone_number));
 		editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber);
-		editTextNewPhoneNumber.setTypeface(Data.latoRegular(this));
+		editTextNewPhoneNumber.setTypeface(Fonts.mavenRegular(this));
 		editTextNewPhoneNumber.setHint(getStringText(R.string.enter_new_phone_no));
 		buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber);
-		buttonChangePhoneNumber.setTypeface(Data.latoRegular(this));
+		buttonChangePhoneNumber.setTypeface(Fonts.mavenRegular(this));
 
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {

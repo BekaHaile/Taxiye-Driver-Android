@@ -20,6 +20,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -50,11 +51,11 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		textViewInfo = (TextView) findViewById(R.id.textViewInfo);
-		textViewInfo.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewInfo.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.setWebChromeClient(new WebChromeClient());

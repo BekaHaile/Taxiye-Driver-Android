@@ -88,17 +88,17 @@ import retrofit.mime.TypedByteArray;
 //
 //		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 //		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-//		textViewTitle.setTypeface(Data.latoRegular(this));
+//		textViewTitle.setTypeface(Fonts.mavenRegular(this));
 //
 //		otpHelpText = (TextView) findViewById(R.id.otpHelpText);
-//		otpHelpText.setTypeface(Data.latoRegular(this));
+//		otpHelpText.setTypeface(Fonts.mavenRegular(this));
 //
 //		editTextOTP = (EditText) findViewById(R.id.otpEt);
-//		editTextOTP.setTypeface(Data.latoRegular(this));
+//		editTextOTP.setTypeface(Fonts.mavenRegular(this));
 //		editTextOTP.setHint(getStringText(R.string.enter_otp));
 //
 //		buttonVerify = (Button) findViewById(R.id.verifyOtp);
-//		buttonVerify.setTypeface(Data.latoRegular(this));
+//		buttonVerify.setTypeface(Fonts.mavenRegular(this));
 //
 //		relativeLayoutOTPThroughCall = (RelativeLayout) findViewById(R.id.relativeLayoutOTPThroughCall);
 //		relativeLayoutChangePhone = (RelativeLayout) findViewById(R.id.relativeLayoutChangePhone);
@@ -106,16 +106,16 @@ import retrofit.mime.TypedByteArray;
 //		relativeLayoutChangePhone.setVisibility(View.GONE);
 //
 //		textViewOTPNotReceived = (TextView) findViewById(R.id.textViewOTPNotReceived);
-//		textViewOTPNotReceived.setTypeface(Data.latoRegular(this));
+//		textViewOTPNotReceived.setTypeface(Fonts.mavenRegular(this));
 //		textViewOTPNotReceived.setText(getStringText(R.string.not_recived_otp));
 //
-//		((TextView) findViewById(R.id.textViewCallMe)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+//		((TextView) findViewById(R.id.textViewCallMe)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 //
 //		textViewChangePhone = (TextView) findViewById(R.id.textViewChangePhone);
-//		textViewChangePhone.setTypeface(Data.latoRegular(this));
+//		textViewChangePhone.setTypeface(Fonts.mavenRegular(this));
 //		textViewChangePhone.setText(getStringText(R.string.change_phone_no));
 //
-//		((TextView) findViewById(R.id.textViewChange)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+//		((TextView) findViewById(R.id.textViewChange)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 //
 //		imageViewBack.setOnClickListener(new View.OnClickListener() {
 //

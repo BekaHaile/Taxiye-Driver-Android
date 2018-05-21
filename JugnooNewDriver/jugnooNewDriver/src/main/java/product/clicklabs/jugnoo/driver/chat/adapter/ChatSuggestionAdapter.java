@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by aneesh on 10/4/15.
@@ -41,7 +40,7 @@ public class ChatSuggestionAdapter extends RecyclerView.Adapter<ChatSuggestionAd
 	public void onBindViewHolder(infoTileViewHolder infoTileViewHolder, int i) {
 		final FetchChatResponse.Suggestion itr = chatHistories.get(i);
 
-		infoTileViewHolder.name.setTypeface(Data.latoRegular(context));
+		infoTileViewHolder.name.setTypeface(Fonts.mavenRegular(context));
 		infoTileViewHolder.name.setText(itr.getSuggestion());
 
 		infoTileViewHolder.relative.setTag(i);
@@ -81,7 +80,7 @@ public class ChatSuggestionAdapter extends RecyclerView.Adapter<ChatSuggestionAd
 			super(v);
 			relative = (LinearLayout)v.findViewById(R.id.relative);
 			name = (TextView) v.findViewById(R.id.name);
-			name.setTypeface(Data.latoRegular(context));
+			name.setTypeface(Fonts.mavenRegular(context));
 			relative.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(relative);
 		}

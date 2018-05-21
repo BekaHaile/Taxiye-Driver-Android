@@ -33,7 +33,6 @@ import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.LocationUpdate;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
@@ -42,11 +41,9 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -96,24 +93,24 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this));
+		textViewTitle.setTypeface(Fonts.mavenRegular(this));
 
 		otpHelpText = (TextView) findViewById(R.id.otpHelpText);
-		otpHelpText.setTypeface(Data.latoRegular(this));
+		otpHelpText.setTypeface(Fonts.mavenRegular(this));
 		editTextOTP = (EditText) findViewById(R.id.editTextOTP);
-		editTextOTP.setTypeface(Data.latoRegular(this));
+		editTextOTP.setTypeface(Fonts.mavenRegular(this));
 
 		buttonVerify = (Button) findViewById(R.id.buttonVerify);
-		buttonVerify.setTypeface(Data.latoRegular(this));
+		buttonVerify.setTypeface(Fonts.mavenRegular(this));
 
 		relativeLayoutOTPThroughCall = (RelativeLayout) findViewById(R.id.relativeLayoutOTPThroughCall);
 		relativeLayoutChangePhone = (RelativeLayout) findViewById(R.id.relativeLayoutChangePhone);
 
-		((TextView) findViewById(R.id.textViewOTPNotReceived)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCallMe)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		((TextView) findViewById(R.id.textViewOTPNotReceived)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCallMe)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
-		((TextView) findViewById(R.id.textViewChangePhone)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewChange)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		((TextView) findViewById(R.id.textViewChangePhone)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewChange)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 /**
@@ -37,15 +38,15 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		new ASSL(DriverResourceActivity.this, relative, 1134, 720, false);
 
 		title = (TextView) findViewById(R.id.title) ;
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewResource = (TextView) findViewById(R.id.textViewResource) ;
-		textViewResource.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewResource.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewTraining = (TextView) findViewById(R.id.textViewTraining) ;
-		textViewTraining.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewTraining.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		linearLayoutResources = (LinearLayout) findViewById(R.id.linearLayoutResources);
 		linearLayoutTraining = (LinearLayout) findViewById(R.id.linearLayoutTraining);
 		textViewSupport = (TextView) findViewById(R.id.textViewSupport) ;
-		textViewSupport.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewSupport.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		linearLayoutSupport = (LinearLayout) findViewById(R.id.linearLayoutSupport);
 		backBtn = (Button) findViewById(R.id.backBtn);
 
@@ -53,7 +54,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		imageView3 = (ImageView) findViewById(R.id.imageView3);
 
 		RelativeLayout rlBrandingImages = (RelativeLayout) findViewById(R.id.rlBrandingImages);
-		((TextView)findViewById(R.id.tvBrandingImages)).setTypeface(Data.latoRegular(this));
+		((TextView)findViewById(R.id.tvBrandingImages)).setTypeface(Fonts.mavenRegular(this));
 
 		linearLayoutResources.setOnClickListener(new View.OnClickListener() {
 			@Override

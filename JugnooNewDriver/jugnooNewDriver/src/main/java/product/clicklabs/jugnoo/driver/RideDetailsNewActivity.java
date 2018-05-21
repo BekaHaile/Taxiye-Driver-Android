@@ -303,7 +303,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
 		waitTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewActualFareValue = (TextView) findViewById(R.id.textViewActualFareValue);
-		textViewActualFareValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewActualFareValue.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		relativeContainer.setVisibility(View.GONE);
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Fonts.mavenRegular(this));
@@ -322,7 +322,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Fonts.mavenRegular(this));
 

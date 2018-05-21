@@ -14,7 +14,6 @@ import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -87,40 +87,40 @@ public class DriverAuditActivity extends BaseActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 
 		textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
-		textViewDriverName.setTypeface(Data.latoRegular(this));
+		textViewDriverName.setTypeface(Fonts.mavenRegular(this));
 		textViewDriverId = (TextView) findViewById(R.id.textViewDriverId);
-		textViewDriverId.setTypeface(Data.latoRegular(this));
+		textViewDriverId.setTypeface(Fonts.mavenRegular(this));
 		textViewRankCity = (TextView) findViewById(R.id.textViewRankCity);
-		textViewRankCity.setTypeface(Data.latoRegular(this));
+		textViewRankCity.setTypeface(Fonts.mavenRegular(this));
 		textViewRankOverall = (TextView) findViewById(R.id.textViewRankOverall);
-		textViewRankOverall.setTypeface(Data.latoRegular(this));
+		textViewRankOverall.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue);
-		textViewMonthlyValue.setTypeface(Data.latoRegular(this));
+		textViewMonthlyValue.setTypeface(Fonts.mavenRegular(this));
 
 		textViewRidesTakenValue = (TextView) findViewById(R.id.textViewRidesTakenValue);
-		textViewRidesTakenValue.setTypeface(Data.latoRegular(this));
+		textViewRidesTakenValue.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesCancelledValue = (TextView) findViewById(R.id.textViewRidesCancelledValue);
-		textViewRidesCancelledValue.setTypeface(Data.latoRegular(this));
+		textViewRidesCancelledValue.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesMissedValue = (TextView) findViewById(R.id.textViewRidesMissedValue);
-		textViewRidesMissedValue.setTypeface(Data.latoRegular(this));
+		textViewRidesMissedValue.setTypeface(Fonts.mavenRegular(this));
 		textViewOnlineHoursValue = (TextView) findViewById(R.id.textViewOnlineHoursValue);
-		textViewOnlineHoursValue.setTypeface(Data.latoRegular(this));
+		textViewOnlineHoursValue.setTypeface(Fonts.mavenRegular(this));
 //		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-//		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+//		textViewTitleBarDEI.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
-		textViewMonthlyText.setTypeface(Data.latoRegular(this));
+		textViewMonthlyText.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthlyText.setText(getStringText(R.string.earnings));
 		textViewRidesTakenText = (TextView) findViewById(R.id.textViewRidesTakenText);
-		textViewRidesTakenText.setTypeface(Data.latoRegular(this));
+		textViewRidesTakenText.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesTakenText.setText(getStringText(R.string.rides_taken));
 		textViewRidesMissedText = (TextView) findViewById(R.id.textViewRidesMissedText);
-		textViewRidesMissedText.setTypeface(Data.latoRegular(this));
+		textViewRidesMissedText.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesMissedText.setText(getResources().getString(R.string.rides_missed));
 		textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
-		textViewRidesCancelledText.setTypeface(Data.latoRegular(this));
+		textViewRidesCancelledText.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesCancelledText.setText(getStringText(R.string.rides_cancelled));
 
 

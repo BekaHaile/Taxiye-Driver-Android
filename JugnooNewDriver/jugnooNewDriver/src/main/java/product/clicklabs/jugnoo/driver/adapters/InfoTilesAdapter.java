@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by aneesh on 10/4/15.
@@ -40,13 +40,13 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 	public void onBindViewHolder(infoTileViewHolder infoTileViewHolder, int i) {
 		final Tile itr = infoTileResponses.get(i);
 
-		infoTileViewHolder.textViewHeadText.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textView1Value.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textView1.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textView2Value.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textView2.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textViewValue.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textViewValueSub.setTypeface(Data.latoRegular(context));
+		infoTileViewHolder.textViewHeadText.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textView1Value.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textView1.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textView2Value.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textView2.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textViewValue.setTypeface(Fonts.mavenRegular(context));
+		infoTileViewHolder.textViewValueSub.setTypeface(Fonts.mavenRegular(context));
 		infoTileViewHolder.textViewEmpty.setVisibility(View.GONE);
 
 		if(i == 0){
@@ -143,19 +143,19 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			super(v);
 			relative = (RelativeLayout)v.findViewById(R.id.relative);
 			textViewHeadText = (TextView) v.findViewById(R.id.textViewHeadText);
-			textViewHeadText.setTypeface(Data.latoRegular(context));
+			textViewHeadText.setTypeface(Fonts.mavenRegular(context));
 			textView1Value = (TextView) v.findViewById(R.id.textView1Value);
-			textView1Value.setTypeface(Data.latoRegular(context));
+			textView1Value.setTypeface(Fonts.mavenRegular(context));
 			textView1 = (TextView) v.findViewById(R.id.textView1);
-			textView1.setTypeface(Data.latoRegular(context));
+			textView1.setTypeface(Fonts.mavenRegular(context));
 			textView2Value = (TextView) v.findViewById(R.id.textView2Value);
-			textView2Value.setTypeface(Data.latoRegular(context));
+			textView2Value.setTypeface(Fonts.mavenRegular(context));
 			textView2 = (TextView) v.findViewById(R.id.textView2);
-			textView2.setTypeface(Data.latoRegular(context));
+			textView2.setTypeface(Fonts.mavenRegular(context));
 			textViewValue = (TextView) v.findViewById(R.id.textViewValue);
-			textViewValue.setTypeface(Data.latoRegular(context));
+			textViewValue.setTypeface(Fonts.mavenRegular(context));
 			textViewValueSub = (TextView) v.findViewById(R.id.textViewValueSub);
-			textViewValueSub.setTypeface(Data.latoRegular(context));
+			textViewValueSub.setTypeface(Fonts.mavenRegular(context));
 			textViewEmpty = (TextView) v.findViewById(R.id.textViewEmpty);
 			topRlOuterSlide = (ImageView) v.findViewById(R.id.topRlOuterSlide);
 			arrowSlider = (ImageView) v.findViewById(R.id.arrowSlider);

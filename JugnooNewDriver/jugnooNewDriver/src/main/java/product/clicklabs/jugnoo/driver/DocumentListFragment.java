@@ -50,6 +50,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -183,14 +184,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
-				holder.docType.setTypeface(Data.latoRegular(getActivity()));
+				holder.docType.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.docRejected = (TextView) convertView.findViewById(R.id.docRejected);
-				holder.docRejected.setTypeface(Data.latoRegular(getActivity()));
+				holder.docRejected.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.docRequirement = (TextView) convertView.findViewById(R.id.docRequirement);
-				holder.docRequirement.setTypeface(Data.latoRegular(getActivity()));
+				holder.docRequirement.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
-				holder.docStatus.setTypeface(Data.latoRegular(getActivity()));
+				holder.docStatus.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
@@ -709,7 +710,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
 
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 			DocInfo docInfo = docs.get(index);
 			if((docInfo.getGalleryRestricted() == null

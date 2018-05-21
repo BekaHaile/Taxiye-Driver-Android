@@ -189,7 +189,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
 //		textShader=new LinearGradient(0, 0, 0, 20,

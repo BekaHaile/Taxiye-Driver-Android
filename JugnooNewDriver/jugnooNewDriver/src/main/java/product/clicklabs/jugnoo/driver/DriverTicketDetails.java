@@ -1,52 +1,24 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class DriverTicketDetails extends BaseActivity {
 
@@ -102,7 +74,7 @@ public class DriverTicketDetails extends BaseActivity {
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 		imageViewStatus = (ImageView) findViewById(R.id.imageViewStatus);
 
@@ -114,40 +86,40 @@ public class DriverTicketDetails extends BaseActivity {
 		relativeLayoutCall1 = (RelativeLayout) findViewById(R.id.relativeLayoutCall1);
 
 		textViewComplainIdText = (TextView) findViewById(R.id.textViewComplainIdText);
-		textViewComplainIdText.setTypeface(Data.latoRegular(this));
+		textViewComplainIdText.setTypeface(Fonts.mavenRegular(this));
 		textViewComplainId = (TextView) findViewById(R.id.textViewComplainId);
-		textViewComplainId.setTypeface(Data.latoRegular(this));
+		textViewComplainId.setTypeface(Fonts.mavenRegular(this));
 
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
-		textViewStatus.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewStatus.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 		textViewCreatedOnText = (TextView) findViewById(R.id.textViewCreatedOnText);
-		textViewCreatedOnText.setTypeface(Data.latoRegular(this));
+		textViewCreatedOnText.setTypeface(Fonts.mavenRegular(this));
 		textViewCreatedOn = (TextView) findViewById(R.id.textViewCreatedOn);
-		textViewCreatedOn.setTypeface(Data.latoRegular(this));
+		textViewCreatedOn.setTypeface(Fonts.mavenRegular(this));
 
 		textViewRideTypeText = (TextView) findViewById(R.id.textViewRideTypeText);
-		textViewRideTypeText.setTypeface(Data.latoRegular(this));
+		textViewRideTypeText.setTypeface(Fonts.mavenRegular(this));
 		textViewRideType = (TextView) findViewById(R.id.textViewRideType);
-		textViewRideType.setTypeface(Data.latoRegular(this));
+		textViewRideType.setTypeface(Fonts.mavenRegular(this));
 
 		textViewUpdatedOnText = (TextView) findViewById(R.id.textViewUpdatedOnText);
-		textViewUpdatedOnText.setTypeface(Data.latoRegular(this));
+		textViewUpdatedOnText.setTypeface(Fonts.mavenRegular(this));
 		textViewUpdatedOn = (TextView) findViewById(R.id.textViewUpdatedOn);
-		textViewUpdatedOn.setTypeface(Data.latoRegular(this));
+		textViewUpdatedOn.setTypeface(Fonts.mavenRegular(this));
 
 		textViewManualAdjText = (TextView) findViewById(R.id.textViewManualAdjText);
-		textViewManualAdjText.setTypeface(Data.latoRegular(this));
+		textViewManualAdjText.setTypeface(Fonts.mavenRegular(this));
 		textViewManualAdj = (TextView) findViewById(R.id.textViewManualAdj);
-		textViewManualAdj.setTypeface(Data.latoRegular(this));
+		textViewManualAdj.setTypeface(Fonts.mavenRegular(this));
 
 		textViewComplainText = (TextView) findViewById(R.id.textViewComplainText);
-		textViewComplainText.setTypeface(Data.latoRegular(this));
+		textViewComplainText.setTypeface(Fonts.mavenRegular(this));
 		textViewComplain = (TextView) findViewById(R.id.textViewComplain);
-		textViewComplain.setTypeface(Data.latoRegular(this));
+		textViewComplain.setTypeface(Fonts.mavenRegular(this));
 
 		textViewCall = (TextView) findViewById(R.id.textViewCall);
-		textViewCall.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCall.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		backBtn.setOnClickListener(new View.OnClickListener() {

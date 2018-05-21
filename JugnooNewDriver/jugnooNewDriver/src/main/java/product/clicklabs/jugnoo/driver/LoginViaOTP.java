@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomCountDownTimer;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.OtpDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -108,7 +109,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         countryCode = getIntent().getStringExtra(Constants.KEY_COUNTRY_CODE);
 
         otpEt = (EditText) findViewById(R.id.otpEt);
-        otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
+        otpEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
         otpEt.setEnabled(false);
 		otpEt.setFocusable(true);
 		otpEt.setCursorVisible(true);
@@ -124,20 +125,20 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
 		backBtn = (Button) findViewById(R.id.backBtn);
-        btnLogin.setTypeface(Data.latoRegular(getApplicationContext()));
+        btnLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
 
         loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
-        loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
+        loginViaOtp.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
         textViewOtpNumber = (TextView) findViewById(R.id.textViewOtpNumber);
-        textViewOtpNumber.setTypeface(Data.latoRegular(getApplicationContext()));
+        textViewOtpNumber.setTypeface(Fonts.mavenRegular(getApplicationContext()));
         textViewOr = (TextView) findViewById(R.id.textViewOr);
-        textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
+        textViewOr.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		textviewLogin = (TextView) findViewById(R.id.textviewLogin);
-		textviewLogin.setTypeface(Data.latoRegular(getApplicationContext()));
+		textviewLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
         selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 

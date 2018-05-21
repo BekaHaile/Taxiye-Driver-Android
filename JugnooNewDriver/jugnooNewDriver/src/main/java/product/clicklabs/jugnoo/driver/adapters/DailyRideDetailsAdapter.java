@@ -398,9 +398,9 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			linear = (LinearLayout) itemView.findViewById(R.id.linear);
 
 			textViewActualFareText = (TextView)itemView.findViewById(R.id.textViewActualFareText);
-			textViewActualFareText.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+			textViewActualFareText.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
 			textViewActualFareValue = (TextView)itemView.findViewById(R.id.textViewActualFareValue);
-			textViewActualFareValue.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+			textViewActualFareValue.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
 
 			textViewCustomerPaidText = (TextView)itemView.findViewById(R.id.textViewCustomerPaidText);
 			textViewCustomerPaidText.setTypeface(Fonts.mavenRegular(context));

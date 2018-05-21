@@ -109,7 +109,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
 		sdf = new SimpleDateFormat("hh:mm a");
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Data.latoRegular(this));
+        textViewTitle.setTypeface(Fonts.mavenRegular(this));
 //        textViewTitle.getPaint().setShader(Utils.textColorGradient(this, textViewTitle));
         imageViewBack = (ImageView) findViewById(R.id.imageViewBack); imageViewBack.setOnClickListener(this);
 
