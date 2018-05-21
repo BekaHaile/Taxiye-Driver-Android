@@ -973,7 +973,8 @@ public class JSONParser implements Constants {
 				Constants.WALLET_BALANCE_IN_EARNING,
 				Constants.SUPPORT_MAIN,
 				Constants.TICKET_SUPPORT,
-				Constants.MAIL_SUPPORT
+				Constants.MAIL_SUPPORT,
+				Constants.BRANDING_IMAGE
 		};
 		List<String> keysArr = Arrays.asList(keys);
 		for(String key : keysArr){

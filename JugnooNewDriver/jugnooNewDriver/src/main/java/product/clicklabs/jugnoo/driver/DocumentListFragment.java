@@ -60,11 +60,12 @@ import retrofit.mime.TypedFile;
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
 	private static final String BRANDING_IMAGE = "Branding Image";
+	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
-	int requirement;
+	int requirement, brandingImagesOnly;
 	int imgPixel;
 
 
@@ -114,6 +115,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
+		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		getDocsAsync(getActivity());
 
 		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
@@ -607,6 +609,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			params.put("access_token",accessToken);
 			params.put("login_documents", isRequired);
 			params.put("app_version", Data.appVersion+"");
+			params.put(Constants.BRANDING_IMAGE, String.valueOf(brandingImagesOnly));
 			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().docRequest(params, new Callback<DocRequirementResponse>() {
@@ -629,6 +632,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
 										data.getInstructions(), data.getGalleryRestricted());
+								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
+									continue;
+								}
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
@@ -1102,6 +1108,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void checkForDocumentsSubmit(){
+		if(brandingImagesOnly == 1){
+			return;
+		}
 		boolean mandatoryDocsSubmitted = true;
 		for(DocInfo docInfo : docs){
 			if((docInfo.docRequirement.equals(1)

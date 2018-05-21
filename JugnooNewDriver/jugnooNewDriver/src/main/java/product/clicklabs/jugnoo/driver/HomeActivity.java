@@ -5524,6 +5524,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							} else {
 								acceptRequestFunc(customerInfo1);
 							}
+							GCMIntentService.stopRing(true, HomeActivity.this);
 							FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
 						}
 					} catch (Exception e) {
