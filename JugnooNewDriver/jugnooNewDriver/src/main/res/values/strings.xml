@@ -941,6 +941,7 @@
     <string name="drop">Drop</string>
     <string name="hide">Hide</string>
     <string name="drop_location">Drop\nLocation</string>
+    <string name="branding_images">Branding Images</string>
 
 
     <string-array name="CountryCodes">
