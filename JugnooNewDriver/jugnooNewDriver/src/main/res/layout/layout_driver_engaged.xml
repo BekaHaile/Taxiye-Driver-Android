@@ -853,28 +853,29 @@
 
     <RelativeLayout
         android:id="@+id/rlChatDriver"
-        android:layout_width="129px"
-        android:layout_height="129px"
-        android:layout_marginLeft="12px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:layout_above="@+id/linearLayoutStartEnd"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:tag="@string/dont_touch_me">
 
-        <Button
+        <TextView
             android:id="@+id/btnChatHead"
-            android:layout_width="124px"
-            android:layout_height="124px"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
             android:background="@drawable/chat_icon_eng"/>
 
         <TextView
             android:id="@+id/tvChatCount"
-            android:layout_width="35px"
-            android:layout_height="35px"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10px"
-            android:layout_marginTop="10px"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_toEndOf="@+id/btnChatHead"
+            android:layout_marginStart="-20dp"
+            android:layout_marginTop="5dp"
             android:text="3"
             android:textColor="@color/theme_color"
-            android:textSize="@dimen/text_size_24"
+            android:textSize="12sp"
             android:gravity="center"
             android:visibility="visible"
             android:background="@drawable/circle_white_stroke_grey"/>

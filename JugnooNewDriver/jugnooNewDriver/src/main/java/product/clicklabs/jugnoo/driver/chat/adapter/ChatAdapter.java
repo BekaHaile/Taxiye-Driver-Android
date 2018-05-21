@@ -43,7 +43,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 		View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_item, viewGroup, false);
 
 		RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-		//RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT);
 		itemView.setLayoutParams(layoutParams);
 		ASSL.DoMagic(itemView);
 
@@ -68,10 +67,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 				chatViewHolder.chatTextMe.setText(chatHistory.getMessage());
 				chatViewHolder.chatTimeMe.setText(DateOperations.utcToLocalTZAMPM(chatHistory.getCreatedAt()));
-			/*Picasso.with(context).
-					load(chat.getImage()).
-					transform(new CircleTransform()).
-					fit().into(holder.userIconMe);*/
 			} else {
 				chatViewHolder.layoutYou.setVisibility(View.VISIBLE);
 				chatViewHolder.layoutMe.setVisibility(View.GONE);
@@ -113,8 +108,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 			chatTimeMe = (TextView) itemView.findViewById(R.id.chat_time_me);chatTimeMe.setTypeface(Fonts.mavenRegular(context));
 			userIconMe = (ImageView) itemView.findViewById(R.id.usr_icon_me);
 			layoutMe = (RelativeLayout) itemView.findViewById(R.id.layout_me);
-
-			//ASSL.DoMagic(relative);
 		}
 	}
 

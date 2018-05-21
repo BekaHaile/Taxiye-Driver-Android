@@ -344,7 +344,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn, tvChatCount;
 
 	private TextView endRideCustomText;
-	Button reviewSubmitBtn, btnHelp, btnChatHead;
+	Button reviewSubmitBtn, btnHelp;
+	TextView btnChatHead;
 	RelativeLayout relativeLayoutRateCustomer, topRlOuter, rlChatDriver;
 	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
 	Button reviewSkipBtn;
@@ -623,7 +624,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
 
-			btnChatHead = (Button) findViewById(R.id.btnChatHead);
+			btnChatHead = (TextView) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
 			tvChatCount = (TextView) findViewById(R.id.tvChatCount);
 //			btnChat1 = (Button) findViewById(R.id.btnChat1);
