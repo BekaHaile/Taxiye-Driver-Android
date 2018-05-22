@@ -84,18 +84,11 @@
 
             <Button
                 android:id="@+id/btnOk"
-                android:layout_width="400px"
-                android:layout_height="83px"
-                android:layout_marginBottom="15px"
-                android:layout_alignParentBottom="true"
+                style="@style/DialogButtonOrange"
+                android:layout_marginBottom="7dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30px"
-                android:background="@drawable/new_orange_btn_selector_rounded"
-                android:singleLine="true"
-                android:padding="3px"
+                android:layout_marginTop="15dp"
                 android:text="@string/ok"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
                 />
 
 

@@ -3,6 +3,6 @@
 <!--
  you can use any color you want I used here gray color 
 -->
-<solid android:color="#202020"/>
+<solid android:color="#AA202020"/>
 <corners android:radius="10px"/>
 </shape>

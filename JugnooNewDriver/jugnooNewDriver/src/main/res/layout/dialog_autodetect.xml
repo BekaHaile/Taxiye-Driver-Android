@@ -136,14 +136,12 @@
 
                 <Button
                     android:id="@+id/enterOtpButton"
-                    android:layout_width="372px"
+                    style="@style/DialogButtonOrange"
+                    android:layout_width="160dp"
                     android:layout_marginTop="15dp"
-                    android:layout_height="80px"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/enter_otp"
-                    android:textSize="30px"
-                    android:textColor="@color/new_orange"
-                    android:layout_marginBottom="60px"
+                    android:layout_marginBottom="30dp"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     />
 

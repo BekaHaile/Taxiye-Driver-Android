@@ -123,16 +123,11 @@
 
             <Button
                 android:id="@+id/btnCancel"
-                android:layout_width="320px"
-                android:layout_height="83px"
+                style="@style/DialogButtonOrange"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/new_orange_btn_selector_rounded"
-                android:singleLine="true"
                 android:text="@string/cancel"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text_size"
-                android:layout_marginBottom="20px"
+                android:layout_marginBottom="10dp"
                 />
 
 

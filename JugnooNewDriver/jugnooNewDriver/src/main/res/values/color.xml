@@ -37,6 +37,7 @@
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
     <color name="theme_color">#FD7945</color>
+    <color name="theme_color_alpha">#BBFD7945</color>
     <color name="document_text_color">#f79042</color>
 
     <color name="black_text_grey">#4C4C4C</color>
@@ -130,6 +131,7 @@
     <color name="grey_light_boarder">#d2d1d1</color>
     <color name="grey_dark">#838383</color>
     <color name="grey_dark_button">#54585D</color>
+    <color name="grey_dark_button_alpha">#BB54585D</color>
     <color name="grey_dark_more">#5D5D5D</color>
     <color name="grey_black">#232323</color>
     <color name="grey_black_v2">#6e6a70</color>

@@ -31,15 +31,19 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="1px"
                     android:layout_marginRight="1px"
-                    android:background="@drawable/background_orange_top_rounded_bordered"
                     android:gravity="center"
                     android:padding="20px"
                     android:paddingLeft="20px"
                     android:paddingRight="20px"
                     android:text="@string/did_you_know"
-                    android:textColor="@color/white"
+                    android:textColor="@color/theme_color"
                     android:textSize="32px"
                     android:visibility="visible"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dialog_border_color"
+                    />
 
 
                 <TextView
@@ -95,18 +99,11 @@
 
                 <Button
                     android:id="@+id/btnOk"
-                    android:layout_width="260px"
-                    android:layout_height="70px"
-                    android:layout_alignParentBottom="true"
+                    style="@style/DialogButtonOrange"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="32px"
-                    android:layout_marginTop="30px"
-                    android:background="@drawable/new_orange_btn_selector_rounded"
-                    android:padding="3px"
-                    android:singleLine="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/ok"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
                 />
 
             </LinearLayout>
