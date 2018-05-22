@@ -391,8 +391,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			if(Data.isCaptive()){
 				layoutCaptivePlanDetails.setVisibility(View.VISIBLE);
-				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this));
-				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this));
+				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this, driverEarningsResponse.getDistanceUnit()));
+				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this, driverEarningsResponse.getDistanceUnit()));
 				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
 				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected(),driverEarningsResponse.getCurrencyUnit()));
 				if(driverEarningsResponse.getPeriod()!=null){
@@ -404,7 +404,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 				if(driverEarningsResponse.getAdjustedKilometer()!=null){
 					findViewById(R.id.rl_adjusted_distance).setVisibility(View.VISIBLE);
-					tvAdjustedDistanceValue.setText(Utils.getKilometers(driverEarningsResponse.getAdjustedKilometer(),this));
+					tvAdjustedDistanceValue.setText(Utils.getKilometers(driverEarningsResponse.getAdjustedKilometer(),this, driverEarningsResponse.getDistanceUnit()));
 				}else{
 					findViewById(R.id.rl_adjusted_distance).setVisibility(View.GONE);
 

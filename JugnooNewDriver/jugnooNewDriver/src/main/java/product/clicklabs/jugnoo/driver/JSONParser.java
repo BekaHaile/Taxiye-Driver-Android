@@ -362,6 +362,8 @@ public class JSONParser implements Constants {
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
 		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
+		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
+		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT_FACTOR, (float) userData.optDouble(Constants.KEY_DISTANCE_UNIT_FACTOR, 1D));
 		Prefs.with(context).save(SP_USER_ID, userId);
 
 		parseSideMenu(context, userData);

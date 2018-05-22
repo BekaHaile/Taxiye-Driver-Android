@@ -499,7 +499,6 @@
     <string name="start_loc">Start Location</string>
     <string name="driver_loc">Driver Location</string>
     <string name="customer_2">Customer 2</string>
-    <string name="kms">Kms</string>
     <string name="mark_delivered">Mark Delivered</string>
     <string name="order_id">Order ID</string>
     <string name="thanks_for_feedback">Thank you for your valuable feedback</string>
@@ -611,14 +610,13 @@
     <string name="referral_rate">REFERRAL</string>
     <string name="pickup_charges">Pickup Charges </string>
     <string name="base_fare">Base Fare</string>
-    <string name="distance_per_km">Distance\n(Per Km)</string>
     <string name="time_per_min">Time\n(per min)</string>
     <string name="per_min">(per min)</string>
     <string name="driver_to_customer">Driver to Customer</string>
     <string name="driver_to_driver">Driver to Driver</string>
     <string name="rate_card">Rate Card</string>
-    <string name="applicable_after">Applicable after %1$s Kms</string>
-    <string name="per_km">(per Km)</string>
+    <string name="applicable_after">Applicable after %1$s</string>
+    <string name="per_format">(per %s)</string>
     <string name="delivery_off">Delivery OFF</string>
     <string name="Yesterday">Yesterday</string>
     <string name="ride_money">Total ride amount</string>
@@ -630,7 +628,7 @@
     <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-    <string name="diffrential_pricing_rate">After %1$sKm, distance charge will be %2$s/Km </string>
+    <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ESTIMATED PAYOUT</string>
     <string name="this_week_cap">THIS WEEK</string>
@@ -811,11 +809,9 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
+    <string name="per_km_wo_brack_format">PER %s</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>
@@ -931,7 +927,7 @@
     <string name="dont_agree">I disagree</string>
     <string name="chat_support">Chat Support</string>
     <string name="t_and_c_login">By submitting OTP here and logging in the app you accept the <a href="https://jugnoo.in/sg/terms/driver/">Terms and Conditions </a> of Jugnoo. Please do not go further, if these are not OK with you.</string>
-    <string name="estimated_distance_format">Estimated Distance: %skm</string>
+    <string name="estimated_distance_format">Estimated Distance: %s</string>
     <string name="action_not_supported">Action not supported</string>
     <string name="send_us_a_mail">Send us a mail</string>
     <string name="issue_description">Issue description</string>

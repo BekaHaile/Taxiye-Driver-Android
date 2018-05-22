@@ -288,6 +288,8 @@ public interface Constants {
 	String KEY_SHOW_IN_ACCOUNT = "show_in_account";
 	String BRANDING_IMAGES_ONLY = "branding_images_only";
 	String BRANDING_IMAGE = "branding_image";
+	String KEY_DISTANCE_UNIT = "distance_unit";
+	String KEY_DISTANCE_UNIT_FACTOR = "distance_unit_factor";
 
 	String ACTION_FINISH_ACTIVITY = BuildConfig.APPLICATION_ID+".finish_activity";
 

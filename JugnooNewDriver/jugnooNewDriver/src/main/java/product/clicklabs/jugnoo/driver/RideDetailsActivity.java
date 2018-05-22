@@ -157,7 +157,7 @@ public class RideDetailsActivity extends BaseActivity {
 
 			distanceValue.setText(getResources().getString(R.string.distance)+": "
 					+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance))
-					+ " "+getResources().getString(R.string.km));
+					+ " "+Utils.getDistanceUnit(openedRideInfo.getDistanceUnit()));
 
 			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "
 					+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));

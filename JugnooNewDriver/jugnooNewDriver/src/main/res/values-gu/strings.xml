@@ -431,7 +431,6 @@
     <string name="start_loc">પ્રારંભ સ્થાન</string>
     <string name="driver_loc">ડ્રાઈવર સ્થાન</string>
     <string name="customer_2">ગ્રાહક 2</string>
-    <string name="kms">કિલોમીટર </string>
     <string name="mark_delivered">માર્ક વિતરિત</string>
     <string name="order_id">ઓર્ડર ID</string>
     <string name="thanks_for_feedback">તમારા મૂલ્યવાન પ્રતિભાવ માટે આભાર</string>
@@ -536,7 +535,7 @@
     <string name="Submit">સબમિટ</string>
     <string name="owner">માલિક</string>
     <string name="approval_pending">મંજૂરી બાકી</string>
-    <string name="applicable_after">કિ.મી. પછી લાગુ %1$s Km</string>
+    <string name="applicable_after">કિ.મી. પછી લાગુ %1$s</string>
 
     <string name="rejection_reason">રદ કરવાનું કારણ</string>
     <string name="mandatory">ફરજિયાત</string>
@@ -552,8 +551,6 @@
     <string name="driver_to_driver">ડરાઇવર થી ડરાઇવર</string>
     <string name="rate_card">ભાવ પત્રક</string>
     <string name="owned">માલિકી</string>
-    <string name="distance_per_km">અંતર\n( મિનિટ દીઠ )</string>
-    <string name="per_km">(per Km)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ગઇકાલે</string>
@@ -561,7 +558,7 @@
     <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
     <string name="this_week">આ અઠવાડિયે</string>
     <string name="outstanding_amount1">બાદ બાકી થઇ ગયું </string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">અંદાજિત ચૂકવણી</string>
     <string name="this_week_cap">આ અઠવાડિયે</string>
@@ -770,11 +767,8 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>

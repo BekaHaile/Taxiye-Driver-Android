@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
@@ -107,6 +106,9 @@ public class DeliveryDetailResponse {
 		@SerializedName("to")
 		@Expose
 		private List<To> to = new ArrayList<To>();
+		@SerializedName("distance_unit")
+		@Expose
+		private String distanceUnit;
 
 
 		/**
@@ -368,6 +370,14 @@ public class DeliveryDetailResponse {
 		 */
 		public void setTo(List<To> to) {
 			this.to = to;
+		}
+
+		public String getDistanceUnit() {
+			return distanceUnit;
+		}
+
+		public void setDistanceUnit(String distanceUnit) {
+			this.distanceUnit = distanceUnit;
 		}
 
 		public class To {

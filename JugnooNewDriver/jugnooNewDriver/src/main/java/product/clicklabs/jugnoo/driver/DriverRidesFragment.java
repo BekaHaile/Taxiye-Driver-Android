@@ -273,7 +273,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
-				holder.distanceValue.setText(rideInfo.distance + " " + activity.getStringText(R.string.km) + ", ");
+				holder.distanceValue.setText(rideInfo.distance
+						+ " " + Utils.getDistanceUnit(rideInfo.getDistanceUnit()) + ", ");
 				holder.rideTimeValue.setText(rideInfo.rideTime + " " + activity.getStringText(R.string.min));
 
 
@@ -328,7 +329,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
-				holder.distanceValue.setText(rideInfo.distance + " " + activity.getStringText(R.string.km) + ", ");
+				holder.distanceValue.setText(rideInfo.distance
+						+ " " + Utils.getDistanceUnit(rideInfo.getDistanceUnit()) + ", ");
 				holder.rideTimeValue.setText(rideInfo.rideTime + " " + activity.getStringText(R.string.min));
 
 
@@ -452,14 +454,16 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut(),data.getCurrencyUnit());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(),
+														data.getJugnooCut(),data.getCurrencyUnit(), data.getDistanceUnit());
 											} else if (data.getType().equalsIgnoreCase("delivery")) {
 												rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
 														data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut(),data.getCurrencyUnit());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(),
+														data.getJugnooCut(),data.getCurrencyUnit(), data.getDistanceUnit());
 											} else if (data.getType().equalsIgnoreCase("referral")) {
 												rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime(),data.getCurrencyUnit());
 											} else if (data.getType().equalsIgnoreCase("phone_deductions")) {

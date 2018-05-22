@@ -87,7 +87,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5px"
                         android:gravity="center"
-                        android:text="4.7 Kms"
                         android:textColor="@color/menu_black"
                         android:textSize="@dimen/end_ride_details_text_size"/>
                 </RelativeLayout>

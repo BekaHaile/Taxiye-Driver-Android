@@ -10,6 +10,8 @@ public class CurrencyModel {
 
     @SerializedName("currency")
     private String currencyUnit;
+    @SerializedName("distance_unit")
+    private String distanceUnit;
 
     public String getCurrencyUnit() {
         return currencyUnit;
@@ -17,5 +19,13 @@ public class CurrencyModel {
 
     public void setCurrencyUnit(String currencyUnit) {
         this.currencyUnit = currencyUnit;
+    }
+
+    public String getDistanceUnit() {
+        return distanceUnit;
+    }
+
+    public void setDistanceUnit(String distanceUnit) {
+        this.distanceUnit = distanceUnit;
     }
 }

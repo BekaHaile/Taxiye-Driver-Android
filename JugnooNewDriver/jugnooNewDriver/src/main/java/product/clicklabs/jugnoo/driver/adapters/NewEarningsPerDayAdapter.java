@@ -13,10 +13,7 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.Item;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -51,7 +48,7 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 		rideInfoViewHolder.relativeLayout.setVisibility(View.VISIBLE);
 		if(Data.isCaptive()){
 			rideInfoViewHolder.textViewDailyValue.setText(deliveryDetails.get(i).getNoOfRides() + " " +  context.getString(R.string.rides) + ", " +
-					Utils.getKilometers(deliveryDetails.get(i).getDistance(),context));
+					Utils.getKilometers(deliveryDetails.get(i).getDistance(),context, deliveryDetails.get(i).getDistanceUnit()));
 
 		}else{
 			rideInfoViewHolder.textViewDailyValue.setText(Utils.formatCurrencyValue(deliveryDetails.get(i).getCurrencyUnit(),deliveryDetails.get(i).getEarnings()));

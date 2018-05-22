@@ -642,7 +642,6 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:gravity="center"
-                            android:text="4.7 Kms"
                             android:textColor="@color/bg_grey_opaque"
                             android:textSize="@dimen/text_size_24"
                             android:layout_alignParentBottom="true"
