@@ -54,7 +54,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        Fabric.with(this, new Crashlytics());
+      //  Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
         Paper.init(this);
         registerActivityLifecycleCallbacks(this);

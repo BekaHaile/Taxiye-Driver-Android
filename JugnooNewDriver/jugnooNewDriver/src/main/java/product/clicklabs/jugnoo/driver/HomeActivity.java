@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -22,10 +24,13 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
@@ -200,6 +205,7 @@ import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -212,6 +218,7 @@ import retrofit.mime.TypedByteArray;
 import static product.clicklabs.jugnoo.driver.Data.context;
 import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
 import com.google.firebase.iid.FirebaseInstanceId;
+import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
@@ -228,6 +235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	//menu bar
 	LinearLayout menuLayout;
 
+	private PermissionCommon mPermissionCommon;
 
 
 	ImageView profileImg, seprator;
@@ -1369,12 +1377,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					if(mPermissionCommon == null){
+						mPermissionCommon = new PermissionCommon(HomeActivity.this);
+					}
 
-					FlurryEventLogger.event(CALL_US);
+					mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+						@SuppressLint("MissingPermission")
+						@Override
+						public void permissionGranted(final int requestCode) {
+							Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 
-					drawerLayout.closeDrawer(GravityCompat.START);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							FlurryEventLogger.event(CALL_US);
+
+							drawerLayout.closeDrawer(GravityCompat.START);
+							overridePendingTransition(R.anim.right_in, R.anim.right_out);
+						}
+
+						@Override
+						public void permissionDenied(final int requestCode) { }
+					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
 				}
 			});
 			rlGetSupport.setOnClickListener(new OnClickListener() {
@@ -2794,7 +2815,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (map != null) {
 				map.getUiSettings().setZoomControlsEnabled(false);
-				map.setMyLocationEnabled(true);
+
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+						== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+					map.setMyLocationEnabled(true);
+				}
+
 				map.getUiSettings().setTiltGesturesEnabled(false);
 				map.getUiSettings().setMyLocationButtonEnabled(false);
 				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -3642,8 +3668,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(latLng != null) {
 						Utils.openNavigationIntent(HomeActivity.this, latLng);
-						Intent intent = new Intent(HomeActivity.this, GeanieView.class);
-						startService(intent);
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+							if(!Settings.canDrawOverlays(HomeActivity.this)){
+								// ask for setting
+								Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+										Uri.parse("package:" + getPackageName()));
+								startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
+							} else {
+								Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+								startService(intent);
+							}
+						}
+
 					}
 				} else {
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
@@ -5733,7 +5769,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_LONGITUDE, "" + Data.longitude);
 
 			params.put(KEY_DEVICE_NAME, Utils.getDeviceName());
-			params.put(KEY_IMEI, DeviceUniqueID.getUniqueId(this));
+			params.put(KEY_IMEI, DeviceUniqueID.getCachedUniqueId(this));
 			params.put(KEY_APP_VERSION, "" + Utils.getAppVersion(this));
 
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
@@ -6206,12 +6242,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 								}
 
-								try {
-									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-											String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
-								} catch (Exception e) {
-									e.printStackTrace();
+								if (mPermissionCommon == null){
+									mPermissionCommon = new PermissionCommon(HomeActivity.this);
 								}
+
+								mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+									@Override
+									public void permissionGranted(final int requestCode) {
+										try {
+											new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+													String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+
+									@Override
+									public void permissionDenied(final int requestCode) {
+										Log.e(TAG, "READ_CALL_LOG NOT GRANTED");
+									}
+								}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
 								initializeStartRideVariables();
 
@@ -7903,6 +7953,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			super.onActivityResult(requestCode, resultCode, data);
 
+			if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if (Settings.canDrawOverlays(this)) {
+					startService(new Intent(this, GeanieView.class));
+				}
+			}
+
 			if(requestCode==REQUEST_CODE_TERMS_ACCEPT){
 					if(resultCode==RESULT_OK){
 						//relativeLayoutAutosOn.performClick();
@@ -8142,13 +8198,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			public void run() {
 				try {
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-						try {
-							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-									engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-							stopRing(true, HomeActivity.this);
-						} catch (Exception e) {
-							e.printStackTrace();
+
+						if (mPermissionCommon == null){
+							mPermissionCommon = new PermissionCommon(HomeActivity.this);
 						}
+
+						mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+							@Override
+							public void permissionGranted(final int requestCode) {
+								try {
+									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+											engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+									stopRing(true, HomeActivity.this);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+
+							@Override
+							public void permissionDenied(final int requestCode) {
+								Log.e(TAG, "READ_CALL_LOG NOT GRANTED");
+							}
+						}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
+
+
 						try {
 							Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -8351,8 +8424,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 		try {
+			FlurryAgent.onEndSession(this);
 			mGoogleApiClient.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -10833,5 +10906,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (mPermissionCommon != null ){
+			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
 }

@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.firebase.iid.FirebaseInstanceId
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -25,15 +26,15 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.*
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_SMS
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
-import com.google.firebase.iid.FirebaseInstanceId
 
 
-class OTPConfirmFragment : Fragment() {
+class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
 
     private lateinit var countryCode: String
     private var missedCallNumber: String? = null
@@ -48,6 +49,9 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
     private  var mListener: SplashFragment.InteractionListener?  = null;
+
+    private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
+
 
     companion object {
 
@@ -164,13 +168,18 @@ class OTPConfirmFragment : Fragment() {
                 edtOTP.setText(mListener?.getPrefillOtpIfany())
                 edtOTP.setSelection(edtOTP.text.length)
             }else{
-                showCountDownPopup()
+                checkReadSMSPermission()
 
             }
         }
 
         return rootView
 
+    }
+
+    private fun checkReadSMSPermission() {
+
+        permissionCommon.getPermission(REQUEST_CODE_READ_SMS, android.Manifest.permission.READ_SMS)
     }
 
     private fun showCountDownPopup() {
@@ -415,7 +424,7 @@ class OTPConfirmFragment : Fragment() {
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
         }else{
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
-
+            permissionCommon.dismissSnackbars()
         }
 
     }
@@ -435,6 +444,32 @@ class OTPConfirmFragment : Fragment() {
 
     }
 
+
+    override fun permissionGranted(requestCode: Int) {
+        if (requestCode == REQUEST_CODE_READ_SMS) {
+            mListener?.registerForSmsReceiver(true);
+            showCountDownPopup()
+        }
+
+    }
+
+    override fun permissionDenied(requestCode: Int) {
+        if (requestCode == REQUEST_CODE_READ_SMS) {
+            mListener?.registerForSmsReceiver(false);
+            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        permissionCommon.dismissSnackbars()
+    }
 
 }
 

@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver.apis;
 
+import android.Manifest;
 import android.app.Activity;
+import android.support.annotation.RequiresPermission;
 
 import org.json.JSONObject;
 
@@ -23,6 +25,7 @@ import retrofit.mime.TypedByteArray;
  */
 public class ApiSendCallLogs {
 
+	@RequiresPermission(Manifest.permission.READ_CALL_LOG)
 	public void sendCallLogs(Activity activity, String accessToken, String engagementId, String phoneNumber) {
 		try {
 			HashMap<String, String> params = new HashMap<>();

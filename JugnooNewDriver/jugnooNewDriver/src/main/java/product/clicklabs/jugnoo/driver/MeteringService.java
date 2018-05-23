@@ -3,15 +3,19 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -268,9 +272,9 @@ public class MeteringService extends Service {
 				GpsDistanceCalculator.getTotalHaversineDistanceFromSP(context));
 	}
     
-    
-    
-    
+
+
+
     public static int METER_NOTIF_ID = 1212;
     
 	public static Notification generateNotification(Context context, String message,int notificationId) {
@@ -282,8 +286,12 @@ public class MeteringService extends Service {
 			
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-			
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				createNotificationChannel(context);
+			}
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MeteringService.class.getSimpleName());
 			builder.setAutoCancel(false);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
@@ -310,6 +318,22 @@ public class MeteringService extends Service {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(METER_NOTIF_ID);
     }
-    
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+	private static void createNotificationChannel(final Context context) {
+		// Default channel
+		NotificationChannel mChannel = new NotificationChannel(MeteringService.class.getSimpleName(),
+				context.getString(R.string.Notifications), NotificationManager.IMPORTANCE_DEFAULT);
+		// v
+		mChannel.setDescription(context.getString(R.string.Notifications));
+		mChannel.enableLights(true);
+		// Sets the notification light color for notifications posted to this
+		// channel, if the device supports this feature.
+		mChannel.setLightColor(Color.RED);
+		mChannel.enableVibration(true);
+		((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(mChannel);
+
+	}
 
 }

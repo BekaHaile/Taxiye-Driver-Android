@@ -230,7 +230,7 @@ public class Data {
 			Data.deviceName = Utils.getDeviceName();
 			Log.i("deviceName", Data.deviceName + "..");
 
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(context);
+			Data.uniqueDeviceId = DeviceUniqueID.getCachedUniqueId(context);
 			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -29,16 +31,24 @@ import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
+
+import static product.clicklabs.jugnoo.driver.Constants.REQUEST_OVERLAY_PERMISSION;
 
 /**
  * Created by aneeshbansal on 09/05/16.
  */
-public class BaseFragmentActivity extends AppCompatActivity {
+public abstract class BaseFragmentActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (!(this instanceof DriverSplashActivity  || this instanceof DriverDocumentActivity) && Data.userData == null) {
+			restartApp();
+		}
+
 		if(savedInstanceState==null){
 			recoverLastSavedLanguage();
 			updateLanguage(this,null);
@@ -46,16 +56,42 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		updateStatusBar();
 	}
 
+	protected void restartApp(){
+		startActivity(new Intent(this, DriverSplashActivity.class));
+		finishAffinity();
+	}
 	@Override
 	protected void onResume() {
-
+		Data.appMinimized = false;
+		stopService(new Intent(this, GeanieView.class));
 		super.onResume();
 		checkIfUserDataNull();
 	}
 
+	@Override
+	protected void onPause() {
+		Data.appMinimized = true;
+		super.onPause();
+	}
 
+	@Override
+	protected void onStop() {
+		if(Data.appMinimized){
 
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if(!Settings.canDrawOverlays(this)){
+                    // ask for setting
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
+                } else {
+					startService(new Intent(this, GeanieView.class));
+				}
+			}
 
+		}
+		super.onStop();
+	}
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
@@ -175,6 +211,16 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		}
 		transaction.commitAllowingStateLoss();
 
+	}
+
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (Settings.canDrawOverlays(this)) {
+				startService(new Intent(this, GeanieView.class));
+			}
+		}
 	}
 
 	private static final int WIDTH_PX = 200;

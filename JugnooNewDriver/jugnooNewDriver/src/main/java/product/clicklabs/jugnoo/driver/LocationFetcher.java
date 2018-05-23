@@ -3,11 +3,14 @@ package product.clicklabs.jugnoo.driver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -20,18 +23,18 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener {
-	
+
 	private final String TAG = this.getClass().getSimpleName();
 
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
 	private Location location, locationUnchecked;
-	
+
 	private long requestInterval;
 	private LocationUpdate locationUpdate;
 	private Context context;
-	
-	
+
+
 	public int priority;
 
 	public LocationFetcher(LocationUpdate locationUpdate, long requestInterval, int priority){
@@ -40,7 +43,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			this.requestInterval = requestInterval;
 			this.priority = priority;
 	}
-	
+
 	public synchronized void connect(){
 		destroy();
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -55,7 +58,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			Log.e("Google Play Service Error ","="+resp);
 		}
 	}
-	
+
 	public synchronized void destroyWaitAndConnect(){
 		destroy();
 		new Handler().postDelayed(new Runnable() {
@@ -78,10 +81,10 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	public static double getSavedLngFromSP(Context context){
 		return Database2.getInstance(context).getDriverCurrentLocation(context).getLongitude();
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Checks if location fetching is enabled in device or not
 	 * @param context application context
@@ -132,6 +135,11 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 
 	protected void startLocationUpdates(long interval, int priority) {
 		createLocationRequest(interval, priority);
+		if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+				!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
+			return;
+		}
 		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, this);
 	}
 
@@ -164,16 +172,20 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		} catch(Exception e){Log.e("e", "=" + e.toString());}
 		return getSavedLngFromSP(context);
 	}
-
+	@Nullable
 	public Location getLocation(){
 		try{
 			if(location != null){
 				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
 					return location;
 				}
-			}
-			else{
-				if(googleApiClient != null && googleApiClient.isConnected()){
+			} else {
+				if (googleApiClient != null && googleApiClient.isConnected()) {
+					if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+							&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+						Log.e(TAG, "getLocation : ACCESS_FINE_LOCATION NOT GRANTED");
+						return null;
+					}
 					location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
 					Log.e("last fused location", "=" + location);
 					if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){

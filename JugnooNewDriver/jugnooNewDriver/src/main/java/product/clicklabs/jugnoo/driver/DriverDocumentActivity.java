@@ -326,7 +326,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				params.put("login_type", Data.LOGIN_TYPE);
 
 				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getUniqueId(this));
+				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
 				HomeUtil.putDefaultParams(params);
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){

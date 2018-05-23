@@ -80,7 +80,7 @@ public class GeanieView extends Service {
 					WindowManager.LayoutParams paramRemove = new WindowManager.LayoutParams(
 							WindowManager.LayoutParams.MATCH_PARENT,
 							WindowManager.LayoutParams.WRAP_CONTENT,
-							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
 
@@ -98,7 +98,7 @@ public class GeanieView extends Service {
 					WindowManager.LayoutParams paramsNew = new WindowManager.LayoutParams(
 							WindowManager.LayoutParams.WRAP_CONTENT,
 							WindowManager.LayoutParams.WRAP_CONTENT,
-							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
 					paramsNew.gravity = Gravity.TOP | Gravity.START;
@@ -421,8 +421,9 @@ public class GeanieView extends Service {
 
 	@Override
 	public void onDestroy() {
-		FlurryAgent.onEndSession(this);
+
 		try {
+			FlurryAgent.onEndSession(this);
 			windowManager.removeViewImmediate(convertView);
 		} catch (Exception e) {
 			e.printStackTrace();

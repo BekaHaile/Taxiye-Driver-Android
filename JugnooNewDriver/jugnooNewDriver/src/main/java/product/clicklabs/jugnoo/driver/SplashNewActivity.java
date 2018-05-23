@@ -1506,7 +1506,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				HomeUtil.putDefaultParams(params);
 
 				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getUniqueId(this));
+				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");

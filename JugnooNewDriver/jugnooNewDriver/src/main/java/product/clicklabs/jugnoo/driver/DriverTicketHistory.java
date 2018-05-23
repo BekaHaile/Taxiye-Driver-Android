@@ -1,9 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +30,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -47,6 +51,8 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 	DriverTicketHistoryAdapter driverTicketHistoryAdapter;
 	int totalRides = 0;
 	public ASSL assl;
+
+	private PermissionCommon mPermissionCommon;
 
 
 	@Override
@@ -124,7 +130,22 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Utils.makeCallIntent(DriverTicketHistory.this, Data.userData.driverSupportNumber);
+				if(mPermissionCommon == null ) {
+					mPermissionCommon = new PermissionCommon(DriverTicketHistory.this);
+				}
+					mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+						@SuppressLint("MissingPermission")
+						@Override
+						public void permissionGranted(final int requestCode) {
+							Utils.makeCallIntent(DriverTicketHistory.this, Data.userData.driverSupportNumber);
+						}
+
+						@Override
+						public void permissionDenied(final int requestCode) {
+
+						}
+					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
+
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
@@ -246,6 +267,14 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (mPermissionCommon != null) {
+			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 	}
 

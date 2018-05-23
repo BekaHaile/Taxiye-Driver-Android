@@ -5,6 +5,8 @@ package product.clicklabs.jugnoo.driver;
  */
 public interface Constants {
 
+    int REQUEST_OVERLAY_PERMISSION = 3564;
+
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 

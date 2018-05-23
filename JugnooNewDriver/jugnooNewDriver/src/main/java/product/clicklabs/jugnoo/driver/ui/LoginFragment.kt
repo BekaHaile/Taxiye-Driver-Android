@@ -24,6 +24,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
@@ -43,7 +44,6 @@ import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
 import java.util.*
-import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginFragment : Fragment() {
     private var mListener: SplashFragment.InteractionListener? = null

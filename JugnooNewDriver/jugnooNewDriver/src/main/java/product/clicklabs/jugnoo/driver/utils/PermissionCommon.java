@@ -1,0 +1,418 @@
+package product.clicklabs.jugnoo.driver.utils;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PermissionInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public final class PermissionCommon {
+    public static final int REQUEST_CODE_READ_SMS = 2001;
+    public static final int REQUEST_CODE_CAMERA = 2002;
+    public static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 2003;
+    public static final int REQUEST_CODE_FINE_LOCATION = 2004;
+    public static final int REQUEST_CODE_READ_PHONE_STATE = 2005;
+    public static final int REQUEST_CODE_CALL_PHONE = 2006;
+    public static final int REQUEST_CODE_CALL_LOGS = 2007;
+
+    private static final int REQUEST_CODE = 0x8;
+    private static final int REQUEST_CODE_RATIONAL = 0x9;
+
+    private int requestCodeInitiated;
+    private View view;
+    private String[] permissionsInitiated;
+    private Snackbar snackBarPermissionDenied, snackBarRational;
+    private String appName;
+    private Activity activity;
+    private PermissionListener permissionListener;
+    private HashMap<String, String> rationalMessageMap;
+    private Fragment fragment;
+
+    private boolean showRationaleSnackbar = true;
+
+
+    @SuppressWarnings("unused")
+    private PermissionCommon() {
+
+    }
+
+
+    /**
+     * @param context context of activity or fragment
+     */
+    public <Instance extends Activity> PermissionCommon(Instance context) {
+        activity = context;
+        this.view = activity.findViewById(android.R.id.content);
+    }
+
+    public <Instance extends Fragment >PermissionCommon(Instance context){
+        this.fragment = context;
+        activity = context.getActivity();
+        this.view = activity.findViewById(android.R.id.content);
+    }
+
+
+    /**
+     *
+     * @param rationalMessageMap An explanation to the user, on why you are using the features
+     *                           This can be made like HashMap<String,String> hashMap = new HashMap<>();
+     *                           hashMap.put("Manifest.permission.CAMERA","This app requires camera access to use face recognition");
+     *                           hashMap.put("Manifest.permission.READ_EXTERNAL_STORAGE","This app requires storage access to display gallery images");
+     *                           Alternatively, you can declare the permission reason in getRationalMessage() method which would be global for the application if not passed in method
+     */
+    public PermissionCommon setMessageMap( @NonNull HashMap<String, String> rationalMessageMap){
+        this.rationalMessageMap = rationalMessageMap;
+        return this;
+
+    }
+
+    public PermissionCommon setCallback(PermissionListener permissionListener){
+        this.permissionListener = permissionListener;
+        return this;
+
+    }
+
+
+    /**
+     * Sets the showRationaleSnackbar
+     *
+     * @param showRationaleSnackbar : showRationaleSnackbar
+     */
+    public PermissionCommon showRationale(final boolean showRationaleSnackbar) {
+        this.showRationaleSnackbar = showRationaleSnackbar;
+        return this;
+    }
+
+    public final void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+
+            case REQUEST_CODE:
+
+
+                int permissionsGranted = 0;
+                for (int result : grantResults) {
+                    if (result == PackageManager.PERMISSION_GRANTED)
+                        permissionsGranted++;
+                }
+
+
+                if (grantResults.length == permissionsGranted) {
+                    // this means all the permissions have been granted and we are ready to GO!
+                    if(permissionListener!=null) permissionListener.permissionGranted(requestCodeInitiated);
+
+
+                } else {
+
+                    for (String permission : permissions) {
+
+                        if (!isGranted(permission,activity) && !shouldShowRationalPermission(permission) && showRationaleSnackbar) {
+
+
+                            String messageToShow = "You have disabled the permission to " + getPermissionLabel(permission) + ".Please go to app settings to allow permission";
+                            showPermissionDenied(messageToShow);
+                            //this means the user has blocked a permission and chosen "Never ask again" for the that permission.
+
+
+                            if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+
+                            return;
+
+                        }
+
+                    }
+
+                    //the user has denied permission normally.Wait for user's action to ask for permission again
+                    if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+
+
+                }
+
+
+                break;
+
+
+            case REQUEST_CODE_RATIONAL:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    getPermission(requestCodeInitiated, permissionsInitiated);
+                //continues to check again if all permissions have been granted or there is still a rational permission pending
+                else {
+                    if (shouldShowRationalPermission(permissions[0]) && showRationaleSnackbar) {
+
+                        String messageToShow = "You have disabled the permission to " + getPermissionLabel(permissions[0]) + ".Please go to app settings to allow permission";
+                        showPermissionDenied(messageToShow);
+                        //activity means the user has blocked a permission and chosen "Never ask again" for the same
+                        if(permissionListener!=null)permissionListener.permissionDenied(requestCodeInitiated);
+
+                        return;
+
+                    }
+
+                    if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+
+                }
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * @param permission permission for which the rational message is needed
+     * @return A message for the permission explaining why the feature is required
+     * This is displayed as per the hashMap if not passed feel free to declare the reasons below that would be global for the app
+     */
+    private String getRationalMessage(String permission) {
+
+
+        if (rationalMessageMap != null && rationalMessageMap.containsKey(permission))
+            return rationalMessageMap.get(permission);
+
+
+        if (appName == null)
+            appName = activity.getString(activity.getApplicationInfo().labelRes);
+
+
+        switch (permission) {
+            case Manifest.permission.CAMERA:
+                return appName + " needs permission to access the camera to save images";
+            case Manifest.permission.ACCESS_COARSE_LOCATION:
+                return appName + " needs permission fetch current location address";
+            case Manifest.permission.ACCESS_FINE_LOCATION:
+                return appName + " needs permission fetch current location address";
+            case Manifest.permission.READ_SMS:
+                return appName + " needs read sms permission to fetch otp";
+            case Manifest.permission.READ_PHONE_STATE:
+                return appName + " needs to call permission to make support calls";
+            case Manifest.permission.CALL_PHONE:
+                return appName + " needs to call permission to make support calls";
+            default:
+                return appName + " needs this permission to proceed.";
+        }
+
+    }
+
+
+    /**
+     * @param requestCode     request code corresponding to set of permissions that would be returned onGranted() or onDenied()
+     * @param permissionArray set of permissions needed for the feature
+     */
+
+    public void getPermission(int requestCode, final String... permissionArray) {
+
+
+        // Android code Build is lower than Marshmallow no need to check for permissions
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if(permissionListener!=null)permissionListener.permissionGranted(requestCode);
+
+            return;
+        }
+
+
+        //creates an arrayList of all the permissions that need to be  asked for
+        ArrayList<String> permissionsToAsk = new ArrayList<>();
+        for (String permission : permissionArray) {
+
+            if (!isGranted(permission,activity)) {
+                permissionsToAsk.add(permission);
+            }
+
+        }
+
+        //if all permissions are granted already calls the permissionsGrantedMethod
+        if (permissionsToAsk.size() < 1) {
+            if(permissionListener!=null)permissionListener.permissionGranted(requestCode);
+
+            return;
+        }
+
+        permissionsInitiated = permissionArray;
+        requestCodeInitiated = requestCode;
+
+
+        //this loop checks for any rationalPermission and stops the process un till the user reacts to the first rational permission if found
+        //if granted the process continues again from onRequestPermissionResult() if not granted we wait for user's further input
+        for (final String permission : permissionsToAsk) {
+
+
+            if (shouldShowRationalPermission(permission)) {
+                getRationalSnackBar(getRationalMessage(permission)).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        requestPermissions(new String[]{permission}, REQUEST_CODE_RATIONAL);
+
+                    }
+                }).show();
+
+                return;
+            }
+
+
+        }
+        //At activity point if shouldAsk is true there is no rational Permission that exists and  No explanation needed, we can request for  the permissions.
+        requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
+
+
+    }
+
+
+
+    private void requestPermissions(String[] strings, int requestCode) {
+
+        if (fragment!=null) {
+            fragment.requestPermissions(strings, requestCode);
+        } else {
+            ActivityCompat.requestPermissions(activity, strings, requestCode);
+        }
+    }
+
+    private boolean shouldShowRationalPermission(String permission) {
+        if (fragment!=null) {
+            return fragment.shouldShowRequestPermissionRationale(permission);
+        } else {
+            return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+        }
+
+    }
+
+
+
+
+
+    /**
+     * Determine whether <em>you</em> have been granted a particular permission.
+     *
+     * @param permission The name of the permission being checked.
+     *
+     * @return {@link android.content.pm.PackageManager#PERMISSION_GRANTED} if you have the
+     * permission, or {@link android.content.pm.PackageManager#PERMISSION_DENIED} if not.
+     *
+     * @see android.content.pm.PackageManager#checkPermission(String, String)
+     */    public static boolean isGranted(String permission,Context activity) {
+
+        return ActivityCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * @param permission permission to check
+     * @return returns human readable format of the permission
+     */
+
+    private CharSequence getPermissionLabel(String permission) {
+        try {
+
+            PermissionInfo permissionInfo = activity.getPackageManager().getPermissionInfo(permission, 0);
+            return permissionInfo.loadLabel(activity.getPackageManager());
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * Shows a snackBar to inform the user that he needs to go to settings to enable permission
+     *
+     * @param message The message that needs to be shown to the user for the corresponding permission
+     */
+    private void showPermissionDenied(String message) {
+
+        if (snackBarPermissionDenied == null) {
+            snackBarPermissionDenied = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+            snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
+            snackBarPermissionDenied.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
+            ((TextView) snackBarPermissionDenied.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
+            snackBarPermissionDenied.setAction("Dismiss", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackBarPermissionDenied.dismiss();
+                }
+            });
+
+            snackBarPermissionDenied.setAction("Grant", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snackBarPermissionDenied.dismiss();
+                    openSettingsScreen(activity);
+                }
+            });
+        }
+
+
+        snackBarPermissionDenied.setText(message);
+        snackBarPermissionDenied.show();
+    }
+
+    /**
+     * @param message Message that needs to be shown to user to inform why we are using the feature
+     * @return returns SnackBar
+     */
+    private Snackbar getRationalSnackBar(String message) {
+
+        if (snackBarRational == null) {
+            snackBarRational = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
+            snackBarRational.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
+            snackBarRational.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_blue_dark));
+            ((TextView) snackBarRational.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
+
+        }
+
+        snackBarRational.setText(message);
+        return snackBarRational;
+
+
+    }
+
+    public interface PermissionListener {
+        /**
+         * @param requestCode requestCode used to ask for specific set of permissions
+         *                    activity method is called if all the permissions have been granted
+         */
+
+        void permissionGranted(int requestCode);
+
+        /**
+         * @param requestCode requestCode used to ask for specific set of permissions
+         *                    activity method is called if any of the permission has been denied
+         */
+        void permissionDenied(int requestCode);
+
+
+    }
+
+
+    public void openSettingsScreen(Activity activity){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivity(intent);
+    }
+
+    public void dismissSnackbars(){
+        if (snackBarPermissionDenied != null  && snackBarPermissionDenied.isShownOrQueued()) {
+            snackBarPermissionDenied.dismiss();
+        }
+
+        if (snackBarRational != null  && snackBarRational.isShownOrQueued()) {
+            snackBarRational.dismiss();
+        }
+
+    }
+}

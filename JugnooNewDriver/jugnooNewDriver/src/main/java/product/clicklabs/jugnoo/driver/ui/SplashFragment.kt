@@ -41,7 +41,6 @@ import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class SplashFragment : Fragment() {
 
@@ -248,7 +247,7 @@ class SplashFragment : Fragment() {
                 HomeUtil.putDefaultParams(params)
 
                 params["device_name"] = Utils.getDeviceName()
-                params["imei"] = DeviceUniqueID.getUniqueId(mActivity)
+                params["imei"] = DeviceUniqueID.getCachedUniqueId(mActivity)
 
                 if (Utils.isAppInstalled(mActivity, Data.GADDAR_JUGNOO_APP)) {
                     params["auto_n_cab_installed"] = "1"
