@@ -260,7 +260,7 @@ public class JSONParser implements Constants {
 		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
 		String driverSupportEmail = userData.optString(Constants.DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email));
 		String driverSupportEmailSubject = userData.optString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, context.getString(R.string.support_email_subject));
-		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.hippo_support_faq_name_default));
+		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.support_email_subject));
 		String referralCode = userData.getString("referral_code");
 
 
