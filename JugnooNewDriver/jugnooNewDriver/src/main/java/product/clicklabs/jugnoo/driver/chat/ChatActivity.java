@@ -1,7 +1,10 @@
 package product.clicklabs.jugnoo.driver.chat;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -57,6 +60,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	private EditText input;
 	private int engagementId = 0;
 	private String userImage;
+	LinearLayoutManager linearLayoutManager;
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
 	ChatAdapter chatAdapter;
 	boolean appOpen = true;
@@ -96,8 +100,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		ImageView send = (ImageView) findViewById(R.id.action_send);
 
 		recyclerViewChat = (RecyclerView) findViewById(R.id.recyclerViewChat);
-		recyclerViewChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-		recyclerViewChat.setHasFixedSize(true);
+		linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+		recyclerViewChat.setLayoutManager(linearLayoutManager);
+		recyclerViewChat.setHasFixedSize(false);
 		recyclerViewChat.setItemAnimator(new DefaultItemAnimator());
 		chatResponse = new ArrayList<>();
 		chatAdapter = new ChatAdapter(this, chatResponse, userImage);
@@ -164,6 +169,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 				}
 			}
 		}, 100);
+
+		registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_FINISH_ACTIVITY));
 	}
 
 	Runnable loadDiscussion=new Runnable() {
@@ -212,6 +219,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		super.onDestroy();
 		CHAT_SCREEN_OPEN = null;
 		Data.context = null;
+		unregisterReceiver(broadcastReceiver);
 		if(handler != null && loadDiscussion != null){
 			handler.removeCallbacks(loadDiscussion);
 		}
@@ -231,8 +239,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 				int position = chatAdapter.getItemCount() - 1;
 				chatAdapter.notifyItemInserted(position);
 
-				// scroll to the last message
-				recyclerViewChat.scrollToPosition(position);
+				linearLayoutManager.scrollToPositionWithOffset(chatAdapter.getItemCount() - 1, 10);
 				postChat(ChatActivity.this, inputText, id);
 				input.setText("");
 			}
@@ -302,7 +309,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatSuggestionAdapter.notifyDataSetChanged();
 
 								chatAdapter.notifyDataSetChanged();
-								recyclerViewChat.scrollToPosition(chatAdapter.getItemCount() - 1);
+								linearLayoutManager.scrollToPositionWithOffset(chatAdapter.getItemCount() - 1, 10);
 								//updateListData(getResources().getString(R.string.add_cash), false);
 								if(handler != null && loadDiscussion != null) {
 									handler.removeCallbacks(loadDiscussion);
@@ -372,4 +379,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
             e.printStackTrace();
         }
     }
+
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(Constants.ACTION_FINISH_ACTIVITY)) {
+				performBackPressed();
+			}
+		}
+	};
 }

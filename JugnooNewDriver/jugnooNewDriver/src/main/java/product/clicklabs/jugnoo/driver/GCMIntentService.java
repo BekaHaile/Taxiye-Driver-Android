@@ -732,6 +732,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 									notificationManager(this, logMessage, true);
 								}
 
+								//broadcast sent to finish chat activity
+								Intent intentBr = new Intent(Constants.ACTION_FINISH_ACTIVITY);
+								intentBr.putExtra(Constants.KEY_TAG, 1);
+								sendBroadcast(intentBr);
+
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 
 								String logMessage = jObj.getString("message");
