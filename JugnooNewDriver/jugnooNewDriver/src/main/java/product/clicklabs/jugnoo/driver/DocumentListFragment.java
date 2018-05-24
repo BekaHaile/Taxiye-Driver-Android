@@ -50,6 +50,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -60,11 +61,12 @@ import retrofit.mime.TypedFile;
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
 	private static final String BRANDING_IMAGE = "Branding Image";
+	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
-	int requirement;
+	int requirement, brandingImagesOnly;
 	int imgPixel;
 
 
@@ -114,6 +116,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
+		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		getDocsAsync(getActivity());
 
 		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
@@ -181,14 +184,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
-				holder.docType.setTypeface(Data.latoRegular(getActivity()));
+				holder.docType.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.docRejected = (TextView) convertView.findViewById(R.id.docRejected);
-				holder.docRejected.setTypeface(Data.latoRegular(getActivity()));
+				holder.docRejected.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.docRequirement = (TextView) convertView.findViewById(R.id.docRequirement);
-				holder.docRequirement.setTypeface(Data.latoRegular(getActivity()));
+				holder.docRequirement.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
-				holder.docStatus.setTypeface(Data.latoRegular(getActivity()));
+				holder.docStatus.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
@@ -607,6 +610,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			params.put("access_token",accessToken);
 			params.put("login_documents", isRequired);
 			params.put("app_version", Data.appVersion+"");
+			params.put(Constants.BRANDING_IMAGE, String.valueOf(brandingImagesOnly));
 			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().docRequest(params, new Callback<DocRequirementResponse>() {
@@ -629,6 +633,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
 										data.getInstructions(), data.getGalleryRestricted());
+								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
+									continue;
+								}
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
@@ -703,7 +710,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			LayoutGallery = (LinearLayout) dialog.findViewById(R.id.LAyoutGallery);
 
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 			DocInfo docInfo = docs.get(index);
 			if((docInfo.getGalleryRestricted() == null
@@ -1102,6 +1109,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void checkForDocumentsSubmit(){
+		if(brandingImagesOnly == 1){
+			return;
+		}
 		boolean mandatoryDocsSubmitted = true;
 		for(DocInfo docInfo : docs){
 			if((docInfo.docRequirement.equals(1)

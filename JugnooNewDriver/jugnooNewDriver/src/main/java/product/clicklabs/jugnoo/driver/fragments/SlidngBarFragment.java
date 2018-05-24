@@ -32,12 +32,11 @@ import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -74,7 +73,7 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
 
@@ -174,19 +173,19 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
 				convertView = mInflater.inflate(R.layout.list_item_slidebar_tab, null);
 
 				holder.textViewHeadText = (TextView) convertView.findViewById(R.id.textViewHeadText);
-				holder.textViewHeadText.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewHeadText.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textView1Value = (TextView) convertView.findViewById(R.id.textView1Value);
-				holder.textView1Value.setTypeface(Data.latoRegular(getActivity()));
+				holder.textView1Value.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textView1 = (TextView) convertView.findViewById(R.id.textView1);
-				holder.textView1.setTypeface(Data.latoRegular(getActivity()));
+				holder.textView1.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textView2Value = (TextView) convertView.findViewById(R.id.textView2Value);
-				holder.textView2Value.setTypeface(Data.latoRegular(getActivity()));
+				holder.textView2Value.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textView2 = (TextView) convertView.findViewById(R.id.textView2);
-				holder.textView2.setTypeface(Data.latoRegular(getActivity()));
+				holder.textView2.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewValue = (TextView) convertView.findViewById(R.id.textViewValue);
-				holder.textViewValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewValue.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewValueSub = (TextView) convertView.findViewById(R.id.textViewValueSub);
-				holder.textViewValueSub.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewValueSub.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.statusImage = (ImageView) convertView.findViewById(R.id.statusImage);
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);

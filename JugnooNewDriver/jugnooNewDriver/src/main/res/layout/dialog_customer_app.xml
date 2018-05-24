@@ -60,15 +60,12 @@
 
                 <Button
                     android:id="@+id/btnOk"
-                    android:layout_width="350px"
-                    android:layout_height="83px"
+                    style="@style/DialogButtonOrange"
                     android:layout_gravity="center_horizontal"
                     android:layout_centerHorizontal="true"
-                    android:background="@drawable/new_orange_btn_selector_rounded"
                     android:singleLine="true"
                     android:text="@string/go_to_playstore"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size" />
+                    />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

@@ -15,11 +15,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 /**
@@ -175,12 +175,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			linearLayoutNotificationImage = (LinearLayout) itemView.findViewById(R.id.linearLayoutNotificationImage);
 			imageViewNotification = (ImageView) itemView.findViewById(R.id.imageViewNotification);
 			textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
-			textViewTitle.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			textViewTitle.setSingleLine(true);
 			textViewTime = (TextView) itemView.findViewById(R.id.textViewTime);
-			textViewTime.setTypeface(Data.latoRegular(activity));
+			textViewTime.setTypeface(Fonts.mavenRegular(activity));
 			textViewDescription = (TextView) itemView.findViewById(R.id.textViewDescription);
-			textViewDescription.setTypeface(Data.latoRegular(activity));
+			textViewDescription.setTypeface(Fonts.mavenRegular(activity));
 			textViewDescription.setSingleLine(true);
 		}
 	}
@@ -193,7 +193,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			super(convertView);
 			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
 			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
-			textViewShowMore.setTypeface(Data.latoRegular(context));
+			textViewShowMore.setTypeface(Fonts.mavenRegular(context));
 			textViewShowMore.setText(context.getResources().getString(R.string.show_more));
 		}
 	}

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,10 +24,10 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -86,32 +85,32 @@ public class SelectAuditFragment extends Fragment {
 
 
 		textViewSelfAudit = (TextView) rootView.findViewById(R.id.textViewSelfAudit);
-		textViewSelfAudit.setTypeface(Data.latoHeavy(activity));
+		textViewSelfAudit.setTypeface(Fonts.mavenBold(activity));
 		textViewNJAutoBranding = (TextView) rootView.findViewById(R.id.textViewNJAutoBranding);
-		textViewNJAutoBranding.setTypeface(Data.latoHeavy(activity));
+		textViewNJAutoBranding.setTypeface(Fonts.mavenBold(activity));
 		textViewNJAutoAudit = (TextView) rootView.findViewById(R.id.textViewNJAutoAudit);
-		textViewNJAutoAudit.setTypeface(Data.latoHeavy(activity));
+		textViewNJAutoAudit.setTypeface(Fonts.mavenBold(activity));
 
 		textViewSelfAuditLast = (TextView) rootView.findViewById(R.id.textViewSelfAuditLast);
-		textViewSelfAuditLast.setTypeface(Data.latoRegular(activity));
+		textViewSelfAuditLast.setTypeface(Fonts.mavenRegular(activity));
 		textViewSelfAuditNext  = (TextView) rootView.findViewById(R.id.textViewSelfAuditNext);
-		textViewSelfAuditNext.setTypeface(Data.latoRegular(activity));
+		textViewSelfAuditNext.setTypeface(Fonts.mavenRegular(activity));
 		textViewSelfAuditStatus = (TextView) rootView.findViewById(R.id.textViewSelfAuditStatus);
-		textViewSelfAuditStatus.setTypeface(Data.latoRegular(activity));
+		textViewSelfAuditStatus.setTypeface(Fonts.mavenRegular(activity));
 		textViewNJAutoBrandingStatus = (TextView) rootView.findViewById(R.id.textViewNJAutoBrandingStatus);
-		textViewNJAutoBrandingStatus.setTypeface(Data.latoRegular(activity));
+		textViewNJAutoBrandingStatus.setTypeface(Fonts.mavenRegular(activity));
 		textViewNJAutoAuditStatus = (TextView) rootView.findViewById(R.id.textViewNJAutoAuditStatus);
-		textViewNJAutoAuditStatus.setTypeface(Data.latoRegular(activity));
+		textViewNJAutoAuditStatus.setTypeface(Fonts.mavenRegular(activity));
 
 
 		textViewNJBOffer = (TextView) rootView.findViewById(R.id.textViewNJBOffer);
-		textViewNJBOffer.setTypeface(Data.latoRegular(activity));
+		textViewNJBOffer.setTypeface(Fonts.mavenRegular(activity));
 		textViewNJAOffer = (TextView) rootView.findViewById(R.id.textViewNJAOffer);
-		textViewNJAOffer.setTypeface(Data.latoRegular(activity));
+		textViewNJAOffer.setTypeface(Fonts.mavenRegular(activity));
 		textViewNJBNumber = (TextView) rootView.findViewById(R.id.textViewNJBNumber);
-		textViewNJBNumber.setTypeface(Data.latoRegular(activity));
+		textViewNJBNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewNJANumber = (TextView) rootView.findViewById(R.id.textViewNJANumber);
-		textViewNJANumber.setTypeface(Data.latoRegular(activity));
+		textViewNJANumber.setTypeface(Fonts.mavenRegular(activity));
 
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
 		imageViewArrowSA = (ImageView) rootView.findViewById(R.id.imageViewArrowSA);

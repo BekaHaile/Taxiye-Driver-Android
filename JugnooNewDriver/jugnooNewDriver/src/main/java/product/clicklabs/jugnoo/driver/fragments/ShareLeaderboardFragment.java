@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import retrofit.Callback;
@@ -93,14 +94,14 @@ public class ShareLeaderboardFragment extends Fragment {
 		}
 
 		buttonLocal = (Button) rootView.findViewById(R.id.buttonLocal);
-		buttonLocal.setTypeface(Data.latoRegular(activity));
+		buttonLocal.setTypeface(Fonts.mavenRegular(activity));
 		buttonGlobal = (Button) rootView.findViewById(R.id.buttonGlobal);
-		buttonGlobal.setTypeface(Data.latoRegular(activity));
+		buttonGlobal.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewDaily = (TextView) rootView.findViewById(R.id.textViewDaily);
-		textViewDaily.setTypeface(Data.latoRegular(activity));
+		textViewDaily.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekly = (TextView) rootView.findViewById(R.id.textViewWeekly);
-		textViewWeekly.setTypeface(Data.latoRegular(activity));
+		textViewWeekly.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewNoOfDownloads = (TextView) rootView.findViewById(R.id.textViewNoOfDownloads);
 

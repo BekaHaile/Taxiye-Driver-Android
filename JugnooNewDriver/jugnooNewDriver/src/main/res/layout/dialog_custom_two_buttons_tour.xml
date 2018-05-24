@@ -97,43 +97,31 @@
 
                 />
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="40px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
-                android:layout_marginBottom="25px"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="20dp"
                 android:layout_gravity="center"
                 android:splitMotionEvents="false"
+                android:tag="@string/dont_touch_me"
                 >
-
-                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                    android:id="@+id/btnOk"
-                    android:layout_width="220px"
-                    android:layout_height="83px"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="280px"
-                    android:background="@drawable/new_orange_btn_selector_rounded"
-                    android:text="@string/ok"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    />
-
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
-                    android:layout_width="220px"
-                    android:layout_height="83px"
-                    android:layout_marginLeft="28px"
-                    android:padding="2px"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    style="@style/DialogButtonGrey"
                     android:text="@string/cancel"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
                     />
-            </RelativeLayout>
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnOk"
+                    style="@style/DialogButtonOrange"
+                    android:text="@string/ok"
+                    android:layout_marginStart="20dp"
+                    />
+
+
+            </LinearLayout>
 
 
         </LinearLayout>

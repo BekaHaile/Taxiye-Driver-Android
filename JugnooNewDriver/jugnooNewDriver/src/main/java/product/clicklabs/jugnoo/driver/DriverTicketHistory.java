@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,18 +20,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DriverTicketHistoryAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -83,13 +78,13 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 		title.setText(getResources().getString(R.string.support));
 
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
 		textViewCall = (TextView) findViewById(R.id.textViewCall);
-		textViewCall.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCall.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 		textViewInfoDisplay.setVisibility(View.GONE);
 		totalRides =0;

@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -17,21 +16,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -96,7 +90,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 
 		relativeLayoutDeliveryFare = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryFare);
 		relativeLayoutReturnSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutReturnSubsidy);
@@ -104,56 +98,56 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 
 		idValue = (TextView) findViewById(R.id.idValue);
-		idValue.setTypeface(Data.latoRegular(this));
+		idValue.setTypeface(Fonts.mavenRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
-		dateTimeValue.setTypeface(Data.latoRegular(this));
+		dateTimeValue.setTypeface(Fonts.mavenRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
-		distanceValue.setTypeface(Data.latoRegular(this));
+		distanceValue.setTypeface(Fonts.mavenRegular(this));
 		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue);
-		rideTimeValue.setTypeface(Data.latoRegular(this));
+		rideTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewReturnDistance = (TextView) findViewById(R.id.textViewReturnDistance);
-		textViewReturnDistance.setTypeface(Data.latoRegular(this));
+		textViewReturnDistance.setTypeface(Fonts.mavenRegular(this));
 
 		textViewRideFareValue = (TextView) findViewById(R.id.textViewRideFareValue);
-		textViewRideFareValue.setTypeface(Data.latoRegular(this));
+		textViewRideFareValue.setTypeface(Fonts.mavenRegular(this));
 		textViewNoOfDeliveries = (TextView) findViewById(R.id.textViewNoOfDeliveries);
-		textViewNoOfDeliveries.setTypeface(Data.latoRegular(this));
+		textViewNoOfDeliveries.setTypeface(Fonts.mavenRegular(this));
 		textViewReturnSubsidyValue = (TextView) findViewById(R.id.textViewReturnSubsidyValue);
-		textViewReturnSubsidyValue.setTypeface(Data.latoRegular(this));
+		textViewReturnSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
-		textViewJugnooCutValue.setTypeface(Data.latoRegular(this));
+		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this));
 
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
-		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewActualFare.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
-		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalance.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
-		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCustomerPaid.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
-		textViewFromValue.setTypeface(Data.latoRegular(this));
+		textViewFromValue.setTypeface(Fonts.mavenRegular(this));
 		textViewDeliveryFareValue = (TextView) findViewById(R.id.textViewDeliveryFareValue);
-		textViewDeliveryFareValue.setTypeface(Data.latoRegular(this));
+		textViewDeliveryFareValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
+		textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.distanceValue)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewDeliveryFare)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewDeliveryFareRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewReturnSubsidy)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewReturnSubsidyRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewDeliveryFare)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewDeliveryFareRupee)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewReturnSubsidy)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewReturnSubsidyRupee)).setTypeface(Fonts.mavenRegular(this));
 
 
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Fonts.mavenRegular(this));
 
 
 //		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);

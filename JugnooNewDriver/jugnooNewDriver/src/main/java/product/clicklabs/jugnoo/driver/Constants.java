@@ -287,5 +287,10 @@ public interface Constants {
 	String SUPPORT_MAIN = "support_main";
 	String HIPPO_TICKET_FAQ_NAME = "hippo_ticket_faq_name";
 	String KEY_SHOW_IN_ACCOUNT = "show_in_account";
+	String BRANDING_IMAGES_ONLY = "branding_images_only";
+	String BRANDING_IMAGE = "branding_image";
+
+	String ACTION_FINISH_ACTIVITY = BuildConfig.APPLICATION_ID+".finish_activity";
+
 }
 

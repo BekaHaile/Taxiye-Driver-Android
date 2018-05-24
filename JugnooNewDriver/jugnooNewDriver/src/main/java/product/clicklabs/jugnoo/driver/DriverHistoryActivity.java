@@ -17,6 +17,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 public class DriverHistoryActivity extends BaseFragmentActivity {
 	
@@ -51,14 +52,14 @@ public class DriverHistoryActivity extends BaseFragmentActivity {
 		relativeLayoutReferralMoney = (RelativeLayout) findViewById(R.id.relativeLayoutReferralMoney);
 		relativeLayoutReferralMoney.setVisibility(View.GONE);
 		
-		textViewRides = (TextView) findViewById(R.id.textViewRides); textViewRides.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewMissed = (TextView) findViewById(R.id.textViewMissed); textViewMissed.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Data.latoRegular(getApplicationContext()),Typeface.BOLD);
-		textViewDailyValue = (TextView) findViewById(R.id.textViewDailyValue); textViewDailyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue); textViewMonthlyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewReferralMoneyText = (TextView) findViewById(R.id.textViewReferralMoneyText); textViewReferralMoneyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewReferralMoneyValue = (TextView) findViewById(R.id.textViewReferralMoneyValue); textViewReferralMoneyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewRides = (TextView) findViewById(R.id.textViewRides); textViewRides.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		textViewMissed = (TextView) findViewById(R.id.textViewMissed); textViewMissed.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Fonts.mavenRegular(getApplicationContext()),Typeface.BOLD);
+		textViewDailyValue = (TextView) findViewById(R.id.textViewDailyValue); textViewDailyValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+		textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue); textViewMonthlyValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyText = (TextView) findViewById(R.id.textViewReferralMoneyText); textViewReferralMoneyText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyValue = (TextView) findViewById(R.id.textViewReferralMoneyValue); textViewReferralMoneyValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 		
 		imageViewRides = (ImageView) findViewById(R.id.imageViewRides);
 		imageViewMissed = (ImageView) findViewById(R.id.imageViewMissed);

@@ -29,7 +29,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -37,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -90,7 +90,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		
 		
 		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		listViewHelp = (ListView) findViewById(R.id.listViewHelp);
 		helpListAdapter = new HelpListAdapter();
@@ -101,7 +101,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		
 		
 		progressBarHelp = (ProgressBar) findViewById(R.id.progressBarHelp);
-		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay); textViewInfoDisplay.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay); textViewInfoDisplay.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		helpWebview = (WebView) findViewById(R.id.helpWebview);
 
 
@@ -274,7 +274,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 				holder = new ViewHolderHelp();
 				convertView = mInflater.inflate(R.layout.list_item_help, null);
 				
-				holder.name = (TextView) convertView.findViewById(R.id.name); holder.name.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.name = (TextView) convertView.findViewById(R.id.name); holder.name.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
 				
 				holder.relative.setTag(holder);

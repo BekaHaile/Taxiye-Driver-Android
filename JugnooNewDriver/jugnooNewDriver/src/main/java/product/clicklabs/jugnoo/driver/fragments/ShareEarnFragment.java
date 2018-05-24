@@ -48,6 +48,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -96,12 +97,12 @@ public class ShareEarnFragment extends Fragment {
         buttonShare.setText(Data.userData.referralButtonText);
 
         textViewReferralCodeDisplay = (TextView) rootView.findViewById(R.id.textViewReferralCodeDisplay);
-        textViewReferralCodeDisplay.setTypeface(Data.latoRegular(activity));
+        textViewReferralCodeDisplay.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue = (TextView) rootView.findViewById(R.id.textViewReferralCodeValue);
-        textViewReferralCodeValue.setTypeface(Data.latoRegular(activity));
+        textViewReferralCodeValue.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue.setTextColor(getResources().getColor(R.color.musturd_jugnoo));
         textViewShareReferral = (TextView) rootView.findViewById(R.id.textViewShareReferral);
-        textViewShareReferral.setTypeface(Data.latoRegular(activity));
+        textViewShareReferral.setTypeface(Fonts.mavenRegular(activity));
 
         try {
             sstr = new SpannableString(Data.userData.referralCode);
@@ -114,7 +115,7 @@ public class ShareEarnFragment extends Fragment {
             textViewReferralCodeDisplay.setText("");
             textViewReferralCodeDisplay.append(getResources().getString(R.string.your_referral_code));
             textViewReferralCodeValue.setText(sstr);
-            textViewReferralCodeValue.setTypeface(Data.latoHeavy(activity));
+            textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
             textViewShareReferral.setText(Data.userData.referralMessage);
 
@@ -166,7 +167,7 @@ public class ShareEarnFragment extends Fragment {
 
 
             TextView textViewDialogTitle = (TextView) dialog.findViewById(R.id.textViewDialogTitle);
-            textViewDialogTitle.setTypeface(Data.latoRegular(activity));
+            textViewDialogTitle.setTypeface(Fonts.mavenRegular(activity));
             final EditText customerNumber = (EditText) dialog.findViewById(R.id.customerNumber);
             final TextView tvCountryCode = (TextView) dialog.findViewById(R.id.tvCountryCode);
             tvCountryCode.setText(Utils.getCountryCode(activity));
@@ -184,14 +185,14 @@ public class ShareEarnFragment extends Fragment {
                     countryPicker.showDialog(activity.getSupportFragmentManager());
                 }
             });
-            customerNumber.setTypeface(Data.latoRegular(activity));
+            customerNumber.setTypeface(Fonts.mavenRegular(activity));
             customerNumber.setHint(Data.userData.referralDialogHintText);
             textViewDialogTitle.setText(Data.userData.referralDialogText);
 
             final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-            btnOk.setTypeface(Data.latoRegular(activity));
+            btnOk.setTypeface(Fonts.mavenRegular(activity));
             final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-            btnCancel.setTypeface(Data.latoRegular(activity));
+            btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override

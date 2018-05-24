@@ -1,9 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,35 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
-import org.json.JSONObject;
-
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
-import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 public class SwitchCustomerFragment extends Fragment {
@@ -87,9 +66,9 @@ public class SwitchCustomerFragment extends Fragment {
 		recyclerViewCustomer.setHasFixedSize(false);
 
 		restText = (TextView) rootView.findViewById(R.id.restText);
-		restText.setTypeface(Data.latoRegular(activity));
+		restText.setTypeface(Fonts.mavenRegular(activity));
 		title = (TextView) rootView.findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(activity));
+		title.setTypeface(Fonts.mavenRegular(activity));
 
 		if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
 			title.setText(activity.getResources().getString(R.string.pool_only));

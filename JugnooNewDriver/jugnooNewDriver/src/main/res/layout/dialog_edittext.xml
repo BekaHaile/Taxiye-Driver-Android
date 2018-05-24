@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60px"
             android:orientation="vertical"
-            android:paddingBottom="60px"
+            android:paddingBottom="40px"
             android:splitMotionEvents="false"
 
             >
@@ -82,17 +82,11 @@
 
             <Button
                 android:id="@+id/btnConfirm"
-                android:layout_width="247px"
-                android:layout_height="83px"
-                android:layout_alignParentBottom="true"
+                style="@style/DialogButtonOrange"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40px"
-                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="@string/done"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-
                 />
 
 

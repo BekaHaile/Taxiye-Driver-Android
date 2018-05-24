@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -80,7 +81,7 @@ public class NotificationMessagesFragment extends android.support.v4.app.Fragmen
 		swipeRefreshLayout.setColorSchemeResources(R.color.new_orange);
 		linearLayoutNoNotifications = (LinearLayout) rootView.findViewById(R.id.linearLayoutNoNotifications);
 		linearLayoutNoNotifications.setVisibility(View.GONE);
-		((TextView)rootView.findViewById(R.id.textViewNoNotifications)).setTypeface(Data.latoRegular(activity));
+		((TextView)rootView.findViewById(R.id.textViewNoNotifications)).setTypeface(Fonts.mavenRegular(activity));
 
 		recyclerViewNotification = (RecyclerView) rootView.findViewById(R.id.my_request_recycler);
 		recyclerViewNotification.setLayoutManager(new LinearLayoutManager(activity));

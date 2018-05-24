@@ -344,7 +344,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn, tvChatCount;
 
 	private TextView endRideCustomText;
-	Button reviewSubmitBtn, btnHelp, btnChatHead;
+	Button reviewSubmitBtn, btnHelp;
+	TextView btnChatHead;
 	RelativeLayout relativeLayoutRateCustomer, topRlOuter, rlChatDriver;
 	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
 	Button reviewSkipBtn;
@@ -529,8 +530,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			profileImg = (ImageView) findViewById(R.id.profileImg);
 			userName = (TextView) findViewById(R.id.userName);
 			ratingValue = (TextView) findViewById(R.id.ratingValue);
-			userName.setTypeface(Data.latoRegular(getApplicationContext()));
-			ratingValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			ratingValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
@@ -544,11 +545,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
-			((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
 			temptext  = (TextView) findViewById(R.id.temptext);
-			temptext.setTypeface(Data.latoRegular(getApplicationContext()));
+			temptext.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 //			textShader=new LinearGradient(0, 0, 0, 20,
 //					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //					new float[]{0, 1}, Shader.TileMode.CLAMP);
@@ -568,27 +569,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
 			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
-			notificationCenterText.setTypeface(Data.latoRegular(getApplicationContext()));
+			notificationCenterText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			notificationCenterText.setText(getResources().getString(R.string.Notifications));
 
 			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
 			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 			bookingsText = (TextView) findViewById(R.id.bookingsText);
-			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			bookingsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			etaTimerRLayout = (RelativeLayout) findViewById(R.id.etaTimerRLayout);
 			etaTimerText = (TextView) findViewById(R.id.ETATimerText);
-			etaTimerText.setTypeface(Data.digitalRegular(getApplicationContext()));
+			etaTimerText.setTypeface(Fonts.digitalRegular(getApplicationContext()));
 
 			imageViewETASmily = (ImageView) findViewById(R.id.imageViewETASmily);
 
 			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
-			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
+			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Fonts.mavenRegular(this));
 
 			fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
 			driverImageRL = (RelativeLayout) findViewById(R.id.driverImageRL);
 			fareDetailsText = (TextView) findViewById(R.id.fareDetailsText);
-			fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			fareDetailsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
 			textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
@@ -623,7 +624,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
 
-			btnChatHead = (Button) findViewById(R.id.btnChatHead);
+			btnChatHead = (TextView) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
 			tvChatCount = (TextView) findViewById(R.id.tvChatCount);
 //			btnChat1 = (Button) findViewById(R.id.btnChat1);
@@ -678,9 +679,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 			imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+			textViewTitleBarDEI.setTypeface(Fonts.mavenRegular(this));
 			textViewNotificationValue = (TextView) findViewById(R.id.textViewNotificationValue);
-			textViewNotificationValue.setTypeface(Data.latoRegular(this));
+			textViewNotificationValue.setTypeface(Fonts.mavenRegular(this));
 			textViewNotificationValue.setVisibility(View.GONE);
 
 
@@ -691,7 +692,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tourLayout = (RelativeLayout) findViewById(R.id.tour_layout);
 			tourLayout.setVisibility(View.GONE);
 			tourTextView = (TextView) findViewById(R.id.tour_textView);
-			tourTextView.setTypeface(Data.latoRegular(this));
+			tourTextView.setTypeface(Fonts.mavenRegular(this));
 			tourCrossBtn = (ImageView) findViewById(R.id.cross_tour);
 			tourCrossBtn.setOnClickListener(this);
 
@@ -763,10 +764,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
 			driverRequestAcceptBackBtn = (Button) findViewById(R.id.driverRequestAcceptBackBtn);
 			driverAcceptRideBtn = (Button) findViewById(R.id.driverAcceptRideBtn);
-			driverAcceptRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverAcceptRideBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverAcceptRideBtn.setText(getStringText(R.string.accept_ride));
 			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
-			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverCancelRequestBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
 			buttonDriverNavigation = (Button) findViewById(R.id.buttonDriverNavigation);
 
@@ -778,7 +779,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			driverPerfectRidePassengerName = (TextView) findViewById(R.id.driverPerfectRidePassengerName);
-			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverPerfectRidePassengerName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewRideInstructions = (TextView) findViewById(R.id.textViewRideInstructions);
 			textViewRideInstructions.setTypeface(Fonts.mavenRegular(this));
 //			textViewRideInstructionsInRide = (TextView) findViewById(R.id.textViewRideInstructionsInRide);
@@ -786,7 +787,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.textViewCall);
-			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverPassengerCallText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
 //			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
@@ -795,18 +796,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
 			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
-			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverStartRideBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverStartRideBtn.setText(getStringText(R.string.start_ride));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
-			buttonMarkArrived.setTypeface(Data.latoRegular(this));
+			buttonMarkArrived.setTypeface(Fonts.mavenRegular(this));
 //			buttonMarkArrived.setText(getStringText(R.string.arrived));
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
-			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverCancelRideBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverCancelRideBtn.setText(getStringText(R.string.cancel));
 			tvDropAddressToggleView = (TextView) findViewById(R.id.tvDropAddressToggleView);
-			tvDropAddressToggleView.setTypeface(Data.latoRegular(this));
+			tvDropAddressToggleView.setTypeface(Fonts.mavenRegular(this));
 			bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
-			bDropAddressToggle.setTypeface(Data.latoRegular(this));
+			bDropAddressToggle.setTypeface(Fonts.mavenRegular(this));
 
 
 			//In ride layout
@@ -814,36 +815,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			linearLayoutRideValues = (LinearLayout) findViewById(R.id.linearLayoutRideValues);
 
 			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
-			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRDistanceText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverIRDistanceText.setText(R.string.distance);
 			driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue);
-			driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			driverIRDistanceValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 			driverIRFareText = (TextView) findViewById(R.id.driverIRFareText);
-			driverIRFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRFareText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverIRFareValue = (TextView) findViewById(R.id.driverIRFareValue);
-			driverIRFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			driverIRFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 			driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText);
-			driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverRideTimeText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverRideTimeText.setText(getStringText(R.string.ride_time));
 			rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer);
-			rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			rideTimeChronometer.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 			driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
 			driverWaitText = (TextView) findViewById(R.id.driverWaitText);
-			driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverWaitText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverWaitText.setText(getStringText(R.string.wait_time));
 
 			driverWaitValue = (TextView) findViewById(R.id.driverWaitValue);
-			driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			driverWaitValue.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			driverWaitRl.setVisibility(View.GONE);
 
 			driverIRFareRl = (RelativeLayout) findViewById(R.id.driverIRFareRl);
 			driverIRFareRl.setVisibility(View.GONE);
 
 			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
-			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverEndRideBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			driverEndRideBtn.setText(R.string.end_ride);
 
 			buttonMakeDelivery = (Button) findViewById(R.id.buttonMakeDelivery);
@@ -860,24 +861,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			endRideReviewRl = (RelativeLayout) findViewById(R.id.endRideReviewRl);
 
 			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
-			reviewDistanceText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewDistanceText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewDistanceText.setText(getStringText(R.string.distance));
 			reviewDistanceValue = (TextView) findViewById(R.id.reviewDistanceValue);
-			reviewDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewDistanceValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			reviewWaitText = (TextView) findViewById(R.id.reviewWaitText);
-			reviewWaitText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewWaitText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewWaitText.setText(getStringText(R.string.wait_time));
 			reviewWaitValue = (TextView) findViewById(R.id.reviewWaitValue);
-			reviewWaitValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewWaitValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			reviewRideTimeText = (TextView) findViewById(R.id.reviewRideTimeText);
-			reviewRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewRideTimeText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewRideTimeText.setText(getStringText(R.string.ride_time));
 			reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
-			reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewRideTimeValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			reviewFareText = (TextView) findViewById(R.id.reviewFareText);
-			reviewFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewFareText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewFareValue = (TextView) findViewById(R.id.reviewFareValue);
-			reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
 			imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
@@ -888,32 +889,32 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewReachedDistanceRl = (LinearLayout) findViewById(R.id.reviewReachedDistanceRl);
 
 			linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
-			((TextView) findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			((TextView) findViewById(R.id.textViewEnterMeterFare)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 			linearLayoutMeterFareEditText = (LinearLayout) findViewById(R.id.linearLayoutMeterFareEditText);
 			textViewMeterFareRupee = (TextView) findViewById(R.id.textViewMeterFareRupee);
-			textViewMeterFareRupee.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			textViewMeterFareRupee.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 			textViewMeterFareRupee.setVisibility(View.GONE);
 			editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare);
-			editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			editTextEnterMeterFare.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 			relativeLayoutEndRideLuggageCount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideLuggageCount);
 			relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 			imageViewEndRideLuggageCountPlus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountPlus);
 			imageViewEndRideLuggageCountMinus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountMinus);
 			textViewEndRideLuggageCount = (TextView) findViewById(R.id.textViewEndRideLuggageCount);
-			textViewEndRideLuggageCount.setTypeface(Data.latoRegular(this));
+			textViewEndRideLuggageCount.setTypeface(Fonts.mavenRegular(this));
 
 			textViewPerfectRideWating = (TextView) findViewById(R.id.textViewPerfectRideWating);
-			textViewPerfectRideWating.setTypeface(Data.latoRegular(this));
+			textViewPerfectRideWating.setTypeface(Fonts.mavenRegular(this));
 			textViewPerfectRideWating.setText(getStringText(R.string.customer_waiting));
 
 
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
-			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooRideOverText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
-			takeFareText.setTypeface(Data.latoHeavy(getApplicationContext()));
+			takeFareText.setTypeface(Fonts.mavenBold(getApplicationContext()));
 
 			endRideCustomText = (TextView) findViewById(R.id.end_ride_custom_text);
 			String endRideText = Prefs.with(HomeActivity.this).getString(Constants.END_RIDE_CUSTOM_TEXT, "");
@@ -931,16 +932,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
-			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewSubmitBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			relativeLayoutRateCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutRateCustomer);
 			textViewRateYourCustomer = (TextView) findViewById(R.id.textViewRateYourCustomer);
-			textViewRateYourCustomer.setTypeface(Data.latoRegular(this));
+			textViewRateYourCustomer.setTypeface(Fonts.mavenRegular(this));
 			textViewRateYourCustomer.setText(getStringText(R.string.Rate_Your_Customer));
 			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
 			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
-			reviewSkipBtn.setTypeface(Data.latoRegular(this));
+			reviewSkipBtn.setTypeface(Fonts.mavenRegular(this));
 			reviewSkipBtn.setVisibility(View.GONE);
 
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
@@ -968,7 +969,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreen  = (TextView) findViewById(R.id.textViewDriverEarningOnScreen);
 			textViewDriverEarningOnScreenDate = (TextView) findViewById(R.id.textViewDriverEarningOnScreenDate);
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
-			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			textViewDriverEarningOnScreenValue.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 			imageViewSliderView = (ImageView)findViewById(R.id.imageViewSliderView);
 
 			relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
@@ -979,7 +980,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutEnterDestination = (RelativeLayout) findViewById(R.id.relativeLayoutEnterDestination);
 			textViewEnterDestination= (TextView) findViewById(R.id.textViewEnterDestination);
-			textViewEnterDestination.setTypeface(Data.latoRegular(this));
+			textViewEnterDestination.setTypeface(Fonts.mavenRegular(this));
 
 			linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
 			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
@@ -5199,33 +5200,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				convertView = mInflater.inflate(R.layout.list_item_driver_request_new, null);
 
 				holder.textViewRequestName = (TextView) convertView.findViewById(R.id.textViewRequestName);
-				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewRequestName.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress);
-				holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestAddress.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewEstimatedTripDistance = (TextView) convertView.findViewById(R.id.textViewEstimatedTripDistance);
-				holder.textViewEstimatedTripDistance.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedTripDistance.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
-				holder.textViewRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestDetails.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewEstimatedDist = (TextView) convertView.findViewById(R.id.textViewEstimatedDist);
-				holder.textViewEstimatedDist.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedDist.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime);
-				holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestTime.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor);
-				holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewRequestFareFactor.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewDeliveryFare = (TextView) convertView.findViewById(R.id.textViewDeliveryFare);
-				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewDeliveryFare.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 //				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
-//				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
+//				holder.textViewDeliveryApprox.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewEstimatedFareValue = (TextView) convertView.findViewById(R.id.textViewEstimatedFareValue);
-				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 //				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
-//				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
+//				holder.textViewEstimatedFare.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
-				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewRequestDistance.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
-				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.buttonAcceptRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
-				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.buttonCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
 				holder.rlAcceptCancel = (RelativeLayout) convertView.findViewById(R.id.rlAcceptCancel);
@@ -5242,16 +5243,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.buttonCancelRide.setTag(holder);
 
 				holder.textViewDropPoint = (TextView) convertView.findViewById(R.id.textViewDropPoint);
-				holder.textViewDropPoint.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewDropPoint.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewDropPoint1 = (TextView) convertView.findViewById(R.id.textViewDropPoint1);
-				holder.textViewDropPoint1.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPoint1.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewDropPoint2 = (TextView) convertView.findViewById(R.id.textViewDropPoint2);
-				holder.textViewDropPoint2.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPoint2.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewDropPoint3 = (TextView) convertView.findViewById(R.id.textViewDropPoint3);
-				holder.textViewDropPoint3.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPoint3.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.relativeLayoutDriverCOD = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutDriverCOD);
 				holder.textViewDropPointCount = (TextView) convertView.findViewById(R.id.textViewDropPointCount);
-				holder.textViewDropPointCount.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDropPointCount.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 				holder.textViewDropPointCount.setVisibility(View.GONE);
 
 				holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
@@ -7217,17 +7218,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
+			textMessage.setTypeface(Fonts.mavenRegular(activity));
 
 			textHead.setText(getResources().getString(R.string.alert));
 			textMessage.setText(getResources().getString(R.string.logout_text));
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -7372,13 +7373,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
+			textMessage.setTypeface(Fonts.mavenRegular(activity));
 
 			RelativeLayout tour_layout = (RelativeLayout) dialog.findViewById(R.id.tour_layout);
 			TextView tour_textView = (TextView) dialog.findViewById(R.id.tour_textView);
-			tour_textView.setTypeface(Data.latoRegular(activity));
+			tour_textView.setTypeface(Fonts.mavenRegular(activity));
 			ImageView cross_tour = (ImageView) dialog.findViewById(R.id.cross_tour);
 
 
@@ -7397,9 +7398,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			tour_textView.setText(getResources().getString(R.string.tutorial_tap_ok));
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -7490,14 +7491,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 				TextView textHead = (TextView) dialogEndRidePopup.findViewById(R.id.textHead);
-				textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+				textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 				TextView textMessage = (TextView) dialogEndRidePopup.findViewById(R.id.textMessage);
-				textMessage.setTypeface(Data.latoRegular(activity));
+				textMessage.setTypeface(Fonts.mavenRegular(activity));
 				walletBalanceUpdatePopup = false;
 
 				RelativeLayout tour_layout = (RelativeLayout) dialogEndRidePopup.findViewById(R.id.tour_layout);
 				TextView tour_textView = (TextView) dialogEndRidePopup.findViewById(R.id.tour_textView);
-				tour_textView.setTypeface(Data.latoRegular(activity));
+				tour_textView.setTypeface(Fonts.mavenRegular(activity));
 				ImageView cross_tour = (ImageView) dialogEndRidePopup.findViewById(R.id.cross_tour);
 
 				if(isTourFlag){
@@ -7511,9 +7512,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 				Button btnOk = (Button) dialogEndRidePopup.findViewById(R.id.btnOk);
-				btnOk.setTypeface(Data.latoRegular(activity));
+				btnOk.setTypeface(Fonts.mavenRegular(activity));
 				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
-				btnCancel.setTypeface(Data.latoRegular(activity));
+				btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 				btnOk.setOnClickListener(new View.OnClickListener() {
 					@SuppressWarnings("unused")
@@ -8769,13 +8770,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity));
+			textHead.setTypeface(Fonts.mavenRegular(activity));
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
+			textMessage.setTypeface(Fonts.mavenRegular(activity));
 			TextView timeOutText = (TextView) dialog.findViewById(R.id.timeOutText);
-			timeOutText.setTypeface(Data.latoRegular(activity));
+			timeOutText.setTypeface(Fonts.mavenRegular(activity));
 			final TextView timeOutValue = (TextView) dialog.findViewById(R.id.timeOutValue);
-			timeOutValue.setTypeface(Data.latoRegular(activity));
+			timeOutValue.setTypeface(Fonts.mavenRegular(activity));
 
 			textMessage.setText(Data.userData.timeoutMessage);
 

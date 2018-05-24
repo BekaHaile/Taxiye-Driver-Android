@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,31 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
-import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedFile;
 
 /**
  * Created by aneeshbansal on 13/08/16.
@@ -158,7 +142,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 		buttonGallery = (Button) rootView.findViewById(R.id.buttonGallery);
 
 		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
-		titleAutoSide.setTypeface(Data.latoRegular(activity));
+		titleAutoSide.setTypeface(Fonts.mavenRegular(activity));
 
 		titleAutoSide.setText(topMessage);
 		surfaceHolder = surfaceView.getHolder();

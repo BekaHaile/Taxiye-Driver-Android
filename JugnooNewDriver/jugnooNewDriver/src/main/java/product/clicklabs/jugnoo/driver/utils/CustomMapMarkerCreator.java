@@ -111,7 +111,7 @@ public class CustomMapMarkerCreator {
 		textView.setText(text);
 //		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (scale * (float) fontSize));
 		textView.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.text_size_8));
-		textView.setTypeface(Data.latoHeavy(context));
+		textView.setTypeface(Fonts.mavenBold(context));
 
 		final Rect boundsText = new Rect();
 

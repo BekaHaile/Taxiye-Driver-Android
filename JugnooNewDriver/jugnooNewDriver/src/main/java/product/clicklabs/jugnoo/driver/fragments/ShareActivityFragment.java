@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -78,18 +79,18 @@ public class ShareActivityFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		((TextView)rootView.findViewById(R.id.textViewNumberOfDownloads)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
-		((TextView)rootView.findViewById(R.id.textViewNumberOfFirstRides)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
-		((TextView)rootView.findViewById(R.id.textViewMoneyEarned)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
+		((TextView)rootView.findViewById(R.id.textViewNumberOfDownloads)).setTypeface(Fonts.mavenLight(activity), Typeface.BOLD);
+		((TextView)rootView.findViewById(R.id.textViewNumberOfFirstRides)).setTypeface(Fonts.mavenLight(activity), Typeface.BOLD);
+		((TextView)rootView.findViewById(R.id.textViewMoneyEarned)).setTypeface(Fonts.mavenLight(activity), Typeface.BOLD);
 
 		textViewNumberOfDownloadsValue = (TextView)rootView.findViewById(R.id.textViewNumberOfDownloadsValue);
-		textViewNumberOfDownloadsValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewNumberOfDownloadsValue.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewNumberOfFirstRidesValue = (TextView)rootView.findViewById(R.id.textViewNumberOfFirstRidesValue);
-		textViewNumberOfFirstRidesValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewNumberOfFirstRidesValue.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewMoneyEarnedValue = (TextView)rootView.findViewById(R.id.textViewMoneyEarnedValue);
-		textViewMoneyEarnedValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewMoneyEarnedValue.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewDataEffective = (TextView)rootView.findViewById(R.id.textViewDataEffective);
-		textViewDataEffective.setTypeface(Data.latoRegular(activity));
+		textViewDataEffective.setTypeface(Fonts.mavenRegular(activity));
 
 		getLeaderboardActivityCall();
 

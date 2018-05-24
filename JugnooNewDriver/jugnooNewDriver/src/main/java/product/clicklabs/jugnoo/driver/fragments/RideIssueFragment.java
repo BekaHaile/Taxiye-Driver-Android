@@ -118,7 +118,7 @@ public class RideIssueFragment extends Fragment {
 		}
 
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(activity));
+		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
 
 		textViewRegistration = (TextView) rootView.findViewById(R.id.textViewRegistration);
@@ -127,7 +127,7 @@ public class RideIssueFragment extends Fragment {
 		editTextMessage.setTypeface(Fonts.mavenRegular(activity));
 
 		buttonSubmitRequest = (Button) rootView.findViewById(R.id.buttonSubmitRequest);
-		buttonSubmitRequest.setTypeface(Data.latoRegular(activity));
+		buttonSubmitRequest.setTypeface(Fonts.mavenRegular(activity));
 
 		scrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
 		textViewScroll = (TextView) rootView.findViewById(R.id.textViewScroll);

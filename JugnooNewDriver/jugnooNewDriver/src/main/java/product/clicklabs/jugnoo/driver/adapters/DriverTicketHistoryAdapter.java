@@ -174,21 +174,21 @@ public class DriverTicketHistoryAdapter extends RecyclerView.Adapter<RecyclerVie
 			linearLayoutTicketItem = (LinearLayout)v.findViewById(R.id.linearLayoutTicketItem);
 			imageViewStatus = (ImageView)v.findViewById(R.id.imageViewStatus);
 			textViewComplainIdText = (TextView) v.findViewById(R.id.textViewComplainIdText);
-			textViewComplainIdText.setTypeface(Data.latoRegular(activity));
+			textViewComplainIdText.setTypeface(Fonts.mavenRegular(activity));
 			textViewComplainId = (TextView) v.findViewById(R.id.textViewComplainId);
-			textViewComplainId.setTypeface(Data.latoRegular(activity));
+			textViewComplainId.setTypeface(Fonts.mavenRegular(activity));
 
 			textViewStatus = (TextView) v.findViewById(R.id.textViewStatus);
 			textViewStatus.setTypeface(Fonts.mavenBold(activity));
 			textViewCreatedOnText = (TextView) v.findViewById(R.id.textViewCreatedOnText);
-			textViewCreatedOnText.setTypeface(Data.latoRegular(activity));
+			textViewCreatedOnText.setTypeface(Fonts.mavenRegular(activity));
 			textViewCreatedOn = (TextView) v.findViewById(R.id.textViewCreatedOn);
-			textViewCreatedOn.setTypeface(Data.latoRegular(activity));
+			textViewCreatedOn.setTypeface(Fonts.mavenRegular(activity));
 
 			textViewIssueCategory = (TextView) v.findViewById(R.id.textViewIssueCategory);
-			textViewIssueCategory.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			textViewIssueCategory.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			textViewManualAdj = (TextView) v.findViewById(R.id.textViewManualAdj);
-			textViewManualAdj.setTypeface(Data.latoHeavy(activity));
+			textViewManualAdj.setTypeface(Fonts.mavenBold(activity));
 
 			linearLayoutTicketItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(linearLayoutTicketItem);
@@ -203,7 +203,7 @@ public class DriverTicketHistoryAdapter extends RecyclerView.Adapter<RecyclerVie
 			super(convertView);
 			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
 			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
-			textViewShowMore.setTypeface(Data.latoRegular(activity));
+			textViewShowMore.setTypeface(Fonts.mavenRegular(activity));
 			textViewShowMore.setText("show more");
 		}
 	}

@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
-import product.clicklabs.jugnoo.driver.Data;
+
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 class ViewHolderDestinationOption {
@@ -60,7 +61,7 @@ public class DestinationOptionsListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.list_item_destination_option, null);
 
 			holder.textViewDestinationOption = (TextView) convertView.findViewById(R.id.textViewDestinationOption);
-			holder.textViewDestinationOption.setTypeface(Data.latoRegular(context));
+			holder.textViewDestinationOption.setTypeface(Fonts.mavenRegular(context));
 			holder.imageViewDestinationOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewDestinationOptionCheck);
 
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);

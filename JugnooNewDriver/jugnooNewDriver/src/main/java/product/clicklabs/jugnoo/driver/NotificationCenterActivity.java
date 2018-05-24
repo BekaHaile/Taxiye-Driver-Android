@@ -1,50 +1,28 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import product.clicklabs.jugnoo.driver.adapters.NotificationAdapter;
 import product.clicklabs.jugnoo.driver.adapters.NotificationFragmentAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
-import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 /**
@@ -85,7 +63,7 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
         new ASSL(this, root, 1134, 720, false);
 
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		backBtn = (Button)findViewById(R.id.backBtn);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +80,7 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
 		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
 		try {

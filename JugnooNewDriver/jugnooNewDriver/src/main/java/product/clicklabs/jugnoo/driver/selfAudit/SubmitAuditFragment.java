@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -112,39 +113,39 @@ public class SubmitAuditFragment extends Fragment {
 		vehicleNoEt = (EditText) rootView.findViewById(R.id.vehicleNoEt);
 
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(activity));
+		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
 		textViewFront = (TextView) rootView.findViewById(R.id.textViewFront);
-		textViewFront.setTypeface(Data.latoRegular(activity));
+		textViewFront.setTypeface(Fonts.mavenRegular(activity));
 		textViewBack  = (TextView) rootView.findViewById(R.id.textViewBack);
-		textViewBack.setTypeface(Data.latoRegular(activity));
+		textViewBack.setTypeface(Fonts.mavenRegular(activity));
 		textViewLeft = (TextView) rootView.findViewById(R.id.textViewLeft);
-		textViewLeft.setTypeface(Data.latoRegular(activity));
+		textViewLeft.setTypeface(Fonts.mavenRegular(activity));
 		textViewRight = (TextView) rootView.findViewById(R.id.textViewRight);
-		textViewRight.setTypeface(Data.latoRegular(activity));
+		textViewRight.setTypeface(Fonts.mavenRegular(activity));
 		textViewCameraStand = (TextView) rootView.findViewById(R.id.textViewCameraStand);
-		textViewCameraStand.setTypeface(Data.latoRegular(activity));
+		textViewCameraStand.setTypeface(Fonts.mavenRegular(activity));
 		textViewRetryFront = (TextView) rootView.findViewById(R.id.textViewRetryFront);
-		textViewRetryFront.setTypeface(Data.latoRegular(activity));
+		textViewRetryFront.setTypeface(Fonts.mavenRegular(activity));
 		textViewRetryBack = (TextView) rootView.findViewById(R.id.textViewRetryBack);
-		textViewRetryBack.setTypeface(Data.latoRegular(activity));
+		textViewRetryBack.setTypeface(Fonts.mavenRegular(activity));
 		textViewRetryLeft = (TextView) rootView.findViewById(R.id.textViewRetryLeft);
-		textViewRetryLeft.setTypeface(Data.latoRegular(activity));
+		textViewRetryLeft.setTypeface(Fonts.mavenRegular(activity));
 		textViewRetryRight = (TextView) rootView.findViewById(R.id.textViewRetryRight);
-		textViewRetryRight.setTypeface(Data.latoRegular(activity));
+		textViewRetryRight.setTypeface(Fonts.mavenRegular(activity));
 		textViewRetryCameraStand = (TextView) rootView.findViewById(R.id.textViewRetryCameraStand);
-		textViewRetryCameraStand.setTypeface(Data.latoRegular(activity));
+		textViewRetryCameraStand.setTypeface(Fonts.mavenRegular(activity));
 
 
 		textViewStatusFront = (TextView) rootView.findViewById(R.id.textViewStatusFront);
-		textViewStatusFront.setTypeface(Data.latoRegular(activity));
+		textViewStatusFront.setTypeface(Fonts.mavenRegular(activity));
 		textViewStatusBack = (TextView) rootView.findViewById(R.id.textViewStatusBack);
-		textViewStatusBack.setTypeface(Data.latoRegular(activity));
+		textViewStatusBack.setTypeface(Fonts.mavenRegular(activity));
 		textViewStatusLeft = (TextView) rootView.findViewById(R.id.textViewStatusLeft);
-		textViewStatusLeft.setTypeface(Data.latoRegular(activity));
+		textViewStatusLeft.setTypeface(Fonts.mavenRegular(activity));
 		textViewStatusRight = (TextView) rootView.findViewById(R.id.textViewStatusRight);
-		textViewStatusRight.setTypeface(Data.latoRegular(activity));
+		textViewStatusRight.setTypeface(Fonts.mavenRegular(activity));
 		textViewStatusMobileStand = (TextView) rootView.findViewById(R.id.textViewStatusMobileStand);
-		textViewStatusMobileStand.setTypeface(Data.latoRegular(activity));
+		textViewStatusMobileStand.setTypeface(Fonts.mavenRegular(activity));
 
 
 		imageIconFront = (ImageView) rootView.findViewById(R.id.image_icon_front);

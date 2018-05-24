@@ -119,13 +119,13 @@ public class OtpDialog {
             ImageView callView = (ImageView) alertDialog.findViewById(R.id.callView);
             Button enterOtpButton = (Button) alertDialog.findViewById(R.id.enterOtpButton);
 
-            textViewWaiting.setTypeface(Data.latoRegular(activity));
-            textViewCounter.setTypeface(Data.latoRegular(activity));
+            textViewWaiting.setTypeface(Fonts.mavenRegular(activity));
+            textViewCounter.setTypeface(Fonts.mavenRegular(activity));
 
-            automaticOtpFailed.setTypeface(Data.latoRegular(activity));
-            giveMissedCall.setTypeface(Data.latoRegular(activity));
-            textViewOr.setTypeface(Data.latoRegular(activity));
-            enterOtpButton.setTypeface(Data.latoRegular(activity));
+            automaticOtpFailed.setTypeface(Fonts.mavenRegular(activity));
+            giveMissedCall.setTypeface(Fonts.mavenRegular(activity));
+            textViewOr.setTypeface(Fonts.mavenRegular(activity));
+            enterOtpButton.setTypeface(Fonts.mavenRegular(activity));
 
 
             if (isNumberNotExist) {

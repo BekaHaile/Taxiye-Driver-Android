@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +30,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -89,7 +89,7 @@ public class NotificationTipsFragment extends Fragment {
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfo = (TextView) rootView.findViewById(R.id.textViewInfo);
-		textViewInfo.setTypeface(Data.latoRegular(activity));
+		textViewInfo.setTypeface(Fonts.mavenRegular(activity));
 		webview = (WebView) rootView.findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.setWebChromeClient(new WebChromeClient());
