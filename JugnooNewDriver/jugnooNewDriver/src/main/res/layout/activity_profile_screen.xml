@@ -86,7 +86,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="350px"
-        android:background="@drawable/profile_background"
+        android:background="@drawable/bg_profile_background"
         android:id="@+id/driverDetailsRL">
 
         <RelativeLayout

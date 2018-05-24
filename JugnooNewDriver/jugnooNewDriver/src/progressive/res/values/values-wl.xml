@@ -16,27 +16,25 @@
     -->
 
     <!--White Label Key-->
-    <string name="white_label_key">d7f228ce89b10cb02ec9fccdb47355d5</string>
+    <string name="white_label_key">2a5ea26afb2c1fdbd0e7ab0941b9b9ab</string>
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
-    <string name="file_provider">product.clicklabs.jugnoo.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--IMP-->
+    <string name="file_provider">product.clicklabs.jugnoo.white.driver.provider</string>
 
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">Jugnoo</string><!--* IMP-->
+    <string name="white_label_name">Progressive Taxi</string><!--* IMP-->
+    <string name="google_maps_api_key">AIzaSyDL96no_9dXS-ERNJs3qxOAu3lQW4RrUbY</string> <!--IMP-->
     <string name="support_email">support@jugnoo.in</string>
-    <string name="support_email_subject">Jugnoo Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
-    <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
     <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
-    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_small</drawable>
+    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
 
@@ -45,27 +43,27 @@
     <drawable name="bg_on_boarding_drawable">@drawable/splash_new_background</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <integer name="show_t_and_c">@integer/view_visible</integer>
+    <integer name="show_t_and_c">@integer/view_gone</integer>
 
 
 
     <!--Side Menu Properties-->
     <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
-    <integer name="show_invoices">@integer/view_visible</integer>
-    <integer name="show_driver_resources">@integer/view_visible</integer>
-    <integer name="show_refer_earn">@integer/view_visible</integer>
+    <integer name="show_invoices">@integer/view_gone</integer>
+    <integer name="show_driver_resources">@integer/view_gone</integer>
+    <integer name="show_refer_earn">@integer/view_gone</integer>
 
 
     <!--Profile Screen-->
-    <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
+    <integer name="show_bank_details_in_profile">@integer/view_gone</integer>
     <integer name="show_t_and_c_profile">@integer/view_visible</integer>
 
 
 
     <!--General Features Enable/Disable-->
-    <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
-    <integer name="show_language_control">@integer/view_visible</integer>
-    <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <bool name="show_support_ride_detail">false</bool>  <!--For Ticketing-->
+    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="show_call_in_otp">@integer/view_gone</integer>
 
 
 
