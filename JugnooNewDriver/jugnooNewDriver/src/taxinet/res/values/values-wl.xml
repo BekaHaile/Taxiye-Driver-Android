@@ -16,22 +16,22 @@
     -->
 
     <!--White Label Key-->
-    <string name="white_label_key">d7f228ce89b10cb02ec9fccdb47355d5</string>
+    <string name="white_label_key">5bb40d7c0caa35d207433fe74302e7c2</string>
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
-    <string name="file_provider">product.clicklabs.jugnoo.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--IMP-->
+    <string name="images_path">Taxinet Driver/Taxinet Pictures</string>
+    <string name="file_provider">production.taxinet.driver.provider</string>
+    <string name="google_maps_api_key">AIzaSyB8aOETL0HSK0AoQlqrBS6Do87IWVpwBPc</string> <!--IMP-->
 
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">Jugnoo</string><!--* IMP-->
-    <string name="support_email">support@jugnoo.in</string>
-    <string name="support_email_subject">Jugnoo Driver Support</string>
+    <string name="white_label_name">Taxinet</string><!--* IMP-->
+    <string name="support_email">support@taxinet.in</string>
+    <string name="support_email_subject">Taxinet Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
-    <string name="customer_app_download_link">https://www.jugnoo.in/</string>
+    <string name="customer_app_download_link">https://www.taxinet.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
@@ -42,7 +42,7 @@
 
 
     <!--Login sign-up -->
-    <drawable name="bg_on_boarding_drawable">@drawable/splash_new_background</drawable>
+    <drawable name="bg_on_boarding_drawable">@color/red_v2</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>
@@ -59,12 +59,13 @@
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
     <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <drawable name="bg_profile_background">@color/red_v2</drawable>
 
 
 
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
-    <integer name="show_language_control">@integer/view_visible</integer>
+    <integer name="show_language_control">@integer/view_invisible</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
 
