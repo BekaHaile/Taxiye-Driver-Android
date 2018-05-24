@@ -938,6 +938,9 @@
     <string name="stripe_connect_title">Stripe</string>
     <string name="stripe_success_message">Your stripe account has been configured successfully.</string>
     <string name="stripe_error_message">Oops! There was a problem configuring your stripe account.</string>
+    <string name="account_details">Account Details</string>
+    <string name="connect_with_stripe">Connect with stripe</string>
+    <string name="login_with_stripe">Login to Stripe</string>
 
 
     <string-array name="CountryCodes">

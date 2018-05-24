@@ -227,7 +227,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="24px"
                     android:layout_marginLeft="42px"
-                    android:text="@string/bank_details"
+                    android:text="@string/account_details"
                     android:textColor="@color/new_orange"
                     android:textSize="42px"/>
 
@@ -239,183 +239,210 @@
                     android:layout_centerHorizontal="true"
                     android:background="@color/grey_light_more"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px">
 
-                    <TextView
-                        android:id="@+id/TextViewAccNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:text="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/TextViewAccNo"
-                        android:layout_width="380px"
-                        android:gravity="right"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:hint="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal4"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px">
-
-                    <TextView
-                        android:id="@+id/textViewIFSCText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="42px"
-                        android:background="#0000"
-                        android:text="@string/ifsc_code"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewIFSC"
-                        android:layout_width="380px"
-                        android:gravity="right"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:hint="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal5"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px">
-
-                    <TextView
-                        android:id="@+id/textViewBankNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="42px"
-                        android:background="#0000"
-                        android:text="@string/bank_name"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewBankName"
-                        android:layout_width="380px"
-                        android:gravity="right"
-                        android:layout_height="70px"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="42px"
-                        android:background="#0000"
-                        android:hint="Bank name"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal6"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-                <RelativeLayout
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/layout_bank_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/textViewBankLocText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="15px"
-                        android:layout_marginLeft="42px"
-                        android:layout_marginTop="15px"
-                        android:background="#0000"
-                        android:text="@string/bank_loc"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewBankLoc"
-                        android:layout_width="380px"
-                        android:gravity="right"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="15px"
-                        android:layout_marginRight="42px"
-                        android:layout_marginTop="15px"
-                        android:background="#0000"
-                        android:hint="@string/bank_loc"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
 
 
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80px">
+
+                        <TextView
+                            android:id="@+id/TextViewAccNoText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="70px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="42px"
+                            android:background="#0000"
+                            android:capitalize="words"
+                            android:text="@string/acc_no"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+                        <TextView
+                            android:id="@+id/TextViewAccNo"
+                            android:layout_width="380px"
+                            android:gravity="right"
+                            android:layout_height="70px"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="42px"
+                            android:background="#0000"
+                            android:capitalize="words"
+                            android:hint="@string/acc_no"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal4"
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/grey_light_more"/>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80px">
+
+                        <TextView
+                            android:id="@+id/textViewIFSCText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="70px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="42px"
+                            android:background="#0000"
+                            android:text="@string/ifsc_code"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+                        <TextView
+                            android:id="@+id/textViewIFSC"
+                            android:layout_width="380px"
+                            android:gravity="right"
+                            android:layout_height="70px"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="42px"
+                            android:background="#0000"
+                            android:capitalize="words"
+                            android:hint="@string/acc_no"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal5"
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/grey_light_more"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80px">
+
+                        <TextView
+                            android:id="@+id/textViewBankNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="70px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="42px"
+                            android:background="#0000"
+                            android:text="@string/bank_name"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+                        <TextView
+                            android:id="@+id/textViewBankName"
+                            android:layout_width="380px"
+                            android:gravity="right"
+                            android:layout_height="70px"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="42px"
+                            android:background="#0000"
+                            android:hint="Bank name"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal6"
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/grey_light_more"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewBankLocText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="15px"
+                            android:layout_marginLeft="42px"
+                            android:layout_marginTop="15px"
+                            android:background="#0000"
+                            android:text="@string/bank_loc"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+                        <TextView
+                            android:id="@+id/textViewBankLoc"
+                            android:layout_width="380px"
+                            android:gravity="right"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="15px"
+                            android:layout_marginRight="42px"
+                            android:layout_marginTop="15px"
+                            android:background="#0000"
+                            android:hint="@string/bank_loc"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black_text_alpha"
+                            android:textCursorDrawable="@null"
+                            android:textSize="36px"/>
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_stripe"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15px"
+                    android:layout_marginBottom="15px"
+                    android:background="@drawable/button_bg_gradient"
+                    android:text="@string/connect_with_stripe"
+                    android:textAllCaps="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="42px"
+                    android:layout_gravity="left"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_34"/>
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal7"

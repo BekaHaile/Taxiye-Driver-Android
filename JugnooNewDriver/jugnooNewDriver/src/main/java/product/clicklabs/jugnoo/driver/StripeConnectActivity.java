@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -47,39 +48,45 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
             if(view==null || StripeConnectActivity.this.isFinishing()){
                 return;
             }
+           // UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(url);
 
-            if(url.contains(StripeUtils.STRIPE_CALLBACK_URL)){
-                UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(url);
-                if(sanitizer.getValue("code")!=null){
+            if(url.contains(StripeUtils.STRIPE_SUCCESS_URL)){
+       /*         if(sanitizer.getValue("code")!=null){
 
                     Log.i(TAG,"success "+url);
                     Log.i(TAG,"auth code= "+sanitizer.getValue("code"));
                     Log.i(TAG,"auth state= "+sanitizer.getValue("state"));
                     String message = sanitizer.getValue("message");
                     if(message==null){
-                        message = getString(R.string.stripe_success_message);
+                       String message = getString(R.string.stripe_success_message);
                     }
-                    DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            StripeConnectActivity.this.finish();
-                        }
-                    });
-              }else{
-                    Log.i(TAG,"failure "+url);
-                    String message = sanitizer.getValue("error");
-                    if(message==null){
-                        message = getString(R.string.stripe_error_message);
+
+              }*/
+
+               String message = getString(R.string.stripe_success_message);
+                DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setResult(RESULT_OK, new Intent());
+                        StripeConnectActivity.this.finish();
                     }
-                    DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            StripeConnectActivity.this.finish();
-                        }
-                    });
+                });
 
+            }else if(url.contains(StripeUtils.STRIPE_FAILURE_URL)){
+             /*   Log.i(TAG,"failure "+url);
+                String message = sanitizer.getValue("error");
+                if(message==null){
+                }*/
+                String message = getString(R.string.stripe_error_message);
 
-                }
+                DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        setResult(RESULT_CANCELED, new Intent());
+                        StripeConnectActivity.this.finish();
+                    }
+                });
+
 
             }
 
@@ -147,7 +154,12 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
         stripeWebViewClient = new StripeWebViewClient();
         webView.setWebViewClient(stripeWebViewClient);
         webView.loadUrl(StripeUtils.stripeConnectBuilder().toString());
-
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    onBackPressed();
+            }
+        });
 
     }
 

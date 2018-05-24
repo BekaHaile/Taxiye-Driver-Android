@@ -203,6 +203,7 @@ public class DriverAuditActivity extends BaseActivity {
 											int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
 													textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
 											Integer textViewMonthlyValue = null ;
+											boolean showStripeAccount = false;
 											if (jObj.has("driver_name")) {
 												textViewDriverName = jObj.getString("driver_name");
 											}
@@ -245,6 +246,7 @@ public class DriverAuditActivity extends BaseActivity {
 											if (jObj.has("currency")) {
 												currency = jObj.getString("currency");
 											}
+
 
 											openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
 													textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,

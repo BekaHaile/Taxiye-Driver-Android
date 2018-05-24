@@ -335,10 +335,9 @@ public class JSONParser implements Constants {
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		saveAccessToken(context, accessToken);
 		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
-
-
-		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
-
+        int stripeAccountStatus = userData.optInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
+        Prefs.with(context).save(Constants.STRIPE_ACCOUNT_STATUS, stripeAccountStatus);
+        double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
