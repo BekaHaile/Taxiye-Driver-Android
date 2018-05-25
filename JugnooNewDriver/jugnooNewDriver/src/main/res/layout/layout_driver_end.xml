@@ -370,6 +370,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/take_cash"
+                        android:maxLines="1"
                         android:textColor="@color/black"
                         android:textSize="72px"/>
 
