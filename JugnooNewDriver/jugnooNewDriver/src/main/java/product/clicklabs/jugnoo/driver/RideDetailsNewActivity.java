@@ -366,7 +366,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			textViewEngID.setText(getResources().getString(R.string.id)+": "+extras.getEngagementId());
 			dateTimeValue.setText(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime());
 
-			distanceValue.setText(Utils.getKilometers(extras.getDistance(),this));
+			distanceValue.setText(Utils.getKilometers(extras.getDistance(),this, extras.getDistanceUnit()));
 
 			rideTimeValue.setText(extras.getRideTime() + " " + getResources().getString(R.string.min));
 
@@ -433,7 +433,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
 				findViewById(R.id.rlIncome).setVisibility(View.GONE);
 				findViewById(R.id.iv_below_rl_income).setVisibility(View.GONE);
-				textViewActualFare.setText(Utils.getKilometers(extras.getDistance(),this));
+				textViewActualFare.setText(Utils.getKilometers(extras.getDistance(),this, extras.getDistanceUnit()));
 			}else{
 				if (extras.getEarning() <= 0) {
 					imageViewSeprator.setVisibility(View.GONE);

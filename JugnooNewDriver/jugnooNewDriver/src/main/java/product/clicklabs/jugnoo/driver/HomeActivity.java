@@ -139,6 +139,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -3696,7 +3697,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					scrollViewEndRide.smoothScrollTo(0, 0);
 
 					double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
-							.getDistance(HomeActivity.this), HomeActivity.this) / 1000.0);
+							.getDistance(HomeActivity.this), HomeActivity.this) * UserData.getDistanceUnitFactor(this));
 					String kmsStr = "";
 
 					try {
@@ -3716,11 +3717,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
-					if (totalDistanceInKm > 1) {
-						kmsStr = getResources().getString(R.string.kms);
-					} else {
-						kmsStr = getResources().getString(R.string.km);
-					}
+					kmsStr = Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
@@ -4949,7 +4946,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
 		}
 
-		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
+		double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this));
 
 		double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
 		double waitTimeInMin = Math.round(((double) waitTimeInMillis) / 60000.0d);
@@ -4965,9 +4962,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
 		try {
-			double totalDistanceInKm = Math.abs(distance / 1000.0);
+			double totalDistanceInKm = Math.abs(distance * UserData.getDistanceUnitFactor(this));
 
-			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getStringText(R.string.km));
+			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+Utils.getDistanceUnit(UserData.getDistanceUnit(this)));
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {
@@ -5300,11 +5297,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestDistance.setVisibility(View.GONE);
 			}
 
-			if (distance >= 1000) {
-				holder.textViewRequestDistance.setText("" + decimalFormat.format(distance / 1000) +" "+ getResources().getString(R.string.km_away));
-			} else {
-				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
-			}
+			holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this))
+					+" "+ Utils.getDistanceUnit(UserData.getDistanceUnit(HomeActivity.this)));
 
 //			holder.textViewDeliveryApprox.setVisibility(View.GONE);
 
@@ -5347,7 +5341,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			if(customerInfo.getEstimatedDist() != 0){
 				holder.textViewEstimatedDist.setText(getResources().getString(R.string.estimated_dis)
-						+": "+customerInfo.getEstimatedDist()+" "+activity.getResources().getString(R.string.km));
+						+": "+customerInfo.getEstimatedDist()+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(HomeActivity.this)));
 				holder.textViewEstimatedDist.setVisibility(View.VISIBLE);
 			} else {
 				holder.textViewEstimatedDist.setVisibility(View.GONE);
@@ -5488,7 +5482,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getEstimatedTripDistance() > 0.0){
 				holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
 				holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
-						Utils.getDecimalFormatForMoney2Dec().format(customerInfo.getEstimatedTripDistance()/1000d)));
+						Utils.getDecimalFormatForMoney2Dec().format(customerInfo.getEstimatedTripDistance()
+								*UserData.getDistanceUnitFactor(HomeActivity.this))));
 			} else {
 				holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
 			}

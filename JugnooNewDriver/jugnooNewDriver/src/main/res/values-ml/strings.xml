@@ -62,7 +62,7 @@
     <string name="done">അവസാനിച്ചു </string>
     <string name="amount">തുക</string>
     <string name="no_driver_available">ഡ്രൈവർമാർ നിലവിൽ ഫ്രീ അല്ല</string>
-    <string name="no_driver_available_message">3 km പരിധിക്ക് ഉള്ളിൽ നിലവിൽ ഡ്രൈവർമാർ ആരും ഫ്രീ അല്ല. ഞങ്ങൾ  ആ പ്രശ്നം ഉടനെ തന്നെ പരിഹരിക്കുന്നതയിരിക്കും </string>
+    <string name="no_driver_available_message">3 പരിധിക്ക് ഉള്ളിൽ നിലവിൽ ഡ്രൈവർമാർ ആരും ഫ്രീ അല്ല. ഞങ്ങൾ  ആ പ്രശ്നം ഉടനെ തന്നെ പരിഹരിക്കുന്നതയിരിക്കും </string>
     <string name="logout">ലോഗ് ഔട്ട്‌ </string>
     <string name="are_you_sure_you_want_to_logout">ലോഗ് ഔട്ട്‌ ചെയ്യണം എന്നു നിങ്ങൾക്ക് ഉറപ്പാണോ.</string>
     <string name="cancel">ക്യാൻസൽ </string>
@@ -430,7 +430,6 @@
     <string name="start_loc">ആരംഭിക്കുന്ന സ്ഥലം </string>
     <string name="driver_loc">ഡ്രൈവറുടെ സ്ഥലം</string>
     <string name="customer_2">കസ്റ്റമർ 2</string>
-    <string name="kms">കി മി </string>
     <string name="mark_delivered">അടയാളപ്പെടുത്തിയതു കൈമാറി</string>
     <string name="order_id">ഓർഡർ ഐഡി</string>
     <string name="thanks_for_feedback">നിങ്ങളുടെ വിലപ്പെട്ട പ്രതികരണത്തിന് നന്ദി</string>
@@ -559,8 +558,6 @@
     <string name="driver_to_driver">ഡ്രൈവറിൽ നിന്നു ഡ്രൈവറിലേക് </string>
     <string name="rate_card">റേറ്റ് കാർഡ്</string>
     <string name="owned">സ്വന്തം</string>
-    <string name="distance_per_km">അകലം\n( മിനിറ്റിന് )</string>
-    <string name="per_km">( കിലോമീറ്ററിന് )</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ഇന്നലെ</string>
@@ -618,7 +615,7 @@
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="uploading">Uploading</string>
 
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ESTIMATED PAYOUT</string>
     <string name="this_week_cap">THIS WEEK</string>
@@ -770,11 +767,8 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>

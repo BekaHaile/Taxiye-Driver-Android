@@ -996,24 +996,19 @@ public class Utils {
 		return result;
 	}
 
-	/*public static String getKilometers(double meter,Context context){
-		double kilometer = meter/1000;
-		return  (Math.round(kilometer * 100) / 100) + context.getString(R.string.km);
-	}*/
-	public static String getKilometers(double kilometer,Context context){
+	public static String getKilometers(double kilometer,Context context, String distanceUnit){
 
-		String suffix = kilometer>1?context.getString(R.string.kms):context.getString(R.string.km);
-		return  getDecimalFormatNoDecimal().format(kilometer) +  " " +  suffix;
+		return  getDecimalFormatNoDecimal().format(kilometer) +  " " +  Utils.getDistanceUnit(distanceUnit);
 	}
 
-	public static String getKilometers(String kilometer,Context context){
+	public static String getKilometers(String kilometer,Context context, String distanceUnit){
 
 
 		try {
-			return getKilometers(Double.parseDouble(kilometer),context);
+			return getKilometers(Double.parseDouble(kilometer),context, distanceUnit);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 	""+kilometer + " "+ context.getResources().getString(R.string.km);
+			return 	""+kilometer + " "+ Utils.getDistanceUnit(distanceUnit);
 		}
 
 
@@ -1186,6 +1181,14 @@ public class Utils {
 		email.putExtra(Intent.EXTRA_TEXT, body); //
 		email.setType("message/rfc822");
 		activity.startActivity(Intent.createChooser(email, activity.getString(R.string.choose_email_client)));
+	}
+
+	public static String getDistanceUnit(String distanceUnit){
+		if(TextUtils.isEmpty(distanceUnit)){
+			return MyApplication.getInstance().getString(R.string.km);
+		} else {
+			return distanceUnit;
+		}
 	}
 
 }

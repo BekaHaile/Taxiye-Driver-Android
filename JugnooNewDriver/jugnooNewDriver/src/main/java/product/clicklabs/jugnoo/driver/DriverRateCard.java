@@ -33,7 +33,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 	RelativeLayout relativeLayoutDriverReferralHeading, relativeLayoutDriverReferralSingle, relativeLayoutNoData;
 	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue, textViewPickupChargesCond,
 			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
-			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar;
+			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar,
+			textViewPickupChargesperkm, textViewPKm;
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
 	LinearLayout llBeforeRide, llInRide;
@@ -86,6 +87,10 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		textViewDtoDValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewPickupChargesCondStar = (TextView) rootView.findViewById(R.id.textViewPickupChargesCondStar);
 		textViewPickupChargesCondStar.setTypeface(Fonts.mavenRegular(activity));
+		textViewPickupChargesperkm = (TextView) rootView.findViewById(R.id.textViewPickupChargesperkm);
+		textViewPickupChargesperkm.setTypeface(Fonts.mavenRegular(activity));
+		textViewPKm = (TextView) rootView.findViewById(R.id.textViewPKm);
+		textViewPKm.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewDtoC = (TextView) rootView.findViewById(R.id.textViewDtoC);
 		textViewDtoC.setTypeface(Fonts.mavenRegular(activity));
@@ -107,7 +112,6 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewDistancePKm)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewTimePKm)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewPKm)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPm)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(activity));
@@ -158,10 +162,13 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		if (rateCardResponse != null) {
 
 			textViewPickupChargesValues.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() , rateCardResponse.getRates().getPickupCharges()));
+			textViewPickupChargesperkm.setText(getString(R.string.per_format, Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
+			textViewPKm.setText(getString(R.string.per_format, Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 
 			if(rateCardResponse.getRates().getPickupChargesThreshold() > 0){
-				textViewPickupChargesCond.setText(getResources().getString(R.string.applicable_after,
-						String.valueOf(rateCardResponse.getRates().getPickupChargesThreshold())));
+				textViewPickupChargesCond.setText(getString(R.string.applicable_after,
+						String.valueOf(rateCardResponse.getRates().getPickupChargesThreshold())
+								+" "+Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 				textViewPickupChargesCondStar.setText("*");
 			} else {
 				textViewPickupChargesCond.setVisibility(View.GONE);
@@ -175,8 +182,11 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			if(rateCardResponse.getRates().getAfterThresholdDistance() > 0){
 				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
 				textViewDifferentialPricingEnable.setText(getResources().getString(R.string.diffrential_pricing_rate,
-						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance()),
-						Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue()))));
+						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance())
+								+" "+Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit()),
+						Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,
+								String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue()))
+								+"/"+Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 			}
 
 

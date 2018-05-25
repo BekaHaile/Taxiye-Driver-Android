@@ -22,6 +22,7 @@ public class RideInfo {
 	public String statusString, referredOn, phone, status, type;
 	public String convenienceCharges, luggageCharges, fareFactorApplied, referralAmount, amount, jugnooCut,
 			fareFactorValue, acceptSubsidy, cancelSubsidy, accountBalance, actualFare, driverRideFair,currency;
+	private String distanceUnit;
 
 
 	public RideInfo(String id, String fromLocation, String toLocation,
@@ -30,7 +31,7 @@ public class RideInfo {
 					int couponUsed, int paymentMode, int businessId, int paymentStatus,
 					String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
 					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare,
-					String type, String driverRideFair, String jugnooCut,String currency) {
+					String type, String driverRideFair, String jugnooCut,String currency, String distanceUnit) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -68,6 +69,7 @@ public class RideInfo {
 		this.driverRideFair = driverRideFair;
 		this.jugnooCut = jugnooCut;
 		this.currency = currency;
+		this.distanceUnit = distanceUnit;
 	}
 
 	public RideInfo(int customerId, String referralAmount, String referredOn, String type, String dateTime,String currency){
@@ -147,5 +149,12 @@ public class RideInfo {
 		return id + " " + dateTime;
 	}
 
+	public String getDistanceUnit() {
+		return distanceUnit;
+	}
+
+	public void setDistanceUnit(String distanceUnit) {
+		this.distanceUnit = distanceUnit;
+	}
 }
 

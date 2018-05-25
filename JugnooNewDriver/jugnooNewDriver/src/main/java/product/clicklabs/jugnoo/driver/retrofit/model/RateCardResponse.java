@@ -116,6 +116,9 @@ public class RateCardResponse {
 		@SerializedName("in_ride_charges_enabled")
 		@Expose
 		private int inRideChargesEnabled;
+		@SerializedName("distance_unit")
+		@Expose
+		private String distanceUnit;
 
 		/**
 		 *
@@ -282,6 +285,14 @@ public class RateCardResponse {
 
 		public void setInRideChargesEnabled(int inRideChargesEnabled) {
 			this.inRideChargesEnabled = inRideChargesEnabled;
+		}
+
+		public String getDistanceUnit() {
+			return distanceUnit;
+		}
+
+		public void setDistanceUnit(String distanceUnit) {
+			this.distanceUnit = distanceUnit;
 		}
 	}
 

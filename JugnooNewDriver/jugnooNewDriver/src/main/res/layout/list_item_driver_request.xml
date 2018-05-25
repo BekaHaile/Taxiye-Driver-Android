@@ -163,7 +163,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="0 km away"
                     android:layout_marginTop="8px"
                     android:textColor="@color/text_color"
                     android:textSize="31px"

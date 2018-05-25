@@ -297,7 +297,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatResponse.addAll(fetchChat.getChatHistory());
 								Collections.reverse(chatResponse);
 								if(fetchChat.getChatHistory().size() > Prefs.with(activity).getInt(SPLabels.CHAT_SIZE,0) && CHAT_SCREEN_OPEN != null){
-									SoundMediaPlayer.startSound(activity, R.raw.whats_app_shat_sound, 1, true);
+									SoundMediaPlayer.startSound(activity, R.raw.whats_app_shat_sound, 1, false);
 								}
 								Prefs.with(activity).save(SPLabels.CHAT_SIZE, fetchChat.getChatHistory().size());
 								chatSuggestions.addAll(fetchChat.getSuggestions());

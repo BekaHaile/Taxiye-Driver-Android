@@ -75,7 +75,7 @@
                 android:layout_toRightOf="@+id/textViewPickupCharges"
                 android:layout_width="140px"
                 android:layout_height="wrap_content"
-                android:text="@string/per_km"
+                android:text="@string/per_format"
                 android:textColor="@color/grey_dark_less"
                 android:textSize="34px"/>
 
@@ -192,7 +192,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/per_km"
+                        android:text="@string/per_format"
                         android:textColor="@color/grey_dark_less"
                         android:textSize="34px"/>
 

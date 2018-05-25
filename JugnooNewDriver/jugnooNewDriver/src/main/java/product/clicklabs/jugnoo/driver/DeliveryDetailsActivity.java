@@ -183,7 +183,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 				distanceValue.setText(getResources().getString(R.string.distance) + ": "
 						+ Utils.getDecimalFormatForMoney().
 						format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getRideDistance())))
-						+ " " + getResources().getString(R.string.km));
+						+ " " + Utils.getDistanceUnit(deliveryDetailResponse.getDetails().getDistanceUnit()));
 
 				rideTimeValue.setText(getResources().getString(R.string.total_time) + ": "
 						+ deliveryDetailResponse.getDetails().getTotalTime() + " " + getResources().getString(R.string.min));
@@ -194,7 +194,8 @@ public class DeliveryDetailsActivity extends BaseActivity {
 				} else {
 					textViewReturnDistance.setVisibility(View.VISIBLE);
 					textViewReturnDistance.setText(getResources().getString(R.string.return_distance) + ": "
-							+ deliveryDetailResponse.getDetails().getReturnDistance() + " " + getResources().getString(R.string.km));
+							+ deliveryDetailResponse.getDetails().getReturnDistance()
+							+ " " + Utils.getDistanceUnit(deliveryDetailResponse.getDetails().getDistanceUnit()));
 				}
 
 				textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().

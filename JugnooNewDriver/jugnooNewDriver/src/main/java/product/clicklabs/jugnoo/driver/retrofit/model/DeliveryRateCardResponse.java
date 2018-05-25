@@ -1,8 +1,11 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 
 
 public class DeliveryRateCardResponse {
@@ -62,7 +65,7 @@ public class DeliveryRateCardResponse {
 		this.data = data;
 	}
 
-	public class Data {
+	public class Data extends CurrencyModel{
 
 		@SerializedName("base_fare")
 		@Expose

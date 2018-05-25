@@ -1,5 +1,11 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.content.Context;
+
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+
 public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
@@ -147,5 +153,13 @@ public class UserData {
 
 	public void setHippoTicketFAQ(String hippoTicketFAQ) {
 		this.hippoTicketFAQ = hippoTicketFAQ;
+	}
+
+	public static String getDistanceUnit(Context context){
+		return Prefs.with(context).getString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km));
+	}
+	public static double getDistanceUnitFactor(Context context){
+		double factor = (double) Prefs.with(context).getFloat(Constants.KEY_DISTANCE_UNIT_FACTOR, 1F);
+		return factor/1000.0D;
 	}
 }
