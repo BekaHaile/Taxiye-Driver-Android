@@ -729,12 +729,6 @@
                     android:textColor="@color/white"
                     android:textSize="36px"/>
 
-                <ImageView
-                    android:layout_width="450px"
-                    android:layout_height="2px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/black_text_v2"/>
 
             </RelativeLayout>
             <RelativeLayout
