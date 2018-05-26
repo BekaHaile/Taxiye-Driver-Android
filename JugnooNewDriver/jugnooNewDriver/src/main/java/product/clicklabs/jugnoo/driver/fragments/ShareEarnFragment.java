@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class ShareEarnFragment extends BaseFragment {
     Button buttonShare;
     TextView textViewReferralCodeDisplay, textViewReferralCodeValue;
     TextView textViewShareReferral;
+    ImageView imageViewJugnooLogo;
     SpannableString sstr;
     private LinearLayout linearLayoutRoot;
     private boolean isCustomerSharing;
@@ -96,6 +98,7 @@ public class ShareEarnFragment extends BaseFragment {
         buttonShare = (Button) rootView.findViewById(R.id.buttonShare);
         buttonShare.setText(Data.userData.referralButtonText);
 
+        imageViewJugnooLogo = (ImageView) rootView.findViewById(R.id.imageViewJugnooLogo);
         textViewReferralCodeDisplay = (TextView) rootView.findViewById(R.id.textViewReferralCodeDisplay);
         textViewReferralCodeDisplay.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue = (TextView) rootView.findViewById(R.id.textViewReferralCodeValue);
@@ -118,6 +121,8 @@ public class ShareEarnFragment extends BaseFragment {
             textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
             textViewShareReferral.setText(Data.userData.referralMessage);
+
+            imageViewJugnooLogo.setImageResource(isCustomerSharing ? R.drawable.graphic_refer : R.drawable.iv_driver_to_driver_referral);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,6 +284,7 @@ public class ShareEarnFragment extends BaseFragment {
                 params.put("access_token", Data.userData.accessToken);
                 params.put("phone_no", phone_no);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
+                params.put(Constants.KEY_IS_DRIVER, isCustomerSharing ? "0" : "1");
                 HomeUtil.putDefaultParams(params);
                 Log.i("params", "=" + params);
 
