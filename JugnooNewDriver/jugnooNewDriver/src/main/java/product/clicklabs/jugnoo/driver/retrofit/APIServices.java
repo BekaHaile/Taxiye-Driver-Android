@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
@@ -592,6 +593,11 @@ public interface APIServices {
 	@POST("/driver/send_credits")
 	void sendCredits(@FieldMap Map<String, String> params,
 							 Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/get_credits")
+	void getCredits(@FieldMap Map<String, String> params,
+							 Callback<DriverCreditResponse> callback);
 
 
 }

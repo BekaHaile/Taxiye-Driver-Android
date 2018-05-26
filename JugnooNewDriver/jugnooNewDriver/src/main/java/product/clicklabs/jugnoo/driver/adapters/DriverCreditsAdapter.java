@@ -5,9 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.CreditsHistoryFragment;
 import product.clicklabs.jugnoo.driver.fragments.CurrentDetailsFragment;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 
 
 /**
@@ -16,10 +19,11 @@ import product.clicklabs.jugnoo.driver.fragments.CurrentDetailsFragment;
 public class DriverCreditsAdapter extends FragmentPagerAdapter {
 
 	Context context;
-
-	public DriverCreditsAdapter(Context context, FragmentManager fm) {
+	ArrayList<DriverCreditResponse.CreditHistory> list;
+	public DriverCreditsAdapter(Context context, FragmentManager fm, ArrayList<DriverCreditResponse.CreditHistory> list) {
 		super(fm);
 		this.context = context;
+		this.list = list;
 	}
 
 	@Override
@@ -33,7 +37,7 @@ public class DriverCreditsAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = new CreditsHistoryFragment();
+				fragment = CreditsHistoryFragment.newInstance(list);
 				break;
 		}
 

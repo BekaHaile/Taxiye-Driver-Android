@@ -10,13 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.DriverCreditsHistoryAdapter;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by Parminder Saini on 25/05/18.
@@ -32,13 +35,14 @@ public class CreditsHistoryFragment extends Fragment {
     private ArrayList<DriverCreditResponse.CreditHistory> list ;
     private static final String ARGS_DRIVER_HISTORY_LIST = "driverHistoryList";
 
-    public  static CreditsHistoryFragment newInstance( ArrayList<DriverCreditResponse.CreditHistory> list) {
+    public static CreditsHistoryFragment newInstance(ArrayList<DriverCreditResponse.CreditHistory> list) {
 
         Bundle args = new Bundle();
-
+        Gson gson = new Gson();
         CreditsHistoryFragment fragment = new CreditsHistoryFragment();
-        // TODO: 26/05/18 GSON
-//        args.putParcelable(ARGS_DRIVER_HISTORY_LIST,list);
+        args.putString(ARGS_DRIVER_HISTORY_LIST,
+                gson.toJsonTree(list, new TypeToken<List<DriverCreditResponse.CreditHistory>>() {}.getType())
+                        .getAsJsonArray().toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +52,9 @@ public class CreditsHistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if(getArguments()!=null && getArguments().containsKey(ARGS_DRIVER_HISTORY_LIST)){
-            list = getArguments().getParcelable(ARGS_DRIVER_HISTORY_LIST);
+            Gson gson = new Gson();
+            list = gson.fromJson(getArguments().getString(ARGS_DRIVER_HISTORY_LIST),
+                    new TypeToken<List<DriverCreditResponse.CreditHistory>>() {}.getType());
         }
     }
 

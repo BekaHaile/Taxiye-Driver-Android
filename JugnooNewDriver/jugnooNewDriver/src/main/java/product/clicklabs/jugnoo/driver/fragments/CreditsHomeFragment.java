@@ -9,11 +9,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeUtil;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.DriverCreditsAdapter;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 /**
  * Created by Parminder Saini on 25/05/18.
@@ -50,14 +67,11 @@ public class CreditsHomeFragment extends BaseFragment {
         rootView = inflater.inflate(R.layout.fragment_credits_home, container, false);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
-        driverCreditsAdapter = new DriverCreditsAdapter(getActivity(), getChildFragmentManager());
-        viewPager.setAdapter(driverCreditsAdapter);
 
         tabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.tabs);
         tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
         tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
         tabs.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.NORMAL);
-        tabs.setViewPager(viewPager);
 
 
 
@@ -78,14 +92,57 @@ public class CreditsHomeFragment extends BaseFragment {
             }
         });
 
+        getCreditsApi();
+
         return rootView;
-
-
-
     }
 
     @Override
     public String getTitle() {
         return getString(R.string.title_credits_activity);
+    }
+
+
+
+    private void getCreditsApi() {
+        try {
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+            HomeUtil.putDefaultParams(params);
+            DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
+            RestClient.getApiServices().getCredits(params, new Callback<DriverCreditResponse>() {
+                @Override
+                public void success(DriverCreditResponse rateCardResponse, Response response) {
+                    try {
+                        String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                        JSONObject jObj = new JSONObject(jsonString);
+                        String message = JSONParser.getServerMessage(jObj);
+                        int flag = jObj.getInt(Constants.KEY_FLAG);
+
+                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                            driverCreditsAdapter = new DriverCreditsAdapter(getActivity(), getChildFragmentManager(), rateCardResponse.getCreditHistoryList());
+                            viewPager.setAdapter(driverCreditsAdapter);
+                            tabs.setViewPager(viewPager);
+                        } else {
+                            DialogPopup.alertPopup(getActivity(), "", message);
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        DialogPopup.alertPopup(getActivity(), "", getString(R.string.server_error));
+                    }
+                    DialogPopup.dismissLoadingDialog();
+                }
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i("error", String.valueOf(error));
+                    DialogPopup.dismissLoadingDialog();
+                    DialogPopup.alertPopup(getActivity(), "", getString(R.string.server_not_responding));
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogPopup.alertPopup(getActivity(), "", getString(R.string.check_internet_message));
+        }
     }
 }
