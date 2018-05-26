@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.fragments.CreditsHistoryFragment;
 import product.clicklabs.jugnoo.driver.fragments.CurrentDetailsFragment;
 
 
@@ -32,7 +33,7 @@ public class DriverCreditsAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = new CurrentDetailsFragment();
+				fragment = new CreditsHistoryFragment();
 				break;
 		}
 
