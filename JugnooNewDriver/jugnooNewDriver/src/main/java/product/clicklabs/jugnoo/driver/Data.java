@@ -441,7 +441,7 @@ public class Data {
 	}
 
 	public static boolean isCaptive(){
-		return Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
+		return Data.userData!=null && Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
 	}
 	public static void setCaptive(boolean isCaptiveDriver){
 		Data.userData.isCaptiveDriver = isCaptiveDriver?1:0;

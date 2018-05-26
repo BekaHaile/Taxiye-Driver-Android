@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 
@@ -44,6 +43,10 @@ public class DialogPopup {
 	}
 
 	public static void alertPopup(Activity activity, String title, String message, boolean cancellable, boolean okVisible) {
+		alertPopup(activity, title, message, cancellable, okVisible, null);
+	}
+
+	public static void alertPopup(Activity activity, String title, String message, boolean cancellable, boolean okVisible, final View.OnClickListener listener) {
 		try {
 			dismissAlertPopup();
 			if("".equalsIgnoreCase(title)){
@@ -81,6 +84,9 @@ public class DialogPopup {
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
+					if(listener != null){
+						listener.onClick(view);
+					}
 				}
 				
 			});

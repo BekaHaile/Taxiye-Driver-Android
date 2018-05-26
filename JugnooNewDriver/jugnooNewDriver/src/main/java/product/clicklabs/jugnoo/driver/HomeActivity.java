@@ -230,7 +230,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl;
 	TextView inviteFriendText, notificationCenterText;
 
 	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
@@ -563,6 +563,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+			driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
@@ -1246,6 +1247,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(INVITE_OPENED);
+
+				}
+			});
+
+			driverCreditsRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverCreditsActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}
 			});

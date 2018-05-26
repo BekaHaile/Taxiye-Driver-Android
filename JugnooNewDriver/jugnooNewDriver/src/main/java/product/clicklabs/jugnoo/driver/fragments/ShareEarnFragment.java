@@ -66,7 +66,7 @@ public class ShareEarnFragment extends Fragment {
     SpannableString sstr;
     private LinearLayout linearLayoutRoot;
     private View rootView;
-    private ShareActivity activity;
+    private FragmentActivity activity;
 
     @Override
     public void onStart() {
@@ -87,7 +87,7 @@ public class ShareEarnFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_share_earn, container, false);
 
-        activity = (ShareActivity) getActivity();
+        activity =  getActivity();
 
         linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
         new ASSL(activity, linearLayoutRoot, 1134, 720, false);

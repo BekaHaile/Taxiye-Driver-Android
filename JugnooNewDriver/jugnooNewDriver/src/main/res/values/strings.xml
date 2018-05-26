@@ -938,6 +938,22 @@
     <string name="hide">Hide</string>
     <string name="drop_location">Drop\nLocation</string>
     <string name="branding_images">Branding Images</string>
+    <string name="current_details">Current Details</string>
+    <string name="credit_history">Credit History</string>
+    <string name="title_credits_activity">CREDITS &amp; REWARDS</string>
+    <string name="earn_more_credits">Earn More Credits</string>
+    <string name="title_earn_more_credits">Earn More Credits</string>
+    <string name="share_your_credits">Share your Credits</string>
+    <string name="total_credits_earned">Total Credits Earned</string>
+    <string name="commission_saved">Commission Saved</string>
+    <string name="refer_a_driver">Refer a Driver</string>
+    <string name="refer_a_customer">Refer a Customer</string>
+    <string name="advertise_for_us">Advertise for us</string>
+    <string name="menu_label_credits">Driver Credits</string>
+    <string name="send_to_a_friend">Send to a friend</string>
+    <string name="credits">Credits</string>
+    <string name="enter_credits">Enter credits</string>
+    <string name="please_enter_valid_phone">Please enter valid phone number</string>
 
 
     <string-array name="CountryCodes">

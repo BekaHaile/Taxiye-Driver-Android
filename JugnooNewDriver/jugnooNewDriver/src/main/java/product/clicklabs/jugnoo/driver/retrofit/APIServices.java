@@ -588,5 +588,10 @@ public interface APIServices {
 	void agreeTerms(@FieldMap Map<String, String> params,
 							 Callback<SettleUserDebt> callback);
 
+	@FormUrlEncoded
+	@POST("/driver/send_credits")
+	void sendCredits(@FieldMap Map<String, String> params,
+							 Callback<SettleUserDebt> callback);
+
 
 }
