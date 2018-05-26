@@ -366,7 +366,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT_FACTOR, (float) userData.optDouble(Constants.KEY_DISTANCE_UNIT_FACTOR, 1D));
 		Prefs.with(context).save(SP_USER_ID, userId);
-
+		Double creditsEarned = userData.has(Constants.KEY_CREDITS_EARNED)?userData.optDouble(Constants.KEY_CREDITS_EARNED):null;
+		Double commissionSaved = userData.has(Constants.KEY_COMMISSION_SAVED)?userData.optDouble(Constants.KEY_COMMISSION_SAVED):null;
 		parseSideMenu(context, userData);
 
 		return new UserData(accessToken, userData.getString("user_name"),
@@ -378,7 +379,7 @@ public class JSONParser implements Constants {
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
-				hippoTicketFAQ, currency);
+				hippoTicketFAQ, currency,creditsEarned,commissionSaved);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

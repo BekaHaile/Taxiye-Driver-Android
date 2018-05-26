@@ -224,7 +224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	ImageView profileImg, seprator;
-	TextView userName, ratingValue, textViewAutosOn;
+	TextView userName, ratingValue, textViewAutosOn,tvCredits;
 	LinearLayout linearLayoutDEI, linearLayout_DEI;
 	RelativeLayout driverImageRL;
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
@@ -530,8 +530,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			profileImg = (ImageView) findViewById(R.id.profileImg);
 			userName = (TextView) findViewById(R.id.userName);
+			tvCredits = (TextView) findViewById(R.id.tvCredits);
 			ratingValue = (TextView) findViewById(R.id.ratingValue);
 			userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			tvCredits.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			ratingValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
@@ -3615,6 +3617,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setUserData() {
 		try {
 			userName.setText(Data.userData.userName);
+			if(Data.userData.creditsEarned!=null){
+				tvCredits.setVisibility(View.VISIBLE);
+				tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.creditsEarned) + " "
+						+ getString(R.string.credits));
+			}else{
+				tvCredits.setVisibility(View.GONE);
+			}
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
 			try {
 				if (resumed) {

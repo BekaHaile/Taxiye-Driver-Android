@@ -10,10 +10,12 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -78,14 +80,17 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         ssb.append(supportOption.getName());
+        if(supportOption.getAmount() != null && supportOption.getAmount() > 0) {
+            Spannable spannable = new SpannableString(getString(R.string.earn_credits_format,
+                    Utils.formatCurrencyValue(Data.userData.getCurrency(), supportOption.getAmount())));
+            spannable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.text_color_light)),
+                    0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new RelativeSizeSpan(0.8f),
+                    0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        Spannable spannable = new SpannableString(getString(R.string.earn_credits_format,
-                Utils.formatCurrencyValue(Data.userData.getCurrency(), supportOption.getAmount())));
-        spannable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.text_color_light)),
-                0, spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        ssb.append(" ");
-        ssb.append(spannable);
+            ssb.append(" ");
+            ssb.append(spannable);
+        }
 
         textView.setText(ssb);
         textView.setTag(supportOption.getTag());
@@ -93,6 +98,9 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
         Utils.setTypeface(getActivity(), textView);
 
         ((LinearLayout)rootView.findViewById(R.id.llRoot)).addView(textView);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
+        params.setMargins(0, 0, 0, getActivity().getResources().getDimensionPixelSize(R.dimen.dp_1));
+        textView.setLayoutParams(params);
     }
 
     @Override

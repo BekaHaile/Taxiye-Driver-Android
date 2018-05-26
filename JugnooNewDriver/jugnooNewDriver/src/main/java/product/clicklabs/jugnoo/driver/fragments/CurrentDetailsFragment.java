@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -55,6 +57,10 @@ public class CurrentDetailsFragment extends Fragment {
                 rootView.findViewById(R.id.tv_comission_value),rootView.findViewById(R.id.tv_earn_credits),
                 rootView.findViewById(R.id.tv_share_credits));
 
+        ((TextView)rootView.findViewById(R.id.tv_credits_value)).setText(
+                Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.creditsEarned==null?0.0:Data.userData.creditsEarned));
+        ((TextView)rootView.findViewById(R.id.tv_comission_value)).setText(
+                Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.commissionSaved==null?0.0:Data.userData.commissionSaved));
         return rootView;
 
 

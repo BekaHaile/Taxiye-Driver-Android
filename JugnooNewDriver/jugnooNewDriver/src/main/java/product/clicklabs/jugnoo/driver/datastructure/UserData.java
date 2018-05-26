@@ -24,6 +24,7 @@ public class UserData {
 	private String driverSupportEmail, driverSupportEmailSubject;
 	private String hippoTicketFAQ;
 	private String currency;
+	public Double creditsEarned,commissionSaved;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -34,7 +35,8 @@ public class UserData {
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
 					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier,
-					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency) {
+					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
+					Double creditsEarned,Double commissionSaved) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -83,6 +85,8 @@ public class UserData {
 		this.driverSupportEmailSubject = driverSupportEmailSubject;
 		this.hippoTicketFAQ = hippoTicketFAQ;
 		this.currency = currency;
+		this.creditsEarned = creditsEarned;
+		this.commissionSaved = commissionSaved;
 	}
 
 	public String getUserId() {
