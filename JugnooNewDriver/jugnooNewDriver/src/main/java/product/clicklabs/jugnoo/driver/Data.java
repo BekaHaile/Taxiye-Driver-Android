@@ -434,6 +434,13 @@ public class Data {
 	public static void setSupportOptions(ArrayList<SupportOption> supportOptions) {
 		Data.supportOptions = supportOptions;
 	}
+	public static ArrayList<SupportOption> getCreditOptions() {
+		return creditOptions;
+	}
+
+	public static void setCreditOptions(ArrayList<SupportOption> creditOptions) {
+		Data.creditOptions = creditOptions;
+	}
 
 	public static interface TxnType {
 		public static final int CREDITED = 1;
@@ -505,6 +512,6 @@ public class Data {
 		}
 	}
 
-	private static ArrayList<SupportOption> supportOptions;
+	private static ArrayList<SupportOption> supportOptions, creditOptions;
 
 }

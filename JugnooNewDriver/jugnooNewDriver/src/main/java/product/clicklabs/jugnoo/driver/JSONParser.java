@@ -360,6 +360,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		String currency = userData.optString(KEY_CURRENCY, "INR");
 		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
@@ -377,7 +378,7 @@ public class JSONParser implements Constants {
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
-				hippoTicketFAQ);
+				hippoTicketFAQ, currency);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -984,17 +985,21 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(key, 0);
 		}
 
-		ArrayList<SupportOption> supportOptions = new ArrayList<>();
+		ArrayList<SupportOption> supportOptions = new ArrayList<>(), creditOptions = new ArrayList<>();
 		for(int i=0; i<menu.length(); i++){
 			JSONObject menuItem = menu.optJSONObject(i);
 			if(menuItem.optInt(Constants.KEY_SHOW_IN_ACCOUNT, 0) == 1) {
 				supportOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME),
 						menuItem.optString(Constants.KEY_TAG)));
+			} else if(menuItem.optInt(Constants.KEY_SHOW_IN_EARN_CREDITS, 0) == 1) {
+				creditOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME),
+						menuItem.optString(Constants.KEY_TAG),menuItem.optDouble(Constants.KEY_AMOUNT)));
 			} else {
 				Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
 			}
 		}
 		Data.setSupportOptions(supportOptions);
+		Data.setCreditOptions(creditOptions);
 	}
 
 	public static boolean isChatSupportEnabled(Context context){

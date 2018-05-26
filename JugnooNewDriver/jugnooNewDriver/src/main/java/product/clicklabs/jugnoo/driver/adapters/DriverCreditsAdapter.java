@@ -19,11 +19,9 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 public class DriverCreditsAdapter extends FragmentPagerAdapter {
 
 	Context context;
-	ArrayList<DriverCreditResponse.CreditHistory> list;
-	public DriverCreditsAdapter(Context context, FragmentManager fm, ArrayList<DriverCreditResponse.CreditHistory> list) {
+	public DriverCreditsAdapter(Context context, FragmentManager fm) {
 		super(fm);
 		this.context = context;
-		this.list = list;
 	}
 
 	@Override
@@ -37,7 +35,7 @@ public class DriverCreditsAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = CreditsHistoryFragment.newInstance(list);
+				fragment = CreditsHistoryFragment.newInstance();
 				break;
 		}
 

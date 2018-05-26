@@ -295,5 +295,11 @@ public interface Constants {
 
 	String KEY_CREDITS = "credits";
 	String DRIVER_CREDITS = "driver_credits";
+    String KEY_SHOW_IN_EARN_CREDITS = "show_in_earn_credits";
+    String KEY_AMOUNT = "amount";
+    String KEY_REFER_A_DRIVER = "refer_a_driver";
+    String KEY_REFER_A_CUSTOMER = "refer_a_customer";
+    String KEY_ADVERTISE_WITH_US = "advertise_with_us";
+    String KEY_GET_CREDITS = "get_credits";
 }
 
