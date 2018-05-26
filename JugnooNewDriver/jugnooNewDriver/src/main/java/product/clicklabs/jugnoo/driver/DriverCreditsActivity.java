@@ -1,11 +1,15 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.fragments.BaseFragment;
 import product.clicklabs.jugnoo.driver.fragments.CreditsHomeFragment;
 import product.clicklabs.jugnoo.driver.fragments.EarnCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.SendCreditsFragment;
@@ -51,6 +55,21 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 		});
 		containerLayout = root.findViewById(R.id.container);
 
+		getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+			@Override
+			public void onBackStackChanged() {
+				FragmentManager fragmentManager = getSupportFragmentManager();
+				if(fragmentManager.getBackStackEntryCount() <= 0){
+					return;
+				}
+				Fragment fragment = fragmentManager.findFragmentByTag(fragmentManager
+						.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName());
+				if(fragment instanceof BaseFragment) {
+					setTitle(((BaseFragment) fragment).getTitle());
+				}
+			}
+		});
+
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 				.add(R.id.container, new CreditsHomeFragment(), CreditsHomeFragment.class.getName())
@@ -67,7 +86,10 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	@Override
 	public void onBackPressed() {
-
+		if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+			finish();
+			return;
+		}
 		super.onBackPressed();
 	}
 
@@ -105,13 +127,17 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	@Override
 	public void openAdvertiseScreen() {
-
-
+		Intent intent = new Intent(this, DriverDocumentActivity.class);
+		intent.putExtra("access_token",Data.userData.accessToken);
+		intent.putExtra("in_side", true);
+		intent.putExtra("doc_required", 0);
+		intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+		startActivity(intent);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 	@Override
 	public void openEarnCreditsScreen() {
-		setTitle(getString(R.string.title_earn_more_credits));
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 				.add(R.id.container, new EarnCreditsFragment(), EarnCreditsFragment.class.getName())
@@ -123,7 +149,6 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	@Override
 	public void openShareCreditsScreen() {
-		setTitle(R.string.send_to_a_friend);
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 				.add(R.id.container, new SendCreditsFragment(), SendCreditsFragment.class.getName())

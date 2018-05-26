@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 /**
  * Created by Parminder Saini on 25/05/18.
  */
-public class EarnCreditsFragment extends Fragment {
+public class EarnCreditsFragment extends BaseFragment {
 
 
     View rootView;
@@ -38,7 +37,7 @@ public class EarnCreditsFragment extends Fragment {
         rootView.findViewById(R.id.tv_refer_driver).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //cringe here
                 if(driverCreditsListener!=null)driverCreditsListener.openDriverEarnScreen();
 
             }
@@ -50,7 +49,7 @@ public class EarnCreditsFragment extends Fragment {
         });rootView.findViewById(R.id.tv_advertise_us).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(driverCreditsListener!=null)driverCreditsListener.openAdvertiseScreen();
             }
         });
         return rootView;
@@ -59,5 +58,8 @@ public class EarnCreditsFragment extends Fragment {
 
     }
 
-
+    @Override
+    public String getTitle() {
+        return getString(R.string.title_earn_more_credits);
+    }
 }

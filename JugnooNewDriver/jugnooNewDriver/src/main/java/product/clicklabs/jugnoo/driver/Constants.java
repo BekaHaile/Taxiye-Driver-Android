@@ -294,5 +294,6 @@ public interface Constants {
 	String ACTION_FINISH_ACTIVITY = BuildConfig.APPLICATION_ID+".finish_activity";
 
 	String KEY_CREDITS = "credits";
+	String DRIVER_CREDITS = "driver_credits";
 }
 

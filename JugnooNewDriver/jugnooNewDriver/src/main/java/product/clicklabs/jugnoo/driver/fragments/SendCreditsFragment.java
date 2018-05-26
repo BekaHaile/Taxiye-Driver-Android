@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by Parminder Saini on 25/05/18.
  */
-public class SendCreditsFragment extends Fragment {
+public class SendCreditsFragment extends BaseFragment {
 
     private Activity activity;
     private TextView tvCountryCode;
@@ -160,5 +159,10 @@ public class SendCreditsFragment extends Fragment {
             e.printStackTrace();
             DialogPopup.alertPopup(activity, "", getString(R.string.check_internet_message));
         }
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.send_to_a_friend);
     }
 }

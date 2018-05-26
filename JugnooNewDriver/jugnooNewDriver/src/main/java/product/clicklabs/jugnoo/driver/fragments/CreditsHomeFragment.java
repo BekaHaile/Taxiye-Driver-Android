@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import product.clicklabs.jugnoo.driver.DriverCreditsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.DriverCreditsAdapter;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
@@ -20,7 +18,7 @@ import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 /**
  * Created by Parminder Saini on 25/05/18.
  */
-public class CreditsHomeFragment extends Fragment {
+public class CreditsHomeFragment extends BaseFragment {
 
     View rootView;
     private ViewPager viewPager;
@@ -77,4 +75,8 @@ public class CreditsHomeFragment extends Fragment {
 
     }
 
+    @Override
+    public String getTitle() {
+        return getString(R.string.title_credits_activity);
+    }
 }

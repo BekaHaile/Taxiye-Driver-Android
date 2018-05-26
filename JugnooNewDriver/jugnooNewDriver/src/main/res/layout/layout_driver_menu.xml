@@ -719,7 +719,7 @@
                     android:tag="mwar"/>
 
                 <TextView
-                    android:id="@+id/tvdriverCredits"
+                    android:id="@+id/tvDriverCredits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

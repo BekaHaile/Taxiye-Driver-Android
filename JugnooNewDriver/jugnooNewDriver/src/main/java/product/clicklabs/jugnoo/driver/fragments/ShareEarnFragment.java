@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -39,7 +38,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.ShareActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -58,7 +56,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class ShareEarnFragment extends Fragment {
+public class ShareEarnFragment extends BaseFragment {
 
     Button buttonShare;
     TextView textViewReferralCodeDisplay, textViewReferralCodeValue;
@@ -316,5 +314,8 @@ public class ShareEarnFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public String getTitle() {
+        return null;
+    }
 }

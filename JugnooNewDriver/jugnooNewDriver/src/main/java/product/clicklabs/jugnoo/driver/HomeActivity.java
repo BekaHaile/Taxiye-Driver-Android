@@ -625,6 +625,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewMailSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.tvDriverCredits)).setTypeface(Fonts.mavenRegular(this));
 
 			btnChatHead = (TextView) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -2313,6 +2314,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				earningsRL.setVisibility(View.VISIBLE);
 			} else {
 				earningsRL.setVisibility(View.GONE);
+			}
+			// TODO: 26/05/18 revert this
+			if(Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_CREDITS, 1) == 1){
+				driverCreditsRl.setVisibility(View.VISIBLE);
+			} else {
+				driverCreditsRl.setVisibility(View.VISIBLE);
 			}
 
 
