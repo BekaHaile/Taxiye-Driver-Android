@@ -26,6 +26,15 @@ public class CreditsHomeFragment extends BaseFragment {
     private PagerSlidingTabStrip tabs;
     private DriverCreditsListener driverCreditsListener;
 
+    public static CreditsHomeFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        CreditsHomeFragment fragment = new CreditsHomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

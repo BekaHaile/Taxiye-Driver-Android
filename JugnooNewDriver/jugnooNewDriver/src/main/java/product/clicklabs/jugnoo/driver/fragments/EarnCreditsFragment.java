@@ -19,6 +19,16 @@ public class EarnCreditsFragment extends BaseFragment {
 
     View rootView;
     private DriverCreditsListener driverCreditsListener;
+
+    public static EarnCreditsFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        EarnCreditsFragment fragment = new EarnCreditsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -33,7 +43,7 @@ public class EarnCreditsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_earn_credits, container, false);
         Utils.setTypeface(getActivity(),rootView.findViewById(R.id.tv_refer_driver),rootView.findViewById(R.id.tv_refer_customer)
-        ,rootView.findViewById(R.id.tv_advertise_us));
+        ,rootView.findViewById(R.id.tv_advertise_us), rootView.findViewById(R.id.tv_get_credits));
         rootView.findViewById(R.id.tv_refer_driver).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +60,12 @@ public class EarnCreditsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if(driverCreditsListener!=null)driverCreditsListener.openAdvertiseScreen();
+            }
+        });
+        rootView.findViewById(R.id.tv_get_credits).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(driverCreditsListener!=null)driverCreditsListener.openGetCreditsInfoScreen();
             }
         });
         return rootView;

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -63,27 +63,29 @@ public class ShareEarnFragment extends BaseFragment {
     TextView textViewShareReferral;
     SpannableString sstr;
     private LinearLayout linearLayoutRoot;
-    private View rootView;
+    private boolean isCustomerSharing;
     private FragmentActivity activity;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FlurryAgent.init(activity, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-        FlurryAgent.onEvent(ShareEarnFragment.class.getSimpleName() + " started");
+    private static final String IS_CUSTOMER_SHARING = "is_customer_sharing";
+
+    public static ShareEarnFragment newInstance(boolean isCustomerSharing) {
+        ShareEarnFragment fragment = new ShareEarnFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(IS_CUSTOMER_SHARING, isCustomerSharing);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        FlurryAgent.onEndSession(activity);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        isCustomerSharing = bundle.getBoolean(IS_CUSTOMER_SHARING, false);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_share_earn, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_share_earn, container, false);
 
         activity =  getActivity();
 
@@ -316,6 +318,6 @@ public class ShareEarnFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return null;
+        return isCustomerSharing ? getString(R.string.refer_a_customer) : getString(R.string.refer_a_driver);
     }
 }

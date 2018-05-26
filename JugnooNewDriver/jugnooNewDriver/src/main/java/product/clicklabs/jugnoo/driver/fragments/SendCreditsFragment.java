@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.picker.Country;
@@ -46,6 +47,14 @@ public class SendCreditsFragment extends BaseFragment {
     private EditText etCredits, etPhoneNumber;
     private CountryPicker countryPicker;
 
+    public static SendCreditsFragment newInstance() {
+        Bundle args = new Bundle();
+
+        SendCreditsFragment fragment = new SendCreditsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -60,6 +69,7 @@ public class SendCreditsFragment extends BaseFragment {
         ((TextView) rootView.findViewById(R.id.tvCredits)).setTypeface(Fonts.mavenRegular(activity));
         ((TextView) rootView.findViewById(R.id.tvPhoneNumber)).setTypeface(Fonts.mavenRegular(activity));
 
+        ImageView ivBackground = (ImageView) rootView.findViewById(R.id.ivBackground);
         etCredits = (EditText) rootView.findViewById(R.id.etCredits); etCredits.setTypeface(Fonts.mavenRegular(activity));
         etPhoneNumber = (EditText) rootView.findViewById(R.id.etPhoneNumber); etPhoneNumber.setTypeface(Fonts.mavenRegular(activity));
         tvCountryCode = (TextView) rootView.findViewById(R.id.tvCountryCode); tvCountryCode.setTypeface(Fonts.mavenRegular(activity));

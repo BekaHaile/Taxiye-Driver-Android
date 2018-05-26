@@ -12,6 +12,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.fragments.BaseFragment;
 import product.clicklabs.jugnoo.driver.fragments.CreditsHomeFragment;
 import product.clicklabs.jugnoo.driver.fragments.EarnCreditsFragment;
+import product.clicklabs.jugnoo.driver.fragments.GetCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.SendCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
@@ -27,10 +28,6 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
     private LinearLayout root;
     private TextView tvTitle;
-    private Button backBtn;
-	private View containerLayout;
-
-
 
 
 	@Override
@@ -45,7 +42,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 		tvTitle = (TextView) findViewById(R.id.title);
 		tvTitle.setText(getString(R.string.title_credits_activity));
 		tvTitle.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-		backBtn = (Button)findViewById(R.id.backBtn);
+		Button backBtn = (Button) findViewById(R.id.backBtn);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -53,7 +50,6 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 				onBackPressed();
 			}
 		});
-		containerLayout = root.findViewById(R.id.container);
 
 		getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
 			@Override
@@ -72,7 +68,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-				.add(R.id.container, new CreditsHomeFragment(), CreditsHomeFragment.class.getName())
+				.add(R.id.container, CreditsHomeFragment.newInstance(), CreditsHomeFragment.class.getName())
 				.addToBackStack(CreditsHomeFragment.class.getName())
 				.commit();
 
@@ -102,12 +98,11 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 
 
-	public void openEarnScreen(String title){
+	public void openEarnScreen(boolean isCustomerSharing){
 
-		setTitle(title);
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-				.add(R.id.container, new ShareEarnFragment(), ShareEarnFragment.class.getName())
+				.add(R.id.container, ShareEarnFragment.newInstance(isCustomerSharing), ShareEarnFragment.class.getName())
 				.addToBackStack(ShareEarnFragment.class.getName())
 				.hide(  getSupportFragmentManager().findFragmentByTag( getSupportFragmentManager()
 						.getBackStackEntryAt(  getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
@@ -117,12 +112,12 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 	@Override
 	public void openCustomerEarnScreen() {
 
-		openEarnScreen(getString(R.string.refer_a_customer));
+		openEarnScreen(true);
 	}
 
 	@Override
 	public void openDriverEarnScreen() {
-		openEarnScreen(getString(R.string.refer_a_driver));
+		openEarnScreen(false);
 	}
 
 	@Override
@@ -140,7 +135,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 	public void openEarnCreditsScreen() {
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-				.add(R.id.container, new EarnCreditsFragment(), EarnCreditsFragment.class.getName())
+				.add(R.id.container, EarnCreditsFragment.newInstance(), EarnCreditsFragment.class.getName())
 				.addToBackStack(EarnCreditsFragment.class.getName())
 				.hide(  getSupportFragmentManager().findFragmentByTag( getSupportFragmentManager()
 						.getBackStackEntryAt(  getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
@@ -151,7 +146,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 	public void openShareCreditsScreen() {
 		getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-				.add(R.id.container, new SendCreditsFragment(), SendCreditsFragment.class.getName())
+				.add(R.id.container, SendCreditsFragment.newInstance(), SendCreditsFragment.class.getName())
 				.addToBackStack(SendCreditsFragment.class.getName())
 				.hide(  getSupportFragmentManager().findFragmentByTag( getSupportFragmentManager()
 						.getBackStackEntryAt(  getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
@@ -160,6 +155,17 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	private void setTitle(String title){
 		tvTitle.setText(title);
+	}
+
+	@Override
+	public void openGetCreditsInfoScreen() {
+		getSupportFragmentManager().beginTransaction()
+				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+				.add(R.id.container, GetCreditsFragment.newInstance(), GetCreditsFragment.class.getName())
+				.addToBackStack(GetCreditsFragment.class.getName())
+				.hide(  getSupportFragmentManager().findFragmentByTag( getSupportFragmentManager()
+						.getBackStackEntryAt(  getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+				.commit();
 	}
 
 
