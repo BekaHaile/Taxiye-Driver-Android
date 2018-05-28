@@ -10,7 +10,7 @@
         android:id="@+id/topBarEmpty"
         android:layout_width="720px"
         android:layout_height="90px"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/transparent" >
     </RelativeLayout>

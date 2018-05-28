@@ -11,7 +11,7 @@
         android:id="@+id/topBar"
         android:layout_width="720px"
         android:layout_height="96px"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/black_top_bar_bg">
 
@@ -30,9 +30,10 @@
             android:layout_width="60.7px"
             android:layout_height="76.9px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
+            android:layout_marginStart="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:src="@drawable/back_white_selector"
+            android:rotationY="@integer/locale_mirror_flip"/>
     </RelativeLayout>
 
     <ImageView

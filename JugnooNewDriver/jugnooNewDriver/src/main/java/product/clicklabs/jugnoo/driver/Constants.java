@@ -294,5 +294,15 @@ public interface Constants {
 
 	String ACTION_FINISH_ACTIVITY = BuildConfig.APPLICATION_ID+".finish_activity";
 
+	String KEY_CREDITS = "credits";
+	String DRIVER_CREDITS = "driver_credits";
+    String KEY_SHOW_IN_EARN_CREDITS = "show_in_earn_credits";
+    String KEY_AMOUNT = "amount";
+    String KEY_REFER_A_DRIVER = "refer_a_driver";
+    String KEY_REFER_A_CUSTOMER = "refer_a_customer";
+    String KEY_ADVERTISE_WITH_US = "advertise_with_us";
+    String KEY_GET_CREDITS = "get_credits";
+    String KEY_CREDITS_EARNED = "credits_earned";
+    String KEY_COMMISSION_SAVED = "commission_saved";
 }
 

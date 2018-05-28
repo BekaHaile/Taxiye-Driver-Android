@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40px"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="36px">
 
             <LinearLayout
@@ -26,19 +26,19 @@
                     android:id="@+id/textViewOrderId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="48px"
+                    android:layout_marginStart="48px"
                     android:textSize="32px"
                     android:layout_marginBottom="12px"
-                    android:layout_toRightOf="@+id/imageViewDote"
+                    android:layout_toEndOf="@+id/imageViewDote"
                     android:text="@string/NA"/>
 
                 <TextView
                     android:id="@+id/textViewCustomer1Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="48px"
+                    android:layout_marginStart="48px"
                     android:textSize="32px"
-                    android:layout_toRightOf="@+id/imageViewDote"
+                    android:layout_toEndOf="@+id/imageViewDote"
                     android:text="@string/NA"/>
 
 
@@ -48,9 +48,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="32px"
                     android:visibility="gone"
-                    android:layout_marginLeft="48px"
+                    android:layout_marginStart="48px"
                     android:layout_marginTop="28px"
-                    android:layout_toRightOf="@+id/imageViewDote1"
+                    android:layout_toEndOf="@+id/imageViewDote1"
                     android:text="@string/NA"/>
 
 
@@ -59,10 +59,10 @@
                     android:layout_width="525px"
                     android:layout_height="wrap_content"
                     android:textSize="27px"
-                    android:layout_marginLeft="48px"
+                    android:layout_marginStart="48px"
                     android:layout_marginTop="16px"
                     android:layout_marginBottom="32px"
-                    android:layout_toRightOf="@+id/imageViewDote1"
+                    android:layout_toEndOf="@+id/imageViewDote1"
                     android:text="@string/NA"/>
 
                 <LinearLayout
@@ -71,8 +71,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10px"
                     android:layout_marginBottom="22px"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
+                    android:layout_marginStart="40px"
+                    android:layout_marginEnd="40px"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                 >
@@ -86,8 +86,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
                     android:layout_marginTop="16px"
                     android:layout_marginBottom="16px"
                     android:visibility="visible"
@@ -99,8 +99,8 @@
                         android:layout_height="70px"
                         android:layout_weight="1"
                         android:visibility="visible"
-                        android:layout_marginLeft="12px"
-                        android:layout_marginRight="12px"
+                        android:layout_marginStart="12px"
+                        android:layout_marginEnd="12px"
                         android:background="@drawable/new_menu_black_btn_selector_rounded"
                         android:text="@string/cancel"
                         android:textColor="@drawable/white_color_selector"
@@ -111,8 +111,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="70px"
                         android:layout_weight="1"
-                        android:layout_marginLeft="12px"
-                        android:layout_marginRight="12px"
+                        android:layout_marginStart="12px"
+                        android:layout_marginEnd="12px"
                         android:background="@drawable/new_orange_btn_normal_rounded"
                         android:text="@string/switchText"
                         android:visibility="visible"
@@ -127,8 +127,8 @@
                     android:layout_height="2px"
                     android:background="@color/grey_light"
                     android:layout_marginTop="22px"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"/>
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"/>
 
             </LinearLayout>
 
@@ -139,7 +139,7 @@
         android:id="@+id/imageViewVerticalLine"
         android:layout_width="3px"
         android:layout_height="38px"
-        android:layout_marginLeft="10px"
+        android:layout_marginStart="10px"
         android:layout_marginBottom="5px"
         android:background="@color/grey_light"
         android:visibility="visible"
@@ -149,7 +149,7 @@
         android:id="@+id/imageViewVerticalLine1"
         android:layout_width="3px"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10px"
+        android:layout_marginStart="10px"
         android:layout_alignTop="@+id/imageViewHorizontalLineNew"
         android:layout_marginTop="30px"
         android:layout_above="@+id/imageViewFakeBottom"

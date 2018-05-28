@@ -434,6 +434,13 @@ public class Data {
 	public static void setSupportOptions(ArrayList<SupportOption> supportOptions) {
 		Data.supportOptions = supportOptions;
 	}
+	public static ArrayList<SupportOption> getCreditOptions() {
+		return creditOptions;
+	}
+
+	public static void setCreditOptions(ArrayList<SupportOption> creditOptions) {
+		Data.creditOptions = creditOptions;
+	}
 
 	public static interface TxnType {
 		public static final int CREDITED = 1;
@@ -441,7 +448,7 @@ public class Data {
 	}
 
 	public static boolean isCaptive(){
-		return Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
+		return Data.userData!=null && Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
 	}
 	public static void setCaptive(boolean isCaptiveDriver){
 		Data.userData.isCaptiveDriver = isCaptiveDriver?1:0;
@@ -505,6 +512,6 @@ public class Data {
 		}
 	}
 
-	private static ArrayList<SupportOption> supportOptions;
+	private static ArrayList<SupportOption> supportOptions, creditOptions;
 
 }

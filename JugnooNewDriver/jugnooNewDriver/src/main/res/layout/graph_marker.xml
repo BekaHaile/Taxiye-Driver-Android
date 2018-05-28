@@ -20,6 +20,14 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="15px"
+        android:layout_height="9px"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12px"
+        android:src="@drawable/red_arrow_v2"/>
 
 
 </RelativeLayout>

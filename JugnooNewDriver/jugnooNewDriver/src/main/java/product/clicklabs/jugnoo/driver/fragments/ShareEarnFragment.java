@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -20,12 +20,12 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -39,7 +39,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.ShareActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -58,36 +57,39 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class ShareEarnFragment extends Fragment {
+public class ShareEarnFragment extends BaseFragment {
 
     Button buttonShare;
     TextView textViewReferralCodeDisplay, textViewReferralCodeValue;
     TextView textViewShareReferral;
+    ImageView imageViewJugnooLogo;
     SpannableString sstr;
     private LinearLayout linearLayoutRoot;
-    private View rootView;
-    private ShareActivity activity;
+    private boolean isCustomerSharing;
+    private FragmentActivity activity;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FlurryAgent.init(activity, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-        FlurryAgent.onEvent(ShareEarnFragment.class.getSimpleName() + " started");
+    private static final String IS_CUSTOMER_SHARING = "is_customer_sharing";
+
+    public static ShareEarnFragment newInstance(boolean isCustomerSharing) {
+        ShareEarnFragment fragment = new ShareEarnFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(IS_CUSTOMER_SHARING, isCustomerSharing);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        FlurryAgent.onEndSession(activity);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        isCustomerSharing = bundle.getBoolean(IS_CUSTOMER_SHARING, false);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_share_earn, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_share_earn, container, false);
 
-        activity = (ShareActivity) getActivity();
+        activity =  getActivity();
 
         linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
         new ASSL(activity, linearLayoutRoot, 1134, 720, false);
@@ -96,6 +98,7 @@ public class ShareEarnFragment extends Fragment {
         buttonShare = (Button) rootView.findViewById(R.id.buttonShare);
         buttonShare.setText(Data.userData.referralButtonText);
 
+        imageViewJugnooLogo = (ImageView) rootView.findViewById(R.id.imageViewJugnooLogo);
         textViewReferralCodeDisplay = (TextView) rootView.findViewById(R.id.textViewReferralCodeDisplay);
         textViewReferralCodeDisplay.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue = (TextView) rootView.findViewById(R.id.textViewReferralCodeValue);
@@ -117,7 +120,11 @@ public class ShareEarnFragment extends Fragment {
             textViewReferralCodeValue.setText(sstr);
             textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
-            textViewShareReferral.setText(Data.userData.referralMessage);
+            if(Data.userData != null && Data.userData.referralMessage != null){
+                textViewShareReferral.setText(isCustomerSharing ? Data.userData.referralMessage : Data.userData.referralMessage.replace("customer","driver"));
+            }
+
+            imageViewJugnooLogo.setImageResource(isCustomerSharing ? R.drawable.graphic_refer : R.drawable.iv_driver_to_driver_referral);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,6 +286,7 @@ public class ShareEarnFragment extends Fragment {
                 params.put("access_token", Data.userData.accessToken);
                 params.put("phone_no", phone_no);
                 params.put(Constants.KEY_COUNTRY_CODE, countryCode);
+                params.put(Constants.KEY_IS_DRIVER, isCustomerSharing ? "0" : "1");
                 HomeUtil.putDefaultParams(params);
                 Log.i("params", "=" + params);
 
@@ -316,5 +324,8 @@ public class ShareEarnFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public String getTitle() {
+        return isCustomerSharing ? getString(R.string.refer_a_customer) : getString(R.string.refer_a_driver);
+    }
 }

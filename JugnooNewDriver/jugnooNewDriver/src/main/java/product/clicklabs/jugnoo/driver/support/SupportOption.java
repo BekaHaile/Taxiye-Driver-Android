@@ -11,10 +11,20 @@ public class SupportOption {
 	@SerializedName("tag")
 	@Expose
 	private String tag;
+	@SerializedName("amount")
+	@Expose
+	private Double amount;
 
 	public SupportOption(String name, String tag) {
 		this.name = name;
 		this.tag = tag;
+	}
+
+
+	public SupportOption(String name, String tag,Double amount) {
+		this.name = name;
+		this.tag = tag;
+		this.amount = amount;
 	}
 
 	public String getName() {
@@ -31,5 +41,13 @@ public class SupportOption {
 
 	public void setTag(String tag) {
 		this.tag = tag;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
 	}
 }

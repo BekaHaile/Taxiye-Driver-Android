@@ -41,8 +41,8 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:lineSpacingExtra="10px"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
+                    android:paddingStart="20px"
+                    android:paddingEnd="20px"
                     android:text="Order Id: 0000000"
                     android:textColor="@color/black"
                     android:textSize="48px"/>
@@ -51,7 +51,7 @@
                     <!--android:layout_width="120px"-->
                     <!--android:layout_height="2px"-->
                     <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_toRightOf="@+id/textViewOrderId"-->
+                    <!--android:layout_toEndOf="@+id/textViewOrderId"-->
                     <!--android:id="@+id/imageViewHorizontal2"-->
                     <!--android:background="@color/black"/>-->
 
@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_horizontal"
-                    android:layout_marginLeft="72px">
+                    android:layout_marginStart="72px">
 
                     <ImageView
                         android:layout_width="102px"
@@ -151,8 +151,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="80px"
-                android:layout_marginRight="20px"
-                android:layout_marginLeft="20px"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="20px"
                 android:layout_gravity="center_horizontal"
                 android:visibility="visible"
                 android:background="@color/white_little_dark">
@@ -161,8 +161,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20px"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
                     >
 
                     <TextView
@@ -177,7 +177,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/textViewStatus"
+                        android:layout_toEndOf="@+id/textViewStatus"
                         android:gravity="center_vertical"
                         android:text=":"
                         android:textColor="@color/text_color"
@@ -187,8 +187,8 @@
                         android:id="@+id/textViewStatusValue"
                         android:layout_width="330px"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center_vertical|right"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical|end"
                         android:text="@string/Returned"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size_30"/>
@@ -199,8 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20px"
                     android:layout_marginBottom="20px"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"
+                    android:layout_marginStart="30px"
+                    android:layout_marginEnd="30px"
                     >
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -215,7 +215,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/textViewReturnReason"
+                        android:layout_toEndOf="@+id/textViewReturnReason"
                         android:gravity="center_vertical"
                         android:text=":"
                         android:textColor="@color/text_color"
@@ -225,8 +225,8 @@
                         android:id="@+id/textViewReturnReasonValue"
                         android:layout_width="330px"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center_vertical|right"
+                        android:layout_alignParentEnd="true"
+                        android:gravity="center_vertical|end"
                         android:text="customer "
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size_30"/>
@@ -260,8 +260,8 @@
                     android:background="@color/white"
                     android:lineSpacingExtra="10px"
                     android:maxHeight="800px"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
+                    android:paddingStart="20px"
+                    android:paddingEnd="20px"
                     android:textColor="@color/black"
                     android:textSize="40px"
 
@@ -271,7 +271,7 @@
                     <!--android:layout_width="220px"-->
                     <!--android:layout_height="2px"-->
                     <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_toRightOf="@+id/textViewTakeCash"-->
+                    <!--android:layout_toEndOf="@+id/textViewTakeCash"-->
                     <!--android:id="@+id/imageViewHorizontal4"-->
                     <!--android:background="@color/black"/>-->
 
@@ -288,8 +288,8 @@
                 android:text="Rs. 0"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:textColor="@color/black"
                 android:textSize="108px"
                 android:visibility="visible"
@@ -303,8 +303,8 @@
                 android:layout_marginTop="64px"
                 android:layout_marginBottom="40px"
                 android:splitMotionEvents="false"
-                android:layout_marginLeft="70px"
-                android:layout_marginRight="70px"
+                android:layout_marginStart="70px"
+                android:layout_marginEnd="70px"
                 >
 
 
@@ -327,7 +327,7 @@
                     android:text="@string/deliver"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     />
             </RelativeLayout>
 

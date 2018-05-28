@@ -34,7 +34,7 @@
                     android:id="@+id/profileRl"
                     android:layout_width="114px"
                     android:layout_height="114px"
-                    android:layout_marginLeft="40px"
+                    android:layout_marginStart="40px"
                     android:layout_centerVertical="true"
                     android:splitMotionEvents="false"
                     android:tag="mwar">
@@ -57,12 +57,13 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDEI"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/profileRl"
+                    android:layout_toEndOf="@+id/profileRl"
+                    android:layout_toStartOf="@+id/ivArrow"
                     android:layout_marginTop="10px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:orientation="horizontal"
                     >
 
@@ -73,7 +74,7 @@
 
                         <TextView
                             android:id="@+id/userName"
-                            android:layout_width="260px"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/NA"
                             android:textColor="@color/white"
@@ -102,10 +103,10 @@
                                 android:layout_height="40px"
                                 android:visibility="gone"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginLeft="15px"
-                                android:layout_marginRight="15px"
+                                android:layout_marginStart="15px"
+                                android:layout_marginEnd="15px"
                                 android:layout_marginTop="17px"
-                                android:layout_toRightOf="@+id/ratingBarFeedbackSide"
+                                android:layout_toEndOf="@+id/ratingBarFeedbackSide"
                                 android:background="@drawable/driver_rating_seperation_line"
                                 android:tag="mwar"/>
 
@@ -116,7 +117,7 @@
                                 android:visibility="gone"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="17px"
-                                android:layout_toRightOf="@+id/seprator"
+                                android:layout_toEndOf="@+id/seprator"
                                 android:text="4.5"
                                 android:textColor="@color/white"
                                 android:textSize="40px"/>
@@ -125,16 +126,28 @@
                         </RelativeLayout>
 
 
+                        <TextView
+                            android:id="@+id/tvCredits"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/NA"
+                            android:visibility="gone"
+                            android:textColor="@color/white"
+                            android:textSize="30px"/>
+
                     </LinearLayout>
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/ivArrow"
                     android:layout_width="31px"
                     android:layout_height="19px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="32px"
-                    android:src="@drawable/side_menu_white_arrow"/>
+                    android:layout_marginEnd="32px"
+                    android:src="@drawable/side_menu_white_arrow"
+                    android:rotationY="@integer/locale_mirror_flip"
+                    />
 
 
 
@@ -152,7 +165,7 @@
                     android:id="@+id/imageViewAutosIcon"
                     android:layout_width="56px"
                     android:layout_height="35px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/jugnoo_side_menu_icon_drawable"
                     android:tag="mwar"/>
@@ -162,8 +175,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewAutosIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewAutosIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/jugnoo_on"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -172,9 +185,9 @@
                     android:id="@+id/imageViewAutosOnToggle"
                     android:layout_width="90px"
                     android:layout_height="72px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20px"
+                    android:layout_marginEnd="20px"
                     android:src="@drawable/toggle_on_v2"
                     android:tag="mwar"/>
             </RelativeLayout>
@@ -197,7 +210,7 @@
                     android:id="@+id/imageViewDeliveryIcon"
                     android:layout_width="56px"
                     android:layout_height="35px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/delivery_v2"
                     android:tag="mwar"/>
@@ -207,8 +220,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewDeliveryIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewDeliveryIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/delivery_on"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -217,9 +230,9 @@
                     android:id="@+id/imageViewDeliveryOnToggle"
                     android:layout_width="90px"
                     android:layout_height="72px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20px"
+                    android:layout_marginEnd="20px"
                     android:src="@drawable/toggle_on_v2"
                     android:tag="mwar"/>
             </RelativeLayout>
@@ -243,7 +256,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/sharing_on"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -252,9 +265,9 @@
                     android:id="@+id/imageViewSharingOnToggle"
                     android:layout_width="90px"
                     android:layout_height="72px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20px"
+                    android:layout_marginEnd="20px"
                     android:src="@drawable/jugnoo_on_button"
                     android:tag="mwar"/>
             </RelativeLayout>
@@ -270,7 +283,7 @@
                     android:id="@+id/imageViewHomeIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/home_v2"
                     android:tag="mwar"/>
@@ -280,8 +293,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewHomeIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewHomeIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/home"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -300,7 +313,7 @@
                     android:id="@+id/imageViewEarningIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_marginTop="5px"
                     android:src="@drawable/icon_cash_xxx"
                     android:tag="mwar"/>
@@ -309,8 +322,8 @@
                     android:id="@+id/earningsText"
                     android:layout_width="wrap_content"
                     android:layout_height="44px"
-                    android:layout_toRightOf="@+id/imageViewEarningIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewEarningIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/earnings"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -330,7 +343,7 @@
                     android:id="@+id/imageViewInvoicesIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/invoices_v2"
                     android:tag="mwar"/>
@@ -340,8 +353,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="44px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewInvoicesIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewInvoicesIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/Invoices"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -359,7 +372,7 @@
                     android:id="@+id/imageViewSuperDriverIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/super_driver_v2"
                     android:tag="mwar"/>
@@ -369,8 +382,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewSuperDriverIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewSuperDriverIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/super_driver"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -389,7 +402,7 @@
                     android:id="@+id/imageViewTourIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_tutorial_icon"
                     android:tag="mwar"/>
@@ -399,8 +412,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewTourIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewTourIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/start_training"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -419,7 +432,7 @@
                     android:id="@+id/imageViewDocIcon"
                     android:layout_width="56px"
                     android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_driver_resources"
                     android:tag="mwar"/>
@@ -429,8 +442,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewDocIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewDocIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/driver_resources"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -448,7 +461,7 @@
                     android:id="@+id/ivJugnooPlans"
                     android:layout_width="56px"
                     android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_plan"
                     android:tag="mwar"/>
@@ -458,8 +471,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/ivJugnooPlans"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/ivJugnooPlans"
+                    android:layout_marginStart="8px"
                     android:text="@string/plans_drawer_title"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -623,7 +636,7 @@
                     android:id="@+id/imageViewSupportIcon"
                     android:layout_width="56px"
                     android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
@@ -633,8 +646,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewSupportIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewSupportIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/support"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -683,7 +696,7 @@
                     android:id="@+id/imageViewAuditIcon"
                     android:layout_width="56px"
                     android:layout_height="35px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/audit_menu_v2"
                     android:tag="mwar"/>
@@ -693,14 +706,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewAuditIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewAuditIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/audit_lower"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/driverCreditsRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:visibility="@integer/show_refer_earn"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewdriverCreditsRl"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/invite_n_earn_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvDriverCredits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewdriverCreditsRl"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/menu_label_credits"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/inviteFriendRl"
                 android:layout_width="match_parent"
@@ -713,7 +756,7 @@
                     android:id="@+id/imageViewInviteErnIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/invite_n_earn_v2"
                     android:tag="mwar"/>
@@ -723,8 +766,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewInviteErnIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewInviteErnIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/invite_earn"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -752,7 +795,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/rides"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -772,7 +815,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/sharing_rides"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -792,7 +835,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/fare_details"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -813,7 +856,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/Notifications"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -821,6 +864,62 @@
             </RelativeLayout>
 
 
+            <RelativeLayout
+                android:id="@+id/callUsRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewCallIcon"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/call_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/callUsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageViewCallIcon"
+                    android:layout_marginStart="8px"
+                    android:text="@string/call_us"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/rlGetSupport"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false"
+                android:gravity="center_vertical"
+                android:tag="@string/dont_touch_me"
+                >
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/call_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvGetSupport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/get_support_call"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutDestination"
@@ -835,7 +934,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/destination_menu"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -855,7 +954,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/Paytm_recharge"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -875,7 +974,7 @@
                     android:id="@+id/imageViewRateCardIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/rate_card_v2"
                     android:tag="mwar"/>
@@ -885,8 +984,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewRateCardIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewRateCardIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/rate_card"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -907,7 +1006,7 @@
                     android:id="@+id/imageViewLangPrefIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/language_pref_v2"
                     android:tag="mwar"/>
@@ -917,8 +1016,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewLangPrefIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewLangPrefIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/language_preferences"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -938,7 +1037,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/terms"
                     android:textColor="@color/white"
                     android:textSize="34px"/>
@@ -956,7 +1055,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_marginStart="42px"
                     android:text="@string/logout"
                     android:textColor="@color/white"
                     android:textSize="36px"/>

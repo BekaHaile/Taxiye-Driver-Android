@@ -30,7 +30,7 @@
     <color name="light_grey_op_75">#75f3f3f3</color>
 
 
-    <color name="black_translucent">#77000000</color>
+    <color name="black_translucent">#55000000</color>
     <color name="jet_black">#000000</color>
     <color name="black_translucent_level_2">#55000000</color>
     <color name="black_translucent_level_3">#e536363f</color>
@@ -133,43 +133,22 @@
     <color name="grey_dark_button_alpha">#BB54585D</color>
     <color name="grey_dark_more">#5D5D5D</color>
     <color name="grey_black">#232323</color>
-    <color name="grey_black_v2">#6e6a70</color>
-    <color name="grey_menu_black_v2">#363645</color>
     <color name="grey_black_light">#3E3E3E</color>
     <color name="grey_ride_history">#6D6e71</color>
     <color name="grey_ticket_history">#4a4a4a</color>
     <color name="grey_light_ticket_history">#616270</color>
     <color name="grey_ride_detail_bg">#f2f4f5</color>
     <color name="grey_ride_detail">#9e9e9e</color>
-    <color name="gradient_orange_v2">#ff8162</color>
-    <color name="gradient_yellow_v2">#f8b542</color>
-
-
-    <color name="blue_light">#4E75D8</color>
-    <color name="blue_light_alpha">#994E75D8</color>
-
-
-    <color name="green_transaction_type">#46B82F</color>
-
-    <color name="dialog_border_color">#AA7E7D78</color>
 
 
     <color name="green_delivery">#09BC15</color>
     <color name="red_delivery">#ee2e2e</color>
 
     <!-- share lb colors-->
-    <color name="grey_lb_list">#f6f6f6</color>
     <color name="white_60">#9AFFFFFF</color>
     <color name="white_40">#66FFFFFF</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="grey_alpha_66">#66666666</color>
-
-    <integer-array name="gplus_colors">
-        <item>@color/yellow_jugnoo</item>
-        <item>@color/transparent</item>
-        <item>@color/yellow_jugnoo</item>
-        <item>@color/transparent</item>
-    </integer-array>
 
     <color name="stroke_color_light">#CDCDCD</color>
 
@@ -183,5 +162,8 @@
     <color name="dialog_brown">#474747</color>
     <color name="case_added">#00af5a</color>
     <color name="case_deducted">#ff6c6c</color>
+
+    <color name="dialog_border_color">#AA7E7D78</color>
+
 
 </resources>

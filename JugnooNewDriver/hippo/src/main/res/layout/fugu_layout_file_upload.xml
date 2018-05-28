@@ -8,6 +8,8 @@
     android:minHeight="40dp"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/fugu_padding_15"
+    android:paddingStart="@dimen/fugu_padding_15"
+    android:paddingEnd="@dimen/fugu_padding_15"
     android:paddingRight="@dimen/fugu_padding_15">
 
     <ImageView
@@ -21,6 +23,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/fugu_margin_5"
+        android:layout_marginStart="@dimen/fugu_margin_5"
+        android:layout_marginEnd="@dimen/fugu_margin_5"
         android:layout_marginRight="@dimen/fugu_margin_5"
         android:layout_weight="1"
         android:ellipsize="end"

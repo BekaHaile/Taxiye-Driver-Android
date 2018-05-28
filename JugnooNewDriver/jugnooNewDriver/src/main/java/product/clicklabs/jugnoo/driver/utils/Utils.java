@@ -1216,4 +1216,12 @@ public class Utils {
         }
     }
 
+	public static void setTypeface(Context context,View... views){
+
+		for(View textView:views){
+			((TextView)textView).setTypeface(Fonts.mavenRegular(context.getApplicationContext()));
+
+		}
+
+	}
 }

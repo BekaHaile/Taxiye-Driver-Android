@@ -128,7 +128,7 @@ public class LinearLayoutManagerForResizableRecyclerView extends android.support
 			if (exactWidth) {
 				width = widthSize;
 			} else {
-				width += getPaddingLeft() + getPaddingRight();
+				width += getPaddingStart() + getPaddingEnd();
 			}
 
 			if (exactHeight) {
@@ -196,10 +196,10 @@ public class LinearLayoutManagerForResizableRecyclerView extends android.support
 
 		final RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-		final int hPadding = getPaddingLeft() + getPaddingRight();
+		final int hPadding = getPaddingStart() + getPaddingEnd();
 		final int vPadding = getPaddingTop() + getPaddingBottom();
 
-		final int hMargin = p.leftMargin + p.rightMargin;
+		final int hMargin = p.getMarginStart() + p.getMarginEnd();
 		final int vMargin = p.topMargin + p.bottomMargin;
 
 		final int hDecoration = getRightDecorationWidth(child) + getLeftDecorationWidth(child);
@@ -210,7 +210,7 @@ public class LinearLayoutManagerForResizableRecyclerView extends android.support
 
 		child.measure(childWidthSpec, childHeightSpec);
 
-		dimensions[CHILD_WIDTH] = getDecoratedMeasuredWidth(child) + p.leftMargin + p.rightMargin;
+		dimensions[CHILD_WIDTH] = getDecoratedMeasuredWidth(child) + p.getMarginStart() + p.getMarginEnd();
 		dimensions[CHILD_HEIGHT] = getDecoratedMeasuredHeight(child) + p.bottomMargin + p.topMargin;
 
 		recycler.recycleView(child);

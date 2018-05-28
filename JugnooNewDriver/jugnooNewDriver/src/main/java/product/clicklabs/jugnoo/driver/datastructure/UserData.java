@@ -23,6 +23,8 @@ public class UserData {
 	private String userIdentifier;
 	private String driverSupportEmail, driverSupportEmailSubject;
 	private String hippoTicketFAQ;
+	private String currency;
+	public Double creditsEarned,commissionSaved;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -33,7 +35,8 @@ public class UserData {
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
 					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier,
-					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ) {
+					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
+					Double creditsEarned,Double commissionSaved) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -81,6 +84,9 @@ public class UserData {
 		this.driverSupportEmail = driverSupportEmail;
 		this.driverSupportEmailSubject = driverSupportEmailSubject;
 		this.hippoTicketFAQ = hippoTicketFAQ;
+		this.currency = currency;
+		this.creditsEarned = creditsEarned;
+		this.commissionSaved = commissionSaved;
 	}
 
 	public String getUserId() {
@@ -161,5 +167,13 @@ public class UserData {
 	public static double getDistanceUnitFactor(Context context){
 		double factor = (double) Prefs.with(context).getFloat(Constants.KEY_DISTANCE_UNIT_FACTOR, 1F);
 		return factor/1000.0D;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 }

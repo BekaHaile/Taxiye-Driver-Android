@@ -42,6 +42,28 @@ public class DateOperations {
 		}
 	}
 
+
+	/**
+	 * Converts UTC time to local time
+	 * @param utcTime UTC time String
+	 * @return Local time String
+	 */
+	@SuppressLint("SimpleDateFormat")
+	public static String utcToLocalTime(String utcTime) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		try {
+			Date myDate = simpleDateFormat.parse(utcTime);
+			String localDate = sdf.format(myDate);
+			return localDate;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return utcTime;
+		}
+	}
+
 	//2015-05-08T10:29:52.000Z
 	public static String utcToLocalTZ(String utcTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

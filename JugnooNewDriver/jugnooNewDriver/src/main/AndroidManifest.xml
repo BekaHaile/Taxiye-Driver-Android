@@ -74,6 +74,7 @@
         android:largeHeap="true"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
+        android:supportsRtl="true"
         tools:replace="android:icon">
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -114,6 +115,12 @@
             android:name=".SplashLogin"
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".DriverCreditsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
