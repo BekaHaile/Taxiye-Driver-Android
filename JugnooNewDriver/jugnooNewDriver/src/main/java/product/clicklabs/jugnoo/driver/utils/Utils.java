@@ -1080,6 +1080,9 @@ public class Utils {
 				String[] g = aRl.split(",");
 				if (g[1].trim().equals(CountryID.trim())) {
 					CountryZipCode = g[0];
+					if(!CountryZipCode.contains("+")){
+						CountryZipCode = "+" + CountryZipCode;
+					}
 					return CountryZipCode;
 				}
 			}

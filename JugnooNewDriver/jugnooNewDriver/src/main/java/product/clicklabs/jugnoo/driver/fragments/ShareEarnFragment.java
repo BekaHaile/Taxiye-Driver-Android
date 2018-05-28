@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -95,8 +96,7 @@ public class ShareEarnFragment extends BaseFragment {
         new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
 
-        buttonShare = (Button) rootView.findViewById(R.id.buttonShare);
-        buttonShare.setText(Data.userData.referralButtonText);
+        buttonShare = (Button) rootView.findViewById(R.id.buttonShare); buttonShare.setTypeface(Fonts.mavenRegular(activity));
 
         imageViewJugnooLogo = (ImageView) rootView.findViewById(R.id.imageViewJugnooLogo);
         textViewReferralCodeDisplay = (TextView) rootView.findViewById(R.id.textViewReferralCodeDisplay);
@@ -108,6 +108,7 @@ public class ShareEarnFragment extends BaseFragment {
         textViewShareReferral.setTypeface(Fonts.mavenRegular(activity));
 
         try {
+            buttonShare.setText(Data.userData.referralButtonText);
             sstr = new SpannableString(Data.userData.referralCode);
             final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
             final ForegroundColorSpan clrs = new ForegroundColorSpan(Color.parseColor("#FAA31C"));
@@ -120,11 +121,24 @@ public class ShareEarnFragment extends BaseFragment {
             textViewReferralCodeValue.setText(sstr);
             textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
-            if(Data.userData != null && Data.userData.referralMessage != null){
-                textViewShareReferral.setText(isCustomerSharing ? Data.userData.referralMessage : Data.userData.referralMessage.replace("customer","driver"));
+            if(Data.userData != null){
+                textViewShareReferral.setText(isCustomerSharing ? Data.userData.referralMessage : Data.userData.getReferralMessageDriver());
+                if(TextUtils.isEmpty(Data.userData.getReferralImageD2C()) && TextUtils.isEmpty(Data.userData.getReferralImageD2C())) {
+                    imageViewJugnooLogo.setImageResource(isCustomerSharing ? R.drawable.graphic_refer : R.drawable.iv_driver_to_driver_referral);
+                } else {
+                    if (isCustomerSharing) {
+                        Picasso.with(activity).load(Data.userData.getReferralImageD2C())
+                                .placeholder(R.drawable.graphic_refer)
+                                .error(R.drawable.graphic_refer)
+                                .into(imageViewJugnooLogo);
+                    } else {
+                        Picasso.with(activity).load(Data.userData.getReferralImageD2D())
+                                .placeholder(R.drawable.iv_driver_to_driver_referral)
+                                .error(R.drawable.iv_driver_to_driver_referral)
+                                .into(imageViewJugnooLogo);
+                    }
+                }
             }
-
-            imageViewJugnooLogo.setImageResource(isCustomerSharing ? R.drawable.graphic_refer : R.drawable.iv_driver_to_driver_referral);
 
         } catch (Exception e) {
             e.printStackTrace();

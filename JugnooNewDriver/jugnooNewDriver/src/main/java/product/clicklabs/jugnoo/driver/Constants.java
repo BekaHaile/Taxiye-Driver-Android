@@ -303,5 +303,11 @@ public interface Constants {
     String KEY_GET_CREDITS = "get_credits";
     String KEY_CREDITS_EARNED = "credits_earned";
     String KEY_COMMISSION_SAVED = "commission_saved";
+	String KEY_REFERRAL_MESSAGE = "referral_message";
+	String KEY_REFERRAL_MESSAGE_DRIVER = "referral_message_driver";
+	String KEY_REFERRAL_IMAGE_D2D = "referral_image_d2d";
+	String KEY_REFERRAL_IMAGE_D2C = "referral_image_d2c";
+	String KEY_GET_CREDITS_INFO = "get_credits_info";
+	String KEY_GET_CREDITS_IMAGE = "get_credits_image";
 }
 

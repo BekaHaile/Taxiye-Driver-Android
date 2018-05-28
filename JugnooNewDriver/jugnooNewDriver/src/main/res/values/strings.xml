@@ -955,7 +955,7 @@
     <string name="enter_credits">Enter credits</string>
     <string name="please_enter_valid_phone">Please enter valid phone number</string>
     <string name="get_credits">Receive credits from a friend</string>
-    <string name="get_credits_from_friends">Get credits from friends</string>
+    <string name="get_credits_from_drivers">Get credits from drivers</string>
     <string name="earn_credits_format">(Earn %s credits)</string>
 
 
