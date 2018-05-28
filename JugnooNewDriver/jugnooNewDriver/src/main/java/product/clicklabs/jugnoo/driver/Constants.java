@@ -301,7 +301,7 @@ public interface Constants {
     String KEY_REFER_A_CUSTOMER = "refer_a_customer";
     String KEY_ADVERTISE_WITH_US = "advertise_with_us";
     String KEY_GET_CREDITS = "get_credits";
-    String KEY_CREDITS_EARNED = "credits_earned";
+    String KEY_CREDIT_BALANCE = "credit_balance";
     String KEY_COMMISSION_SAVED = "commission_saved";
 	String KEY_REFERRAL_MESSAGE = "referral_message";
 	String KEY_REFERRAL_MESSAGE_DRIVER = "referral_message_driver";

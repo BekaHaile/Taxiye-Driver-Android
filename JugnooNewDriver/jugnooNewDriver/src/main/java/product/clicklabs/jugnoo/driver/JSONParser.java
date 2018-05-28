@@ -371,7 +371,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT_FACTOR, (float) userData.optDouble(Constants.KEY_DISTANCE_UNIT_FACTOR, 1D));
 		Prefs.with(context).save(SP_USER_ID, userId);
-		Double creditsEarned = userData.has(Constants.KEY_CREDITS_EARNED)?userData.optDouble(Constants.KEY_CREDITS_EARNED):null;
+		Double creditsEarned = userData.has(Constants.KEY_CREDIT_BALANCE)?userData.optDouble(Constants.KEY_CREDIT_BALANCE):null;
 		Double commissionSaved = userData.has(Constants.KEY_COMMISSION_SAVED)?userData.optDouble(Constants.KEY_COMMISSION_SAVED):null;
 		parseSideMenu(context, userData);
 
