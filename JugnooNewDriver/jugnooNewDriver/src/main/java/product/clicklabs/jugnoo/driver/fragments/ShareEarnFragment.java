@@ -120,7 +120,9 @@ public class ShareEarnFragment extends BaseFragment {
             textViewReferralCodeValue.setText(sstr);
             textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
-            textViewShareReferral.setText(Data.userData.referralMessage);
+            if(Data.userData != null && Data.userData.referralMessage != null){
+                textViewShareReferral.setText(isCustomerSharing ? Data.userData.referralMessage : Data.userData.referralMessage.replace("customer","driver"));
+            }
 
             imageViewJugnooLogo.setImageResource(isCustomerSharing ? R.drawable.graphic_refer : R.drawable.iv_driver_to_driver_referral);
 

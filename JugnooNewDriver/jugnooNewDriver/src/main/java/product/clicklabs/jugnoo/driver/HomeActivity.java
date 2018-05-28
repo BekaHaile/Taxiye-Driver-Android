@@ -2317,11 +2317,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				earningsRL.setVisibility(View.GONE);
 			}
-			// TODO: 26/05/18 revert this
+
 			if(Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_CREDITS, 1) == 1){
 				driverCreditsRl.setVisibility(View.VISIBLE);
 			} else {
-				driverCreditsRl.setVisibility(View.VISIBLE);
+				driverCreditsRl.setVisibility(View.GONE);
 			}
 
 
