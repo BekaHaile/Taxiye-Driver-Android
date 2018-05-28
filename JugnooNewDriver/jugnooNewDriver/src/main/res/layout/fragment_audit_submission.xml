@@ -9,7 +9,7 @@
         android:id="@+id/topBar"
         android:layout_width="720px"
         android:layout_height="96px"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/black_top_bar_bg">
 
@@ -29,17 +29,18 @@
             android:layout_width="60.10px"
             android:layout_height="76.9px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
+            android:layout_marginStart="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:src="@drawable/back_white_selector"
+            android:rotationY="@integer/locale_mirror_flip"/>
 
         <ImageView
             android:id="@+id/imageViewBin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10px"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10px"
             android:padding="20px"
             android:src="@drawable/bin_icon"/>
 
@@ -66,8 +67,8 @@
                 android:id="@+id/imageViewName"
                 android:layout_width="69px"
                 android:layout_height="49px"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="32px"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/person_img_grey"/>
 
@@ -76,13 +77,13 @@
                 android:id="@+id/nameEt"
                 android:layout_width="525px"
                 android:layout_height="90px"
-                android:layout_toRightOf="@+id/imageViewName"
+                android:layout_toEndOf="@+id/imageViewName"
                 android:background="@drawable/transparent"
                 android:capitalize="words"
                 android:hint="@string/name"
                 android:inputType="text"
-                android:paddingLeft="12px"
-                android:paddingRight="20px"
+                android:paddingStart="12px"
+                android:paddingEnd="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey_ride_history"
@@ -92,9 +93,9 @@
                 android:id="@+id/imageViewNameLine"
                 android:layout_width="525px"
                 android:layout_height="2px"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/nameEt"
-                android:layout_marginLeft="92px"
+                android:layout_marginStart="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -110,8 +111,8 @@
                 android:id="@+id/imageViewPhone"
                 android:layout_width="69px"
                 android:layout_height="49px"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="32px"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/phone_img_grey"/>
 
@@ -120,13 +121,13 @@
                 android:id="@+id/phoneNoEt"
                 android:layout_width="525px"
                 android:layout_height="90px"
-                android:layout_toRightOf="@+id/imageViewPhone"
+                android:layout_toEndOf="@+id/imageViewPhone"
                 android:background="@drawable/transparent"
                 android:hint="@string/phone_number"
                 android:inputType="number"
                 android:maxLength="13"
-                android:paddingLeft="12px"
-                android:paddingRight="20px"
+                android:paddingStart="12px"
+                android:paddingEnd="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey_ride_history"
@@ -136,9 +137,9 @@
                 android:id="@+id/imageViewPhoneNoLine"
                 android:layout_width="525px"
                 android:layout_height="2px"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/phoneNoEt"
-                android:layout_marginLeft="92px"
+                android:layout_marginStart="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -154,8 +155,8 @@
                 android:id="@+id/imageViewVehicle"
                 android:layout_width="69px"
                 android:layout_height="49px"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="32px"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="32px"
                 android:layout_marginTop="28px"
                 android:background="@drawable/vehicle_img_grey"/>
 
@@ -164,13 +165,13 @@
                 android:id="@+id/vehicleNoEt"
                 android:layout_width="525px"
                 android:layout_height="90px"
-                android:layout_toRightOf="@+id/imageViewVehicle"
+                android:layout_toEndOf="@+id/imageViewVehicle"
                 android:background="@drawable/transparent"
                 android:hint="@string/vehicle_number"
                 android:maxLength="15"
                 android:capitalize="characters"
-                android:paddingLeft="12px"
-                android:paddingRight="20px"
+                android:paddingStart="12px"
+                android:paddingEnd="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey_ride_history"
@@ -181,9 +182,9 @@
                 android:id="@+id/imageViewCityLine"
                 android:layout_width="525px"
                 android:layout_height="2px"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/vehicleNoEt"
-                android:layout_marginLeft="92px"
+                android:layout_marginStart="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -265,7 +266,7 @@
                     android:layout_width="42px"
                     android:layout_height="42px"
                     android:src="@drawable/orange_cross"
-                    android:layout_marginLeft="138px"
+                    android:layout_marginStart="138px"
                     android:layout_marginTop="30px"
                     android:visibility="visible"
                     android:tag="mwar"/>
@@ -288,7 +289,7 @@
                 android:id="@+id/linearLayoutBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -345,7 +346,7 @@
                     android:layout_width="42px"
                     android:layout_height="42px"
                     android:src="@drawable/orange_cross"
-                    android:layout_marginLeft="138px"
+                    android:layout_marginStart="138px"
                     android:layout_marginTop="30px"
                     android:visibility="visible"
                     android:tag="mwar"/>
@@ -433,7 +434,7 @@
                     android:layout_width="42px"
                     android:layout_height="42px"
                     android:src="@drawable/orange_cross"
-                    android:layout_marginLeft="138px"
+                    android:layout_marginStart="138px"
                     android:layout_marginTop="30px"
                     android:visibility="visible"
                     android:tag="mwar"/>
@@ -456,7 +457,7 @@
                 android:id="@+id/linearLayoutRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -513,7 +514,7 @@
                     android:layout_width="42px"
                     android:layout_height="42px"
                     android:src="@drawable/orange_cross"
-                    android:layout_marginLeft="138px"
+                    android:layout_marginStart="138px"
                     android:layout_marginTop="30px"
                     android:visibility="visible"
                     android:tag="mwar"/>
@@ -538,7 +539,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:visibility="visible"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:orientation="vertical">
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -594,7 +595,7 @@
                     android:layout_width="42px"
                     android:layout_height="42px"
                     android:src="@drawable/orange_cross"
-                    android:layout_marginLeft="138px"
+                    android:layout_marginStart="138px"
                     android:layout_marginTop="30px"
                     android:visibility="visible"
                     android:tag="mwar"/>

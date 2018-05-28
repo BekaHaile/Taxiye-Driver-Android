@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/rv"
+<RelativeLayout android:id="@+id/rv"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="720px"
              android:layout_height="1134px"
@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:layout_margin="30px"
         android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
         >
 
 
@@ -35,8 +36,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/title"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:padding="20px"
                 android:textColor="@color/blue_btn"
                 android:textSize="50px"
@@ -55,8 +56,8 @@
                 android:gravity="center"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:padding="20px"
                 android:textColor="@color/black"
                 android:textSize="34px"
@@ -85,4 +86,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

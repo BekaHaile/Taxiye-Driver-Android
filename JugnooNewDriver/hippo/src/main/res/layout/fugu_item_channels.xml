@@ -19,7 +19,9 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/fugu_padding_15"
             android:paddingLeft="@dimen/fugu_padding_12"
+            android:paddingStart="@dimen/fugu_padding_12"
             android:paddingRight="@dimen/fugu_padding_12"
+            android:paddingEnd="@dimen/fugu_padding_12"
             android:paddingTop="@dimen/fugu_padding_15">
 
             <RelativeLayout
@@ -52,6 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/tvDate"
+                android:layout_toStartOf="@+id/tvDate"
+                android:layout_toEndOf="@+id/rlChannelIcon"
                 android:layout_toRightOf="@+id/rlChannelIcon"
                 android:singleLine="true"
                 android:text="Channel Name"
@@ -65,7 +69,9 @@
                 android:layout_below="@+id/tvChannelName"
                 android:layout_marginTop="@dimen/fugu_margin_2"
                 android:layout_toLeftOf="@+id/circularTvMessageCount"
+                android:layout_toStartOf="@+id/circularTvMessageCount"
                 android:layout_toRightOf="@+id/rlChannelIcon"
+                android:layout_toEndOf="@+id/rlChannelIcon"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -95,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/fugu_margin_15"
+                android:layout_marginStart="@dimen/fugu_margin_15"
                 android:text="84667967657657"
                 android:textColor="@color/fugu_channel_date_text"
                 android:textSize="@dimen/fugu_text_size_small" />
@@ -106,6 +113,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/tvDate"
                 android:layout_marginLeft="@dimen/fugu_margin_15"
+                android:layout_marginStart="@dimen/fugu_margin_15"
                 android:layout_marginTop="@dimen/fugu_padding_3"
                 android:background="@drawable/bg_unread_count"
                 android:gravity="center"

@@ -20,7 +20,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -695,7 +694,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_upload_document);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.addImage);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();

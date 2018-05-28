@@ -28,6 +28,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:layout_marginTop="10px"
+        android:text="@string/km"
         android:textColor="@color/red_v2"
         android:textSize="84px"/>
 

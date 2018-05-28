@@ -12,7 +12,7 @@
             android:id="@+id/imageViewVerticalLine"
             android:layout_width="6px"
             android:layout_height="match_parent"
-            android:layout_marginLeft="42px"
+            android:layout_marginStart="42px"
             android:layout_alignTop="@+id/viewSep"
             android:layout_above="@+id/imageViewFakeBottom"
             android:background="@color/grey_light_delivery"
@@ -22,7 +22,7 @@
             android:id="@+id/relativeLayoutOrderNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="29px"
+            android:layout_marginStart="29px"
             android:layout_marginTop="68px">
 
             <ImageView
@@ -55,9 +55,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24px"
-        android:layout_marginLeft="26px"
-        android:layout_toRightOf="@+id/relativeLayoutOrderNo"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="26px"
+        android:layout_toEndOf="@+id/relativeLayoutOrderNo"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="24px">
 
         <android.support.v7.widget.CardView
@@ -80,7 +80,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="22px"
+                    android:layout_marginStart="22px"
                     android:layout_marginTop="28px">
 
                     <TextView
@@ -94,8 +94,8 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="23px">
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="23px">
 
                         <TextView
                             android:id="@+id/textViewOrderStatus"
@@ -103,10 +103,10 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="20px"
-                            android:layout_toLeftOf="@+id/imageViewStatus"
+                            android:layout_toStartOf="@+id/imageViewStatus"
                             android:gravity="center"
                             android:text="Delivered"
-                            android:paddingRight="10px"
+                            android:paddingEnd="10px"
                             android:textColor="@color/green_delivery"
                             android:textSize="24px"/>
 
@@ -114,7 +114,7 @@
                             android:id="@+id/imageViewStatus"
                             android:layout_width="20px"
                             android:layout_height="20px"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:background="@drawable/delivery_green_tick"
                             />
@@ -129,9 +129,9 @@
                     android:layout_width="525px"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="32px"
-                    android:layout_marginLeft="22px"
+                    android:layout_marginStart="22px"
                     android:layout_marginTop="22px"
-                    android:layout_toRightOf="@+id/imageViewDote1"
+                    android:layout_toEndOf="@+id/imageViewDote1"
                     android:text="@string/NA"
                     android:textSize="27px"/>
 
@@ -141,8 +141,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="32px"
-                    android:layout_marginLeft="20px"
-                    android:layout_marginRight="20px"
+                    android:layout_marginStart="20px"
+                    android:layout_marginEnd="20px"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:visibility="gone">
@@ -162,7 +162,7 @@
                         android:id="@+id/buttonCancel"
                         android:layout_width="256px"
                         android:layout_height="70px"
-                        android:layout_marginLeft="40px"
+                        android:layout_marginStart="40px"
                         android:background="@drawable/new_menu_black_btn_selector_rounded"
                         android:text="@string/cancel"
                         android:textColor="@drawable/white_color_selector"

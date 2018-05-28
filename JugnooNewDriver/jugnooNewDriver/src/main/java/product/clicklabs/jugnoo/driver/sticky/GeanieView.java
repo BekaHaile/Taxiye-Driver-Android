@@ -100,7 +100,7 @@ public class GeanieView extends Service {
 							WindowManager.LayoutParams.TYPE_PHONE,
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
-					paramsNew.gravity = Gravity.TOP | Gravity.LEFT;
+					paramsNew.gravity = Gravity.TOP | Gravity.START;
 					try {
 						int[] par = GeniePositonsSaver.readGenieParams(GeanieView.this);
 						if (par != null) {
@@ -392,7 +392,7 @@ public class GeanieView extends Service {
 	public void hideCloseView(int remove_img_height, int remove_img_width) {
 
 		removeView.setVisibility(View.GONE);
-		removeView.setPadding(0, 0, 0, 0);
+		removeView.setPaddingRelative(0, 0, 0, 0);
 		removeImg.getLayoutParams().height = remove_img_height;
 		removeImg.getLayoutParams().width = remove_img_width;
 		SimpleAnimator mShadowFadeOut = new SimpleAnimator(relativeLayoutCloseInner, R.anim.fade_out);

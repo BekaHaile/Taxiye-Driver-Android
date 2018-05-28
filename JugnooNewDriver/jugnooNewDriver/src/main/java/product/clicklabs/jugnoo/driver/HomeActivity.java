@@ -362,7 +362,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer, relativeLayoutBatteryLow;
+			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -1003,7 +1003,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
 
-			relativeLayoutSelectCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutSelectCustomer);
 
 			btnHelp = (Button) findViewById(R.id.btnHelp);
 
@@ -3836,6 +3835,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
 				layoutParams.setMargins(0, 0, 0, (int) (270 * ASSL.Yscale()));
+				layoutParams.setMarginStart(0);
+				layoutParams.setMarginEnd(0);
 				reviewSubmitBtn.setLayoutParams(layoutParams);
 				reviewSubmitBtn.setText(getResources().getString(R.string.ok));
 
@@ -7223,7 +7224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -7378,7 +7379,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -7496,7 +7497,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
+				RelativeLayout frameLayout = (RelativeLayout) dialogEndRidePopup.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
 
 				WindowManager.LayoutParams layoutParams = dialogEndRidePopup.getWindow().getAttributes();
@@ -9245,6 +9246,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //				textViewRideInstructionsInRide.setVisibility(View.GONE);
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, 0);
+					layoutParams.setMarginStart((int)(18f*ASSL.Xscale()));
+					layoutParams.setMarginEnd(0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
 				}
@@ -9255,6 +9258,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
+					layoutParams.setMarginStart((int)(18f*ASSL.Xscale()));
+					layoutParams.setMarginEnd(0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
@@ -9314,13 +9319,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverEndRideBtn.getLayoutParams();
 			if(isDefault) {
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_new) * ASSL.Xscale());
-				params.leftMargin = 0;
+				params.setMarginStart(0);
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				driverEndRideBtn.setLayoutParams(params);
 				driverEndRideBtn.setBackgroundResource(R.drawable.menu_black_btn_selector);
 			} else{
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_extra_new) * ASSL.Xscale());
-				params.leftMargin = (int) (30f * ASSL.Xscale());
+				params.setMarginStart((int) (30f * ASSL.Xscale()));
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 				driverEndRideBtn.setLayoutParams(params);
 				driverEndRideBtn.setBackgroundResource(R.drawable.orange_btn_selector);
@@ -9335,25 +9340,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonMakeDelivery.getLayoutParams();
 			if(isDefault) {
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_new) * ASSL.Xscale());
-				params.rightMargin = 0;
+				params.setMarginEnd(0);
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-					params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+					params.removeRule(RelativeLayout.ALIGN_PARENT_END);
 				} else{
-					params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+					params.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
 				}
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
 				buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
 			} else{
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
-				params.rightMargin = (int) (30f * ASSL.Xscale());
+				params.setMarginEnd((int) (30f * ASSL.Xscale()));
 				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
 					params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
 				} else{
 					params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 				}
-				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				params.addRule(RelativeLayout.ALIGN_PARENT_END);
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
 			}

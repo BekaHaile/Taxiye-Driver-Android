@@ -29,7 +29,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
+            android:layout_marginStart="10px"
             android:padding="2px"
             android:layout_marginTop="25px"
             android:src="@drawable/back_btn_selector"/>

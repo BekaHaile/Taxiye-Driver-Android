@@ -11,7 +11,7 @@
         android:layout_width="50px"
         android:layout_height="50px"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20px"
+        android:layout_marginStart="20px"
         android:src="@drawable/ic_work"
         android:visibility="visible"
         android:tag="mwar" />
@@ -19,13 +19,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20px"
-        android:layout_marginRight="20px"
+        android:layout_marginStart="20px"
+        android:layout_marginEnd="20px"
         android:orientation="vertical"
         android:gravity="center"
         android:splitMotionEvents="false"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageViewType"
+        android:layout_toEndOf="@+id/imageViewType"
         >
 
         <TextView
@@ -54,8 +54,8 @@
         android:id="@+id/imageViewSep"
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:layout_marginLeft="2px"
-        android:layout_marginRight="2px"
+        android:layout_marginStart="2px"
+        android:layout_marginEnd="2px"
         android:background="@color/stroke_color_light"
         android:layout_alignParentBottom="true"
         />

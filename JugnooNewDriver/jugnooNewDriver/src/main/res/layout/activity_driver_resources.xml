@@ -19,7 +19,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:tag="mwar"/>
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="36px"
             android:background="@drawable/transparent"
             android:orientation="horizontal">
@@ -53,7 +53,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15px">
+                android:layout_marginStart="15px">
 
                 <TextView
                     android:id="@+id/textViewResource"
@@ -67,10 +67,11 @@
                 <ImageView
                     android:layout_width="21px"
                     android:layout_height="20px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="36px"
-                    android:src="@drawable/arrow_thick_new"/>
+                    android:layout_marginEnd="36px"
+                    android:src="@drawable/arrow_thick_new"
+                    android:rotationY="@integer/locale_mirror_flip"/>
 
             </RelativeLayout>
 
@@ -91,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/topRl"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="36px"
             android:background="@drawable/transparent"
             android:orientation="horizontal">
@@ -99,7 +100,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15px">
+                android:layout_marginStart="15px">
 
                 <TextView
                     android:id="@+id/textViewTraining"
@@ -113,10 +114,11 @@
                 <ImageView
                     android:layout_width="21px"
                     android:layout_height="20px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="36px"
-                    android:src="@drawable/arrow_thick_new"/>
+                    android:layout_marginEnd="36px"
+                    android:src="@drawable/arrow_thick_new"
+                    android:rotationY="@integer/locale_mirror_flip"/>
 
             </RelativeLayout>
 
@@ -138,7 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/topRl"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="36px"
             android:background="@drawable/transparent"
             android:orientation="horizontal">
@@ -146,7 +148,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15px">
+                android:layout_marginStart="15px">
 
                 <TextView
                     android:id="@+id/textViewSupport"
@@ -160,10 +162,11 @@
                 <ImageView
                     android:layout_width="21px"
                     android:layout_height="20px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="36px"
-                    android:src="@drawable/arrow_thick_new"/>
+                    android:layout_marginEnd="36px"
+                    android:src="@drawable/arrow_thick_new"
+                    android:rotationY="@integer/locale_mirror_flip"/>
 
             </RelativeLayout>
 

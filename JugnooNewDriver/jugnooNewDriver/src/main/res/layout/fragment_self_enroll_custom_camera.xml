@@ -17,7 +17,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:tag="mwar" />
 
         <TextView
@@ -67,7 +67,7 @@
                 android:layout_width="72px"
                 android:layout_height="72px"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="50px"
+                android:layout_marginStart="50px"
                 android:textSize="40px"
                 android:background="@drawable/photogallery_icon"
                 android:textColor="@color/white"
@@ -82,7 +82,7 @@
             <ImageView
                 android:layout_width="2px"
                 android:layout_height="94px"
-                android:layout_marginLeft="14px"
+                android:layout_marginStart="14px"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:background="@color/white"/>
@@ -92,7 +92,7 @@
                 android:id="@+id/rejectImage"
                 android:layout_width="350px"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/self_audit_cross"
                 android:visibility="visible"/>
@@ -101,7 +101,7 @@
                 android:id="@+id/acceptImage"
                 android:layout_width="350px"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/self_audit_tick"
                 android:visibility="visible"/>

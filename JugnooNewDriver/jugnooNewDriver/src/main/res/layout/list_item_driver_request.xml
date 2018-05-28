@@ -152,8 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_18"
-                        android:textColor="@color/text_color"
-                        android:text="@string/approx"/>
+                        android:textColor="@color/text_color"/>
 
                 </LinearLayout>
 

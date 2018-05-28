@@ -22,8 +22,8 @@
         android:textSize="18sp"
         android:textColor="@color/new_orange"
         tools:text="Plan Value"
-        android:layout_gravity="right"
-        android:gravity="right"
+        android:layout_gravity="end"
+        android:gravity="end"
         android:id="@+id/tvValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

@@ -17,9 +17,9 @@
             android:id="@+id/tour_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/cross_tour"
+            android:layout_toStartOf="@+id/cross_tour"
             android:gravity="center_vertical"
             android:padding="13dp"
             android:textColor="@color/white"
@@ -31,10 +31,10 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:padding="4dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_tutorial_cross"
-            android:layout_marginRight="9dp" />
+            android:layout_marginEnd="9dp" />
 
     </RelativeLayout>
 

@@ -97,8 +97,8 @@ public class ProgressWheel extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int viewWidth = circleRadius + this.getPaddingLeft()
-                + this.getPaddingRight();
+        int viewWidth = circleRadius + this.getPaddingStart()
+                + this.getPaddingEnd();
         int viewHeight = circleRadius + this.getPaddingTop()
                 + this.getPaddingBottom();
 
@@ -174,13 +174,13 @@ public class ProgressWheel extends View {
     private void setupBounds(int layout_width, int layout_height) {
         int paddingTop = getPaddingTop();
         int paddingBottom = getPaddingBottom();
-        int paddingLeft = getPaddingLeft();
-        int paddingRight = getPaddingRight();
+        int paddingStart = getPaddingStart();
+        int paddingEnd = getPaddingEnd();
 
         if (!fillRadius) {
             // Width should equal to Height, find the min value to setup the
             // circle
-            int minValue = Math.min(layout_width - paddingLeft - paddingRight,
+            int minValue = Math.min(layout_width - paddingStart - paddingEnd,
                     layout_height - paddingBottom - paddingTop);
 
             int circleDiameter = Math.min(minValue, circleRadius * 2 - barWidth
@@ -188,8 +188,8 @@ public class ProgressWheel extends View {
 
             // Calc the Offset if needed for centering the wheel in the
             // available space
-            int xOffset = (layout_width - paddingLeft - paddingRight - circleDiameter)
-                    / 2 + paddingLeft;
+            int xOffset = (layout_width - paddingStart - paddingEnd - circleDiameter)
+                    / 2 + paddingStart;
             int yOffset = (layout_height - paddingTop - paddingBottom - circleDiameter)
                     / 2 + paddingTop;
 
@@ -197,8 +197,8 @@ public class ProgressWheel extends View {
                     xOffset + circleDiameter - barWidth, yOffset
                     + circleDiameter - barWidth);
         } else {
-            circleBounds = new RectF(paddingLeft + barWidth, paddingTop
-                    + barWidth, layout_width - paddingRight - barWidth,
+            circleBounds = new RectF(paddingStart + barWidth, paddingTop
+                    + barWidth, layout_width - paddingEnd - barWidth,
                     layout_height - paddingBottom - barWidth);
         }
     }

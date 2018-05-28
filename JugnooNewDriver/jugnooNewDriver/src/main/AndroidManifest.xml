@@ -74,6 +74,7 @@
         android:largeHeap="true"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
+        android:supportsRtl="true"
         tools:replace="android:icon">
         <provider
             android:name="android.support.v4.content.FileProvider"

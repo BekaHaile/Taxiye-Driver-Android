@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/rv"
+<RelativeLayout android:id="@+id/rv"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="1134px"
@@ -16,6 +16,7 @@
         android:layout_margin="40px"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
         >
 
 
@@ -34,8 +35,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/alert"
                 android:textColor="@color/black_text_v2"
                 android:textSize="24px"
@@ -52,8 +53,8 @@
                 android:text="@string/take_cash"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:textColor="@color/red_v2"
                 android:textSize="38px"/>
 
@@ -65,8 +66,8 @@
                 android:layout_marginTop="8px"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/NA"
                 android:textColor="@color/black_text_v2"
                 android:textSize="28px"/>
@@ -74,8 +75,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1.5px"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
+                android:layout_marginStart="40px"
+                android:layout_marginEnd="40px"
                 android:layout_marginTop="28px"
                 android:background="@color/black_varient"/>
 
@@ -95,8 +96,8 @@
                 <ImageView
                     android:layout_width="1.5px"
                     android:layout_height="105px"
-                    android:layout_marginLeft="50px"
-                    android:layout_marginRight="22px"
+                    android:layout_marginStart="50px"
+                    android:layout_marginEnd="22px"
                     android:src="@color/black_varient"/>
 
                 <RelativeLayout
@@ -119,8 +120,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1.5px"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
+                android:layout_marginStart="40px"
+                android:layout_marginEnd="40px"
                 android:background="@color/black_varient"/>
 
             <RelativeLayout
@@ -135,8 +136,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="28px"
-                    android:layout_marginLeft="26px"
-                    android:layout_marginRight="26px"
+                    android:layout_marginStart="26px"
+                    android:layout_marginEnd="26px"
                     android:scrollbars="vertical"
                     android:maxLines="12"
                     android:paddingBottom="15px"
@@ -147,8 +148,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1.5px"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:layout_below="@+id/textViewItems"
                     android:background="@color/black_varient"/>
 
@@ -171,22 +172,30 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="74px"
-                android:layout_marginRight="74px"
+                android:layout_marginStart="44px"
+                android:layout_marginEnd="44px"
                 android:layout_marginBottom="25px"
                 android:splitMotionEvents="false"
                 >
 
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
-                    style="@style/DialogButtonGrey"
+                    android:layout_width="260px"
+                    android:layout_height="70px"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
                     android:text="@string/cancel"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
                     />
 
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"
-                    style="@style/DialogButtonOrange"
+                    android:layout_width="260px"
+                    android:layout_height="70px"
+                    android:background="@drawable/new_orange_btn_selector_rounded"
                     android:text="@string/ok"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
                     android:layout_alignParentEnd="true"
                     />
             </RelativeLayout>
@@ -195,4 +204,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

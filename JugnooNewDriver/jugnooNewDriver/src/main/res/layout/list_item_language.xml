@@ -24,7 +24,7 @@
             android:textSize="42px"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:singleLine="true"
              />
         
@@ -36,8 +36,8 @@
             <!--android:tag="mwar"-->
             <!--android:src="@drawable/check_off"-->
             <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="20px"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="20px"-->
             <!--/>-->
         
         <ImageView 
