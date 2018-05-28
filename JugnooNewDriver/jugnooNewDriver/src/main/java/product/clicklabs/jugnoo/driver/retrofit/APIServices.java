@@ -595,9 +595,9 @@ public interface APIServices {
 							 Callback<SettleUserDebt> callback);
 
 	@FormUrlEncoded
-	@POST("/get_credits")
-	void getCredits(@FieldMap Map<String, String> params,
-							 Callback<DriverCreditResponse> callback);
+	@POST("/driver/credit_history")
+	void creditHistory(@FieldMap Map<String, String> params,
+					   Callback<DriverCreditResponse> callback);
 
 
 }

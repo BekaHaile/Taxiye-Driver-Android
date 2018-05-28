@@ -5,17 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -44,8 +40,8 @@ public class DriverCreditsHistoryAdapter extends RecyclerView.Adapter<DriverCred
 	@Override
 	public void onBindViewHolder(CreditHistoryViewHolder rideInfoViewHolder, int i) {
 		rideInfoViewHolder.tvDesc.setText(deliveryDetails.get(i).getDesc());
-		rideInfoViewHolder.tvDate.setText(DateOperations.utcToLocalTime(deliveryDetails.get(i).getDate()));
-		rideInfoViewHolder.tvId.setText(deliveryDetails.get(i).getCreditId());
+		rideInfoViewHolder.tvDate.setText(deliveryDetails.get(i).getTxnDate());
+		rideInfoViewHolder.tvId.setText(context.getString(R.string.hash_format, String.valueOf(deliveryDetails.get(i).getTxnId())));
 		rideInfoViewHolder.tvAmount.setText(Utils.formatCurrencyValue(deliveryDetails.get(i).getCurrencyUnit(),deliveryDetails.get(i).getAmount()));
 
 	}

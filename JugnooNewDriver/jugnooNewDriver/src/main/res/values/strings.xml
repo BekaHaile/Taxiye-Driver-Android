@@ -957,6 +957,7 @@
     <string name="get_credits">Receive credits from a friend</string>
     <string name="get_credits_from_drivers">Get credits from drivers</string>
     <string name="earn_credits_format">(Earn %s credits)</string>
+    <string name="hash_format">#%s</string>
 
 
     <string-array name="CountryCodes">

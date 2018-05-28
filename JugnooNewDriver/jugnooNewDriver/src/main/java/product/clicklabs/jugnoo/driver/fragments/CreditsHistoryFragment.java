@@ -11,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
@@ -47,7 +45,7 @@ public class CreditsHistoryFragment extends Fragment {
     View rootView;
 
     private DriverCreditsListener driverCreditsListener;
-    private ArrayList<DriverCreditResponse.CreditHistory> list ;
+    private ArrayList<DriverCreditResponse.CreditHistory> list = new ArrayList<>() ;
     private DriverCreditsHistoryAdapter driverCreditsHistoryAdapter;
 
     public static CreditsHistoryFragment newInstance() {
@@ -97,7 +95,7 @@ public class CreditsHistoryFragment extends Fragment {
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             HomeUtil.putDefaultParams(params);
             DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
-            RestClient.getApiServices().getCredits(params, new Callback<DriverCreditResponse>() {
+            RestClient.getApiServices().creditHistory(params, new Callback<DriverCreditResponse>() {
                 @Override
                 public void success(DriverCreditResponse rateCardResponse, Response response) {
                     try {
@@ -106,8 +104,9 @@ public class CreditsHistoryFragment extends Fragment {
                         String message = JSONParser.getServerMessage(jObj);
                         int flag = jObj.getInt(Constants.KEY_FLAG);
 
-                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                            list = rateCardResponse.getCreditHistoryList();
+                        if (ApiResponseFlags.TRANSACTION_HISTORY.getOrdinal() == flag) {
+                            list.clear();
+                            list.addAll(rateCardResponse.getCreditHistoryList());
                             driverCreditsHistoryAdapter.notifyDataSetChanged();
                         } else {
                             DialogPopup.alertPopup(getActivity(), "", message);

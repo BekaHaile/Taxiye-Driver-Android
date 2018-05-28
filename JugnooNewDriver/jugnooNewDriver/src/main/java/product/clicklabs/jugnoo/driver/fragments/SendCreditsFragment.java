@@ -112,7 +112,7 @@ public class SendCreditsFragment extends BaseFragment {
                     Utils.showToast(activity, getString(R.string.please_enter_valid_phone));
                     return;
                 }
-                sendCreditsApi(countryCode, phoneNumber, credits);
+                sendCreditsApi(countryCode, countryCode+phoneNumber, credits);
             }
         });
 
@@ -129,7 +129,7 @@ public class SendCreditsFragment extends BaseFragment {
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             params.put(Constants.KEY_PHONE_NO, phoneNo);
             params.put(Constants.KEY_COUNTRY_CODE, countryCode);
-            params.put(Constants.KEY_CREDITS, credits);
+            params.put(Constants.KEY_AMOUNT, credits);
             HomeUtil.putDefaultParams(params);
             DialogPopup.showLoadingDialog(activity, getString(R.string.loading));
             RestClient.getApiServices().sendCredits(params, new Callback<SettleUserDebt>() {
