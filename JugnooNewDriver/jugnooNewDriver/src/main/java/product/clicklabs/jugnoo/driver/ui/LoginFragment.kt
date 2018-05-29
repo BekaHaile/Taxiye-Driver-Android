@@ -329,8 +329,12 @@ class LoginFragment : Fragment() {
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
-        toolbarChangeListener.setToolbarVisibility(false)
         super.onHiddenChanged(hidden)
+
+        if (!hidden) {
+            toolbarChangeListener.setToolbarVisibility(false)
+            JSONParser.saveAccessToken(parentActivity, "")
+        }
     }
 
 
@@ -375,9 +379,6 @@ class LoginFragment : Fragment() {
         sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
                 animateViews()
-                activity.supportFragmentManager.beginTransaction()
-                        .remove(activity.supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
-                        .commit()
             }
 
             override fun onTransitionResume(transition: Transition) {}
