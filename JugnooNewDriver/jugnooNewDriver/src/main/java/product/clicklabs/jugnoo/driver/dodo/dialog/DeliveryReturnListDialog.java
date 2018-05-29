@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -75,7 +76,7 @@ public class DeliveryReturnListDialog {
 			dialog.setCanceledOnTouchOutside(cancelable);
 
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
+			textMessage.setTypeface(Fonts.mavenRegular(activity));
 
 			RecyclerView recyclerViewReturnOptions;
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
@@ -98,13 +99,13 @@ public class DeliveryReturnListDialog {
 			}
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnSubmit);
-			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			if(!"".equalsIgnoreCase(okText)){
 				btnOk.setText(okText);
 			}
 
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 			if(!"".equalsIgnoreCase(canceltext)){
 				btnCancel.setText(canceltext);
 			}

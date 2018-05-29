@@ -76,7 +76,9 @@ public class DocRequirementResponse {
 	}
 
 	public class DocumentData {
-
+		@SerializedName("doc_type")
+		@Expose
+		private int docType;
 		@SerializedName("doc_type_num")
 		@Expose
 		private Integer docTypeNum;
@@ -243,6 +245,14 @@ public class DocRequirementResponse {
 
 		public void setGalleryRestricted(Integer galleryRestricted) {
 			this.galleryRestricted = galleryRestricted;
+		}
+
+		public int getDocType() {
+			return docType;
+		}
+
+		public void setDocType(int docType) {
+			this.docType = docType;
 		}
 	}
 

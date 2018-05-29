@@ -95,6 +95,7 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.PendingApiHit;
@@ -233,27 +234,27 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		viewInitLS = (ImageView) findViewById(R.id.viewInitLS);
 
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
-		buttonLogin.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		buttonLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
-		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		btnGenerateOtp.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
 
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
-		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		buttonRegister.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		textViewCustomerApp= (TextView) findViewById(R.id.textViewCustomerApp);
-		textViewCustomerApp.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewCustomerApp.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		textViewRegDriver = (TextView) findViewById(R.id.textViewRegDriver);
-		textViewRegDriver.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewRegDriver.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setVisibility(View.GONE);
 		buttonRegisterTookan = (Button) findViewById(R.id.buttonRegisterTookan);
-		buttonRegisterTookan.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		buttonRegisterTookan.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 
 		viewInitJugnoo = (ImageView) findViewById(R.id.viewInitJugnoo);
 		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
@@ -267,20 +268,20 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		viewInitLS.setVisibility(View.VISIBLE);
 
 		nameEt = (EditText) findViewById(R.id.nameEt);
-		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		nameEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		referralCodeEt = (EditText) findViewById(R.id.referralCodeEt);
-		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		referralCodeEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
-		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		alternatePhoneNoEt  = (EditText) findViewById(R.id.alternatePhoneNoEt);
-		alternatePhoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		alternatePhoneNoEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		vehicleNumEt  = (EditText) findViewById(R.id.vehicleNumEt);
-		vehicleNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		vehicleNumEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		phoneNoOPTEt = (EditText) findViewById(R.id.phoneNoOPTEt);
-		phoneNoOPTEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoOPTEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
@@ -294,15 +295,15 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 						.build();
 
 		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
-		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		signUpBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewLoginRegister = (TextView) findViewById(R.id.textViewLoginRegister);
-		textViewLoginRegister.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewLoginRegister.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		textViewRegLogin = (TextView) findViewById(R.id.textViewRegLogin);
-		textViewRegLogin.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewRegLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
-		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewTandC.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
@@ -1802,8 +1803,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			dialog.setCanceledOnTouchOutside(false);
 			
 			
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
 			textHead.setVisibility(View.VISIBLE);
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
@@ -1811,11 +1812,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			
 			textMessage.setText(message);
 			
-			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.mavenRegular(activity));
 			btnOk.setText(activity.getResources().getString(R.string.update));
 			
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 			btnCancel.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -1875,8 +1876,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			dialog.setCanceledOnTouchOutside(false);
 			
 			
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
 			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
@@ -1884,7 +1885,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			textHead.setText(title);
 			textMessage.setText(message);
 			
-			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.mavenRegular(activity));
 			
 			frameLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -1994,9 +1995,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				dialog.setCanceledOnTouchOutside(true);
 				
 				
-				TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
-				TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
-				final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Data.latoRegular(activity));
+				TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity));
+				TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
+				final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Fonts.mavenRegular(activity));
 				
 				
 				if(DriverDebugOpenMode.DEBUG == flag){
@@ -2012,7 +2013,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				
 				
 				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm);
-				btnConfirm.setTypeface(Data.latoRegular(activity));
+				btnConfirm.setTypeface(Fonts.mavenRegular(activity));
 				
 				btnConfirm.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -2153,8 +2154,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					
 					
 					
-					TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-					TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+					TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+					TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
 					
 					
 					SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -2172,14 +2173,14 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 					
 					
 					
-					Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
+					Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.mavenRegular(activity));
 					btnOk.setText("LIVE");
 					
 					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral);
-					btnNeutral.setTypeface(Data.latoRegular(activity));
+					btnNeutral.setTypeface(Fonts.mavenRegular(activity));
 					btnNeutral.setText("DEV");
 					
-					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Fonts.mavenRegular(activity));
 					btnCancel.setText("CUSTOM");
 					
 					
@@ -2255,9 +2256,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			dialog.setCanceledOnTouchOutside(true);
 
 
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
-			final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Data.latoRegular(activity));
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.mavenRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.mavenRegular(activity));
+			final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Fonts.mavenRegular(activity));
 
 			etCode.setInputType(InputType.TYPE_CLASS_TEXT);
 			etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30);
@@ -2275,7 +2276,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			textMessage.setVisibility(View.GONE);
 
 
-			final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Data.latoRegular(activity));
+			final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Fonts.mavenRegular(activity));
 
 			btnConfirm.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -2417,10 +2418,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				restartPhoneDialog.setCanceledOnTouchOutside(false);
 	
 				TextView textHead = (TextView) restartPhoneDialog.findViewById(R.id.textHead);
-				textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+				textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 				textHead.setVisibility(View.GONE);
 				TextView textMessage = (TextView) restartPhoneDialog.findViewById(R.id.textMessage);
-				textMessage.setTypeface(Data.latoRegular(activity));
+				textMessage.setTypeface(Fonts.mavenRegular(activity));
 	
 				textMessage.setMovementMethod(new ScrollingMovementMethod());
 				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
@@ -2429,7 +2430,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				
 	
 				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);
-				btnOk.setTypeface(Data.latoRegular(activity));
+				btnOk.setTypeface(Fonts.mavenRegular(activity));
 	
 				btnOk.setOnClickListener(new View.OnClickListener() {
 					@Override

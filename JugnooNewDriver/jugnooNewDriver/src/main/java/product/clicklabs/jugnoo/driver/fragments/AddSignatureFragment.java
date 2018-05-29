@@ -47,6 +47,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -126,23 +127,23 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 		}
 
         btnAction = (Button) parentView.findViewById(iAction);
-        btnAction.setTypeface(Data.latoRegular(activity));
+        btnAction.setTypeface(Fonts.mavenRegular(activity));
         btnAction.setOnClickListener(this);
 
         btnReset = (Button) parentView.findViewById(iReset);
-        btnReset.setTypeface(Data.latoRegular(activity));
+        btnReset.setTypeface(Fonts.mavenRegular(activity));
         btnReset.setOnClickListener(this);
 
 		backBtn = (Button) parentView.findViewById(R.id.backBtn);
 		backBtn.setVisibility(View.GONE);
 		title = (TextView) parentView.findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(activity));
+		title.setTypeface(Fonts.mavenRegular(activity));
 
         tvInformation = (TextView) parentView.findViewById(R.id.tvInformation);
-        tvInformation.setTypeface(Data.latoRegular(activity));
+        tvInformation.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTandC = (TextView) parentView.findViewById(R.id.textViewTandC);
-		textViewTandC.setTypeface(Data.latoRegular(activity));
+		textViewTandC.setTypeface(Fonts.mavenRegular(activity));
 
 		scrollView = (ScrollView) parentView.findViewById(R.id.scrollView);
 		imageViewScroll = (ImageView) parentView.findViewById(R.id.imageViewScroll);
@@ -162,7 +163,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
 //        rlPlaceholder = parentView.findViewById(R.id.rlPlaceholder);
 //        TextView tvPlaceholder = (TextView) parentView.findViewById(R.id.tvPlaceholder);
-//        tvPlaceholder.setTypeface(Data.latoRegular(activity));
+//        tvPlaceholder.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTandC.setOnClickListener(new View.OnClickListener() {
 			@Override

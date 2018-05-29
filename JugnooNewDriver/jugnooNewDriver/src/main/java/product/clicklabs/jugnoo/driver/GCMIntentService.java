@@ -55,6 +55,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
@@ -605,11 +606,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									try {
 										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 										DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
-										if (dryDistance >= 1000) {
-											distanceDry = decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
-										} else {
-											distanceDry = decimalFormatNoDecimal.format(dryDistance) + " " + getResources().getString(R.string.m_away);
-										}
+										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this))
+												+" "+ Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 									} catch (Resources.NotFoundException e) {
 										e.printStackTrace();
 									}
@@ -732,6 +730,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 								} else {
 									notificationManager(this, logMessage, true);
 								}
+
+								//broadcast sent to finish chat activity
+								Intent intentBr = new Intent(Constants.ACTION_FINISH_ACTIVITY);
+								intentBr.putExtra(Constants.KEY_TAG, 1);
+								sendBroadcast(intentBr);
 
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 

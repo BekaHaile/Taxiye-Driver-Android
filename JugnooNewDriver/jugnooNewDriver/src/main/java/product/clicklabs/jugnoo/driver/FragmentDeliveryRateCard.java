@@ -1,16 +1,14 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -20,7 +18,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -36,6 +33,7 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 	RelativeLayout relative, relativeLayoutRange, relativelayoutBaseFare, relativelayoutPerDelivery, relativelayoutReturnFare,
 			relativeLayoutPickupWaitTime, relativeLayoutPickupDistanceFare, relativeLayoutLoadingFare, relativeLayoutUnLoadingFare;
+	TextView textViewPerKm;
 
 	TextView textViewNoRCard;
 	NewRateCardActivity activity;
@@ -82,7 +80,6 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		relativeLayoutPickupWaitTime = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutPickupWaitTime);
 		relativeLayoutPickupDistanceFare = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutPickupDistanceFare);
 
-		((TextView) rootView.findViewById(R.id.textViewPerKm)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewReturnFare)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewLoadingFare)).setTypeface(Fonts.mavenRegular(activity));
@@ -91,6 +88,7 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewPickupWaitTime)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewPickupDistanceFare)).setTypeface(Fonts.mavenRegular(activity));
 		textViewNoRCard = (TextView) rootView.findViewById(R.id.textViewNoRCard);
+		textViewPerKm = (TextView) rootView.findViewById(R.id.textViewPerKm);
 
 		getRateCardDetails(activity);
 		return rootView;
@@ -119,6 +117,8 @@ public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
 
 		if (rateCardResponse != null) {
 			DeliveryRateCardResponse.Data data = rateCardResponse.getData();
+
+			textViewPerKm.setText(getString(R.string.per_km_wo_brack_format, rateCardResponse.getData().getDistanceUnit()));
 
 			if(data.getBaseFare() != null){
 				setFares(data.getBaseFare(), basefare_extras);

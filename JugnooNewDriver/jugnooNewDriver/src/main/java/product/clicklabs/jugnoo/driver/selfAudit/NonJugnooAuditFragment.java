@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -89,14 +90,14 @@ public class NonJugnooAuditFragment extends Fragment {
 
 
 		textViewSmartPhoneOption = (TextView) rootView.findViewById(R.id.textViewSmartPhoneOption);
-		textViewSmartPhoneOption.setTypeface(Data.latoRegular(activity));
+		textViewSmartPhoneOption.setTypeface(Fonts.mavenRegular(activity));
 		textViewOptional  = (TextView) rootView.findViewById(R.id.textViewOptional);
-		textViewOptional.setTypeface(Data.latoRegular(activity));
+		textViewOptional.setTypeface(Fonts.mavenRegular(activity));
 		textViewNextButton = (TextView) rootView.findViewById(R.id.textViewNextButton);
-		textViewNextButton.setTypeface(Data.latoRegular(activity));
+		textViewNextButton.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(activity));
+		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
 
 		imageViewSmartPhoneCheckYes = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckYes);
 		imageViewSmartPhoneCheckNo = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckNo);

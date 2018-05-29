@@ -16,6 +16,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
@@ -55,7 +56,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
         new ASSL(this, root, 1134, 720, false);
 
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		title.setText(getResources().getString(R.string.rate_card));
 		backBtn = (Button)findViewById(R.id.backBtn);
 		
@@ -74,7 +75,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.red_v2));
 		tabs.setTextColorResource(R.color.red_v2, R.color.white);
-		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 		tabs.setBackgroundColor(getResources().getColor(R.color.black_top_bar_bg));
 		tabs.setVisibility(rateCardFragmentAdapter.getCount() > 1 ? View.VISIBLE : View.GONE);

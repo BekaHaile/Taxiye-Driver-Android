@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,6 +23,7 @@ import java.util.Locale;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -224,8 +224,8 @@ public class MeteringService extends Service {
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
 							String message = context.getResources().getString(R.string.total_distance)
-									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000) +" "
-									+ context.getResources().getString(R.string.km) + " "
+									+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context)) +" "
+									+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
 									+ "\n" + context.getResources().getString(R.string.ride_time)
 									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
 							generateNotification(context, message,METER_NOTIF_ID);

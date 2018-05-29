@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import retrofit.Callback;
@@ -71,7 +72,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		listViewCancelOptions = (NonScrollListView) findViewById(R.id.listViewCancelOptions);
@@ -80,7 +81,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 
 		buttonCancelRide = (Button) findViewById(R.id.buttonCancelRide);
-		buttonCancelRide.setTypeface(Data.latoRegular(this));
+		buttonCancelRide.setTypeface(Fonts.mavenRegular(this));
 
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);

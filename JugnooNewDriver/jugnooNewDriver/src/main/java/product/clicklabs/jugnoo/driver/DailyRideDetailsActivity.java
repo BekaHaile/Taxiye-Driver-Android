@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -105,14 +106,14 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
 //		title.getPaint().setShader(textShader);
 
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
 		textViewInfoDisplay.setVisibility(View.GONE);
 
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {

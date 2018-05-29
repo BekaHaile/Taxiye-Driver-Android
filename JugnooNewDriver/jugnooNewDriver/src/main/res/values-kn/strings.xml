@@ -448,7 +448,6 @@
     <string name="driver_loc">ಚಾಲಕನ ಸ್ಥಳ</string>
     <string name="customer_2">ಗ್ರಾಹಕ 2</string>
 
-    <string name="kms">ಕಿಮೀ</string>
     <string name="mark_delivered">ಮಾರ್ಕ್ ತಲುಪಿಸಲಾಗಿದೆ</string>
     <string name="thanks_for_feedback">ನಿಮ್ಮ ಅಮೂಲ್ಯವಾದ ಪ್ರತಿಕ್ರಿಯೆಗೆ ಧನ್ಯವಾದಗಳು</string>
     <string name="total_amnt_till_now">ಇಲ್ಲಿಯವರೆಗಿನ ಒಟ್ಟು ಹಣ</string>
@@ -581,9 +580,7 @@
     <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
     <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
     <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
-    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
-    <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
-    <string name="per_km">(ಪ್ರತಿ km ಗೆ )</string>
+    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s</string>
 
     <string name="Yesterday">ನಿನ್ನೆ</string>
     <string name="ride_money">ಸವಾರಿಯ ಒಟ್ಟು ಮೊತ್ತ </string>
@@ -592,7 +589,6 @@
     <string name="outstanding_amount1">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
 
 
-    <string name="diffrential_pricing_rate">%1$s ಕಿಲೋಮೀಟರ್  ನಂತರ, ಪ್ರತಿ ಕಿಲೋಮೀಟರಿಗೆ ರೂ. %2$s ಸಿಗುತ್ತದೆ</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ಪಾವತಿಸಿದ ಅಂದಾಜು </string>
     <string name="this_week_cap">ಈ ವಾರ</string>
@@ -796,11 +792,8 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>

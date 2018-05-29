@@ -120,7 +120,7 @@ public class FetchChatResponse {
 		this.status = status;
 	}
 
-	public class ChatHistory {
+	public static class ChatHistory {
 
 		@SerializedName("chat_history_id")
 		@Expose

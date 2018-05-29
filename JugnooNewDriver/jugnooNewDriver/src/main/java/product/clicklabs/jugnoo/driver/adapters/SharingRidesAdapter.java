@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -43,17 +43,17 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 	public void onBindViewHolder(SharingRideViewHolder sharingRideViewHolder, int i) {
 		SharingRideData srd = sharingRideDatas.get(i);
 
-		sharingRideViewHolder.textViewDateValue.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewTimeValue.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewPhoneValue.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewActualFare.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-		sharingRideViewHolder.textViewCustomerPaid.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-		sharingRideViewHolder.textViewAccountBalance.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-		sharingRideViewHolder.textRideStatus.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewCustomerPaidText.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewAccountBalanceText.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewRideID.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.buttonRideComplete.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewDateValue.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewTimeValue.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewPhoneValue.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewActualFare.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
+		sharingRideViewHolder.textViewCustomerPaid.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
+		sharingRideViewHolder.textViewAccountBalance.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
+		sharingRideViewHolder.textRideStatus.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewCustomerPaidText.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.textViewRideID.setTypeface(Fonts.mavenRegular(context));
+		sharingRideViewHolder.buttonRideComplete.setTypeface(Fonts.mavenRegular(context));
 
 
 			if(srd.completed == 1){

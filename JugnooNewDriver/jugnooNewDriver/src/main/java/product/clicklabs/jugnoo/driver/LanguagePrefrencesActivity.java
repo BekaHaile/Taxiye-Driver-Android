@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -67,7 +68,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
 		listView = (ListView) findViewById(R.id.listView);
 
 		languageListAdapter = new LanguageListAdapter();
@@ -183,7 +184,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 				convertView = mInflater.inflate(R.layout.list_item_language, null);
 
 				holder.languageName = (TextView) convertView.findViewById(R.id.languageName);
-				holder.languageName.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.languageName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 				holder.relative.setTag(holder);

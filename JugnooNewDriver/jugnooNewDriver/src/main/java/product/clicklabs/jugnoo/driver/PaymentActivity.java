@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,10 +15,10 @@ import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.PaymentFragmentAdapter;
 import product.clicklabs.jugnoo.driver.fragments.InvoiceHistoryFragment;
-import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
@@ -70,12 +69,12 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
 		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},

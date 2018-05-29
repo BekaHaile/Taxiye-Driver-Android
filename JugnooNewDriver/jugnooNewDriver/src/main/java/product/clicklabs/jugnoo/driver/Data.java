@@ -7,7 +7,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -94,6 +93,9 @@ public class Data {
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
+
+    public static final String CHAT_URL_DEV = "https://test.jugnoo.in:8095";
+    public static final String CHAT_URL_LIVE = "https://prod-autos-api.jugnoo.in:4010";
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
@@ -214,51 +216,6 @@ public class Data {
 
 
 
-	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy, digitalRegular, latoSemiBold;																// fonts declaration
-
-
-	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
-		if (latoRegular == null) {
-			latoRegular = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_regular.ttf");
-		}
-		return latoRegular;
-	}
-
-
-	public static Typeface museoSlab(Context appContext) {
-		if (museoSlab == null) {
-			museoSlab = Typeface.createFromAsset(appContext.getAssets(), "fonts/museo_slab.otf");
-		}
-		return museoSlab;
-	}
-
-    public static Typeface latoLight(Context appContext) {											// accessing fonts functions
-        if (latoLight == null) {
-            latoLight = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_light.ttf");
-        }
-        return latoLight;
-    }
-
-	public static Typeface latoHeavy(Context appContext) {											// accessing fonts functions
-		if (latoHeavy == null) {
-			latoHeavy = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato-heavy.ttf");
-		}
-		return latoHeavy;
-	}
-
-	public static Typeface latoSemiBold(Context appContext) {											// accessing fonts functions
-		if (latoSemiBold == null) {
-			latoSemiBold = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_semibold.ttf");
-		}
-		return latoSemiBold;
-	}
-
-	public static Typeface digitalRegular(Context appContext) {											// accessing fonts functions
-		if (digitalRegular == null) {
-			digitalRegular = Typeface.createFromAsset(appContext.getAssets(), "fonts/digital_regular.ttf");
-		}
-		return digitalRegular;
-	}
 
 	public static void filldetails(Context context){
 		try {																						// to get AppVersion, OS version, country code and device name
@@ -477,6 +434,13 @@ public class Data {
 	public static void setSupportOptions(ArrayList<SupportOption> supportOptions) {
 		Data.supportOptions = supportOptions;
 	}
+	public static ArrayList<SupportOption> getCreditOptions() {
+		return creditOptions;
+	}
+
+	public static void setCreditOptions(ArrayList<SupportOption> creditOptions) {
+		Data.creditOptions = creditOptions;
+	}
 
 	public static interface TxnType {
 		public static final int CREDITED = 1;
@@ -484,7 +448,7 @@ public class Data {
 	}
 
 	public static boolean isCaptive(){
-		return Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
+		return Data.userData!=null && Data.userData.isCaptiveDriver!=null && Data.userData.isCaptiveDriver==1;
 	}
 	public static void setCaptive(boolean isCaptiveDriver){
 		Data.userData.isCaptiveDriver = isCaptiveDriver?1:0;
@@ -548,6 +512,6 @@ public class Data {
 		}
 	}
 
-	private static ArrayList<SupportOption> supportOptions;
+	private static ArrayList<SupportOption> supportOptions, creditOptions;
 
 }

@@ -37,6 +37,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -92,13 +93,13 @@ public class DeliveryListAdapter extends PagerAdapter {
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
-		textViewCashCollected.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewCashCollected.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		TextView textViewReturnText = (TextView) taskItemView.findViewById(R.id.textViewReturnText);
 
 		RelativeLayout call = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
 		final RelativeLayout relativelayoutProgressInfo = (RelativeLayout) taskItemView.findViewById(R.id.relativelayoutProgressInfo);
 		TextView textViewDeliveryText = (TextView) taskItemView.findViewById(R.id.textViewDeliveryText);
-		textViewDeliveryText.setTypeface(Data.latoRegular(activity));
+		textViewDeliveryText.setTypeface(Fonts.mavenRegular(activity));
 
 		Button buttonMarkDeliver = (Button) taskItemView.findViewById(R.id.buttonMarkDeliver);
 		Button buttonMarkReturn = (Button) taskItemView.findViewById(R.id.buttonMarkReturn);

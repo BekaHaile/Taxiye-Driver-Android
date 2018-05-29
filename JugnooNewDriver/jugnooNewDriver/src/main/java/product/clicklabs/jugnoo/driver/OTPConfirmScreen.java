@@ -39,6 +39,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomCountDownTimer;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.OtpDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -100,34 +101,34 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         new ASSL(OTPConfirmScreen.this, relative, 1134, 720, false);
 
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Data.latoRegular(this));
+        textViewTitle.setTypeface(Fonts.mavenRegular(this));
 
         relativeLayoutFake = (RelativeLayout) findViewById(R.id.relativeLayoutFake);
 		relativeLayoutFake.setVisibility(View.GONE);
         phoneNoEt = (TextView) findViewById(R.id.phoneNoEt);
-        phoneNoEt.setTypeface(Data.latoRegular(this));
+        phoneNoEt.setTypeface(Fonts.mavenRegular(this));
         editTextOTP = (EditText) findViewById(R.id.otpEt);
-        editTextOTP.setTypeface(Data.latoRegular(this));
+        editTextOTP.setTypeface(Fonts.mavenRegular(this));
         editTextOTP.setCursorVisible(true);
         buttonVerify = (Button) findViewById(R.id.verifyOtp);
-        buttonVerify.setTypeface(Data.latoRegular(this));
+        buttonVerify.setTypeface(Fonts.mavenRegular(this));
 
         backBtn = (Button) findViewById(R.id.backBtn);
-        backBtn.setTypeface(Data.latoRegular(this));
+        backBtn.setTypeface(Fonts.mavenRegular(this));
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setTypeface(Data.latoRegular(this));
+        btnLogin.setTypeface(Fonts.mavenRegular(this));
 
         layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
         btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
         btnOtpViaCall = (ImageView) findViewById(R.id.btnOtpViaCall);
 //        textViewCounter = (TextView) findViewById(R.id.textViewCounter);
-//        textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
+//        textViewCounter.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
-//		((TextView) findViewById(R.id.textViewBtnOtpViaCall)).setTypeface(Data.latoRegular(this));
+//		((TextView) findViewById(R.id.textViewBtnOtpViaCall)).setTypeface(Fonts.mavenRegular(this));
         textViewOr = (TextView) findViewById(R.id.textViewOr);
-        textViewOr.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-        ((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
+        textViewOr.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+        ((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Fonts.mavenRegular(this));
         imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
         phoneNumberToVerify = null;

@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -96,22 +97,22 @@ public class EditDriverProfile extends BaseFragmentActivity {
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-		editTextUserName.setTypeface(Data.latoRegular(this));
+		editTextUserName.setTypeface(Fonts.mavenRegular(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-		editTextPhone.setTypeface(Data.latoRegular(this));
+		editTextPhone.setTypeface(Fonts.mavenRegular(this));
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
-		tvCountryCode.setTypeface(Data.latoRegular(this));
+		tvCountryCode.setTypeface(Fonts.mavenRegular(this));
 		TextViewAccNo = (TextView) findViewById(R.id.TextViewAccNo);
-		TextViewAccNo.setTypeface(Data.latoRegular(this));
+		TextViewAccNo.setTypeface(Fonts.mavenRegular(this));
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
-		textViewIFSC.setTypeface(Data.latoRegular(this));
+		textViewIFSC.setTypeface(Fonts.mavenRegular(this));
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
-		textViewBankName.setTypeface(Data.latoRegular(this));
+		textViewBankName.setTypeface(Fonts.mavenRegular(this));
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
-		textViewBankLoc.setTypeface(Data.latoRegular(this));
+		textViewBankLoc.setTypeface(Fonts.mavenRegular(this));
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);

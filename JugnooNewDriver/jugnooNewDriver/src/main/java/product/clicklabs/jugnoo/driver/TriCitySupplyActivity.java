@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -63,7 +64,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		listViewDestinationOptions = (NonScrollListView) findViewById(R.id.listViewDestinationOptions);
@@ -72,7 +73,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 
 		buttonOk = (Button) findViewById(R.id.buttonOk);
-		buttonOk.setTypeface(Data.latoRegular(this));
+		buttonOk.setTypeface(Fonts.mavenRegular(this));
 
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);

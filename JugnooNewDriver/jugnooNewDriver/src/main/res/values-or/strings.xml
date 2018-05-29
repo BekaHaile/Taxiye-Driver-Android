@@ -430,7 +430,6 @@
     <string name="start_loc">ପ୍ରାଥମିକ ସ୍ଥାନ</string>
     <string name="driver_loc">ଡ୍ରାଇଭର୍ ସ୍ଥାନ</string>
     <string name="customer_2">ଗ୍ରାହକ 2</string>
-    <string name="kms">କିଲୋମିଟର</string>
     <string name="mark_delivered">ଦିଆଜାଇଥିବା ଚିହ୍ନଟ କରନ୍ତୁ</string>
     <string name="order_id">ଆଦେଶ ଆଇଡି</string>
     <string name="thanks_for_feedback">ଆପଣଂକର ବହୁମୁଲ୍ୟ ପ୍ରତିକ୍ରିୟା ପାଇଁ ଧନ୍ୟବାଦ୍</string>
@@ -564,8 +563,6 @@
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="owned">ନିଜର</string>
 
-    <string name="distance_per_km">ଦୁରତା\n(ମିନିଟ୍ ପ୍ରତି)</string>
-    <string name="per_km">(କି.ମି ପ୍ରତି)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ଗତକାଲି</string>
@@ -646,7 +643,7 @@
 
     <string name="self_enroled">ନିଜେ ଜୋଡ଼ିହେବା</string>
     <string name="upload_Documents">ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପ୍-ଲୋଡ଼୍</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
 
     <string name="ride_history_cap">RIDE HISTORY</string>
@@ -771,11 +768,8 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>

@@ -15,6 +15,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class RideDetailsActivity extends BaseActivity {
@@ -67,7 +68,7 @@ public class RideDetailsActivity extends BaseActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
 
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
 		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
@@ -75,68 +76,68 @@ public class RideDetailsActivity extends BaseActivity {
 		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
 
 
-		idValue = (TextView) findViewById(R.id.idValue); idValue.setTypeface(Data.latoRegular(this));
+		idValue = (TextView) findViewById(R.id.idValue); idValue.setTypeface(Fonts.mavenRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
-		dateTimeValue.setTypeface(Data.latoRegular(this));
+		dateTimeValue.setTypeface(Fonts.mavenRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
-		distanceValue.setTypeface(Data.latoRegular(this));
+		distanceValue.setTypeface(Fonts.mavenRegular(this));
 		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue);
-		rideTimeValue.setTypeface(Data.latoRegular(this));
+		rideTimeValue.setTypeface(Fonts.mavenRegular(this));
 		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
-		waitTimeValue.setTypeface(Data.latoRegular(this));
+		waitTimeValue.setTypeface(Fonts.mavenRegular(this));
 
 		textViewRideFareValue = (TextView) findViewById(R.id.textViewRideFareValue);
-		textViewRideFareValue.setTypeface(Data.latoRegular(this));
+		textViewRideFareValue.setTypeface(Fonts.mavenRegular(this));
 		textViewConvayenceChargeValue = (TextView) findViewById(R.id.textViewConvayenceChargeValue);
-		textViewConvayenceChargeValue.setTypeface(Data.latoRegular(this));
+		textViewConvayenceChargeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewLuggageChargeValue = (TextView) findViewById(R.id.textViewLuggageChargeValue);
-		textViewLuggageChargeValue.setTypeface(Data.latoRegular(this));
+		textViewLuggageChargeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewRateApplied = (TextView) findViewById(R.id.textViewRateApplied);
-		textViewRateApplied.setTypeface(Data.latoRegular(this));
+		textViewRateApplied.setTypeface(Fonts.mavenRegular(this));
 
 		textViewRateAppliedValue = (TextView) findViewById(R.id.textViewRateAppliedValue);
-		textViewRateAppliedValue.setTypeface(Data.latoRegular(this));
+		textViewRateAppliedValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAcceptSubsidyValue = (TextView) findViewById(R.id.textViewAcceptSubsidyValue);
-		textViewAcceptSubsidyValue.setTypeface(Data.latoRegular(this));
+		textViewAcceptSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
-		textViewCancelSubsidyValue.setTypeface(Data.latoRegular(this));
+		textViewCancelSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
-		textViewJugnooCutValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
-		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewActualFare.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
-		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalance.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
-		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCustomerPaid.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
-		textViewFromValue.setTypeface(Data.latoRegular(this));
+		textViewFromValue.setTypeface(Fonts.mavenRegular(this));
 		textViewToValue = (TextView) findViewById(R.id.textViewToValue);
-		textViewToValue.setTypeface(Data.latoRegular(this));
+		textViewToValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
+		textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.distanceValue)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewConvayenceCharge)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewConvayenceChargeRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewLuggageCharge)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewLuggageChargeRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewConvayenceCharge)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewConvayenceChargeRupee)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewLuggageCharge)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewLuggageChargeRupee)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewJugnooCut)).setTypeface(Data.latoRegular(this));
-//		((TextView) findViewById(R.id.textViewJugnooCutRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCancelSubsidy)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCancelSubsidyRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewJugnooCut)).setTypeface(Fonts.mavenRegular(this));
+//		((TextView) findViewById(R.id.textViewJugnooCutRupee)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCancelSubsidy)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCancelSubsidyRupee)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Fonts.mavenRegular(this));
 
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
@@ -156,7 +157,7 @@ public class RideDetailsActivity extends BaseActivity {
 
 			distanceValue.setText(getResources().getString(R.string.distance)+": "
 					+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance))
-					+ " "+getResources().getString(R.string.km));
+					+ " "+Utils.getDistanceUnit(openedRideInfo.getDistanceUnit()));
 
 			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "
 					+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));

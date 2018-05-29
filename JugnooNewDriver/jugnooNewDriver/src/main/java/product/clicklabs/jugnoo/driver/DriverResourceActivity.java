@@ -12,6 +12,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 /**
@@ -37,20 +38,23 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		new ASSL(DriverResourceActivity.this, relative, 1134, 720, false);
 
 		title = (TextView) findViewById(R.id.title) ;
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewResource = (TextView) findViewById(R.id.textViewResource) ;
-		textViewResource.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewResource.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewTraining = (TextView) findViewById(R.id.textViewTraining) ;
-		textViewTraining.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewTraining.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		linearLayoutResources = (LinearLayout) findViewById(R.id.linearLayoutResources);
 		linearLayoutTraining = (LinearLayout) findViewById(R.id.linearLayoutTraining);
 		textViewSupport = (TextView) findViewById(R.id.textViewSupport) ;
-		textViewSupport.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewSupport.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		linearLayoutSupport = (LinearLayout) findViewById(R.id.linearLayoutSupport);
 		backBtn = (Button) findViewById(R.id.backBtn);
 
 		imageView2 = (ImageView) findViewById(R.id.imageView2);
 		imageView3 = (ImageView) findViewById(R.id.imageView3);
+
+		RelativeLayout rlBrandingImages = (RelativeLayout) findViewById(R.id.rlBrandingImages);
+		((TextView)findViewById(R.id.tvBrandingImages)).setTypeface(Fonts.mavenRegular(this));
 
 		linearLayoutResources.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -80,6 +84,19 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 			}
 		});
 
+		rlBrandingImages.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(DriverResourceActivity.this, DriverDocumentActivity.class);
+				intent.putExtra("access_token",Data.userData.accessToken);
+				intent.putExtra("in_side", true);
+				intent.putExtra("doc_required", 0);
+				intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+
 		if(Prefs.with(DriverResourceActivity.this).getInt(Constants.SET_DRIVER_TUTORIAL_STATUS, 0) == 1){
 			linearLayoutTraining.setVisibility(View.VISIBLE);
 			imageView2.setVisibility(View.VISIBLE);
@@ -94,6 +111,12 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		} else {
 			linearLayoutSupport.setVisibility(View.GONE);
 			imageView3.setVisibility(View.GONE);
+		}
+
+		if(Prefs.with(this).getInt(Constants.BRANDING_IMAGE, 0) == 1){
+			rlBrandingImages.setVisibility(View.VISIBLE);
+		} else {
+			rlBrandingImages.setVisibility(View.GONE);
 		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {

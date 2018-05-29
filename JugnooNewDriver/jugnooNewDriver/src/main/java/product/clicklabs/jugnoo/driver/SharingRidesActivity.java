@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
@@ -104,7 +105,7 @@ public class SharingRidesActivity extends BaseActivity {
 		new ASSL(this, relative, 1134, 720, false);
 
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		backBtn = (Button) findViewById(R.id.backBtn);
 		swipeRefreshLayoutShareRides = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutShareRides);
 

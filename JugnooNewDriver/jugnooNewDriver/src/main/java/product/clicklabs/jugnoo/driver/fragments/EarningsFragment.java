@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -92,154 +93,154 @@ public class EarningsFragment extends Fragment {
 		rlLCEarningsDeliveries = (RelativeLayout) rootView.findViewById(R.id.rlLCEarningsDeliveries);
 		rlTYEarningsDeliveries = (RelativeLayout) rootView.findViewById(R.id.rlTYEarningsDeliveries);
 
-		((TextView) rootView.findViewById(R.id.textViewToday)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewMonth)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewWeek)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewToday)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewMonth)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewWeek)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		((TextView) rootView.findViewById(R.id.textViewYesterday)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewCurrentWeek)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewCurrentMonth)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewYesterday)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewCurrentWeek)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewCurrentMonth)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-//		((TextView) rootView.findViewById(R.id.dateTimeTextToWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
-//		((TextView) rootView.findViewById(R.id.dateTimeTextFromWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
-//		((TextView) rootView.findViewById(R.id.dateTimeTextFrom)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
-//		((TextView) rootView.findViewById(R.id.dateTimeTextTo)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+//		((TextView) rootView.findViewById(R.id.dateTimeTextToWeek)).setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
+//		((TextView) rootView.findViewById(R.id.dateTimeTextFromWeek)).setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
+//		((TextView) rootView.findViewById(R.id.dateTimeTextFrom)).setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
+//		((TextView) rootView.findViewById(R.id.dateTimeTextTo)).setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
 
-		((TextView) rootView.findViewById(R.id.textViewTodayRidesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewTodayReferralText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewTodayDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewTodayRidesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewTodayReferralText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewTodayDeliveriesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		((TextView) rootView.findViewById(R.id.textViewWeekRidesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewWeekReferralText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewWeekDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewWeekRidesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewWeekReferralText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewWeekDeliveriesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		((TextView) rootView.findViewById(R.id.textViewMonthRidesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewMonthReferralText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewMonthDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewMonthRidesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewMonthReferralText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewMonthDeliveriesText)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
 
 		textViewTodayValue = (TextView) rootView.findViewById(R.id.textViewTodayValue);
-		textViewTodayValue.setTypeface(Data.latoRegular(activity));
+		textViewTodayValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewMonthValue = (TextView) rootView.findViewById(R.id.textViewMonthValue);
-		textViewMonthValue.setTypeface(Data.latoRegular(activity));
+		textViewMonthValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekValue = (TextView) rootView.findViewById(R.id.textViewWeekValue);
-		textViewWeekValue.setTypeface(Data.latoRegular(activity));
+		textViewWeekValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTodayRidesNumber = (TextView) rootView.findViewById(R.id.textViewTodayRidesNumber);
-		textViewTodayRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewTodayRidesValue = (TextView) rootView.findViewById(R.id.textViewTodayRidesValue);
-		textViewTodayRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewTodayRidesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTodayReferralNumber = (TextView) rootView.findViewById(R.id.textViewTodayReferralNumber);
-		textViewTodayReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewTodayReferralValue = (TextView) rootView.findViewById(R.id.textViewTodayReferralValue);
-		textViewTodayReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewTodayReferralValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTodayDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewTodayDeliveriesNumber);
-		textViewTodayDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewTodayDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewTodayDeliveriesValue);
-		textViewTodayDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewTodayDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewWeekRidesNumber = (TextView) rootView.findViewById(R.id.textViewWeekRidesNumber);
-		textViewWeekRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekRidesValue = (TextView) rootView.findViewById(R.id.textViewWeekRidesValue);
-		textViewWeekRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewWeekRidesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewWeekReferralNumber = (TextView) rootView.findViewById(R.id.textViewWeekReferralNumber);
-		textViewWeekReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekReferralValue = (TextView) rootView.findViewById(R.id.textViewWeekReferralValue);
-		textViewWeekReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewWeekReferralValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewWeekDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewWeekDeliveriesNumber);
-		textViewWeekDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewWeekDeliveriesValue);
-		textViewWeekDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewWeekDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewMonthRidesNumber = (TextView) rootView.findViewById(R.id.textViewMonthRidesNumber);
-		textViewMonthRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewMonthRidesValue = (TextView) rootView.findViewById(R.id.textViewMonthRidesValue);
-		textViewMonthRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewMonthRidesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewMonthDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewMonthDeliveriesNumber);
-		textViewMonthDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewMonthDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewMonthDeliveriesValue);
-		textViewMonthDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewMonthDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewMonthReferralNumber = (TextView) rootView.findViewById(R.id.textViewMonthReferralNumber);
-		textViewMonthReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewMonthReferralValue = (TextView) rootView.findViewById(R.id.textViewMonthReferralValue);
-		textViewMonthReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewMonthReferralValue.setTypeface(Fonts.mavenRegular(activity));
 
 //		dateTimeValueFromWeek = (TextView) rootView.findViewById(R.id.dateTimeValueFromWeek);
-//		dateTimeValueFromWeek.setTypeface(Data.latoRegular(activity));
+//		dateTimeValueFromWeek.setTypeface(Fonts.mavenRegular(activity));
 //		dateTimeValueToWeek = (TextView) rootView.findViewById(R.id.dateTimeValueToWeek);
-//		dateTimeValueToWeek.setTypeface(Data.latoRegular(activity));
+//		dateTimeValueToWeek.setTypeface(Fonts.mavenRegular(activity));
 //
 //		dateTimeValueFromMonth = (TextView) rootView.findViewById(R.id.dateTimeValueFromMonth);
-//		dateTimeValueFromMonth.setTypeface(Data.latoRegular(activity));
+//		dateTimeValueFromMonth.setTypeface(Fonts.mavenRegular(activity));
 //		dateTimeValueToMonth = (TextView) rootView.findViewById(R.id.dateTimeValueToMonth);
-//		dateTimeValueToMonth.setTypeface(Data.latoRegular(activity));
+//		dateTimeValueToMonth.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewTodayDate = (TextView) rootView.findViewById(R.id.textViewTodayDate);
-		textViewTodayDate.setTypeface(Data.latoRegular(activity));
+		textViewTodayDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayDate = (TextView) rootView.findViewById(R.id.textViewYesterdayDate);
-		textViewYesterdayDate.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayValue = (TextView) rootView.findViewById(R.id.textViewYesterdayValue);
-		textViewYesterdayValue.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayRidesNumber = (TextView) rootView.findViewById(R.id.textViewYesterdayRidesNumber);
-		textViewYesterdayRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayRidesValue = (TextView) rootView.findViewById(R.id.textViewYesterdayRidesValue);
-		textViewYesterdayRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayRidesValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayReferralNumber = (TextView) rootView.findViewById(R.id.textViewYesterdayReferralNumber);
-		textViewYesterdayReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayReferralValue = (TextView) rootView.findViewById(R.id.textViewYesterdayReferralValue);
-		textViewYesterdayReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayReferralValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewYesterdayDeliveriesNumber);
-		textViewYesterdayDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewYesterdayDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewYesterdayDeliveriesValue);
-		textViewYesterdayDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewYesterdayDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 
 
 		textViewCurrentWeekDate = (TextView) rootView.findViewById(R.id.textViewCurrentWeekDate);
-		textViewCurrentWeekDate.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewWeekDate = (TextView) rootView.findViewById(R.id.textViewWeekDate);
-		textViewWeekDate.setTypeface(Data.latoRegular(activity));
+		textViewWeekDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekValue = (TextView) rootView.findViewById(R.id.textViewCurrentWeekValue);
-		textViewCurrentWeekValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekRidesNumber = (TextView) rootView.findViewById(R.id.textViewCurrentWeekRidesNumber);
-		textViewCurrentWeekRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekRidesValue = (TextView) rootView.findViewById(R.id.textViewCurrentWeekRidesValue);
-		textViewCurrentWeekRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekRidesValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekReferralNumber = (TextView) rootView.findViewById(R.id.textViewCurrentWeekReferralNumber);
-		textViewCurrentWeekReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekReferralValue = (TextView) rootView.findViewById(R.id.textViewCurrentWeekReferralValue);
-		textViewCurrentWeekReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekReferralValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewCurrentWeekDeliveriesNumber);
-		textViewCurrentWeekDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentWeekDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewCurrentWeekDeliveriesValue);
-		textViewCurrentWeekDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentWeekDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 
 
 		textViewCurrentMonthDate = (TextView) rootView.findViewById(R.id.textViewCurrentMonthDate);
-		textViewCurrentMonthDate.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewMonthDate = (TextView) rootView.findViewById(R.id.textViewMonthDate);
-		textViewMonthDate.setTypeface(Data.latoRegular(activity));
+		textViewMonthDate.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthValue = (TextView) rootView.findViewById(R.id.textViewCurrentMonthValue);
-		textViewCurrentMonthValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthRidesNumber = (TextView) rootView.findViewById(R.id.textViewCurrentMonthRidesNumber);
-		textViewCurrentMonthRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthRidesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthRidesValue = (TextView) rootView.findViewById(R.id.textViewCurrentMonthRidesValue);
-		textViewCurrentMonthRidesValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthRidesValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthReferralNumber = (TextView) rootView.findViewById(R.id.textViewCurrentMonthReferralNumber);
-		textViewCurrentMonthReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthReferralNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthReferralValue = (TextView) rootView.findViewById(R.id.textViewCurrentMonthReferralValue);
-		textViewCurrentMonthReferralValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthReferralValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewCurrentMonthDeliveriesNumber);
-		textViewCurrentMonthDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthDeliveriesNumber.setTypeface(Fonts.mavenRegular(activity));
 		textViewCurrentMonthDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewCurrentMonthDeliveriesValue);
-		textViewCurrentMonthDeliveriesValue.setTypeface(Data.latoRegular(activity));
+		textViewCurrentMonthDeliveriesValue.setTypeface(Fonts.mavenRegular(activity));
 		textViewCondtion = (TextView) rootView.findViewById(R.id.textViewCondtion);
-		textViewCondtion.setTypeface(Data.latoRegular(activity));
+		textViewCondtion.setTypeface(Fonts.mavenRegular(activity));
 
 		getLeaderboardActivityCall();
 

@@ -41,6 +41,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -94,17 +95,17 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(OldRegisterScreen.this, relative, 1134, 720, false);
 		
-		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
+		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
-		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Data.latoRegular(this));
-		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Fonts.mavenRegular(this));
+		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		
-		signUpBtn = (Button) findViewById(R.id.signUpBtn); signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		signUpBtn = (Button) findViewById(R.id.signUpBtn); signUpBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		
 

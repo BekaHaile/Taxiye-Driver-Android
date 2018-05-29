@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverRideHistoryNew;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
@@ -28,7 +26,6 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private ArrayList<RideHistoryItem> rideHistoryItems;
-	private Context context;
 	DriverRideHistoryNew activity;
 	private Callback callback;
 	private static final int TYPE_FOOTER = 2;
@@ -87,8 +84,8 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
 			final RideHistoryItem itr = rideHistoryItems.get(i);
 
-			holder.textViewInfoText.setTypeface(Fonts.mavenRegular(context));
-			holder.textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
+			holder.textViewInfoText.setTypeface(Fonts.mavenRegular(activity));
+			holder.textViewInfoValue.setTypeface(Fonts.mavenRegular(activity));
 
 
 			holder.textViewInfoText.setText(itr.getTime());
@@ -181,15 +178,15 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
 			imageViewArrow = (ImageView)v.findViewById(R.id.imageViewArrow);
 			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
-			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
+			textViewInfoText.setTypeface(Fonts.mavenRegular(activity));
 			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
-			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
+			textViewInfoValue.setTypeface(Fonts.mavenRegular(activity));
 			textViewStatus = (TextView) v.findViewById(R.id.textViewStatus);
-			textViewStatus.setTypeface(Fonts.mavenRegular(context));
+			textViewStatus.setTypeface(Fonts.mavenRegular(activity));
 			textViewType = (TextView) v.findViewById(R.id.textViewType);
-			textViewType.setTypeface(Fonts.mavenRegular(context));
+			textViewType.setTypeface(Fonts.mavenRegular(activity));
 			textViewInfoDate = (TextView) v.findViewById(R.id.textViewInfoDate);
-			textViewInfoDate.setTypeface(Fonts.mavenRegular(context));
+			textViewInfoDate.setTypeface(Fonts.mavenRegular(activity));
 
 			linearLayoutRideItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(linearLayoutRideItem);
@@ -204,7 +201,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 			super(convertView);
 			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
 			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
-			textViewShowMore.setTypeface(Data.latoRegular(context));
+			textViewShowMore.setTypeface(Fonts.mavenRegular(activity));
 			textViewShowMore.setText(R.string.show_more);
 		}
 	}

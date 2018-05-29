@@ -289,5 +289,29 @@ public interface Constants {
 	String SUPPORT_MAIN = "support_main";
 	String HIPPO_TICKET_FAQ_NAME = "hippo_ticket_faq_name";
 	String KEY_SHOW_IN_ACCOUNT = "show_in_account";
+	String BRANDING_IMAGES_ONLY = "branding_images_only";
+	String BRANDING_IMAGE = "branding_image";
+	String KEY_DISTANCE_UNIT = "distance_unit";
+	String KEY_DISTANCE_UNIT_FACTOR = "distance_unit_factor";
+
+	String ACTION_FINISH_ACTIVITY = BuildConfig.APPLICATION_ID+".finish_activity";
+
+	String KEY_CREDITS = "credits";
+	String DRIVER_CREDITS = "driver_credits";
+    String KEY_SHOW_IN_EARN_CREDITS = "show_in_earn_credits";
+    String KEY_AMOUNT = "amount";
+    String KEY_REFER_A_DRIVER = "refer_a_driver";
+    String KEY_REFER_A_CUSTOMER = "refer_a_customer";
+    String KEY_ADVERTISE_WITH_US = "advertise_with_us";
+    String KEY_GET_CREDITS = "get_credits";
+    String KEY_CREDIT_BALANCE = "credit_balance";
+    String KEY_COMMISSION_SAVED = "commission_saved";
+	String KEY_REFERRAL_MESSAGE = "referral_message";
+	String KEY_REFERRAL_MESSAGE_DRIVER = "referral_message_driver";
+	String KEY_REFERRAL_IMAGE_D2D = "referral_image_d2d";
+	String KEY_REFERRAL_IMAGE_D2C = "referral_image_d2c";
+	String KEY_GET_CREDITS_INFO = "get_credits_info";
+	String KEY_GET_CREDITS_IMAGE = "get_credits_image";
+	String KEY_SEND_CREDITS_ENABLED = "send_credits_enabled";
 }
 

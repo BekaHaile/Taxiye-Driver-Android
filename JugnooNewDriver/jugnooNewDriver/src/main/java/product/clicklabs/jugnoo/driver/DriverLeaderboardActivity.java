@@ -22,6 +22,7 @@ import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class DriverLeaderboardActivity extends BaseFragmentActivity implements FlurryEventNames {
@@ -68,22 +69,22 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 
 		buttonBack = (Button) findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(this));
+		textViewTitle.setTypeface(Fonts.mavenRegular(this));
 		if(Prefs.with(this).getInt(SPLabels.VEHICLE_TYPE,0) == 2){
 			textViewTitle.setText(getResources().getString(R.string.super_biker));
 		}
 		textViewPositionTop = (TextView) findViewById(R.id.textViewPositionTop);
-		textViewPositionTop.setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewPositions)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewNoRides)).setTypeface(Data.latoRegular(this));
+		textViewPositionTop.setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewPositions)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewNoRides)).setTypeface(Fonts.mavenRegular(this));
 		textViewDaily = (TextView) findViewById(R.id.textViewDaily);
-		textViewDaily.setTypeface(Data.latoRegular(this));
+		textViewDaily.setTypeface(Fonts.mavenRegular(this));
 		textViewWeekly = (TextView) findViewById(R.id.textViewWeekly);
-		textViewWeekly.setTypeface(Data.latoRegular(this));
+		textViewWeekly.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthly = (TextView) findViewById(R.id.textViewMonthlyValue);
-		textViewMonthly.setTypeface(Data.latoRegular(this));
+		textViewMonthly.setTypeface(Fonts.mavenRegular(this));
 		textViewPositionBottom = (TextView) findViewById(R.id.textViewPositionBottom);
-		textViewPositionBottom.setTypeface(Data.latoRegular(this));
+		textViewPositionBottom.setTypeface(Fonts.mavenRegular(this));
 
 
 		listViewDriverLB = (ListView) findViewById(R.id.listViewDriverLB);

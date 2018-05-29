@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -66,7 +67,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
 		driverMissedRidesListAdapter = new DriverMissedRidesListAdapter();
@@ -158,22 +159,22 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 				convertView = mInflater.inflate(R.layout.list_item_missed_rides, null);
 
 				holder.textViewMissedRideFrom = (TextView) convertView.findViewById(R.id.textViewMissedRideFrom);
-				holder.textViewMissedRideFrom.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideFrom.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.BOLD);
 				holder.textViewMissedRideFromValue = (TextView) convertView.findViewById(R.id.textViewMissedRideFromValue);
-				holder.textViewMissedRideFromValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewMissedRideFromValue.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.textViewMissedRideTime = (TextView) convertView.findViewById(R.id.textViewMissedRideTime);
-				holder.textViewMissedRideTime.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewMissedRideTime.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.textViewMissedRideCustomerName = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerName);
-				holder.textViewMissedRideCustomerName.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideCustomerName.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.BOLD);
 				holder.textViewMissedRideCustomerNameValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerNameValue);
-				holder.textViewMissedRideCustomerNameValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewMissedRideCustomerNameValue.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.textViewMissedRideCustomerDistance = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistance);
-				holder.textViewMissedRideCustomerDistance.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideCustomerDistance.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.BOLD);
 				holder.textViewMissedRideCustomerDistanceValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistanceValue);
-				holder.textViewMissedRideCustomerDistanceValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewMissedRideCustomerDistanceValue.setTypeface(Fonts.mavenRegular(getActivity()));
 
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);

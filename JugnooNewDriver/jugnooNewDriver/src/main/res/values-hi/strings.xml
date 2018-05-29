@@ -210,7 +210,6 @@
 	<string name="customer_name">ग्राहक का नाम: </string>
 	<string name="change">बदलें</string>
 
-	<string name="km">Km</string>
 	<string name="disable_mock_location">पहले मोक स्थान को निष्क्रिय करें। </string>
 	<string name="daily">दैनिक</string>
 	<string name="distance2">दूरी:\n</string>
@@ -480,7 +479,6 @@
 	<string name="start_loc">प्रारंभिक स्थान</string>
 	<string name="driver_loc">चालक स्थान</string>
 	<string name="customer_2">ग्राहक 2</string>
-	<string name="kms">किलोमीटर्स </string>
 	<string name="mark_delivered">दिया गया चिन्हित करें </string>
 	<string name="thanks_for_feedback">आपके बहुमूल्य प्रतिक्रिया के लिए शुक्रिया</string>
 	<string name="total_amnt_till_now">अब तक कुल राशि</string>
@@ -615,8 +613,6 @@
 	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
 	<string name="rate_card">रेट कार्ड</string>
 	<string name="applicable_after"> %1$s कि.मी. के बाद लागू </string>
-	<string name="distance_per_km">दूरी\n(प्रति मिनट)</string>
-	<string name="per_km">(प्रति कि.मी.)</string>
 	<string name="delivery_off">डिलिवरी बंद है</string>
 
 	<string name="Yesterday">कल</string>
@@ -691,7 +687,7 @@
 	<string name="this_week_cap">इस सप्ताह</string>
 	<string name="ride_history_cap">सवारी इतिहास</string>
 
-	<string name="diffrential_pricing_rate">बाद %1$s िमी, दूरी शुल्क देना होगा %2$s/किमी</string>
+	<string name="diffrential_pricing_rate">बाद %1$s, दूरी शुल्क देना होगा %2$s</string>
 
 	<string name="payment_sent">भुगतान भेज दिया</string>
 	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
@@ -831,11 +827,8 @@
 	<string name="raisedOn">शिकायत की तारीख</string>
 
 	<string name="delivery_1">Delivery 1</string>
-	<string name="range_in_km">Range (In km)</string>
 	<string name="return_fare_aplicable">Return Fare If Applicable</string>
-	<string name="per_km_wo_brack">PER Km</string>
 	<string name="per_delivery">Per Delivery</string>
-	<string name="per_km_fare">Per km fare</string>
 	<string name="return_fare">Return Fare</string>
 	<string name="pick_up_wait_time">Pickup Wait Time fare</string>
 	<string name="un_loading">un loading</string>

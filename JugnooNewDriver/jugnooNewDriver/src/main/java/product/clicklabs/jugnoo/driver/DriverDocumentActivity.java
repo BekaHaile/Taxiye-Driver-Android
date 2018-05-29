@@ -50,7 +50,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	static boolean loginDataFetched = false;
 	Bundle bundleHomePush= new Bundle();
 	boolean inSideApp = false;
-	int requirement;
+	int requirement, brandingImagesOnly;
 	public static int temp = 0;
 
 	@Override
@@ -74,8 +74,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 			inSideApp = true;
 		}
 		requirement  = getIntent().getExtras().getInt("doc_required");
+		brandingImagesOnly  = getIntent().getIntExtra(Constants.BRANDING_IMAGES_ONLY, 0);
 		bundle.putString("access_token", accessToken);
 		bundle.putInt("doc_required", requirement);
+		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		documentListFragment.setArguments(bundle);
 		loginDataFetched = false;
 		getSupportFragmentManager().beginTransaction()
@@ -86,15 +88,18 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(brandingImagesOnly == 1){
+					docSubmission();
+				} else {
+					DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+							getString(R.string.i_agree), "", new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									docSubmission();
 
-				DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
-						getString(R.string.i_agree),"", new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								docSubmission();
-
-							}
-						},null,true,false);
+								}
+							}, null, true, false);
+				}
 			}
 		});
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +200,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 			params.put("login_documents", String.valueOf(newRequirement));
+			params.put(Constants.BRANDING_IMAGE, String.valueOf(brandingImagesOnly));
+
 			HomeUtil.putDefaultParams(params);
 
 			RestClient.getApiServices().docSubmission(params, new Callback<DocRequirementResponse>() {
@@ -215,7 +222,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
 									} else {
-										Prefs.with(DriverDocumentActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, jObj.optString("display_message", ""));
+										if(brandingImagesOnly != 1){
+											Prefs.with(DriverDocumentActivity.this).save(Constants.UPLOAD_DOCUMENT_MESSAGE, jObj.optString("display_message", ""));
+										}
 										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
 											@Override
 											public void onClick(View v) {

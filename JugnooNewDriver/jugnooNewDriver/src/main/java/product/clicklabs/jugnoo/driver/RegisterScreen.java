@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -107,16 +108,16 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
-		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		backBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		nameEt = (EditText) findViewById(R.id.nameEt);
-		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		nameEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		referralCodeEt = (EditText) findViewById(R.id.referralCodeEt);
-		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		referralCodeEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
-		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
@@ -128,11 +129,11 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 						.build();
 
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
-		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewTandC.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		imageViewTandC = (ImageView) findViewById(R.id.imageViewTandC);
 
 		signUpBtn = (Button) findViewById(R.id.signUpBtn);
-		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		signUpBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
