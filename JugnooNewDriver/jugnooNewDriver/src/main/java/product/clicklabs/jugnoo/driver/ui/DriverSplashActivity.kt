@@ -20,7 +20,8 @@ import product.clicklabs.jugnoo.driver.utils.*
  * Created by Parminder Saini on 16/04/18.
  */
 
-class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
+class
+DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
 
     private val TAG = SplashFragment::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)

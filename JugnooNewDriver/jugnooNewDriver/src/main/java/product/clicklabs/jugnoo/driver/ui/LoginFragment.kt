@@ -170,7 +170,7 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKt<DriverLanguageResponse>(activity = activity, showLoader = true, checkForActionComplete = true)
+        ApiCommonKt<DriverLanguageResponse>(activity = activity, showLoader = false, checkForActionComplete = true)
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
@@ -288,9 +288,9 @@ class LoginFragment : Fragment() {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
 
-            textHead.typeface = Data.latoRegular(activity)
-            textMessage.typeface = Data.latoRegular(activity)
-            etCode.typeface = Data.latoRegular(activity)
+            textHead.typeface = Fonts.mavenRegular(activity)
+            textMessage.typeface = Fonts.mavenRegular(activity)
+            etCode.typeface = Fonts.mavenRegular(activity)
 
             etCode.inputType = inputType
             etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
@@ -303,7 +303,7 @@ class LoginFragment : Fragment() {
             textHead.text = title
             if (message.isBlank()) textMessage.gone() else textMessage.text = message
 
-            btnConfirm.typeface = Data.latoRegular(activity)
+            btnConfirm.typeface = Fonts.mavenRegular(activity)
             btnConfirm.setOnClickListener {
                 val code = etCode.text.toString().trim()
                 if ("".equals(code, ignoreCase = true)) {
@@ -336,11 +336,16 @@ class LoginFragment : Fragment() {
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
 
-        with(rootView) {
-            tvLabel.text = getString(R.string.label_edt_phone)
-            edtPhoneNo.hint = getString(R.string.hint_edt_phone)
-            btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+        try {
+            with(rootView) {
+                tvLabel.text = getString(R.string.label_edt_phone)
+                edtPhoneNo.hint = getString(R.string.hint_edt_phone)
+                btnGenerateOtp.text = getString(R.string.btn_text_OTP)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("", e.message)
         }
 
         // animate

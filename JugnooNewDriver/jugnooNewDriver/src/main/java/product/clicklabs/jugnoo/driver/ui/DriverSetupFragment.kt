@@ -72,10 +72,9 @@ class DriverSetupFragment : Fragment() {
         toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
         toolbarChangeListener.setToolbarVisibility(true)
 
-        // TODO check fonts , replace latoLight with mavenLight(missing)
-        tvEnterName.typeface = Fonts.latoLight(activity)
+        tvEnterName.typeface = Fonts.mavenLight(activity)
         editTextName.typeface = Fonts.mavenRegular(activity)
-        tvSelectVehicle.typeface = Fonts.latoLight(activity)
+        tvSelectVehicle.typeface = Fonts.mavenLight(activity)
 
 
         bContinue.typeface = Fonts.mavenRegular(activity)

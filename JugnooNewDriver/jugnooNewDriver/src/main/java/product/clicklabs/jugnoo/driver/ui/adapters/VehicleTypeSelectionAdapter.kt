@@ -72,13 +72,10 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         val pos = recyclerView.getChildAdapterPosition(parentView);
         if (pos != RecyclerView.NO_POSITION) {
 
-            if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes.size) {
+            if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes.size && currentSelectedPos != pos) {
                 vehicleTypes[currentSelectedPos].isSelected = false;
                 notifyItemChanged(currentSelectedPos)
 
-            }
-
-            if (currentSelectedPos != pos) {
                 vehicleTypes[pos].isSelected = true;
                 currentSelectedPos = pos;
                 notifyItemChanged(currentSelectedPos);
