@@ -53,8 +53,8 @@ public class GetCreditsFragment extends BaseFragment {
         if(Data.userData != null) {
             if (!TextUtils.isEmpty(Data.userData.getGetCreditsImage())) {
                 Picasso.with(activity).load(Data.userData.getGetCreditsImage())
-                        .placeholder(R.drawable.iv_share_credits)
-                        .error(R.drawable.iv_share_credits)
+                        .placeholder(R.drawable.ic_receive_credits)
+                        .error(R.drawable.ic_receive_credits)
                         .into(ivBackground);
             }
             tvInfo.setText(Utils.fromHtml(Data.userData.getGetCreditsInfo()));

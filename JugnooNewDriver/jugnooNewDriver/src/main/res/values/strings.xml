@@ -370,7 +370,7 @@
     <string name="present_near_customer_location">You must be present near the customer pickup location to mark ride arrived.</string>
     <string name="present_near_customer_location_to_start">You must be present near the customer pickup location to start ride.</string>
     <string name="You_have_already_created">You have already created %1$d accounts from this device. Please explain the reason for creating a new account.</string>
-    <string name="your_referral_code">Your Referral Code is</string>
+    <string name="your_referral_code">आपका रेफ़रल कोड है</string>
 
     <string name="tap_to_retry">Tap to retry</string>
     <string name="error_occured_tap_to_retry">Some error occurred. Tap to retry</string>
@@ -395,7 +395,7 @@
     <string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
     <string name="select_reason">Please select one reason</string>
     <string name="referral_money">Referral Money</string>
-    <string name="send">Send</string>
+    <string name="send">भेजें</string>
 
     <string name="wait_here">Wait here...</string>
     <string name="use_jugnoo_fare">USE &appname; FARE</string>
@@ -941,11 +941,11 @@
     <string name="current_details">Current Details</string>
     <string name="credit_history">Credit History</string>
     <string name="title_credits_activity">CREDITS &amp; REWARDS</string>
-    <string name="earn_more_credits">Earn More Credits</string>
-    <string name="title_earn_more_credits">Earn More Credits</string>
-    <string name="share_your_credits">Share your Credits</string>
-    <string name="total_credits_earned">Total Credits Earned</string>
-    <string name="commission_saved">Commission Saved</string>
+    <string name="earn_more_credits">और Credits कमाऐं</string>
+    <string name="title_earn_more_credits">और Credits कमाऐं</string>
+    <string name="share_your_credits">Credits शेयर करें</string>
+    <string name="total_credits_earned">कुल Credits कमाए</string>
+    <string name="commission_saved">commission बचाया</string>
     <string name="refer_a_driver">Refer a Driver</string>
     <string name="refer_a_customer">Refer a Customer</string>
     <string name="advertise_for_us">Advertise for us</string>
@@ -956,7 +956,7 @@
     <string name="please_enter_valid_phone">Please enter valid phone number</string>
     <string name="get_credits">Receive credits from a friend</string>
     <string name="get_credits_from_drivers">Get credits from drivers</string>
-    <string name="earn_credits_format">(Earn %s credits)</string>
+    <string name="earn_credits_format">(%s credits कमाऐं)</string>
     <string name="hash_format">#%s</string>
 
 

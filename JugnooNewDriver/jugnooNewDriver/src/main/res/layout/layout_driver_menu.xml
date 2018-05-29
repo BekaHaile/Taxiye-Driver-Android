@@ -298,6 +298,37 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/driverCreditsRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:visibility="@integer/show_refer_earn"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewdriverCreditsRl"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/invite_n_earn_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvDriverCredits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewdriverCreditsRl"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/menu_label_credits"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/earningsRL"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
@@ -710,36 +741,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/driverCreditsRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:visibility="@integer/show_refer_earn"
-                android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false">
-
-                <ImageView
-                    android:id="@+id/imageViewdriverCreditsRl"
-                    android:layout_width="56px"
-                    android:layout_height="38px"
-                    android:layout_marginLeft="20px"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/invite_n_earn_v2"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/tvDriverCredits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewdriverCreditsRl"
-                    android:layout_marginLeft="8px"
-                    android:text="@string/menu_label_credits"
-                    android:textColor="@color/white"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/inviteFriendRl"
                 android:layout_width="match_parent"
