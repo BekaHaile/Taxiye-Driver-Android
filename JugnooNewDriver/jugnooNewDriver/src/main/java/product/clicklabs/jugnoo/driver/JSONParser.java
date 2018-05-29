@@ -275,6 +275,7 @@ public class JSONParser implements Constants {
 		String referralImageD2C = userData.optString(Constants.KEY_REFERRAL_IMAGE_D2C);
 		String getCreditsInfo = userData.optString(Constants.KEY_GET_CREDITS_INFO);
 		String getCreditsImage = userData.optString(Constants.KEY_GET_CREDITS_IMAGE);
+		int sendCreditsEnabled = userData.optInt(Constants.KEY_SEND_CREDITS_ENABLED, 0);
 
 		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
@@ -385,7 +386,7 @@ public class JSONParser implements Constants {
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage);
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

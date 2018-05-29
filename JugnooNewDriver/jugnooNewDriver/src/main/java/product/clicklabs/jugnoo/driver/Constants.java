@@ -309,5 +309,6 @@ public interface Constants {
 	String KEY_REFERRAL_IMAGE_D2C = "referral_image_d2c";
 	String KEY_GET_CREDITS_INFO = "get_credits_info";
 	String KEY_GET_CREDITS_IMAGE = "get_credits_image";
+	String KEY_SEND_CREDITS_ENABLED = "send_credits_enabled";
 }
 

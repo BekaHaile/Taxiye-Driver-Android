@@ -57,13 +57,23 @@ public class CurrentDetailsFragment extends Fragment {
                 rootView.findViewById(R.id.tv_comission_value),rootView.findViewById(R.id.tv_earn_credits),
                 rootView.findViewById(R.id.tv_share_credits));
 
-        ((TextView)rootView.findViewById(R.id.tv_credits_value)).setText(
-                Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.creditsEarned==null?0.0:Data.userData.creditsEarned));
-        ((TextView)rootView.findViewById(R.id.tv_comission_value)).setText(
-                Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.commissionSaved==null?0.0:Data.userData.commissionSaved));
+        if(Data.userData != null) {
+            ((TextView) rootView.findViewById(R.id.tv_credits_value)).setText(
+                    Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.creditsEarned == null ? 0.0 : Data.userData.creditsEarned));
+            ((TextView) rootView.findViewById(R.id.tv_comission_value)).setText(
+                    Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.commissionSaved == null ? 0.0 : Data.userData.commissionSaved));
+            rootView.findViewById(R.id.tv_share_credits).setVisibility(Data.userData.getSendCreditsEnabled() == 0 ? View.GONE : View.VISIBLE);
+        }
         return rootView;
 
 
 
+    }
+
+    public void update(){
+        if(Data.userData != null) {
+            ((TextView) rootView.findViewById(R.id.tv_credits_value)).setText(
+                    Utils.formatCurrencyValue(Data.userData.getCurrency(), Data.userData.creditsEarned == null ? 0.0 : Data.userData.creditsEarned));
+        }
     }
 }

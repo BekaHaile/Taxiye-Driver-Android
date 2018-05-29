@@ -28,6 +28,7 @@ public class UserData {
 	private String referralMessageDriver;
 	private String referralImageD2D, referralImageD2C;
 	private String getCreditsInfo, getCreditsImage;
+	private int sendCreditsEnabled;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -40,7 +41,8 @@ public class UserData {
 					int deliveryEnabled, int deliveryAvailable, Integer fareCachingLimit, int isCaptiveDriver, String countryCode, String userIdentifier,
 					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
-					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage) {
+					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
+					int sendCreditsEnabled) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -96,6 +98,7 @@ public class UserData {
 		this.referralMessageDriver = referralMessageDriver;
 		this.referralImageD2D = referralImageD2D;
 		this.referralImageD2C = referralImageD2C;
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 
 	public String getUserId() {
@@ -224,5 +227,13 @@ public class UserData {
 
 	public void setGetCreditsImage(String getCreditsImage) {
 		this.getCreditsImage = getCreditsImage;
+	}
+
+	public int getSendCreditsEnabled() {
+		return sendCreditsEnabled;
+	}
+
+	public void setSendCreditsEnabled(int sendCreditsEnabled) {
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 }

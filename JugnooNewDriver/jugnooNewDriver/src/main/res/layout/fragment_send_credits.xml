@@ -1,126 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     >
 
-    <ImageView
-        android:id="@+id/ivBackground"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_send_credits_to_driver"
-        />
+        android:layout_height="match_parent"
+        >
 
+        <ImageView
+            android:id="@+id/ivBackground"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_send_credits_to_driver"
+            />
 
-    <TextView
-        android:id="@+id/tvCredits"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/credits"
-        app:layout_constraintTop_toBottomOf="@+id/ivBackground"
-        android:layout_marginStart="25dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:textSize="16sp"
-        android:textColor="@color/text_color"
-        />
-
-
-    <EditText
-        android:id="@+id/etCredits"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:maxLines="1"
-        android:textSize="16sp"
-        android:textColor="@color/text_color"
-        app:layout_constraintTop_toBottomOf="@+id/tvCredits"
-        android:background="@drawable/background_white_bordered"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:hint="@string/enter_credits"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp"
-        android:padding="12dp"
-        />
-
-
-    <TextView
-        android:id="@+id/tvPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/phone_number"
-        app:layout_constraintTop_toBottomOf="@+id/etCredits"
-        android:layout_marginStart="25dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
-        android:textSize="16sp"
-        android:textColor="@color/text_color"
-        />
-
-    <LinearLayout
-        android:id="@+id/llPhoneNo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber"
-        android:background="@drawable/background_white_bordered"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp">
+        <TextView
+            android:id="@+id/tvCreditsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/credits"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBackground"
+            />
 
 
         <TextView
-            android:id="@+id/tvCountryCode"
+            android:id="@+id/tvCredits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text=""
-            android:hint="@string/code"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/credits"
             android:textColor="@color/text_color"
-            android:textSize="17sp"
-            android:layout_marginStart="5dp"
-            android:drawableEnd="@drawable/ic_arrow_down_vector"
-            android:drawablePadding="3dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:tag="@string/dont_touch_me"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreditsLeft"
             />
+
 
         <EditText
-            android:id="@+id/etPhoneNumber"
+            android:id="@+id/etCredits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_bordered"
+            android:hint="@string/enter_credits"
             android:inputType="number"
             android:maxLines="1"
-            android:textSize="16sp"
-            android:textColor="@color/text_color"
-            android:hint="@string/enter_phone_number"
             android:padding="12dp"
-            android:background="@drawable/transparent"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCredits"
             />
-    </LinearLayout>
 
 
-    
-    
-    <Button
-        android:id="@+id/bSend"
-        style="@style/ButtonOrange"
-        app:layout_constraintTop_toBottomOf="@+id/llPhoneNo"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        android:layout_marginTop="15dp"
-        android:text="@string/send"
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/phone_number"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etCredits"
+            />
 
-        />
+        <LinearLayout
+            android:id="@+id/llPhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_bordered"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
 
 
-</android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/tvCountryCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:drawableEnd="@drawable/ic_arrow_down_vector"
+                android:drawablePadding="3dp"
+                android:hint="@string/code"
+                android:includeFontPadding="false"
+                android:paddingBottom="8dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:tag="@string/dont_touch_me"
+                android:text=""
+                android:textColor="@color/text_color"
+                android:textSize="17sp"
+                />
+
+            <EditText
+                android:id="@+id/etPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent"
+                android:hint="@string/enter_phone_number_hinglish"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/bSend"
+            style="@style/ButtonOrange"
+            android:layout_marginTop="15dp"
+            android:text="@string/send"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llPhoneNo"
+
+            />
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

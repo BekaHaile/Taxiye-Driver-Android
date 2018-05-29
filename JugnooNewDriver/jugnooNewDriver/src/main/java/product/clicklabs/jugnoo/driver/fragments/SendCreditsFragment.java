@@ -73,6 +73,7 @@ public class SendCreditsFragment extends BaseFragment {
         etCredits = (EditText) rootView.findViewById(R.id.etCredits); etCredits.setTypeface(Fonts.mavenRegular(activity));
         etPhoneNumber = (EditText) rootView.findViewById(R.id.etPhoneNumber); etPhoneNumber.setTypeface(Fonts.mavenRegular(activity));
         tvCountryCode = (TextView) rootView.findViewById(R.id.tvCountryCode); tvCountryCode.setTypeface(Fonts.mavenRegular(activity));
+        TextView tvCreditsLeft = (TextView) rootView.findViewById(R.id.tvCreditsLeft); tvCreditsLeft.setTypeface(Fonts.mavenRegular(activity));
         countryPicker = new CountryPicker.Builder().with(activity)
                         .listener(new OnCountryPickerListener() {
                             @Override
@@ -93,6 +94,7 @@ public class SendCreditsFragment extends BaseFragment {
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                double creditsTotal = (Data.userData == null || Data.userData.creditsEarned == null) ? 0.0 : Data.userData.creditsEarned;
                 if(tvCountryCode.getText().toString().length() == 0){
                     Utils.showToast(activity, getString(R.string.please_select_country_code));
                     return;
@@ -107,6 +109,10 @@ public class SendCreditsFragment extends BaseFragment {
                 }
                 String countryCode = tvCountryCode.getText().toString();
                 String credits = etCredits.getText().toString().trim();
+                if(creditsTotal < Double.parseDouble(credits)){
+                    Utils.showToast(activity, getString(R.string.please_enter_less_value));
+                    return;
+                }
                 String phoneNumber = Utils.retrievePhoneNumberTenChars(countryCode, etPhoneNumber.getText().toString().trim());
                 if(!Utils.validPhoneNumber(phoneNumber)){
                     Utils.showToast(activity, getString(R.string.please_enter_valid_phone));
@@ -116,6 +122,11 @@ public class SendCreditsFragment extends BaseFragment {
             }
         });
 
+        if(Data.userData != null){
+            tvCreditsLeft.setText(getString(R.string.credits_left_format,
+                    Utils.formatCurrencyValue(Data.userData.getCurrency(),
+                            Data.userData.creditsEarned == null ? 0.0 : Data.userData.creditsEarned)));
+        }
 
 
 
@@ -142,6 +153,9 @@ public class SendCreditsFragment extends BaseFragment {
                         int flag = jObj.getInt(Constants.KEY_FLAG);
 
                         if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                            if(Data.userData != null) {
+                                Data.userData.creditsEarned = jObj.has(Constants.KEY_CREDIT_BALANCE) ? jObj.optDouble(Constants.KEY_CREDIT_BALANCE) : null;
+                            }
                             DialogPopup.alertPopup(activity, "", message, true, true, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
