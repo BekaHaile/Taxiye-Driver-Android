@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -9,13 +8,13 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -57,9 +56,12 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_earn_credits, container, false);
 
-        if(Data.getCreditOptions() != null) {
+        if(Data.userData != null && Data.getCreditOptions() != null) {
             for(SupportOption supportOption : Data.getCreditOptions()) {
-                addTextView(supportOption);
+                if(!supportOption.getTag().equalsIgnoreCase(Constants.KEY_GET_CREDITS)
+                        || !TextUtils.isEmpty(Data.userData.getGetCreditsInfo())){
+                    addTextView(supportOption);
+                }
             }
         }
 

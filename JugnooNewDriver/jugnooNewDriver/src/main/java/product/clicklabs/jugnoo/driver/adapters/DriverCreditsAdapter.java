@@ -5,12 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import java.util.ArrayList;
-
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.CreditsHistoryFragment;
 import product.clicklabs.jugnoo.driver.fragments.CurrentDetailsFragment;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 
 
 /**
@@ -50,8 +47,8 @@ public class DriverCreditsAdapter extends FragmentPagerAdapter {
 	@Override
 	public CharSequence getPageTitle(int position) {
 
-		String message = context.getString(R.string.current_details);
-		String tips =context.getString(R.string.credit_history);
+		String message = context.getString(R.string.details);
+		String tips =context.getString(R.string.history);
 
 		switch (position) {
 			case 0:

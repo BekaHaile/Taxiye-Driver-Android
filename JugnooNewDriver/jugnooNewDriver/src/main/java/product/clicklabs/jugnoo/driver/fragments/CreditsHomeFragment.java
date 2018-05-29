@@ -4,33 +4,17 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-
-import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeUtil;
-import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.DriverCreditsAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 /**
  * Created by Parminder Saini on 25/05/18.
@@ -85,4 +69,15 @@ public class CreditsHomeFragment extends BaseFragment {
         return getString(R.string.title_credits_activity);
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:" + viewPager.getId() + ":" + 0);
+            if (page != null) {
+                ((CurrentDetailsFragment) page).update();
+            }
+        }
+    }
 }

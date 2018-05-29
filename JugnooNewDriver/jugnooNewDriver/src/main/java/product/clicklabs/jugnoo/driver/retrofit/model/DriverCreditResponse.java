@@ -20,22 +20,8 @@ public class DriverCreditResponse extends CurrencyModel  {
     private String message;
 
     @Expose
-    @SerializedName("credits_earned")
-    private double creditsEarned;
-
-    @Expose
-    @SerializedName("commission_saved")
-    private Double comissionSaved;
-
-
-    @Expose
-    @SerializedName("credit_history")
+    @SerializedName("transactions")
     private ArrayList<CreditHistory> creditHistoryList ;
-
-    @Expose
-    @SerializedName("rate_card")
-    private RateCard rateCard;
-
 
     public Integer getFlag() {
         return flag;
@@ -45,14 +31,6 @@ public class DriverCreditResponse extends CurrencyModel  {
         return message;
     }
 
-    public double getCreditsEarned() {
-        return creditsEarned;
-    }
-
-    public Double getComissionSaved() {
-        return comissionSaved;
-    }
-
     public ArrayList<CreditHistory> getCreditHistoryList() {
         return creditHistoryList;
     }
@@ -60,12 +38,12 @@ public class DriverCreditResponse extends CurrencyModel  {
     public class CreditHistory extends CurrencyModel{
 
         @Expose
-        @SerializedName("id")
-        private String creditId;
+        @SerializedName("txn_id")
+        private int txnId;
 
         @Expose
-        @SerializedName("date")
-        private String date;
+        @SerializedName("txn_date")
+        private String txnDate;
 
         @Expose
         @SerializedName("desc")
@@ -75,45 +53,36 @@ public class DriverCreditResponse extends CurrencyModel  {
         @SerializedName("amount")
         private double amount;
 
-
-        public String getCreditId() {
-            return creditId;
+        public int getTxnId() {
+            return txnId;
         }
 
-        public String getDate() {
-            return date;
+        public void setTxnId(int txnId) {
+            this.txnId = txnId;
+        }
+
+        public String getTxnDate() {
+            return txnDate;
+        }
+
+        public void setTxnDate(String txnDate) {
+            this.txnDate = txnDate;
         }
 
         public String getDesc() {
             return desc;
         }
 
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
         public double getAmount() {
             return amount;
         }
-    }
 
-    public class RateCard extends CurrencyModel{
-        @Expose
-        @SerializedName("driver_credit")
-        private double driverCredit;
-        @Expose
-        @SerializedName("customer_credit")
-        private double customerCredit;
-        @Expose
-        @SerializedName("advertise_credit")
-        private double advertiseCredit;
-
-        public double getDriverCredit() {
-            return driverCredit;
-        }
-
-        public double getCustomerCredit() {
-            return customerCredit;
-        }
-
-        public double getAdvertiseCredit() {
-            return advertiseCredit;
+        public void setAmount(double amount) {
+            this.amount = amount;
         }
     }
 }

@@ -1095,24 +1095,27 @@ public class Utils {
         String CountryID = "";
         String CountryZipCode = "";
 
-        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        // getNetworkCountryIso
-        try {
-            CountryID = manager.getSimCountryIso().toUpperCase();
-            Log.e("CountryID", "=" + CountryID);
-            String[] rl = context.getResources().getStringArray(R.array.CountryCodes);
-            for (String aRl : rl) {
-                String[] g = aRl.split(",");
-                if (g[1].trim().equals(CountryID.trim())) {
-                    CountryZipCode = g[0];
-                    return CountryZipCode;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+		TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		// getNetworkCountryIso
+		try {
+			CountryID = manager.getSimCountryIso().toUpperCase();
+			Log.e("CountryID", "=" + CountryID);
+			String[] rl = context.getResources().getStringArray(R.array.CountryCodes);
+			for (String aRl : rl) {
+				String[] g = aRl.split(",");
+				if (g[1].trim().equals(CountryID.trim())) {
+					CountryZipCode = g[0];
+					if(!CountryZipCode.contains("+")){
+						CountryZipCode = "+" + CountryZipCode;
+					}
+					return CountryZipCode;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 
     public static String getCountryCodeFromCountryIso(Context context, String countryIso) {
         String CountryZipCode = "";

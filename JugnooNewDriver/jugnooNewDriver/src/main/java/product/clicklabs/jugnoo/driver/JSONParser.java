@@ -266,10 +266,16 @@ public class JSONParser implements Constants {
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
 		context.getResources().getString(R.string.referal_sms_message,referralCode,context.getResources().getString(R.string.customer_app_download_link)));
-		String referralMessage = userData.optString("referral_message");
+		String referralMessage = userData.optString(Constants.KEY_REFERRAL_MESSAGE);
+		String referralMessageDriver = userData.optString(Constants.KEY_REFERRAL_MESSAGE_DRIVER);
 		String referralButtonText = userData.optString("referral_button_text", "Share");
-		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
+		String referralDialogText = userData.optString("referral_dialog_text", "Enter Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
+		String referralImageD2D = userData.optString(Constants.KEY_REFERRAL_IMAGE_D2D);
+		String referralImageD2C = userData.optString(Constants.KEY_REFERRAL_IMAGE_D2C);
+		String getCreditsInfo = userData.optString(Constants.KEY_GET_CREDITS_INFO);
+		String getCreditsImage = userData.optString(Constants.KEY_GET_CREDITS_IMAGE);
+		int sendCreditsEnabled = userData.optInt(Constants.KEY_SEND_CREDITS_ENABLED, 0);
 
 		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
@@ -366,7 +372,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT_FACTOR, (float) userData.optDouble(Constants.KEY_DISTANCE_UNIT_FACTOR, 1D));
 		Prefs.with(context).save(SP_USER_ID, userId);
-		Double creditsEarned = userData.has(Constants.KEY_CREDITS_EARNED)?userData.optDouble(Constants.KEY_CREDITS_EARNED):null;
+		Double creditsEarned = userData.has(Constants.KEY_CREDIT_BALANCE)?userData.optDouble(Constants.KEY_CREDIT_BALANCE):null;
 		Double commissionSaved = userData.has(Constants.KEY_COMMISSION_SAVED)?userData.optDouble(Constants.KEY_COMMISSION_SAVED):null;
 		parseSideMenu(context, userData);
 
@@ -379,7 +385,8 @@ public class JSONParser implements Constants {
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
-				hippoTicketFAQ, currency,creditsEarned,commissionSaved);
+				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -768,7 +775,7 @@ public class JSONParser implements Constants {
 			JSONObject preferredLangStrings = jsonObject1.getJSONObject("locale_texts");
 			parseCancellationReasons(preferredLangStrings, context);
 			Data.userData.referralButtonText = preferredLangStrings.optString("referral_button_text", "Share");
-			Data.userData.referralDialogText = preferredLangStrings.optString("referral_dialog_text", "Please enter Customer Phone No.");
+			Data.userData.referralDialogText = preferredLangStrings.optString("referral_dialog_text", "Enter Phone No.");
 			Data.userData.referralDialogHintText = preferredLangStrings.optString("referral_dialog_hint_text", "Phone No.");
 			Data.userData.timeoutMessage = preferredLangStrings.optString("timeout_message", "We have noticed that, you aren't taking "+ context.getString(R.string.white_label_name) + " rides. So we are blocking you for some time");
 

@@ -25,6 +25,10 @@ public class UserData {
 	private String hippoTicketFAQ;
 	private String currency;
 	public Double creditsEarned,commissionSaved;
+	private String referralMessageDriver;
+	private String referralImageD2D, referralImageD2C;
+	private String getCreditsInfo, getCreditsImage;
+	private int sendCreditsEnabled;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -34,9 +38,11 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier,
+					int deliveryEnabled, int deliveryAvailable, Integer fareCachingLimit, int isCaptiveDriver, String countryCode, String userIdentifier,
 					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
-					Double creditsEarned,Double commissionSaved) {
+					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
+					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
+					int sendCreditsEnabled) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -60,6 +66,8 @@ public class UserData {
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
 		this.referralSMSToCustomer = referralSMSToCustomer;
+		this.getCreditsInfo = getCreditsInfo;
+		this.getCreditsImage = getCreditsImage;
 		this.driverOnlineHours = "00:00";
 
 		this.showDriverRating = showDriverRating;
@@ -87,6 +95,10 @@ public class UserData {
 		this.currency = currency;
 		this.creditsEarned = creditsEarned;
 		this.commissionSaved = commissionSaved;
+		this.referralMessageDriver = referralMessageDriver;
+		this.referralImageD2D = referralImageD2D;
+		this.referralImageD2C = referralImageD2C;
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 
 	public String getUserId() {
@@ -175,5 +187,53 @@ public class UserData {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public String getReferralMessageDriver() {
+		return referralMessageDriver;
+	}
+
+	public void setReferralMessageDriver(String referralMessageDriver) {
+		this.referralMessageDriver = referralMessageDriver;
+	}
+
+	public String getReferralImageD2C() {
+		return referralImageD2C;
+	}
+
+	public void setReferralImageD2C(String referralImageD2C) {
+		this.referralImageD2C = referralImageD2C;
+	}
+
+	public String getReferralImageD2D() {
+		return referralImageD2D;
+	}
+
+	public void setReferralImageD2D(String referralImageD2D) {
+		this.referralImageD2D = referralImageD2D;
+	}
+
+	public String getGetCreditsInfo() {
+		return getCreditsInfo;
+	}
+
+	public void setGetCreditsInfo(String getCreditsInfo) {
+		this.getCreditsInfo = getCreditsInfo;
+	}
+
+	public String getGetCreditsImage() {
+		return getCreditsImage;
+	}
+
+	public void setGetCreditsImage(String getCreditsImage) {
+		this.getCreditsImage = getCreditsImage;
+	}
+
+	public int getSendCreditsEnabled() {
+		return sendCreditsEnabled;
+	}
+
+	public void setSendCreditsEnabled(int sendCreditsEnabled) {
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 }

@@ -3622,7 +3622,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setUserData() {
 		try {
 			userName.setText(Data.userData.userName);
-			if(Data.userData.creditsEarned!=null){
+			if(Prefs.with(this).getInt(Constants.DRIVER_CREDITS, 0) == 1
+					&& Data.userData.creditsEarned!=null){
 				tvCredits.setVisibility(View.VISIBLE);
 				tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.creditsEarned) + " "
 						+ getString(R.string.credits));

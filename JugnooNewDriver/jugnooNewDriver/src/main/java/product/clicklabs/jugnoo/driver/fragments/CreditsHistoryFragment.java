@@ -4,20 +4,20 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -46,8 +47,10 @@ public class CreditsHistoryFragment extends Fragment {
 
     View rootView;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView tvError;
     private DriverCreditsListener driverCreditsListener;
-    private ArrayList<DriverCreditResponse.CreditHistory> list ;
+    private ArrayList<DriverCreditResponse.CreditHistory> list = new ArrayList<>() ;
     private DriverCreditsHistoryAdapter driverCreditsHistoryAdapter;
 
     public static CreditsHistoryFragment newInstance() {
@@ -81,6 +84,15 @@ public class CreditsHistoryFragment extends Fragment {
         driverCreditsHistoryAdapter = new DriverCreditsHistoryAdapter(getActivity(),list,recyclerView);
         recyclerView.setAdapter(driverCreditsHistoryAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        tvError = (TextView) rootView.findViewById(R.id.tvError); tvError.setTypeface(Fonts.mavenRegular(getActivity()));
+        tvError.setVisibility(View.GONE);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getCreditsApi();
+            }
+        });
 
 
         getCreditsApi();
@@ -96,8 +108,8 @@ public class CreditsHistoryFragment extends Fragment {
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             HomeUtil.putDefaultParams(params);
-            DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
-            RestClient.getApiServices().getCredits(params, new Callback<DriverCreditResponse>() {
+            swipeRefreshLayout.setRefreshing(true);
+            RestClient.getApiServices().creditHistory(params, new Callback<DriverCreditResponse>() {
                 @Override
                 public void success(DriverCreditResponse rateCardResponse, Response response) {
                     try {
@@ -106,9 +118,11 @@ public class CreditsHistoryFragment extends Fragment {
                         String message = JSONParser.getServerMessage(jObj);
                         int flag = jObj.getInt(Constants.KEY_FLAG);
 
-                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                            list = rateCardResponse.getCreditHistoryList();
+                        if (ApiResponseFlags.TRANSACTION_HISTORY.getOrdinal() == flag) {
+                            list.clear();
+                            list.addAll(rateCardResponse.getCreditHistoryList());
                             driverCreditsHistoryAdapter.notifyDataSetChanged();
+                            tvError.setVisibility(driverCreditsHistoryAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                         } else {
                             DialogPopup.alertPopup(getActivity(), "", message);
                         }
@@ -116,14 +130,14 @@ public class CreditsHistoryFragment extends Fragment {
                         exception.printStackTrace();
                         DialogPopup.alertPopup(getActivity(), "", getString(R.string.server_error));
                     }
-                    DialogPopup.dismissLoadingDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
                 @Override
                 public void failure(RetrofitError error) {
                     Log.i("error", String.valueOf(error));
-                    DialogPopup.dismissLoadingDialog();
                     DialogPopup.alertPopup(getActivity(), "", getString(R.string.server_not_responding));
-
+                    swipeRefreshLayout.setRefreshing(false);
+                    tvError.setVisibility(driverCreditsHistoryAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                 }
             });
         } catch (Exception e) {
