@@ -90,13 +90,13 @@
             android:text="@string/label_edt_phone"
             android:textSize="17sp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/background"
-            app:layout_constraintEnd_toEndOf="@+id/background"
+            app:layout_constraintBottom_toTopOf="@+id/backgroundPhone"
+            app:layout_constraintEnd_toEndOf="@+id/backgroundPhone"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/background"/>
+            app:layout_constraintStart_toStartOf="@+id/backgroundPhone"/>
 
         <View
-            android:id="@+id/background"
+            android:id="@+id/backgroundPhone"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="24dp"
@@ -125,9 +125,9 @@
             android:text=""
             android:textColor="@color/text_color"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/background"
-            app:layout_constraintStart_toStartOf="@id/background"
-            app:layout_constraintTop_toTopOf="@id/background"/>
+            app:layout_constraintBottom_toBottomOf="@id/backgroundPhone"
+            app:layout_constraintStart_toStartOf="@id/backgroundPhone"
+            app:layout_constraintTop_toTopOf="@id/backgroundPhone"/>
 
         <EditText
             android:id="@+id/edtPhoneNo"
@@ -145,9 +145,9 @@
             android:padding="2dp"
             android:textColor="@color/text_color_splash"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/background"
+            app:layout_constraintEnd_toEndOf="@id/backgroundPhone"
             app:layout_constraintStart_toEndOf="@+id/tvCountryCode"
-            app:layout_constraintTop_toTopOf="@id/background"/>
+            app:layout_constraintTop_toTopOf="@id/backgroundPhone"/>
 
         <Space
             android:id="@+id/space"
@@ -170,7 +170,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/background"/>
+            app:layout_constraintTop_toBottomOf="@id/backgroundPhone"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

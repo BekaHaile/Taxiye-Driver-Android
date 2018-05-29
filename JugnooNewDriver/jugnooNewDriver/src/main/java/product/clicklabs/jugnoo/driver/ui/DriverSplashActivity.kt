@@ -1,10 +1,12 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.app.FragmentManager
 import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -68,6 +70,8 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
             }
 
         }
+
+
     }
 
     private fun setLoginData() {
@@ -98,24 +102,31 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
     }
 
     private fun addPhoneNumberScreen(enableSharedTransition: Boolean, view: View?) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && enableSharedTransition && view != null) {
             try {
+
                 supportFragmentManager.inTransactionWithSharedTransition(view, {
                     setAllowOptimization(true)
-                            .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
+                            .add(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
+                            .hide(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                            .addToBackStack(LoginFragment::class.simpleName)
+
+
                 })
+
             } catch (e: Exception) {
 
                 supportFragmentManager.inTransaction {
                     setAllowOptimization(true)
-                            .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                            .add(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                            .addToBackStack(LoginFragment::class.simpleName)
                 }
             }
         } else {
             supportFragmentManager.inTransaction {
                 setAllowOptimization(true)
-                        .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                        .add(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                        .addToBackStack(LoginFragment::class.simpleName)
             }
         }
     }
@@ -124,25 +135,28 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
 
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, OTPConfirmFragment.newInstance(phone, countryCode, missedCallNumber),
-                    OTPConfirmFragment::class.simpleName).addToBackStack(OTPConfirmFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
+                    OTPConfirmFragment::class.simpleName)
+                    .addToBackStack(LoginFragment::class.simpleName);
+
 
         }
     }
 
     fun openDriverSetupFragment(accessToken: String) {
+        supportFragmentManager.beginTransaction().remove(supportFragmentManager.findFragmentByTag( OTPConfirmFragment::class.simpleName)).commit();
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, DriverSetupFragment.newInstance(accessToken),
-                    OTPConfirmFragment::class.simpleName).addToBackStack(DriverSetupFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(supportFragmentManager
-                            .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name))
-
+                    DriverSetupFragment::class.simpleName)
+                    addToBackStack(DriverSetupFragment::class.simpleName);
         }
     }
 
     fun addDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransactionWithAnimation {
-            replace(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+            add(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                    .addToBackStack(LoginFragment::class.simpleName)
+                    .replace(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+                    .addToBackStack(DriverSetupFragment::class.simpleName)
         }
     }
 
@@ -178,12 +192,17 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
 
     override fun onBackPressed() {
         // TODO use proper method for creating the user flow
-        if (supportFragmentManager.backStackEntryCount == 0 && supportFragmentManager
-                        .findFragmentByTag(DriverSetupFragment::class.simpleName) is DriverSetupFragment) {
-            JSONParser.saveAccessToken(this, "")
-            addPhoneNumberScreen(false, null)
-            setToolbarVisibility(false)
 
+
+//        val backStackCount = supportFragmentManager.backStackEntryCount;
+//        if(backStackCount>0 && supportFragmentManager.getBackStackEntryAt(backStackCount-1).name
+//                        .equals(OTPConfirmFragment::class.simpleName)){
+//            supportFragmentManager.popBackStackImmediate();
+//        }
+//
+        if (supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName) is DriverSetupFragment){
+            supportFragmentManager.popBackStack(LoginFragment::class.simpleName, POP_BACK_STACK_INCLUSIVE);
+            setToolbarVisibility(false)
         } else {
             super.onBackPressed()
         }

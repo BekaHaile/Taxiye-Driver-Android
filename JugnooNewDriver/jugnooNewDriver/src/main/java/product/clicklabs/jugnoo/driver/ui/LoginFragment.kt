@@ -26,6 +26,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.picker.CountryPicker
+import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
@@ -63,7 +64,7 @@ class LoginFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = container?.inflate(R.layout.frag_login)!!
+        rootView = inflater.inflate(R.layout.frag_login, container, false)!!
         applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
         if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // animate logo using shared transitions and then onEnd animate other view's visibility
@@ -374,6 +375,9 @@ class LoginFragment : Fragment() {
         sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
                 animateViews()
+                activity.supportFragmentManager.beginTransaction()
+                        .remove(activity.supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                        .commit()
             }
 
             override fun onTransitionResume(transition: Transition) {}
@@ -390,18 +394,12 @@ class LoginFragment : Fragment() {
     private fun animateViews() {
         getLanguageList(false)
 
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(rootView.constraint)
-
-        constraintSet.setVisibility(R.id.tvLabel, ConstraintSet.VISIBLE)
-        constraintSet.setVisibility(R.id.background, ConstraintSet.VISIBLE)
-        constraintSet.setVisibility(R.id.tvCountryCode, ConstraintSet.VISIBLE)
-        constraintSet.setVisibility(R.id.edtPhoneNo, ConstraintSet.VISIBLE)
-        constraintSet.setVisibility(R.id.btnGenerateOtp, ConstraintSet.VISIBLE)
-
-        TransitionManager.beginDelayedTransition(rootView.constraint);
-        constraintSet.applyTo(rootView.constraint);
-
-
+        with(rootView){
+            tvLabel.visible()
+            backgroundPhone.visible()
+            tvCountryCode.visible()
+            edtPhoneNo.visible()
+            btnGenerateOtp.visible()
+        }
     }
 }
