@@ -157,6 +157,9 @@ public class CityResponse extends FeedCommonResponse implements Serializable {
 		@SerializedName("vehicle_type")
 		@Expose
 		private Integer vehicleType;
+		@SerializedName("images")
+		@Expose
+		private Images images;
 
 		private boolean selected;
 
@@ -207,6 +210,42 @@ public class CityResponse extends FeedCommonResponse implements Serializable {
 
 		public void setSelected(boolean selected) {
 			this.selected = selected;
+		}
+
+		public String getImage() {
+			if (images != null && images.getI0() != null && images.getI0().getDriverIcon() != null){
+				return images.getI0().getDriverIcon();
+			} else {
+				return "";
+			}
+		}
+
+		public class Images{
+			@SerializedName("0")
+			@Expose
+			private I0 i0;
+
+			public I0 getI0() {
+				return i0;
+			}
+
+			public void setI0(I0 i0) {
+				this.i0 = i0;
+			}
+
+			public class I0{
+				@SerializedName("driver_icon")
+				@Expose
+				private String driverIcon;
+
+				public String getDriverIcon() {
+					return driverIcon;
+				}
+
+				public void setDriverIcon(String driverIcon) {
+					this.driverIcon = driverIcon;
+				}
+			}
 		}
 	}
 
