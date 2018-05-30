@@ -152,7 +152,7 @@ public class HippoNotificationConfig implements FuguAppConstant {
                     if (!notificationSoundEnabled)
                         notificationDefaults = Notification.DEFAULT_LIGHTS;
 
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)//, CHANNEL_ONE_ID)
                             //     .setTicker(r.getString(R.string.app_name))
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(messageJson.getString("new_message")))
                             //.setSmallIcon(android.R.color.transparent)

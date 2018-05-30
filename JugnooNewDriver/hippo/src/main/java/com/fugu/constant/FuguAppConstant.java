@@ -116,6 +116,7 @@ public interface FuguAppConstant {
 
     String SUPPORT_ID = "support_id";
     String SUPPORT_TRANSACTION_ID = "support_transaction_id";
+    String HIPPO_SUPPORT_TAGS = "support_tags";
     String SUPPORT_IS_ACTIVE = "is_active";
     String SOURCE_KEY = "source";
 

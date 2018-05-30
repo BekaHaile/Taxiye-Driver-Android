@@ -310,5 +310,6 @@ public interface Constants {
 	String KEY_GET_CREDITS_INFO = "get_credits_info";
 	String KEY_GET_CREDITS_IMAGE = "get_credits_image";
 	String KEY_SEND_CREDITS_ENABLED = "send_credits_enabled";
+	String HIPPO_TAG_DRIVER_APP = "Driver App";
 }
 

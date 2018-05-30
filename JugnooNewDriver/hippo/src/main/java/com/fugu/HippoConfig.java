@@ -179,6 +179,7 @@ public class HippoConfig extends FuguBaseActivity implements Parcelable {
         return hippoConfig;
     }
 
+
     public static void init(int appType, String appKey, Activity activity, String environment, String provider) {
         init(appType, appKey, activity, environment, null, provider);
     }
@@ -303,24 +304,25 @@ public class HippoConfig extends FuguBaseActivity implements Parcelable {
      * Open Support menu
      * @param HippoTicketAttributes
      */
-    public void showTicketSupport(HippoTicketAttributes HippoTicketAttributes) {
+    public void showFAQSupport(HippoTicketAttributes HippoTicketAttributes) {
     // preventing double, using threshold of 1000 ms
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
             return;
         }
         if(HippoTicketAttributes != null) {
-            openSupportScreen(HippoTicketAttributes.getmFaqName(), HippoTicketAttributes.getmTransactionId());
+            openSupportScreen(HippoTicketAttributes.getmFaqName(), HippoTicketAttributes.getmTransactionId(),
+                    HippoTicketAttributes.getmTags());
         } else {
-            openSupportScreen(null, null);
+            openSupportScreen(null, null, null);
         }
         lastClickTime = SystemClock.elapsedRealtime();
     }
 
-    private void openSupportScreen(final String categoryId, final String transactionId) {
+    private void openSupportScreen(final String categoryId, final String transactionId, final ArrayList<String> mTags) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                openFuguSupportActivity(categoryId, transactionId);
+                openFuguSupportActivity(categoryId, transactionId, mTags);
             }
         }, 100);
     }
@@ -364,10 +366,11 @@ public class HippoConfig extends FuguBaseActivity implements Parcelable {
         activity.startActivity(chatIntent);
     }
 
-    private void openFuguSupportActivity(String faqName, String transactionId) {
+    private void openFuguSupportActivity(String faqName, String transactionId, ArrayList<String> mTags) {
         Intent intent = new Intent(activity.getApplicationContext(), HippoSupportActivity.class);
         intent.putExtra(FuguAppConstant.SUPPORT_ID, faqName);
         intent.putExtra(FuguAppConstant.SUPPORT_TRANSACTION_ID, transactionId);
+        intent.putExtra(FuguAppConstant.HIPPO_SUPPORT_TAGS, mTags);
         intent.putExtra("userData", userData);
         activity.startActivity(intent);
     }
@@ -720,7 +723,7 @@ public class HippoConfig extends FuguBaseActivity implements Parcelable {
         }
     }
 
-    public static void clearHippoData(Activity activity) {
+    public static void clearFuguData(Activity activity) {
         HippoConfig.getInstance().isDataCleared = true;
         logOutUser(activity);
         try {
