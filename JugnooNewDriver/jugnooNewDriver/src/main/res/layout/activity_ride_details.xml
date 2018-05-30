@@ -116,7 +116,7 @@
                     android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:text="Distance: 5.6 Km"
+                    android:text="Distance:"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 

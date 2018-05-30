@@ -30,8 +30,8 @@ public class CustomMarkerView extends MarkerView {
 
 	public CustomMarkerView (final Context context, int layoutResource, Listener listener) {
 		super(context, layoutResource);
-		setLayoutParams(new LayoutParams(120, 64));
-		ASSL.DoMagic(this);
+		/*setLayoutParams(new LayoutParams(120, 64));
+		ASSL.DoMagic(this);*/
 		mListener = listener;
 		// this markerview only displays a textview
 		tvContent = (TextView) findViewById(R.id.tvContent);
@@ -42,8 +42,13 @@ public class CustomMarkerView extends MarkerView {
 	// content (user-interface)
 	@Override
 	public void refreshContent(Entry e, Highlight highlight) {
-		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
-		tvContent.setText(getResources().getString(R.string.rupee)+ decimalFormatNoDecimal.format(e.getVal())); // set the entry-value as the display text
+	//	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+	//	tvContent.setText(getResources().getString(R.string.rupee)+ decimalFormatNoDecimal.format(e.getVal())); // set the entry-value as the display text
+		String currencyUnit =null;
+		if(e.getData() instanceof String){
+			currencyUnit = (String) e.getData();
+		}
+		tvContent.setText(Utils.formatCurrencyValue(currencyUnit,e.getVal()));
 	}
 
 	@Override

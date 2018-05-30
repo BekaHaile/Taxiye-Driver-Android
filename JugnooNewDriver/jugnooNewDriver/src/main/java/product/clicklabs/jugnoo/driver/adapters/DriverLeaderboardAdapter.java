@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by socomo20 on 7/24/15.
@@ -64,9 +64,9 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
             holder = new ViewHolderDriverLeaderboard();
             convertView = mInflater.inflate(R.layout.list_item_driver_leaderboard, null);
 
-            holder.textViewSno = (TextView) convertView.findViewById(R.id.textViewSno); holder.textViewSno.setTypeface(Data.latoRegular(context));
-            holder.textViewDriverName = (TextView) convertView.findViewById(R.id.textViewDriverName); holder.textViewDriverName.setTypeface(Data.latoRegular(context));
-            holder.textViewRidesTaken = (TextView) convertView.findViewById(R.id.textViewRidesTaken); holder.textViewRidesTaken.setTypeface(Data.latoRegular(context));
+            holder.textViewSno = (TextView) convertView.findViewById(R.id.textViewSno); holder.textViewSno.setTypeface(Fonts.mavenRegular(context));
+            holder.textViewDriverName = (TextView) convertView.findViewById(R.id.textViewDriverName); holder.textViewDriverName.setTypeface(Fonts.mavenRegular(context));
+            holder.textViewRidesTaken = (TextView) convertView.findViewById(R.id.textViewRidesTaken); holder.textViewRidesTaken.setTypeface(Fonts.mavenRegular(context));
 
             holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 

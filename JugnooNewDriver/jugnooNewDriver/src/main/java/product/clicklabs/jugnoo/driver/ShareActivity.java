@@ -18,7 +18,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
@@ -75,11 +75,11 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
 		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {

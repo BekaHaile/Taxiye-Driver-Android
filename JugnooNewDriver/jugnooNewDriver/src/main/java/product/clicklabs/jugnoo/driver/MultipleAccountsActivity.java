@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.EnglishNumberToWords;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MultipleAccountsActivity extends BaseActivity {
@@ -48,25 +48,25 @@ public class MultipleAccountsActivity extends BaseActivity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
-        textViewMultipleAccountsCreated = (TextView) findViewById(R.id.textViewMultipleAccountsCreated); textViewMultipleAccountsCreated.setTypeface(Data.latoRegular(this));
-        textViewPleaseLogin = (TextView) findViewById(R.id.textViewPleaseLogin); textViewPleaseLogin.setTypeface(Data.latoLight(this), Typeface.BOLD);
+        textViewMultipleAccountsCreated = (TextView) findViewById(R.id.textViewMultipleAccountsCreated); textViewMultipleAccountsCreated.setTypeface(Fonts.mavenRegular(this));
+        textViewPleaseLogin = (TextView) findViewById(R.id.textViewPleaseLogin); textViewPleaseLogin.setTypeface(Fonts.mavenLight(this), Typeface.BOLD);
 
         listViewPreviousAccounts = (ListView) findViewById(R.id.listViewPreviousAccounts);
 
-        textViewLikeToCreate = (TextView) findViewById(R.id.textViewLikeToCreate); textViewLikeToCreate.setTypeface(Data.latoRegular(this));
+        textViewLikeToCreate = (TextView) findViewById(R.id.textViewLikeToCreate); textViewLikeToCreate.setTypeface(Fonts.mavenRegular(this));
 
         relativeLayoutMailUs = (RelativeLayout) findViewById(R.id.relativeLayoutMailUs);
         textViewContactUs = (TextView) findViewById(R.id.textViewContactUs);
-		textViewContactUs.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewContactUs.setTypeface(Fonts.mavenLight(this), Typeface.BOLD);
 		textViewContactUs.setText(getStringText(R.string.please_contact_customer_care));
 
         textViewMailUs = (TextView) findViewById(R.id.textViewMailUs);
-		textViewMailUs.setTypeface(Data.latoRegular(this));
+		textViewMailUs.setTypeface(Fonts.mavenRegular(this));
 
 
         previousAccountsAdapter = new PreviousAccountsAdapter(this);
@@ -180,9 +180,9 @@ public class MultipleAccountsActivity extends BaseActivity {
 				holder = new ViewHolderPreviousAccount();
 				convertView = mInflater.inflate(R.layout.list_item_previous_account, null);
 				
-				holder.textViewAccountEmail = (TextView) convertView.findViewById(R.id.textViewAccountEmail); holder.textViewAccountEmail.setTypeface(Data.latoRegular(context));
-				holder.textViewAccountPhone = (TextView) convertView.findViewById(R.id.textViewAccountPhone); holder.textViewAccountPhone.setTypeface(Data.latoLight(context), Typeface.BOLD);
-				holder.textViewLogin = (TextView) convertView.findViewById(R.id.textViewLogin); holder.textViewLogin.setTypeface(Data.latoRegular(context));
+				holder.textViewAccountEmail = (TextView) convertView.findViewById(R.id.textViewAccountEmail); holder.textViewAccountEmail.setTypeface(Fonts.mavenRegular(context));
+				holder.textViewAccountPhone = (TextView) convertView.findViewById(R.id.textViewAccountPhone); holder.textViewAccountPhone.setTypeface(Fonts.mavenLight(context), Typeface.BOLD);
+				holder.textViewLogin = (TextView) convertView.findViewById(R.id.textViewLogin); holder.textViewLogin.setTypeface(Fonts.mavenRegular(context));
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 

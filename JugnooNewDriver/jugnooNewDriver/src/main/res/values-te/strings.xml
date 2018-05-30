@@ -483,7 +483,6 @@
     <string name="start_loc">ప్రారంభ స్థానం</string>
     <string name="driver_loc">డ్రైవర్ స్థానం</string>
     <string name="customer_2">కస్టమర్ 2</string>
-    <string name="kms">కి.మీ.</string>
     <string name="mark_delivered">డెలివర్ చేసినవి టిక్ చేయండి </string>
     <string name="order_id">ఆర్డర్ ఐడి</string>
     <string name="thanks_for_feedback">మీ విలువైన అభిప్రాయాన్ని తెలియజేసినందుకు ధన్యవాదాలు</string>
@@ -615,9 +614,7 @@
     <string name="driver_to_customer">కస్టమర్ డ్రైవర్</string>
     <string name="driver_to_driver">డ్రైవర్ డ్రైవర్</string>
     <string name="rate_card">రేటు కార్డ్</string>
-    <string name="applicable_after">వర్తించే తర్వాత  %1$s Kms</string>
-    <string name="distance_per_km">దూరం\n(కనీసం ప్రతి)</string>
-    <string name="per_km">(కి.మీ.లలో ప్రతి)</string>
+    <string name="applicable_after">వర్తించే తర్వాత  %1$s</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ನಿನ್ನೆ</string>
@@ -709,7 +706,7 @@
 
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
     <string name="upload_again">Upload Again</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be %2$s/Km</string>
+    <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
 
     <string name="ride_history_cap">RIDE HISTORY</string>
@@ -824,11 +821,8 @@
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
-    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
-    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
-    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
     <string name="un_loading">un loading</string>

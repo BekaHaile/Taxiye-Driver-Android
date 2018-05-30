@@ -11,12 +11,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.Item;
-import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
-import product.clicklabs.jugnoo.driver.retrofit.model.Ranklist;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 /**
@@ -75,14 +73,14 @@ public class LeaderboardItemsAdapter extends RecyclerView.Adapter<LeaderboardIte
         if(leaderboardItem.getIsUser()){
             holder.textViewRank.setTextColor(activity.getResources().getColor(R.color.grey_black));
             holder.textViewName.setTextColor(activity.getResources().getColor(R.color.grey_black));
-            holder.textViewRank.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-            holder.textViewName.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+            holder.textViewRank.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+            holder.textViewName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
         }
         else{
             holder.textViewRank.setTextColor(activity.getResources().getColor(R.color.grey_dark_more));
             holder.textViewName.setTextColor(activity.getResources().getColor(R.color.grey_dark_more));
-            holder.textViewRank.setTypeface(Data.latoRegular(activity));
-            holder.textViewName.setTypeface(Data.latoRegular(activity));
+            holder.textViewRank.setTypeface(Fonts.mavenRegular(activity));
+            holder.textViewName.setTypeface(Fonts.mavenRegular(activity));
         }
 
 	}
@@ -99,11 +97,11 @@ public class LeaderboardItemsAdapter extends RecyclerView.Adapter<LeaderboardIte
             super(itemView);
             relative = (RelativeLayout) itemView.findViewById(R.id.relative);
             textViewRank = (TextView)itemView.findViewById(R.id.textViewRank);
-            textViewRank.setTypeface(Data.latoRegular(activity));
+            textViewRank.setTypeface(Fonts.mavenRegular(activity));
             textViewName = (TextView)itemView.findViewById(R.id.textViewName);
-            textViewName.setTypeface(Data.latoRegular(activity));
+            textViewName.setTypeface(Fonts.mavenRegular(activity));
             textViewNoOfDownloads = (TextView)itemView.findViewById(R.id.textViewNoOfDownloads);
-            textViewNoOfDownloads.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+            textViewNoOfDownloads.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
         }
     }
 }

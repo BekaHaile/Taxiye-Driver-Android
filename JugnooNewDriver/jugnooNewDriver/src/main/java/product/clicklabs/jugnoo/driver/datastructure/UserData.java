@@ -1,5 +1,11 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.content.Context;
+
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+
 public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
@@ -17,6 +23,12 @@ public class UserData {
 	private String userIdentifier;
 	private String driverSupportEmail, driverSupportEmailSubject;
 	private String hippoTicketFAQ;
+	private String currency;
+	public Double creditsEarned,commissionSaved;
+	private String referralMessageDriver;
+	private String referralImageD2D, referralImageD2C;
+	private String getCreditsInfo, getCreditsImage;
+	private int sendCreditsEnabled;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -26,8 +38,11 @@ public class UserData {
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
-					int deliveryEnabled, int deliveryAvailable,Integer fareCachingLimit, int isCaptiveDriver, String countryCode,String userIdentifier,
-					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ) {
+					int deliveryEnabled, int deliveryAvailable, Integer fareCachingLimit, int isCaptiveDriver, String countryCode, String userIdentifier,
+					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
+					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
+					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
+					int sendCreditsEnabled) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -51,6 +66,8 @@ public class UserData {
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
 		this.referralSMSToCustomer = referralSMSToCustomer;
+		this.getCreditsInfo = getCreditsInfo;
+		this.getCreditsImage = getCreditsImage;
 		this.driverOnlineHours = "00:00";
 
 		this.showDriverRating = showDriverRating;
@@ -75,6 +92,13 @@ public class UserData {
 		this.driverSupportEmail = driverSupportEmail;
 		this.driverSupportEmailSubject = driverSupportEmailSubject;
 		this.hippoTicketFAQ = hippoTicketFAQ;
+		this.currency = currency;
+		this.creditsEarned = creditsEarned;
+		this.commissionSaved = commissionSaved;
+		this.referralMessageDriver = referralMessageDriver;
+		this.referralImageD2D = referralImageD2D;
+		this.referralImageD2C = referralImageD2C;
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 
 	public String getUserId() {
@@ -147,5 +171,69 @@ public class UserData {
 
 	public void setHippoTicketFAQ(String hippoTicketFAQ) {
 		this.hippoTicketFAQ = hippoTicketFAQ;
+	}
+
+	public static String getDistanceUnit(Context context){
+		return Prefs.with(context).getString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km));
+	}
+	public static double getDistanceUnitFactor(Context context){
+		double factor = (double) Prefs.with(context).getFloat(Constants.KEY_DISTANCE_UNIT_FACTOR, 1F);
+		return factor/1000.0D;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public String getReferralMessageDriver() {
+		return referralMessageDriver;
+	}
+
+	public void setReferralMessageDriver(String referralMessageDriver) {
+		this.referralMessageDriver = referralMessageDriver;
+	}
+
+	public String getReferralImageD2C() {
+		return referralImageD2C;
+	}
+
+	public void setReferralImageD2C(String referralImageD2C) {
+		this.referralImageD2C = referralImageD2C;
+	}
+
+	public String getReferralImageD2D() {
+		return referralImageD2D;
+	}
+
+	public void setReferralImageD2D(String referralImageD2D) {
+		this.referralImageD2D = referralImageD2D;
+	}
+
+	public String getGetCreditsInfo() {
+		return getCreditsInfo;
+	}
+
+	public void setGetCreditsInfo(String getCreditsInfo) {
+		this.getCreditsInfo = getCreditsInfo;
+	}
+
+	public String getGetCreditsImage() {
+		return getCreditsImage;
+	}
+
+	public void setGetCreditsImage(String getCreditsImage) {
+		this.getCreditsImage = getCreditsImage;
+	}
+
+	public int getSendCreditsEnabled() {
+		return sendCreditsEnabled;
+	}
+
+	public void setSendCreditsEnabled(int sendCreditsEnabled) {
+		this.sendCreditsEnabled = sendCreditsEnabled;
 	}
 }

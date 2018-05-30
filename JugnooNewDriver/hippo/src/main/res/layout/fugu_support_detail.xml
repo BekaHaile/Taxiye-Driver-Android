@@ -52,9 +52,12 @@
                 android:hint="@string/fugu_leave_comment"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="6"
+                android:minLines="6"
+                android:background="@drawable/fugu_white_background_curved_all_sides"
                 android:singleLine="false"
                 android:layout_marginTop="@dimen/fugu_margin_7"
                 android:overScrollMode="always"
+                android:padding="6dp"
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 android:visibility="gone" />

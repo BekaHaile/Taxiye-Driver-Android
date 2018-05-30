@@ -142,6 +142,9 @@ public class NewBookingHistoryRespose {
 		@SerializedName("status")
 		@Expose
 		private String status;
+		@SerializedName("distance_unit")
+		@Expose
+		private String distanceUnit;
 
 		/**
 		 *
@@ -773,6 +776,13 @@ public class NewBookingHistoryRespose {
 			this.status = status;
 		}
 
+		public String getDistanceUnit() {
+			return distanceUnit;
+		}
+
+		public void setDistanceUnit(String distanceUnit) {
+			this.distanceUnit = distanceUnit;
+		}
 	}
 
 }

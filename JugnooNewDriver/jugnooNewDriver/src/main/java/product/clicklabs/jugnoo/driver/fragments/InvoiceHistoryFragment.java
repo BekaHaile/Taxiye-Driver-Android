@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +26,6 @@ import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
-import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.InvoiceInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
@@ -37,6 +35,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -76,7 +75,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
-		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
+		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
 
@@ -176,17 +175,17 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 				convertView = mInflater.inflate(R.layout.list_item_invoice_history, null);
 
 				holder.textViewInvoiceId = (TextView) convertView.findViewById(R.id.textViewInvoiceId);
-				holder.textViewInvoiceId.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewInvoiceId.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.dateTimeValueFrom = (TextView) convertView.findViewById(R.id.dateTimeValueFrom);
-				holder.dateTimeValueFrom.setTypeface(Data.latoRegular(getActivity()));
+				holder.dateTimeValueFrom.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.dateTimeValueTo = (TextView) convertView.findViewById(R.id.dateTimeValueTo);
-				holder.dateTimeValueTo.setTypeface(Data.latoRegular(getActivity()));
+				holder.dateTimeValueTo.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString);
-				holder.textViewStatusString.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewStatusString.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.textViewInvoiceFare = (TextView) convertView.findViewById(R.id.textViewInvoiceFare);
-				holder.textViewInvoiceFare.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewInvoiceFare.setTypeface(Fonts.mavenRegular(getActivity()));
 				holder.dateTimeValueGenerated = (TextView) convertView.findViewById(R.id.dateTimeValueGenerated);
-				holder.dateTimeValueGenerated.setTypeface(Data.latoRegular(getActivity()));
+				holder.dateTimeValueGenerated.setTypeface(Fonts.mavenRegular(getActivity()));
 
 				holder.statusImage = (ImageView) convertView.findViewById(R.id.statusImage);
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);

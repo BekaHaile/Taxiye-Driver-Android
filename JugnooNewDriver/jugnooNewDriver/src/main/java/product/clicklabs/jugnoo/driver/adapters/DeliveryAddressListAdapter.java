@@ -5,7 +5,6 @@ package product.clicklabs.jugnoo.driver.adapters;
  */
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +16,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
-import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 /**
@@ -69,7 +65,7 @@ public class DeliveryAddressListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.list_item_delivery_address, null);
 
 			holder.textViewToValue = (TextView) convertView.findViewById(R.id.textViewToValue);
-			holder.textViewToValue.setTypeface(Data.latoRegular(context));
+			holder.textViewToValue.setTypeface(Fonts.mavenRegular(context));
 			holder.destination = (ImageView) convertView.findViewById(R.id.destination);
 
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);

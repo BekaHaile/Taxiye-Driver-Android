@@ -15,6 +15,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by aneeshbansal on 24/10/15.
@@ -57,7 +58,7 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 			holder = new ViewHolderCancelOption();
 			convertView = mInflater.inflate(R.layout.list_item_cancel_option, null);
 
-			holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption); holder.textViewCancelOption.setTypeface(Data.latoRegular(context));
+			holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption); holder.textViewCancelOption.setTypeface(Fonts.mavenRegular(context));
 			holder.imageViewCancelOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewCancelOptionCheck);
 
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);

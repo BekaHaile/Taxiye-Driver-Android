@@ -19,7 +19,7 @@ import retrofit.RestAdapter;
  */
 public class RestClient {
 	private static final String TAG = RestClient.class.getSimpleName();
-	private static String CURRENT_URL;
+	private static String CURRENT_URL, CURRENT_URL_CHAT;
 	private static APIServices API_SERVICES;
 	private static DirectionAPIService DISTANCE_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
@@ -55,22 +55,7 @@ public class RestClient {
 	}
 
 	public static void setupRestClient() {
-
-		RestAdapter.Log fooLog = new RestAdapter.Log() {
-			@Override public void log(String message) {
-			}
-		};
-
-		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint(Data.SERVER_URL)
-				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
-				.setLogLevel(RestAdapter.LogLevel.FULL)
-				;
-
-		RestAdapter restAdapter = builder.build();
-		API_SERVICES = restAdapter.create(APIServices.class);
-		CURRENT_URL = Data.SERVER_URL;
+		setupRestClient(Data.SERVER_URL);
 	}
 
 	public static void setupRestClient(String url) {
@@ -95,6 +80,7 @@ public class RestClient {
 			CURRENT_URL = url;
 			Log.i(TAG, "setupRestClient");
 		}
+		setupChatAPIRestClient(url.equalsIgnoreCase(Data.LIVE_SERVER_URL) ? Data.CHAT_URL_LIVE : Data.CHAT_URL_DEV);
 	}
 	public static APIServices getApiServices() {
 		return API_SERVICES;
@@ -174,20 +160,29 @@ public class RestClient {
 	}
 
 	public static void setupChatAPIRestClient() {
+		setupChatAPIRestClient(Data.CHAT_URL_LIVE);
+	}
 
+	public static void setupChatAPIRestClient(String url) {
+		if (url.equalsIgnoreCase(CURRENT_URL_CHAT)) {
+			return;
+		}
 		RestAdapter.Log fooLog = new RestAdapter.Log() {
 			@Override public void log(String message) {
 			}
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint("https://prod-autos-api.jugnoo.in:4010")
+				.setEndpoint(url)
 				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
+		if(!BuildConfig.DEBUG){
+			builder.setLog(fooLog);
+		}
 
 		RestAdapter restAdapter = builder.build();
 		CHAT_ACK_API_SERVICE = restAdapter.create(ChatAckAPIService.class);
+		CURRENT_URL_CHAT = url;
 	}
 
 	public static ChatAckAPIService getChatAckApiServices() {

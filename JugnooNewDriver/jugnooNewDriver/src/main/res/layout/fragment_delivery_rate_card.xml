@@ -88,7 +88,7 @@
                 android:layout_marginLeft="22px"
                 android:layout_marginTop="24px"
                 android:textAllCaps="true"
-                android:text="@string/per_km_wo_brack"
+                android:text="@string/per_km_wo_brack_format"
                 android:textColor="@color/new_orange"
                 android:textSize="38px"/>
 

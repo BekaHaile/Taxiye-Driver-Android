@@ -1,13 +1,13 @@
 package product.clicklabs.jugnoo.driver.utils;
 
+import android.annotation.SuppressLint;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import android.annotation.SuppressLint;
 
 /**
  * date and time related operations functions
@@ -30,6 +30,28 @@ public class DateOperations {
 	public static String utcToLocal(String utcTime) {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		try {
+			Date myDate = simpleDateFormat.parse(utcTime);
+			String localDate = sdf.format(myDate);
+			return localDate;
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return utcTime;
+		}
+	}
+
+
+	/**
+	 * Converts UTC time to local time
+	 * @param utcTime UTC time String
+	 * @return Local time String
+	 */
+	@SuppressLint("SimpleDateFormat")
+	public static String utcToLocalTime(String utcTime) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		try {

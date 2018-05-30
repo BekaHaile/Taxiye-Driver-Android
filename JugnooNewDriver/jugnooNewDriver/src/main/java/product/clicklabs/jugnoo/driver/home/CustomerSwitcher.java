@@ -22,6 +22,7 @@ import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -315,13 +316,13 @@ public class CustomerSwitcher {
 														if (finalDistance > 0) {
 															distanceRefreshTime = System.currentTimeMillis();
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(finalDistance / 1000d)+" "
-																	+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+																	.format(finalDistance * UserData.getDistanceUnitFactor(activity))+" "
+																	+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														} else {
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-																	+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+																	+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														}
 													} catch (Exception e) {
 														e.printStackTrace();
@@ -358,8 +359,8 @@ public class CustomerSwitcher {
 				try {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-							+" "+activity.getResources().getString(R.string.km)+ "\n" + activity.getResources().getString(R.string.away_cap));
+									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

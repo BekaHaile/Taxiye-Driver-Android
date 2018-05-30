@@ -75,5 +75,44 @@
         <item name="android:tag">mwar</item>
     </style>
 
+    <style name="DialogButtonOrange" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">116dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:background">@drawable/button_white_theme_border</item>
+        <item name="android:textColor">@color/theme_color</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="DialogButtonGrey" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">116dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:background">@drawable/button_white_grey_border</item>
+        <item name="android:textColor">@color/grey_dark_button</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+
+    <style name="ButtonOrange" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">116dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:background">@drawable/orange_btn_selector</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:padding">8dp</item>
+    </style>
 
 </resources>

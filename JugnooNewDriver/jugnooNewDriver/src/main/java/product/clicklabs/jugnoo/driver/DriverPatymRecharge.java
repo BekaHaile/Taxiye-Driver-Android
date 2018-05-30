@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -90,24 +91,24 @@ public class DriverPatymRecharge extends BaseActivity {
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		editTextCashAmount = (EditText) findViewById(R.id.editTextCashAmount);
-		editTextCashAmount.setTypeface(Data.latoRegular(this));
+		editTextCashAmount.setTypeface(Fonts.mavenRegular(this));
 		editTextCashAmount.setHint(getStringText(R.string.enter_amount));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-		editTextPhone.setTypeface(Data.latoRegular(this));
+		editTextPhone.setTypeface(Fonts.mavenRegular(this));
 		editTextPhone.setHint(getStringText(R.string.enter_phone_number));
 
 		btnConfirm = (Button) findViewById(R.id.btnConfirm);
-		btnConfirm.setTypeface(Data.latoRegular(this));
+		btnConfirm.setTypeface(Fonts.mavenRegular(this));
 		btnRupee500 = (Button) findViewById(R.id.btnRupee500);
-		btnRupee500.setTypeface(Data.latoRegular(this));
+		btnRupee500.setTypeface(Fonts.mavenRegular(this));
 		btnRupee200 = (Button) findViewById(R.id.btnRupee200);
-		btnRupee200.setTypeface(Data.latoRegular(this));
+		btnRupee200.setTypeface(Fonts.mavenRegular(this));
 		btnRupee100 = (Button) findViewById(R.id.btnRupee100);
-		btnRupee100.setTypeface(Data.latoRegular(this));
+		btnRupee100.setTypeface(Fonts.mavenRegular(this));
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -376,17 +377,17 @@ public class DriverPatymRecharge extends BaseActivity {
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
+			textMessage.setTypeface(Fonts.mavenRegular(activity));
 
 			textMessage.setText(getResources().getString(R.string.recharge_amount_for_customer, editTextCashAmount.getText().toString() , editTextPhone.getText().toString()));
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
