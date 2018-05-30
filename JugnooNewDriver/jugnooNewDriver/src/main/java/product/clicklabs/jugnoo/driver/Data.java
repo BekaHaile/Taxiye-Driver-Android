@@ -87,7 +87,7 @@ public class Data {
 
 	//TODO
 	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-	public static final String LIVE_SERVER_URL = "https://prod-jingos.jugnoo.in";
+	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
 	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
@@ -471,9 +471,9 @@ public class Data {
 								 String keyFromServer, int appTypeFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
 			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-				//if(TextUtils.isEmpty(keyFromServer)){
+				if(TextUtils.isEmpty(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key);
-				//}
+				}
 				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
 			} else {
 				if(TextUtils.isEmpty(keyFromServer)){
