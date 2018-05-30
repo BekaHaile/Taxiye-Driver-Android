@@ -43,6 +43,8 @@ import static com.fugu.support.Utils.SupportKeys.SupportKey.DEFAULT_SUPPORT;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_CATEGORY_DATA;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_CATEGORY_ID;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_DB_VERSION;
+import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_POWERED_VIA;
+import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TAGS;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TITLE;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TRANSACTION_ID;
 
@@ -63,6 +65,7 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
     private int serverDBVersion = -1;
     private String defaultFaqName = null;
     private String transactionId = null;
+    private boolean hasPoweredVia;
 
     private Toolbar toolbar;
 
@@ -75,6 +78,7 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
 
     private ArrayList<Item> supportResponses;
     private ArrayList<String> pathList;
+    private ArrayList<String> mTags;
     private String title = "";
 
 
@@ -85,6 +89,9 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
         if(getArguments() != null) {
             if(getArguments().containsKey(DEFAULT_SUPPORT))
                 supportResponses = gson.fromJson(getArguments().getString(DEFAULT_SUPPORT), Constants.listType);
+
+            if(getArguments().containsKey(SUPPORT_TAGS))
+                mTags = gson.fromJson(getArguments().getString(SUPPORT_TAGS), ArrayList.class);
 
             if(getArguments().containsKey(SUPPORT_TITLE))
                 title = getArguments().getString(SUPPORT_TITLE);
@@ -100,6 +107,11 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
 
             if(getArguments().containsKey(SUPPORT_CATEGORY_DATA))
                 categoryData = getArguments().getString(SUPPORT_CATEGORY_DATA);
+
+            if(getArguments().containsKey(SUPPORT_POWERED_VIA))
+                hasPoweredVia = getArguments().getBoolean(SUPPORT_POWERED_VIA);
+
+
 
         }
     }
@@ -152,6 +164,7 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
         mNoDataTextView.setTextColor(hippoColorConfig.getHippoThemeColorPrimary());
 
         poweredBy = rootView.findViewById(R.id.tvPoweredBy);
+
         supportView = new HippoSupportViewImpl(getActivity(), this, new HippoSupportInteractorImpl());
         initView(serverDBVersion);
     }
@@ -162,7 +175,11 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
         else
             setInnerData(supportResponses);
 
-        setPoweredByText(poweredBy);
+        if(hasPoweredVia)
+            setPoweredByText(poweredBy);
+        else
+            poweredBy.setVisibility(View.GONE);
+
         poweredBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,20 +251,20 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
 
     @Override
     public void onClick(int actionType, List<Item> items, String title) {
-        typeCallback.onActionType((ArrayList<Item>) items, gson.toJson(pathList), title, transactionId, categoryData);
+        typeCallback.onActionType((ArrayList<Item>) items, gson.toJson(pathList), title, transactionId, categoryData, mTags);
     }
 
     @Override
     public void onOtherTypeClick(int actionType, Item item) {
         switch (SupportKeys.SupportActionType.get(actionType)) {
             case DESCRIPTION:
-                typeCallback.openDetailPage(item, gson.toJson(pathList), transactionId, categoryData);
+                typeCallback.openDetailPage(item, gson.toJson(pathList), transactionId, categoryData, mTags);
                 break;
             case CHAT_SUPPORT:
                 Category category = gson.fromJson(categoryData, Category.class);
                 SendQueryChat queryChat = new SendQueryChat(
                         SupportKeys.SupportQueryType.CHAT, category, transactionId,
-                        CommonData.getUserUniqueKey(), item.getSupportId(), pathList);
+                        CommonData.getUserUniqueKey(), item.getSupportId(), pathList, mTags);
 
                 supportView.openChat(queryChat);
                 break;
@@ -262,14 +279,14 @@ public class HippoSupportFragment extends BaseFragment implements HippoSupportVi
 
     @Override
     public void onDescription(Item item) {
-        typeCallback.openDetailPage(item, gson.toJson(pathList), transactionId, categoryData);
+        typeCallback.openDetailPage(item, gson.toJson(pathList), transactionId, categoryData, mTags);
     }
 
     @Override
     public void chatSupport(Item item) {
         Category category = gson.fromJson(categoryData, Category.class);
         SendQueryChat queryChat = new SendQueryChat(SupportKeys.SupportQueryType.CHAT, category,
-                transactionId, CommonData.getUserUniqueKey(), item.getSupportId(), pathList);
+                transactionId, CommonData.getUserUniqueKey(), item.getSupportId(), pathList, mTags);
         queryChat.setSubHeader(item.getContent().getSubHeading().getText());
 
         supportView.openChat(queryChat);

@@ -9,6 +9,7 @@ import com.fugu.model.FuguGetMessageParams;
 import com.fugu.model.FuguGetMessageResponse;
 import com.fugu.model.FuguPutUserDetailsResponse;
 import com.fugu.model.FuguUploadImageResponse;
+import com.fugu.support.model.HippoSendQueryParams;
 import com.fugu.support.model.SupportResponse;
 import com.fugu.support.model.SupportTicketResponse;
 
@@ -73,6 +74,6 @@ public interface ApiInterface {
     Call<SupportResponse> sendSupportQuery(@FieldMap Map<String, Object> map);
 
     @POST("/api/support/createConversation")
-    Call<SupportTicketResponse> createTicket(@Body FuguCreateConversationParams obj);
+    Call<SupportTicketResponse> createTicket(@Body HippoSendQueryParams obj);
 
 }

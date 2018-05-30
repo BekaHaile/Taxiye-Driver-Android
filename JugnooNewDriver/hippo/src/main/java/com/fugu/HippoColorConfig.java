@@ -119,7 +119,6 @@ public class HippoColorConfig {
 
     private String hippoSecondaryTextMsgFromName = "#627de3";
     private String hippoTextColorPrimary = "#2c2333";
-    private String hippoTextColorSecondary = "#2c2333";
     private String hippoChannelDateText = "#88838c";
     private String hippoChatBg = "#f8f9ff";
     private String hippoBorderColor = "#dce0e6";
@@ -188,11 +187,6 @@ public class HippoColorConfig {
         }
 
         public Builder hippoTextColorPrimary(String hippoTextColorPrimary) {
-            hippoColorConfig.hippoTextColorPrimary = hippoTextColorPrimary;
-            return this;
-        }
-
-        public Builder hippoTextColorSecondary(String hippoTextColorPrimary) {
             hippoColorConfig.hippoTextColorPrimary = hippoTextColorPrimary;
             return this;
         }

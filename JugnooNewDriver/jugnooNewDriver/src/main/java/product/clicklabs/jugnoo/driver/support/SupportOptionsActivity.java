@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.fugu.HippoConfig;
 import com.fugu.HippoTicketAttributes;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeUtil;
@@ -72,7 +74,12 @@ public class SupportOptionsActivity extends BaseActivity implements View.OnClick
 				if(Data.userData != null){
 					builder.setFaqName(Data.userData.getHippoTicketFAQ());
 				}
-				HippoConfig.getInstance().showTicketSupport(builder.build());
+
+				ArrayList<String> tags = new ArrayList<>();
+				tags.add(Constants.HIPPO_TAG_DRIVER_APP);
+				builder.setTags(tags);
+
+				HippoConfig.getInstance().showFAQSupport(builder.build());
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_CALL_US_MENU)){
 				Utils.makeCallIntent(activity, Data.userData.driverSupportNumber);
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_IN_APP_CALL_US)){
