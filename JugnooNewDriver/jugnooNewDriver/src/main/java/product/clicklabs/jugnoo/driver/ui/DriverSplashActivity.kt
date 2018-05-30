@@ -37,7 +37,6 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
         FlurryAgent.init(this, Data.FLURRY_KEY)
 
