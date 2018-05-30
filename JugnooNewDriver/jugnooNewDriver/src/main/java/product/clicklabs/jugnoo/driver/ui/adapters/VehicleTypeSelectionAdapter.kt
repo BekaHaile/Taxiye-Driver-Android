@@ -3,10 +3,12 @@ package product.clicklabs.jugnoo.driver.ui.adapters
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.squareup.picasso.Picasso
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
@@ -48,7 +50,11 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             VehicleTypeValue.E_RICK.value -> R.drawable.ic_ride_accept_erick
             else -> R.drawable.ic_auto_request
         }
-        holder.ivVehicle.setImageResource(imageRes)
+        if(!TextUtils.isEmpty(vehicle.image)){
+            Picasso.with(context).load(vehicle.image).placeholder(imageRes).error(imageRes).into(holder.ivVehicle)
+        } else {
+            holder.ivVehicle.setImageResource(imageRes)
+        }
         holder.ivVehicleTick.setImageResource(if (vehicle.isSelected) R.drawable.ic_tick_green_20 else R.drawable.circle_grey_stroke_theme)
     }
 
