@@ -1,12 +1,10 @@
 package product.clicklabs.jugnoo.driver.ui
 
-import android.app.FragmentManager
 import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -134,11 +132,6 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
     }
 
     fun openDriverSetupFragment(accessToken: String) {
-        // this transaction removes the access token, hence access token is to be saved again
-
-        supportFragmentManager.popBackStackImmediate()
-        JSONParser.saveAccessToken(this, accessToken)
-
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
                     .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
@@ -147,16 +140,16 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
     }
 
     fun addDriverSetupFragment(accessToken: String) {
-        supportFragmentManager.beginTransaction()
-                .add(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
-                .commitNow()
 
-
-        supportFragmentManager.inTransactionWithAnimation {
-            add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+        supportFragmentManager.inTransaction {
+            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                    .add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
         }
+
+        supportFragmentManager.beginTransaction()
+                .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                .commit()
     }
 
     override fun openPhoneLoginScreen(enableSharedTransition: Boolean, sharedView: View?) {
@@ -196,6 +189,34 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+
+        // if back pressed from driver setup fragment from the normal flow
+        if (supportFragmentManager.backStackEntryCount == 2
+                && supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName) != null
+                && supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName) != null
+                && supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName) is DriverSetupFragment) {
+
+            supportFragmentManager.popBackStackImmediate()
+            super.onBackPressed()
+
+        } else if (supportFragmentManager.backStackEntryCount == 1
+                && supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName) == null) {
+
+            // when back press on any fragment where there is no login fragment added before in the flow, add login fragment
+            // after transaction pop and clear the saved access token
+            super.onBackPressed()
+
+            supportFragmentManager.inTransaction {
+                replace(R.id.container, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+            }
+
+            JSONParser.saveAccessToken(this, "")
+        } else {
+            super.onBackPressed()
+        }
     }
 }
 
