@@ -30,6 +30,8 @@ import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_CATEGORY_DAT
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_CATEGORY_ID;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_DB_VERSION;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_PATH;
+import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_POWERED_VIA;
+import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TAGS;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TITLE;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TRANSACTION_ID;
 
@@ -49,18 +51,19 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
 
         String faqName = getIntent().getStringExtra(FuguAppConstant.SUPPORT_ID);
         String transactionId = getIntent().getStringExtra(FuguAppConstant.SUPPORT_TRANSACTION_ID);
+        ArrayList<String> mTags = getIntent().getStringArrayListExtra(FuguAppConstant.HIPPO_SUPPORT_TAGS);
 
-
-        initView(faqName, transactionId);
+        initView(faqName, transactionId, mTags);
     }
 
-    private void initView(String faqName, String transactionId) {
+    private void initView(String faqName, String transactionId, ArrayList<String> mTags) {
         //int supportDbVersion = CommonData.getUserDetails().getData().getUserId();
         if(TextUtils.isEmpty(faqName))
             faqName = CommonData.getDefaultCategory();
 
         CommonData.clearPathList();
-        loadFragment(null, null, null, 0, faqName, transactionId, null);
+        loadFragment(null, null, null, 0, faqName,
+                transactionId, null, true, mTags);
     }
 
     @Override
@@ -127,7 +130,7 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
      * @param categoryData Selected {@link com.fugu.support.model.Category}  category object
      */
     private void loadFragment(ArrayList<Item> items, String path, String title, int support_db_version,
-                              String faqName, String transactionId, String categoryData) {
+                              String faqName, String transactionId, String categoryData, boolean powerFlag, ArrayList<String> mTags) {
         HippoSupportFragment fragment = new HippoSupportFragment();
 
         Bundle bundle = new Bundle();
@@ -140,6 +143,11 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
             }
 
         }
+
+        if(mTags != null) {
+            bundle.putString(SUPPORT_TAGS, new Gson().toJson(mTags));
+        }
+
         if(!TextUtils.isEmpty(path))
             bundle.putString(SUPPORT_PATH, path);
         if(!TextUtils.isEmpty(title))
@@ -152,6 +160,7 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
             bundle.putString(SUPPORT_TRANSACTION_ID, transactionId);
 
         bundle.putString(SUPPORT_CATEGORY_DATA, categoryData);
+        bundle.putBoolean(SUPPORT_POWERED_VIA, powerFlag);
 
         fragment.setArguments(bundle);
         openFragment(fragment);
@@ -171,12 +180,12 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
     }
 
     @Override
-    public void onActionType(ArrayList<Item> items, String path, String title, String transactionId, String categoryData) {
-        loadFragment(items, path, title, -1,"", transactionId, categoryData);
+    public void onActionType(ArrayList<Item> items, String path, String title, String transactionId, String categoryData, ArrayList<String> mTags) {
+        loadFragment(items, path, title, -1,"", transactionId, categoryData, false, mTags);
     }
 
     @Override
-    public void openDetailPage(Item items, String path, String transactionId, String categoryData) {
+    public void openDetailPage(Item items, String path, String transactionId, String categoryData, ArrayList<String> mTags) {
         HippoSupportDetailFragment detailFragment = new HippoSupportDetailFragment();
 
         Bundle bundle = new Bundle();
@@ -185,6 +194,8 @@ public class HippoSupportActivity extends AppCompatActivity implements OnActionT
             bundle.putString(SUPPORT_PATH, path);
         if(!TextUtils.isEmpty(transactionId))
             bundle.putString(SUPPORT_TRANSACTION_ID, transactionId);
+        if(mTags != null)
+            bundle.putString(SUPPORT_TAGS, new Gson().toJson(mTags));
 
         bundle.putString(SUPPORT_CATEGORY_DATA, categoryData);
 

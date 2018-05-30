@@ -1391,7 +1391,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if(Data.userData != null){
 							builder.setFaqName(Data.userData.getHippoTicketFAQ());
 						}
-						HippoConfig.getInstance().showTicketSupport(builder.build());
+
+						ArrayList<String> tags = new ArrayList<>();
+						tags.add(Constants.HIPPO_TAG_DRIVER_APP);
+						builder.setTags(tags);
+
+						HippoConfig.getInstance().showFAQSupport(builder.build());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3620,7 +3625,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setUserData() {
 		try {
 			userName.setText(Data.userData.userName);
-			if(Data.userData.creditsEarned!=null){
+			if(Prefs.with(this).getInt(Constants.DRIVER_CREDITS, 0) == 1
+					&& Data.userData.creditsEarned!=null){
 				tvCredits.setVisibility(View.VISIBLE);
 				tvCredits.setText(Utils.formatCurrencyValue(Data.userData.getCurrency(),Data.userData.creditsEarned) + " "
 						+ getString(R.string.credits));

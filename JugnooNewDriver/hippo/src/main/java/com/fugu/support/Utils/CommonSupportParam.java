@@ -4,11 +4,9 @@ import android.text.TextUtils;
 
 import com.fugu.HippoConfig;
 import com.fugu.model.CustomAttributes;
-import com.fugu.model.FuguCreateConversationParams;
+import com.fugu.support.model.HippoSendQueryParams;
+import com.fugu.support.model.TagsModel;
 import com.fugu.support.model.callbackModel.OpenChatParams;
-import com.fugu.utils.FuguLog;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 
@@ -50,7 +48,7 @@ public class CommonSupportParam {
         ArrayList<String> tagsList = new ArrayList<>();
         tagsList.add(categoryName);
 
-        CustomAttributes attributes = getAttributes(pathList, userUniqueId, transactionId);
+        CustomAttributes attributes = getAttributes(pathList, userUniqueId, transactionId, null);
 
         return new OpenChatParams(transactionId, userUniqueId, channelName, tagsList, data, attributes);
     }
@@ -67,8 +65,9 @@ public class CommonSupportParam {
      * @param textboxMsg
      * @return
      */
-    public FuguCreateConversationParams getSubmitQueryParams(String categoryName, String transactionId,
-                                                             String userUniqueId, int supportId, ArrayList<String> pathList, String textboxMsg, String subHeader) {
+    public HippoSendQueryParams getSubmitQueryParams(String categoryName, String transactionId,
+                       String userUniqueId, int supportId, ArrayList<String> pathList,
+                       String textboxMsg, String subHeader, ArrayList<String> mTags) {
         String channelName = getChannelName(pathList.get(pathList.size() - 1), userUniqueId, supportId, transactionId);
         String message = getMessage(userUniqueId, transactionId, categoryName, pathList.get(pathList.size() - 1),
                 textboxMsg, subHeader);
@@ -81,23 +80,27 @@ public class CommonSupportParam {
 
         String msg[] = new String[1];
         msg[0] = message;
-        JsonArray tagsArray = null;
 
-        ArrayList<String> tags = new ArrayList<>();
-        tags.add(categoryName);
+        ArrayList<TagsModel> tags = new ArrayList<>();
+        tags.add(new TagsModel(categoryName));
 
-        tagsArray = new Gson().toJsonTree(tags).getAsJsonArray();
+        if(mTags != null) {
+            for (String tag : mTags) {
+                tags.add(new TagsModel(tag));
+            }
+        }
 
-        FuguCreateConversationParams params = new FuguCreateConversationParams(HippoConfig.getInstance().getAppKey(),
+
+        HippoSendQueryParams params = new HippoSendQueryParams(HippoConfig.getInstance().getAppKey(),
                 -1l,
                 transactionId,
                 HippoConfig.getInstance().getUserData().getUserId(),
                 channelName,
-                tagsArray,
+                tags,
                 msg,
                 HippoConfig.getInstance().getUserData().getEnUserId(), 1);
 
-        CustomAttributes attributes = getAttributes(pathList, userUniqueId, transactionId);
+        CustomAttributes attributes = getAttributes(pathList, userUniqueId, transactionId, textboxMsg);
         params.setCustomAttributes(attributes);
 
         return params;
@@ -155,7 +158,8 @@ public class CommonSupportParam {
      * @param transactionId
      * @return
      */
-    private CustomAttributes getAttributes(ArrayList<String> pathList, String userUniqueId, String transactionId) {
+    private CustomAttributes getAttributes(ArrayList<String> pathList, String userUniqueId
+            , String transactionId, String query) {
         String attributesPath = "";
         for(String str : pathList) {
             if(TextUtils.isEmpty(attributesPath)) {
@@ -171,6 +175,8 @@ public class CommonSupportParam {
         if(!TextUtils.isEmpty(transactionId)) {
             attributes.setTransactionId(transactionId);
         }
+        if(!TextUtils.isEmpty(query))
+            attributes.setQuery(query);
         return attributes;
     }
 

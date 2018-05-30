@@ -18,6 +18,7 @@ public class SendQueryChat {
     private String userUniqueId;
     private int supportId;
     private ArrayList<String> pathList;
+    private ArrayList<String> mTags;
     private String textboxMsg;
     private String categoryName;
     private String successMessage;
@@ -114,6 +115,13 @@ public class SendQueryChat {
         this.type = type;
     }
 
+    public ArrayList<String> getmTags() {
+        return mTags;
+    }
+
+    public void setmTags(ArrayList<String> mTags) {
+        this.mTags = mTags;
+    }
 
     /**
      * For Sending Query
@@ -125,7 +133,7 @@ public class SendQueryChat {
      * @param textboxMsg
      */
     public SendQueryChat(SupportKeys.SupportQueryType type, Category category, String transactionId, String userUniqueId, int supportId,
-                         ArrayList<String> pathList, String textboxMsg, String successMessage) {
+                         ArrayList<String> pathList, String textboxMsg, String successMessage, ArrayList<String> mTags) {
         this.type = type;
         this.category = category;
         this.transactionId = transactionId;
@@ -134,6 +142,7 @@ public class SendQueryChat {
         this.pathList = pathList;
         this.textboxMsg = textboxMsg;
         this.successMessage = successMessage;
+        this.mTags = mTags;
     }
 
 
@@ -146,13 +155,14 @@ public class SendQueryChat {
      * @param pathList
      */
     public SendQueryChat(SupportKeys.SupportQueryType type, Category category, String transactionId, String userUniqueId,
-                         int supportId, ArrayList<String> pathList) {
+                         int supportId, ArrayList<String> pathList, ArrayList<String> mTags) {
         this.type = type;
         this.category = category;
         this.transactionId = transactionId;
         this.userUniqueId = userUniqueId;
         this.supportId = supportId;
         this.pathList = pathList;
+        this.mTags = mTags;
     }
 
 }
