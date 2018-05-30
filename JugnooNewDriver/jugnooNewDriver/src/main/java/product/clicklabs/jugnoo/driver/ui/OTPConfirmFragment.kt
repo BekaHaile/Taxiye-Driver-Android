@@ -49,7 +49,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var edtOTP: EditText
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
-
+    private var mListener: SplashFragment.InteractionListener?=null
 
     companion object {
 
@@ -68,6 +68,18 @@ class OTPConfirmFragment : Fragment() {
         }
 
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        parentActivity = context as Activity
+        toolbarChangeListener = context as ToolbarChangeListener
+        if(context is SplashFragment.InteractionListener){
+            mListener = context
+        } else {
+            throw IllegalArgumentException(TAG+" Interaction listener required")
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +144,13 @@ class OTPConfirmFragment : Fragment() {
         })
 
 
-        showCountDownPopup()
+        if(mListener?.getPrefillOtpIfany()!=null){
+            edtOTP.setText(mListener.getPrefillOtpIfany())
+            edtOTP.setSelection(edtOTP.text.length)
+        }else{
+            showCountDownPopup()
+
+        }
         return rootView
 
     }
@@ -168,36 +186,13 @@ class OTPConfirmFragment : Fragment() {
     }
 
 
-    //Using Rx
-    private fun retrieveOTPFromSMS(intent: Intent) {
-        try {
-            var otp = ""
-            if (intent.hasExtra("message")) {
-                val message = intent.getStringExtra("message")
 
-                if (message.toLowerCase().contains("paytm")) {
-                    otp = message.split("\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
-                } else {
-                    val arr = message.split("and\\ it\\ is\\ valid\\ till\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    val arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ One\\ Time\\ Password\\ is\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    otp = arr2[1]
-                    otp = otp.replace("\\ ".toRegex(), "")
-                }
-            }
-            if (Utils.checkIfOnlyDigits(otp)) {
-                if (!"".equals(otp, ignoreCase = true)) {
-                    if (java.lang.Boolean.parseBoolean(Prefs.with(activity).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
-                        edtOTP.setText(otp)
-                        edtOTP.setSelection(edtOTP.text.length)
-                        otpDialog?.dismiss()
-                        countDownTimer?.cancel()
-
-
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
+     fun onOtpReceived(otp: String) {
+        if(view!=null){
+            edtOTP.setText(otp)
+            edtOTP.setSelection(edtOTP.text.length)
+            otpDialog?.dismiss()
+            countDownTimer?.cancel()
         }
 
     }
@@ -393,35 +388,28 @@ class OTPConfirmFragment : Fragment() {
         if (!hidden) {
             toolbarChangeListener.setToolbarText(getString(R.string.verification))
             toolbarChangeListener.setToolbarVisibility(true)
+            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
+        }else{
+            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
+
         }
 
     }
 
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        parentActivity = context as Activity
-        toolbarChangeListener = context as ToolbarChangeListener
+
+
+      fun isWaitingForOTPDetection(): Boolean{
+
+       return otpDialog!=null && otpDialog!!.isShown();
     }
 
-    override fun onResume() {
-        super.onResume()
-        LocalBroadcastManager.getInstance(activity).registerReceiver(broadcastReceiver,
-                IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
+
     }
 
-    override fun onPause() {
-        super.onPause()
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(broadcastReceiver)
-    }
-
-    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
-                retrieveOTPFromSMS(intent)
-            }
-        }
-    };
 
 }
 

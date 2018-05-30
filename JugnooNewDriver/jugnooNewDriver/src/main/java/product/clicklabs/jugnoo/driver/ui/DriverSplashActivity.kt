@@ -1,10 +1,14 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -20,11 +24,21 @@ import product.clicklabs.jugnoo.driver.utils.*
  * Created by Parminder Saini on 16/04/18.
  */
 
-class
-DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
+class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
 
     private val TAG = SplashFragment::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
+    private  var otpDetectedViaSms :String? = null;
+
+
+    private var otpBroadCastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
+               retrieveOTPFromSMS(intent)
+            }
+        }
+    };
+
 
 
     override fun onLocationChanged(location: Location?, priority: Int) {
@@ -84,7 +98,23 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
         super.onResume()
         if (Data.locationFetcher != null) Data.locationFetcher.connect()
         LocationInit.showLocationAlertDialog(this)
+        registerbackForOTPDetection()
+
+
     }
+
+    private fun registerbackForOTPDetection() {
+        var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
+        if (otpFragment != null) {
+            otpFragment = otpFragment as OTPConfirmFragment;
+            if (otpFragment.isWaitingForOTPDetection()) {
+                registerForSmsReceiver()
+
+            }
+
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -94,6 +124,7 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
             e.printStackTrace()
         }
         Database2.getInstance(this).close()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(otpBroadCastReceiver)
 
     }
 
@@ -154,6 +185,17 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
     override fun openPhoneLoginScreen(enableSharedTransition: Boolean, sharedView: View?) {
         addPhoneNumberScreen(enableSharedTransition, sharedView)
     }
+
+    override fun registerForSmsReceiver() {
+        otpDetectedViaSms=null;
+        LocalBroadcastManager.getInstance(this).registerReceiver(otpBroadCastReceiver, IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
+
+    }
+
+    override fun getPrefillOtpIfany():String? {
+       return otpDetectedViaSms;
+    }
+
 
     override fun goToHomeScreen() {
         val intent = Intent(this, HomeActivity::class.java)
@@ -217,6 +259,48 @@ DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.In
             super.onBackPressed()
         }
     }
+
+
+
+    //Using Rx
+    public fun retrieveOTPFromSMS(intent: Intent) {
+        try {
+            var otp = ""
+            if (intent.hasExtra("message")) {
+                val message = intent.getStringExtra("message")
+
+                if (message.toLowerCase().contains("paytm")) {
+                    otp = message.split("\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
+                } else {
+                    val arr = message.split("and\\ it\\ is\\ valid\\ till\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    val arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    otp = arr2[1]
+                    otp = otp.replace("\\ ".toRegex(), "")
+                }
+            }
+            if (Utils.checkIfOnlyDigits(otp)) {
+                if (!"".equals(otp, ignoreCase = true)) {
+
+                    otpDetectedViaSms = otp;
+
+                    var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
+                    if (otpFragment != null) {
+                        otpFragment = otpFragment as OTPConfirmFragment;
+                        otpFragment.onOtpReceived(otp)
+
+                    }
+
+
+
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+
 }
 
 interface ToolbarChangeListener {

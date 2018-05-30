@@ -343,6 +343,10 @@ class SplashFragment : Fragment() {
         fun openPhoneLoginScreen(enableSharedTransition: Boolean = false, sharedView: View? = null)
 
         fun goToHomeScreen()
+
+        fun registerForSmsReceiver()
+
+        fun getPrefillOtpIfany():String?
     }
 
     override fun onDestroy() {

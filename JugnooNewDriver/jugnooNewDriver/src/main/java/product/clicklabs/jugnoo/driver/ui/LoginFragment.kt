@@ -42,6 +42,8 @@ import java.lang.Exception
 import java.util.*
 
 class LoginFragment : Fragment() {
+    private var mListener: SplashFragment.InteractionListener?=null
+
 
     companion object {
         private const val IS_SHARED_TRANSITION_ENABLED = "is_shared_transition_enabled"
@@ -62,6 +64,13 @@ class LoginFragment : Fragment() {
     private lateinit var toolbarChangeListener: ToolbarChangeListener
     private var applyTransition = false;
 
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        if(activity is SplashFragment.InteractionListener){
+            mListener = activity;
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.frag_login, container, false)!!
@@ -106,6 +115,8 @@ class LoginFragment : Fragment() {
 
                 }
 
+                mListener?.registerForSmsReceiver();
+                Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
 
                 val params = HashMap<String, String>()
                 params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
@@ -402,5 +413,9 @@ class LoginFragment : Fragment() {
             edtPhoneNo.visible()
             btnGenerateOtp.visible()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }
