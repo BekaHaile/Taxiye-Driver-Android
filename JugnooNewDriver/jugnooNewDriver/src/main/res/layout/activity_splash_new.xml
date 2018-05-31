@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@+id/textViewDriver"
-                android:background="@drawable/ic_splash_logo_drawable"
+                android:src="@drawable/ic_splash_logo_drawable"
                 android:tag="mwar"
                 android:visibility="visible" />
 
