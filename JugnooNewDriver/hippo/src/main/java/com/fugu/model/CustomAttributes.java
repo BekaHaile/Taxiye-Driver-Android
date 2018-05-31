@@ -17,6 +17,17 @@ public class CustomAttributes {
     @SerializedName("path")
     @Expose
     private String path;
+    @SerializedName("Query")
+    @Expose
+    private String query;
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
 
     public String getPath() {
         return path;

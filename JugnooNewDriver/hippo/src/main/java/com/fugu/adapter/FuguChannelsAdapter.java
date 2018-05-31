@@ -28,7 +28,6 @@ import com.fugu.datastructure.ChannelStatus;
 import com.fugu.model.FuguConversation;
 import com.fugu.utils.DateUtils;
 import com.fugu.utils.FuguLog;
-import com.fugu.utils.RoundedCornersTransformation;
 
 import java.util.ArrayList;
 

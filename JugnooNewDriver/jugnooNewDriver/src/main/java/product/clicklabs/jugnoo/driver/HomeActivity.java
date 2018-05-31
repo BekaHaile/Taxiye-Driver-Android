@@ -1387,7 +1387,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if(Data.userData != null){
 							builder.setFaqName(Data.userData.getHippoTicketFAQ());
 						}
-						HippoConfig.getInstance().showTicketSupport(builder.build());
+
+						ArrayList<String> tags = new ArrayList<>();
+						tags.add(Constants.HIPPO_TAG_DRIVER_APP);
+						builder.setTags(tags);
+
+						HippoConfig.getInstance().showFAQSupport(builder.build());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

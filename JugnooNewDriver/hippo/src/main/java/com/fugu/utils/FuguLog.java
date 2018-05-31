@@ -7,7 +7,7 @@ package com.fugu.utils;
  */
 public class FuguLog {
 
-    private static final boolean PRINT = false; // true for printing and false
+    private static final boolean PRINT = true; // true for printing and false
     // for not
 
     public FuguLog() {

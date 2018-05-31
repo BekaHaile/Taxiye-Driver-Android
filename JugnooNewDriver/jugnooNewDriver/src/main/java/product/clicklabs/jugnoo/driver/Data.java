@@ -185,7 +185,7 @@ public class Data {
 			editor.clear();
 			editor.apply();
 			Prefs.with(context).save(Constants.IS_OFFLINE, 1);
-			HippoConfig.clearHippoData((Activity) context);
+			HippoConfig.clearFuguData((Activity) context);
 		} catch(Exception e){
 			e.printStackTrace();
 		}

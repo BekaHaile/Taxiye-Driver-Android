@@ -1,5 +1,7 @@
 package com.fugu;
 
+import java.util.ArrayList;
+
 /**
  * Created by gurmail on 04/04/18.
  */
@@ -8,6 +10,11 @@ public class HippoTicketAttributes {
 
     private String mFaqName;
     private String mTransactionId;
+    private ArrayList<String> mTags;
+
+    public ArrayList<String> getmTags() {
+        return mTags;
+    }
 
     public String getmFaqName() {
         return mFaqName;
@@ -21,6 +28,7 @@ public class HippoTicketAttributes {
 
         private String mFaqName;
         private String mTransactionId;
+        private ArrayList<String> mTags;
 
         public Builder setFaqName(String mFaqName) {
             this.mFaqName = mFaqName;
@@ -32,6 +40,11 @@ public class HippoTicketAttributes {
             return this;
         }
 
+        public Builder setTags(ArrayList<String> mTags) {
+            this.mTags = mTags;
+            return this;
+        }
+
         public HippoTicketAttributes build() {
             return new HippoTicketAttributes(this);
         }
@@ -40,5 +53,6 @@ public class HippoTicketAttributes {
     private HippoTicketAttributes(Builder builder) {
         this.mFaqName = builder.mFaqName;
         this.mTransactionId = builder.mTransactionId;
+        this.mTags = builder.mTags;
     }
 }
