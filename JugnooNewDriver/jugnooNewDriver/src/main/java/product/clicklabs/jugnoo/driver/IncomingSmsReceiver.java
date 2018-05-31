@@ -33,6 +33,7 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
 					String message = currentMessage.getDisplayMessageBody();
 
 					Log.i("SmsReceiver", "senderNum: " + senderNum + "; message: " + message);
+		/*
 
 					if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
 						Intent otpConfirmScreen = new Intent(context, LoginViaOTP.class);
@@ -40,7 +41,8 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
 						otpConfirmScreen.putExtra("sender_num", senderNum);
 						otpConfirmScreen.putExtra("message", message);
 						context.startActivity(otpConfirmScreen);
-					}
+					}*/
+
 					// broadcast of new message received
 					Intent broadcastIntent = new Intent(Constants.INTENT_ACTION_NEW_MESSAGE);
 					broadcastIntent.putExtra("sender_num", senderNum);

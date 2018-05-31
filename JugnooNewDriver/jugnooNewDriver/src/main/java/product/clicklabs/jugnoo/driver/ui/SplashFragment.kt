@@ -383,7 +383,7 @@ class SplashFragment : Fragment() {
 
         fun goToHomeScreen()
 
-        fun registerForSmsReceiver()
+        fun registerForSmsReceiver(register: Boolean)
 
         fun getPrefillOtpIfany():String?
     }

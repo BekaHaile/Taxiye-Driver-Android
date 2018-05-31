@@ -26,6 +26,10 @@ public class RegisterScreenResponse extends FeedCommonResponse {
 	@Expose
 	private String missedCallNumber;
 
+	@SerializedName("otp_length")
+	@Expose
+	private Integer otpLength;
+
 	/**
 	 * @return The phoneNo
 	 */
@@ -70,5 +74,9 @@ public class RegisterScreenResponse extends FeedCommonResponse {
 
 	public String getMissedCallNumber() {
 		return missedCallNumber;
+	}
+
+	public Integer getOtpLength() {
+		return otpLength;
 	}
 }

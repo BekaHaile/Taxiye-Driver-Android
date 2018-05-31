@@ -46,7 +46,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var edtOTP: EditText
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
-    private lateinit var mListener: SplashFragment.InteractionListener
+    private  var mListener: SplashFragment.InteractionListener?  = null;
 
     companion object {
 
@@ -141,8 +141,8 @@ class OTPConfirmFragment : Fragment() {
         })
 
 
-        if(mListener.getPrefillOtpIfany()!=null){
-            edtOTP.setText(mListener.getPrefillOtpIfany())
+        if(mListener?.getPrefillOtpIfany()!=null){
+            edtOTP.setText(mListener?.getPrefillOtpIfany())
             edtOTP.setSelection(edtOTP.text.length)
         }else{
             showCountDownPopup()
@@ -160,7 +160,7 @@ class OTPConfirmFragment : Fragment() {
                     if (purpose == AppConstants.OperationType.CALL) {
 
                     } else if (purpose == AppConstants.OperationType.ENTER_OTP) {
-
+                       mListener?.registerForSmsReceiver(false);
                     }
                 })
 
@@ -168,7 +168,7 @@ class OTPConfirmFragment : Fragment() {
         otpDialog?.show()
 
 
-        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
+        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 30 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
             override fun updateCounterView(text: String?, width: Double) {
                 otpDialog?.updateCounterView(text, width)
             }

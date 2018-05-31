@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.driver_splash_activity.*
 import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
+import java.util.regex.Pattern
+
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -28,7 +30,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     private val TAG = SplashFragment::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
-    private  var otpDetectedViaSms :String? = null;
+    private var otpDetectedViaSms :String? = null;
+    private var otpLength:Int = 4;
 
 
     private var otpBroadCastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -108,7 +111,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (otpFragment != null) {
             otpFragment = otpFragment as OTPConfirmFragment;
             if (otpFragment.isWaitingForOTPDetection()) {
-                registerForSmsReceiver()
+                registerForSmsReceiver(true)
 
             }
 
@@ -124,7 +127,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             e.printStackTrace()
         }
         Database2.getInstance(this).close()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(otpBroadCastReceiver)
+        registerForSmsReceiver(false);
 
     }
 
@@ -152,7 +155,12 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     }
 
-    fun addLoginViaOTPScreen(phone: String, countryCode: String, missedCallNumber: String?) {
+    fun addLoginViaOTPScreen(phone: String, countryCode: String, missedCallNumber: String?, otpLength:Int?) {
+
+
+        if(otpLength!=null){
+            this.otpLength = otpLength;
+        }
 
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, OTPConfirmFragment.newInstance(phone, countryCode, missedCallNumber), OTPConfirmFragment::class.simpleName)
@@ -186,9 +194,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         addPhoneNumberScreen(enableSharedTransition, sharedView)
     }
 
-    override fun registerForSmsReceiver() {
-        otpDetectedViaSms=null;
-        LocalBroadcastManager.getInstance(this).registerReceiver(otpBroadCastReceiver, IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
+    override fun registerForSmsReceiver(register: Boolean) {
+        if(register){
+            otpDetectedViaSms=null;
+            LocalBroadcastManager.getInstance(this).registerReceiver(otpBroadCastReceiver, IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
+
+        }else{
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(otpBroadCastReceiver)
+        }
 
     }
 
@@ -265,21 +278,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     //Using Rx
     public fun retrieveOTPFromSMS(intent: Intent) {
         try {
-            var otp = ""
             if (intent.hasExtra("message")) {
-                val message = intent.getStringExtra("message")
+                var otp:String? = null ;
 
-                if (message.toLowerCase().contains("paytm")) {
-                    otp = message.split("\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0]
-                } else {
-                    val arr = message.split("and\\ it\\ is\\ valid\\ till\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    val arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    otp = arr2[1]
-                    otp = otp.replace("\\ ".toRegex(), "")
+                val message = intent.getStringExtra("message")
+                val pattern = Pattern.compile("\\b\\d{$otpLength}\\b")
+                val matcher = pattern.matcher(message)
+                if (matcher.find()) {
+                    otp = matcher.group(0)
                 }
-            }
-            if (Utils.checkIfOnlyDigits(otp)) {
-                if (!"".equals(otp, ignoreCase = true)) {
+
+
+                if(otp!=null){
 
                     otpDetectedViaSms = otp;
 
@@ -290,10 +300,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
                     }
 
-
-
                 }
+                registerForSmsReceiver(false);
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }

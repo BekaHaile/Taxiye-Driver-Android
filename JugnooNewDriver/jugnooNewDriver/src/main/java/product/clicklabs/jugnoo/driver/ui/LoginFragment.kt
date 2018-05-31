@@ -115,7 +115,7 @@ class LoginFragment : Fragment() {
 
                 }
 
-                mListener?.registerForSmsReceiver();
+                mListener?.registerForSmsReceiver(true);
                 Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
 
                 val params = HashMap<String, String>()
@@ -149,7 +149,7 @@ class LoginFragment : Fragment() {
 
                     override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                         if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber)
+                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber,t?.otpLength)
                         } else {
                             DialogPopup.alertPopup(activity, "", message)
                         }
