@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.squareup.picasso.Picasso
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
@@ -56,6 +57,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             holder.ivVehicle.setImageResource(imageRes)
         }
         holder.ivVehicleTick.setImageResource(if (vehicle.isSelected) R.drawable.ic_tick_green_20 else R.drawable.circle_grey_stroke_theme)
+        holder.tvName.setText(vehicle.vehicleName)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolderVehicle {
@@ -66,6 +68,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     inner class ViewHolderVehicle(convertView: View, itemListener: ItemListener) : RecyclerView.ViewHolder(convertView) {
         var clRoot: ConstraintLayout = convertView.findViewById(R.id.clRoot) as ConstraintLayout
         var ivVehicle: ImageView = convertView.findViewById(R.id.ivVehicle) as ImageView
+        var tvName: TextView = convertView.findViewById(R.id.tvName) as TextView
         var ivVehicleTick: ImageView = convertView.findViewById(R.id.ivVehicleTick) as ImageView
 
 
