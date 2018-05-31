@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -350,6 +351,7 @@ class SplashFragment : Fragment() {
     }
 
     override fun onDestroy() {
+
         if (!compositeDisposable.isDisposed){
             disposable?.dispose()
         }
@@ -360,6 +362,19 @@ class SplashFragment : Fragment() {
             Log.d(TAG, "onDestroy: ${e.message}")
         }
         super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+
+        val w = activity.getWindow()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+
+        super.onDestroyView()
     }
 
 }

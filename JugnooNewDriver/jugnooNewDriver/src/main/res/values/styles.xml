@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -76,8 +76,9 @@
     </style>
 
     <style name="SplashTheme" parent="AppBaseTheme">
-        <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowBackground">@drawable/app_startup_bg</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
     </style>
 
 
