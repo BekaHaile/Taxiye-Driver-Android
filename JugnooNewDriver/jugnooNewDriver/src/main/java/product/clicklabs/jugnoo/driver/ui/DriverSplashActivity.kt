@@ -133,20 +133,20 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             try {
 
                 supportFragmentManager.inTransactionWithSharedTransition(view, {
-                    setAllowOptimization(true)
+                    setReorderingAllowed(true)
                             .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
                 })
 
             } catch (e: Exception) {
 
                 supportFragmentManager.inTransactionWithAnimation {
-                    setAllowOptimization(true)
+                    setReorderingAllowed(true)
                             .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
                 }
             }
         } else {
             supportFragmentManager.inTransactionWithAnimation {
-                setAllowOptimization(true)
+                setReorderingAllowed(true)
                         .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
             }
         }

@@ -10,7 +10,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +26,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.synthetic.main.activity_notification_center.*
 import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
@@ -87,11 +90,48 @@ class SplashFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = container?.inflate(R.layout.frag_splash)
+        return container?.inflate(R.layout.frag_splash)
+    }
 
-        //todo Snackbar for no internet
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        checkForInternet(view!!.root)
+    }
+
+    private fun checkForInternet(rootView: View) {
+
+        parentActivity.withNetwork( { start() }, false, {
+            // remove on screen navigation flags to display the snackbar above them
+            removeNavigationFlags()
+
+            val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
+                    .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
+
+            snackBar.setAction("Retry", {
+
+                // add on screen navigation translucent flags for smooth image shared animation
+                addNavigationFlags()
+                snackBar.dismiss()
+                checkForInternet(rootView)
+            })
+            snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
+            snackBar.show()
+
+        })
+    }
+
+
+    private fun start() {
+
+        val w = activity.getWindow()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
+
         checkForBatteryOptimisation()
-
 
         compositeDisposable.add(deviceTokenObservable
                 .timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
@@ -100,8 +140,6 @@ class SplashFragment : Fragment() {
                     pushAPIs(this@SplashFragment.activity)
                     LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
                 }))
-
-        return rootView
     }
 
     private fun isMockLocationEnabled():Boolean{
@@ -365,16 +403,33 @@ class SplashFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        removeNavigationFlags()
+        super.onDestroyView()
+    }
+
+
+    /**
+     * add the translucent flags on the onscreen navigation bar for kikat above devices
+     */
+    private fun addNavigationFlags() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val w = activity.getWindow()
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
+    /**
+     * removes the translucent flags on the onscreen navigation bar for kikat above devices
+     */
+    private fun removeNavigationFlags() {
 
         val w = activity.getWindow()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
             w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-
-
-        super.onDestroyView()
     }
 
 }

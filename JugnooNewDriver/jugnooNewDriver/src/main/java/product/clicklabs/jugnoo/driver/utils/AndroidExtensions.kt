@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
 
 // ========================= VIEW VISIBILITY =========================
@@ -66,3 +67,14 @@ inline fun FragmentManager.inTransactionWithAnimation(func: FragmentTransaction.
 }
 
 infix fun Int.with(x: Int) = this.or(x)
+
+
+// ========================= NETWORK CHECK =========================
+
+fun Activity.withNetwork(block: () -> Unit, showDialog: Boolean = true, notConnected: () -> Unit = {} ) {
+    if (AppStatus.getInstance(this).isOnline(this)) block.invoke()
+    else {
+        if (showDialog) DialogPopup.alertPopup(this, "", Data.CHECK_INTERNET_MSG)
+        notConnected.invoke()
+    }
+}
