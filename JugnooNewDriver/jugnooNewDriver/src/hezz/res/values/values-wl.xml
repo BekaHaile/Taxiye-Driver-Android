@@ -65,7 +65,6 @@
 
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
-    <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 

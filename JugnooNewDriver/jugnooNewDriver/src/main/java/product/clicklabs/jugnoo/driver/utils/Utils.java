@@ -718,7 +718,8 @@ public class Utils {
 
     public static void openNavigationIntent(Context context, LatLng latLng) {
         try {
-            if (context.getResources().getBoolean(R.bool.waze_navigation_enabled)) {
+            if (Prefs.with(context).getInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS)
+                    == Constants.NAVIGATION_TYPE_WAZE) {
                 try {
                     if (isAppInstalled("com.waze", context.getPackageManager())) {
                         // Launch Waze to navigate:
