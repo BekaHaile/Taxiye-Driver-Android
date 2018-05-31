@@ -2,15 +2,12 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.v4.app.Fragment
-import android.support.v4.content.LocalBroadcastManager
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -49,7 +46,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var edtOTP: EditText
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
-    private var mListener: SplashFragment.InteractionListener?=null
+    private lateinit var mListener: SplashFragment.InteractionListener
 
     companion object {
 
@@ -144,7 +141,7 @@ class OTPConfirmFragment : Fragment() {
         })
 
 
-        if(mListener?.getPrefillOtpIfany()!=null){
+        if(mListener.getPrefillOtpIfany()!=null){
             edtOTP.setText(mListener.getPrefillOtpIfany())
             edtOTP.setSelection(edtOTP.text.length)
         }else{
