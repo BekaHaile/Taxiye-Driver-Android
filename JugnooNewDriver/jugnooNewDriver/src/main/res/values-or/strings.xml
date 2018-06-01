@@ -397,7 +397,7 @@
     <string name="add_image">ଛବି ଯୋଡନ୍ତୁ</string>
     <string name="Submit">ଜମା କରନ୍ତୁ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
-    <string name="applicable_after">%1$s କି.ମି. ପରେ ଲାଗୁ</string>
+    <string name="applicable_after">%1$s ପରେ ଲାଗୁ</string>
 
     <string name="rejection_reason">ରିଜେକ୍ଟ କରିବାର କାରଣ</string>
     <string name="mandatory">ବାଧ୍ୟତା ମୁଳକ</string>

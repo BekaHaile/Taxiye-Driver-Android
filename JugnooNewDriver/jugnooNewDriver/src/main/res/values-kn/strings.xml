@@ -427,7 +427,7 @@
     <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
     <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
     <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
-    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
+    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s</string>
     <string name="per_km">(ಪ್ರತಿ km ಗೆ )</string>
 
     <string name="Yesterday">ನಿನ್ನೆ</string>

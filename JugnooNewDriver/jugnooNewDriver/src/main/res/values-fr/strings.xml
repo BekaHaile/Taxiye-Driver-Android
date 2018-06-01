@@ -1071,7 +1071,7 @@
 
 <string name="rate_card">Carte de débit</string>
 
-<string name="applicable_after">Applicable après %1$s Kilomètre</string>
+<string name="applicable_after">Applicable après %1$s</string>
 
 <string name="per_km">(par kilomètre)</string>
 
@@ -1097,7 +1097,7 @@
 
 <string name="last_trip_earning">Les gains du dernier trajet</string>
 
-<string name="diffrential_pricing_rate">Après %1$sKilomètre, frais de distance sera %2$s/Kilomètre </string>
+<string name="diffrential_pricing_rate">Après %1$s, frais de distance sera %2$s</string>
 
 <string name="payment_sent">Paiement envoyé</string>
 

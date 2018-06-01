@@ -398,7 +398,7 @@
     <string name="add_image">ചിത്രം ചേർക്കാൻ</string>
     <string name="Submit">സമർപ്പിക്കുക</string>
     <string name="approval_pending">അംഗീകാരം തീർച്ചപ്പെടുത്തിയില്ല</string>
-    <string name="applicable_after">వర్తించే తర్వాత %1$s  కి.మీ</string>
+    <string name="applicable_after">వర్తించే తర్వాత %1$s</string>
 
     <string name="rejection_reason">നിരസിക്കാനുള്ള കാരണം</string>
     <string name="mandatory">നിർബന്ധമായി ചെയ്യേണ്ടത്</string>

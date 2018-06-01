@@ -457,7 +457,7 @@
 	<string name="driver_to_customer">ड्राइवर टू कस्टमर</string>
 	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
 	<string name="rate_card">रेट कार्ड</string>
-	<string name="applicable_after"> %1$s कि.मी. के बाद लागू </string>
+	<string name="applicable_after"> %1$s के बाद लागू </string>
 	<string name="distance_per_km">दूरी\n(प्रति मिनट)</string>
 	<string name="per_km">(प्रति कि.मी.)</string>
 	<string name="delivery_off">डिलिवरी बंद है</string>

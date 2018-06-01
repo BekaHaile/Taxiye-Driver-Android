@@ -400,7 +400,7 @@
     <string name="Submit">জমা</string>
     <string name="approval_pending">অনুমোদন পেন্দিং</string>
 
-    <string name="applicable_after">%1$s কি: মি: পিছত প্রযোজ্য হব</string>
+    <string name="applicable_after">%1$s পিছত প্রযোজ্য হব</string>
 
     <string name="rejection_reason">খাৰিজ হোৱা কাৰণ</string>
     <string name="mandatory">কার্যভাৰ</string>
