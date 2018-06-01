@@ -1838,7 +1838,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 						dialog.dismiss();
 						Intent intent = new Intent(Intent.ACTION_VIEW);
 						if("".equalsIgnoreCase(link)) {
-							intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
+							intent.setData(Uri.parse("market://details?id="+BuildConfig.APPLICATION_ID));
 						} else {
 							intent.setData(Uri.parse(link));
 						}
