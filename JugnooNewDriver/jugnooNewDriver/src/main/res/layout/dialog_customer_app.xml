@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rv"
     android:layout_width="720px"
     android:layout_height="1134px"
@@ -13,7 +13,8 @@
         android:layout_gravity="center"
         android:layout_margin="30px"
         android:background="@drawable/dialog_background_color"
-        android:splitMotionEvents="false" >
+        android:splitMotionEvents="false"
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:id="@+id/rl1"
@@ -30,8 +31,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/update"
                 android:textColor="@color/new_orange"
                 android:textSize="50px" />
@@ -45,8 +46,8 @@
                 android:gravity="center"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="ands"
                 android:textColor="@color/black"
                 android:textSize="34px" />
@@ -70,4 +71,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

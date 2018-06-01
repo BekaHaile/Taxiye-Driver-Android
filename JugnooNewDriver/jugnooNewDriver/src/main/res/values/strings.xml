@@ -3,10 +3,7 @@
     <!ENTITY appname "Jugnoo">
     ]>
 <resources>
-    <string name="app_name">&appname;
-        Drivers</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">&appname; Drivers</string>
 
 
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
@@ -18,11 +15,6 @@
 
 
     <!-- <string name="fb_app_id">782131025144439</string> -->
-    <string name="fb_app_id">782131025144439</string>
-
-
-    <string name="language_english_text">English</string>
-    <string name="language_hindi_text">हिंदी</string>
 
 
     <string name="rupee">\u20B9</string>
@@ -36,28 +28,18 @@
 
     <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
-    <string name="about_1_text">&appname;
-        helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
-    <string name="about_2_text">Rate card</string>
-
     <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
     <string name="email_id">Email ID</string>
     <string name="confirm_email_id">Confirm Email ID</string>
     <string name="password">Password</string>
-    <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_up">Sign Up</string>
     <string name="or">OR</string>
-    <string name="sign_in_with_facebook">Sign in with Facebook</string>
 
-    <string name="save_to_favorite">Save To Favorite</string>
-    <string name="enter_name_for_favorite">Enter Name for Favorite</string>
     <string name="ok">OK</string>
 
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="confirm_password">Confirm Password</string>
 
@@ -65,47 +47,30 @@
     <string name="check_your_registered_email_phone_number_for_otp">Check your registered email/phone number for OTP</string>
     <string name="enter_code">Enter Code</string>
     <string name="done">Done</string>
-    <string name="amount">Amount</string>
-
-    <string name="no_driver_available">No Driver Available</string>
-    <string name="no_driver_available_message">Currently there are no drivers available nearby within 3km. We will look into it</string>
 
     <string name="logout">Logout</string>
-    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
     <string name="cancel">Cancel</string>
     <string name="retry">Retry</string>
 
     <string name="select_language">Select Language</string>
     <string name="enter_phone_number">Enter Phone No.</string>
-    <string name="enter_email">Enter Email</string>
-
-    <string name="send_email">Send Email</string>
-    <string name="favorites">Favorites</string>
-    <string name="no_favorite_locations_added">No favorite locations added.</string>
 
     <string name="from">From: </string>
     <string name="to">To: </string>
     <string name="rides">Rides</string>
     <string name="no_rides_currently">No rides currently</string>
 
-    <string name="history">History</string>
     <string name="missed">Missed</string>
     <string name="no_missed_rides_currently">No missed rides currently.</string>
     <string name="update">Update</string>
 
     <string name="driver_mode">Driver Mode</string>
-    <string name="jugnoo_on">&appname;
-        ON</string>
+    <string name="jugnoo_on">&appname; ON</string>
     <string name="driver_type">Driver Type</string>
     <string name="ride_type">Ride Type</string>
-    <string name="invite_friends">Invite Friends</string>
-    <string name="about">About</string>
     <string name="support">Support</string>
-    <string name="sos">SOS</string>
     <string name="language_preferences">Language Preferences</string>
 
-    <string name="ride_in_progress">Ride in progress...</string>
-    <string name="click_to_view">Click to view</string>
     <string name="start_ride">Start Ride</string>
     <string name="end_ride">End Ride</string>
 
@@ -114,43 +79,18 @@
     <string name="wait_time">WAIT TIME</string>
     <string name="fare">Fare</string>
 
-    <string name="driver_rating">Driver Rating</string>
-    <string name="customer_rating">Customer Rating</string>
-    <string name="request_ride">Request Ride</string>
-    <string name="assigning_driver">Assigning driver...</string>
-
-    <string name="no_drivers_nearby">No drivers nearby.</string>
-    <string name="could_not_find_nearest_driver_distance">Could not find nearest driver\'s distance.</string>
-    <string name="nearest_driver_is">Nearest driver is</string>
-    <string name="away">away.</string>
-
-    <string name="cancel_request_in">Cancel request in </string>
-    <string name="your_ride_is">Your ride is </string>
-    <string name="away_and_will_arrive"> away and will arrive in approximately </string>
-    <string name="will_arrive_in">Will arrive in </string>
-
-    <string name="call_driver">Call Driver</string>
-    <string name="you_have">You have </string>
-    <string name="ride_request"> ride request</string>
-
     <string name="accept_ride">Accept Ride</string>
-    <string name="cancel_request">Cancel Request</string>
     <string name="cancel_ride">Cancel Ride</string>
 
 
-    <string name="rating"> Rating</string>
     <string name="call">Call</string>
     <string name="ride_time">RIDE TIME</string>
 
-    <string name="start_wait">Start wait</string>
-    <string name="stop_wait">Stop wait</string>
     <string name="submit">SUBMIT</string>
-    <string name="search_results">Search results</string>
     <string name="search">Search</string>
 
     <string name="your_login_session_expired">Your Login session has expired. Please login again.</string>
     <string name="alert">Alert</string>
-    <string name="start_ride_error">You must be present near the customer pickup location to start ride.</string>
 
 
     <string name="server_error">Server error. Please try again later.</string>
@@ -166,7 +106,6 @@
     <string name="rides_taken">Rides Taken</string>
     <string name="rides_missed">Rides Missed</string>
     <string name="rides_cancelled">Rides Cancelled</string>
-    <string name="ride_cancelled">Ride Cancelled</string>
     <string name="online_hours">Online Hours</string>
 
     <string name="Auto_not_working">Auto is not working</string>
@@ -176,30 +115,20 @@
     <string name="Not_able_to_contact_customer">Not able to contact customer</string>
     <string name="Customer_behavior">Customer\'s bad behavior</string>
     <string name="profile">PROFILE</string>
-    <string name="Duty_Hours">Duty Hours:</string>
     <string name="call_us">Call Us</string>
     <string name="auto_number">Auto number</string>
-    <string name="Choose_one">Choose one:</string>
-    <string name="is_rented">I have a rented auto.</string>
-    <string name="is_owned">I own my auto.</string>
 
-    <string name="Documents">Documents</string>
     <string name="Document_type">Document type</string>
     <string name="Requirement">Requirement</string>
     <string name="add_image">ADD IMAGE</string>
     <string name="Submit">Submit</string>
 
 
-    <string name="check_all">Check All</string>
-    <string name="uncheck_all">Uncheck All</string>
-    <string name="add_cash">ADD CASH</string>
-    <string name="add_customer_cash">ADD CUSTOMER CASH</string>
     <string name="arrived">Arrived</string>
     <string name="accept_subsidy">Accept Subsidy</string>
     <string name="account">Account</string>
     <string name="accept">ACCEPT</string>
     <string name="away_from_you">Away from you:</string>
-    <string name="cancel_ride_text">Are you sure you want to cancel ride?</string>
     <string name="end_ride_text">Are you sure you want to end ride?</string>
     <string name="logout_text">Are you sure you want to logout?</string>
     <string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
@@ -211,12 +140,9 @@
     <string name="back">Back</string>
 
     <string name="change_phone_no_text">Changed Phone number is same as the previous one.</string>
-    <string name="local_positon_text">Could not get local position</string>
-    <string name="overall_position_text">Could not get overall position</string>
-    <string name="convenience_charges_text">Convenience charges for customer: </string>
     <string name="code_empty">Code can\'t be empty</string>
     <string name="confirm_email_text">Confirm email id doesn\'t match</string>
-    <string name="choose_email_client">Choose an Email app:</string>
+    <string name="choose_email_client">Choose an Email client:</string>
     <string name="select_time_error_text">Cannot select time before current time</string>
     <string name="call_me">CALL ME</string>
     <string name="change_phone_no">CHANGE PHONE NUMBER</string>
@@ -228,19 +154,13 @@
     <string name="km">Km</string>
     <string name="disable_mock_location">Disable mock location first</string>
     <string name="daily">Daily</string>
-    <string name="distance2">Distance:\n</string>
-    <string name="discount">Discount</string>
 
     <string name="enter_new_phone_no">Enter New Phone Number</string>
     <string name="enter_fare">ENTER FARE</string>
     <string name="enter_otp">ENTER OTP</string>
     <string name="email">Email:</string>
 
-    <string name="fare1">Fare :</string>
     <string name="forgot_password_cap">FORGOT PASSWORD</string>
-    <string name="free_ride">FREE RIDE</string>
-    <string name="final_amount">Final Amount</string>
-    <string name="fare2">Fare:\n</string>
     <string name="fare_details">Fare Details</string>
 
     <string name="go_to_setting">Go to Settings</string>
@@ -248,15 +168,12 @@
     <string name="google_pay_service_error_message">Google Play services not found or outdated. Please install Google Play Services?</string>
     <string name="go_to_playstore">Go to Play Store:</string>
 
-    <string name="help">Help</string>
     <string name="have_arrived">Have you arrived?</string>
 
     <string name="invite_earn">Invite &amp; Earn</string>
     <string name="create_new_account_msg">If you would still like to create a new account</string>
     <string name="not_recived_otp">I didn\'t receive the OTP</string>
 
-    <string name="jugnoo_cash">&appname;
-        Cash</string>
     <string name="jugnoo">&appname;</string>
     <string name="jugnoo_off">&appname;
         OFF</string>
@@ -264,7 +181,6 @@
         Cut</string>
 
     <string name="loading">Loading ...</string>
-    <string name="local_position">Local position</string>
     <string name="location_setting">Location Settings</string>
     <string name="location_setting_enable_message">Location is not enabled. Do you want to enable it from settings menu?</string>
     <string name="luggage_charge">Luggage Charge</string>
@@ -273,7 +189,7 @@
     <string name="restart_phone">Please Restart Your Phone</string>
     <string name="min_fare">Min Fare</string>
     <string name="meals_on">Meals ON</string>
-    <string name="mail_us">Mail us</string>
+    <string name="mail_us">MAIL US</string>
     <string name="message">MESSAGE</string>
 
     <string name="no">No</string>
@@ -283,45 +199,31 @@
     <string name="no_lugage">NO LUGGAGE</string>
     <string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using &appname;.</string>
     <string name="no_data_to_show">No data to show</string>
-    <string name="no_cash">NO CASH</string>
     <string name="no_of_rides">No. of rides</string>
     <string name="name">Name</string>
     <string name="name_colon">Name:</string>
-    <string name="overall_position">Overall position</string>
 
-    <string name="some_amount">Please enter some amount</string>
-    <string name="less_amount">Please enter less amount</string>
-    <string name="valid_amount">Please enter valid amount</string>
     <string name="Phone_number_not_empty">Phone number can\'t be empty</string>
     <string name="valid_phone_number">Please enter valid phone number</string>
     <string name="please_wait">Please Wait ...</string>
     <string name="enter_some_fare">Please enter some fare</string>
-    <string name="please_reach">Please reach </string>
-    <string name="by">by</string>
-    <string name="take_fare_from_customer">Please take the fare as shown above from the customer.</string>
     <string name="enter_name">Please enter name</string>
     <string name="Pls_enter_email_or_phn">Please enter email or Phone No.</string>
     <string name="Pls_enter_email">Please enter Email</string>
-    <string name="confirm_email">Please confirm email id</string>
-    <string name="pls_enter_phone_number">Please enter Phone No.</string>
 
     <string name="enter_valid_phone_number">Please enter valid Phone No.</string>
     <string name="enter_password">Please enter password</string>
-    <string name="pls_confirm_password">Please confirm password</string>
     <string name="password_atleast_6">Password must be of atleast six characters</string>
     <string name="valid_email">Please enter valid email id</string>
     <string name="password_not_match">Passwords do not match</string>
     <string name="password_to_continue">Please enter password to continue.</string>
     <string name="enter_new_phone_number">Please enter your new phone number</string>
     <string name="position">POSITION</string>
-    <string name="enter_phone_to_have_instruction">Please provide your Phone No. to get instructions for resetting your password.</string>
-    <string name="pay">Pay</string>
     <string name="please_login_from_these_accounts">Please login through one of these accounts</string>
     <string name="please_contact_customer_care">Please contact our customer care</string>
     <string name="paid_cash">Paid in Cash</string>
 
     <string name="ride_id">Ride ID</string>
-    <string name="ride_time2">Ride Time: </string>
     <string name="rate">Rate: </string>
     <string name="ride_in_progress_cant_logout">Ride in progress. You can logout only after the ride ends.</string>
     <string name="rate_applied">Rate Applied</string>
@@ -331,8 +233,6 @@
     <string name="ride_details">RIDE DETAILS</string>
     <string name="ride_fare">Ride Fare</string>
 
-    <string name="can_not_calculated_distance">Sorry, we could not calculate your distance right now</string>
-    <string name="set">SET</string>
     <string name="SUBMIT">SUBMIT</string>
     <string name="super_driver">Super Drivers</string>
     <string name="sharing_rides">Sharing Rides</string>
@@ -345,13 +245,9 @@
     <string name="min">min</string>
     <string name="app_need_active_gps">The app needs active GPS connection. Enable it from Settings.</string>
     <string name="app_needs_network_time">The app needs Network Provided Time to be enabled. Enable it from Settings.</string>
-    <string name="take">Take</string>
-    <string name="req_accepted_by_other_driver">This request has been accepted by other driver</string>
     <string name="amount_entered">The amount entered is</string>
     <string name="time">Time</string>
-    <string name="time_new">Time /n</string>
-    <string name="jugnoo_ride_over">&appname;
-        ride over</string>
+    <string name="jugnoo_ride_over">&appname; ride over</string>
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="title">Title</string>
@@ -365,13 +261,9 @@
 
     <string name="waiting_for_location">Waiting for location...</string>
     <string name="wait">Wait</string>
-    <string name="whatsapp_not_installed">WhatsApp not Installed</string>
     <string name="weekly">Weekly</string>
     <string name="will_revert_you">We will revert to you soon</string>
 
-    <string name="your_position">Your Position in</string>
-    <string name="your_overall_position">Your Overall Position</string>
-    <string name="got_new_request">You have got a new request.</string>
     <string name="present_near_customer_location">You must be present near the customer pickup location to mark ride arrived.</string>
     <string name="present_near_customer_location_to_start">You must be present near the customer pickup location to start ride.</string>
     <string name="You_have_already_created">You have already created %1$d accounts from this device. Please explain the reason for creating a new account.</string>
@@ -379,41 +271,29 @@
 
     <string name="tap_to_retry">Tap to retry</string>
     <string name="error_occured_tap_to_retry">Some error occurred. Tap to retry</string>
-    <string name="no_missed_rides">No missed rides currently</string>
     <string name="no_internet_tap_to_retry">No Internet connection. Tap to retry</string>
     <string name="no_rides">No rides currently</string>
     <string name="pickup_location">Your Pickup Location</string>
     <string name="money_to">Money to &appname;</string>
     <string name="start_ride_loc">start ride location</string>
 
-    <string name="sec_left">sec left</string>
     <string name="km_away">km away</string>
     <string name="m_away">m away</string>
     <string name="some_error_occured">Some error has occurred</string>
     <string name="take_cash">Take Cash </string>
-    <string name="wallet">Wallet</string>
-    <string name="Scheduled_Ride_Pickup">Scheduled Ride Pickup: </string>
 
 
-    <string name="referral_msg">"Use my code %1$s to download &appname;
-        customer App and earn &appname;
-        cash.\n Download it from here\nhttp://smarturl.it/&appname;</string>
     <string name="no_of_account">accounts have already been created on this device</string>
     <string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
     <string name="select_reason">Please select one reason</string>
     <string name="referral_money">Referral Money</string>
     <string name="send">भेजें</string>
 
-    <string name="wait_here">Wait here...</string>
-    <string name="use_jugnoo_fare">USE &appname;
-        FARE</string>
-    <string name="view_account">View Account</string>
     <string name="hint_created_multiple_account">You have already created 2 accounts from this device. Please explain the reason for creating a new account.</string>
     <string name="convenience_charge">Convenience Charge</string>
     <string name="cancel_subsidy">Cancel Subsidy</string>
 
     <string name="inc_subsidy">(inc. Subsidy)</string>
-    <string name="to_end">To: </string>
     <string name="Edit_profile"><u>Edit Profile</u></string>
     <string name="info">Personal Info</string>
     <string name="local_leaderboard">LOCAL</string>
@@ -427,18 +307,13 @@
     <string name="number_of_first_rides">Number of First Rides Taken</string>
     <string name="money_earned">Money Earned from Referrals</string>
     <string name="data_effective_format">*Data effective from </string>
-    <string name="notifications">Notification Center</string>
-    <string name="click_for_direction">Click here for Directions</string>
     <string name="time_left">Time left :</string>
     <string name="enter_phone_no_to_reset_password">Enter your registered phone number for resetting your password.</string>
-    <string name="customer_phone_number">Customer Phone Number</string>
-    <string name="recharge_amount">Amount to be Recharged</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="paytm_recharge">Paytm Recharge</string>
     <string name="Confirm">Confirm</string>
     <string name="Paytm_recharge">Paytm Recharge</string>
     <string name="phone_number_or_email">Phone No. or Email</string>
-    <string name="nl_otp_waiting_to_detect_otp">Waiting to Automatically detect OTP</string>
     <string name="battery_low_message">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
     <string name="destination">DESTINATIONS</string>
     <string name="destination_selection">Please select destination where you can go right now</string>
@@ -448,16 +323,12 @@
     <string name="no_current_notification">No Current Notification</string>
     <string name="phone">Phone :</string>
     <string name="GENERATE_OTP">Generate OTP</string>
-    <string name="otp">OTP</string>
     <string name="signin_via_otp">Sign in via OTP</string>
     <string name="Neutral">Neutral</string>
     <string name="terms">Terms</string>
-    <string name="Payments">Payments</string>
     <string name="Today">Today</string>
     <string name="Last_week">Last Week</string>
     <string name="Last_month">Last Month</string>
-    <string name="upcoming_invoice">Upcoming Invoice</string>
-    <string name="current_invoice">Current Invoice</string>
     <string name="Outstanding_amnt">Previous invoice adjustments</string>
     <string name="jugnoo_cmsn">&appname;
         Commission</string>
@@ -468,10 +339,6 @@
     <string name="paid_by_customer">Paid In Cash</string>
     <string name="paid_using_wallet">Paid Using Wallet</string>
     <string name="acc_credited">Account Credited</string>
-    <string name="last_invoice">Last Invoice</string>
-    <string name="last_invoice_details">Last Payment On :</string>
-    <string name="last_payments">Last Payments</string>
-    <string name="upcoming_payment_due_date">Upcoming Payment On :</string>
     <string name="cash_via_paytm">Cash Via Paytm</string>
     <string name="bank_details">Bank Details</string>
     <string name="acc_no">Acc No. :</string>
@@ -503,11 +370,10 @@
     <string name="changed_no_same_as_previous">Changed phone number is same as the previous one
 	</string>
     <string name="sharing_payment_recieved">Sharing payment recieved for Phone</string>
-    <string name="please_give_customer">We take your feedback seriously. Please give us a rating
-	</string>
     <string name="start_loc">Start Location</string>
     <string name="driver_loc">Driver Location</string>
     <string name="customer_2">Customer 2</string>
+    <string name="kms">Kms</string>
     <string name="mark_delivered">Mark Delivered</string>
     <string name="order_id">Order ID</string>
     <string name="thanks_for_feedback">Thank you for your valuable feedback</string>
@@ -519,9 +385,7 @@
     <string name="valid_email_phone_no">Enter valid Email or Phone No.</string>
     <string name="select_destination">Please select atleast one Destination</string>
     <string name="JUGNOO">&appname;</string>
-    <string name="fatafat_on">Fatafat On</string>
     <string name="Notifications">Notifications</string>
-    <string name="PAYMENTS">Payments</string>
     <string name="enter_customer_phone_no">Enter Customer Phone No.</string>
     <string name="invoice_detail">INVOICE DETAILS</string>
     <string name="generated_on">Generated On:</string>
@@ -534,11 +398,9 @@
     <string name="return_reasons">Reasons of Return</string>
 
     <string name="accepted">Accepted</string>
-    <string name="in_ride">In Ride</string>
     <string name="arrive_at_pickup_location">Arrive at pickup location</string>
     <string name="make_delivery">Make Delivery</string>
 
-    <string name="collected">Collected</string>
     <string name="Returned">Returned</string>
     <string name="please_confirm_cash_taken">Please confirm you have taken cash</string>
     <string name="confirm">Confirm</string>
@@ -547,8 +409,6 @@
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
     <string name="current">Current</string>
-    <string name="to_no_colon">To</string>
-    <string name="address">Address</string>
     <string name="get_directions">Get Directions</string>
     <string name="delivered">Delivered</string>
     <string name="delivery_on">Delivery ON</string>
@@ -558,10 +418,7 @@
     <string name="rate_your_vendor">Rate Your Merchant</string>
     <string name="view_orders">View Orders</string>
     <string name="delivery_numbers">No. of Deliveries :</string>
-    <string name="approx">(Approx)</string>
     <string name="start_the_delivery">Start the Delivery</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
     <string name="returned">Returned</string>
     <string name="start_delivery_text">Are you sure you want to start Delivery?</string>
     <string name="delivery_id">Order ID</string>
@@ -573,28 +430,15 @@
     <string name="delivery_completed">Delivery Completed</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
 
-    <string name="miss_call_otp">GIVE A MISSED CALL</string>
     <string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
 		identity
 	</string>
     <string name="give_misscall_to_verify">Give Missed Call To Verify</string>
-    <string name="please_press_here">Please Press Here</string>
-    <string name="no_deliveries_pending">No deliveries pending</string>
-    <string name="no_deliveries_completed">No deliveries completed</string>
     <string name="cash_collected">Cash Collected</string>
-    <string name="s_no">S No.</string>
-    <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
     <string name="details">Details</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
     <string name="success">SUCCESS</string>
     <string name="vehicle_status">Vehicle Status</string>
-    <string name="owner">Owner</string>
     <string name="rented">Rented</string>
-    <string name="auto_driver_confirmation">Are you an auto driver?</string>
-    <string name="auto_status_confirmation">Do you have an auto ?</string>
     <string name="no_doc_available">No Documents Available</string>
     <string name="upload">Upload</string>
     <string name="mandatory">Mandatory</string>
@@ -604,7 +448,6 @@
     <string name="verified">Verified</string>
     <string name="approval_pending">Approval Pending</string>
     <string name="owned">Owned</string>
-    <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>
     <string name="outstanding_amount">Previous invoice adjustments</string>
     <string name="delivery_fare">Delivery Fare</string>
@@ -620,6 +463,7 @@
     <string name="referral_rate">REFERRAL</string>
     <string name="pickup_charges">Pickup Charges </string>
     <string name="base_fare">Base Fare</string>
+    <string name="distance_per_km">Distance\n(Per Km)</string>
     <string name="time_per_min">Time\n(per min)</string>
     <string name="per_min">(per min)</string>
     <string name="driver_to_customer">Driver to Customer</string>
@@ -634,18 +478,13 @@
     <string name="this_week">THIS WEEK</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
     <string name="upload_again">Upload Again</string>
-    <string name="self_enroled">Self Register</string>
     <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
-    <string name="estimated_payout">ESTIMATED PAYOUT</string>
     <string name="this_week_cap">THIS WEEK</string>
     <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">HIGH DEMAND AREAS</string>
     <string name="referral_code">Referral Code</string>
     <string name="i_accept">I accept <u>Terms &amp; Condition</u></string>
     <string name="select_tandc">Please select Terms and Conditions</string>
@@ -654,7 +493,6 @@
     <string name="select_valid_city">Please select valid City</string>
     <string name="self_audit">SELF AUDIT</string>
     <string name="front">Front</string>
-    <string name="add_photo">+ Add Photo</string>
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="Audit">AUDIT</string>
@@ -685,7 +523,6 @@
     <string name="image_upload_failed">Image uploading failed, please try again</string>
     <string name="audit_lower">Audit</string>
     <string name="deletion_confirmation">Are you sure you want to delete image ?</string>
-    <string name="estimated_payout_lower">Estimated Payout</string>
     <string name="bank_deposite">Bank Deposit</string>
     <string name="trips">TRIPS</string>
     <string name="home">Home</string>
@@ -715,8 +552,6 @@
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
-    <string name="Reason">Reason</string>
-    <string name="delivery_conf">Are you sure you want to Deliver ?</string>
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
@@ -726,17 +561,12 @@
     <string name="deposite_cash_1">Deposit cash</string>
     <string name="return_reasons_confirmation">Select a reason for failed Delivery</string>
     <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
     <string name="fail">Fail</string>
     <string name="chat">CHAT</string>
     <string name="required">required</string>
     <string name="login_here">Already have a driver account? <u>Login Here</u></string>
-    <string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
     <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-    <string name="driver">Driver</string>
     <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
-    <string name="spinner_owned">Owned</string>
-    <string name="spinner_rented">Rented</string>
     <string name="select">Select</string>
     <string name="select_customer">Select Customer</string>
     <string name="collect_cash">Collect Amount</string>
@@ -751,31 +581,25 @@
     <string name="i_accept_abv">ACCEPT T&amp;C</string>
     <string name="your_sig_here">YOUR SIGNATURE HERE</string>
     <string name="delivery_start">Delivery Start</string>
-    <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
-    <string name="reg_as_driver"><u>Register as a &appname;
-        DRIVER</u></string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as Driver</string>
     <string name="distance_lower">Distance</string>
     <string name="please_drop_customer_delivery">End %s\'s Delivery</string>
     <string name="please_start_customer_delivery">Start %s\'s Delivery</string>
     <string name="please_reach_customer_delivery">Pickup %s\'s Delivery</string>
-    <string name="select_merchant">Select Merchant</string>
     <string name="estimated_fare">Estimated Fare</string>
     <string name="provide_sign_msg">Please provide signature before submit</string>
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
     <string name="image">image</string>
-    <string name="tutorial_accept_ride">Turn &appname;
-        on to start accepting rides</string>
+    <string name="tutorial_accept_ride">Turn &appname; on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
     <string name="start_training">Start Training</string>
     <string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\nTap \'Accept\'.</string>
-    <string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
     <string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
     <string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
     <string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
@@ -786,9 +610,7 @@
     <string name="auto_detect_otp_failed">Automatic detection of OTP Failed.</string>
     <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
     <string name="tutorial_tap_yes">Tap \'YES\'</string>
-    <string name="arriving">Arriving</string>
     <string name="arrivingdot">Arriving...</string>
-    <string name="upload_later">Upload Later</string>
     <string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
     <string name="request_autos">Booking Request will be sent to you now.</string>
     <string name="later">Later</string>
@@ -799,8 +621,6 @@
     <string name="more">more</string>
     <string name="estimated_dis">Estimated Distance</string>
     <string name="cash_to_collected">Cash to be Collected</string>
-    <string name="return_amount">Returned Amount</string>
-    <string name="cash_required">Cash Required</string>
     <string name="pick_up">PICK - UP</string>
     <string name="you_have_arrived">You have Arrived</string>
     <string name="switchText">Switch</string>
@@ -815,24 +635,21 @@
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
     <string name="registered">Registered</string>
-    <string name="createdOnNew">Created On</string>
     <string name="updated_on">Updated On</string>
-    <string name="complain">Complain</string>
     <string name="settled">settled</string>
-    <string name="ended_on">Ended On</string>
     <string name="no_tickets">No complaints yet</string>
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
+    <string name="range_in_km">Range (In km)</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
+    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_km_wo_brack_format">PER %s</string>
     <string name="per_delivery">Per Delivery</string>
+    <string name="per_km_fare">Per km fare</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
-    <string name="un_loading">un loading</string>
-    <string name="un_loading_fare">un loading fare</string>
     <string name="loading_fare">loading fare</string>
-    <string name="pickup_distance_fare">pickup distance fare</string>
     <string name="range">Range</string>
     <string name="value">Value</string>
     <string name="no_rate_card_available">No Rate Card Available</string>
@@ -840,7 +657,6 @@
     <string name="loading_req">Loading Required</string>
     <string name="unloading_fare">Unloading Fare</string>
     <string name="super_biker">Super Biker</string>
-    <string name="needed">Needed</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
     <string name="keep_jugnoo_on">Keep your &appname;
@@ -854,8 +670,6 @@
     <string name="select_valid_offering">Please select valid Offering</string>
     <string name="wallet_title">Wallet Balance</string>
     <string name="how_to_recharge">How to Recharge</string>
-    <string name="recharge_new">2 ) Recharge Now</string>
-    <string name="visit_office">1 ) Visit Office</string>
     <string name="wallet_balance">Wallet Balance</string>
     <string name="low_balance">\n(Low Balance)</string>
     <string name="rupees_value_format">\u20B9%s</string>
@@ -864,10 +678,8 @@
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
-    <string name="office_address">Office Address</string>
     <string name="view_wallet_transactions">View Wallet Transactions</string>
     <string name="dont_touch_me">DontTouchMe</string>
-    <string name="get_support">Get Support</string>
     <string name="schedule_call_message">Press the below button to get support from &appname;. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
@@ -886,7 +698,6 @@
     <string name="label_total_savings">Total savings till now:</string>
     <string name="label_current_savings">Current savings till now:</string>
     <string name="label_active_plan">Active Plan</string>
-    <string name="label_current_outstanding">Current Outstanding:</string>
     <string name="label_available_plans">Available Plans</string>
     <string name="title_plans_screen">Ride Without Commission</string>
     <!--Strings for Subscription plans-->
@@ -895,7 +706,6 @@
     <string name="amount_collected">Amount Collected</string>
     <string name="days_left">Days Left</string>
     <string name="distance_covered">Distance Covered</string>
-    <string name="label_distance_details">Distance Details :</string>
     <string name="slots">ONLINE HOURS</string>
     <string name="hour">hour</string>
     <string name="hours">hours</string>

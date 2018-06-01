@@ -111,6 +111,10 @@ public class BaseFragmentActivity extends AppCompatActivity {
 			languageToLoad = "kn";
 		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
+		} else if (item.equalsIgnoreCase("french")) { // todo change keyName
+			languageToLoad = "fr";
+		} else if (item.equalsIgnoreCase("arabic")) {  // todo change keyName
+			languageToLoad = "ar";
 		} else {
 			languageToLoad = "en";
 //			return;

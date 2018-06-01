@@ -1,0 +1,2153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+																									
+<string name="app_name">Hezz Drivers</string>																									
+																									
+<string name="hello_world">Bonne route</string>																									
+																									
+<string name="action_settings">Paramètres</string>																									
+																									
+<!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->																									
+																									
+																									
+<!--<string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>-->																									
+																									
+																									
+<string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>																									
+																									
+<string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>																									
+																									
+<!-- <string name="fb_app_id">782131025144439</string> -->																									
+																									
+																									
+<string name="fb_app_id">782131025144439</string>																									
+																									
+<string name="language_english_text">Anglais</string>																									
+																									
+<string name="language_hindi_text">हिंदी</string>																									
+																									
+<string name="rupee">\u20B9</string>																									
+																									
+<string name="rupee_zero">\u20B9 0.0</string>																									
+																									
+<string name="rupee_100">\u20B9 100</string>																									
+																									
+<string name="rupee_200">\u20B9 200</string>																									
+																									
+<string name="rupee_500">\u20B9 500</string>																									
+																									
+<string name="rupee_zero_zero">\u20B9 0000.00</string>																									
+																									
+<!-- \Hezz Taxi est la meilleure façàn de se déplacer au Maroc.. -->																									
+																									
+																									
+<string name="about_1_text">Nos chauffeurs de taxis viennent vous récupérer ou vous êtes et vous dépose où vous voulez</string>																									
+																									
+<string name="about_2_text">Tarifs</string>																									
+																									
+<string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>																									
+																									
+<string name="email_id">Email</string>																									
+																									
+<string name="confirm_email_id">Confirmer l\'Email</string>
+
+<string name="password">Mot de passe</string>
+
+<string name="sign_in">S\'identifier</string>
+
+<string name="forgot_password">Mot de passe oublié? </string>
+
+<string name="sign_up">S\'inscrire</string>
+
+<string name="or">ou</string>
+
+<string name="sign_in_with_facebook">Utiliser Facebook</string>
+
+<string name="save_to_favorite">Sauvgarder dans les favoris</string>
+
+<string name="enter_name_for_favorite">Entrer un nom pour favoris</string>
+
+<string name="ok">OK</string>
+
+<string name="first_name">Prénom</string>
+
+<string name="last_name">Nom</string>
+
+<string name="phone_number">Numéro de Téléphone </string>
+
+<string name="confirm_password">Confirmer le mot de passe</string>
+
+<string name="confirmation_code">Confirmation du Code </string>
+
+<string name="check_your_registered_email_phone_number_for_otp">Merci de vérifier votre téléphone ou Email avec le code  OTP</string>
+
+<string name="enter_code">Enter le Code</string>
+
+<string name="done">Réussi</string>
+
+<string name="amount">Montant</string>
+
+<string name="no_driver_available">Aucun chauffeur n\'est disponible</string>
+
+<string name="no_driver_available_message">Aucun chauffeur n\'est disponible sur un rayon de 3Km . Nous sommes en train de vérifier </string>
+
+<string name="logout">Déconexion </string>
+
+<string name="are_you_sure_you_want_to_logout">Etes vous sure de vouloir vous déconnecter ? </string>
+
+<string name="cancel">Annuler</string>
+
+<string name="retry">Reessayer </string>
+
+<string name="select_language">Choisir une langue </string>
+
+<string name="enter_phone_number">Entrez votre numéro de téléphone .</string>
+
+<string name="enter_email">Renseigner vore Email</string>
+
+<string name="send_email">Envoyer un Email</string>
+
+<string name="favorites">Favoris</string>
+
+<string name="no_favorite_locations_added">Pas d\'adresses en Favoris .</string>
+
+<string name="from">De: </string>
+
+<string name="to">à </string>
+
+<string name="rides">Courses</string>
+
+<string name="no_rides_currently">Pas de courses pour l\'instant </string>
+
+<string name="history">Historique</string>
+
+<string name="missed">manqué?</string>
+
+<string name="no_missed_rides_currently">Aucune course manqué.</string>
+
+<string name="update"> Mise à jour </string>
+
+<string name="driver_mode">Mode Chauffeur </string>
+
+<string name="jugnoo_on">Hezz ON</string>
+
+<string name="driver_type">Type de chauffeur</string>
+
+<string name="ride_type">Type de course </string>
+
+<string name="invite_friends">Inviter des amis </string>
+
+<string name="about">A propos</string>
+
+<string name="support">Support</string>
+
+<string name="sos">SOS</string>
+
+<string name="language_preferences">Langue préférée</string>
+
+<string name="ride_in_progress">Course en cours</string>
+
+<string name="click_to_view">Cliquez pour voir </string>
+
+<string name="start_ride">Commencer la course</string>
+
+<string name="end_ride">Finir la course </string>
+
+<string name="reached_destination"> Destination</string>
+
+<string name="distance">Distance</string>
+
+<string name="wait_time">Temps d\'attente </string>
+
+<string name="fare">Tarifs</string>
+
+<string name="driver_rating">Note du Conducteur </string>
+
+<string name="customer_rating">Note du client </string>
+
+<string name="request_ride">Demander une course </string>
+
+<string name="assigning_driver">Recherche d\'un conducteur...</string>
+
+<string name="no_drivers_nearby">Pas de conducteur à proximité.</string>
+
+<string name="could_not_find_nearest_driver_distance">Impossible de trouver le chauffeur le plus proche.</string>
+
+<string name="nearest_driver_is">Le plus proche conducteur est </string>
+
+<string name="away">Loin .</string>
+
+<string name="cancel_request_in">Annuler la demande  </string>
+
+<string name="your_ride_is">Votre course est </string>
+
+<string name="away_and_will_arrive"> loin de vous et va arriver dans approximativement </string>
+
+<string name="will_arrive_in">va arriver dans </string>
+
+<string name="call_driver">Appeler le conducteur </string>
+
+<string name="you_have">Vous avez  </string>
+
+<string name="ride_request"> Demande de course </string>
+
+<string name="accept_ride">Accepter la course </string>
+
+<string name="cancel_request">Annuler la course </string>
+
+<string name="cancel_ride">Annuler la couse </string>
+
+<string name="rating"> Note </string>
+
+<string name="call">Appeler </string>
+
+<string name="ride_time">Temps de la course </string>
+
+<string name="start_wait">Début d\'attente </string>
+
+<string name="stop_wait">Fin d\'attente </string>
+
+<string name="submit">ENVOYER </string>
+
+<string name="search_results">Résultats de la recherche </string>
+
+<string name="search">Rechercher</string>
+
+<string name="your_login_session_expired">Votre session à expirer, merci de vous reconnecter </string>
+
+<string name="alert">Alerte </string>
+
+<string name="start_ride_error">Vous devez etre près de l\'endroit de prise en charge pour monter à bord du taxi.</string>
+
+<string name="server_error">Erreur du serveur , merci de réessayer </string>
+
+<string name="server_not_responding">Oops!! Le serveur ne répond plus Merci de réessayer tout à l\'heure .</string>
+
+<string name="check_internet_message">Merci de vérifier votre connexion internet</string>
+
+<string name="driver_id">ID du chauffeur </string>
+
+<string name="rank_city">Classement des villes </string>
+
+<string name="rank_overall">Note global:</string>
+
+<string name="monthly">Score mensuel </string>
+
+<string name="earnings">Gains </string>
+
+<string name="rides_taken">Nombre de courses </string>
+
+<string name="rides_missed">Nombre de courses manquées  </string>
+
+<string name="rides_cancelled">Courses annulées </string>
+
+<string name="ride_cancelled">Courses annulées </string>
+
+<string name="online_hours">Temps de connexion </string>
+
+<string name="Auto_not_working">Taxi ne marche pas</string>
+
+<string name="Traffic">Circulation</string>
+
+<string name="accepted_by_mistake">Courses acceptées par erreur </string>
+
+<string name="Customer_asked_to_cancel">Le client a demandé d\'annuler la course</string>
+
+<string name="Not_able_to_contact_customer">Impossible de contacter le client </string>
+
+<string name="Customer_behavior">Mauvais comportement du client </string>
+
+<string name="profile">Profile </string>
+
+<string name="Duty_Hours">Heures de service :</string>
+
+<string name="call_us">Appellez nous </string>
+
+<string name="auto_number">Taxi numéro</string>
+
+<string name="Choose_one">Choisissez-en un</string>
+
+<string name="is_rented">Voiture de location</string>
+
+<string name="is_owned">Propriétaire du véhicule .</string>
+
+<string name="Documents">Documents</string>
+
+<string name="Document_type">Type du Document </string>
+
+<string name="Requirement">Exigeances</string>
+
+<string name="add_image">Ajouter une image</string>
+
+<string name="Submit">Envoyer</string>
+
+<string name="check_all">Tout cocher </string>
+
+<string name="uncheck_all">Tout décocher </string>
+
+<string name="add_cash">Ajouter du liquide </string>
+
+<string name="add_customer_cash">Ajouter du CASH au client </string>
+
+<string name="arrived">Arrivé </string>
+
+<string name="accept_subsidy">Accepter la subvention </string>
+
+<string name="account">Compte</string>
+
+<string name="accept">ACCEPT</string>
+
+<string name="away_from_you">Loin de vous </string>
+
+<string name="cancel_ride_text">Etes vous sure de vouloir annuler la course ?</string>
+
+<string name="end_ride_text">Etes vous sure de vouloir finir la course ?</string>
+
+<string name="logout_text">Etes vous sure de vouloir vous déconnecter ?</string>
+
+<string name="customer_pickup_text">Une demande vous a été transmise. Merci d\'aller chercher votre client </string>
+
+<string name="start_ride_text">Merci de confirmer que vous avez bien récupérer votre client </string>
+
+<string name="battery_level_text">Le niveau de la batterie doit être supérieur à 20% pour accepter la course . Branchez votre téléphone pour continuer .</string>
+
+<string name="battery_level_start_text">Le niveau de la batterie doit être supérieur à 10% pour commencer le trajet. Branchez votre téléphone  pour continuer.</string>
+
+<string name="battery_level_arrived_text">Le niveau de la batterie doit être supérieur à 10% pour marquer le trajet arrivé. Branchez à une source d'alimentation pour continuer.</string>
+
+<string name="back">Retour </string>
+
+<string name="change_phone_no_text">Le numéro de téléphone modifié est le même que le précédent.</string>
+
+<string name="local_positon_text">Nous n\'avons pa reussi a vous géolocaliser</string>
+
+<string name="overall_position_text">Impossible d\'obtenir la position globale</string>
+
+<string name="convenience_charges_text">Frais de commodité pour le client:</string>
+
+<string name="code_empty">Le code ne peut pas etre vide </string>
+
+<string name="confirm_email_text">Les deux emails ne correspondent pas</string>
+
+<string name="choose_email_client">Choisir un Email</string>
+
+<string name="select_time_error_text">Impossible de sélectionner l\'heure avant et l\'heure actuelle</string>
+
+<string name="call_me">Appelez moi </string>
+
+<string name="change_phone_no">Changer de numéro de téléphone </string>
+
+<string name="creating_game">Creating Game ...</string>
+
+<string name="completed">Términé </string>
+
+<string name="customer_name">Nom du client  </string>
+
+<string name="change">Changer </string>
+
+<string name="km">Km</string>
+
+<string name="disable_mock_location">Désactiver l\'emplacement simulé</string>
+
+<string name="daily">Par jour </string>
+
+<string name="distance2">Distance </string>
+
+<string name="discount">Réduction </string>
+
+<string name="enter_new_phone_no">Merci de renseigner un nouveau numéro de téléphone </string>
+
+<string name="enter_fare">Entrer le tarif</string>
+
+<string name="enter_otp">Code OTP</string>
+
+<string name="email">Email:</string>
+
+<string name="fare1">Tarif :</string>
+
+<string name="forgot_password_cap">Mot de passe oublié </string>
+
+<string name="free_ride">Course gratuite </string>
+
+<string name="final_amount">Montant finale </string>
+
+<string name="fare2">Tarif:\n</string>
+
+<string name="fare_details">Details du tarif </string>
+
+<string name="go_to_setting">Aller aux paramètres </string>
+
+<string name="google_pay_service_error">Ereur du Google Play Services </string>
+
+<string name="google_pay_service_error_message">Services Google Play introuvables ou obsolètes. Veuillez installer Google Play Services?</string>
+
+<string name="go_to_playstore">Aller à Play Store:</string>
+
+<string name="help">Aide</string>
+
+<string name="have_arrived">Es-tu arrivé?</string>
+
+<string name="invite_earn">Parrainez et gagner</string>
+
+<string name="create_new_account_msg">Si vous souhaitez créer un nouveau compte</string>
+
+<string name="not_recived_otp">Je n\'ai pas reçu le code OTP</string>
+
+<string name="jugnoo_cash">Hezz Cash</string>
+
+<string name="jugnoo">Hezz Taxi</string>
+
+<string name="jugnoo_off">Hezz OFF</string>
+
+<string name="jugnoo_cut">Hezz Cut</string>
+
+<string name="loading">Chargement ...</string>
+
+<string name="local_position">Position actuel</string>
+
+<string name="location_setting">Paramètres de localisation</string>
+
+<string name="location_setting_enable_message">La localisation n\'est pas activé. Voulez-vous l\'activer depuis le menu des paramètres?</string>
+
+<string name="luggage_charge">Frais de bagage</string>
+
+<string name="login">Connexion</string>
+
+<string name="restart_phone">Veuillez redémarrer votre téléphone</string>
+
+<string name="min_fare">Tarif min</string>
+
+<string name="meals_on">Repas ON</string>
+
+<string name="mail_us">Envoyez nous un mail</string>
+
+<string name="message">message</string>
+
+<string name="no">Non</string>
+
+<string name="yes">Oui</string>
+
+<string name="no_luggage">Aucun bagage ajouté</string>
+
+<string name="luggage_added">Articles de bagage ajoutés</string>
+
+<string name="no_lugage">PAS DE BAGAGES</string>
+
+<string name="network_problem">Problème de réseau. Veuillez éteindre et allumer votre téléphone et attendez 5 minutes pour continuer à utiliser Hezz.</string>
+
+<string name="no_data_to_show">Aucune donnée à afficher</string>
+
+<string name="no_cash">PAS DE CASH</string>
+
+<string name="no_of_rides">Nombre de courses</string>
+
+<string name="name">Nom</string>
+
+<string name="name_colon">Nom:</string>
+
+<string name="overall_position">Position globale</string>
+
+<string name="some_amount">S\'il vous plaît entrer un certain montant</string>
+
+<string name="less_amount">Please entrer le montant minimum</string>
+
+<string name="valid_amount">Veuillez entrer un montant valide</string>
+
+<string name="Phone_number_not_empty">Le numéro de téléphone ne peut pas être vide</string>
+
+<string name="valid_phone_number">Veuillez entrer un numéro de téléphone valide</string>
+
+<string name="please_wait">S\'il vous plaît attendez ...</string>
+
+<string name="enter_some_fare">S\'il vous plaît entrer un tarif</string>
+
+<string name="please_reach">S\'il vous plaît allez y</string>
+
+<string name="by">par</string>
+
+<string name="take_fare_from_customer">S\'il vous plaît prendre le tarif comme indiqué ci-dessus du client.</string>
+
+<string name="enter_name">S\'il vous plaît entrer le nom</string>
+
+<string name="Pls_enter_email_or_phn">S\'il vous plaît entrer le nom.</string>
+
+<string name="Pls_enter_email">S\'il vous plaît entrer l\'Email</string>
+
+<string name="confirm_email">Veuillez confirmer l\'identifiant de votre email</string>
+
+<string name="pls_enter_phone_number">Veuillez entrer le numéro de téléphone</string>
+
+<string name="enter_valid_phone_number">Veuillez entrer un numéro de téléphone valide</string>
+
+<string name="enter_password">Veuillez entrer le mot de passe</string>
+
+<string name="pls_confirm_password">Veuillez confirmer le mot de passe</string>
+
+<string name="password_atleast_6">Le mot de passe doit contenir au moins six caractères</string>
+
+<string name="valid_email">Veuillez entrer un identifiant email valide</string>
+
+<string name="password_not_match">Les mots de passe ne correspondent pas</string>
+
+<string name="password_to_continue">Veuillez entrer votre mot de passe pour continuer.</string>
+
+<string name="enter_new_phone_number">Veuillez entrer votre nouveau numéro de téléphone</string>
+
+<string name="position">position</string>
+
+<string name="enter_phone_to_have_instruction">Veuillez indiquer votre numéro de téléphone pour obtenir des instructions sur la réinitialisation de votre mot de passe.</string>
+
+<string name="pay">Payer</string>
+
+<string name="please_login_from_these_accounts">Veuillez vous connecter via l\'un de ces comptes</string>
+
+<string name="please_contact_customer_care">S\'il vous plaît contacter notre service clients</string>
+
+<string name="paid_cash">Payé en espèces</string>
+
+<string name="ride_id">Course ID</string>
+
+<string name="ride_time2">Durée du trajet:</string>
+
+<string name="rate">Taux:</string>
+
+<string name="ride_in_progress_cant_logout">Vous êtes en plein trajet. Vous pouvez vous déconnecter seulement après la fin du trajet.</string>
+
+<string name="rate_applied">Taux appliqué</string>
+
+<string name="register">S\'inscrire</string>
+
+<string name="request_registration">DEMANDE D\'INSCRIPTION</string>
+
+<string name="reg_info">Informations d\'inscription</string>
+
+<string name="ride_details">Détails des courses</string>
+
+<string name="ride_fare">Tarif de trajet</string>
+
+<string name="can_not_calculated_distance">Désolé, nous ne pouvions pas calculer votre distance maintenant</string>
+
+<string name="set">appliquer</string>
+
+<string name="SUBMIT">SOUMETTRE</string>
+
+<string name="super_driver">Super Chauffeurs</string>
+
+<string name="sharing_rides">Partage de courses</string>
+
+<string name="sharing_on">Partage ON</string>
+
+<string name="SIGN_UP">Inscrivez-vous</string>
+
+<string name="submit_request">SOUMETTRE UNE DEMANDE</string>
+
+<string name="status">Statut</string>
+
+<string name="total_time">Temps total</string>
+
+<string name="min">min</string>
+
+<string name="app_need_active_gps">L\'application nécessite une connexion GPS active. Activez-le dans les paramètres.</string>
+
+<string name="app_needs_network_time">L\'application doit être activée sur le réseau. Activer le à partir des paramètres.</string>
+
+<string name="take">Prendre</string>
+
+<string name="req_accepted_by_other_driver">Cette demande a été acceptée par un autre conducteur</string>
+
+<string name="amount_entered">Le montant entrer est</string>
+
+<string name="time">Temps</string>
+
+<string name="time_new">Temps/n</string>
+
+<string name="jugnoo_ride_over">Hezz </string>
+
+<string name="today">Aujourd\'hui</string>
+
+<string name="this_month">Ce mois</string>
+
+<string name="title">Titre</string>
+
+<string name="two_account_on_device">Deux comptes ont déjà été créés sur cet appareil</string>
+
+<string name="total_fare">Total Tarif</string>
+
+<string name="updating">En cours de téléchargement ...</string>
+
+<string name="user_cancel_request">Le client a annulé la course</string>
+
+<string name="verification">VERIFICATION</string>
+
+<string name="verify_me">Verifie moi</string>
+
+<string name="waiting_for_location">En attente de localisation...</string>
+
+<string name="wait">Veuillez attendre</string>
+
+<string name="whatsapp_not_installed">WhatsApp n\'est pas installer</string>
+
+<string name="weekly">Hebdomadaire</string>
+
+<string name="will_revert_you">On reviens vers vous prochainement</string>
+
+<string name="your_position">Votre position</string>
+
+<string name="your_overall_position">Votre position actuel</string>
+
+<string name="got_new_request">Vous avez une autre demande.</string>
+
+<string name="present_near_customer_location">Vous devez vous présenter près du client avant de marquer que vous êtes arriver.</string>
+
+<string name="present_near_customer_location_to_start">Vous devez être prés du client pour commancer la course.</string>
+
+<string name="You_have_already_created">Vous avez déjà créer %1$d compte de ce téléphone. Veuillez nous expliquer pourquoi recréer un autre?</string>
+
+<string name="your_referral_code">Votre code de parrainage est </string>
+
+<string name="tap_to_retry">Cliquez pour réessayer</string>
+
+<string name="error_occured_tap_to_retry">Une erreur est survenue . Cliquez pour réessayer</string>
+
+<string name="no_missed_rides">Aucun trajets manqués</string>
+
+<string name="no_internet_tap_to_retry">Pas d\'internet. Veuillez réessayer</string>
+
+<string name="no_rides">Vous n\'avez effectuer aucun trajet à présent</string>
+
+<string name="pickup_location">l\'emplacement de départ</string>
+
+<string name="money_to">Commissions pour Hezz</string>
+
+<string name="start_ride_loc">sCommencer la course</string>
+
+<string name="sec_left">sec manquante</string>
+
+<string name="km_away">km loin</string>
+
+<string name="m_away">je suis loin</string>
+
+<string name="some_error_occured">Une erreur est survenue</string>
+
+<string name="take_cash">Récupérer l\'espèces </string>
+
+<string name="wallet">Portefeuille</string>
+
+<string name="Scheduled_Ride_Pickup">Départ du trajet prévu à: </string>
+
+<string name="referral_msg">"Utilisr mon code %1$s et télécharger Hezz Taxi App et gagne des réductions.\n Télécharger d\'ici \nhttp://smarturl.it/Hezz</string>
+
+<string name="no_of_account">Un compte a déjà été créer avec ce téléphone</string>
+
+<string name="enter_otp_received">Veuillez entrer le mot de passe unique reçue par SMS à</string>
+
+<string name="select_reason">Choissisez une raison</string>
+
+<string name="referral_money">Argent parrainage</string>
+
+<string name="send">Envoyer</string>
+
+<string name="wait_here">Attendez ici...</string>
+
+<string name="use_jugnoo_fare">UTILISEZ Hezz Taxi Tarif</string>
+
+<string name="view_account">Voir le compte</string>
+
+<string name="hint_created_multiple_account">Vous avez déjà créé 2 comptes à partir de cet appareil. Veuillez expliquer la raison de la création d\'un nouveau compte.</string>
+
+<string name="convenience_charge">Frais de commodité</string>
+
+<string name="cancel_subsidy">Annuler la subvention</string>
+
+<string name="inc_subsidy">(subvention incluse)</string>
+
+<string name="to_end">Pour: </string>
+
+
+-<string name="Edit_profile">
+
+<u>Edit Profile</u>
+
+</string>
+
+<string name="info">Informations personnelles</string>
+
+<string name="local_leaderboard">LOCAL</string>
+
+<string name="global_leaderboard">GLOBAL</string>
+
+<string name="daily_leaderboard">Quotidien</string>
+
+<string name="weekly_leaderboard">Hebdomadaire</string>
+
+<string name="lb_rank">Classement</string>
+
+<string name="lb_name">Nom</string>
+
+<string name="lb_no_downloads">Nombre de téléchargements</string>
+
+<string name="number_of_downloads">Nombre de téléchargements</string>
+
+<string name="number_of_first_rides">Nombre de premiers trajets effectués</string>
+
+<string name="money_earned">Argent gagné par les parrainages</string>
+
+<string name="data_effective_format">* Données en vigueur à partir de </string>
+
+<string name="notifications">Centre de notifications</string>
+
+<string name="click_for_direction">Cliquez ici pour les directions</string>
+
+<string name="time_left">Temps restant:</string>
+
+<string name="enter_phone_no_to_reset_password">Entrez votre numéro de téléphone enregistré pour réinitialiser votre mot de passe.</string>
+
+<string name="customer_phone_number">Numéro de téléphone du client</string>
+
+<string name="recharge_amount">Montant à rechargé</string>
+
+<string name="enter_amount">Entrer le montant</string>
+
+<string name="paytm_recharge">Paytm Recharge</string>
+
+<string name="Confirm">Confirmer</string>
+
+<string name="Paytm_recharge">Paytm Recharge</string>
+
+<string name="phone_number_or_email">N ° de téléphone ou e-mail</string>
+
+<string name="nl_otp_waiting_to_detect_otp">En attente de détecter automatiquement le code OTP</string>
+
+<string name="battery_low_message">Le niveau de la batterie doit être supérieur à 20% pour accepter le trajet. Plugin à une source d'alimentation pour continuer.</string>
+
+<string name="destination">DESTINATIONS</string>
+
+<string name="destination_selection">S\'il vous plaît sélectionnez la destination où vous pouvez aller maintenant</string>
+
+<string name="Rate_Your_Customer">Évaluer votre client</string>
+
+<string name="skip">Passer</string>
+
+<string name="destination_menu">Destination</string>
+
+<string name="no_current_notification">Pas de notification en cours</string>
+
+<string name="phone">Téléphone:</string>
+
+<string name="GENERATE_OTP">Générer OTP</string>
+
+<string name="otp">OTP</string>
+
+<string name="signin_via_otp">Connectez-vous via OTP</string>
+
+<string name="Neutral">Neutre</string>
+
+<string name="terms">Termes</string>
+
+<string name="Payments">Paiements</string>
+
+<string name="Today">Aujourd\'hui</string>
+
+<string name="Last_week">La semaine dernière</string>
+
+<string name="Last_month">Le mois dernier</string>
+
+<string name="upcoming_invoice">Facture à venir</string>
+
+<string name="current_invoice">Facture</string>
+
+<string name="Outstanding_amnt">Ajustements de facture précédents</string>
+
+<string name="jugnoo_cmsn">Hezz Commission</string>
+
+<string name="Manual_adjustment">Réglage manuel</string>
+
+<string name="referral_amount">Montant de référence</string>
+
+<string name="phone_deduction">Déduction téléphonique</string>
+
+<string name="paid_by_jugnoo">Déduction téléphonique Hezz</string>
+
+<string name="paid_by_customer">Payé en espèces</string>
+
+<string name="paid_using_wallet">Payé avec un portefeuille</string>
+
+<string name="acc_credited">Compte crédité</string>
+
+<string name="last_invoice">Dernière facture</string>
+
+<string name="last_invoice_details">Dernier paiement le:</string>
+
+<string name="last_payments">Derniers paiements</string>
+
+<string name="upcoming_payment_due_date">Paiement à venir sur:</string>
+
+<string name="cash_via_paytm">Argent Via Paytm</string>
+
+<string name="bank_details">Détails de la banque</string>
+
+<string name="acc_no">Numéro de compte. :</string>
+
+<string name="ifsc_code">IBAN :</string>
+
+<string name="bank_name">Nom de la banque:</string>
+
+<string name="bank_loc">Emplacement de la banque:</string>
+
+<string name="customer_waiting">Votre prochain client attend </string>
+
+<string name="show_more">Montrer plus</string>
+
+<string name="Transactions">Transactions</string>
+
+<string name="Invoices">Factures</string>
+
+<string name="Earnings">Gains</string>
+
+<string name="Earn">Gagner</string>
+
+<string name="Activity">Activité</string>
+
+<string name="referral">Référence</string>
+
+<string name="NA">NA</string>
+
+<string name="Invoice">Facture</string>
+
+<string name="phone_no_cnt_be_empty">Le numéro de téléphone ne peut pas être vide</string>
+
+<string name="enter_some_amount">S\'il vous plaît entrer un certain montant</string>
+
+<string name="enter_less_amount">Veuillez entrer le montant minimum</string>
+
+<string name="enter_valid_amount">Veuillez entrer un montant valide</string>
+
+<string name="recharge_amount_for_customer">Vous rechargez \u20B9 %1$s pour le client avec le compte paytm à %2$s </string>
+
+<string name="Ride">Course</string>
+
+<string name="Ride_id">Course ID</string>
+
+<string name="customer_id">ID client</string>
+
+<string name="paytm_transaction">Transaction Paytm</string>
+
+<string name="phone_no">Numéro de téléphone.</string>
+
+<string name="changed_no_same_as_previous">Le numéro de téléphone modifié est le même que le précédent</string>
+
+<string name="sharing_payment_recieved">Partage du paiement reçu par le téléphone</string>
+
+"<string name="please_give_customer">Nous prenons vos commentaires au sérieux. Veuillez nous attribuer une note
+ </string>"
+
+<string name="start_loc">Commencer la localisation</string>
+
+<string name="driver_loc">Emplacement du conducteur</string>
+
+<string name="customer_2">Client 2</string>
+
+<string name="kms">Kms</string>
+
+<string name="mark_delivered">Mark Delivered</string>
+
+<string name="order_id">Commande ID</string>
+
+<string name="thanks_for_feedback">Merci pour vos précieux commentaires</string>
+
+<string name="total_amnt_till_now">Montant total jusqu\'à maintenant</string>
+
+<string name="amnt_credited">Paiement crédité</string>
+
+<string name="invoice_date">Date de facturation</string>
+
+<string name="invoice_id">ID de facture</string>
+
+<string name="total_distance">DISTANCE TOTALE</string>
+
+<string name="valid_email_phone_no">Entrez un e-mail ou un numéro de téléphone valide</string>
+
+<string name="select_destination">Veuillez sélectionner au moins une destination</string>
+
+<string name="JUGNOO">Hezz Taxi</string>
+
+<string name="fatafat_on">Fatafat On</string>
+
+<string name="Notifications">Notifications</string>
+
+<string name="PAYMENTS">Paiements</string>
+
+<string name="enter_customer_phone_no">Entrez le numéro de téléphone du client</string>
+
+<string name="invoice_detail">DÉTAILS DE LA FACTURE</string>
+
+<string name="generated_on">Généré le:</string>
+
+<string name="share">Partager</string>
+
+<string name="no_language_to_select">Option de langue non disponible</string>
+
+<string name="ride_complete">Course terminé</string>
+
+<string name="no_not_verified">Numéro de téléphone non vérifié</string>
+
+<string name="resend_OTP">Renvoyer OTP</string>
+
+<string name="return_reasons">Raisons du retour</string>
+
+<string name="accepted">Accepté</string>
+
+<string name="in_ride">En trajet</string>
+
+<string name="arrive_at_pickup_location">Arrivée à destination</string>
+
+<string name="make_delivery">Faire une livraison</string>
+
+<string name="collected">Récupérer</string>
+
+<string name="Returned">Revenu</string>
+
+<string name="please_confirm_cash_taken">Veuillez confirmer que vous avez récupérer l\'argent</string>
+
+<string name="confirm">Confirmer</string>
+
+<string name="start_delivery">Start Delivery</string>
+
+<string name="deliveries">Deliveries</string>
+
+<string name="pending">En attente</string>
+
+<string name="cancelled">Annulé</string>
+
+<string name="current">Actuel</string>
+
+<string name="to_no_colon">À</string>
+
+<string name="address">Adresse</string>
+
+<string name="get_directions">Obtenir des directions</string>
+
+<string name="delivered">Delivered</string>
+
+<string name="delivery_on">Delivery ON</string>
+
+<string name="delivery_is_over">Delivery is Over</string>
+
+<string name="orders_delivered">Orders Delivered</string>
+
+<string name="orders_returned">Orders Returned</string>
+
+<string name="rate_your_vendor">Rate Your Merchant</string>
+
+<string name="view_orders">View Orders</string>
+
+<string name="delivery_numbers">No. of Deliveries :</string>
+
+<string name="approx">(Approximatif)</string>
+
+<string name="start_the_delivery">Start the Delivery</string>
+
+<string name="deliver_order_number">Deliver order no. %s</string>
+
+<string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
+
+<string name="returned">Returned</string>
+
+<string name="start_delivery_text">Are you sure you want to start Delivery?</string>
+
+<string name="delivery_id">Order ID</string>
+
+<string name="deliver">Deliver</string>
+
+<string name="Return">Return</string>
+
+<string name="delivery">Delivery</string>
+
+<string name="delivery_caps">DELIVERY</string>
+
+<string name="delivery_completed">Delivery Completed</string>
+
+<string name="delivery_cancelled">Delivery Cancelled</string>
+
+<string name="miss_call_otp">GIVE A MISSED CALL</string>
+
+<string name="give_missed_call_dialog_text">Effectuer un appel manqué et nous vérifierons votre identité </string>
+
+<string name="give_misscall_to_verify">Effectuer un appel manquér pour vérifier</string>
+
+<string name="please_press_here">S\'il vous plaît appuyez ici</string>
+
+<string name="no_deliveries_pending">No deliveries pending</string>
+
+<string name="no_deliveries_completed">No deliveries completed</string>
+
+<string name="cash_collected">Cash collectée</string>
+
+<string name="s_no">Numéro de série</string>
+
+<string name="order_no">Commande No.</string>
+
+<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+
+<string name="details">Détails</string>
+
+<string name="Messages">Messages</string>
+
+<string name="Hints">Astuces</string>
+
+<string name="tricks">Astuces pour gagner</string>
+
+<string name="success">SUCCÈS</string>
+
+<string name="vehicle_status">État du véhicule</string>
+
+<string name="owner">Propriétaire</string>
+
+<string name="rented">Loué</string>
+
+<string name="auto_driver_confirmation">Êtes-vous un conducteur?</string>
+
+<string name="auto_status_confirmation">Avez-vous un véhicule?</string>
+
+<string name="no_doc_available">Aucun document disponible</string>
+
+<string name="upload">Télécharger</string>
+
+<string name="mandatory">Obligatoire</string>
+
+<string name="optional">Optionnel</string>
+
+<string name="uploaded">Téléchargé</string>
+
+<string name="rejected">Rejeté</string>
+
+<string name="verified">Vérifié</string>
+
+<string name="approval_pending">En attente d\'approbation</string>
+
+<string name="owned">Propriètaire</string>
+
+<string name="auto">Taxi</string>
+
+<string name="rejection_reason">Raison de rejet</string>
+
+<string name="outstanding_amount">Ajustements de facture précédents</string>
+
+<string name="delivery_fare">Delivery Fare</string>
+
+<string name="return_subsidy">Retour de subvention</string>
+
+<string name="return_distance">Distance de retour</string>
+
+<string name="delivery_details">DELIVERY DETAILS</string>
+
+<string name="please_drop_customer">Déposer %s</string>
+
+<string name="please_reach_customer_location">Récupérer %s</string>
+
+<string name="please_start_customer_ride">Début %s\'s course</string>
+
+<string name="uploading">TÉLÉCHARGEMENT</string>
+
+<string name="before_ride">AVANT DE CIRCULER</string>
+
+<string name="in_ride_rate">EN TRAJET</string>
+
+<string name="referral_rate">RÉFÉRENCE</string>
+
+<string name="pickup_charges">Frais d\'approche </string>
+
+<string name="base_fare">Tarif de base</string>
+
+<string name="distance_per_km">\n(Par Kilomètre)</string>
+
+<string name="time_per_min">Temps\n(Par minute)</string>
+
+<string name="per_min">(par minute)</string>
+
+<string name="driver_to_customer">Chauffeur au client</string>
+
+<string name="driver_to_driver">Conducteur à conducteur</string>
+
+<string name="rate_card">Carte de débit</string>
+
+<string name="applicable_after">Applicable après %1$s Kilomètre</string>
+
+<string name="per_km">(par kilomètre)</string>
+
+<string name="delivery_off">Delivery OFF</string>
+
+<string name="Yesterday">Hier</string>
+
+<string name="ride_money">Montant total du trajet</string>
+
+<string name="total_amount">Montant final de la facture</string>
+
+<string name="this_week">CETTE SEMAINE</string>
+
+<string name="outstanding_amount1">En cours Ajusté</string>
+
+<string name="upload_again">Importer à nouveau</string>
+
+<string name="self_enroled">Auto-inscription</string>
+
+<string name="register_via_agent">S\'inscrire via l\'agent</string>
+
+<string name="upload_Documents">Télécharger des documents</string>
+
+<string name="last_trip_earning">Les gains du dernier trajet</string>
+
+<string name="diffrential_pricing_rate">Après %1$sKilomètre, frais de distance sera %2$s/Kilomètre </string>
+
+<string name="payment_sent">Paiement envoyé</string>
+
+<string name="estimated_payout">ESTIMATION DE PAIEMENT</string>
+
+<string name="this_week_cap">CETTE SEMAINE</string>
+
+<string name="ride_history_cap">HISTORIQUE DES COURSES</string>
+
+<string name="cancel_ride_by_customer">Le client a annulé le trajet</string>
+
+<string name="high_demand_areas">Cliquez ici pour connaître les zones à forte demande</string>
+
+<string name="high_demad">ZONES DE HAUTE DEMANDE</string>
+
+<string name="referral_code">Code de Parrainage</string>
+
+
+-<string name="i_accept">
+I accept
+<u>Termes et conditions</u>
+
+</string>
+
+<string name="select_tandc">Veuillez sélectionner les termes et conditions</string>
+
+<string name="select_valid_vehicle_type">Veuillez sélectionner un type de véhicule valide</string>
+
+<string name="select_valid_vehicle_status">Veuillez sélectionner un statut de véhicule valide</string>
+
+<string name="select_valid_city">Veuillez sélectionner une ville valide</string>
+
+<string name="self_audit">AUTO VÉRIFICATION</string>
+
+<string name="front">De face</string>
+
+<string name="add_photo">+ Ajouter une photo</string>
+
+<string name="left">Gauche</string>
+
+<string name="right">Droite</string>
+
+<string name="Audit">AUDIT</string>
+
+<string name="non_jugnoo_auto_branding">Hezz Taxi</string>
+
+<string name="auto_from_front">Auto From Front</string>
+
+<string name="auto_from_back">Auto From Back</string>
+
+<string name="auto_from_left">Auto From Left</string>
+
+<string name="auto_from_right">Auto From Right</string>
+
+<string name="mobile_stand">Mobile Stand (Optional)</string>
+
+<string name="vehicle_number">Numéro de véhicule</string>
+
+<string name="mobile_stand_non">Mobile Stand</string>
+
+<string name="next">Prochain</string>
+
+<string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
+
+<string name="has_smart_phone">The driver has a smart phone</string>
+
+<string name="optional_brack">(Optionnel)</string>
+
+<string name="non_jugnoo_auto_audit">NON Hezz AUTO AUDIT</string>
+
+<string name="name_cant_empty">Le nom ne peut pas être vide</string>
+
+<string name="self_audit_caps">AUTO VÉRIFICATION</string>
+
+<string name="audit_required">Audit requis</string>
+
+<string name="in_progress">En cours</string>
+
+<string name="request_pending">Requête en attente</string>
+
+<string name="please_submit">Veuillez valider</string>
+
+<string name="cancel_audit">Êtes-vous sûr de vouloir annuler le processus?</string>
+
+<string name="image_upload_failed">Le téléchargement de l\'image a échoué. Veuillez réessayer.</string>
+
+<string name="audit_lower">Vérification</string>
+
+<string name="deletion_confirmation">Êtes-vous sûr de vouloir supprimer l\'image?</string>
+
+<string name="estimated_payout_lower">Paiement estimé</string>
+
+<string name="bank_deposite">Dépôt bancaire</string>
+
+<string name="trips">TRAJETS</string>
+
+<string name="home">Accueil</string>
+
+<string name="duration">DURÉE</string>
+
+<string name="daily_earnings">GAINS QUOTIDIENS</string>
+
+<string name="Invoices_cap">FACTURES</string>
+
+<string name="Today_earning">AUJOURD\'HUI</string>
+
+<string name="daily_breakup">RÉPARTITION QUOTIDIENNE</string>
+
+<string name="trip_earning">GAINS DES COURSES</string>
+
+<string name="earnings_caps">GAINS</string>
+
+<string name="trip_details">DÉTAILS DU TRAJET</string>
+
+<string name="fare_issues">Questions par rapport au tarif</string>
+
+<string name="req_text">S\'il y avait un problème avec le prix du trajet, laissez-nous le savoir.</string>
+
+<string name="type_issue">Ecrivez votre problème ici</string>
+
+<string name="report_issue">RAPPORTER LES PROBLÈMES DE PRIX</string>
+
+<string name="id"></string>
+
+<string name="fair_complaint">Réclamation tarifaire</string>
+
+<string name="in_review">EN REVUE</string>
+
+<string name="pool">Pool</string>
+
+<string name="no_invoice_currently">Aucune facture actuellement</string>
+
+<string name="no_data">Pas de données</string>
+
+<string name="web_view">VUE WEB</string>
+
+<string name="connection_lost">Vous n\'êtes pas connecté. Veuillez appuyer pour réessayer.</string>
+
+<string name="pls_enter_some_msg">Veuillez descrire le problème</string>
+
+<string name="enter_destination">Entrer la destination</string>
+
+<string name="no_results_found">Aucun résultat trouvé</string>
+
+<string name="COD">COD</string>
+
+<string name="auto_accept_message">La demande du client a été automatiquement acceptée</string>
+
+<string name="start_ride_alert">Si le client est avec vous, vous pouvez y aller</string>
+
+<string name="Reason">Raison</string>
+
+<string name="delivery_conf">Are you sure you want to Deliver ?</string>
+
+<string name="failed">Échoué</string>
+
+<string name="cash_deposite_conf">Avez-vous déposé de l\'argent?</string>
+
+<string name="total"></string>
+
+<string name="order_summary">Résumer de la commande</string>
+
+<string name="return_to_merchant">Return to the Merchant</string>
+
+<string name="deposite_cash">Have you deposited cash?</string>
+
+<string name="deposite_cash_1">Deposit cash</string>
+
+<string name="return_reasons_confirmation">Select a reason for failed Delivery</string>
+
+<string name="submit_small">Submit</string>
+
+<string name="total_cash_collected">Total cash collected</string>
+
+<string name="fail">Fail</string>
+
+<string name="chat">CHAT</string>
+
+<string name="required">obligatoires</string>
+
+
+-<string name="login_here">
+Vous avez déjà un compte pilote?
+<u>Connectez-vous ici</u>
+
+</string>
+
+
+-<string name="i_accept_new">
+"
+En vous inscrivant, vous acceptez notre"
+<u>Conditions d\'utilisation</u>
+
+</string>
+
+<string name="nl_otp_please_enter_otp">Veuillez entrer votre mot de passe à usage unique envoyé à</string>
+
+<string name="driver">Chauffeur</string>
+
+
+-<string name="register_text">
+"
+Vous n\'avez pas de compte chauffeur?"
+<u>Inscrivez-vous ici</u>
+
+</string>
+
+<string name="spinner_owned">Propriètaire</string>
+
+<string name="spinner_rented">Loué</string>
+
+<string name="select">Sélectionner</string>
+
+<string name="select_customer">Sélectionnez un client</string>
+
+<string name="collect_cash">Collecter le montant</string>
+
+<string name="pool_start">Début  pool</string>
+
+<string name="pool_stop">Arrêt pool</string>
+
+<string name="battery_low">Le niveau de la batterie est faible. Veuillez vous connecter à une source d'alimentation.</string>
+
+<string name="alter_phone_number">Autre numéro de téléphone</string>
+
+<string name="reset">Réinitialiser</string>
+
+<string name="unable_to_capture_signature">incapable de capturer la signature</string>
+
+<string name="clear">Clair</string>
+
+<string name="type_your_name">Tapez votre nom</string>
+
+<string name="i_accept_abv">ACCEPTER LES TERMES ET CONDITIONS</string>
+
+<string name="your_sig_here">VOTRE SIGNATURE ICI</string>
+
+<string name="delivery_start">Delivery Start</string>
+
+<string name="delivery_stop">Delivery Stop</string>
+
+<string name="delivery_end">Delivery End</string>
+
+<string name="select_delivery">Select Delivery</string>
+
+
+-<string name="reg_as_driver">
+
+<u>Inscrivez-vous en tant que Hezz DRIVER</u>
+
+</string>
+
+<string name="driver_app">APPLICATION DRIVER</string>
+
+<string name="register_as_driver">Inscrivez-vous comme chauffeur Hezz</string>
+
+<string name="distance_lower"></string>
+
+<string name="please_drop_customer_delivery">End %s\'s Delivery</string>
+
+<string name="please_start_customer_delivery">Start %s\'s Delivery</string>
+
+<string name="please_reach_customer_delivery">Pickup %s\'s Delivery</string>
+
+<string name="select_merchant">Selectionner le magasin</string>
+
+<string name="estimated_fare">Tarif estimé</string>
+
+<string name="provide_sign_msg"> Veuillez nous fournir la signature avant de soumettre</string>
+
+<string name="pls_type_name">Veuillez taper votre nom avant de soumettre</string>
+
+
+-<string name="looking_for_customer_app">
+
+<u>Vous rechercher l\'application client?</u>
+
+</string>
+
+<string name="image"></string>
+
+<string name="tutorial_accept_ride">Balayez Hezz ON pour commencer à accepter les trajets</string>
+
+<string name="tutorial_tap_ok">Appuyez sur \'OK\'</string>
+
+<string name="tutorial_wait_for_customer">Attendez un client...</string>
+
+<string name="tutorial_your_location">Le point bleu indique votre position actuelle</string>
+
+<string name="start_training">Commence l\'entraînement</string>
+
+<string name="tutorial_customer_requesting_ride">Le client demande un trajet ... Tapez sur «Accepter».</string>
+
+<string name="tutorial_drive_to_pickup">Conduire au point de départ.</string>
+
+<string name="tutorial_tap_to_start_ride">Tapez sur Démarrer le trajet lorsque vous êtes prêt à commencer le trajet</string>
+
+<string name="tutorial_tap_end_ride">Appuyez sur Finir seulement après avoir déposer le client</string>
+
+<string name="tutorial_tap_ok_endride">Appuyez sur OK si vous avez déposer le client</string>
+
+<string name="tutorial_tap_done_finish">Appuyez sur OK pour terminer</string>
+
+<string name="tutorial_tap_arrived_if_at_pickup">Appuyez sur Arrivé si vous êtes à l\'emplacement de départ</string>
+
+<string name="tutorial_driver_to_pickup_point">Conduire au point de départ.</string>
+
+<string name="auto_detect_otp_failed">La détection automatique de OTP a échoué.</string>
+
+<string name="auto_detect_otp_wait">Auto-détection OTP. S\'il vous plaît, attendez...</string>
+
+<string name="tutorial_tap_yes">Cliquez sur OUI</string>
+
+<string name="arriving">En arrivant</string>
+
+<string name="arrivingdot">En arrivant...</string>
+
+<string name="upload_later">Télécharger plus tard</string>
+
+<string name="training_confirmation_text">Vous ne recevrez aucune demande de client pendant la formation. Êtes-vous sûr de vouloir commencer?</string>
+
+<string name="request_autos">Demande de réservation sera envoyé à vous maintenant.</string>
+
+<string name="later">Plus tard</string>
+
+<string name="upload_now">Télécharger maintenant</string>
+
+<string name="driver_resources">Ressources du chauffeur</string>
+
+<string name="delivery_conf_new">Êtes-vous sûr de vouloir marquer ceci comme livré?</string>
+
+<string name="drop_points">Points de retour:</string>
+
+<string name="more">plus</string>
+
+<string name="estimated_dis">Distance estimée</string>
+
+<string name="cash_to_collected">Argent à collecter</string>
+
+<string name="return_amount">Montant retourné</string>
+
+<string name="cash_required">Argent requis</string>
+
+<string name="pick_up">Récupérer</string>
+
+<string name="you_have_arrived">arrivé ?</string>
+
+<string name="switchText">Commutateur</string>
+
+<string name="away_cap">Un moyen</string>
+
+<string name="pool_only">Pool</string>
+
+<string name="pickup_from">Récupérer de:</string>
+
+<string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+
+<string name="delivery_route">Delivery Route</string>
+
+<string name="turn_jugnooo_for_training">S\'il vous plaît tournez Hezz sur</string>
+
+<string name="delivery_1">Delivery 1</string>
+
+<string name="complainId">ID de plainte:</string>
+
+<string name="createdOn">Créé sur :</string>
+
+<string name="registered">Inscrit</string>
+
+<string name="createdOnNew">Créé sur</string>
+
+<string name="updated_on">Mis à jour le</string>
+
+<string name="complain">Se plaindre</string>
+
+<string name="settled">valider</string>
+
+<string name="ended_on">Terminé</string>
+
+<string name="no_tickets">Aucune plainte pour le moment</string>
+
+<string name="closed_on">Fermé le</string>
+
+<string name="complaint">Plainte</string>
+
+<string name="raisedOn">Élévé sur</string>
+
+<string name="range_in_km">Portée (In km)</string>
+
+<string name="return_fare_aplicable">Tarif de retour si applicable</string>
+
+<string name="per_km_wo_brack">Au kilomètre</string>
+
+<string name="per_delivery">Per Delivery</string>
+
+<string name="per_km_fare">Tarif par kilomètre</string>
+
+<string name="return_fare">Tarif retour</string>
+
+<string name="pick_up_wait_time">Tarif de temps d\'attente de départ</string>
+
+<string name="un_loading">chargement</string>
+
+
+
+<string name="loading_fare">tarif de chargement</string>
+
+<string name="pickup_distance_fare">tarif d\'approche</string>
+
+<string name="range">Portée</string>
+
+<string name="value">Valeur</string>
+
+<string name="no_rate_card_available">Aucune carte de taux disponible</string>
+
+<string name="unloading_req">Déchargement requis</string>
+
+<string name="loading_req">Chargement requis</string>
+
+<string name="unloading_fare">Unloading Fare</string>
+
+<string name="super_biker">Super Biker</string>
+
+<string name="needed">Nécessaire</string>
+
+<string name="your_income">Votre revenu</string>
+
+<string name="did_you_know">Le saviez-vous?</string>
+
+<string name="keep_jugnoo_on">Gardez votre Hezz ON pour gagner plus</string>
+
+<string name="average_days_text">En dernier %s jours les chauffeurs dans votre région ont gagné:</string>
+
+<string name="day">journée</string>
+
+<string name="update_webview">Please update your WebView to latest version.</string>
+
+<string name="max_earning_ins">Hurray! Tu es juste %s loin pour atteindre votre revenu maximum.</string>
+
+<string name="max_earning">Gain maximum</string>
+
+<string name="select_valid_offering">Veuillez sélectionner une offre valide</string>
+
+<string name="wallet_title">Portefeuille Balance</string>
+
+<string name="how_to_recharge">Comment recharger</string>
+
+<string name="recharge_new">2 ) Rechargez maintenant</string>
+
+<string name="visit_office">1 ) Visiter notre locale</string>
+
+<string name="wallet_balance">portefeuille Balance</string>
+
+<string name="low_balance">\n(Faible équilibre)</string>
+
+<string name="rupees_value_format">\u20B9%s</string>
+
+<string name="rupees_value_format_negtive">-\u20B9%s</string>
+
+<string name="wallet_transactions">Transactions de portefeuille</string>
+
+<string name="no_transactions">Pas de transactions actuellement</string>
+
+<string name="added">Ajoutée</string>
+
+<string name="deducted">Déduit</string>
+
+<string name="office_address">Siège Addresse</string>
+
+<string name="view_wallet_transactions">Afficher les transactions de portefeuille</string>
+
+<string name="dont_touch_me">DontTouchMe</string>
+
+<string name="get_support">Obtenir de l\'aide</string>
+
+<string name="schedule_call_message">Appuyez sur le bouton ci-dessous pour obtenir l\'aide de Hezz. Notre exécutif vous appellera sous peu.</string>
+
+<string name="get_call">Recevoir un appel</string>
+
+<string name="get_support_call">Obtenir un appel de support</string>
+
+<!--Strings for Subscription plans-->
+
+
+<string name="pay_now">Payez maintenant</string>
+
+<string name="plans_drawer_title">Des plans</string>
+
+<string name="days">Journée</string>
+
+<string name="plan_amount">Montant du plan</string>
+
+<string name="label_outstanding_amount">En cours</string>
+
+<string name="label_total_amount">Montant total</string>
+
+<string name="transaction_failed">La transaction a échoué</string>
+
+<string name="transaction_successful">Transaction réussie</string>
+
+<string name="cancel_transaction_warning">Voulez-vous vraiment annuler la transaction?</string>
+
+<string name="label_total_savings">Total des économies jusqu\'à maintenant:</string>
+
+<string name="label_current_savings">Économies actuelles jusqu\'à maintenant:</string>
+
+<string name="label_active_plan">Plan actif</string>
+
+<string name="label_current_outstanding">Actuel en cours:</string>
+
+<string name="label_available_plans">Plans disponibles</string>
+
+<string name="title_plans_screen">Rouler sans commission</string>
+
+<!--Strings for Subscription plans-->
+
+
+<string name="amount_collected">Montant collecté
+</string>
+
+<string name="days_left">Jours restants</string>
+
+<string name="distance_covered">Distance parcourue</string>
+
+<string name="label_distance_details">Détails de la distance:</string>
+
+<string name="slots">HEURES EN LIGNE</string>
+
+<string name="hour">heure</string>
+
+<string name="hours">heures</string>
+
+<string name="day_wise_breakup">PAUSE JOURNÉE</string>
+
+<string name="target_distance">Distance cible</string>
+
+<string name="cash_collected_from_user">Encaissement collectée auprès de l\'utilisateur</string>
+
+<string name="adjusted_distance">Distance ajustée</string>
+
+<string name="type_message_here">Tapez votre message ici</string>
+
+<string name="gallery">Galerie</string>
+
+<string name="camera">Camera</string>
+
+<string name="Message_from_vendor">message du vendeur</string>
+
+<string name="message_from_merchant">Message du magasin</string>
+
+<string name="driver_is_late">Le chauffeur est en retard</string>
+
+<string name="english">Anglais</string>
+
+<string name="unable_to_fetch_wallet">Impossible d\'extraire les détails du portefeuille. Veuillez réessayer</string>
+
+<string name="money_to_jugnoo">Commissions pour Hezz</string>
+
+<string name="no_internet">Pas de connexion Internet. Cliquer pour réessayer.</string>
+
+<string name="visit_office_in_city">Visitez le bureau de Hezz dans votre ville</string>
+
+<string name="support_subject">Hezz Support</string>
+
+<string name="referal_sms_message">Utilise mon code %1$s télécharger Hezz App et gagner des réductions avec Hezz. \ nTéléchargez-le ici \ n %2$s </string>
+
+<string name="device_token_not_found_message">Il y a eu un problème avec votre appareil, veuillez redémarrer votre application une fois pour continuer</string>
+
+<string name="no_country_found">Aucun pays trouvé</string>
+
+<string name="error_no_countries_found">Aucun pays trouvé!</string>
+
+<string name="country_picker_header">Choisissez le pays</string>
+
+<string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
+
+<string name="code">Code</string>
+
+<string name="please_select_country_code">Veuillez sélectionner le code du pays</string>
+
+<string name="metering_service_notif_label">Rouler en cours</string>
+
+<string name="update_location_notif_label">Tu es en ligne</string>
+
+<string name="place_bid">Place Bid</string>
+
+<string name="please_enter_some_value">Please enter some value</string>
+
+<string name="bid">Bid</string>
+
+<string name="bid_placed">Bid Placed</string>
+
+<string name="reduce_by_10">Réduire \nde 10%</string>
+
+<string name="increase_by_10">Augmenté \nde 10%</string>
+
+<string name="reduce_by_format">Réduire \nde %s</string>
+
+<string name="increase_by_format">Augmenté \nde %s</string>
+
+<string name="documents_authentication">J\'accepte que les documents que j\'ai importé sont vrais et corrects. Je comprends que toute tentative de fournir des informations incorrectes ou trompeuses ou de faux documents mènera au blacklist immédiat de la plate-forme Hezz. La plate-forme Hezz se réserve le droit de porter l'affaire devant les autorités répressives en cas de falsification de documents.</string>
+
+<string name="i_agree">Je suis d\'accord</string>
+
+<string name="dont_agree">Je ne suis pas d\'accord</string>
+
+<string name="chat_support">Assistance par chat</string>
+
+
+-<string name="t_and_c_login">
+En soumettant le code OTP ici et en vous connectant dans l\'application, vous acceptez le
+<a href="https://jugnoo.in/sg/terms/driver/">Termes et conditions </a>
+de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
+</string>																									
+																									
+<string name="estimated_distance_format">Distance estimée: %skilomètre</string>																									
+																									
+<string name="action_not_supported">Action non prise en charge</string>																									
+																									
+<string name="send_us_a_mail">Envoyez-nous un mail</string>																									
+																									
+<string name="issue_description">Description du problème</string>																									
+																									
+<string name="please_enter_something">Veuillez écrire quelque chose</string>																									
+																									
+<string name="support_tickets"> Support tickets</string>																									
+																									
+<string name="please_press_submit_button">Veuillez appuyez sur le bouton Envoyer</string>																									
+																									
+<string name="drop">déposer</string>																									
+																									
+<string name="hide">Cacher</string>																									
+																									
+<string name="drop_location">Lieu de dépôt</string>																									
+																									
+																									
+-<string-array name="CountryCodes">																									
+																									
+<item>+93,AF</item>																									
+																									
+<item>+355,AL</item>																									
+																									
+<item>+213,DZ</item>																									
+																									
+<item>+376,AD</item>																									
+																									
+<item>+244,AO</item>																									
+																									
+<item>+672,AQ</item>																									
+																									
+<item>+54,AR</item>																									
+																									
+<item>+374,AM</item>																									
+																									
+<item>+297,AW</item>																									
+																									
+<item>+61,AU</item>																									
+																									
+<item>+43,AT</item>																									
+																									
+<item>+994,AZ</item>																									
+																									
+<item>+973,BH</item>																									
+																									
+<item>+880,BD</item>																									
+																									
+<item>+375,BY</item>																									
+																									
+<item>+32,BE</item>																									
+																									
+<item>+501,BZ</item>																									
+																									
+<item>+229,BJ</item>																									
+																									
+<item>+975,BT</item>																									
+																									
+<item>+591,BO</item>																									
+																									
+<item>+387,BA</item>																									
+																									
+<item>+267,BW</item>																									
+																									
+<item>+55,BR</item>																									
+																									
+<item>+673,BN</item>																									
+																									
+<item>+359,BG</item>																									
+																									
+<item>+226,BF</item>																									
+																									
+<item>+95,MM</item>																									
+																									
+<item>+257,BI</item>																									
+																									
+<item>+855,KH</item>																									
+																									
+<item>+237,CM</item>																									
+																									
+<item>+1,CA</item>																									
+																									
+<item>+238,CV</item>																									
+																									
+<item>+236,CF</item>																									
+																									
+<item>+235,TD</item>																									
+																									
+<item>+56,CL</item>																									
+																									
+<item>+86,CN</item>																									
+																									
+<item>+61,CX</item>																									
+																									
+<item>+61,CC</item>																									
+																									
+<item>+57,CO</item>																									
+																									
+<item>+269,KM</item>																									
+																									
+<item>+242,CG</item>																									
+																									
+<item>+243,CD</item>																									
+																									
+<item>+682,CK</item>																									
+																									
+<item>+506,CR</item>																									
+																									
+<item>+385,HR</item>																									
+																									
+<item>+53,CU</item>																									
+																									
+<item>+357,CY</item>																									
+																									
+<item>+420,CZ</item>																									
+																									
+<item>+45,DK</item>																									
+																									
+<item>+253,DJ</item>																									
+																									
+<item>+670,TL</item>																									
+																									
+<item>+593,EC</item>																									
+																									
+<item>+20,EG</item>																									
+																									
+<item>+503,SV</item>																									
+																									
+<item>+240,GQ</item>																									
+																									
+<item>+291,ER</item>																									
+																									
+<item>+372,EE</item>																									
+																									
+<item>+251,ET</item>																									
+																									
+<item>+500,FK</item>																									
+																									
+<item>+298,FO</item>																									
+																									
+<item>+679,FJ</item>																									
+																									
+<item>+358,FI</item>																									
+																									
+<item>+33,FR</item>																									
+																									
+<item>+689,PF</item>																									
+																									
+<item>+241,GA</item>																									
+																									
+<item>+220,GM</item>																									
+																									
+<item>+995,GE</item>																									
+																									
+<item>+49,DE</item>																									
+																									
+<item>+233,GH</item>																									
+																									
+<item>+350,GI</item>																									
+																									
+<item>+30,GR</item>																									
+																									
+<item>+299,GL</item>																									
+																									
+<item>+502,GT</item>																									
+																									
+<item>+224,GN</item>																									
+																									
+<item>+245,GW</item>																									
+																									
+<item>+592,GY</item>																									
+																									
+<item>+509,HT</item>																									
+																									
+<item>+504,HN</item>																									
+																									
+<item>+852,HK</item>																									
+																									
+<item>+36,HU</item>																									
+																									
+<item>+91,IN</item>																									
+																									
+<item>+62,ID</item>																									
+																									
+<item>+98,IR</item>																									
+																									
+<item>+964,IQ</item>																									
+																									
+<item>+353,IE</item>																									
+																									
+<item>+44,IM</item>																									
+																									
+<item>+972,IL</item>																									
+																									
+<item>+39,IT</item>																									
+																									
+<item>+225,CI</item>																									
+																									
+<item>+81,JP</item>																									
+																									
+<item>+962,JO</item>																									
+																									
+<item>+7,KZ</item>																									
+																									
+<item>+254,KE</item>																									
+																									
+<item>+686,KI</item>																									
+																									
+<item>+965,KW</item>																									
+																									
+<item>+996,KG</item>																									
+																									
+<item>+856,LA</item>																									
+																									
+<item>+371,LV</item>																									
+																									
+<item>+961,LB</item>																									
+																									
+<item>+266,LS</item>																									
+																									
+<item>+231,LR</item>																									
+																									
+<item>+218,LY</item>																									
+																									
+<item>+423,LI</item>																									
+																									
+<item>+370,LT</item>																									
+																									
+<item>+352,LU</item>																									
+																									
+<item>+853,MO</item>																									
+																									
+<item>+389,MK</item>																									
+																									
+<item>+261,MG</item>																									
+																									
+<item>+265,MW</item>																									
+																									
+<item>+60,MY</item>																									
+																									
+<item>+960,MV</item>																									
+																									
+<item>+223,ML</item>																									
+																									
+<item>+356,MT</item>																									
+																									
+<item>+692,MH</item>																									
+																									
+<item>+222,MR</item>																									
+																									
+<item>+230,MU</item>																									
+																									
+<item>+262,YT</item>																									
+																									
+<item>+52,MX</item>																									
+																									
+<item>+691,FM</item>																									
+																									
+<item>+373,MD</item>																									
+																									
+<item>+377,MC</item>																									
+																									
+<item>+976,MN</item>																									
+																									
+<item>+382,ME</item>																									
+																									
+<item>+212,MA</item>																									
+																									
+<item>+258,MZ</item>																									
+																									
+<item>+264,NA</item>																									
+																									
+<item>+674,NR</item>																									
+																									
+<item>+977,NP</item>																									
+																									
+<item>+31,NL</item>																									
+																									
+<item>+599,AN</item>																									
+																									
+<item>+687,NC</item>																									
+																									
+<item>+64,NZ</item>																									
+																									
+<item>+505,NI</item>																									
+																									
+<item>+227,NE</item>																									
+																									
+<item>+234,NG</item>																									
+																									
+<item>+683,NU</item>																									
+																									
+<item>+850,KP</item>																									
+																									
+<item>+47,NO</item>																									
+																									
+<item>+968,OM</item>																									
+																									
+<item>+92,PK</item>																									
+																									
+<item>+680,PW</item>																									
+																									
+<item>+507,PA</item>																									
+																									
+<item>+675,PG</item>																									
+																									
+<item>+595,PY</item>																									
+																									
+<item>+51,PE</item>																									
+																									
+<item>+63,PH</item>																									
+																									
+<item>+870,PN</item>																									
+																									
+<item>+48,PL</item>																									
+																									
+<item>+351,PT</item>																									
+																									
+<item>+1,PR</item>																									
+																									
+<item>+974,QA</item>																									
+																									
+<item>+40,RO</item>																									
+																									
+<item>+7,RU</item>																									
+																									
+<item>+250,RW</item>																									
+																									
+<item>+590,BL</item>																									
+																									
+<item>+685,WS</item>																									
+																									
+<item>+378,SM</item>																									
+																									
+<item>+239,ST</item>																									
+																									
+<item>+966,SA</item>																									
+																									
+<item>+221,SN</item>																									
+																									
+<item>+381,RS</item>																									
+																									
+<item>+248,SC</item>																									
+																									
+<item>+232,SL</item>																									
+																									
+<item>+65,SG</item>																									
+																									
+<item>+421,SK</item>																									
+																									
+<item>+386,SI</item>																									
+																									
+<item>+677,SB</item>																									
+																									
+<item>+252,SO</item>																									
+																									
+<item>+27,ZA</item>																									
+																									
+<item>+82,KR</item>																									
+																									
+<item>+34,ES</item>																									
+																									
+<item>+94,LK</item>																									
+																									
+<item>+290,SH</item>																									
+																									
+<item>+508,PM</item>																									
+																									
+<item>+249,SD</item>																									
+																									
+<item>+597,SR</item>																									
+																									
+<item>+268,SZ</item>																									
+																									
+<item>+46,SE</item>																									
+																									
+<item>+41,CH</item>																									
+																									
+<item>+963,SY</item>																									
+																									
+<item>+886,TW</item>																									
+																									
+<item>+992,TJ</item>																									
+																									
+<item>+255,TZ</item>																									
+																									
+<item>+66,TH</item>																									
+																									
+<item>+228,TG</item>																									
+																									
+<item>+690,TK</item>																									
+																									
+<item>+676,TO</item>																									
+																									
+<item>+216,TN</item>																									
+																									
+<item>+90,TR</item>																									
+																									
+<item>+993,TM</item>																									
+																									
+<item>+688,TV</item>																									
+																									
+<item>+971,AE</item>																									
+																									
+<item>+256,UG</item>																									
+																									
+<item>+44,GB</item>																									
+																									
+<item>+380,UA</item>																									
+																									
+<item>+598,UY</item>																									
+																									
+<item>+1,US</item>																									
+																									
+<item>+998,UZ</item>																									
+																									
+<item>+678,VU</item>																									
+																									
+<item>+39,VA</item>																									
+																									
+<item>+58,VE</item>																									
+																									
+<item>+84,VN</item>																									
+																									
+<item>+681,WF</item>																									
+																									
+<item>+967,YE</item>																									
+																									
+<item>+260,ZM</item>																									
+																									
+<item>+263,ZW</item>																									
+																									
+</string-array>																									
+																									
+</resources>																									

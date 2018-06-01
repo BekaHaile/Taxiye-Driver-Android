@@ -174,6 +174,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) buttonMarkFailed.getLayoutParams();
 		params.setMargins((int)(30f*ASSL.Xscale()), 0, 0, 0);
+		params.setMarginStart((int)(30f*ASSL.Xscale()));
+		params.setMarginEnd(0);
 		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
@@ -199,6 +201,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 				buttonMarkFailed.setText(activity.getResources().getString(R.string.failed));
 				buttonMarkFailed.setEnabled(false);
 				params.setMargins(0, 0, 0, 0);
+				params.setMarginStart(0);
+				params.setMarginEnd(0);
 				call.setEnabled(false);
 				buttonMarkDeliver.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
@@ -386,8 +390,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 								int width =  (linearLayoutProgress.getWidth() / i)* (finalJ -1);
 								Log.e("doori4", String.valueOf(linearLayoutProgress.getWidth() +" i="+i+" j="+finalJ));
 								Log.e("doori3", String.valueOf(width));
-//								rp.setMargins(leftMargin, 0, 0, 15);
-								rp.leftMargin=width + 4;
+								rp.setMarginStart(width + 4);
 								relativelayoutProgressInfo.setLayoutParams(rp);
 							}
 						}, 200);

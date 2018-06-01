@@ -10,7 +10,7 @@
         android:id="@+id/topBar"
         android:layout_width="720px"
         android:layout_height="96px"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/black_top_bar_bg">
 
@@ -29,9 +29,10 @@
             android:layout_width="60.7px"
             android:layout_height="76.9px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
+            android:layout_marginStart="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:src="@drawable/back_white_selector"
+            android:rotationY="@integer/locale_mirror_flip"/>
     </RelativeLayout>
 
 
@@ -48,7 +49,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:textSize="35px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:text="@string/self_audit_caps"
             android:textColor="@color/new_orange"/>
 
@@ -57,7 +58,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_below="@+id/textViewSelfAudit"
             android:textSize="30px"
             android:layout_marginTop="28px"/>
@@ -67,7 +68,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_below="@+id/textViewSelfAuditLast"
             android:textSize="30px"
             android:layout_marginTop="17px"/>
@@ -77,7 +78,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:textSize="30px"
             android:layout_below="@+id/textViewSelfAuditNext"
             android:layout_marginTop="19px"/>
@@ -95,8 +96,8 @@
             android:layout_width="12px"
             android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginRight="60px"
-            android:layout_alignParentRight="true"
+            android:layout_marginEnd="60px"
+            android:layout_alignParentEnd="true"
             android:visibility="visible"
             android:src="@drawable/audit_next_arrow"/>
 
@@ -115,7 +116,7 @@
             android:id="@+id/textViewNJAutoBranding"
             android:layout_width="617px"
             android:textSize="35px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_height="wrap_content"
             android:text="@string/non_jugnoo_auto_branding"
             android:textColor="@color/new_orange"/>
@@ -124,7 +125,7 @@
             android:id="@+id/textViewNJBOffer"
             android:layout_below="@+id/textViewNJAutoBranding"
             android:layout_width="617px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
             android:textSize="30px"
@@ -134,7 +135,7 @@
             android:id="@+id/textViewNJBNumber"
             android:layout_below="@+id/textViewNJBOffer"
             android:layout_width="617px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
             android:textSize="30px"
@@ -145,7 +146,7 @@
             android:id="@+id/textViewNJAutoBrandingStatus"
             android:layout_below="@+id/textViewNJBNumber"
             android:layout_width="617px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
             android:textSize="30px"
@@ -164,8 +165,8 @@
             android:layout_width="12px"
             android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginRight="60px"
-            android:layout_alignParentRight="true"
+            android:layout_marginEnd="60px"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/audit_next_arrow"/>
 
     </RelativeLayout>
@@ -184,7 +185,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:textSize="35px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:text="@string/non_jugnoo_auto_audit"
             android:textColor="@color/new_orange"/>
 
@@ -195,7 +196,7 @@
             android:layout_height="wrap_content"
             android:text="@string/NA"
             android:visibility="visible"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:textSize="30px"
             android:layout_marginTop="25px"/>
 
@@ -206,7 +207,7 @@
             android:layout_height="wrap_content"
             android:text="@string/NA"
             android:textSize="30px"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:visibility="visible"
             android:layout_marginTop="19px"/>
 
@@ -216,7 +217,7 @@
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:layout_marginLeft="32px"
+            android:layout_marginStart="32px"
             android:textSize="30px"
             android:layout_marginTop="28px"/>
 
@@ -225,8 +226,8 @@
             android:layout_width="12px"
             android:layout_height="20px"
             android:layout_centerVertical="true"
-            android:layout_marginRight="60px"
-            android:layout_alignParentRight="true"
+            android:layout_marginEnd="60px"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/audit_next_arrow"/>
 
     </RelativeLayout>

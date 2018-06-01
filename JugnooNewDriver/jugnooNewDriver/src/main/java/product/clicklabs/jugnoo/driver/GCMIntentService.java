@@ -87,8 +87,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 	private static final long WAKELOCK_TIMEOUT = 5000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
-	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_big_drawable;
-	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_small_drawable;
+	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
+	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_big_drawable;
 	HippoNotificationConfig fuguNotificationConfig = new HippoNotificationConfig();
 	public GCMIntentService() {
 	}
@@ -940,6 +940,12 @@ public class GCMIntentService extends FirebaseMessagingService {
 								notificationManagerCustomID(this, title, getResources().getString(R.string.sharing_payment_recieved)
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
 										Integer.parseInt(sharingRideData.sharingEngagementId), DriverSplashActivity.class, null);
+							}
+							else if (PushFlags.MPESA_DRIVER_SUCCESS_PUSH.getOrdinal() == flag) {
+								Intent mpesaPush = new Intent(Constants.UPDATE_MPESA_PRICE);
+								mpesaPush.putExtra("to_pay", jObj.getString("to_pay"));
+								sendBroadcast(mpesaPush);
+
 							}
 
 							String message1 = jObj.optString("message", " ");

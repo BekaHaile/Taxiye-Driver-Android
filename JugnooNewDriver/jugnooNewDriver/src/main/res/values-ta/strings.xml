@@ -4,9 +4,6 @@
 
 
     <string name="app_name">Jingo Drivers</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
 
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -20,11 +17,6 @@
 
 
     <!-- <string name="fb_app_id">782131025144439</string> -->
-    <string name="fb_app_id">782131025144439</string>
-
-
-    <string name="language_english_text">English</string>
-    <string name="language_hindi_text">हिंदी</string>
 
 
     <string name="rupee">\u20B9</string>
@@ -36,27 +28,13 @@
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
 
 
-
-    <string name="about_1_text">ஜுக்னூ சென்னை மாநகரில் எளிதான மற்றும் மலிவான சவாரிகள் வழங்குகிறது.
-        மலிவான கட்டணத்தில் எளிதான சவாரி கிடைத்தால் நன்மை தானே.
-    </string>
-    <string name="about_2_text">விலை அட்டை</string>
     <string name="email_id">இ-மெயில் ஐடி</string>
     <string name="confirm_email_id">இ-மெயில் ஐடி உறுதிப்படுத்தவும்</string>
     <string name="password">கடவுச்சொல்/பாஸ்வோர்ட்</string>
-    <string name="sign_in">உள்நுழைய/ செய்ன் இன்</string>
     <string name="forgot_password">கடவுச்சொல்லை/பாஸ்வோர்ட் மறந்துவிட்டிர்களா ?</string>
     <string name="sign_up">பதிவு செய்யவும்</string>
     <string name="or">அல்லது</string>
-    <string name="sign_in_with_facebook">பேஸ்புக் மூலம் உள்நுழையவும்</string>
-    <string name="save_to_favorite">பிடித்தவை/அடிக்கடி பயன்படுத்தப்படும் பட்டியலில் சேர்க்கவும்
-    </string>
-    <string name="enter_name_for_favorite">பிடித்தவை\'அடிக்கடி பயன்படுத்தப்படும்\' பட்டியலின் பெயரை
-        உள்ளிடவும்
-    </string>
     <string name="ok">சரி</string>
-    <string name="first_name">முதல் பெயர்</string>
-    <string name="last_name">கடைசி பெயர்</string>
     <string name="phone_number">தொலைபேசி எண்</string>
     <string name="confirm_password">கடவுச்சொல்லை உறுதிப்படுத்தவும்</string>
     <string name="confirmation_code">உறுதிப்படுத்தல் குறியீடு</string>
@@ -66,80 +44,37 @@
     </string>
     <string name="enter_code">குறியீட்டை உள்ளிடுக</string>
     <string name="done">முடிந்தது</string>
-    <string name="amount">ரூபாய்</string>
-    <string name="no_driver_available">மனிக்கவும். ஓட்டுனர்கள் கிடைக்கவில்லை</string>
     <string name="logout">விடுபதிகை</string>
-    <string name="are_you_sure_you_want_to_logout">நீங்கள் வெளியேற வேண்டும் என்பதை உறுதி செய்யுங்கள்
-        ?
-    </string>
     <string name="cancel">ரத்து செய்க</string>
     <string name="retry">மீண்டும் முயற்சி செய்க</string>
     <string name="select_language">மொழி தேர்வு செய்க</string>
     <string name="enter_phone_number">உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்</string>
-    <string name="enter_email">உங்கள் இ-மெயில் ஐடி/மின்னஞ்சல் முகவரியை உள்ளிடவும்</string>
-    <string name="send_email">மின்னஞ்சல்/இ-மெயில் அனுப்புக</string>
-    <string name="favorites">பிடித்தவை</string>
-    <string name="no_favorite_locations_added">பிடித்தவை\'அடிக்கடி பயன்படுத்தப்படும்\' பட்டியலின்
-        சேர்க்க படவில்லை
-    </string>
     <string name="from">இருந்து</string>
     <string name="to">வரை</string>
     <string name="rides">சவாரிகள்</string>
     <string name="no_rides_currently">தற்போது எந்த சவாரிகளும் இல்லை</string>
-    <string name="history">வரலாறு</string>
     <string name="missed">தவறவிட்ட சவாரிகள்</string>
     <string name="no_missed_rides_currently">தற்பொழுது எந்த தவறவிட்ட சவாரிகளும் இல்லை</string>
     <string name="update">புதுப்பிக்கவும்</string>
-    <string name="driver_mode">ஓட்டுனர் முறையில்</string>
     <string name="jugnoo_on">ஜுக்னூ ஆன்</string>
-    <string name="driver_type">ஓட்டுனர் வகை</string>
     <string name="ride_type">சவாரி வகை</string>
-    <string name="invite_friends">நண்பர்களை அழைக்க</string>
-    <string name="about">பற்றி</string>
     <string name="support">ஆதரவு</string>
-    <string name="sos">எஸ் ஒ எஸ்</string>
     <string name="language_preferences">மொழி விருப்பம்</string>
-    <string name="ride_in_progress">ஓடிகொண்டிருக்கும் சவாரி</string>
-    <string name="click_to_view">பார்வையிட கிளிக் செய்யவும்</string>
     <string name="start_ride">சவாரி-ஐ தொடங்கவும்</string>
     <string name="end_ride">சவாரி-ஐ நிறுத்தவும்</string>
     <string name="reached_destination">இலக்கை அடைந்தது</string>
     <string name="distance">தூரம்</string>
     <string name="wait_time">காத்திருக்கும் நேரம்</string>
     <string name="fare">கட்டணம்</string>
-    <string name="driver_rating">ஓட்டுனர் மதிப்பீடு</string>
-    <string name="customer_rating">வாடிக்கையாளர் மதிப்பீடு</string>
-    <string name="request_ride">கோரிக்கை-சவாரி செய்ய</string>
-    <string name="assigning_driver">நியமிக்கப்பட்ட ஓட்டுனர்</string>
-    <string name="no_drivers_nearby">இப்பகுதியில் ஓட்டுனர்கள் இல்லை</string>
-    <string name="could_not_find_nearest_driver_distance">அருகில் ஓட்டுனர்கள் யாரும் இல்லை</string>
-    <string name="nearest_driver_is">அருகில் உள்ள ஓட்டுனர்</string>
-    <string name="away">தொலைவில்</string>
-    <string name="cancel_request_in">கோரிக்கையை ரத்து செய்ய</string>
-    <string name="your_ride_is">தங்களது சவாரி</string>
-    <string name="away_and_will_arrive">தொலைவில் இருக்கிறது மற்றும் சுமாராக வந்தடையும் நேரம்
-    </string>
-    <string name="will_arrive_in">வந்தடையும் நேரம்</string>
-    <string name="call_driver">ஓட்டுனரை அழையுங்கள்</string>
-    <string name="you_have">தங்களுக்கு ஒரு</string>
-    <string name="ride_request">கோரிக்கை சவாரி செய்ய</string>
     <string name="accept_ride">சவாரியை ஏற்கிறேன்</string>
-    <string name="cancel_request">கோரிக்கையை ரத்து செய்ய</string>
     <string name="cancel_ride">சவாரியை ரத்து செய்ய</string>
-    <string name="rating">மதிப்பீடு</string>
     <string name="call">அழைப்பு</string>
     <string name="ride_time">சவாரி நேரம்</string>
-    <string name="start_wait">வைடிங் தொடங்க</string>
-    <string name="stop_wait">வைடிங் நிறுத்த</string>
     <string name="submit">சமர்ப்பிக்க</string>
-    <string name="search_results">முடிவுகளை தேட</string>
     <string name="search">தேடு</string>
     <string name="your_login_session_expired">தங்களது பதிவு அமர்வு /லோக் இன் காலாவதியாகிவிட்டது
     </string>
     <string name="alert">எச்சரிக்கை</string>
-    <string name="start_ride_error">சவாரியை தொடுங்குவதற்கு , வாடிக்கையாளர் இருக்கும் இடத்திற்கு
-        செல்லவும்
-    </string>
     <string name="server_error">சர்வர் பிழை. தயவுசெய்து மீண்டும் முயற்சிக்கவும்.</string>
     <string name="server_not_responding">மன்னிக்கவும்!! சேவையகம்/சர்வர் பதிலளிக்கவில்லை. தயவுசெய்து
         மீண்டும் முயற்சிக்கவும்.
@@ -154,7 +89,6 @@
     <string name="rides_taken">எடுத்து சவாரிகள்</string>
     <string name="rides_missed">தவறவிட்ட சவாரிகள்</string>
     <string name="rides_cancelled">ரத்து செய்த சவாரிகள்</string>
-    <string name="ride_cancelled">ரத்து செய்த சவாரிகள்</string>
     <string name="online_hours">ஆன்லைன்-இல் இருக்கும் நேரம்</string>
     <string name="Auto_not_working">ஆட்டோ பழுது அடைந்து விட்டது</string>
     <string name="Traffic">போக்குவரத்து நெரிசல்</string>
@@ -165,18 +99,12 @@
     <string name="Not_able_to_contact_customer">வாடிக்கையாளரை தொடர்பு கொள்ள முடியவில்லை</string>
     <string name="Customer_behavior">வாடிக்கையாளர்-இன் மோசமான நடத்தை</string>
     <string name="profile">சுயவிவரம்</string>
-    <string name="Duty_Hours">பணி நேரம்</string>
     <string name="call_us">எங்களை அழைக்க</string>
-    <string name="check_all">எல்லாவற்றையும் செக் செய்ய</string>
-    <string name="uncheck_all">எல்லாவற்றையும் அன்செக் செய்ய</string>
-    <string name="add_cash">பணம் சேர்க்க</string>
-    <string name="add_customer_cash">வாடிக்கையாளர் பணம் சேர்க்க</string>
     <string name="arrived">வந்துவிட்டது</string>
     <string name="accept_subsidy">ஏற்பதற்கான மானியம்</string>
     <string name="account">அக்கௌன்ட்</string>
     <string name="accept">சரி</string>
     <string name="away_from_you">தங்கள் இடத்தில் இருந்து தொலைவில்:</string>
-    <string name="cancel_ride_text">சவாரியை உறுதியாக ரத்து செய்ய வேண்டுமா?</string>
     <string name="end_ride_text">சவாரியை உறுதியாக நிறுத்த வேண்டுமா?</string>
     <string name="logout_text">உறுதியாக விடுபதிகை/ லாக் அவுட் செய்ய வேண்டுமா?</string>
     <string name="customer_pickup_text">தங்களுக்கு ஒரு அழைப்பு நியமிக்கப்பட்டுள்ளது. வாடிக்கையாளரை
@@ -197,14 +125,9 @@
     <string name="change_phone_no_text">மாற்றப்பட்டது தொலைபேசி என் மற்றும் முந்தைய தொலைபேசி எண் ,
         இரண்டும் ஒன்றே
     </string>
-    <string name="local_positon_text">உள்ளூர் நிலையை பெற முடியவில்லை</string>
-    <string name="overall_position_text">ஒட்டுமொத்த நிலையை பெற முடியவில்லை</string>
-    <string name="convenience_charges_text">வாடிக்கையாளர் வசதிக்காக கட்டணம்:</string>
     <string name="code_empty">குறியீடு காலியாக இருக்க முடியாது</string>
     <string name="confirm_email_text">இ-மெயில் ஐ டி மாறுகிறது</string>
     <string name="choose_email_client">இ- மெயில் வாடிக்கையாளர் தேர்வு செய்யவும்</string>
-    <string name="select_time_error_text">தற்போதைய நேரத்திற்கு முன் நேரம் தேர்ந்தெடுக்க முடியாது
-    </string>
     <string name="call_me">என்னை அழையுங்கள்</string>
     <string name="change_phone_no">தொலைபேசி எண்ணை மாற்றவும்</string>
     <string name="creating_game">உருவாக்கும் விளையாட்டு...</string>
@@ -214,17 +137,11 @@
     <string name="km">கி.மீ.</string>
     <string name="disable_mock_location">முதலில் போலி இடத்தை முடக்கவும்</string>
     <string name="daily">தினசரி</string>
-    <string name="distance2">தூரம்</string>
-    <string name="discount">தள்ளுபடி</string>
     <string name="enter_new_phone_no">புதிய என்னை பதிப்பிக்கவும்</string>
     <string name="enter_fare">கட்டணத்தை பதிப்பிக்கவும்</string>
     <string name="enter_otp">ஒரு முறை கடவுச்சொல்லை பதிப்பிக்கவும்</string>
     <string name="email">இ-மெயில் :</string>
-    <string name="fare1">கட்டணம்</string>
     <string name="forgot_password_cap">கடவுச்சொல்லை மறந்துவிட்டேன்</string>
-    <string name="free_ride">இலவச சவாரி</string>
-    <string name="final_amount">இறுதி கட்டணம்</string>
-    <string name="fare2">கட்டணம்:\n</string>
     <string name="fare_details">கட்டணம் விவரங்கள்</string>
     <string name="go_to_setting">செட்டிங்க்ஸ்-க்கு செல்லவும்</string>
     <string name="google_pay_service_error">கூகுள் ப்ளே செர்விசெஸ் பிழை</string>
@@ -232,19 +149,16 @@
         காலாவதியானது. தயவு செய்து கூகுள் ப்ளே செர்விசெஸ்-ஐ இன்ஸ்டால் செய்யவும்
     </string>
     <string name="go_to_playstore">ப்ளே ஸ்டோருக்கு செல்லவும்:</string>
-    <string name="help">உதவி</string>
     <string name="have_arrived">நீங்கள் வந்து விட்டீர்களா?</string>
     <string name="invite_earn">அழைத்து சம்பாதிங்கள்</string>
     <string name="create_new_account_msg">நீங்கள் இன்னும் ஒரு புதிய கணக்கை உருவாக்க விரும்பினால்
     </string>
     <string name="not_recived_otp">எனக்கு ஒ.டி.பீ வரவில்லை</string>
     <string name="Pls_enter_email">Please enter Email</string>
-    <string name="jugnoo_cash">Jugnoo பணம்</string>
     <string name="jugnoo">Jugnoo</string>
     <string name="jugnoo_off">Jugnoo இப்பொது அணைக்க பட்டது</string>
     <string name="jugnoo_cut">Jugnoo கமிஷன்</string>
     <string name="loading">ஏற்றுதல்....</string>
-    <string name="local_position">உல்லூர் நிலை</string>
     <string name="location_setting">இருப்பிட செட்டிங்க்ஸ்</string>
     <string name="location_setting_enable_message">இருப்பிடம் இயக்கப்படவில்லை . நீங்கள் செட்டிங்க்ஸ்
         மெனுவில் இருந்து இயக்க விரும்புகிறீர்களா ?
@@ -252,8 +166,6 @@
     <string name="luggage_charge">லகேஜ் கட்டணம்</string>
     <string name="login">லோக் இன்/பதிவு அமர்வு</string>
     <string name="restart_phone">உங்கள் தொலைபேசி மறுதொடக்கம் செய்யவும்</string>
-    <string name="min_fare">குறைந்தபட்ச கட்டணம்</string>
-    <string name="meals_on">மீல்ஸ் ON</string>
     <string name="mail_us">இ-மெயில் அனுப்புங்கள்</string>
     <string name="message">செய்தி</string>
     <string name="no">இல்லை</string>
@@ -265,30 +177,17 @@
         மற்றும் Jugnoo பயன்படுத்தி தொடர 5 நிமிடங்கள் காத்திருக்கவும்.
     </string>
     <string name="no_data_to_show">எந்த தகவல்கலும் இல்லை காமிக்க</string>
-    <string name="no_cash">பணம் இல்லை</string>
     <string name="no_of_rides">சவாரிகள் கணக்கு</string>
     <string name="name">பெயர்</string>
     <string name="name_colon">பெயர் :</string>
-    <string name="overall_position">ஒட்டுமொத்த நிலை</string>
-    <string name="some_amount">தயவு செய்து கட்டணத்தை உள்ளிடவும்</string>
-    <string name="less_amount">தயவு செய்து குறைந்த கட்டணத்தை உள்ளிடவும்</string>
-    <string name="valid_amount">செல்லுபடியாகும் கட்டணத்தை உள்ளிடவும்</string>
     <string name="Phone_number_not_empty">தொலைபேசி எண் காலியாக இருக்க முடியாது</string>
     <string name="valid_phone_number">சரியான மொபைல் எண்ணை உள்ளிடவும்</string>
     <string name="please_wait">தயவு செய்து காத்திருக்கவும்</string>
     <string name="enter_some_fare">ஏதாவது ஒரு கட்டணம் உள்ளிடவும்</string>
-    <string name="please_reach">தயவு செய்து அடையவும்</string>
-    <string name="by">மூலம்</string>
-    <string name="take_fare_from_customer">வாடிக்கையாளர் இடம் இருந்து மேலே காட்டப்பட்ட கட்டணத்தை
-        எடுத்து கொள்ளவும் .
-    </string>
     <string name="enter_name">தயவு செய்து பெயரை உள்ளிடவும்.</string>
     <string name="Pls_enter_email_or_phn">இ- மெயில் மற்றும் தொலைபேசி எண் உள்ளிடவும்.</string>
-    <string name="confirm_email">இ- மெயில் ஐ டி உறுதி செய்யவும்</string>
-    <string name="pls_enter_phone_number">தொலைபேசி எண் உறுதி செய்யவும்</string>
     <string name="enter_valid_phone_number">சரியான தொலைபேசி என்னை உள்ளிடவும்</string>
     <string name="enter_password">தயவு செய்து கடவுச்சொல்லை உள்ளிடவும்</string>
-    <string name="pls_confirm_password">கடவுச்சொல்லை உறுதிப்படுத்தவும்</string>
     <string name="password_atleast_6">கடவுச்சொல் குறைந்தபட்சம் ஆறு எழுத்துக்கள் இருக்க வேண்டும்
     </string>
     <string name="valid_email">சரியான இ மெயில் ஐ டி -ஐ உள்ளிடவும்</string>
@@ -296,10 +195,6 @@
     <string name="password_to_continue">மேலும் தொடர தயவு செய்து கடவுச்சொல்லை உள்ளிடவும்</string>
     <string name="enter_new_phone_number">உங்கள் தொலைபேசி என்னை உள்ளிடவும்</string>
     <string name="position">நிலை</string>
-    <string name="enter_phone_to_have_instruction">உங்கள் கடவுச்சொல்லை மீட்டமைக்க வழிமுறைகளை பெற
-        உங்கள் தொலைபேசி என்னை வழங்கவும்.
-    </string>
-    <string name="pay">செலுத்த</string>
     <string name="please_login_from_these_accounts">எதாவது ஒரு அக்கௌன்ட் மூலமாக உள்நுழையவும்
     </string>
     <string name="please_contact_customer_care">எங்கள் வாடிக்கையாளர் சேவையைத் தொடர்பு கொள்ளுங்கள்
@@ -307,7 +202,6 @@
     <string name="paid_cash">ரொக்கமாக வழங்கப்படும்</string>
     <string name="ride_id">சவாரி ஐ டி</string>
     <string name="Ride_id">சவாரி ஐ டி</string>
-    <string name="ride_time2">சவாரி நேரம்</string>
     <string name="rate">மதிப்பீடு</string>
     <string name="ride_in_progress_cant_logout">சவாரி ஓடிக்கொண்டிருக்கிறது . முடிந்த பின் தான்
         வெளியேற முடியும்
@@ -318,10 +212,6 @@
     <string name="reg_info">சவாரி விவரங்கள்</string>
     <string name="ride_details">சவாரி விவரங்கள்</string>
     <string name="ride_fare">சவாரி கட்டணம்</string>
-    <string name="can_not_calculated_distance">
-        ಕ್ಷಮಿಸಿ, ಇದೀಗ ನಿಮ್ಮ ಅಂತರವನ್ನು ಲೆಕ್ಕ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ.
-    </string>
-    <string name="set">அமைக்கவும்</string>
     <string name="SUBMIT">சமர்ப்பிக்க</string>
     <string name="super_driver">சூப்பர் டிரைவர்ஸ்</string>
     <string name="sharing_rides">பகிரும் சவாரி</string>
@@ -337,12 +227,8 @@
     <string name="app_needs_network_time">அப்பை பயன்படுத்த
         \'நெட்வொர்க் வழங்கும் நேரம்\' செயல்பாட்டில்.இருக்க வேண்டும், செட்டிங்க்ஸில் இருந்து
         செயல்படுத்தவும்</string>"
-    <string name="take">எடுத்து கொள்ளவும்</string>
-    <string name="req_accepted_by_other_driver">இந்த கோரிக்கை மற்ற ஒடுனரால் ஏற்கப்பட்டுள்ளது
-    </string>
     <string name="amount_entered">உள்ளிட்ட தொகை</string>
     <string name="time">நேரம்</string>
-    <string name="time_new">நேரம்</string>
     <string name="jugnoo_ride_over">Jugnoo சவாரி முடிந்தது</string>
     <string name="today">இன்று</string>
     <string name="this_month">இந்த மாதம்</string>
@@ -357,12 +243,8 @@
     <string name="verify_me">எண்ணை சரிபார்க்க</string>
     <string name="waiting_for_location">இர்ருபிடத்தை தேடுகிறது</string>
     <string name="wait">காத்திரு</string>
-    <string name="whatsapp_not_installed">Whatsapp நிறுவப்படவில்லை</string>
     <string name="weekly">வாராந்திர</string>
     <string name="will_revert_you">விரைவில் உங்களுக்கு பதிலளிக்க படும்</string>
-    <string name="your_position">உங்களது நிலை</string>
-    <string name="your_overall_position">உங்களது ஒட்டுமொத்த நிலை</string>
-    <string name="got_new_request">உங்களுக்கு ஒரு புதிய கோரிக்கை கிடைத்தது</string>
     <string name="present_near_customer_location">நீங்கள் சவாரி வந்து குறிக்க வாடிக்கையாளர் இடம்
         அருகே தற்போது இருக்க வேண்டும்
     </string>
@@ -375,39 +257,27 @@
     <string name="your_referral_code">உங்கள் பரிந்துரை குறியீடு</string>
     <string name="tap_to_retry">மீண்டும் முயற்சி செய்யவும்</string>
     <string name="error_occured_tap_to_retry">பிழை ஏற்பட்டது. மீண்டும் முயற்சி செய்யவும்</string>
-    <string name="no_missed_rides">தற்போது தவறிய சவாரிகள் இல்லை</string>
     <string name="no_internet_tap_to_retry">இணைய இணைப்பு இல்லை. மீண்டும் முயற்சி செய்யவும்</string>
     <string name="no_rides">தற்போது சவாரிகள் இல்லை</string>
     <string name="pickup_location">தங்களது பிக் அப் இடம்</string>
     <string name="money_to">சுக்நூவின் பணம்</string>
     <string name="start_ride_loc">சவாரி தொடங்கும் இடம்</string>
-    <string name="sec_left">மீதம் உள்ள நொடிகள்</string>
     <string name="km_away">கி.மீ. தொலைவில்</string>
     <string name="m_away">மீ. தொலைவில்</string>
     <string name="some_error_occured">சில பிழைகள் ஏற்பட்டுள்ளது</string>
     <string name="take_cash">வாங்கவேண்டிய பணம்</string>
-    <string name="wallet">பணப்பை</string>
-    <string name="Scheduled_Ride_Pickup">திட்டமிடப்பட்ட சவாரிகள்</string>
-    <string name="referral_msg">என் குறியீடு % 1 $ கள் Jugnoo வாடிக்கையாளர் ஆப் பதிவிறக்க மற்றும்
-        jugnoo பணம் சம்பாதிக்க பயன்படுத்தவும். இங்கிருந்து http://smarturl.it/jugnoo அது
-        பதிவிறக்கவும்/Download
-    </string>
     <string name="no_of_account">கணக்குகள் ஏற்கனவே இந்த சாதனத்தில் உர்ருவகபட்டுள்ளது</string>
     <string name="enter_otp_received">தயவு செய்து உங்கல்லக்கு செய்தியாக வந்த O.T.P-ஐ உள்ளிடவும்
     </string>
     <string name="select_reason">ஒரு காரணத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="referral_money">பரிந்துரை பணம்</string>
     <string name="send">அனுப்பு</string>
-    <string name="wait_here">இங்கு காத்திருங்கள்</string>
-    <string name="use_jugnoo_fare">ஜுக்னூ கட்டணம் பயன்படுத்துங்கள்</string>
-    <string name="view_account">சுயவிவர பார்க்கவும்</string>
     <string name="hint_created_multiple_account">நீங்கள் ஏற்கனவே இந்த சாதனத்தில் இருந்து 2 கணக்குகள்
         உருவாக்கிய. புதிய கணக்கை உருவாக்குவதில் காரணத்தை விளக்க கொள்ளவும்.
     </string>
     <string name="convenience_charge">வசதிக்கான கட்டணம்</string>
     <string name="cancel_subsidy">ரத்து மானியம்</string>
     <string name="inc_subsidy">(இனக். மானியம்)</string>
-    <string name="to_end">வரை:</string>
     <string name="Edit_profile">சுயவிவரத்தை திருத்த</string>
     <string name="info">தகவல்</string>
     <string name="local_leaderboard">கோவை</string>
@@ -420,20 +290,15 @@
     <string name="number_of_downloads">டவுன்லோட் எண்ணிக்கை</string>
     <string name="number_of_first_rides">முதல் சவாரி எண்ணிக்கை</string>
     <string name="money_earned">பரிந்துரைகல் மூலம் சம்பாதித்த பணம்</string>
-    <string name="notifications">அறிவிப்புகள்</string>
-    <string name="click_for_direction">வழிகாட்டி பார்க்க இதை அழுத்தவும்</string>
     <string name="time_left">மீதம் உள்ள நேரம்</string>
     <string name="enter_phone_no_to_reset_password">கடவுச்சொல் மாற்ற உங்கள் JUGNOO போன் நம்பர் பதிவு
         செய்யவும்
     </string>
-    <string name="customer_phone_number">வடிக்கையளர் போன் நம்பர்</string>
-    <string name="recharge_amount">ரீசார்ஜ் செய்யவேண்டிய தொகை</string>
     <string name="enter_amount">தொகையை பதிவு செய்யுங்கள்</string>
     <string name="paytm_recharge">PAYTM ரீசார்ஜ்</string>
     <string name="Confirm">உறுதி செய்யுங்கள்</string>
     <string name="Paytm_recharge">PAYTM ரீசார்ஜ்</string>
     <string name="phone_number_or_email">போன் நம்பர் அல்லது ஈமெயில்</string>
-    <string name="nl_otp_waiting_to_detect_otp">தானாக OTP கண்டறிய காத்திருகிறது</string>
     <string name="battery_low_message">சவாரி அக்செப்ட் செய்ய பேட்டரி நிலை 20% மேல் இருக்க
         வேண்டும்.
     </string>
@@ -445,16 +310,11 @@
     <string name="no_current_notification">தற்போது எந்த அறிவித்தலும் இல்லை</string>
     <string name="phone">தொலைபேசி</string>
     <string name="GENERATE_OTP">OTP உருவாக்கவும்</string>
-    <string name="otp">OTP</string>
     <string name="signin_via_otp">OTP மூலம் உள்செல்</string>
     <string name="Neutral">நடுநிலை</string>
-    <string name="Payments">பண வழக்கீடு</string>
-    <string name="PAYMENTS">பண வழக்கீடு</string>
     <string name="Today">இன்று</string>
     <string name="Last_week">கடந்த வாரம்</string>
     <string name="Last_month">கடந்த மாதம்</string>
-    <string name="upcoming_invoice">எதிர்வரும் விலைப்பட்டியல்</string>
-    <string name="current_invoice">தற்போதைய விலைப்பட்டியல்</string>
     <string name="Outstanding_amnt">நிலுவையில் உள்ள தொகை</string>
     <string name="jugnoo_cmsn">ஜுக்னூ கமிசன்</string>
     <string name="Manual_adjustment">கையேடு சரிசெய்தல்</string>
@@ -464,10 +324,6 @@
     <string name="paid_by_customer">பணம் வழியாக கட்டணம்</string>
     <string name="paid_using_wallet">ஆன்லைன் வழியாக கட்டணம்</string>
     <string name="acc_credited">செலுத்திய பணம்</string>
-    <string name="last_invoice">கடந்த விலைப்பட்டியல்</string>
-    <string name="last_invoice_details">முந்தைய கட்டணம்:</string>
-    <string name="last_payments">முந்தைய கட்டணங்கள்</string>
-    <string name="upcoming_payment_due_date">வரவிருக்கும் கட்டணம்</string>
     <string name="cash_via_paytm">பேடியம் மூலம் வந்த பணம்</string>
 
     <string name="data_effective_format">தேதி பயனுள்ள வடிவம:்</string>
@@ -496,13 +352,11 @@
     </string>
     <string name="sharing_payment_recieved">மொபைலுக்கான பகிர்ந்து கட்டணம் பெற்றுக்கொள்ளப்பட்டது
     </string>
-    <string name="please_give_customer">நாங்கள் தங்களுடைய கருத்துக்களை மிக முக்கியமாக கருதுகிறோம் .
-        தேய்வு செய்து மதிப்பீடு கொடுங்கள்
-    </string>
     <string name="start_loc">தொடங்கும் இடம்</string>
     <string name="driver_loc">ஓட்டுனரின் இடம்</string>
     <string name="customer_2">வாடிக்கையாளர் 2</string>
     <string name="mark_delivered">ஒப்படைப்புக்கான அடையாள குறி</string>
+    <string name="kms">கி மீ</string>
     <string name="order_id">பொருட்டு ஐ டி</string>
     <string name="thanks_for_feedback">உங்கள் மதிப்புமிக்க கருத்துக்கு நன்றி</string>
     <string name="total_amnt_till_now">இப்போது வரை மொத்த கட்டணம்</string>
@@ -512,13 +366,11 @@
     <string name="valid_email_phone_no">செல்லுபடியாகும் ஈ மெயில் அல்லது தொலைபேசி என்னை உள்ளிடவும்
     </string>
     <string name="select_destination">குறைந்தது ஒரு இலக்கு தேர்ந்தெடுக்கவும்</string>
-    <string name="fatafat_on">பாட்டாபட் ஆன்</string>
     <string name="Notifications">அறிவிப்புகள்</string>
     <string name="enter_customer_phone_no">வாடிக்கையாளர் தொலைபேசி என்னை உள்ளிடவும்</string>
     <string name="invoice_detail">விலைப்பட்டியல் விவரம்</string>
     <string name="generated_on">உருவாக்கப்பட்டது</string>
     <string name="share">பங்கு</string>
-    <string name="no_driver_available_message">Currently there are no drivers available nearby within 3km. We will look into it</string>
     <string name="phone_no_cnt_be_empty">தொலைபேசி எண் காலியாக இருக்க முடியாது</string>
 
     <string name="no_language_to_select">Language Option Not Available</string>
@@ -529,18 +381,13 @@
     <string name="ride_complete">சவாரி வெற்றிகரமாக முடிந்தது </string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ஒ டி பீ -ஐ மீண்டும் அனுப்பவும்</string>
-    <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">எங்களுக்கு மிஸ்ட் கால் கொடுங்கள் நாங்கள் உங்கள் அடையாளத்தைச் சரிபார்கிறோம்</string>
     <string name="give_misscall_to_verify">சரிபார்க்க மிஸ்ட் கால் கொடுக்கவும்.</string>
-    <string name="please_press_here">தயவு செய்து இங்கே அழுத்தவும்</string>
-
 
 
     <string name="return_reasons"> திரும்புவதற்கான காரணம் </string>
     <string name="Returned">திரும்ப </string>
-    <string name="collected">சேகரிக்கப்பட்ட</string>
     <string name="accepted"> ஏற்றுக்கொள்ளப்பட்ட </string>
-    <string name="in_ride">சவாரியில் </string>
     <string name="arrive_at_pickup_location">பிக் அப் இடத்திற்கு வந்து அடைய </string>
     <string name="make_delivery">ஒப்படைக்க </string>
 
@@ -559,7 +406,6 @@
     <string name="rate_your_vendor">உங்கள் விற்பனையாளரை மதிப்பிடவும்</string>
     <string name="view_orders">ஆடர்கள் பார்க்க</string>
     <string name="delivery_numbers">ஒப்படைப்பு எண்ணிக்கை</string>
-    <string name="approx">சுமார்</string>
     <string name="returned">திரும்ப</string>
     <string name="start_delivery_text">விநியோகம் துடங்குவதில் உறுதியாக இருக்கீர்களா</string>
     <string name="deliver">ஒப்படைக்க</string>
@@ -571,53 +417,34 @@
     <string name="delivery_completed">ஒப்படைப்பு  நிறைவு</string>
     <string name="delivery_cancelled">ஒப்படைப்ப ரத்து</string>
     <string name="cancelled">ரத்து</string>
-    <string name="address">முகவரி</string>
     <string name="delivered">ஒப்படைக்கபட்டன</string>
     <string name="delivery_on">ஒப்படைப்புகள் ஆன் </string>
     <string name="delivery_is_over">ஒப்படைப்பு முடிந்துவிட்டது</string>
     <string name="start_the_delivery">சவாரி தொடங்க</string>
-    <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். %s </string>
-    <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
-    <string name="order_no">Order No.</string>
     <string name="details">Details</string>
     <string name="owned">Owned</string>
-    <string name="auto">Auto</string>
 
-    <string name="to_no_colon">செய்ய</string>
-    <string name="no_deliveries_pending">ஒப்படைப்புகள் எதுவும் நிலுவையில் இல்லை</string>
-    <string name="no_deliveries_completed">எந்த ஒப்படைப்புகளும் முடியவில்லை </string>
     <string name="cash_collected">பணம் சேகரிக்கப்பட்டது </string>
-    <string name="s_no">வரிசை எண்</string>
 
-    <string name="present_near_delivery_location">இந்த ஆடர் ஒப்படைக்க பட்டது என்று உறுதி செய்வதற்கு, நீங்கள் ஒப்படைக்க வேண்டிய இடத்திற்கு அருகில் இருக்க வேண்டும் </string>"
+    "
     <string name="success">வெற்றி</string>
     <string name="outstanding_amount">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
     <string name="uploading">பதிவேற்ற</string>
 
     <string name="vehicle_status">வாகன நிலை</string>
     <string name="rented">வாடகைக்கு எடுக்கப்பட்ட</string>
-    <string name="auto_driver_confirmation">நீங்கள் ஒரு ஆட்டோ டிரைவர்?</string>
-    <string name="auto_status_confirmation">நீங்கள் ஒரு ஆட்டோ  வேண்டும்?</string>
     <string name="no_doc_available">கிடைக்கும் ஆவணங்கள் எதுவும் இல்லை</string>
     <string name="upload">பதிவேற்ற</string>
     <string name="optional">விருப்ப</string>
     <string name="uploaded">பதிவேற்றிய</string>
     <string name="rejected">நிராகரிக்கப்பட்டது</string>
     <string name="verified">சரிபார்க்கப்பட்டது</string>
-    <string name="Hints">குறிப்புகள்</string>
-    <string name="tricks">தந்திரங்களை</string>
-    <string name="Messages">செய்திகள்</string>
 
     <string name="auto_number">வாகன எண்ணிக்கை</string>
-    <string name="Choose_one">ஒன்றை தேர்ந்தெடு</string>
-    <string name="is_rented">நான் ஒரு வாடகை ஆட்டோ வேண்டும்</string>
-    <string name="is_owned">நான் என் ஆட்டோ சொந்தமாக</string>
-    <string name="Documents">ஆவணங்கள்</string>
     <string name="Document_type">ஆவண வகை</string>
     <string name="Requirement">தேவை</string>
     <string name="add_image">படத்தை சேர்க்க</string>
     <string name="Submit">சமர்ப்பிக்கவும்</string>
-    <string name="owner">உரிமையாளர்</string>
     <string name="approval_pending">ஒப்புதல் நிலுவையில்</string>
 
 
@@ -628,13 +455,13 @@
     <string name="referral_rate">பரிந்துரை</string>
     <string name="pickup_charges">அழைத்து கட்டணங்கள் </string>
     <string name="base_fare">அடிப்படை கட்டணம்</string>
-    <string name="time_per_min">நேரம் (நிமிடம் ஒன்றுக்கு)</string>
     <string name="per_min"> (நிமிடம் ஒன்றுக்கு)</string>
 
     <string name="driver_to_customer">டிரைவர் குறிக்கின்ற வாடிக்கையாளர்</string>
     <string name="driver_to_driver">டிரைவர் குறிக்கின்ற டிரைவர்</string>
     <string name="rate_card">விலை அட்டை</string>
-    <string name="applicable_after">பொருந்தக்கூடிய பின்னர்  %1$s</string>
+    <string name="applicable_after">பொருந்தக்கூடிய பின்னர்  %1$s Kms</string>
+    <string name="per_km">(மீற்ற க்கான)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">நேற்று</string>
@@ -643,7 +470,6 @@
     <string name="this_week">இந்த வாரம்</string>
     <string name="outstanding_amount1">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
 
-    <string name="estimated_payout">கணக்கிடப்பட்ட பணம்</string>
     <string name="this_week_cap">இந்த வாரம்</string>
 
 
@@ -660,7 +486,6 @@
     <string name="audit_lower">தணிக்கை</string>
     <string name="self_audit">சுய தணிக்கை</string>
     <string name="front">முன்</string>
-    <string name="add_photo">புகைப்படம் சேர்க்க</string>
     <string name="left">இடப்பக்கம்</string>
     <string name="right">வலது</string>
     <string name="Audit">தணிக்கை</string>
@@ -689,7 +514,6 @@
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
     <string name="earnings_caps">வருமானம்</string>
 
-    <string name="estimated_payout_lower">கணக்கிடப்பட்ட பணம்</string>
     <string name="bank_deposite">வங்கி வைப்பு</string>
     <string name="trips">பயணங்கள்</string>
     <string name="home">முகப்பு</string>
@@ -726,9 +550,6 @@
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
     <string name="referral_code">Referral Code</string>
     <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
     <string name="select_tandc">Please select Terms and Conditions</string>
@@ -739,8 +560,6 @@
     <string name="optional_brack">(Optional)</string>
 
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
-    <string name="Reason">Reason</string>
-    <string name="delivery_conf">Are you sure you want to deliver ?</string>
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
@@ -750,18 +569,13 @@
     <string name="deposite_cash_1">Deposit cash</string>
     <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
     <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
     <string name="fail">Fail</string>
     <string name="chat">Chat</string>
 
     <string name="required">required</string>
     <string name="login_here">Already have an driver account? Login Here</string>
-    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
     <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-    <string name="driver">Driver</string>
     <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
-    <string name="spinner_owned">Owned</string>
-    <string name="spinner_rented">Rented</string>
     <string name="select">Select</string>
     <string name="select_customer">Select Customer</string>
     <string name="collect_cash">Collect Cash</string>
@@ -776,29 +590,24 @@
     <string name="i_accept_abv"><![CDATA[ACCEPT T &amp; C]]></string>
     <string name="your_sig_here">YOUR SIGNATURE HERE</string>
     <string name="delivery_start">Delivery Start</string>
-    <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
-    <string name="reg_as_driver">Register as a Jugnoo DRIVER</string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as DRIVER</string>
     <string name="distance_lower">distance</string>
     <string name="please_drop_customer_delivery">End %s\'s delivery</string>
     <string name="please_start_customer_delivery">Start %s\'s delivery</string>
     <string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
-    <string name="select_merchant">Select Merchant</string>
     <string name="estimated_fare">(Estimated Fare)</string>
     <string name="provide_sign_msg">Please provide signature before submit</string>
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app">Looking for Customer App</string>
-    <string name="image">image</string>
     <string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
     <string name="start_training">Start Training</string>
     <string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\\nTap \'Accept\'.</string>
-    <string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
     <string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
     <string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
     <string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
@@ -809,9 +618,7 @@
     <string name="auto_detect_otp_failed">Automatic detection of OTP Failed</string>
     <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
     <string name="tutorial_tap_yes">Tap \'YES\'</string>
-    <string name="arriving">Arriving</string>
     <string name="arrivingdot">Arriving...</string>
-    <string name="upload_later">Upload Later</string>
     <string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
     <string name="request_autos">Request for AUTOS will be sent to you now.</string>
     <string name="later">Later</string>
@@ -822,8 +629,6 @@
     <string name="more">more</string>
     <string name="estimated_dis">Estimated Distance</string>
     <string name="cash_to_collected">Cash to be Collected</string>
-    <string name="return_amount">Returned Amount</string>
-    <string name="cash_required">Cash Required</string>
     <string name="pick_up">PICK - UP</string>
     <string name="you_have_arrived">You have Arrived</string>
     <string name="switchText">Switch</string>
@@ -837,23 +642,18 @@
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
     <string name="registered">Registered</string>
-    <string name="createdOnNew">Created On</string>
     <string name="updated_on">Updated On</string>
-    <string name="complain">Complain</string>
     <string name="settled">settled</string>
-    <string name="ended_on">Ended On</string>
     <string name="no_tickets">No complaints yet</string>
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
+    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
-    <string name="un_loading">un loading</string>
-    <string name="un_loading_fare">un loading fare</string>
     <string name="loading_fare">loading fare</string>
-    <string name="pickup_distance_fare">pickup distance fare</string>
     <string name="range">Range</string>
     <string name="value">Value</string>
     <string name="no_rate_card_available">No Rate Card Available</string>
@@ -861,7 +661,6 @@
     <string name="loading_req">Loading Required</string>
     <string name="unloading_fare">Unloading Fare</string>
     <string name="super_biker">Super Biker</string>
-    <string name="needed">Needed</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
     <string name="keep_jugnoo_on">Kepp your Jugnoo ON to earn more</string>
@@ -875,8 +674,6 @@
 
     <string name="wallet_title">பணப்பை மீதம்</string>
     <string name="how_to_recharge">எப்படி ரிச்சார்ஜ் செய்வது</string>
-    <string name="recharge_new">2 ) Recharge Now</string>
-    <string name="visit_office">1 ) Visit Office</string>
     <string name="wallet_balance">பணப்பை மீதம்</string>
     <string name="low_balance">\n(குறைவான தொகை)</string>
     <string name="rupees_value_format">\u20B9%s</string>
@@ -885,9 +682,7 @@
     <string name="no_transactions">தற்போது பரிவர்த்தனைகள் இல்லை</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
-    <string name="office_address">Office Address</string>
     <string name="view_wallet_transactions">பணப்பை பரிவர்த்தனை விவரங்கள்</string>
-    <string name="get_support">Get Support</string>
     <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
@@ -905,7 +700,6 @@
     <string name="label_total_savings">    மொத்த சேமிப்பு இப்போது வரை:</string>
     <string name="label_current_savings">    தற்போதைய சேமிப்புகள் இப்போது வரை:</string>
     <string name="label_active_plan">நடப்பு திட்டங்கள்</string>
-    <string name="label_current_outstanding">தற்போதைய நிலுவை:</string>
     <string name="label_available_plans"> செயல்திட்டம்</string>
     <string name="title_plans_screen">    கமிஷன் இல்லாத</string>
     <string name="no_country_found">No country found</string>

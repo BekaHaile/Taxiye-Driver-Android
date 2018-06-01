@@ -28,10 +28,12 @@
             android:layout_width="60.7px"
             android:layout_height="76.9px"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10px"
+            android:layout_marginStart="10px"
             android:padding="20px"
             android:layout_marginTop="25px"
-            android:src="@drawable/arrow"/>
+            android:src="@drawable/arrow"
+            android:rotationY="@integer/locale_mirror_flip"
+            />
     </RelativeLayout>
     <ImageView
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
+            android:rotationY="@integer/locale_mirror_flip"
             android:tag="mwar" />
 
     </RelativeLayout>
@@ -55,8 +56,8 @@
                 android:gravity="center_horizontal"
                 android:textSize="28px"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="50px"
-                android:layout_marginRight="40px"
+                android:layout_marginStart="50px"
+                android:layout_marginEnd="40px"
                 android:text="@string/enter_new_phone_number"/>
 
 
@@ -70,8 +71,8 @@
                     android:gravity="center_vertical"
                     android:hint="@string/enter_new_phone_no"
                     android:inputType="phone"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
+                    android:paddingStart="20px"
+                    android:paddingEnd="20px"
                     android:singleLine="true"
                     android:textColor="@color/black_text"
                     android:textColorHint="@color/black_text_alpha"

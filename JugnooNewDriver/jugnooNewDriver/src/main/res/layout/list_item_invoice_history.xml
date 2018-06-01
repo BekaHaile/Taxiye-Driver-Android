@@ -21,14 +21,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginStart="20px"
             android:orientation="vertical"
             >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15px">
+                android:layout_marginStart="15px">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutStatus"
@@ -50,8 +50,8 @@
                         android:id="@+id/textViewStatusString"
                         android:layout_width="350px"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/statusImage"
-                        android:layout_marginLeft="10px"
+                        android:layout_toEndOf="@+id/statusImage"
+                        android:layout_marginStart="10px"
                         android:text="@string/outstanding_amount"
                         android:textColor="@color/bg_grey_opaque"
                         android:textSize="30px"/>
@@ -74,7 +74,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="15px"
+                            android:layout_marginStart="15px"
                             android:visibility="gone"
                             android:singleLine="true"
                             android:text="@string/from"
@@ -87,7 +87,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_toRightOf="@+id/dateTimeTextFrom"
+                            android:layout_toEndOf="@+id/dateTimeTextFrom"
                             android:singleLine="true"
                             android:text="23/01"
                             android:textColor="@color/black_text_v2"
@@ -100,9 +100,9 @@
                     <ImageView
                         android:layout_width="10px"
                         android:layout_height="2px"
-                        android:layout_toRightOf="@+id/dateTimeRlFrom"
+                        android:layout_toEndOf="@+id/dateTimeRlFrom"
                         android:background="@color/black_text_v2"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginStart="12px"
                         android:layout_centerVertical="true"
                         />
 
@@ -111,8 +111,8 @@
                         android:id="@+id/dateTimeRlTo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="36px"
-                        android:layout_toRightOf="@+id/dateTimeRlFrom"
+                        android:layout_marginStart="36px"
+                        android:layout_toEndOf="@+id/dateTimeRlFrom"
                         android:splitMotionEvents="false">
 
                         <TextView
@@ -120,7 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="15px"
+                            android:layout_marginStart="15px"
                             android:singleLine="true"
                             android:text="@string/to"
                             android:visibility="gone"
@@ -133,8 +133,8 @@
                         <!--android:layout_width="30px"-->
                         <!--android:layout_height="30px"-->
                         <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_toRightOf="@+id/dateTimeTextTo"-->
-                        <!--android:layout_marginLeft="15px"-->
+                        <!--android:layout_toEndOf="@+id/dateTimeTextTo"-->
+                        <!--android:layout_marginStart="15px"-->
                         <!--android:src="@drawable/date_orange_icon"-->
                         <!--android:tag="mwar"/>-->
 
@@ -143,7 +143,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_toRightOf="@+id/dateTimeTextTo"
+                            android:layout_toEndOf="@+id/dateTimeTextTo"
                             android:singleLine="true"
                             android:text="23/01"
                             android:textColor="@color/black_text_v2"
@@ -171,10 +171,10 @@
                     android:id="@+id/textViewInvoiceFare"
                     android:layout_width="220px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="72px"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="72px"
                     android:layout_centerVertical="true"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:singleLine="true"
                     android:text="@string/rupee_zero_zero"
                     android:textColor="@color/grey_light_v2"
@@ -183,10 +183,11 @@
                 <ImageView
                     android:layout_width="21px"
                     android:layout_height="20px"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="36px"
-                    android:src="@drawable/arrow_thick_new"/>
+                    android:layout_marginEnd="36px"
+                    android:src="@drawable/arrow_thick_new"
+                    android:rotationY="@integer/locale_mirror_flip"/>
 
             </RelativeLayout>
 
@@ -204,7 +205,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="15px"
+                    android:layout_marginStart="15px"
                     android:singleLine="true"
                     android:text="@string/generated_on"
                     android:textColor="@color/black"
@@ -217,8 +218,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10px"
-                    android:layout_toRightOf="@+id/dateTimeTextGenerated"
+                    android:layout_marginStart="10px"
+                    android:layout_toEndOf="@+id/dateTimeTextGenerated"
                     android:singleLine="true"
                     android:text="23 June, 2014"
                     android:textColor="@color/new_orange"

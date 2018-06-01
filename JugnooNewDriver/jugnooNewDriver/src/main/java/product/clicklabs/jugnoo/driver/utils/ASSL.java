@@ -232,17 +232,19 @@ import android.widget.TextView;
 /*     */     {
 /* 282 */       ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams)layoutParams;
 /*     */       ViewGroup.MarginLayoutParams tmp590_589 = marginParams; tmp590_589.leftMargin = ((int)(tmp590_589.leftMargin * scaleX));
+/*     */       ViewGroup.MarginLayoutParams tmp590_5891 = marginParams; tmp590_5891.setMarginStart(((int)(tmp590_5891.getMarginStart() * scaleX)));
 /*     */       ViewGroup.MarginLayoutParams tmp604_603 = marginParams; tmp604_603.topMargin = ((int)(tmp604_603.topMargin * scaleY));
 /*     */       ViewGroup.MarginLayoutParams tmp618_617 = marginParams; tmp618_617.rightMargin = ((int)(tmp618_617.rightMargin * scaleX));
+/*     */       ViewGroup.MarginLayoutParams tmp618_6171 = marginParams; tmp618_6171.setMarginEnd(((int)(tmp618_6171.getMarginEnd() * scaleX)));
 /*     */       ViewGroup.MarginLayoutParams tmp632_631 = marginParams; tmp632_631.bottomMargin = ((int)(tmp632_631.bottomMargin * scaleY));
 /*     */     }
 /*     */
 /* 294 */     rootLayout.setLayoutParams(layoutParams);
 /*     */
-/* 298 */     rootLayout.setPadding(
-/* 300 */       (int)(rootLayout.getPaddingLeft() * scaleX),
+/* 298 */     rootLayout.setPaddingRelative(
+/* 300 */       (int)(rootLayout.getPaddingStart() * scaleX),
 /* 302 */       (int)(rootLayout.getPaddingTop() * scaleY),
-/* 304 */       (int)(rootLayout.getPaddingRight() * scaleX),
+/* 304 */       (int)(rootLayout.getPaddingEnd() * scaleX),
 /* 306 */       (int)(rootLayout.getPaddingBottom() * scaleY));
 
 /* 312 */     if ((rootLayout instanceof ViewGroup))

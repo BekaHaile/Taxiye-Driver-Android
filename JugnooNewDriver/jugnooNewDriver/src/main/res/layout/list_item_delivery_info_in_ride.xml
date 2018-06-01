@@ -11,7 +11,7 @@
         android:id="@+id/imageViewVerticalLine"
         android:layout_width="3px"
         android:layout_height="26px"
-        android:layout_marginLeft="41px"
+        android:layout_marginStart="41px"
         android:layout_marginBottom="5px"
         android:background="@color/grey_light"
         android:visibility="visible"
@@ -21,7 +21,7 @@
         android:id="@+id/imageViewVerticalLine1"
         android:layout_width="3px"
         android:layout_height="match_parent"
-        android:layout_marginLeft="41px"
+        android:layout_marginStart="41px"
         android:layout_alignTop="@+id/imageViewHorizontalLineNew"
         android:layout_marginTop="30px"
         android:layout_above="@+id/imageViewFakeBottom"
@@ -34,7 +34,7 @@
         android:id="@+id/imageViewHorizontalLineNew"
         android:layout_width="22px"
         android:layout_height="22px"
-        android:layout_marginLeft="31px"
+        android:layout_marginStart="31px"
         android:layout_marginTop="34px"
         android:background="@drawable/circle_orange"/>
 
@@ -51,8 +51,8 @@
         android:layout_width="604px"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24px"
-        android:layout_marginLeft="76px"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="76px"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="24px"
         android:orientation="vertical">
 
@@ -61,7 +61,7 @@
             android:layout_width="390px"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageViewDote"
+            android:layout_toEndOf="@+id/imageViewDote"
             android:text="@string/NA"
             android:textSize="32px"/>
 
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="32px"
             android:layout_marginTop="2px"
-            android:layout_toRightOf="@+id/imageViewDote1"
+            android:layout_toEndOf="@+id/imageViewDote1"
             android:text="@string/NA"
             android:textSize="28px"/>
 
@@ -81,8 +81,8 @@
             android:layout_height="2px"
             android:background="@color/grey_light"
             android:layout_marginTop="22px"
-            android:layout_marginLeft="30px"
-            android:layout_marginRight="30px"/>
+            android:layout_marginStart="30px"
+            android:layout_marginEnd="30px"/>
 
 
     </LinearLayout>
