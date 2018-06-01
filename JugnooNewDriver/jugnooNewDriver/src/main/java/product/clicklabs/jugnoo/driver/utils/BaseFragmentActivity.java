@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -21,7 +20,6 @@ import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
 import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
@@ -111,9 +109,9 @@ public class BaseFragmentActivity extends AppCompatActivity {
 			languageToLoad = "kn";
 		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
-		} else if (item.equalsIgnoreCase("french")) { // todo change keyName
+		} else if (selectedLanguage.equalsIgnoreCase("french")) {
 			languageToLoad = "fr";
-		} else if (item.equalsIgnoreCase("arabic")) {  // todo change keyName
+		} else if (selectedLanguage.equalsIgnoreCase("arabic")) {
 			languageToLoad = "ar";
 		} else {
 			languageToLoad = "en";
