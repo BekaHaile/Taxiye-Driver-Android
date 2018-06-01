@@ -90,35 +90,28 @@
             </RelativeLayout>
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="90px"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="15dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="0px"
+                android:tag="@string/dont_touch_me"
                 android:orientation="horizontal" >
 
                 <Button
                     android:id="@+id/btnCancel"
-                    android:layout_width="309px"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/new_menu_black_btn_selector"
-                    android:singleLine="true"
+                    style="@style/DialogButtonGrey"
                     android:text="@string/cancel"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="34px" />
+                    />
 
                 <Button
                     android:id="@+id/btnOk"
-                    android:layout_width="309px"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/new_orange_btn_selector"
-                    android:singleLine="true"
+                    style="@style/DialogButtonOrange"
                     android:text="@string/ok"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="34px" />
+                    android:layout_marginStart="20dp"
+                    />
 
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 

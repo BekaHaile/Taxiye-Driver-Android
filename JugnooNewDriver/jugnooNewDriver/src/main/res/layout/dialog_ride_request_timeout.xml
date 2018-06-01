@@ -69,19 +69,20 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="92px"
+            android:layout_height="46dp"
             android:orientation="horizontal"
-            android:layout_marginTop="32px"
-            android:background="@drawable/new_orange_btn_top_normal_bottom_rounded">
+            android:layout_marginTop="10dp"
+            android:tag="@string/dont_touch_me"
+            >
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/timeOutText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32px"
+                android:layout_marginStart="16dp"
                 android:text="@string/time_left"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
                 android:layout_gravity="center_vertical"
                 />
 
@@ -89,12 +90,11 @@
                 android:id="@+id/timeOutValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="58px"
-                android:background="@color/new_orange"
+                android:layout_marginStart="29dp"
                 android:singleLine="true"
                 android:text="@string/ok"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="72px"
+                android:textColor="@color/text_color"
+                android:textSize="36sp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 />
