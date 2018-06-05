@@ -259,7 +259,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
 
 		buttonLogin.setVisibility(View.VISIBLE);
-		buttonRegister.setVisibility(View.VISIBLE);
+		//buttonRegister.setVisibility(View.VISIBLE);
 		buttonRegisterTookan.setVisibility(View.GONE);
 
 		viewInitJugnoo.setVisibility(View.VISIBLE);
@@ -306,7 +306,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
-		tvCountryCodeL.setText(Utils.getCountryCode(this));
+		//tvCountryCodeL.setText(Utils.getCountryCode(this));
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -1281,7 +1281,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			View convertView = inflater.inflate(R.layout.spinner_layout, null);
 
 			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
-			textViewCity.setText(data.get(position).getCityName());
+
+			if (data != null && data.size() > 1) {
+                textViewCity.setText(data.get(position).getCityName());
+            }
+
 			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
 			convertView.setLayoutParams(layoutParams);
 
@@ -1635,7 +1639,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			fetchLanguageList();
 
 			buttonLogin.setVisibility(View.VISIBLE);
-			buttonRegister.setVisibility(View.VISIBLE);
+//			buttonRegister.setVisibility(View.VISIBLE);
 //			toggleRegistrationButton();
 		}
 
@@ -1644,7 +1648,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	public void toggleRegistrationButton(){
 		if((registerViaTooken == RegisterOption.BOTH_TOOKAN_SELF_REGISTER.getOrdinal()
 				|| registerViaTooken == RegisterOption.ONLY_SELF_REGISTER.getOrdinal())) {
-			buttonRegister.setVisibility(View.VISIBLE);
+//			buttonRegister.setVisibility(View.VISIBLE);
 		}
 	}
 

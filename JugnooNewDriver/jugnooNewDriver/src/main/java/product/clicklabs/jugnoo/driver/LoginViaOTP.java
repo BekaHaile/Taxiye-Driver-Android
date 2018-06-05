@@ -485,7 +485,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                             } else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", message);
 //								mainLinear.setVisibility(View.VISIBLE);
-                                layoutResendOtp.setVisibility(View.VISIBLE);
+                                layoutResendOtp.setVisibility(View.GONE);
                                 if(customCountDownTimer != null)
                                     customCountDownTimer.cancel();
                                 btnLogin.setVisibility(View.GONE);
@@ -710,7 +710,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         if(TextUtils.isEmpty(knowlarityMissedCallNumber)){
             layoutResendOtp.setVisibility(View.GONE);
         }else {
-            layoutResendOtp.setVisibility(View.VISIBLE);
+            layoutResendOtp.setVisibility(View.GONE);
         }
         if(dialog != null && dialog.isShown())
             dialog.swictchLayout();

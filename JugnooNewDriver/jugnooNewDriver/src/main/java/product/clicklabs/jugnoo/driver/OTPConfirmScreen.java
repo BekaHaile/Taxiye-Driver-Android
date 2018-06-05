@@ -694,7 +694,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
             btnOtpViaCall.setVisibility(View.GONE);
             textViewOr.setVisibility(View.GONE);
         } else {
-            btnOtpViaCall.setVisibility(View.VISIBLE);
+            //btnOtpViaCall.setVisibility(View.VISIBLE);
             textViewOr.setVisibility(View.VISIBLE);
             btnReGenerateOtp.setVisibility(View.VISIBLE);
         }

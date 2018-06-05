@@ -122,6 +122,7 @@
 
             <TextView
                 android:id="@+id/textViewDriver"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -224,6 +225,7 @@
                     android:layout_marginTop="32px"
                     android:background="@drawable/buttons_on_boarding_drawable"
                     android:text="@string/register"
+                    android:visibility="gone"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_34" />
@@ -244,6 +246,7 @@
                     android:id="@+id/imageViewHorizontal3"
                     android:layout_width="330px"
                     android:layout_height="3px"
+                    android:visibility="invisible"
                     android:layout_centerVertical="true"
                     android:background="@color/white"/>
 
@@ -265,6 +268,7 @@
                     android:id="@+id/imageViewHorizontal4"
                     android:layout_width="330px"
                     android:layout_height="3px"
+                    android:visibility="invisible"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/textViewName"
                     android:background="@color/white"/>
@@ -277,9 +281,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/looking_for_customer_app"
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:layout_marginTop="32px"
-                android:visibility="invisible"
                 android:textSize="36px"/>
 
             <Button
