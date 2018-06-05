@@ -21,7 +21,7 @@
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
-    <string name="file_provider">production.hezz.driver.driver.provider</string>
+    <string name="file_provider">production.hezz.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyCReMAp5TW8sUMQRqecpPwT-o45UC4J3Lk</string> <!--IMP-->
 
 
