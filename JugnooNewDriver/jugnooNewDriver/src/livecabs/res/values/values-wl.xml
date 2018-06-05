@@ -42,7 +42,7 @@
 
 
     <!--Login sign-up -->
-    <drawable name="bg_on_boarding_drawable">@color/white</drawable>
+    <drawable name="bg_on_boarding_drawable">@drawable/splash_new_background</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>

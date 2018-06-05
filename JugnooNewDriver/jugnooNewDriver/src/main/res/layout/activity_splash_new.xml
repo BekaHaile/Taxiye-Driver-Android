@@ -129,8 +129,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20px"
                 android:text="@string/driver_app"
-                android:visibility="invisible"
-                android:textColor="@color/white"
+                android:textColor="@color/red_v2"
                 android:textSize="32px"/>
         </RelativeLayout>
 
@@ -272,7 +271,15 @@
 
             </RelativeLayout>
 
-
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/textViewDriver"
+                android:src="@drawable/bottom_bg"
+                android:layout_marginBottom="20px"
+                android:tag="mwar"
+                android:visibility="visible" />
             <TextView
                 android:id="@+id/textViewCustomerApp"
                 android:layout_width="wrap_content"
