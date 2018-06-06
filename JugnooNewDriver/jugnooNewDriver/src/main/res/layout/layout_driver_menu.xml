@@ -866,63 +866,6 @@
 
 
             <RelativeLayout
-                android:id="@+id/callUsRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false">
-
-                <ImageView
-                    android:id="@+id/imageViewCallIcon"
-                    android:layout_width="56px"
-                    android:layout_height="38px"
-                    android:layout_marginStart="20px"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/call_v2"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/callUsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/imageViewCallIcon"
-                    android:layout_marginStart="8px"
-                    android:text="@string/call_us"
-                    android:textColor="@color/white"
-                    android:textSize="36px"/>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/rlGetSupport"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:background="@drawable/background_tranparend_red_v2_selector"
-                android:splitMotionEvents="false"
-                android:gravity="center_vertical"
-                android:tag="@string/dont_touch_me"
-                >
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="19dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/call_v2"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/tvGetSupport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/get_support_call"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"/>
-
-            </LinearLayout>
-
-            <RelativeLayout
                 android:id="@+id/relativeLayoutDestination"
                 android:layout_width="match_parent"
                 android:layout_height="84px"

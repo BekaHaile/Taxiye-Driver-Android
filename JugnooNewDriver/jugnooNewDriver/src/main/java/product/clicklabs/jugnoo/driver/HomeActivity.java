@@ -4774,6 +4774,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(Utils.isBatteryChargingNew(this) == 1 || Utils.getBatteryPercentage(this) > 20){
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 
 
 		if (!checkIfUserDataNull()) {
@@ -4857,6 +4860,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		super.onPause();
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 
