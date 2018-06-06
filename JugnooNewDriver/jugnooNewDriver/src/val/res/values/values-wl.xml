@@ -56,7 +56,7 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_gone</integer>
-    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <integer name="show_t_and_c_profile">@integer/view_invisible</integer>
     <drawable name="bg_profile_background">@color/red_v2</drawable>
 
 
