@@ -1282,7 +1282,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
 
-			if (data != null && data.size() > 1) {
+			if (data != null && data.size() > 0) {
                 textViewCity.setText(data.get(position).getCityName());
             }
 
