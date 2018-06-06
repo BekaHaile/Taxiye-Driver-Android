@@ -30,6 +30,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.StripeLoginResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -159,6 +160,9 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
 				buttonStripe.setVisibility(View.VISIBLE);
 				layoutBankDetails.setVisibility(View.GONE);
+				if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+					buttonStripe.setText(getString(R.string.login_with_stripe));
+				}
 
 
 			}else{
@@ -251,12 +255,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if(stripeStatus == StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+					loginToStripe();
 
-					//hit backend and go to stripe connect screen
 
 				}else if(stripeStatus ==StripeUtils.STRIPE_ACCOUNT_AVAILABLE){
 
-					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class), REQUEST_CODE_STRIPE_CONNECT);
+					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectBuilder().toString()), REQUEST_CODE_STRIPE_CONNECT);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}
@@ -266,6 +271,34 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		});
 
 		setUserData();
+	}
+
+	private void loginToStripe() {
+		//login to stripe account
+		DialogPopup.showLoadingDialog(EditDriverProfile.this,getString(R.string.loading));
+		HashMap<String,String> params = new HashMap<>();
+		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		HomeUtil.putDefaultParams(params);
+		RestClient.getApiServices().fetchStripeLink(params, new Callback<StripeLoginResponse>() {
+            @Override
+            public void success(StripeLoginResponse stripeLoginResponse, Response response) {
+                DialogPopup.dismissLoadingDialog();
+                if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == stripeLoginResponse.getFlag()){
+
+                    startActivity(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+                    putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,stripeLoginResponse.getStripeLoginUrl()));
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }else{
+                    DialogPopup.alertPopup(EditDriverProfile.this, "", stripeLoginResponse.getErrorMesssage());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                DialogPopup.dismissLoadingDialog();
+                DialogPopup.alertPopup(EditDriverProfile.this, "", error.getMessage());
+            }
+        });
 	}
 
 

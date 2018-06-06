@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,6 +16,9 @@ public class SettleUserDebt {
 	@SerializedName("message")
 	@Expose
 	private String message;
+	@SerializedName("error")
+	@Expose
+	private String error;
 
 	public Integer getFlag() {
 		return flag;
@@ -29,5 +34,14 @@ public class SettleUserDebt {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public String getErrorMesssage(){
+
+		return !TextUtils.isEmpty(message)?message:error;
 	}
 }

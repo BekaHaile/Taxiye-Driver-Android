@@ -2,24 +2,15 @@ package product.clicklabs.jugnoo.driver;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.net.UrlQuerySanitizer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.HttpAuthHandler;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -35,6 +26,39 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
     private StripeWebViewClient stripeWebViewClient;
     private WebView webView;
 
+    public static final String ARGS_URL_TO_OPEN = "url_to_open";
+    private String urlToLoad;
+
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if(getIntent().getExtras()==null || !getIntent().hasExtra(ARGS_URL_TO_OPEN)){
+            finish();
+        }
+
+        urlToLoad = getIntent().getStringExtra(ARGS_URL_TO_OPEN);
+
+        setContentView(R.layout.activity_stipe_connect);
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setPadding(0,0,0,0);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        stripeWebViewClient = new StripeWebViewClient();
+        webView.setWebViewClient(stripeWebViewClient);
+        webView.loadUrl(urlToLoad);
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+    }
 
     private class StripeWebViewClient extends WebViewClient {
 
@@ -48,22 +72,12 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
             if(view==null || StripeConnectActivity.this.isFinishing()){
                 return;
             }
-           // UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(url);
 
-            if(url.contains(StripeUtils.STRIPE_SUCCESS_URL)){
-       /*         if(sanitizer.getValue("code")!=null){
 
-                    Log.i(TAG,"success "+url);
-                    Log.i(TAG,"auth code= "+sanitizer.getValue("code"));
-                    Log.i(TAG,"auth state= "+sanitizer.getValue("state"));
-                    String message = sanitizer.getValue("message");
-                    if(message==null){
-                       String message = getString(R.string.stripe_success_message);
-                    }
+            if(url.contains(urlToLoad)){
 
-              }*/
-
-               String message = getString(R.string.stripe_success_message);
+                //   UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(url);
+         String message = getString(R.string.stripe_success_message);
                 DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -72,11 +86,8 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
                     }
                 });
 
-            }else if(url.contains(StripeUtils.STRIPE_FAILURE_URL)){
-             /*   Log.i(TAG,"failure "+url);
-                String message = sanitizer.getValue("error");
-                if(message==null){
-                }*/
+            }else if(url.contains(urlToLoad)){
+
                 String message = getString(R.string.stripe_error_message);
 
                 DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
@@ -96,7 +107,7 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            if(url.contains(StripeUtils.STRIPE_CONNECT_URL)){
+            if(url.contains(urlToLoad)){
                 DialogPopup.showLoadingDialog(StripeConnectActivity.this,StripeConnectActivity.this.getString(R.string.loading));
             }else{
                 handleUrlLoading(view,url);
@@ -105,7 +116,7 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if(url.contains(StripeUtils.STRIPE_CONNECT_URL)){
+            if(url.contains(urlToLoad)){
 
                 if(DialogPopup.isDialogShowing()){
                     DialogPopup.dismissLoadingDialog();
@@ -139,29 +150,8 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
             super.onBackPressed();
         }
     }
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stipe_connect);
-        webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.setPadding(0,0,0,0);
-        webView.getSettings().setSupportZoom(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        stripeWebViewClient = new StripeWebViewClient();
-        webView.setWebViewClient(stripeWebViewClient);
-        webView.loadUrl(StripeUtils.stripeConnectBuilder().toString());
-        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    onBackPressed();
-            }
-        });
 
-    }
+
 
 
 

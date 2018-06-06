@@ -588,5 +588,9 @@ public interface APIServices {
 	void agreeTerms(@FieldMap Map<String, String> params,
 							 Callback<SettleUserDebt> callback);
 
+	@FormUrlEncoded
+	@POST("/driver/fetch_stripe_login_link")
+	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
+
 
 }
