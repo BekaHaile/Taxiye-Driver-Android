@@ -16,7 +16,7 @@
     -->
 
     <!--White Label Key-->
-    <string name="white_label_key">6e1314631d098db197321244c93fb7c5</string>
+    <string name="white_label_key">99f30666b06f54717b21328fcd5a0c7c</string>
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
@@ -42,7 +42,7 @@
 
 
     <!--Login sign-up -->
-    <drawable name="bg_on_boarding_drawable">@color/white</drawable>
+    <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>
