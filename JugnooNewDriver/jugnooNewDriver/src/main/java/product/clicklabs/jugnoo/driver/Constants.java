@@ -316,5 +316,8 @@ public interface Constants {
 	int NAVIGATION_TYPE_GOOGLE_MAPS = 0;
 	int NAVIGATION_TYPE_WAZE = 1;
 	String KEY_NAVIGATION_TYPE = "navigation_type";
+	String STRIPE_ACCOUNT_STATUS = "is_stripe_enabled";
+
+
 }
 

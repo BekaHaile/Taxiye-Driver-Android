@@ -121,7 +121,10 @@
             android:name=".DriverCreditsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".StripeConnectActivity"
+            android:label="@string/stripe_connect_title"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"

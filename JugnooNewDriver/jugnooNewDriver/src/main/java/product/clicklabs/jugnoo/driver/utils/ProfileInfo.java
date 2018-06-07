@@ -39,5 +39,6 @@ public class ProfileInfo{
 		this.bankName = bankName;
 		this.bankLoc =bankLoc;
 		this.currency =currency;
+
 	}
 }
