@@ -279,6 +279,7 @@ public interface Constants {
 	String KEY_ESTIMATED_TRIP_DISTANCE = "estimated_trip_distance";
 	String BID_INCREMENT_PERCENT = "bid_increment_percent";
 	String STRIPE_ACCOUNT_STATUS = "is_stripe_enabled";
+	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
 
 
 }
