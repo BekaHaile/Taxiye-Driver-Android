@@ -74,10 +74,10 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
             }
 
 
-            if(url.contains(urlToLoad)){
+            if(url.contains(StripeUtils.STRIPE_SUCCESS_URL)){
 
                 //   UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(url);
-         String message = getString(R.string.stripe_success_message);
+           String message = getString(R.string.stripe_success_message);
                 DialogPopup.alertPopupWithListener(StripeConnectActivity.this, "", message, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -86,7 +86,7 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
                     }
                 });
 
-            }else if(url.contains(urlToLoad)){
+            }else if(url.contains(StripeUtils.STRIPE_FAILURE_URL)){
 
                 String message = getString(R.string.stripe_error_message);
 
