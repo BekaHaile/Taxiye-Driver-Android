@@ -355,7 +355,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
 		Prefs.with(context).save(Constants.BID_INCREMENT_PERCENT, (float)userData.optDouble(Constants.BID_INCREMENT_PERCENT, 10d));
-
+		Prefs.with(context).save(Constants.STRIPE_REDIRECT_URI, userData.optString("stripe_redirect_uri", ""));
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
 				|| fatafatAvailable == 1

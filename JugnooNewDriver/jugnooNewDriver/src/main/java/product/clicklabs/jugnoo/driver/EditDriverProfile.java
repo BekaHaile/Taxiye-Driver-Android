@@ -262,7 +262,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				}else if(stripeStatus ==StripeUtils.STRIPE_ACCOUNT_AVAILABLE){
 
 					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
-					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectBuilder().toString()), REQUEST_CODE_STRIPE_CONNECT);
+					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectBuilder(EditDriverProfile.this).toString()), REQUEST_CODE_STRIPE_CONNECT);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}

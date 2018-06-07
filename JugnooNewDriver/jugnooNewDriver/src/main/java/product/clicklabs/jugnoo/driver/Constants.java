@@ -320,6 +320,7 @@ public interface Constants {
 	int NAVIGATION_TYPE_WAZE = 1;
 	String KEY_NAVIGATION_TYPE = "navigation_type";
 	String STRIPE_ACCOUNT_STATUS = "is_stripe_enabled";
+	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
 
 
 }
