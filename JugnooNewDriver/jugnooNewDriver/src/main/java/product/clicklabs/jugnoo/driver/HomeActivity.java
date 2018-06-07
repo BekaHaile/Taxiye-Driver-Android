@@ -153,6 +153,7 @@ import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -333,7 +334,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
-	ImageView imageViewEndRideWaitSep;
 
 	LinearLayout linearLayoutMeterFareEditText;
 	TextView textViewMeterFareRupee;
@@ -890,9 +890,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
-			imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
 			reviewWaitTimeRl.setVisibility(View.GONE);
-			imageViewEndRideWaitSep.setVisibility(View.GONE);
 
 
 			reviewReachedDistanceRl = (LinearLayout) findViewById(R.id.reviewReachedDistanceRl);
@@ -3762,7 +3760,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if(fixedDeliveryWaitTime > -1){
 								waitTime = String.valueOf(decimalFormatNoDecimal.format(fixedDeliveryWaitTime));
 								reviewWaitTimeRl.setVisibility(View.VISIBLE);
-								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 							}
 						}
 					} catch (Resources.NotFoundException e) {
@@ -3833,15 +3830,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					try {
 						if (customerInfo.getWaitingChargesApplicable() == 1) {
 							reviewWaitTimeRl.setVisibility(View.VISIBLE);
-							imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 						} else {
 							reviewWaitTimeRl.setVisibility(View.GONE);
-							imageViewEndRideWaitSep.setVisibility(View.GONE);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						reviewWaitTimeRl.setVisibility(View.GONE);
-						imageViewEndRideWaitSep.setVisibility(View.GONE);
 					}
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
@@ -8245,7 +8239,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							try {
 								dialog.dismiss();
 								if(callback == null || callback.redirectToSplash()){
-									// TODO: 07/05/18 Handle Driver Splash check
 									Intent intent = new Intent(cont, DriverSplashActivity.class);
 									intent.putExtra("no_anim", "yes");
 									cont.startActivity(intent);

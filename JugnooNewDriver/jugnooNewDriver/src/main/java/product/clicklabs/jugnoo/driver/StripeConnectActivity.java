@@ -18,9 +18,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 
 /**
@@ -64,6 +66,8 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
                 onBackPressed();
             }
         });
+        ((TextView)findViewById(R.id.title)).setText(R.string.stripe_connect_title);
+        ((TextView)findViewById(R.id.title)).setTypeface(Fonts.mavenMedium(this));
 
     }
 

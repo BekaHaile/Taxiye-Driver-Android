@@ -136,7 +136,7 @@
 
                 <Button
                     android:id="@+id/enterOtpButton"
-                    style="@style/DialogButtonOrange"
+                    style="@style/DialogButton"
                     android:layout_width="160dp"
                     android:layout_marginTop="15dp"
                     android:layout_gravity="center_horizontal"

@@ -11,7 +11,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -48,7 +47,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	
 	RelativeLayout relative;
 	
-	Button backBtn;
+	View backBtn;
 	TextView title;
 	
 	ListView listViewHelp;
@@ -89,7 +88,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 		new ASSL(HelpActivity.this, relative, 1134, 720, false);
 		
 		
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 		listViewHelp = (ListView) findViewById(R.id.listViewHelp);

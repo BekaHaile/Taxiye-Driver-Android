@@ -46,8 +46,8 @@ public class DeliveryReturnFragment extends Fragment {
 
 	private LinearLayout relative;
 
-	private Button buttonBack;
-	private TextView textViewTitle, textViewReturnReasons;
+	private View backBtn;
+	private TextView title, textViewReturnReasons;
 	private RecyclerView recyclerViewReturnOptions;
 	private Button buttonSubmit;
 	private ReturnOptionsListAdapter returnOptionsListAdapter;
@@ -77,10 +77,10 @@ public class DeliveryReturnFragment extends Fragment {
 		}
 
 
-		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.delivery));
+		backBtn = rootView.findViewById(R.id.backBtn);
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		title.setText(activity.getResources().getString(R.string.delivery));
 
 		textViewReturnReasons = (TextView) rootView.findViewById(R.id.textViewReturnReasons);
 		textViewReturnReasons.setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
@@ -96,7 +96,7 @@ public class DeliveryReturnFragment extends Fragment {
 		buttonSubmit.setTypeface(Fonts.mavenRegular(activity));
 
 
-		buttonBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

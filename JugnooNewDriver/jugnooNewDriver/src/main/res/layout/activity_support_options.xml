@@ -9,7 +9,7 @@
     android:background="@color/white_light_grey"
     >
 
-    <include layout="@layout/layout_titlebar"/>
+    <include layout="@layout/layout_top_bar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOptions"

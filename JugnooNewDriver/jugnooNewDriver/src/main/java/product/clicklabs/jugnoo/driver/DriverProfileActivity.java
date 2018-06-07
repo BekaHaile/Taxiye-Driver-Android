@@ -2,9 +2,9 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,11 +41,11 @@ public class DriverProfileActivity extends BaseActivity {
 
     LinearLayout relative;
     RelativeLayout driverDetailsRLL, driverDetailsRL;
-    Button backBtn;
+    View backBtn;
     TextView title;
 
     TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
-            textViewRidesCancelledValue, textViewRidesMissedValue, textViewOnlineHoursValue, textViewTitleBarDEI, textViewMonthlyText,
+            textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
     ImageView profileImg, imageViewTitleBarDEI;
@@ -106,12 +106,12 @@ public class DriverProfileActivity extends BaseActivity {
 
         new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
-        backBtn = (Button) findViewById(R.id.backBtn);
+        backBtn = findViewById(R.id.backBtn);
         title = (TextView) findViewById(R.id.title);
-        title.setTypeface(Fonts.mavenRegular(this));
+        title.setTypeface(Fonts.mavenRegular(this)); title.setText(R.string.profile);
 
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
-        textViewDriverName.setTypeface(Fonts.mavenRegular(this));
+        textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
         textViewDriverId = (TextView) findViewById(R.id.textViewDriverId);
         textViewDriverId.setTypeface(Fonts.mavenRegular(this));
         textViewRankCity = (TextView) findViewById(R.id.textViewRankCity);
@@ -127,10 +127,8 @@ public class DriverProfileActivity extends BaseActivity {
         textViewRidesCancelledValue.setTypeface(Fonts.mavenRegular(this));
         textViewRidesMissedValue = (TextView) findViewById(R.id.textViewRidesMissedValue);
         textViewRidesMissedValue.setTypeface(Fonts.mavenRegular(this));
-        textViewOnlineHoursValue = (TextView) findViewById(R.id.textViewOnlineHoursValue);
-        textViewOnlineHoursValue.setTypeface(Fonts.mavenRegular(this));
-//		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-//		textViewTitleBarDEI.setTypeface(Fonts.mavenRegular(this));
+        textViewmonthlyScore = (TextView) findViewById(R.id.textViewmonthlyScore);
+        textViewmonthlyScore.setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
         textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
         textViewMonthlyText.setTypeface(Fonts.mavenRegular(this));
         textViewMonthlyText.setText(getStringText(R.string.earnings));
@@ -356,7 +354,6 @@ public class DriverProfileActivity extends BaseActivity {
                 textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
                 textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);
-                textViewOnlineHoursValue.setText("" + openedProfileInfo.textViewOnlineHoursValue);
             }
 
 

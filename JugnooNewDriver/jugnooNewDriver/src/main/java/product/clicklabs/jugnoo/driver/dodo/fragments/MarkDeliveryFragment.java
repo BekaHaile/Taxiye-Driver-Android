@@ -48,9 +48,9 @@ public class MarkDeliveryFragment extends Fragment {
 	private LinearLayout relative,
 			linearLayoutGetDirections, linearLayoutCallCustomer, linearLayoutDeliveryStatus;
 
-	private Button buttonBack;
+	private View backBtn;
 	private TextView textViewOrderId, textViewAmount, textViewCustomerName,
-			textViewCustomerAddress, textViewTitle,
+			textViewCustomerAddress, title,
 			textViewStatusValue, textViewReturnReason, textViewReturnReasonValue;
 	private RelativeLayout relativeLayoutTakeCash, relativeLayoutOperations;
 
@@ -81,10 +81,10 @@ public class MarkDeliveryFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.details));
+		backBtn = (Button) rootView.findViewById(R.id.backBtn);
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		title.setText(activity.getResources().getString(R.string.details));
 
 		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
 		textViewOrderId.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
@@ -180,7 +180,7 @@ public class MarkDeliveryFragment extends Fragment {
 			}
 		});
 
-		buttonBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				activity.onBackPressed();

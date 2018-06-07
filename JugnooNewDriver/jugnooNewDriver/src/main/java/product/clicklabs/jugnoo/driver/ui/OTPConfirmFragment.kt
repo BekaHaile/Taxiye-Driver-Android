@@ -21,7 +21,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -97,6 +99,11 @@ class OTPConfirmFragment : Fragment() {
         tvCall = rootView.findViewById(R.id.tv_call) as TextView
         labelNumber = rootView.findViewById(R.id.label_number) as TextView
         edtOTP = rootView.findViewById(R.id.edt_otp_number) as EditText
+        (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenRegular(activity)
+        labelNumber.typeface = Fonts.mavenMedium(activity)
+        edtOTP.typeface = Fonts.mavenMedium(activity)
+        tvResendOTP.typeface = Fonts.mavenRegular(activity)
+        btnSubmit.typeface = Fonts.mavenMedium(activity)
 
         labelNumber.text = "$countryCode $phoneNumber"
         tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)

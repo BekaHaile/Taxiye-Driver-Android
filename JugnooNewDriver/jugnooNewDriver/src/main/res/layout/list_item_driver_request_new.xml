@@ -20,8 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8px"
-            android:layout_marginTop="10px"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -36,7 +34,9 @@
                     android:layout_marginBottom="6px"
                     android:text="Sankar"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_32"/>
+                    android:textSize="@dimen/text_size_32"
+                    android:layout_marginStart="10px"
+                    />
 
                 <TextView
                     android:id="@+id/textViewRequestAddress"
@@ -45,15 +45,19 @@
                     android:layout_marginBottom="6px"
                     android:text="Sector 28, Chandigarh"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_32"/>
+                    android:textSize="@dimen/text_size_30"
+                    android:drawableStart="@drawable/ic_pickup_drop"
+                    android:drawablePadding="5dp"
+                    android:layout_marginStart="20px"
+                    />
                 <TextView
                     android:id="@+id/textViewEstimatedTripDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text=""
-                    android:textColor="@color/text_color_light"
-                    android:textSize="26px"
+                    android:textColor="@color/textColorLight"
+                    android:textSize="28px"
                     android:layout_marginBottom="6px"
                     android:visibility="gone"
                     />
@@ -353,8 +357,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/place_bid"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:layout_marginTop="5dp"
+                android:textColor="@color/textColor"
                 />
 
             <LinearLayout
@@ -388,9 +393,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/reduce_by_10"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
                         android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
+                        android:textColor="@color/textColor"
                         />
 
                 </LinearLayout>
@@ -403,7 +409,7 @@
                     android:background="@drawable/background_white_rounded_bordered"
                     android:padding="7dp"
                     android:textSize="21sp"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/textColor"
                     android:textColorHint="@color/text_color_light"
                     android:gravity="center_horizontal"
                     android:inputType="numberDecimal"
@@ -438,9 +444,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/increase_by_10"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
                         android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
+                        android:textColor="@color/textColor"
                         />
 
                 </LinearLayout>
@@ -458,23 +465,15 @@
 
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/buttonCancelRide"
-                android:layout_width="290px"
-                android:layout_height="69px"
+                style="@style/ButtonThemeAlternate"
                 android:text="@string/cancel"
-                android:layout_marginStart="30px"
-                android:background="@drawable/menu_black_btn_selector"
-                android:layout_toEndOf="@+id/buttonAcceptRide"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"/>
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/buttonAcceptRide"/>
 
             <Button
                 android:id="@+id/buttonAcceptRide"
-                android:layout_width="290px"
-                android:layout_height="69px"
-                android:background="@drawable/new_orange_btn_corner_selector"
-                android:text="@string/accept"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"/>
+                style="@style/ButtonTheme"
+                android:text="@string/accept"/>
 
         </RelativeLayout>
 

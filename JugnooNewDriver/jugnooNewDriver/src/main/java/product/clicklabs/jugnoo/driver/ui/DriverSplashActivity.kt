@@ -71,7 +71,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            setHomeAsUpIndicator(R.drawable.ic_back_selector)
         }
 
         tvToolbar.typeface = Fonts.mavenRegular(this)

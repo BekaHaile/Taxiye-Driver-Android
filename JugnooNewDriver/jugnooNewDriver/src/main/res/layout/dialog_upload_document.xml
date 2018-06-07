@@ -126,7 +126,7 @@
             <Button
                 android:id="@+id/btnCancel"
                 android:text="@string/cancel"
-                style="@style/DialogButtonOrange"
+                style="@style/DialogButton"
                 android:layout_marginBottom="7dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"

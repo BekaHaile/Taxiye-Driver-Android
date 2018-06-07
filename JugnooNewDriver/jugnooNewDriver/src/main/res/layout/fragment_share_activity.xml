@@ -2,21 +2,30 @@
 <LinearLayout
     android:id="@+id/linearLayoutRoot"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white_light_grey"
+    android:background="@color/white"
     android:splitMotionEvents="false">
 
-
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="8dp"
+        android:layout_marginStart="28px"
+        android:layout_marginEnd="28px"
+        >
         <RelativeLayout
-            android:id="@+id/relativeLayoutDownloads"
             android:layout_width="match_parent"
             android:layout_marginStart="-4px"
             android:layout_marginEnd="-4px"
             android:layout_marginTop="-4px"
             android:layout_height="204px"
-            android:background="@drawable/background_wallet_border"
             >
 
             <TextView
@@ -27,8 +36,8 @@
                 android:gravity="center_vertical"
                 android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_downloads"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_text_size" />
+                android:textColor="@color/textColorMedium"
+                android:textSize="32px" />
 
             <TextView
                 android:id="@+id/textViewNumberOfDownloadsValue"
@@ -38,21 +47,32 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:textColor="@color/textColor"
+                android:textSize="40px" />
 
 
         </RelativeLayout>
 
+    </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="8dp"
+        android:layout_marginTop="40px"
+        android:layout_marginStart="28px"
+        android:layout_marginEnd="28px"
+        >
         <RelativeLayout
-            android:id="@+id/relativeLayoutFirstRides"
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_activity_bar_height"
             android:layout_marginStart="-4px"
             android:layout_marginEnd="-4px"
-            android:layout_marginTop="@dimen/share_activity_text_margin_top"
-            android:background="@drawable/background_wallet_border" >
+            >
 
             <TextView
                 android:id="@+id/textViewNumberOfFirstRides"
@@ -62,8 +82,8 @@
                 android:gravity="center_vertical"
                 android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_first_rides"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_text_size" />
+                android:textColor="@color/textColorMedium"
+                android:textSize="32px" />
 
             <TextView
                 android:id="@+id/textViewNumberOfFirstRidesValue"
@@ -73,20 +93,32 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:textColor="@color/textColor"
+                android:textSize="40px" />
 
 
         </RelativeLayout>
 
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="8dp"
+        android:layout_marginTop="40px"
+        android:layout_marginStart="28px"
+        android:layout_marginEnd="28px"
+        >
         <RelativeLayout
-            android:id="@+id/relativeLayoutMoneyEarned"
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_activity_bar_height"
             android:layout_marginStart="-4px"
             android:layout_marginEnd="-4px"
-            android:layout_marginTop="@dimen/share_activity_text_margin_top"
-            android:background="@drawable/background_wallet_border" >
+            >
 
             <TextView
                 android:id="@+id/textViewMoneyEarned"
@@ -96,8 +128,8 @@
                 android:gravity="center_vertical"
                 android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/money_earned"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_text_size" />
+                android:textColor="@color/textColorMedium"
+                android:textSize="32px" />
 
             <TextView
                 android:id="@+id/textViewMoneyEarnedValue"
@@ -107,11 +139,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:textColor="@color/textColor"
+                android:textSize="40px" />
 
 
         </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
         <TextView
@@ -120,8 +153,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/data_effective_format"
-            android:textColor="@color/black"
-            android:textSize="@dimen/share_activity_text_size_small"
+            android:textColor="@color/textColorLight"
+            android:textSize="30px"
             android:layout_marginTop="@dimen/share_activity_data_text_margin_top" />
 
 </LinearLayout>

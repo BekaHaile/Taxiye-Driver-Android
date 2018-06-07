@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,9 +32,9 @@ public class DeliveryInfosListFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 
-	private Button buttonBack;
+	private View backBtn;
 	private LinearLayout currentLLayout, completedLLayout;
-	private TextView textViewTitle, textViewCompleted, textViewCurrent, textViewMerchantMessage, textViewPlaceholderMessage;
+	private TextView title, textViewCompleted, textViewCurrent, textViewMerchantMessage, textViewPlaceholderMessage;
 	private ImageView imageViewCompleted, imageViewCurrent;
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
@@ -81,10 +80,10 @@ public class DeliveryInfosListFragment extends Fragment {
 		imageViewCompleted = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
 		imageViewCurrent = (ImageView) rootView.findViewById(R.id.imageViewCurrent);
 
-		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.select_delivery));
+		backBtn = rootView.findViewById(R.id.backBtn);
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		title.setText(activity.getResources().getString(R.string.select_delivery));
 
 		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
 		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity));
@@ -129,7 +128,7 @@ public class DeliveryInfosListFragment extends Fragment {
 
 		recyclerViewDeliveryInfo.setAdapter(deliveryInfoAdapter);
 
-		buttonBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				backPress();

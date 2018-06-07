@@ -45,7 +45,7 @@ public class DriverPatymRecharge extends BaseActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	View backBtn;
 	TextView title;
 	ScrollView scrollView;
 	LinearLayout mainLinear, enterAmountLL;
@@ -90,9 +90,10 @@ public class DriverPatymRecharge extends BaseActivity {
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.paytm_recharge);
 
 
 		editTextCashAmount = (EditText) findViewById(R.id.editTextCashAmount);

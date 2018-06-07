@@ -1,41 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/activity_profile_screen"
               xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:animateLayoutChanges="true"
               android:background="@color/white"
               android:orientation="vertical"
-              android:splitMotionEvents="false"
-    >
+              android:splitMotionEvents="false">
 
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:tag="mwar"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/profile"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
-
-    </RelativeLayout>
+    <include layout="@layout/layout_top_bar"/>
 
 
     <ScrollView
@@ -51,8 +26,8 @@
             <RelativeLayout
                 android:id="@+id/driverDetailsRL"
                 android:layout_width="match_parent"
-                android:layout_height="340px"
-                android:background="@drawable/bg_profile_background">
+                android:layout_height="240px"
+                >
 
                 <RelativeLayout
                     android:id="@+id/profileRl"
@@ -90,369 +65,312 @@
 
             </RelativeLayout>
 
-
-            <LinearLayout
-                android:id="@+id/infoLLayout"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/driverDetailsRL"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="20px"
                 android:layout_marginTop="24px"
-                android:orientation="vertical">
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true"
+                >
 
-                <TextView
-                    android:id="@+id/textViewmonthlyText"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="24px"
-                    android:layout_marginStart="42px"
-                    android:text="@string/info"
-                    android:textColor="@color/new_orange"
-                    android:textSize="42px"/>
+                    android:orientation="vertical">
 
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal0"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px">
+                    <TextView
+                        android:id="@+id/tvPersonalInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="100px"
+                        android:background="@color/bgColor"
+                        android:gravity="center"
+                        android:text="@string/info"
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"/>
 
                     <EditText
                         android:id="@+id/editTextUserName"
-                        android:layout_width="590px"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:hint="@string/name"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal2"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80px">
-
-                    <TextView
-                        android:id="@+id/tvCountryCode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:text=""
-                        android:hint="@string/code"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="17sp"
-                        android:drawableEnd="@drawable/ic_arrow_down_vector"
-                        android:drawablePadding="3dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        android:tag="@string/dont_touch_me"
-                        android:layout_centerVertical="true"
-                        />
-
-                    <EditText
-                        android:id="@+id/editTextPhone"
                         android:layout_width="match_parent"
-                        android:layout_height="70px"
+                        android:layout_height="80px"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="5px"
-                        android:layout_toStartOf="@+id/imageViewEditPhone"
-                        android:layout_toEndOf="@+id/tvCountryCode"
+                        android:layout_marginEnd="40px"
+                        android:layout_marginStart="40px"
                         android:background="#0000"
-                        android:hint="@string/phone_number"
-                        android:inputType="number"
-                        android:maxLength="14"
+                        android:hint="@string/name"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
                         android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
+                        android:textColor="@color/textColor"
+                        android:textColorHint="@color/textColorLight"
                         android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:textSize="32px"/>
 
                     <ImageView
-                        android:id="@+id/imageViewEditPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
-                        android:background="@drawable/edit_pencil_icon"
-                        android:tag="mwar"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_marginEnd="40px"
+                        android:layout_marginStart="40px"
+                        android:background="@color/dividerColor"/>
 
-                </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/imageViewHorizontal1"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="80px">
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvCountryCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:drawableEnd="@drawable/ic_arrow_down_vector"
+                            android:drawablePadding="3dp"
+                            android:hint="@string/code"
+                            android:includeFontPadding="false"
+                            android:paddingBottom="8dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:paddingTop="8dp"
+                            android:tag="@string/dont_touch_me"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textColorHint="@color/textColorLight"
+                            android:textSize="16sp"
+                            />
 
-            <LinearLayout
-                android:id="@+id/bankDetailsLLayout"
+                        <EditText
+                            android:id="@+id/editTextPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="5px"
+                            android:layout_toEndOf="@+id/tvCountryCode"
+                            android:layout_toStartOf="@+id/imageViewEditPhone"
+                            android:background="#0000"
+                            android:hint="@string/phone_number"
+                            android:inputType="number"
+                            android:maxLength="14"
+                            android:singleLine="true"
+                            android:textColor="@color/textColor"
+                            android:textColorHint="@color/textColorLight"
+                            android:textCursorDrawable="@null"
+                            android:textSize="32px"/>
+
+                        <ImageView
+                            android:id="@+id/imageViewEditPhone"
+                            android:layout_width="40px"
+                            android:layout_height="40px"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="40px"
+                            android:background="@drawable/edit_pencil_icon"
+                            android:tag="mwar"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvBankLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/infoLLayout"
+                android:layout_below="@+id/cvInfoLayout"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="20px"
                 android:layout_marginTop="24px"
-                android:orientation="vertical"
-                android:visibility="@integer/show_bank_details_in_profile">
-
-                <TextView
-                    android:id="@+id/bankDetailsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="24px"
-                    android:layout_marginStart="42px"
-                    android:text="@string/account_details"
-                    android:textColor="@color/new_orange"
-                    android:textSize="42px"/>
-
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal3"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
+                android:visibility="@integer/show_bank_details_in_profile"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true"
+                >
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:id="@+id/layout_bank_details"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80px">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/TextViewAccNoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:text="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/TextViewAccNo"
-                        android:layout_width="380px"
-                        android:gravity="end"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:hint="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/imageViewHorizontal4"
+                        android:id="@+id/tvAccountDetails"
                         android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/grey_light_more"/>
+                        android:layout_height="100px"
+                        android:background="@color/bgColor"
+                        android:gravity="center"
+                        android:text="@string/account_details"
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"
+                        />
 
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/layout_bank_details"
                         android:layout_width="match_parent"
-                        android:layout_height="80px">
-
-                    <TextView
-                        android:id="@+id/textViewIFSCText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
-                        android:background="#0000"
-                        android:text="@string/ifsc_code"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewIFSC"
-                        android:layout_width="380px"
-                        android:gravity="end"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="42px"
-                        android:background="#0000"
-                        android:capitalize="words"
-                        android:hint="@string/acc_no"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/imageViewHorizontal5"
-                        android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/grey_light_more"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="80px">
-
-                    <TextView
-                        android:id="@+id/textViewBankNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70px"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
-                        android:background="#0000"
-                        android:text="@string/bank_name"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewBankName"
-                        android:layout_width="380px"
-                        android:gravity="end"
-                        android:layout_height="70px"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
-                        android:background="#0000"
-                        android:hint="Bank name"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/imageViewHorizontal6"
-                        android:layout_width="match_parent"
-                        android:layout_height="2px"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/grey_light_more"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textViewBankLocText"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginBottom="15px"
-                        android:layout_marginStart="42px"
-                        android:layout_marginTop="15px"
-                        android:background="#0000"
-                        android:text="@string/bank_loc"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
-
-                    <TextView
-                        android:id="@+id/textViewBankLoc"
-                        android:layout_width="380px"
-                        android:gravity="end"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginBottom="15px"
-                        android:layout_marginEnd="42px"
-                        android:layout_marginTop="15px"
-                        android:background="#0000"
-                        android:hint="@string/bank_loc"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black_text_alpha"
-                        android:textCursorDrawable="@null"
-                        android:textSize="36px"/>
+                        android:orientation="vertical">
 
 
-                    </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80px">
+
+                            <TextView
+                                android:id="@+id/tvAccNoText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40px"
+                                android:background="#0000"
+                                android:textAllCaps="true"
+                                android:text="@string/acc_no"
+                                android:textColor="@color/textColorMedium"
+                                android:textSize="32px"
+                                android:gravity="center_vertical"
+                                />
+
+                            <TextView
+                                android:id="@+id/tvAccNo"
+                                android:layout_width="380px"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="40px"
+                                android:gravity="end|center_vertical"
+                                android:hint="@string/acc_no"
+                                android:textColor="@color/textColor"
+                                android:textSize="32px"/>
+
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px"
+                            android:layout_marginStart="40px"
+                            android:layout_marginEnd="40px"
+                            android:background="@color/dividerColor"/>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80px">
+
+                            <TextView
+                                android:id="@+id/tvIFSCText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40px"
+                                android:text="@string/ifsc_code"
+                                android:textColor="@color/textColorMedium"
+                                android:textSize="32px"
+                                android:gravity="center_vertical"
+                                />
+
+                            <TextView
+                                android:id="@+id/textViewIFSC"
+                                android:layout_width="380px"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="40px"
+                                android:gravity="end|center_vertical"
+                                android:hint="@string/acc_no"
+                                android:textColor="@color/textColor"
+                                android:textSize="32px"/>
+
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px"
+                            android:layout_marginStart="40px"
+                            android:layout_marginEnd="40px"
+                            android:background="@color/dividerColor"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80px">
+
+                            <TextView
+                                android:id="@+id/tvBankNameText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40px"
+                                android:text="@string/bank_name"
+                                android:textColor="@color/textColorMedium"
+                                android:gravity="center_vertical"
+                                android:textSize="32px"/>
+
+                            <TextView
+                                android:id="@+id/textViewBankName"
+                                android:layout_width="380px"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="40px"
+                                android:gravity="end|center_vertical"
+                                android:hint="Bank name"
+                                android:textColor="@color/textColor"
+                                android:textSize="32px"/>
+
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="2px"
+                            android:layout_marginStart="40px"
+                            android:layout_marginEnd="40px"
+                            android:background="@color/dividerColor"/>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80px">
+
+                            <TextView
+                                android:id="@+id/tvBankLocText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="40px"
+                                android:text="@string/bank_loc"
+                                android:textColor="@color/textColorMedium"
+                                android:textSize="32px"
+                                android:gravity="center_vertical"/>
+
+                            <TextView
+                                android:id="@+id/textViewBankLoc"
+                                android:layout_width="380px"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="40px"
+                                android:gravity="end|center_vertical"
+                                android:hint="@string/bank_loc"
+                                android:textColor="@color/textColor"
+                                android:textSize="32px"/>
+
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/button_stripe"
+                        style="@style/ButtonTheme"
+                        android:layout_gravity="start"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="10dp"
+                        android:text="@string/connect_with_stripe"
+                        android:visibility="visible"
+                        />
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/button_stripe"
-                    android:padding="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15px"
-                    android:layout_marginBottom="15px"
-                    android:background="@drawable/button_bg_gradient"
-                    android:text="@string/connect_with_stripe"
-                    android:textAllCaps="true"
-                    android:visibility="gone"
-                    android:layout_marginLeft="42px"
-                    android:layout_gravity="left"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_34"/>
-
-                <ImageView
-                    android:id="@+id/imageViewHorizontal7"
-                    android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/grey_light_more"/>
-
-            </LinearLayout>
-
+            </android.support.v7.widget.CardView>
 
         </RelativeLayout>
     </ScrollView>

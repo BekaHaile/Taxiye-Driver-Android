@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +31,7 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 
     private LinearLayout root;
     private TextView title;
-    private Button backBtn;
+    private View backBtn;
 
 	ViewPager viewPager;
 	NotificationFragmentAdapter notificationFragmentAdapter;
@@ -64,7 +63,8 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-		backBtn = (Button)findViewById(R.id.backBtn);
+		title.setText(R.string.Notifications);
+		backBtn = findViewById(R.id.backBtn);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -78,9 +78,9 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 		viewPager.setAdapter(notificationFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
-		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
+		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
+		tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
+		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		tabs.setViewPager(viewPager);
 
 		try {

@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
-        android:background="@color/black_top_bar_bg"
+        android:background="@color/colorPrimary"
         android:layout_width="0dp"
 
         android:minHeight="48dp"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorTitle"
             android:textSize="20sp"
             android:singleLine="true"
             android:ellipsize="marquee"
@@ -38,10 +38,10 @@
 
         <ImageView
             android:id="@+id/ivBack"
-            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
+            android:background="@drawable/ic_back_selector" android:rotationY="@integer/locale_mirror_flip"
             android:layout_width="40dp"
             android:layout_height="40dp" />
     </android.support.constraint.ConstraintLayout>

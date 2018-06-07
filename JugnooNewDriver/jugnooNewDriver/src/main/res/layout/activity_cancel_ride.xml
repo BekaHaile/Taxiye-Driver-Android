@@ -71,14 +71,13 @@
 
             <Button
                 android:id="@+id/buttonCancelRide"
-                android:layout_width="648px"
-                android:layout_height="100px"
+                style="@style/ButtonTheme"
+                android:layout_width="300dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30px"
-                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:layout_marginTop="15dp"
                 android:text="@string/ok"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"/>
+                android:textSize="16dp"
+                />
 
 
         </LinearLayout>

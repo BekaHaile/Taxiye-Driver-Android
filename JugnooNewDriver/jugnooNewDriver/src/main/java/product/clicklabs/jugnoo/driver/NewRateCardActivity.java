@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,13 +25,12 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 
     private LinearLayout root;
     private TextView title;
-    private Button backBtn;
+    private View backBtn;
 
 	ViewPager viewPager;
 	RateCardFragmentAdapter rateCardFragmentAdapter;
 	PagerSlidingTabStrip tabs;
 	Boolean notVisible = true;
-	ImageView imageViewSeprator;
 
 	@Override
 	protected void onStart() {
@@ -58,7 +55,7 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		title.setText(getResources().getString(R.string.rate_card));
-		backBtn = (Button)findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -70,14 +67,12 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(rateCardFragmentAdapter);
-		imageViewSeprator = (ImageView) findViewById(R.id.imageViewSeprator);
-		imageViewSeprator.setVisibility(View.GONE);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.red_v2));
 		tabs.setTextColorResource(R.color.red_v2, R.color.white);
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
-		tabs.setBackgroundColor(getResources().getColor(R.color.black_top_bar_bg));
+		tabs.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 		tabs.setVisibility(rateCardFragmentAdapter.getCount() > 1 ? View.VISIBLE : View.GONE);
 
 //		try {

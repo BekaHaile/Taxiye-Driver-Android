@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +36,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 
 	TextView idValue, dateTimeValue, distanceValue, rideTimeValue, textViewReturnDistance,
@@ -88,9 +87,10 @@ public class DeliveryDetailsActivity extends BaseActivity {
 			ride_id = extras.getString("delivery_id");
 		}
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.delivery_details);
 
 		relativeLayoutDeliveryFare = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryFare);
 		relativeLayoutReturnSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutReturnSubsidy);

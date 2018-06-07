@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -57,8 +59,9 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
     }
 
     private void initView(FragmentWalletTransactionBinding transactionFragment) {
-        transactionFragment.include.textViewTitle.setText(getString(R.string.wallet_transactions).toUpperCase());
-        transactionFragment.include.buttonBack.setOnClickListener(new View.OnClickListener() {
+        ((TextView)rootView.findViewById(R.id.title)).setText(getString(R.string.wallet_transactions));
+        ((TextView)rootView.findViewById(R.id.title)).setTypeface(Fonts.mavenMedium(walletActivity));
+        rootView.findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 walletActivity.onBackPressed();

@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -103,7 +101,6 @@ public class ShareEarnFragment extends BaseFragment {
         textViewReferralCodeDisplay.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue = (TextView) rootView.findViewById(R.id.textViewReferralCodeValue);
         textViewReferralCodeValue.setTypeface(Fonts.mavenRegular(activity));
-        textViewReferralCodeValue.setTextColor(getResources().getColor(R.color.musturd_jugnoo));
         textViewShareReferral = (TextView) rootView.findViewById(R.id.textViewShareReferral);
         textViewShareReferral.setTypeface(Fonts.mavenRegular(activity));
 
@@ -111,9 +108,7 @@ public class ShareEarnFragment extends BaseFragment {
             buttonShare.setText(Data.userData.referralButtonText);
             sstr = new SpannableString(Data.userData.referralCode);
             final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-            final ForegroundColorSpan clrs = new ForegroundColorSpan(Color.parseColor("#FAA31C"));
             sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
             textViewReferralCodeDisplay.setText("");

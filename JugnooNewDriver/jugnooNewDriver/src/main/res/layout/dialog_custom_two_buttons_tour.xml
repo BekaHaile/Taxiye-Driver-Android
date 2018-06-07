@@ -112,13 +112,13 @@
 
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
-                    style="@style/DialogButtonGrey"
+                    style="@style/DialogButtonAlternate"
                     android:text="@string/cancel"
                     />
 
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"
-                    style="@style/DialogButtonOrange"
+                    style="@style/DialogButton"
                     android:text="@string/ok"
                     android:layout_marginStart="20dp"
                     />

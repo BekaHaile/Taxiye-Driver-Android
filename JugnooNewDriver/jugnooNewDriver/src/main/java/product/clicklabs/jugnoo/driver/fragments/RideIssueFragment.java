@@ -50,8 +50,8 @@ public class RideIssueFragment extends Fragment {
 
 	RelativeLayout relative;
 
-	TextView textViewTitle;
-	ImageView imageViewBack;
+	TextView title;
+	ImageView backBtn;
 
 	TextView textViewRegistration;
 	EditText editTextMessage;
@@ -100,9 +100,10 @@ public class RideIssueFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
-		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity));
+		title.setText(R.string.fare_issues);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 
 		textViewRegistration = (TextView) rootView.findViewById(R.id.textViewRegistration);
 		textViewRegistration.setTypeface(Fonts.mavenRegular(activity));
@@ -116,7 +117,7 @@ public class RideIssueFragment extends Fragment {
 		textViewScroll = (TextView) rootView.findViewById(R.id.textViewScroll);
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

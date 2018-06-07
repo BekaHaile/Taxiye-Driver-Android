@@ -197,7 +197,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/topRlOuter"
                 android:divider="@color/transparent"
-                android:background="@color/black_translucent"
                 android:splitMotionEvents="false"
                 android:visibility="gone"
                 android:focusableInTouchMode="false"

@@ -18,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/please_enter_your_name"
-            android:textColor="@color/text_color_splash_heading"
-            android:textSize="14sp"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
             />
 
 
@@ -35,6 +35,9 @@
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
             />
 
@@ -71,8 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/select_vehicle_type"
-            android:textColor="@color/text_color_splash_heading"
-            android:textSize="14sp"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/edtPromo"
             />
 

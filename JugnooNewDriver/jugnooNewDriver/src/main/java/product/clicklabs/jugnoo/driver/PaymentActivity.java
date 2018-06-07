@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +26,8 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 	
 	LinearLayout linearLayoutRoot;
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	View backBtn;
+	TextView title;
 	RelativeLayout relativeContainer;
 	ViewPager viewPager;
 	PaymentFragmentAdapter paymentFragmentAdapter;
@@ -72,9 +71,10 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		backBtn =  findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.Invoices_cap);
 
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
@@ -87,7 +87,7 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 				.commit();
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				performbackPressed();

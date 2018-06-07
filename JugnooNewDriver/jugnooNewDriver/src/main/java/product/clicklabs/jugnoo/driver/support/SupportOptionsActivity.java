@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fugu.HippoConfig;
@@ -29,9 +29,10 @@ public class SupportOptionsActivity extends BaseActivity implements View.OnClick
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_support_options);
 
-		Button backBtn = (Button) findViewById(R.id.backBtn);
+		ImageView backBtn = (ImageView) findViewById(R.id.backBtn);
 		backBtn.setOnClickListener(this);
 		((TextView) findViewById(R.id.title)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.title)).setText(R.string.support);
 
 		RecyclerView rvOptions = (RecyclerView) findViewById(R.id.rvOptions);
 		rvOptions.setLayoutManager(new LinearLayoutManager(this));

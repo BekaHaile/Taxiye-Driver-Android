@@ -28,7 +28,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppConstants;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -55,9 +54,10 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     private ImageView btnOtpViaCall;
     RelativeLayout relative, relativeLayoutFake;
     EditText otpEt;
-    Button loginViaOtp, btnLogin, backBtn;
+    Button loginViaOtp, btnLogin;
+    View backBtn;
     ImageView imageViewChangePhoneNumber;
-    TextView textViewOr, textViewOtpNumber, textviewLogin;
+    TextView textViewOr, textViewOtpNumber, title;
     String selectedLanguage = "";
     int languagePrefStatus;
     Configuration conf;
@@ -72,16 +72,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     String enteredEmail = "";
     String enteredPhone = "";
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -125,7 +115,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         btnOtpViaCall = (ImageView) findViewById(R.id.btnOtpViaCall);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
         btnLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
         imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
@@ -138,8 +128,9 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
         textViewOr = (TextView) findViewById(R.id.textViewOr);
         textViewOr.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
-		textviewLogin = (TextView) findViewById(R.id.textviewLogin);
-		textviewLogin.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		title.setText(R.string.login);
 
         selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 

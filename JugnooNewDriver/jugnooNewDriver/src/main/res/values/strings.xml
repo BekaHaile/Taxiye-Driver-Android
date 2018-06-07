@@ -75,8 +75,8 @@
     <string name="end_ride">End Ride</string>
 
     <string name="reached_destination">Reached Destination</string>
-    <string name="distance">DISTANCE</string>
-    <string name="wait_time">WAIT TIME</string>
+    <string name="distance">Distance</string>
+    <string name="wait_time">Wait Time</string>
     <string name="fare">Fare</string>
 
     <string name="accept_ride">Accept Ride</string>
@@ -84,7 +84,7 @@
 
 
     <string name="call">Call</string>
-    <string name="ride_time">RIDE TIME</string>
+    <string name="ride_time">Ride Time</string>
 
     <string name="submit">SUBMIT</string>
     <string name="search">Search</string>
@@ -127,7 +127,7 @@
     <string name="arrived">Arrived</string>
     <string name="accept_subsidy">Accept Subsidy</string>
     <string name="account">Account</string>
-    <string name="accept">ACCEPT</string>
+    <string name="accept">Accept</string>
     <string name="away_from_you">Away from you:</string>
     <string name="end_ride_text">Are you sure you want to end ride?</string>
     <string name="logout_text">Are you sure you want to logout?</string>

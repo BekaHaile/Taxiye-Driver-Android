@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,7 +41,7 @@ import retrofit.mime.TypedByteArray;
 public class SharingRidesActivity extends BaseActivity {
 
 	LinearLayout relative;
-	Button backBtn;
+	View backBtn;
 	RecyclerView recyclerViewDrivers;
 	TextView title;
 	SharingRidesAdapter sharingRidesAdapter;
@@ -106,7 +105,8 @@ public class SharingRidesActivity extends BaseActivity {
 
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-		backBtn = (Button) findViewById(R.id.backBtn);
+		title.setText(R.string.sharing_rides);
+		backBtn = findViewById(R.id.backBtn);
 		swipeRefreshLayoutShareRides = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutShareRides);
 
 		swipeRefreshLayoutShareRides.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

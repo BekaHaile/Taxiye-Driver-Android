@@ -77,9 +77,9 @@ class DriverSetupFragment : Fragment() {
 
 
 
-            tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
+            tvEnterName.typeface = Fonts.mavenMedium(parentActivity!!)
             editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvSelectVehicle.typeface = Fonts.mavenLight(parentActivity!!)
+            tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
@@ -89,10 +89,10 @@ class DriverSetupFragment : Fragment() {
 
 
 
-        bContinue.typeface = Fonts.mavenRegular(activity)
+        bContinue.typeface = Fonts.mavenMedium(activity)
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
 
-        bCancel.typeface = Fonts.mavenRegular(activity)
+        bCancel.typeface = Fonts.mavenMedium(activity)
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
         tvCities.setOnClickListener{showCountriesDialog(activity.supportFragmentManager)}
         tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
@@ -127,6 +127,7 @@ class DriverSetupFragment : Fragment() {
         tvTermsOfUse.text = ss
         tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         tvTermsOfUse.highlightColor = Color.TRANSPARENT
+        tvTermsOfUse.typeface = Fonts.mavenRegular(activity)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

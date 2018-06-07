@@ -1,44 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/activity_profile_screen"
+<LinearLayout android:id="@+id/activity_profile_screen"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:layout_width="720px"
               android:layout_height="1134px"
+              android:animateLayoutChanges="true"
               android:background="@color/white"
               android:orientation="vertical"
               android:splitMotionEvents="false"
-                android:animateLayoutChanges="true"
     >
 
 
     <RelativeLayout
-        android:id="@+id/topRl"
         android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false" >
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:splitMotionEvents="false">
 
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:tag="mwar" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/profile"
-            android:textColor="@color/white"
-            android:textSize="40px" />
+        <include layout="@layout/layout_top_bar"/>
 
         <TextView
             android:id="@+id/terms"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
@@ -48,386 +32,333 @@
             android:tag="@string/dont_touch_me"
             android:visibility="@integer/show_t_and_c_profile"
             android:text="@string/about"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorTitle"
             android:textSize="13sp"
             />
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginTop="15px"-->
-            <!--android:layout_marginEnd="20px"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/imageViewTitleBarDEI"-->
-                <!--android:layout_width="53px"-->
-                <!--android:layout_height="53px"-->
-                <!--android:src="@drawable/ic_dei"-->
-                <!--android:tag="mwar"-->
-                <!--android:layout_marginEnd="10px"-->
-                <!--/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewTitleBarDEI"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center"-->
-                <!--android:text="4.5"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="38px"/>-->
-
-        <!--</LinearLayout>-->
     </RelativeLayout>
 
 
     <RelativeLayout
+        android:id="@+id/driverDetailsRLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/driverDetailsRLL">
+        android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="350px"
-        android:background="@drawable/bg_profile_background"
-        android:id="@+id/driverDetailsRL">
-
-        <RelativeLayout
-            android:id="@+id/profileRl"
-            android:layout_width="220px"
-            android:layout_height="220px"
-            android:layout_centerVertical="true"
-            android:splitMotionEvents="false"
-            android:layout_marginStart="40px"
-            android:tag="mwar">
-
-            <ImageView
-                android:id="@+id/profileBack"
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ring"
-                android:tag="mwar"/>
-
-            <ImageView
-                android:id="@+id/profileBack2"
-                android:layout_width="225px"
-                android:layout_height="225px"
-                android:background="@drawable/profile_oval"
-                android:tag="mwar"/>
-
-            <ImageView
-                android:id="@+id/profileImg"
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:layout_centerInParent="true"
-                android:tag="mwar"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvDriverInfo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profileRl"
-            android:layout_centerVertical="true">
-
-            <TextView
-                android:id="@+id/textViewDriverName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="42px"
-                android:layout_marginTop="5px"
-                android:text="@string/name"
-                android:textColor="@color/white"
-                android:textSize="40px" />
-
-            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                android:id="@+id/textViewDriverId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="42px"
-                android:layout_below="@id/textViewDriverName"
-                android:layout_marginTop="5px"
-                android:text="@string/driver_id"
-                android:textColor="@color/white"
-                android:textSize="40px" />
-
-            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                android:id="@+id/textViewRankCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="42px"
-                android:layout_marginTop="5px"
-                android:layout_below="@id/textViewDriverId"
-                android:text="@string/rank_city"
-                android:textColor="@color/white"
-                android:textSize="40px" />
-
-            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                android:id="@+id/textViewRankOverall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="42px"
-                android:layout_marginTop="5px"
-                android:layout_below="@id/textViewRankCity"
-                android:text="@string/rank_overall"
-                android:textColor="@color/white"
-                android:textSize="40px" />
-
-           <RelativeLayout
-               android:id="@+id/layoutEditProfile"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_below="@+id/textViewRankOverall"
-               android:visibility="gone">
-            <TextView
-                android:id="@+id/textViewEditProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="42px"
-                android:layout_marginTop="5px"
-                android:text="@string/Edit_profile"
-                android:textColor="@color/white"
-                android:textSize="40px"
-                android:layout_centerVertical="true"
-                />
-
-            <ImageView
-                android:id="@+id/editIcon"
-                android:layout_width="42px"
-                android:layout_height="42px"
-                android:layout_marginStart="10px"
-                android:background="@drawable/edit_icon_white"
-                android:layout_toEndOf="@+id/textViewEditProfile"
-                android:layout_centerVertical="true"
-                android:tag="mwar"/>
-           </RelativeLayout>
+            android:layout_marginEnd="20px"
+            android:layout_marginStart="20px"
+            android:background="?android:attr/selectableItemBackground"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true"
+            >
 
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/driverDetailsRL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="30px"
+                    android:layout_marginTop="30px"
+                    android:background="@drawable/edit_pencil_icon"
+                    android:tag="mwar"/>
+
+                <RelativeLayout
+                    android:id="@+id/profileRl"
+                    android:layout_width="140px"
+                    android:layout_height="140px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30px"
+                    android:layout_marginTop="30px"
+                    android:layout_marginBottom="30px"
+                    android:splitMotionEvents="false"
+                    android:tag="mwar">
+
+                    <ImageView
+                        android:id="@+id/profileBack"
+                        android:layout_width="140px"
+                        android:layout_height="140px"
+                        android:background="@drawable/ring"
+                        android:tag="mwar"/>
+
+                    <ImageView
+                        android:id="@+id/profileImg"
+                        android:layout_width="134px"
+                        android:layout_height="134px"
+                        android:layout_centerInParent="true"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="30px"
+                    android:layout_toEndOf="@id/profileRl">
+
+                    <TextView
+                        android:id="@+id/textViewDriverName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="@string/name"
+                        android:textColor="@color/textColor"
+                        android:textSize="40px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewDriverId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/textViewDriverName"
+                        android:layout_marginTop="5px"
+                        android:text="@string/driver_id"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="36px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewRankCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/textViewDriverId"
+                        android:layout_marginTop="5px"
+                        android:text="@string/rank_city"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="36px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewRankOverall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/textViewRankCity"
+                        android:layout_marginTop="5px"
+                        android:text="@string/rank_overall"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="36px"/>
+
+                    <RelativeLayout
+                        android:id="@+id/layoutEditProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewRankOverall"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textViewEditProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="42px"
+                            android:layout_marginTop="5px"
+                            android:text="@string/Edit_profile"
+                            android:textColor="@color/white"
+                            android:textSize="40px"
+                            />
+
+                        <ImageView
+                            android:id="@+id/editIcon"
+                            android:layout_width="42px"
+                            android:layout_height="42px"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10px"
+                            android:layout_toEndOf="@+id/textViewEditProfile"
+                            android:background="@drawable/edit_icon_white"
+                            android:tag="mwar"/>
+                    </RelativeLayout>
 
 
-    </RelativeLayout>
+                </RelativeLayout>
 
 
+            </RelativeLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="24px"
-            android:layout_marginEnd="24px"
+            android:layout_below="@+id/cvDriverInfo"
+            android:layout_marginEnd="20px"
+            android:layout_marginStart="20px"
             android:layout_marginTop="55px"
-            android:layout_below="@+id/driverDetailsRL">
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true"
+            >
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120px">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewmonthlyText"
-                    android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:layout_height="65px"
+
+                    <TextView
+                        android:id="@+id/textViewmonthlyScore"
+                        android:layout_width="match_parent"
+                        android:layout_height="120px"
+                        android:gravity="center"
+                        android:text="@string/monthly"
+                        android:textColor="@color/textColor"
+                        android:background="@color/bgColor"
+                        android:textSize="38px"/>
+
+                <RelativeLayout
+                    android:id="@+id/rlMonthlyEarnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/textViewMonthlyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="42px"
+                        android:text="@string/earnings"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="32px"/>
+
+                    <TextView
+                        android:id="@+id/textViewMonthlyValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="42px"
+                        android:text="0000"
+                        android:textColor="@color/textColor"
+                        android:textSize="36px"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginStart="40px"
+                    android:layout_marginEnd="40px"
+                    android:background="@color/dividerColor"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90px">
+
+                    <TextView
+                        android:id="@+id/textViewRidesTakenText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="42px"
+                        android:text="@string/rides_taken"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="32px"/>
+
+                    <TextView
+                        android:id="@+id/textViewRidesTakenValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="42px"
+                        android:text="0000"
+                        android:textColor="@color/textColor"
+                        android:textSize="36px"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/monthly"
-                    android:textColor="@color/black"
-                    android:textSize="48px" />
+                    android:layout_marginStart="40px"
+                    android:layout_marginEnd="40px"
+                    android:background="@color/dividerColor"/>
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90px">
 
-            <!--<ImageView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="2px"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:id="@+id/imageViewHorizontal0"-->
-                <!--android:background="@color/blue_btn_pressed"/>-->
+                    <TextView
+                        android:id="@+id/textViewRidesMissedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="42px"
+                        android:text="@string/rides_missed"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="32px"/>
 
-            <RelativeLayout
-                android:id="@+id/rlMonthlyEarnings"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="120px">
+                    <TextView
+                        android:id="@+id/textViewRidesMissedValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="42px"
+                        android:text="0000"
+                        android:textColor="@color/textColor"
+                        android:textSize="36px"/>
 
-            <TextView
-                android:id="@+id/textViewMonthlyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="42px"
-                android:text="@string/earnings"
-                android:textColor="@color/black"
-                android:textSize="40px" />
+                </RelativeLayout>
 
-            <TextView
-                android:id="@+id/textViewMonthlyValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="0000"
-                android:layout_marginEnd="42px"
-                android:textColor="@color/black"
-                android:textSize="40px" />
+                <ImageView
+                    android:id="@+id/imageViewHorizontal2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/dividerColor"
+                    android:layout_marginStart="40px"
+                    android:layout_marginEnd="40px"/>
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90px">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal1"
-                android:background="@color/black"/>
+                    <TextView
+                        android:id="@+id/textViewRidesCancelledText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="42px"
+                        android:text="@string/rides_cancelled"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="32px"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="120px">
+                    <TextView
+                        android:id="@+id/textViewRidesCancelledValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="42px"
+                        android:text="0000"
+                        android:textColor="@color/textColor"
+                        android:textSize="36px"/>
 
-                <TextView
-                    android:id="@+id/textViewRidesTakenText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/rides_taken"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textViewRidesTakenValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="0000"
-                    android:layout_marginEnd="42px"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
-
-            </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal3"
-                android:background="@color/black"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="120px">
-
-                <TextView
-                    android:id="@+id/textViewRidesMissedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/rides_missed"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/textViewRidesMissedValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="0000"
-                    android:layout_marginEnd="42px"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal2"
-                android:background="@color/black"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="120px">
-
-                <TextView
-                    android:id="@+id/textViewRidesCancelledText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/rides_cancelled"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/textViewRidesCancelledValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="0000"
-                    android:layout_marginEnd="42px"
-                    android:textColor="@color/black"
-                    android:textSize="40px" />
-
-            </RelativeLayout>
-
-
-            <!--<ImageView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="2px"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:id="@+id/imageViewHorizontal4"-->
-                <!--android:background="@color/black"/>-->
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="107px"
-                android:visibility="gone"
-                >
-
-                <TextView
-                    android:id="@+id/textViewOnlineHoursText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/online_hours"
-                    android:textColor="@color/black_grey"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/textViewOnlineHoursValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="0000"
-                    android:layout_marginEnd="36px"
-                    android:textColor="@color/blue_btn_pressed"
-                    android:textSize="40px" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-
-
-
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

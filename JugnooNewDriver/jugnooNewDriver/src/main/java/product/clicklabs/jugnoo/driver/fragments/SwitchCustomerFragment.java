@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,8 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 public class SwitchCustomerFragment extends Fragment {
 
 	private RelativeLayout relativeLayoutRoot, relativeLayoutReset;
-	private Button backBtn, resetBtn;
+	private Button resetBtn;
+	private ImageView backBtn;
 
 	private RecyclerView recyclerViewCustomer;
 
@@ -50,7 +52,7 @@ public class SwitchCustomerFragment extends Fragment {
 
 
 		relativeLayoutReset = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutReset);
-		backBtn = (Button) rootView.findViewById(R.id.backBtn);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 		resetBtn = (Button) rootView.findViewById(R.id.resetBtn);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

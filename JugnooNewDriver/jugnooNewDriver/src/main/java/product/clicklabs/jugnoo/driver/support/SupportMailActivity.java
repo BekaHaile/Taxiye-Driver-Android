@@ -6,6 +6,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -24,9 +25,10 @@ public class SupportMailActivity extends BaseActivity implements View.OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_support_mail);
 
-		Button backBtn = (Button) findViewById(R.id.backBtn);
+		ImageView backBtn = (ImageView) findViewById(R.id.backBtn);
 		backBtn.setOnClickListener(this);
 		((TextView) findViewById(R.id.title)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.title)).setText(R.string.support);
 		((TextView) findViewById(R.id.tvSendUsMail)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 		etMessage = (EditText) findViewById(R.id.etMessage);

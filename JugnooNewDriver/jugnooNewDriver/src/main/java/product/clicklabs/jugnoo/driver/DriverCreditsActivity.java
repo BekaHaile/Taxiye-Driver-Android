@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,7 +41,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 		tvTitle = (TextView) findViewById(R.id.title);
 		tvTitle.setText(getString(R.string.title_credits_activity));
 		tvTitle.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-		Button backBtn = (Button) findViewById(R.id.backBtn);
+		View backBtn = findViewById(R.id.backBtn);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

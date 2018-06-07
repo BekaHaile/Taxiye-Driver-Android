@@ -38,8 +38,8 @@ import retrofit.mime.TypedByteArray;
 
 public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	ImageView backBtn;
+	TextView title;
 
 	TextView textViewChangePhoneNoHelp;
 	EditText editTextNewPhoneNumber;
@@ -68,10 +68,10 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(ChangePhoneBeforeOTPActivity.this, relative, 1134, 720, false);
 
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
-		textViewTitle.setText(getStringText(R.string.change_phone_no));
+		backBtn = (ImageView) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(getStringText(R.string.change_phone_no));
 		textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp);
 		textViewChangePhoneNoHelp.setTypeface(Fonts.mavenRegular(this));
 		textViewChangePhoneNoHelp.setText(getStringText(R.string.enter_new_phone_number));
@@ -82,7 +82,7 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 		buttonChangePhoneNumber.setTypeface(Fonts.mavenRegular(this));
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

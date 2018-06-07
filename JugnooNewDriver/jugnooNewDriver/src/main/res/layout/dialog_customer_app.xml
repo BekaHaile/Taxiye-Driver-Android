@@ -61,7 +61,7 @@
 
                 <Button
                     android:id="@+id/btnOk"
-                    style="@style/DialogButtonOrange"
+                    style="@style/DialogButton"
                     android:layout_gravity="center_horizontal"
                     android:layout_centerHorizontal="true"
                     android:singleLine="true"

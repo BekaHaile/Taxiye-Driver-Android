@@ -7,29 +7,13 @@
 
 
     <RelativeLayout
-        android:id="@+id/topRl"
+        android:id="@+id/topRl11"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
+        android:background="@color/colorPrimary"
         android:splitMotionEvents="false">
 
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:tag="mwar"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/daily_earnings"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
+        <include layout="@layout/layout_top_bar"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCall1"
@@ -64,7 +48,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDailyInfo"
-        android:layout_below="@+id/topRl"
+        android:layout_below="@+id/topRl11"
         android:layout_width="720px"
         android:layout_height="match_parent"
         android:visibility="visible"

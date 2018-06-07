@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 
 /**
@@ -106,6 +105,20 @@ public class OtpDialog {
 
             RelativeLayout frameLayout = (RelativeLayout) alertDialog.findViewById(R.id.rv);
             new ASSL(activity, frameLayout, 1134, 720, false);
+            frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(alertDialog != null) {
+                        alertDialog.dismiss();
+                    }
+                }
+            });
+            alertDialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             linearLayoutWaiting = (LinearLayout) alertDialog.findViewById(R.id.linearLayoutWaiting);
             imageViewYellowLoadingBar = (ImageView) alertDialog.findViewById(R.id.imageViewYellowLoadingBar);

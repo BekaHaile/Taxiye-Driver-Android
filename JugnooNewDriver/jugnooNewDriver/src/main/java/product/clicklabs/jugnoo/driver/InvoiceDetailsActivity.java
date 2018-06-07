@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +32,7 @@ public class InvoiceDetailsActivity extends BaseActivity {
 
 	LinearLayout linearLayoutRoot;
 
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 
 	TextView textViewCurrentInvoiceId, textViewJugnooCmsnValue, textViewReferralValue, textViewPaytmCashValue,
@@ -82,8 +81,9 @@ public class InvoiceDetailsActivity extends BaseActivity {
 			invoice_id = extras.getInt("invoice_id");
 		}
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
+		title.setText(R.string.invoice_detail);
 		title.setTypeface(Fonts.mavenRegular(this));
 
 //		((TextView) findViewById(R.id.textViewUpcomingInvoice)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);

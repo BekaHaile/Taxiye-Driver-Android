@@ -13,7 +13,6 @@ import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -67,7 +66,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	RelativeLayout relativeLayoutPayout ,
 			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative, relativeLayoutPrev,
 			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet, relativeLayoutWalletCaptive,relativeLayoutNefy;
-	Button backBtn;
+	View backBtn;
 	TextView textViewEstPayout, textViewInvPeriod,
 			title, textViewPayOutValue, textViewRideHistory, textViewNoChartData,
 			textViewWalletBalanceAmount,textViewWalletBalanceAmountCaptive, textViewWalletBalance,textViewWalletBalanceCaptive, textViewNefy, textViewNefyAmount;
@@ -187,8 +186,9 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		int color = Color.parseColor("#FFFFFF");
 		imageViewWalletBalance.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
+		title.setText(R.string.earnings_caps);
 		title.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
@@ -477,8 +477,8 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 				BarDataSet dataset = new BarDataSet(entries, "");
 				BarData data = new BarData(labels, dataset);
-				dataset.setColor(getResources().getColor(R.color.white_grey_v2));
-				dataset.setHighLightColor(getResources().getColor(R.color.gradient_orange_v2));
+				dataset.setColor(getResources().getColor(R.color.bgColor));
+				dataset.setHighLightColor(getResources().getColor(R.color.themeColor));
 				dataset.setHighLightAlpha(255);
 //			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
@@ -492,13 +492,13 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				XAxis xAxis = barChart.getXAxis();
 				xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 				xAxis.setTextSize(12);
-				xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
+				xAxis.setTextColor(getResources().getColor(R.color.bgColor));
 				YAxis yAxis = barChart.getAxisRight();
 				yAxis.setDrawAxisLine(false);
 				yAxis.setDrawLabels(false);
 
 				barChart.getAxisLeft().setTextSize(12);
-				barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
+				barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.bgColor));
 
 				barChart.setDrawMarkerViews(true);
 				CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
