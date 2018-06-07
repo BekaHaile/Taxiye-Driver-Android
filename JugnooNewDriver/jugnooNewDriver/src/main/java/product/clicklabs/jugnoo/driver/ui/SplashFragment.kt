@@ -103,20 +103,37 @@ class SplashFragment : Fragment() {
 
         parentActivity.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
-            removeNavigationFlags()
 
             val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(p0: View?) {
+
+                        this@SplashFragment.activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+                    }
+
+
+                    override fun onViewDetachedFromWindow(p0: View?) {
+                        this@SplashFragment.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+                    }
+
+
+                });
+            }
+
 
             snackBar.setAction("Retry", {
 
                 // add on screen navigation translucent flags for smooth image shared animation
-                addNavigationFlags()
                 snackBar.dismiss()
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
             snackBar.show()
+
 
         })
     }
@@ -126,10 +143,6 @@ class SplashFragment : Fragment() {
 
         val w = activity.getWindow()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        }
 
         checkForBatteryOptimisation()
 
@@ -407,18 +420,6 @@ class SplashFragment : Fragment() {
         super.onDestroyView()
     }
 
-
-    /**
-     * add the translucent flags on the onscreen navigation bar for kikat above devices
-     */
-    private fun addNavigationFlags() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val w = activity.getWindow()
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
 
     /**
      * removes the translucent flags on the onscreen navigation bar for kikat above devices
