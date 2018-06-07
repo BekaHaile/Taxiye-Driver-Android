@@ -30,6 +30,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.StripeLoginResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -59,8 +60,11 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
-	private LinearLayout bankDetailsLLayout;
-//	public static ProfileInfo openProfileInfo;
+	private LinearLayout accountDetailsLayout,layoutBankDetails;
+	private Button buttonStripe;
+	public static final int REQUEST_CODE_STRIPE_CONNECT = 0x23;
+    private int stripeStatus;
+    //	public static ProfileInfo openProfileInfo;
 
 
 	@Override
@@ -86,7 +90,10 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activty_edit_driver_profile);
+        stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
 
+		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
+		buttonStripe= (Button) findViewById(R.id.button_stripe);
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		activity_profile_screen = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
@@ -117,11 +124,11 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
-		bankDetailsLLayout = (LinearLayout) findViewById(R.id.bankDetailsLLayout);
+		accountDetailsLayout = (LinearLayout) findViewById(R.id.bankDetailsLLayout);
 		if(Prefs.with(this).getInt(Constants.BANK_DETAILS_IN_EDIT_PROFILE, 1) == 1){
-			bankDetailsLLayout.setVisibility(View.VISIBLE);
+			accountDetailsLayout.setVisibility(View.VISIBLE);
 		} else {
-			bankDetailsLLayout.setVisibility(View.GONE);
+			accountDetailsLayout.setVisibility(View.GONE);
 		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,10 +157,22 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		});
 
 		if(DriverProfileActivity.openedProfileInfo != null){
-			TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
-			textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
-			textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
-			textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
+
+			if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+				buttonStripe.setVisibility(View.VISIBLE);
+				layoutBankDetails.setVisibility(View.GONE);
+				if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+					buttonStripe.setText(getString(R.string.login_with_stripe));
+				}
+
+
+			}else{
+				TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
+				textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
+				textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
+				textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
+			}
+
 		}
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {
@@ -233,8 +252,54 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 			}
 		});
+		buttonStripe.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(stripeStatus == StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+					loginToStripe();
+
+
+				}else if(stripeStatus ==StripeUtils.STRIPE_ACCOUNT_AVAILABLE){
+
+					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectBuilder().toString()), REQUEST_CODE_STRIPE_CONNECT);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}
+
+
+			}
+		});
 
 		setUserData();
+	}
+
+	private void loginToStripe() {
+		//login to stripe account
+		DialogPopup.showLoadingDialog(EditDriverProfile.this,getString(R.string.loading));
+		HashMap<String,String> params = new HashMap<>();
+		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		HomeUtil.putDefaultParams(params);
+		RestClient.getApiServices().fetchStripeLink(params, new Callback<StripeLoginResponse>() {
+            @Override
+            public void success(StripeLoginResponse stripeLoginResponse, Response response) {
+                DialogPopup.dismissLoadingDialog();
+                if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == stripeLoginResponse.getFlag()){
+
+                    startActivity(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+                    putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,stripeLoginResponse.getStripeLoginUrl()));
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }else{
+                    DialogPopup.alertPopup(EditDriverProfile.this, "", stripeLoginResponse.getErrorMesssage());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                DialogPopup.dismissLoadingDialog();
+                DialogPopup.alertPopup(EditDriverProfile.this, "", error.getMessage());
+            }
+        });
 	}
 
 
@@ -349,6 +414,23 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 				}
 			});
+		}
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==REQUEST_CODE_STRIPE_CONNECT){
+
+			if(resultCode==RESULT_OK){
+				stripeStatus = StripeUtils.STRIPE_ACCOUNT_CONNECTED;
+				Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, stripeStatus);
+				buttonStripe.setText(getString(R.string.login_with_stripe));
+
+
+			}
+
 		}
 
 	}

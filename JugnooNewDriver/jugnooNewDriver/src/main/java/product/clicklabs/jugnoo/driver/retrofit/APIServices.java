@@ -614,5 +614,9 @@ public interface APIServices {
 	void creditHistory(@FieldMap Map<String, String> params,
 					   Callback<DriverCreditResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/driver/fetch_stripe_login_link")
+	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
+
 
 }

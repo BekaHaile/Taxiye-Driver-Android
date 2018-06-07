@@ -764,6 +764,7 @@
     <string name="dont_agree">I disagree</string>
     <string name="chat_support">Chat Support</string>
     <string name="t_and_c_login">By submitting OTP here and logging in the app you accept the <a href="https://jugnoo.in/sg/terms/driver/">Terms and Conditions </a> of Jugnoo. Please do not go further, if these are not OK with you.</string>
+
     <string name="estimated_distance_format">Estimated Distance: %s</string>
     <string name="action_not_supported">Action not supported</string>
     <string name="send_us_a_mail">Send us a mail</string>
@@ -800,6 +801,15 @@
     <string name="enter_phone_number_hinglish">Phone no दर्ज करें</string>
 
     <string name="languages">Languages</string>
+
+    <string name="stripe_connect_title">Stripe</string>
+    <string name="stripe_success_message">Your stripe account has been configured successfully.</string>
+    <string name="stripe_error_message">Oops! There was a problem configuring your stripe account.</string>
+    <string name="account_details">Account Details</string>
+    <string name="connect_with_stripe">Connect with stripe</string>
+    <string name="login_with_stripe">Login to Stripe</string>
+
+
     <string-array name="CountryCodes">
         <item>+93,AF</item>
         <item>+355,AL</item>
