@@ -168,7 +168,7 @@ class OTPConfirmFragment : Fragment() {
         otpDialog?.show()
 
 
-        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 30 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
+        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
             override fun updateCounterView(text: String?, width: Double) {
                 otpDialog?.updateCounterView(text, width)
             }
