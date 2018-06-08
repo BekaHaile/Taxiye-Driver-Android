@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -160,6 +162,9 @@ public class CityResponse extends FeedCommonResponse implements Serializable {
 		@SerializedName("images")
 		@Expose
 		private Images images;
+		@SerializedName("driver_icon")
+		@Expose
+		private String driverIcon;
 
 		private boolean selected;
 
@@ -212,12 +217,24 @@ public class CityResponse extends FeedCommonResponse implements Serializable {
 			this.selected = selected;
 		}
 
-		public String getImage() {
+		private String getImage() {
 			if (images != null && images.getI0() != null && images.getI0().getDriverIcon() != null){
 				return images.getI0().getDriverIcon();
 			} else {
 				return "";
 			}
+		}
+
+		public String getDriverIcon() {
+			if(!TextUtils.isEmpty(driverIcon)) {
+				return driverIcon;
+			} else {
+				return getImage();
+			}
+		}
+
+		public void setDriverIcon(String driverIcon) {
+			this.driverIcon = driverIcon;
 		}
 
 		public class Images{

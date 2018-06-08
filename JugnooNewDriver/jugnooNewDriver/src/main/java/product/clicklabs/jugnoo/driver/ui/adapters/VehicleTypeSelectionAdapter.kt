@@ -51,8 +51,8 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             VehicleTypeValue.E_RICK.value -> R.drawable.ic_ride_accept_erick
             else -> R.drawable.ic_auto_request
         }
-        if(!TextUtils.isEmpty(vehicle.image)){
-            Picasso.with(context).load(vehicle.image).placeholder(imageRes).error(imageRes).into(holder.ivVehicle)
+        if(!TextUtils.isEmpty(vehicle.driverIcon)){
+            Picasso.with(context).load(vehicle.driverIcon).placeholder(imageRes).error(imageRes).into(holder.ivVehicle)
         } else {
             holder.ivVehicle.setImageResource(imageRes)
         }
