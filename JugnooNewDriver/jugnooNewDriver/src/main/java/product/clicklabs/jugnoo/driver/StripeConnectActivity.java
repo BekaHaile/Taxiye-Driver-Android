@@ -2,11 +2,14 @@ package product.clicklabs.jugnoo.driver;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -39,7 +42,7 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
         }
 
         urlToLoad = getIntent().getStringExtra(ARGS_URL_TO_OPEN);
-
+        removeAllCookies(StripeConnectActivity.this);
         setContentView(R.layout.activity_stipe_connect);
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -153,7 +156,14 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
 
 
 
-
+    private static void removeAllCookies(final Context context) {
+        //On Lollipop and beyond, the CookieManager singleton works fine by itself.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.createInstance(context);
+        }
+        final CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+    }
 
 
 
