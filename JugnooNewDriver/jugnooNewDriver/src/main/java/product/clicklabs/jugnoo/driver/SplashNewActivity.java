@@ -307,9 +307,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
 		//tvCountryCodeL.setText(Utils.getCountryCode(this));
-
+		Pair<String, String> accPair = null;
 		try {
-			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+			 accPair = JSONParser.getAccessTokenPair(this);
 			if ("".equalsIgnoreCase(accPair.first)) {
 				new Handler().postDelayed(new Runnable() {
 					@Override
@@ -317,10 +317,10 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 						getCityAsync();
 					}
 				}, 1000);
-
-				viewInitJugnoo.setVisibility(View.GONE);
+				changeUIState(State.SPLASH_LS);
+			/*	viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
-				viewInitLS.setVisibility(View.GONE);
+				viewInitLS.setVisibility(View.GONE);*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -779,29 +779,34 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 		noNetFirstTime = false;
 		noNetSecondTime = false;
-	    
-	    
-	    
-	    
-	    
-		if(getIntent().hasExtra("no_anim")){
-			imageViewJugnooLogo.clearAnimation();
-			jugnooTextImgRl.setVisibility(View.VISIBLE);
-			noNetFirstTime = true;
-			getDeviceToken();
-			changeUIState(State.LOGIN);
-			if(getIntent().hasExtra("number")){
-				phoneNoOPTEt.setText(getIntent().getStringExtra("number"));
+
+
+
+		if (accPair!=null && !"".equalsIgnoreCase(accPair.first)) {
+
+			if(getIntent().hasExtra("no_anim")){
+				imageViewJugnooLogo.clearAnimation();
+				jugnooTextImgRl.setVisibility(View.VISIBLE);
+				noNetFirstTime = true;
+				getDeviceToken();
+				changeUIState(State.LOGIN);
+				if(getIntent().hasExtra("number")){
+					phoneNoOPTEt.setText(getIntent().getStringExtra("number"));
+				}
 			}
-		}
-		else{
-			Animation animation = new AlphaAnimation(0, 1);
+			else{
+/*			Animation animation = new AlphaAnimation(0, 1);
 			animation.setFillAfter(false);
 			animation.setDuration(1000);
 			animation.setInterpolator(new AccelerateDecelerateInterpolator());
 			animation.setAnimationListener(new ShowAnimListener());
-			imageViewJugnooLogo.startAnimation(animation);
+			imageViewJugnooLogo.startAnimation(animation);*/
+
+				noNetFirstTime = true;
+				getDeviceToken();
+			}
 		}
+
 
 //		try {
 //			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -2516,18 +2521,26 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 						String errorMessage = jObj.getString("error");
 					} else {
 						res = cityResponse;
-						vehicleTypes.clear();
-						newCities.clear();
-						offeringTypes.clear();
-						vehicleTypes.addAll(res.getVehicleTypes());
-						offeringTypes.addAll(res.getOfferingTypes());
-						newCities.addAll(res.getCities());
-						for(int i=0; i< res.getCities().size(); i++){
-							if(res.getCities().get(i).getCityName().equalsIgnoreCase(res.getCurrentCity())){
-								selectCitySp.setSelection(i);
-								break;
+						if(res.getVehicleTypes()!=null && res.getVehicleTypes().size()>0){
+							vehicleTypes.clear();
+							vehicleTypes.addAll(res.getVehicleTypes());
+
+						}if(res.getOfferingTypes()!=null && res.getOfferingTypes().size()>0){
+							offeringTypes.clear();
+							offeringTypes.addAll(res.getOfferingTypes());
+
+						}if(res.getCities()!=null && res.getCities().size()>0){
+							newCities.clear();
+							newCities.addAll(res.getCities());
+							for(int i=0; i< res.getCities().size(); i++){
+								if(res.getCities().get(i).getCityName().equalsIgnoreCase(res.getCurrentCity())){
+									selectCitySp.setSelection(i);
+									break;
+								}
 							}
 						}
+
+
 						//setLanguageData(jObj);
 
 //						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
@@ -2668,7 +2681,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 				viewInitLS.setVisibility(View.VISIBLE);
 //				refreshApp = true;
-				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
+				relativeLayoutJugnooLogo.setVisibility(View.GONE);
 				textViewRegDriver.setVisibility(View.GONE);
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
@@ -2693,8 +2706,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
 				textViewRegDriver.setVisibility(View.GONE);
-				linearLayoutLogin.setVisibility(View.VISIBLE);
-				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				linearLayoutLogin.setVisibility(View.GONE );
+				relativeLayoutSignup.setVisibility(View.GONE);
 				backBtn.setVisibility(View.GONE);
 				break;
 
