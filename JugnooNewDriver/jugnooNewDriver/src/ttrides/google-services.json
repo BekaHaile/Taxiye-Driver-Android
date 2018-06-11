@@ -1,0 +1,81 @@
+{
+  "project_info": {
+    "project_number": "642564797700",
+    "firebase_url": "https://tt-rides-share.firebaseio.com",
+    "project_id": "tt-rides-share",
+    "storage_bucket": "tt-rides-share.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642564797700:android:54a77761f82ce43f",
+        "android_client_info": {
+          "package_name": "production.ttrides.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642564797700-2h4t6v8jdoudil6a4vkovpnh65srt4v9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "642564797700-2h4t6v8jdoudil6a4vkovpnh65srt4v9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642564797700:android:b82bb9924cefdc28",
+        "android_client_info": {
+          "package_name": "production.ttrides.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642564797700-2h4t6v8jdoudil6a4vkovpnh65srt4v9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "642564797700-2h4t6v8jdoudil6a4vkovpnh65srt4v9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
