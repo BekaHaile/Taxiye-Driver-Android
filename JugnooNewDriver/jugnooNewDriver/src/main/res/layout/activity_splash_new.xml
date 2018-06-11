@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillViewport="true"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout
     android:id="@+id/relative"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="1134px"
 
@@ -9,6 +14,8 @@
     android:baselineAligned="false"
     android:orientation="vertical"
     android:splitMotionEvents="false">
+
+
 
 
     <ImageView
@@ -326,5 +333,5 @@
 
 
     <include layout="@layout/layout_splash_signup"/>
-
 </LinearLayout>
+</ScrollView>

@@ -49,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -147,7 +148,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	Integer cityposition, vehiclePosition, offeringPosition;
 	CityResponse res = new CityResponse();
 	boolean tandc = false, sendToOtpScreen = false, loginFailed = false;
-
+	private ScrollView scrollView;
 
 	public static JSONObject multipleCaseJSON;
 
@@ -155,6 +156,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	ArrayList<CityResponse.OfferingType> offeringTypes = new ArrayList<>();
 	ArrayList<CityResponse.City>newCities = new ArrayList<>();
 	private String countryCode;
+	private Runnable scrollBottomRunnable;
 
 
 	public void resetFlags() {
@@ -212,7 +214,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashNewActivity.this, relative, 1134, 720, false);
 
-
+		scrollView = findViewById(R.id.scroll_view);
 		imageViewJugnooLogo = (ImageView) findViewById(R.id.imageViewJugnooLogo);
 		
 		jugnooTextImgRl = (RelativeLayout) findViewById(R.id.jugnooTextImgRl);
@@ -528,6 +530,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			}
 		});
 
+
 		phoneNoOPTEt.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
@@ -537,6 +540,22 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			}
 		});
 
+		phoneNoOPTEt.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(MotionEvent.ACTION_UP == event.getAction()) {
+					scrollBottomRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    };
+					handler.postDelayed(scrollBottomRunnable,150);
+				}
+
+				return false;
+			}
+		});
 
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
