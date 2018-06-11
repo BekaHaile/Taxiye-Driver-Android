@@ -102,6 +102,7 @@
         android:text="OR"
         android:gravity="center"
         android:textSize="14sp"
+        android:visibility="gone"
         android:drawablePadding="10dp"
         android:drawableBottom="@drawable/ic_missed_call"
         app:layout_constraintEnd_toEndOf="parent"

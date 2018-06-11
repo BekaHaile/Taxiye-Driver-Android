@@ -425,7 +425,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 			if(resultCode==RESULT_OK){
 				stripeStatus = StripeUtils.STRIPE_ACCOUNT_CONNECTED;
-				Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, stripeStatus);
+				Prefs.with(EditDriverProfile.this).save(Constants.STRIPE_ACCOUNT_STATUS, stripeStatus);
 				buttonStripe.setText(getString(R.string.login_with_stripe));
 
 

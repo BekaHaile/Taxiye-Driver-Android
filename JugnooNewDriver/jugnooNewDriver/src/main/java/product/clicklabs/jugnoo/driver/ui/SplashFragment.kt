@@ -60,7 +60,7 @@ class SplashFragment : Fragment() {
     }
 
     companion object {
-        private const val DEVICE_TOKEN_WAIT_TIME = 4 * 1000L
+        private const val DEVICE_TOKEN_WAIT_TIME = 10 * 1000L
 
     }
 
@@ -192,9 +192,9 @@ class SplashFragment : Fragment() {
         if(isMockLocationEnabled()) return
 
         disposable = behaviourSubject.
-                retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
+                    retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
                   .subscribeOn(Schedulers.newThread())
-                  //.delay(1000,TimeUnit.MILLISECONDS)
+               //   .delay(7000,TimeUnit.MILLISECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
         compositeDisposable.add(disposable!!)
@@ -386,9 +386,7 @@ class SplashFragment : Fragment() {
         super.onPause()
 
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
-        if (disposable != null && !disposable!!.isDisposed) {
-            disposable?.dispose()
-        }
+
     }
 
     interface InteractionListener{
@@ -404,7 +402,7 @@ class SplashFragment : Fragment() {
     override fun onDestroy() {
 
         if (!compositeDisposable.isDisposed){
-            disposable?.dispose()
+            compositeDisposable.dispose()
         }
         try {
             LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
