@@ -623,7 +623,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
                     if (!jObj.isNull("error")) {
                         String errorMessage = jObj.getString("error");
                         if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                            HomeActivity.logoutUser(activity);
+                            HomeActivity.logoutUser(activity, null);
                         }else{
 							DialogPopup.alertPopup(activity,"",errorMessage);
 							DialogPopup.dismissLoadingDialog();
@@ -669,7 +669,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) relativelayoutRandom.getLayoutParams();
 		lps.height = (int) (155f * ASSL.Yscale());
 		lps.width = (int) (150f * ASSL.Xscale());
-		lps.leftMargin = (x) - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (75f * ASSL.Xscale());
+		lps.setMarginStart((x) - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (75f * ASSL.Xscale()));
 		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (145f * ASSL.Yscale());
 		relativelayoutRandom.setLayoutParams(lps);
 	}

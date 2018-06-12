@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
+import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -302,6 +303,10 @@ public interface APIServices {
 	@POST("/generate_login_otp")
 	void generateOtp(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/v2/generate_login_otp")
+	void generateOtpK(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_media_data")
@@ -389,6 +394,11 @@ public interface APIServices {
 	@POST("/fetch_active_locales")
 	void fetchLanguageList(@FieldMap Map<String, String> params,
 					 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_active_locales")
+	void fetchLanguageListKotlin(@FieldMap Map<String, String> params,
+					 Callback<DriverLanguageResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/set_locale_preference")
@@ -589,6 +599,11 @@ public interface APIServices {
 	void agreeTerms(@FieldMap Map<String, String> params,
 							 Callback<SettleUserDebt> callback);
 
+    @FormUrlEncoded
+    @POST("/update_driver_info")
+    void updateDriverInfo(@FieldMap Map<String, String> params,
+                              Callback<RegisterScreenResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/driver/send_credits")
 	void sendCredits(@FieldMap Map<String, String> params,
@@ -598,6 +613,10 @@ public interface APIServices {
 	@POST("/driver/credit_history")
 	void creditHistory(@FieldMap Map<String, String> params,
 					   Callback<DriverCreditResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/fetch_stripe_login_link")
+	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
 
 
 }

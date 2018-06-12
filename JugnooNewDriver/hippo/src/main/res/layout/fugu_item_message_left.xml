@@ -6,6 +6,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:paddingBottom="@dimen/fugu_dp_1"
+              android:paddingStart="@dimen/fugu_dp_17"
               android:paddingLeft="@dimen/fugu_dp_17"
               android:paddingTop="@dimen/fugu_dp_1">
 
@@ -14,8 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/fugu_dp_55"
+        android:layout_marginEnd="@dimen/fugu_dp_55"
         android:background="@drawable/chat_bg_left_normal"
-        android:gravity="left"
+        android:gravity="start"
         android:orientation="vertical"
         android:paddingBottom="@dimen/fugu_margin_2">
 
@@ -25,7 +27,9 @@
             android:layout_height="wrap_content"
             android:breakStrategy="simple"
             android:paddingLeft="@dimen/fugu_dp_8"
+            android:paddingStart="@dimen/fugu_dp_8"
             android:paddingRight="@dimen/fugu_margin_10"
+            android:paddingEnd="@dimen/fugu_margin_10"
             android:paddingTop="@dimen/fugu_margin_7"
             android:singleLine="true"
             android:text="Rajat Dhamija"
@@ -43,7 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_height="260dp"
             android:layout_marginLeft="@dimen/fugu_margin_10"
+            android:layout_marginStart="@dimen/fugu_margin_10"
             android:layout_marginRight="@dimen/fugu_margin_10"
+            android:layout_marginEnd="@dimen/fugu_margin_10"
             android:visibility="gone"/>
 
         <include
@@ -61,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/fugu_dp_8"
+            android:paddingEnd="@dimen/fugu_dp_8"
             app:child="@+id/llTime"
             app:parent="@+id/tvMsg">
 
@@ -72,6 +79,7 @@
                 android:breakStrategy="simple"
                 android:paddingBottom="@dimen/fugu_margin_2"
                 android:paddingLeft="@dimen/fugu_dp_8"
+                android:paddingStart="@dimen/fugu_dp_8"
                 android:paddingTop="@dimen/fugu_margin_2"
                 android:text="d"
                 android:textColor="@color/fugu_primary_text_msg_from"
@@ -84,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/tvMsg"
                 android:layout_marginLeft="@dimen/fugu_margin_3"
+                android:layout_marginStart="@dimen/fugu_margin_3"
                 android:gravity="end"
                 android:orientation="horizontal"
                 android:visibility="visible">
@@ -96,6 +105,7 @@
                     android:layout_marginBottom="@dimen/fugu_margin_3"
                     android:breakStrategy="simple"
                     android:paddingRight="@dimen/fugu_padding_3"
+                    android:paddingEnd="@dimen/fugu_padding_3"
                     android:text="12:38 PM "
                     android:textColor="@color/fugu_secondary_text_msg_you"
                     android:textSize="@dimen/fugu_text_size_small"/>
@@ -115,7 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/fugu_margin_15"
+            android:layout_marginStart="@dimen/fugu_margin_15"
             android:layout_marginRight="@dimen/fugu_margin_15"
+            android:layout_marginEnd="@dimen/fugu_margin_15"
             android:gravity="center_vertical">
 
             <include

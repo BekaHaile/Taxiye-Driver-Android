@@ -4,12 +4,6 @@
 
 
     <string name="app_name">Jingo Drivers</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
-
-
-
 
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -23,11 +17,6 @@
 
 
     <!-- <string name="fb_app_id">782131025144439</string> -->
-    <string name="fb_app_id">782131025144439</string>
-
-
-    <string name="language_english_text">English</string>
-    <string name="language_hindi_text">हिंदी</string>
 
 
     <string name="rupee">\u20B9</string>
@@ -39,86 +28,47 @@
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
 
 
-
-    <string name="about_1_text">ଜୁଗ୍ନୁ ଆପଣଂକୁ ଭୁବନେଶ୍ବର ତ୍ରିକୋଣିୟ ସହର ଭିତରେ ଏକ ସସ୍ତା ଏଂବ ବନ୍ଧୁଜନକ ଯାତ୍ରା କରିବାରେ ସହଯ୍ୟ କରେ.ଦରରେ ସସ୍ତା ଏଂବ ଆପଣଂକର ବନ୍ଧୁଜନକ ଯାତ୍ରା ପାଇଁ  ନିସ୍ଚିତ ରୁପରେ ଏହା ଏକ ଅନୁକୁଳ ବନ୍ଧନ ଅଟେ.</string>
-    <string name="about_2_text">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="email_id">ଇମେଲ୍ ଆଇଡି</string>
     <string name="confirm_email_id">କନ୍ଫର୍ମ ଇମେଲ୍ ଆଇଡି</string>
     <string name="password">ପାସ୍ କୋଡ୍</string>
-    <string name="sign_in">ସାଇନ୍ ଇନ୍</string>
     <string name="forgot_password">ଫର୍ଗଟ୍ ପାସ୍ କୋଡ୍</string>
     <string name="sign_up">ସାଇନ୍ ଅପ୍</string>
     <string name="or">କିମ୍ବା</string>
-    <string name="sign_in_with_facebook">ସାଇନ୍ ଇନ୍ ଫେସବୁକ ସହ</string>
-    <string name="save_to_favorite">ଫେଭୋରାଇଟ୍ ରେ ସେଭ୍ କରନ୍ତୁ</string>
-    <string name="enter_name_for_favorite">ଫେଭୋରାଇଟ୍ ପାଇଁ ନାମ ଲେଖନ୍ତୁ</string>
     <string name="ok">ଓକେ</string>
-    <string name="first_name">ପ୍ରଥମ ନାମ</string>
-    <string name="last_name">ଶେସ ନାମ</string>
     <string name="phone_number">ଫୋନ୍ ନମ୍ବର୍</string>
     <string name="confirm_password">କନ୍ଫର୍ମ ପାସ୍ କୋଡ୍</string>
     <string name="confirmation_code">କନ୍ଫର୍ମେସନ୍ କୋଡ୍</string>
     <string name="check_your_registered_email_phone_number_for_otp">ରେଜିସ୍ଟର୍ ଇମେଲ୍/ଫୋନ୍ ନମ୍ବର୍ ଚେକ୍ କରନ୍ତୁ ଓଟିପି ପାଇଁ</string>
     <string name="enter_code">କୋଡ୍ ଲେଖନ୍ତୁ</string>
     <string name="done">ହେଇଗଲା</string>
-    <string name="amount">ଟଂକା</string>
-    <string name="no_driver_available">ଡ୍ରାଇଭର୍ ଉପଲବ୍ଧ ନାହାନ୍ତି</string>
-    <string name="no_driver_available_message">ବର୍ତମାନ୍ କୌଣସି ଡ୍ରାଇଭର୍ ଉପଲବ୍ଧ ନାହାନ୍ତି 3କିମି ଭିତରେ. ଆମେ ଏଥିପାଇଁ ଚେଷ୍ଟା କରୁଚୁ</string>
     <string name="logout">ଲଗ୍ ଆଉଟ୍</string>
-    <string name="are_you_sure_you_want_to_logout">ଆପଣ ନିସ୍ଚିତ ଅଛନ୍ତି କି ଲଗ୍ ଆଉଟ୍ କରିବାକୁ</string>
     <string name="cancel">କ୍ୟାନସଲ୍</string>
     <string name="retry">ପୁଣି ଥରେ ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="select_language">ଭାଷା ଚୟନ କରନ୍ତୁ</string>
     <string name="enter_phone_number"> ଫୋନ୍ ନମ୍ବର୍ ଲେଖନ୍ତୁ</string>
-    <string name="enter_email">ଇମେଲ୍ ଲେଖନ୍ତୁ</string>
-    <string name="send_email">ଇମେଲ୍ ପଠାନ୍ତୁ</string>
-    <string name="favorites">ଫେଭୋରାଇଟ୍ସ୍</string>
-    <string name="no_favorite_locations_added">ଫେଭୋରାଇଟ୍ ଲୋକେସନ୍ ଦେଇନାହାନ୍ତି</string>
     <string name="rides">ରାଇଡ୍ ଗୁଡ଼ିକ</string>
     <string name="no_rides_currently">ବର୍ତମାନ୍ କୋଉଣସି ରାଇଡ୍ ନାହି</string>
-    <string name="history">ବିବରଣି</string>
     <string name="missed">ଛାଡ଼ିଛନ୍ତି</string>
     <string name="no_missed_rides_currently">ବର୍ତମାନ୍ କୌଣଷି ରାଇଡ୍ ଛାଡ଼ିନାହନ୍ତି</string>
     <string name="update">ଅପ୍-ଡେଟ୍</string>
-    <string name="driver_mode">ଡ୍ରାଇଭର୍ ସିଷ୍ଟମ୍</string>
     <string name="jugnoo_on">ଜୁଗ୍ନୁ ଖୋଲନ୍ତୁ</string>
-    <string name="driver_type">ଡ୍ରାଇଭର୍ ବିଭାଗିକରଣ</string>
     <string name="ride_type">ରାଇଡ୍ ବିଭାଗିକରଣ</string>
-    <string name="invite_friends">ନିମନ୍ତ୍ରଣ ସାଂଗମାନଂକୁ</string>
-    <string name="about">ବିଷୟରେ</string>
     <string name="support">ସାହାଯ୍ୟ</string>
-    <string name="sos">ଏମର୍ଜେନ୍ସି</string>
     <string name="language_preferences">ଭାଷା ଚୟନ</string>
-    <string name="ride_in_progress">ରାଇଡ୍ ଚାଲୁଅଛି</string>
-    <string name="click_to_view">ଦେଖିବା ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ</string>
     <string name="start_ride">ରାଇଡ୍ ସ୍ଟାର୍ଟ୍ କରନ୍ତୁ</string>
     <string name="end_ride">ରାଇଡ୍ ଶେଷ କରନ୍ତୁ</string>
     <string name="reached_destination">ପଂହଚିବା ସ୍ତାନ</string>
     <string name="distance">ଦୁରତା</string>
     <string name="wait_time">ଅପେକ୍ଷା ସମୟ</string>
     <string name="fare">ଭଡ଼ା ପଇସା</string>
-    <string name="driver_rating">ଡ୍ରାଇଭର୍ ରେଟିଂଗ୍</string>
-    <string name="customer_rating">କଷ୍ଟମର୍ ରେଟିଂଗ୍</string>
-    <string name="request_ride">ରାଇଡ୍ ରିକୁଏସ୍ଟ୍</string>
-    <string name="assigning_driver">ଡ୍ରାଇଭର୍ ଯୋଗେଇଦେଉଛୁ</string>
-    <string name="no_drivers_nearby">କୌଣସି ଡ୍ରାଇଭର୍ ପାଖରେ ନାହାନ୍ତି</string>
-    <string name="could_not_find_nearest_driver_distance">ପାଖରେ ଥିବା ଡ୍ରାଇଭରଂକର ଦୁରତା ଆମେ ପାଇପାରୁନାଂହୁ</string>
-    <string name="nearest_driver_is">ପାଖରେ ଥିବା ଡ୍ରାଇଭର୍ ଜଣକ ହେଲେ</string>
-    <string name="away">ଦୁରରେ</string>
-    <string name="call_driver">ଡ୍ରାଇଭର୍ କଲ୍</string>
     <string name="accept_ride">ରାଇଡ୍ ଗ୍ରହଣ</string>
-    <string name="cancel_request">କ୍ୟାନ୍ସଲ୍ ରିକୁଏସ୍ଟ୍</string>
     <string name="cancel_ride">କ୍ୟାନ୍ସଲ୍ ରାଇଡ୍</string>
     <string name="call">ଫୋନ୍</string>
     <string name="ride_time">ରାଇଡ୍ ସମୟ</string>
-    <string name="start_wait">ଅପେକ୍ଷା ଆରମ୍ଭ</string>
-    <string name="stop_wait">ଅପେକ୍ଷା ଶେସ</string>
     <string name="submit">ଯମାକରନ୍ତୁ</string>
-    <string name="search_results">ରେଜଲ୍ଟ୍ ଖୋଜନ୍ତୁ</string>
     <string name="search">ଖୋଜନ୍ତୁ</string>
     <string name="your_login_session_expired">ଆପଣଂକର ଲଗ୍-ଇନ୍ ସମୟ ଶେଷ ହୋଇଜାଇଛି.ଦୟାକରି ଆଉଥରେ ଲଗ୍-ଇନ୍ କରନ୍ତୁ</string>
     <string name="alert">ସୁଚିତ</string>
-    <string name="start_ride_error">ସ୍ଟାର୍ଟ ରାଇଡ୍ କରିବା ପାଇଁ ଆପଣଂକୁ କଷ୍ଟମର୍ ଜାଗାରେ ପଂହଚିବାର ଅଛି</string>
     <string name="server_error">ସର୍ଭର୍ ଭୁଲ୍ ଅଛି.ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="server_not_responding">ସର୍ଭର୍ ରେସ୍-ପନ୍ଡ୍ କରୁନାହି</string>
     <string name="check_internet_message">ଚେକ୍ କରନ୍ତୁ ଇନ୍ଟର୍ନେଟ୍ କନେକ୍ସନ୍</string>
@@ -133,7 +83,6 @@
     <string name="rides_taken">ରାଇଡ୍ ନେଇଛନ୍ତି</string>
     <string name="rides_missed">ରାଇଡ୍ ନେଇନାହାନ୍ତି</string>
     <string name="rides_cancelled">ରାଇଡ୍ କ୍ୟାନ୍ସଲ୍</string>
-    <string name="ride_cancelled">ରାଇଡ୍ କ୍ୟାନ୍ସଲ୍</string>
     <string name="online_hours">ଅନ୍-ଲାଇନ୍ ସମୟ</string>
     <string name="Auto_not_working">ଅଟୋ କାମ କରୁନାହି</string>
     <string name="Traffic">ଟ୍ରାଫିକ୍</string>
@@ -142,18 +91,12 @@
     <string name="Not_able_to_contact_customer">କସ୍ଟମର୍ କୁ ଯୋଗାଯୋଗ୍ ହେଇପାରୁ ନାହି</string>
     <string name="Customer_behavior">କସ୍ଟମରନ୍କର ଖରାପ୍ ବ୍ୟବହାର</string>
     <string name="profile">ପ୍ରୋଫାଇଲ୍</string>
-    <string name="Duty_Hours">ଡିଉଟି ସମୟ</string>
     <string name="call_us">ଆମକୁ ଫୋନ୍</string>
-    <string name="check_all">ସବୁ ଚେକ୍ କରନ୍ତୁ</string>
-    <string name="uncheck_all">ସବୁ ଚେକ୍ କରନ୍ତୁ ନାହି</string>
-    <string name="add_cash">କ୍ୟାସ ଜୋଡନ୍ତୁ</string>
-    <string name="add_customer_cash">ଗ୍ରାହକ ର କ୍ୟାସ ଜୋଡନ୍ତୁ</string>
     <string name="arrived">ପହନ୍ଚିଲି</string>
     <string name="accept_subsidy">ସବସିଡି</string>
     <string name="account">ଆକାଉଂଟ୍</string>
     <string name="accept">ଗ୍ରହଣ</string>
     <string name="away_from_you">ଆପଣଂକ ଠାରୁ ଦୁରରେ</string>
-    <string name="cancel_ride_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ରାଇଡ୍ କ୍ୟାନ୍ସଲ୍ କରିବାକୁ ?</string>
     <string name="end_ride_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ରାଇଡ୍ ଶେସ କରିବାକୁ ?</string>
     <string name="logout_text">ନିଶ୍ଚିତ ଅଛନ୍ତି ଲଗ୍-ଆଉଟ୍ କରିବାକୁ ?</string>
     <string name="customer_pickup_text">ଗୋଟିଏ ପିକ୍-ଅପ୍ କରିବାକୁ ଆପଣଂକୁ ନିର୍ଦେଶ ଦିଆଜାଇଛି.ଦୟାକରି କଷ୍ଟମର୍ କୁ ପିକ୍-ଅପ୍ କରନ୍ତୁ</string>
@@ -163,12 +106,9 @@
     <string name="battery_level_arrived_text">ରାଇଡ୍ ଆରାଇଭ୍ କରିବା ପାଇଁ ଚାର୍ଜ୍ 10% ରୁ ଅଧିକ ରହିବା ଦରକାର୍,ଦୟାକରି ମୋବାଇଲ୍ କୁ ଚାର୍ଜ୍ କରି ରଖନ୍ତୁ</string>
     <string name="back">ପଛକୁ</string>
     <string name="change_phone_no_text">ବଦଳିଥିବା ନମ୍ବର୍ ପୁର୍ବ ନମ୍ବର୍ ସହ ସମାନ</string>
-    <string name="local_positon_text">ନିକଟସ୍ତ ସ୍ତାନ ଜଣା ପଡ଼ୁନାହିଁ</string>
-    <string name="overall_position_text">ସମସ୍ତ ସ୍ତାନ ଜଣା ପଡ଼ୁନାହିଁ</string>
     <string name="code_empty">କୋଡ୍ ଖାଲି ରଖିହେବ ନାହିଁ</string>
     <string name="confirm_email_text">କନ୍ଫର୍ମ୍ ଇମେଲ୍ ଆଇଡି ମ୍ୟାଚ କରୁନାହିଁ</string>
     <string name="choose_email_client">ଜଣେ ଗ୍ରାହକର ଇମେଲ୍ ଚୟନ କରନ୍ତୁ</string>
-    <string name="select_time_error_text">ବର୍ତମାନ୍ ସମୟ ପୁର୍ବରୁ ଅନ୍ୟ ସମୟ ଚୟନ କରିପାରିବେ ନହିଁ</string>
     <string name="call_me">ମୋତେ କଲ୍ କରନ୍ତୁ</string>
     <string name="change_phone_no">ଫୋନ୍ ନମ୍ବର୍ ବଦଳାନ୍ତୁ</string>
     <string name="creating_game">ଗେମ୍ ତିଆରି କରନ୍ତୁ</string>
@@ -177,40 +117,29 @@
     <string name="km">କିମି</string>
     <string name="disable_mock_location">ପ୍ରଥମେ କ୍ରୁତ୍ରିମ ସ୍ତାନ ଅଖ୍ୟମ କରନ୍ତୁ</string>
     <string name="daily">ସବୁଦିନ</string>
-    <string name="distance2">ଦୁରତା:/ଏବମ୍</string>
-    <string name="discount">ରିହାତି</string>
     <string name="enter_new_phone_no">ଲେଖନ୍ତୁ ନୁଆ ଫୋନ୍ ନମ୍ବର୍</string>
     <string name="enter_fare">ଭଡ଼ା ପଇସା ଲେଖନ୍ତୁ</string>
     <string name="enter_otp">1 ଟାଇମ୍ ପାସ୍-କୋଡ୍ ପକାନ୍ତୁ</string>
     <string name="email">ଇମେଲ୍:</string>
-    <string name="fare1">ଭଡ଼ା ପଇସା</string>
     <string name="forgot_password_cap">ପାସ୍ବାର୍ଡ଼ ଭୁଲିଯାଇଛନ୍ତି</string>
-    <string name="free_ride">ଫ୍ରି ରାଇଡ୍</string>
-    <string name="final_amount">ଅନ୍ତିମ ପରିମାଣ </string>
-    <string name="fare2">ଭଡା</string>
     <string name="fare_details">ଭଡା ଫଳାଫଳ </string>
     <string name="go_to_setting">ସେଟିଗଂ କୁ ଜାନ୍ତୁ </string>
     <string name="google_pay_service_error">ଗୁଗୁଲ୍ ପ୍ଲେ ସର୍ଭିସ୍ ଏରର୍</string>
     <string name="google_pay_service_error_message">ଗୂଗଲ ପ୍ଲେଏ  ସରଭିସ ମିଳୁନି ଅଥବା ପୁରୁଣା ହେଇଜାଇଛି.ତେଣୁ ଦୟାକରି ଗୂଗଲ ପ୍ଲେଏ  ସରଭିସ ଡାଉନଲୋଅଡ଼ କରନ୍ତୁ.</string>
     <string name="go_to_playstore">ପ୍ଲେ ସ୍ଟୋର୍ କୁ ଯାଆନ୍ତୁ:</string>
-    <string name="help">ସାହାଜ୍</string>
     <string name="have_arrived">ତୁମେ ପହଚିଲଣି କି ?</string>
     <string name="invite_earn">ଆମନ୍ତ୍ରଣ କରନ୍ତୁ ଅଉ ପାନ୍ତୁ</string>
     <string name="create_new_account_msg">ଆପଣ ଏବେ ବି ଅଉ ଏକ ନୁଆ ଆକାଉନ୍ତ ଖୋଲିବାକୁ ଚାହୁଁଛନ୍ତି କି </string>
     <string name="not_recived_otp">ମୋ ପାଖକୁ ଓଟିପି ଆସିନାହିଁ</string>
-    <string name="jugnoo_cash">ଜୁଗ୍ନୁ କ୍ୟାସ୍</string>
     <string name="jugnoo">ଜୁଗ୍ନୁ</string>
     <string name="jugnoo_off">ଜୁଗ୍ନୁ ବର୍ତମାନ୍ ଅଫ୍ ଅଛି</string>
     <string name="jugnoo_cut">ଜୁଗ୍ନୁ କାଟିଛି</string>
     <string name="loading">ଲୋଅଡ଼ ହେଉଛି </string>
-    <string name="local_position">ସ୍ତାନୀୟ ସ୍ତିତ୍ତି </string>
     <string name="location_setting">ସ୍ତାନ ବ୍ୟବସ୍ତାପନ</string>
     <string name="location_setting_enable_message">ଆପଣଂକର ଲୋକେସନ ମିଳୁ ନାହିଁ.ଦୟାକରି ସେଟିଗଂ ମେନୁ କୁ ଯାଇ ଲୋକେସନ ଠିକ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି? </string>
     <string name="luggage_charge">ଜିନିସର ଭଡା </string>
     <string name="login">ଲଗ୍-ଇନ୍</string>
     <string name="restart_phone">ଦୟାକରି ଫୋନ୍ ପୁଣିଥରେ ଷ୍ଟାର୍ଟ କରନ୍ତୁ</string>
-    <string name="min_fare">ସର୍ବନିମ୍ନ ଭଡା ର ମୁଲ୍ୟ </string>
-    <string name="meals_on">ମିଲ୍ସ ଅନ </string>
     <string name="mail_us">ଆମକୁ ମେଲ କରନ୍ତୁ</string>
     <string name="message">ସମ୍ବାଦ </string>
     <string name="no">ନା </string>
@@ -220,43 +149,29 @@
     <string name="no_lugage">କିଛି ଜିନିସ ନାହିଁ  </string>
     <string name="network_problem">ନେଟଵ୍ଵର୍କ ର ସମସ୍ୟା ଅଛି.ତେଣୁ ଦୟାକରି ଆପଣ ଅପଣଂକ ଫୋନ ଅଫ କରି ଅନ କରନ୍ତୁ ଅଉ ୫ମିନିଟ ଅପେକ୍ଷା କରନ୍ତୁ ଜୁଗନୁ ପୁନର୍ବାର ଚଲେଇବାକୁ.</string>
     <string name="no_data_to_show">କିଛି ତଥ୍ୟ ନାହିଁ ଦେଖିବାକୁ.</string>
-    <string name="no_cash">କ୍ୟାସ୍ ନାହିଁ</string>
     <string name="no_of_rides">ରାଇଡ଼ ର ସଂଖ୍ୟା </string>
     <string name="name">ନାମ</string>
     <string name="name_colon">ନାମ:</string>
-    <string name="overall_position">ସମୁଦାୟ ସ୍ତିତି</string>
-    <string name="some_amount">ଦୟାକରି କିଛି ପଇସା ଲେଖନ୍ତୁ </string>
-    <string name="less_amount">ଦୟାକରି କମ ପଇସା ଲେଖନ୍ତୁ </string>
-    <string name="valid_amount">ଦୟାକରି କିଛି ବୈଧ ରାସୀ ଜମା କରନ୍ତୁ </string>
     <string name="Phone_number_not_empty">ଫୋନ ନମ୍ବର ସ୍ତାନ ଟି ଖାଲି ରଖନ୍ତୁ ନାହିଁ  </string>
     <string name="valid_phone_number">ଦୟାକରି ସଠିକ ଫୋନ ନମ୍ବର ଲେଖନ୍ତୁ </string>
     <string name="please_wait">ଦୟାକରି ଅପେକ୍ଷା</string>
     <string name="enter_some_fare">ଦୟାକରି କିଛି ରାସୀ ଲେଖନ୍ତୁ </string>
-    <string name="please_reach">ଦୟାକରି ପହଁଚନ୍ତୁ</string>
-    <string name="by">ଦ୍ବାରା</string>
-    <string name="take_fare_from_customer">ଦୟାକରି ଉପରେ ଦେଖେଇଥିବା ଭଡ଼ା ପଇସା କସ୍ଟମର୍ ଠାରୁ ନିଅନ୍ତୁ</string>
     <string name="enter_name">ଦଯାକରି ନାମ ଲେଖନ୍ତୁ</string>
     <string name="Pls_enter_email_or_phn">ଦଯାକରି ଇମେଲ୍ କିମ୍ବା ଫୋନ୍ ନମ୍ବର୍ ଲେଖନ୍ତୁ</string>
-    <string name="confirm_email">ଦୟାକରି ଇ ମେଲ ଆଇଡ଼ ସୁନିସ୍ଚିତ କରନ୍ତୁ</string>
-    <string name="pls_enter_phone_number">ଦୟାକରି ଫୋନ ନମ୍ବର ଟି ଦିଅନ୍ତୁ </string>
     <string name="enter_valid_phone_number">ଦୟାକରି ବୈଧ ଫୋନ ନମ୍ବର ଟି ଦିଅନ୍ତୁ </string>
     <string name="enter_password">ଦୟାକରି ଗୁପ୍ତ ନମ୍ବର ଟି ଦିଅନ୍ତୁ </string>
-    <string name="pls_confirm_password">ଦୟାକରି ଗୁପ୍ତ ନମ୍ବର ଟି ସୁନିସ୍ଚିତ କରନ୍ତୁ </string>
     <string name="password_atleast_6"> ଗୁପ୍ତ ନମ୍ବର ଟି କମ ସେ କମ ୬ ଅକ୍ଷର ର ହେବା ଦର୍କାର</string>
     <string name="valid_email">ଦୟାକରି ବୈଧ ଇ ମେଲ ଆଇଡ଼ ଟି ଦିଅନ୍ତୁ</string>
     <string name="password_not_match">ଗୁପ୍ତ ନମ୍ବର ଟି ମିସୁନାହିଁ </string>
     <string name="password_to_continue">ସେବା ଟି ଚାଲୁ ରଖିବା ପାଇଁ ଗୁପ୍ତ ନମ୍ବର ଟି ଦିଅନ୍ତୁ </string>
     <string name="enter_new_phone_number">ଦୟାକରି ନୁଆ ନମ୍ବର ଟି ଦିଅନ୍ତୁ</string>
     <string name="position">ପଦ</string>
-    <string name="enter_phone_to_have_instruction">ଗୁପ୍ତ ନମ୍ବର ର ପୁନର୍ବାର ସେଟିନ୍ଗ ର ସୁଚନା ପାଇବା ପାଇଁ ଅପଣଂକ ଫୋଅନ ନମ୍ବର ଟି ପ୍ରଦାନ କରନ୍ତୁ </string>
-    <string name="pay">ଦେୟ </string>
     <string name="please_login_from_these_accounts">ଦୟାକରି ଲଗ୍-ଇନ୍ କରନ୍ତୁ ଏଗୁଡ଼ିକ ମଧ୍ୟରୁ କୌଣସି ଏକ ଆକାଉଣ୍ଟ୍ ସହାଯ୍ୟରେ</string>
     <string name="please_contact_customer_care">କସ୍ଟମର୍ କେୟାର ସହ ଯୋଗା ଯୋଗ କରନ୍ତୁ </string>
     <string name="paid_cash">କ୍ୟାସ ଦ୍ବାରା ପେମେନ୍ଟ୍ କରନ୍ତୁ </string>
     <string name="ride_id">ରାଇଡ଼ ଆଇଡ଼</string>
     <string name="Ride_id">ରାଇଡ଼ ଆଇଡ଼</string>
 
-    <string name="ride_time2">ରାଇଡ୍ ସମୟ:</string>
     <string name="rate">ଦାମ</string>
     <string name="ride_in_progress_cant_logout">ରାଇଡ୍ ଚାଲିଛି,ଆପଣ ରାଇଡ୍ ସେଶ ହେଲାପରେ ଲଗ୍-ଆଉଟ୍ କରିପାରିବେ</string>
     <string name="rate_applied">ଦର ର ପ୍ରୟୋଗ </string>
@@ -265,8 +180,6 @@
     <string name="reg_info">ପନ୍ଜିକରଣ ର ସୁଚନା</string>
     <string name="ride_details">ରାଇଡ ର ବିବରଣି</string>
     <string name="ride_fare">ରାଇଡ ର ମୁଲ୍ୟ </string>
-    <string name="can_not_calculated_distance">କ୍ଷମା କରିବେ,ବର୍ତମାନ ଅମେ ଅପଣଂକ ଦୁରତା ଅକଳନ  କରିପାରୁ ନାହୁଁ</string>
-    <string name="set">ସେଟ </string>
     <string name="SUBMIT">ଜମା କରନ୍ତୁ  </string>
     <string name="super_driver">ସୁପର ଡ୍ରାଇଭର</string>
     <string name="sharing_rides">ସେୟାର ଭଡା କରନ୍ତୁ </string>
@@ -278,11 +191,8 @@
     <string name="min">ମିନିଟ</string>
     <string name="app_need_active_gps">ଆପଲିକେସନ କୁ ସଠିକ ଜିପିଏସ କନେକସନ ଦରକାର ହେଉଛି.ସେଟିନ୍ଗ କୁ ଜାଇ ଠିକ କରନ୍ତୁ </string>
     <string name="app_needs_network_time">ଆପ୍ଲିକେସନ୍ କୁ ନେଟ୍-ଓର୍କ ପ୍ରଦାନ କରାଜାଇଥିବା ସମୟ ସକ୍ଷମ ହେବାପାଇଁ ଦରକାର୍ ହେଉଛି,ଦୟାକରି ସେଟିଂଗ୍ କୁ ଜାଆନ୍ତୁ</string>
-    <string name="take">ନେବା  </string>
-    <string name="req_accepted_by_other_driver">ଏହି ରେକୁଏସ୍ଟ ଟି ଅନ୍ୟ କୌଣସି ଡ୍ରାଇଭର ଦ୍ବାରା ଆକସେପଟ ହୋଇଜାଇଛି</string>
     <string name="amount_entered">ଜମା ହୋଇଥିବା ମୁଲ୍ୟ ହେଉଛି</string>
     <string name="time">ସମୟ  </string>
-    <string name="time_new">ନୁଆ ସମୟ </string>
     <string name="jugnoo_ride_over">ବର୍ତମାନ ଅପଣଣ୍କର ଜୁଗ୍ଣୁ ରାଇଡ ଶେସ ହେଲା </string>
     <string name="today">ଆଜି</string>
     <string name="this_month">ଏହି ମାସ </string>
@@ -295,45 +205,32 @@
     <string name="verify_me">ମୋତେ ଜାଂଚ୍ କରନ୍ତୁ</string>
     <string name="waiting_for_location">ଲୋକେସନ୍ ପାଇଁ ଅପେଖ୍ୟା କରନ୍ତୁ</string>
     <string name="wait">ଅପେକ୍ଷା</string>
-    <string name="whatsapp_not_installed">ହ୍ଵଟସାପ୍ ଇନ୍-ସ୍ଟଲ୍ ହେଇନାହିଁ</string>
     <string name="weekly">ସପ୍ତାହିକ</string>
     <string name="will_revert_you">ଅମେ ଶିଘ୍ର ହିଁ ଅପଣନ୍କୁ ସୁଚନା ଦେବୁ</string>
-    <string name="your_position">ଅପଣଂକ ସ୍ତିତି ରେ</string>
-    <string name="your_overall_position">ଅପଣଂକ ସମ୍ପୁର୍ନ୍ନ ସ୍ତିତି </string>
-    <string name="got_new_request">ଅପଣଂକୁ ଆଉ ଏକ ନୁଅ ରିକୁଏସ୍ଟ୍ ମିଳିଲା </string>
     <string name="present_near_customer_location">ରାଇଡ ରେ ଆରାଇଭ୍ କରିବାକୁ ହେଲେ କସ୍ଟମର୍ ର ପିକପ୍ ଲୋକେସନ୍ ରେ ପହଂନଚିବାକୁ ପଡିବ</string>
     <string name="present_near_customer_location_to_start">ରାଇଡ କୁ ସ୍ଟାର୍ଟ୍ କରିବାକୁ ହେଲେ କସ୍ଟମର୍ ର ପିକପ୍ ଲୋକେସନ୍ ରେ ପହଂନଚିବାକୁ ପଡିବ</string>
     <string name="You_have_already_created">ଆପଣ ପୁର୍ବରୁ ଏହି ଡିଭାଇସ୍ ରେ % ଆକାଉନ୍ଟ୍ କ୍ରିଏଟ୍ କରି ସାରିଛନ୍ତି.ଆଉ ଏକ ନୁଅ ଆକାଉନ୍ଟ କ୍ରିଏଟ୍ କରିବାକୁ ହେଲେ ତାହା କାରଣ ବର୍ଣ୍ଣନା କରନ୍ତୁ</string>
     <string name="your_referral_code">ଅପଣଂକ ରେଫରାଲ୍ କୋଡ୍ ହେଉଛି</string>
     <string name="tap_to_retry">ପୁନର୍ବାର ଚେସ୍ଟା କରିବାକୁ ଅପଣଂକ ଫୋନ୍ ର ସ୍କ୍ରିନ୍ କୁ ଛୁଅନ୍ତୁ</string>
     <string name="error_occured_tap_to_retry">କିଛି ତ୍ରୁଟି ହୋଇଛି.ପୁନର୍ବାର ଚେସ୍ଟା କରିବାକୁ ଅପଣଂକ ଫୋନ୍ ର ସ୍କ୍ରିନ୍ କୁ ଛୁଅନ୍ତୁ</string>
-    <string name="no_missed_rides">ବର୍ତମାନ୍ ପର୍ଜନ୍ତ ମୁଁ କୌଣସି ରାଇଡ ମିସ୍ କରିନହିଁ</string>
     <string name="no_internet_tap_to_retry">ଇନ୍ଟରନେଟ୍ କନେକ୍ସନ୍ ନହିଁ.ପୁନର୍ବାର ଚେସ୍ଟା କରିବାକୁ ଅପଣଂକ ଫୋନ୍ ର ସ୍କ୍ରିନ୍ କୁ ଛୁଅନ୍ତୁ</string>
     <string name="no_rides">ବର୍ତମାନ ସୁଧା କୌଣସି ରାଇଡ ନହିଁ</string>
     <string name="pickup_location">ଅପଣଂକ ପିକପ୍ ଲୋକେସନ୍</string>
     <string name="money_to">ଜୁଗ୍ନୁ ର ମୁଲ୍ୟ </string>
     <string name="start_ride_loc">ରଇଡ ଆରମ୍ଭ ର ଲୋକେସନ </string>
-    <string name="sec_left">ସେକେଣ୍ଡ୍ ରହିଲା</string>
     <string name="km_away">କି.ମି ଦୁର</string>
     <string name="m_away">ମି ଦୁର</string>
     <string name="some_error_occured">କିଛି ତ୍ରୁଟି ହୋଇ ଜାଇଛି</string>
     <string name="take_cash">କ୍ୟସ୍ ନିଅନ୍ତୁ</string>
-    <string name="wallet">ବଲେଟ୍</string>
-    <string name="Scheduled_Ride_Pickup">କାର୍ଯ୍ୟକ୍ରମ ଅନୁସାରେ ରଇଡ ପିକଅପ</string>
-    <string name="referral_msg">ମୋ କୋଡ଼ ୟୁଜ କରି ଜୁଗ୍ନୁ ଆପ ଡାଉନଲୋଡ କରନ୍ତୁ ଅଉ ଜୁଗ୍ନୁ କ୍ୟାସ ପାନ୍ତୁ.ଏହି ଲିନ୍କ୍ ୟୁଜ କରି ଡାଉନଲୋଡ କରନ୍ତୁ            http://smarturl.it/jugnoo          </string>
     <string name="no_of_account">ପୁର୍ବରୁ ଏହି ଡିଭାଇସ ରେ ଆକାଉଣ୍ଟ୍ କ୍ରୀଏଟ ହୋଇ ସାରିଛି</string>
     <string name="enter_otp_received">ଦୟା କରିକି ଓଟିପି ଦିଅନ୍ଟୁ ଯାହା ଏବେ ଆପଣ୍ ଏସ୍.ଏମ୍.ଏସ୍ ଜରିଆ ରେ ପାଇଛନ୍ଟି</string>
     <string name="select_reason">ଦୟାକରି କୌଣସି ଏକ କାରଣ ଦର୍ସାନ୍ତୁ </string>
     <string name="referral_money">ରେଫରାଲ ରାସୀ</string>
     <string name="send">ପଠାଇବା </string>
-    <string name="wait_here">ଏଠାରେ ଅପେକ୍ଷା କରନ୍ତୁ...... </string>
-    <string name="use_jugnoo_fare">ଜୁଗ୍ନୁ ରାସୀ ବ୍ୟବହାର କରନ୍ତୁ </string>
-    <string name="view_account">ଆକାଉଣ୍ଟ୍ ଦେଖନ୍ତୁ</string>
     <string name="hint_created_multiple_account">ଆପଣ ପୁର୍ବରୁ ଏହି ଡିଭାଇସ୍ ରେ ଦୁଇଟି ଆକାଉନ୍ଟ୍ କ୍ରିଏଟ୍ କରି ସାରିଛନ୍ତି.ଆଉ ଏକ ନୁଅ ଆକାଉନ୍ଟ କ୍ରିଏଟ୍ କରିବାକୁ ହେଲେ ତାହା କାରଣ ବର୍ଣ୍ଣନା କରନ୍ତୁ</string>
     <string name="convenience_charge">ସୁବିଧା ଶୁଲ୍କ</string>
     <string name="cancel_subsidy">କ୍ୟାନ୍ସଲ୍ ଅନୁବ୍ରୁତି</string>
     <string name="inc_subsidy">ସର୍ବମୋଟ୍ ଅନୁବ୍ରୁତି</string>
-    <string name="to_end">କୁ:</string>
     <string name="Edit_profile">ପ୍ରୋଫାଇଲ୍ ଏଡିଟ୍ କରନ୍ତୁ</string>
     <string name="info">ସନ୍ଦେସ୍</string>
     <string name="local_leaderboard">ସ୍ଥାନିୟ</string>
@@ -347,18 +244,13 @@
     <string name="number_of_first_rides">ନେଇଥିବା ପ୍ରଥମ ଭଡାର ସଂଖ୍ୟା</string>
     <string name="money_earned">ରେଫରାଲ୍ ସାହାଜ୍ୟ ରେ ଅର୍ଜନ୍ କାରିଥିବା ଟଂକା</string>
     <string name="data_effective_format">ରେ ତଥ୍ୟ ପ୍ରଭାବିତ ହେବ</string>
-    <string name="notifications">ସୁଚନା କେନ୍ଦ୍ର</string>
-    <string name="click_for_direction">ଏଠାରେ ଦିଗ ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ</string>
     <string name="time_left">ସମୟ ସେଷ:</string>
     <string name="enter_phone_no_to_reset_password">ଫୋନ୍ ନମ୍ବର୍ ଲେଖନ୍ତୁ ପାସ୍-କୋଡ୍ ବଦଳିବା ପାଇଁ</string>
-    <string name="customer_phone_number">ଗ୍ରାହକ ଫୋନ୍ ନମ୍ବର୍</string>
-    <string name="recharge_amount">ରିଚାର୍ଜ୍ ପାଇଁ ଟଂକା</string>
     <string name="enter_amount">ଟଂକା ଲେଖନ୍ତୁ</string>
     <string name="paytm_recharge">PAYTM ରିଚାର୍ଜ୍</string>
     <string name="Confirm">ନିସ୍ଚିତ</string>
     <string name="Paytm_recharge">PAYTM ରିଚାର୍ଜ</string>
     <string name="phone_number_or_email">ଫୋନ ନମ୍ବର କିମ୍ବା ଇମେଲ</string>
-    <string name="nl_otp_waiting_to_detect_otp">ଓଟିପି ଜାଣିବା ପାଇଁ ଅପେଖ୍ୟା କରନ୍ତୁ</string>
     <string name="battery_low_message">ବ୍ୟାଟେରୀ ସବୁବେଳେ 20% ରୁ ଅଧିକ ରଖନ୍ତୁ ରାଇଡ଼ ଆକସେପ୍ଟ ପାଇଁ ! ତେଣୁ ସବୁବେଳେ ଚାର୍ଜରେ ରଖନ୍ତୁ!</string>
     <string name="destination">ଡେସ୍ଟିନେସନ ଗୁଡିକ</string>
     <string name="destination_selection">ଦୟାକରି ବର୍ତମାନ ଆପଣ ଡେସଟିନେସନ ସିଲେକ୍ଟ କରନ୍ତୁ ଯୋଉଠିକି ଯିବେ</string>
@@ -368,17 +260,12 @@
     <string name="no_current_notification">ବର୍ତମାନ୍ କୌଣସି ସୁଚନା ନାହିଁ</string>
     <string name="phone">ଫୋନ :</string>
     <string name="GENERATE_OTP">ଓଟିପି ପ୍ରସ୍ତୁତି</string>
-    <string name="otp">ଓଟିପି</string>
     <string name="signin_via_otp">ଓଟିପି ମାଧ୍ୟମରେ ସାଇନ ଇନ କରନ୍ତୁ</string>
     <string name="Neutral">ନିଉଟ୍ରାଲ୍</string>
-    <string name="Payments">ପେମେଣ୍ଟ ଗୁଡିକ</string>
-    <string name="PAYMENTS">ପେମେଣ୍ଟ ଗୁଡିକ</string>
 
     <string name="Today">ଆଜି</string>
     <string name="Last_week">ଶେସ ସପ୍ତାହ</string>
     <string name="Last_month">ଶେସ ମାସ</string>
-    <string name="upcoming_invoice">ଆସୁଥିବା ବିଲ୍</string>
-    <string name="current_invoice">ବର୍ତମାନ୍ ବିଲ୍</string>
     <string name="Outstanding_amnt">ବଳିଥିବା ମୁଲ୍ୟ</string>
     <string name="jugnoo_cmsn">ଜୁଗ୍ଣୁ କମିସନ</string>
     <string name="Manual_adjustment">ମାନୁଆଲ୍ ଆଡ଼ଜସ୍ଟମେନ୍ଟ୍</string>
@@ -388,21 +275,9 @@
     <string name="paid_by_customer">କ୍ୟାସ ପେମେଣ୍ଟ</string>
     <string name="paid_using_wallet">ଫ୍ରୀ ବାଲାନ୍ସ ଦ୍ବ୍ୟାରା ପେମେଣ୍ଟ</string>
     <string name="acc_credited">ପଇସା ପାଇଛନ୍ତି</string>
-    <string name="last_invoice">ଶେଷ ବିଲ୍</string>
-    <string name="last_invoice_details">ଶେସ ପେମେଣ୍ଟ ହେଇଥିଲା</string>
-    <string name="last_payments">ଶେସ ପେମେଣ୍ଟ ଗୁଡିକ</string>
-    <string name="upcoming_payment_due_date">ପରବର୍ତୀ ପେମେଣ୍ଟ ହବ</string>
     <string name="cash_via_paytm">କ୍ୟାସ ପେଟିଏମ ଦ୍ବ୍ୟାରା</string>
     <string name="from">କେଉଁଠୁ </string>
     <string name="to">କେଉଁ ପର୍ଯନ୍ତ</string>
-    <string name="cancel_request_in">କ୍ୟାନ୍ସଲ୍ ଅନୁରୋଧ ରେ</string>
-    <string name="your_ride_is">ଅପଣଂକ ରାଇଡ଼ ହେଉଛି </string>
-    <string name="away_and_will_arrive">ଦୁରରେ ଅଛନ୍ତି ପ୍ରାୟ... ରେ ଆସିଜିବେ</string>
-    <string name="will_arrive_in">ରେ ଆସିଜିବେ</string>
-    <string name="you_have">ଆପଣଂକ ପାଖରେ</string>
-    <string name="ride_request">ଭଡ଼ା ରିକୁଏସ୍ଟ୍</string>
-    <string name="rating">ସ୍ଟାର୍-ମାର୍କ୍</string>
-    <string name="convenience_charges_text">ଗ୍ରାହକ ପାଇଁ ସୁବିଧା ମୁଲ୍ୟ:</string>
     <string name="customer_name">ଗ୍ରାହକ ର ନାମ:</string>
     <string name="terms">ନିୟମ</string>
     <string name="bank_details">ବ୍ୟାଂକ୍ ବିବରଣି</string>
@@ -426,11 +301,11 @@
     <string name="phone_no">ଫୋନ୍ ନମ୍ବର୍</string>
     <string name="changed_no_same_as_previous">ବଦଳିଥିବା ଫୋନ୍ ନମ୍ବର୍ ପଛ ନମ୍ବର୍ ଭଳି ଅଛି</string>
     <string name="sharing_payment_recieved">ଫୋନ୍ ପାଇଁ ସେୟାର୍ ପେମେଣ୍ଟ୍ ଗ୍ରହଣ ହୋଇସାରିଛି</string>
-    <string name="please_give_customer">ଆମେ ଆପଣଂକର ରାୟ କୁ ଗଭିରତାର ସହ ନେଉଛୁ</string>
     <string name="start_loc">ପ୍ରାଥମିକ ସ୍ଥାନ</string>
     <string name="driver_loc">ଡ୍ରାଇଭର୍ ସ୍ଥାନ</string>
     <string name="customer_2">ଗ୍ରାହକ 2</string>
     <string name="mark_delivered">ଦିଆଜାଇଥିବା ଚିହ୍ନଟ କରନ୍ତୁ</string>
+    <string name="kms">କିଲୋମିଟର</string>
     <string name="order_id">ଆଦେଶ ଆଇଡି</string>
     <string name="thanks_for_feedback">ଆପଣଂକର ବହୁମୁଲ୍ୟ ପ୍ରତିକ୍ରିୟା ପାଇଁ ଧନ୍ୟବାଦ୍</string>
     <string name="total_amnt_till_now">ଏପର୍ଯ୍ୟନ୍ତ ସର୍ବମୋଟ୍ ମୁଲ୍ୟ</string>
@@ -439,7 +314,6 @@
     <string name="total_distance">ସର୍ବମୋଟ୍ ଦୁରତା</string>
     <string name="valid_email_phone_no">ବୈଧ ଇମେଲ୍ କିମ୍ବା ଫୋନ୍ ନମ୍ବର୍ ଦିଅନ୍ଟୁ</string>
     <string name="select_destination">ଦୟା କରିକି ଅନୁନ୍ୟ ଗୋଟିଏ ଡ୍ରପ୍ ଲୋକେସନ୍ ଦିଅନ୍ଟୁ</string>
-    <string name="fatafat_on">ଫଟାଫଟ୍ ଅନ୍</string>
     <string name="Notifications">ସୁଚନା</string>
     <string name="enter_customer_phone_no">କସ୍ଟମର୍ ଫୋନ୍ ନମ୍ବର୍ ଦିଅନ୍ତୁ</string>
     <string name="invoice_detail">ଚାଲାଣ୍ ବିବରଣି</string>
@@ -457,13 +331,10 @@
 
     <string name="give_missed_call_dialog_text">ଆମକୁ ଗୋଟେ ମିସକଲ ଦିଅନ୍ତୁ ଅମେ ଅପଣଂକ ପରିଚୟ ଜାନ୍ଚ କରିବୁ</string>
     <string name="give_misscall_to_verify">ଜାଂଚ୍ ପାଇଁ ଆମକୁ ମିସ୍-କଲ୍ ଦିଅନ୍ତୁ</string>
-    <string name="please_press_here">ଦୟାକରି ଏହିଠାରେ ଟିପନ୍ତୁ.</string>
 
     <string name="return_reasons">ଫେରସ୍ତ ର କାରଣ</string>
     <string name="Returned">ଫେରସ୍ତ</string>
-    <string name="collected">ସଂଗ୍ରହ</string>
     <string name="accepted">ଗ୍ରହଣ</string>
-    <string name="in_ride">ରାଇଡ୍ ରେ ଅଛନ୍ତି</string>
     <string name="arrive_at_pickup_location">ପିକ୍-ଅପ୍ ଲୋକେସନ୍ ରେ ପହଂଚି ସାରିଛନ୍ତି</string>
     <string name="make_delivery">ଡେଲିଭରି କରନ୍ତୁ</string>
 
@@ -482,7 +353,6 @@
     <string name="rate_your_vendor">ନିଜ ବିକ୍ରେତା ନ୍କୁ ରେଟିଂ ଦିଅଂନ୍ତୁ.</string>
     <string name="view_orders">ଅର୍ଡର୍ ଗୁଡିକ ଦେଖିବା ପାଇଂ.</string>
     <string name="delivery_numbers">ବିତରଣ କ୍ରମ</string>
-    <string name="approx">ଅନୁମାନିକ.</string>
     <string name="returned">ଫେରେଇ ଦିଆଯାଇଥିବା.</string>
     <string name="start_delivery_text">ଆପଣ ନିଶ୍ଚିତ ଅଛନ୍ତି କି ବିତରଣ ଆରମ୍ଭ କରିବା ପାଇଂ.</string>
     <string name="deliver">ବିତରଣ</string>
@@ -493,23 +363,13 @@
     <string name="delivery_completed">ଡେଲିଭରି ସଂପୁର୍ଣ ହେଲା</string>
     <string name="delivery_cancelled">ଡେଲିଭରି କ୍ୟାନ୍-ସଲ୍</string>
     <string name="cancelled">କ୍ୟାନ୍-ସଲ୍ ହୋଇଗଲା</string>
-    <string name="address">ଠିକଣା</string>
     <string name="delivered">ପହଁଚାଇ ଦିଆଗଲା</string>
     <string name="delivery_on">ଡେଲିଭରି ଉପରେ</string>
     <string name="delivery_is_over">ଡେଲିଭରି ସମାପ୍ତ ହେଲା</string>
     <string name="start_the_delivery">ରାଇଡ୍ ଷ୍ଟାର୍ଟ୍ କରନ୍ତୁ</string>
-    <string name="deliver_order_number">ଡେଲିଭରି ଅଡ଼ର୍ ନମ୍ବର୍ %s</string>
-    <string name="all_orders_have_been_delivered">ସବୁ ଅଡ଼ର୍ ଡେଲିଭରି କରିଦିଆଯାଇଛି</string>
-    <string name="to_no_colon">କୁ</string>
-    <string name="no_deliveries_pending">କୌଣସି ଡେଲିଭରି ପେଣ୍ଡିଂଗ୍ ନାହିଁ</string>
-    <string name="no_deliveries_completed">ଡେଲିଭରି ପୁରଣ ହୋଇ ନାହିଁ</string>
-    <string name="auto">Auto</string>
 
     <string name="cash_collected">ରାଶି ଆଦାୟ ହୋଇସାରିଛି.</string>
-    <string name="s_no">କ୍ରମାଂକ</string>
-    <string name="order_no">ଅର୍ଡର୍ ନମ୍ବର୍</string>
     <string name="details">ବିବରଣି</string>
-    <string name="present_near_delivery_location">ଏହି ଅର୍ଡର୍ ଟି ପହନ୍ଚାଇବା ପାଇଂ ଆପନଂ କୁ ନିଶ୍ଚିତ ରୁପେ ଡେଲିଭରି ସ୍ଥାନ କୁ ଯିବାକୁ ପଡିବ</string>
     <string name="success">ସଫଳ</string>
     <string name="outstanding_amount">ପଛ ଚାଲାଣ୍-ର ଆଡ୍-ଜଷ୍ଟ୍ ମେନ୍ଟ୍</string>
     <string name="please_drop_customer">Please drop %s</string>
@@ -524,30 +384,20 @@
 
     <string name="vehicle_status">ଗାଡ଼ିର ସ୍ଥିତି</string>
     <string name="rented">ଭଡ଼ାରେ</string>
-    <string name="auto_driver_confirmation">ଆପଣ ଜଣେ ଅଟୋ ଡ୍ରାଇଭର୍ କି ?</string>
-    <string name="auto_status_confirmation">ଆପଣଂକ ପାଖରେ ଅଟୋ ଅଛି କି ?</string>
     <string name="no_doc_available">କୌଣସି ଡକ୍ୟୁମେଣ୍ଟ୍ ଉପଲବ୍ଧ ନାହିଁ</string>
     <string name="upload">ଅପ୍-ଲୋଡ଼୍</string>
     <string name="optional">ଇଛାଧିନ</string>
     <string name="uploaded">ଅପ୍-ଲୋଡ଼୍ କରାହୋଇଛି</string>
     <string name="rejected">ପ୍ରତ୍ୟାଖ୍ୟାନ</string>
     <string name="verified">ଯାଂଚ୍ ହୋଇଜାଇଛି</string>
-    <string name="Hints">ସକେଂତ</string>
-    <string name="tricks">ଛଳ</string>
-    <string name="Messages">ସନ୍ଦେଷ୍</string>
 
     <string name="auto_number">ଅଟୋ ନମ୍ବର୍</string>
-    <string name="Choose_one">ଗୋଟିଏ ବାଛନ୍ତୁ</string>
-    <string name="is_rented">ମୋର ଭଡାରେ ଗୋଟିଏ ଅଟୋ ଅଛି</string>
-    <string name="is_owned">ମୋର ନିଜର ଗୋଟେ ଅଟୋ ଅଛି</string>
-    <string name="Documents">ଡକ୍ୟୁମେଣ୍ଟ୍</string>
     <string name="Document_type">ଡକ୍ୟୁମେଣ୍ଟ୍ ପ୍ରକାର</string>
     <string name="Requirement">ଆବଶ୍ୟକତା</string>
     <string name="add_image">ଛବି ଯୋଡନ୍ତୁ</string>
     <string name="Submit">ଜମା କରନ୍ତୁ</string>
-    <string name="owner">ମାଲିକ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
-    <string name="applicable_after">%1$s କି.ମି. ପରେ ଲାଗୁ</string>
+    <string name="applicable_after">%1$s ପରେ ଲାଗୁ</string>
 
     <string name="rejection_reason">ରିଜେକ୍ଟ କରିବାର କାରଣ</string>
     <string name="mandatory">ବାଧ୍ୟତା ମୁଳକ</string>
@@ -556,13 +406,13 @@
     <string name="referral_rate">ରେଫରାଲ୍</string>
     <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ </string>
     <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
-    <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
     <string name="per_min">(ମିନିଟ୍ ପ୍ରତି)</string>
     <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
     <string name="driver_to_driver">ଡ୍ରାଇଭର୍ ଠାରୁ ଡ୍ରାଇଭର୍ କୁ</string>
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="owned">ନିଜର</string>
 
+    <string name="per_km">(କି.ମି ପ୍ରତି)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ଗତକାଲି</string>
@@ -570,7 +420,6 @@
     <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
-    <string name="estimated_payout">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
     <string name="this_week_cap">ଏଇ ସପ୍ତାହ</string>
 
 
@@ -580,7 +429,6 @@
     <string name="audit_lower">ଯାନ୍ଚ୍</string>
     <string name="self_audit">ନିଜେ ଯାନ୍ଚ୍ କରନ୍ତୁ</string>
     <string name="front">ସାମ୍ନାକୁ</string>
-    <string name="add_photo">ଫୋଟ ଜୋଡନ୍ତୁ</string>
     <string name="left">ବାମ</string>
     <string name="right">ଡାହାଣ</string>
     <string name="Audit">ଯାନ୍ଚ୍</string>
@@ -605,8 +453,6 @@
     <string name="earnings_caps">ରୋଜଗାର</string>
 
 
-
-    <string name="estimated_payout_lower">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
     <string name="bank_deposite">ବ୍ୟାଂକ୍ ଜମା</string>
     <string name="trips">ଭଡ଼ା ଗୁଡ଼ିକ</string>
     <string name="home">ଘର</string>
@@ -632,24 +478,17 @@
     <string name="connection_lost">ଆପଣ କନେକ୍ଟେଡ୍ ନାହାନ୍ତି!ପୁନର୍ବାର ପ୍ରୟାସ କରିବା ପାଇଁ ଟ୍ୟାପ୍ ରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
 
     <string name="no_language_to_select">ଭାଷା ଚୟନ ଉପଲବ୍ଧ ନାହିଁ</string>
-    <string name="miss_call_otp">ଗୋଟିଏ ମିସ୍ କଲ୍ ଦିଅନ୍ତୁ</string>
     <string name="required">ଦରକାର୍</string>
     <string name="login_here">ପୁର୍ବରୁ ଡ୍ରାଇଭର୍ ଆକାଉଣ୍ଟ୍ ଅଛି ?<u> ଲଗ୍-ଇନ୍ କରନ୍ତୁ</u></string>
-    <string name="i_accept_new">ସାଇନ୍-ଅପ୍ ହେବା  ଦ୍ୱାରା ଆପଣ ସହମତ ଆମର <u>ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ ସହ</u></string>
     <string name="nl_otp_please_enter_otp">ଦୟାକରି ପଠାଯାଇଥିବା ଓଟିପି କୁ ଲେଖନ୍ତୁ</string>
-    <string name="driver">ଡ୍ରାଇଭର୍</string>
     <string name="register_text">ଡ୍ରାଇଭର୍ ଆକାଉଣ୍ଟ୍ ନାହିଁ? <u>ଏଠାରେ ରେଜିସ୍ଟର୍ କରନ୍ତୁ</u></string>
 
 
-    <string name="self_enroled">ନିଜେ ଜୋଡ଼ିହେବା</string>
     <string name="upload_Documents">ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପ୍-ଲୋଡ଼୍</string>
     <string name="diffrential_pricing_rate">After %1$s, distance charge will be %2$s</string>
     <string name="payment_sent">Payment Sent</string>
 
     <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
     <string name="referral_code">Referral Code</string>
     <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
     <string name="select_tandc">Please select Terms and Conditions</string>
@@ -669,8 +508,6 @@
     <string name="auto_accept_message">গ্ৰাহকৰ অনুৰোধ অটমেটিকলি একচেপ্ত কৰা হৈছে</string>
 
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
-    <string name="Reason">Reason</string>
-    <string name="delivery_conf">Are you sure you want to deliver ?</string>
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
@@ -680,11 +517,8 @@
     <string name="deposite_cash_1">Deposit cash</string>
     <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
     <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
     <string name="fail">Fail</string>
     <string name="chat">Chat</string>
-    <string name="spinner_owned">Owned</string>
-    <string name="spinner_rented">Rented</string>
     <string name="select">Select</string>
     <string name="select_customer">Select Customer</string>
     <string name="collect_cash">Collect Cash</string>
@@ -699,22 +533,18 @@
     <string name="i_accept_abv"><![CDATA[ACCEPT T &amp; C]]></string>
     <string name="your_sig_here">YOUR SIGNATURE HERE</string>
     <string name="delivery_start">Delivery Start</string>
-    <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
-    <string name="reg_as_driver">Register as a Jugnoo DRIVER</string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as DRIVER</string>
     <string name="distance_lower">distance</string>
     <string name="please_drop_customer_delivery">End %s\'s delivery</string>
     <string name="please_start_customer_delivery">Start %s\'s delivery</string>
     <string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
-    <string name="select_merchant">Select Merchant</string>
     <string name="estimated_fare">(Estimated Fare)</string>
     <string name="provide_sign_msg">Please provide signature before submit</string>
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app">Looking for Customer App</string>
-    <string name="image">image</string>
     <string name="auto_detect_otp_failed">Automatic detection of OTP Failed</string>
     <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
     <string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
@@ -723,7 +553,6 @@
     <string name="tutorial_your_location">The blue dot shows your current location</string>
     <string name="start_training">Start Training</string>
     <string name="tutorial_customer_requesting_ride">Customer is requesting a ride...\\nTap \'Accept\'.</string>
-    <string name="tutorial_drive_to_pickup">Drive to the pickup point.</string>
     <string name="tutorial_tap_to_start_ride">Tap \'Start Ride\' when you are ready to start the ride</string>
     <string name="tutorial_tap_end_ride">Tap \'End Ride\' only after dropping the customer</string>
     <string name="tutorial_tap_ok_endride">Tap \'OK\' if you have dropped the customer</string>
@@ -731,9 +560,7 @@
     <string name="tutorial_tap_arrived_if_at_pickup">Tap \'Arrived\' if you are at the pickup location</string>
     <string name="tutorial_driver_to_pickup_point">Drive to the pickup point.</string>
     <string name="tutorial_tap_yes">Tap \'YES\'</string>
-    <string name="arriving">Arriving</string>
     <string name="arrivingdot">Arriving...</string>
-    <string name="upload_later">Upload Later</string>
     <string name="training_confirmation_text">You would receive no customer requests during training. Are you sure you want to start?</string>
     <string name="request_autos">Request for AUTOS will be sent to you now.</string>
     <string name="later">Later</string>
@@ -744,8 +571,6 @@
     <string name="more">more</string>
     <string name="estimated_dis">Estimated Distance</string>
     <string name="cash_to_collected">Cash to be Collected</string>
-    <string name="return_amount">Returned Amount</string>
-    <string name="cash_required">Cash Required</string>
     <string name="pick_up">PICK - UP</string>
     <string name="you_have_arrived">You have Arrived</string>
     <string name="switchText">Switch</string>
@@ -759,23 +584,18 @@
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
     <string name="registered">Registered</string>
-    <string name="createdOnNew">Created On</string>
     <string name="updated_on">Updated On</string>
-    <string name="complain">Complain</string>
     <string name="settled">settled</string>
-    <string name="ended_on">Ended On</string>
     <string name="no_tickets">No complaints yet</string>
     <string name="closed_on">Closed On</string>
     <string name="complaint">Complaint</string>
     <string name="raisedOn">Raised On</string>
     <string name="return_fare_aplicable">Return Fare If Applicable</string>
+    <string name="per_km_wo_brack">PER Km</string>
     <string name="per_delivery">Per Delivery</string>
     <string name="return_fare">Return Fare</string>
     <string name="pick_up_wait_time">Pickup Wait Time fare</string>
-    <string name="un_loading">un loading</string>
-    <string name="un_loading_fare">un loading fare</string>
     <string name="loading_fare">loading fare</string>
-    <string name="pickup_distance_fare">pickup distance fare</string>
     <string name="range">Range</string>
     <string name="value">Value</string>
     <string name="no_rate_card_available">No Rate Card Available</string>
@@ -783,7 +603,6 @@
     <string name="loading_req">Loading Required</string>
     <string name="unloading_fare">Unloading Fare</string>
     <string name="super_biker">Super Biker</string>
-    <string name="needed">Needed</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
     <string name="keep_jugnoo_on">Kepp your Jugnoo ON to earn more</string>
@@ -797,8 +616,6 @@
 
     <string name="wallet_title">ମୁଣି ଅଵଶଷ</string>
     <string name="how_to_recharge">କିପରି ରିଚାଜ କରିବା</string>
-    <string name="recharge_new">2 ) Recharge Now</string>
-    <string name="visit_office">1 ) Visit Office</string>
     <string name="wallet_balance">ମୁଣି ଅଵଶଷ</string>
     <string name="low_balance">\n(ନିମ୍ନ ଅଵଶଷ)</string>
     <string name="rupees_value_format">\u20B9%s</string>
@@ -807,9 +624,7 @@
     <string name="no_transactions">No Transactions Currently</string>
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
-    <string name="office_address">Office Address</string>
     <string name="view_wallet_transactions">ମୁଣି ର ଦୃଶ୍ଯ ଦେଣନେ</string>
-    <string name="get_support">Get Support</string>
     <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
@@ -829,7 +644,6 @@
     <string name="label_total_savings"> ଟୋଟାଲ ସେଭିଙ୍ଗ ରାଶି:</string>
     <string name="label_current_savings"> ବର୍ତମାନ ର ଟୋଟାଲ ସେଭିଙ୍ଗ ରାଶି:</string>
     <string name="label_active_plan">    ଆକ୍ଟିଭ ପ୍ଲାନ</string>
-    <string name="label_current_outstanding">    ବର୍ତମାନ ବାକିଥିବା ଆମାଉଣ୍ଟ:</string>
     <string name="label_available_plans">    ପ୍ଲାନ ଉପଲବ୍ଧ</string>
     <string name="title_plans_screen"> କମିସନ ନକଟିବା ରାଇଡ</string>
     <string name="no_country_found">No country found</string>

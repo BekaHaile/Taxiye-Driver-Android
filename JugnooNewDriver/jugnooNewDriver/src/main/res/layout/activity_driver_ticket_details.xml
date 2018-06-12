@@ -19,7 +19,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector"
+            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -52,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4px"
-            android:layout_marginLeft="40px"
-            android:layout_marginRight="40px"
+            android:layout_marginStart="40px"
+            android:layout_marginEnd="40px"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -82,10 +82,10 @@
                     android:layout_height="wrap_content"
                     android:textSize="28px"
                     android:textAllCaps="true"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5px"
-                    android:layout_toLeftOf="@+id/imageViewStatus"
+                    android:layout_marginEnd="5px"
+                    android:layout_toStartOf="@+id/imageViewStatus"
                     android:textColor="@color/grey_ticket_history"
                     android:text="@string/registered"/>
 
@@ -94,7 +94,7 @@
                     android:layout_width="28px"
                     android:layout_height="28px"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_tick_green_20"/>
 
             </RelativeLayout>
@@ -114,8 +114,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15px"
-            android:layout_marginRight="40px"
-            android:layout_marginLeft="40px"
+            android:layout_marginEnd="40px"
+            android:layout_marginStart="40px"
             android:layout_centerHorizontal="true"
             android:background="@drawable/transparent"
             android:orientation="vertical"
@@ -140,8 +140,8 @@
                 <TextView
                     android:textSize="28px"
                     android:textColor="@color/grey_light_ticket_history"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:text=":"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -177,8 +177,8 @@
                 <TextView
                     android:textSize="28px"
                     android:textColor="@color/grey_light_ticket_history"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:text=":"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -212,8 +212,8 @@
                 <TextView
                     android:textSize="28px"
                     android:textColor="@color/grey_light_ticket_history"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:text=":"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -247,8 +247,8 @@
                 <TextView
                     android:textSize="28px"
                     android:textColor="@color/grey_light_ticket_history"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:text=":"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -281,8 +281,8 @@
                 <TextView
                     android:textSize="28px"
                     android:textColor="@color/grey_light_ticket_history"
-                    android:layout_marginLeft="25px"
-                    android:layout_marginRight="25px"
+                    android:layout_marginStart="25px"
+                    android:layout_marginEnd="25px"
                     android:text=":"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -305,7 +305,7 @@
             android:id="@+id/relativeLayoutCall1"
             android:layout_width="408px"
             android:layout_height="80px"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:visibility="visible"
             android:layout_centerVertical="true"
             android:layout_marginTop="64px"
@@ -325,7 +325,7 @@
                 android:layout_width="130px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="64px"
+                android:layout_marginStart="64px"
                 android:text="@string/call_us"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="38px"/>

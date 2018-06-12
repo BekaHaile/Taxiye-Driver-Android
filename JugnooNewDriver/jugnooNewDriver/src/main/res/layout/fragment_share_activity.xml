@@ -12,8 +12,8 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutDownloads"
             android:layout_width="match_parent"
-            android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px"
+            android:layout_marginStart="-4px"
+            android:layout_marginEnd="-4px"
             android:layout_marginTop="-4px"
             android:layout_height="204px"
             android:background="@drawable/background_wallet_border"
@@ -25,7 +25,7 @@
                 android:layout_height="55px"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_downloads"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_text_size" />
@@ -35,8 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_number_text_size" />
@@ -49,8 +49,8 @@
             android:id="@+id/relativeLayoutFirstRides"
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_activity_bar_height"
-            android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px"
+            android:layout_marginStart="-4px"
+            android:layout_marginEnd="-4px"
             android:layout_marginTop="@dimen/share_activity_text_margin_top"
             android:background="@drawable/background_wallet_border" >
 
@@ -60,7 +60,7 @@
                 android:layout_height="55px"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_first_rides"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_text_size" />
@@ -70,8 +70,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_number_text_size" />
@@ -83,8 +83,8 @@
             android:id="@+id/relativeLayoutMoneyEarned"
             android:layout_width="match_parent"
             android:layout_height="@dimen/share_activity_bar_height"
-            android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px"
+            android:layout_marginStart="-4px"
+            android:layout_marginEnd="-4px"
             android:layout_marginTop="@dimen/share_activity_text_margin_top"
             android:background="@drawable/background_wallet_border" >
 
@@ -94,7 +94,7 @@
                 android:layout_height="55px"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:layout_marginStart="@dimen/share_activity_text_margin_left"
                 android:text="@string/money_earned"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_text_size" />
@@ -104,8 +104,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/share_activity_text_margin_right"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="@dimen/share_activity_number_text_size" />

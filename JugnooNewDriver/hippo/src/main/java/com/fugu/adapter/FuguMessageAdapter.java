@@ -34,10 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.fugu.FuguFontConfig;
 import com.fugu.HippoColorConfig;
 import com.fugu.HippoConfig;
-import com.fugu.FuguFontConfig;
 import com.fugu.R;
 import com.fugu.activity.FuguChatActivity;
 import com.fugu.constant.FuguAppConstant;

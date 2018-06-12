@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
@@ -226,7 +227,7 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.getInt("flag");
 						String message = JSONParser.getServerMessage(jObj);
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
 								DialogPopup.alertPopup(activity, "", message);
 							}
@@ -234,7 +235,7 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener(){
 									@Override
 									public void onClick(View v) {
-										activity.startActivity(new Intent(activity, SplashNewActivity.class));
+										activity.startActivity(new Intent(activity, DriverSplashActivity.class));
 										activity.finish();
 										activity.overridePendingTransition(R.anim.left_in, R.anim.left_out);
 									}

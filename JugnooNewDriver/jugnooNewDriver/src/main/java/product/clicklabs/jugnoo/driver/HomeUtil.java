@@ -13,7 +13,9 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedString;
 
 /**
  * Created by shankar on 16/11/17.
@@ -57,7 +59,7 @@ public class HomeUtil {
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(context);
+								HomeActivity.logoutUser(context, null);
 							} else {
 								DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
 							}
@@ -98,6 +100,10 @@ public class HomeUtil {
 
 	public static void putDefaultParams(HashMap<String, String> params){
 		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
+	}
+
+	public static void putDefaultParams(MultipartTypedOutput params){
+		params.addPart(Constants.KEY_OPERATOR_TOKEN, new TypedString(MyApplication.getInstance().getString(R.string.white_label_key)));
 	}
 
 }

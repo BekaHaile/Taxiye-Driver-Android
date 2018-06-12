@@ -50,7 +50,7 @@
                 <!--android:layout_width="140px"-->
                 <!--android:layout_height="2px"-->
                 <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toRightOf="@+id/textViewReturnReasons"-->
+                <!--android:layout_toEndOf="@+id/textViewReturnReasons"-->
                 <!--android:id="@+id/imageViewHorizontal4"-->
                 <!--android:background="@color/black"/>-->
 

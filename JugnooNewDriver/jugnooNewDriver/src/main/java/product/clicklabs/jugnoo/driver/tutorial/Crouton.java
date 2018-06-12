@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 
 /**
- * Displays information in a non-invasive context related manner. Like
+ * Displays ic_doc_info in a non-invasive context related manner. Like
  * {@link android.widget.Toast}, but better.
  * <p/>
  * <b>Important: </b>
@@ -864,7 +864,7 @@ public final class Crouton {
     if (this.style.paddingDimensionResId > 0) {
       padding = resources.getDimensionPixelSize(this.style.paddingDimensionResId);
     }
-    contentView.setPadding(padding, padding, padding, padding);
+    contentView.setPaddingRelative(padding, padding, padding, padding);
 
     // only setup image if one is requested
     ImageView image = null;
@@ -878,7 +878,7 @@ public final class Crouton {
     RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
         RelativeLayout.LayoutParams.WRAP_CONTENT);
     if (null != image) {
-      textParams.addRule(RelativeLayout.RIGHT_OF, image.getId());
+      textParams.addRule(RelativeLayout.END_OF, image.getId());
     }
 
     if ((this.style.gravity & Gravity.CENTER) != 0) {
@@ -970,7 +970,7 @@ public final class Crouton {
     RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(
         RelativeLayout.LayoutParams.WRAP_CONTENT,
         RelativeLayout.LayoutParams.WRAP_CONTENT);
-    imageParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+    imageParams.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
     imageParams.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
     image.setLayoutParams(imageParams);

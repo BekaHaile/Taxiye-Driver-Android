@@ -18,7 +18,7 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/new_help_button"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:tag="mwar"/>
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25px"
+            android:layout_marginStart="25px"
             android:text="@string/you_have_arrived"
             android:textColor="@color/white"
             android:textSize="40px"/>
@@ -47,8 +47,8 @@
             android:layout_marginTop="66px"
             android:paddingTop="2px"
             android:paddingBottom="2px"
-            android:paddingLeft="10px"
-            android:paddingRight="10px"
+            android:paddingStart="10px"
+            android:paddingEnd="10px"
             android:textSize="16px"
             android:rotation="270"
             android:text="@string/pick_up"/>
@@ -56,7 +56,7 @@
         <RelativeLayout
             android:layout_width="440px"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textViewPickup">
+            android:layout_toEndOf="@+id/textViewPickup">
 
             <TextView
                 android:id="@+id/textViewMerchantName"
@@ -94,8 +94,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="28px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewLoadingIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewLoadingIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/loading_req"/>
 
             </RelativeLayout>
@@ -106,9 +106,9 @@
             android:id="@+id/relativeLayoutCall"
             android:layout_width="136px"
             android:layout_height="60px"
-            android:layout_marginRight="25px"
+            android:layout_marginEnd="25px"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:visibility="visible"
             android:background="@drawable/new_orange_btn_corner_normal">
 
@@ -117,7 +117,7 @@
                 android:layout_width="22px"
                 android:layout_height="22px"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="22px"
+                android:layout_marginStart="22px"
                 android:src="@drawable/call_icon_selector"/>
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -125,7 +125,7 @@
                 android:layout_width="70px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="62px"
+                android:layout_marginStart="62px"
                 android:text="@string/call"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="26px"/>
@@ -181,7 +181,7 @@
             android:id="@+id/driverStartRideBtn"
             android:layout_width="256px"
             android:layout_height="74px"
-            android:layout_marginLeft="35px"
+            android:layout_marginStart="35px"
             android:background="@drawable/new_orange_btn_normal_rounded"
             android:text="@string/start_delivery"
             android:visibility="visible"

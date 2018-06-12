@@ -6,10 +6,10 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -20,19 +20,19 @@ import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
 import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 
 /**
  * Created by aneeshbansal on 09/05/16.
  */
-public class BaseFragmentActivity extends FragmentActivity {
+public class BaseFragmentActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		updateLanguage();
+		updateLanguage(null);
 		updateStatusBar();
 	}
 
@@ -60,48 +60,59 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
-				&& !(this instanceof SplashNewActivity
+				&& !(this instanceof DriverSplashActivity
 					|| this instanceof RegisterScreen
 					|| this instanceof DriverDocumentActivity
 					|| this instanceof HelpActivity)) {
-			startActivity(new Intent(this, SplashNewActivity.class));
+			// TODO: 25/04/18 IMP
+			startActivity(new Intent(this, DriverSplashActivity.class));
 			finish();
 			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			return true;
 		} else {
 			return false;
 		}
+
 	}
 
 	public void sendToSplash(){
-		startActivity(new Intent(this, SplashNewActivity.class));
+		startActivity(new Intent(this, DriverSplashActivity.class));
 		finish();
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
-
-	public void updateLanguage(){
-		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
+	public String selectedLanguage="English";
+	public void updateLanguage(String language){
+		if(language == null) {
+			selectedLanguage = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"English");
+		} else {
+			Prefs.with(this).save(SPLabels.SELECTED_LANGUAGE, language);
+			selectedLanguage = language;
+		}
 		String languageToLoad;
 
-		if (item.equalsIgnoreCase("English")) {
+		if (selectedLanguage.equalsIgnoreCase("English")) {
 			languageToLoad = "en";
-		} else if (item.equalsIgnoreCase("हिन्दी")) {
+		} else if (selectedLanguage.equalsIgnoreCase("हिन्दी")) {
 			languageToLoad = "hi";
-		} else if (item.equalsIgnoreCase("ગુજરાતી")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ગુજરાતી")) {
 			languageToLoad = "gu";
-		} else if (item.equalsIgnoreCase("ଓଡ଼ିଆ")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ଓଡ଼ିଆ")) {
 			languageToLoad = "or";
-		} else if (item.equalsIgnoreCase("മലയാളം")) {
+		} else if (selectedLanguage.equalsIgnoreCase("മലയാളം")) {
 			languageToLoad = "ml";
-		} else if (item.equalsIgnoreCase("தமிழ்")) {
+		} else if (selectedLanguage.equalsIgnoreCase("தமிழ்")) {
 			languageToLoad = "ta";
-		} else if (item.equalsIgnoreCase("తెలుగు")) {
+		} else if (selectedLanguage.equalsIgnoreCase("తెలుగు")) {
 			languageToLoad = "te";
-		} else if (item.equalsIgnoreCase("ಕನ್ನಡ")) {
+		} else if (selectedLanguage.equalsIgnoreCase("ಕನ್ನಡ")) {
 			languageToLoad = "kn";
-		} else if (item.equalsIgnoreCase("অসমীয়া")) {
+		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
+		} else if (selectedLanguage.equalsIgnoreCase("french")) {
+			languageToLoad = "fr";
+		} else if (selectedLanguage.equalsIgnoreCase("arabic")) {
+			languageToLoad = "ar";
 		} else {
 			languageToLoad = "en";
 //			return;
@@ -114,6 +125,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 		config.locale = locale;
 		getBaseContext().getResources().updateConfiguration(config,
 				getBaseContext().getResources().getDisplayMetrics());
+		onConfigurationChanged(config);
 	}
 
 

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.DEFAULT_SUPPORT;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_CATEGORY_DATA;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_PATH;
+import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TAGS;
 import static com.fugu.support.Utils.SupportKeys.SupportKey.SUPPORT_TRANSACTION_ID;
 
 /**
@@ -63,6 +64,7 @@ public class HippoSupportDetailFragment extends BaseFragment implements View.OnC
     private OnActionTypeCallback typeCallback;
 
     private ArrayList<String> pathList;
+    private ArrayList<String> mTags;
     private String transactionId;
     private String message = "";
 
@@ -78,6 +80,9 @@ public class HippoSupportDetailFragment extends BaseFragment implements View.OnC
         if (getArguments() != null) {
             if (getArguments().containsKey(DEFAULT_SUPPORT))
                 supportResponses = gson.fromJson(getArguments().getString(DEFAULT_SUPPORT), Item.class);
+
+            if(getArguments().containsKey(SUPPORT_TAGS))
+                mTags = gson.fromJson(getArguments().getString(SUPPORT_TAGS), ArrayList.class);
 
             if (getArguments().containsKey(SUPPORT_PATH))
                 pathList = gson.fromJson(getArguments().getString(SUPPORT_PATH), ArrayList.class);
@@ -284,17 +289,18 @@ public class HippoSupportDetailFragment extends BaseFragment implements View.OnC
 
             SendQueryChat queryChat = new SendQueryChat(SupportKeys.SupportQueryType.QUERY, category,
                     transactionId, CommonData.getUserUniqueKey(), supportResponses.getSupportId(),
-                    pathList, message, successMsg);
-            if(supportResponses.getContent().getSubHeading() != null && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText())) {
+                    pathList, message, successMsg, mTags);
+            if(supportResponses.getContent() != null && supportResponses.getContent().getSubHeading() != null
+                    && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText()))
                 queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
-            }
             supportDetailView.sendQuery(queryChat);
         } else if (id == R.id.buttonChat) {
             SendQueryChat queryChat = new SendQueryChat(SupportKeys.SupportQueryType.CHAT, category,
-                    transactionId, CommonData.getUserUniqueKey(), supportResponses.getSupportId(), pathList);
-            if(supportResponses.getContent().getSubHeading() != null && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText())) {
+                    transactionId, CommonData.getUserUniqueKey(), supportResponses.getSupportId(), pathList, mTags);
+
+            if(supportResponses.getContent() != null && supportResponses.getContent().getSubHeading() != null
+                    && !TextUtils.isEmpty(supportResponses.getContent().getSubHeading().getText()))
                 queryChat.setSubHeader(supportResponses.getContent().getSubHeading().getText());
-            }
 
             supportDetailView.sendQuery(queryChat);
         } else if (id == R.id.buttonCall) {

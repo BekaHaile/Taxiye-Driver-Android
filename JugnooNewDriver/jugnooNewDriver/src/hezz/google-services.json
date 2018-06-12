@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "715827262249",
+    "firebase_url": "https://hezz-taxi.firebaseio.com",
+    "project_id": "hezz-taxi",
+    "storage_bucket": "hezz-taxi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715827262249:android:b4e813839785e6b0",
+        "android_client_info": {
+          "package_name": "production.hezz.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715827262249-gaad7acs49k1l2ush83sivcqp0e6misb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALkY1H6pkL8WN2HFttCNSC7s15wOhB4d8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715827262249:android:54b7c7455dc1e500",
+        "android_client_info": {
+          "package_name": "production.hezz.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715827262249-gaad7acs49k1l2ush83sivcqp0e6misb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALkY1H6pkL8WN2HFttCNSC7s15wOhB4d8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

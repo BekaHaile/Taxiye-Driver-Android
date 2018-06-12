@@ -172,6 +172,9 @@ import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
+import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
+import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -362,7 +365,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer, relativeLayoutBatteryLow;
+			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -1003,7 +1006,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
 
-			relativeLayoutSelectCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutSelectCustomer);
 
 			btnHelp = (Button) findViewById(R.id.btnHelp);
 
@@ -1388,7 +1390,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if(Data.userData != null){
 							builder.setFaqName(Data.userData.getHippoTicketFAQ());
 						}
-						HippoConfig.getInstance().showTicketSupport(builder.build());
+
+						ArrayList<String> tags = new ArrayList<>();
+						tags.add(Constants.HIPPO_TAG_DRIVER_APP);
+						builder.setTags(tags);
+
+						HippoConfig.getInstance().showFAQSupport(builder.build());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -2148,7 +2155,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				} else {
 					finish();
-					startActivity(new Intent(this, SplashNewActivity.class));
+					startActivity(new Intent(this, DriverSplashActivity.class));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2163,8 +2170,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 
-
-			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
+            IntentFilter intentFilter = new IntentFilter();
+			intentFilter.addAction(Constants.ACTION_UPDATE_RIDE_EARNING);
+			intentFilter.addAction(Constants.UPDATE_MPESA_PRICE);
+			HomeActivity.this.registerReceiver(broadcastReceiver, intentFilter);
 			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
 			HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
 			HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
@@ -2363,6 +2372,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+		    if(intent.getAction().equalsIgnoreCase(Constants.UPDATE_MPESA_PRICE)){
+		        endRideData.toPay=Double.parseDouble(intent.getStringExtra("to_pay"));
+                takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay)); ;
+            }
 			HomeActivity.this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -2953,7 +2966,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						JSONObject jObj = new JSONObject(jsonString);
 						int flag = jObj.getInt("flag");
 						if (flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()) {
-							HomeActivity.logoutUser(activity);
+							HomeActivity.logoutUser(activity, null);
 						} else if(flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()){
 //							DialogPopup.alertPopup(activity, "", jObj.getString(Constants.KEY_MESSAGE));
 							customerInfo.setBidPlaced(1);
@@ -3837,6 +3850,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
 				layoutParams.setMargins(0, 0, 0, (int) (270 * ASSL.Yscale()));
+				layoutParams.setMarginStart(0);
+				layoutParams.setMarginEnd(0);
 				reviewSubmitBtn.setLayoutParams(layoutParams);
 				reviewSubmitBtn.setText(getResources().getString(R.string.ok));
 
@@ -4759,6 +4774,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(Utils.isBatteryChargingNew(this) == 1 || Utils.getBatteryPercentage(this) > 20){
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 
 
 		if (!checkIfUserDataNull()) {
@@ -4842,6 +4860,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		super.onPause();
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 
@@ -5732,7 +5751,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
-			if(!SplashNewActivity.checkIfTrivialAPIErrors(this, jObj, flag)){
+			if(!SplashNewActivity.checkIfTrivialAPIErrors(this, jObj, flag, null)){
 				if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
 					Data.fareStructure = JSONParser.parseFareObject(jObj);
 					Data.fareStructure.fareFactor = jObj.optDouble(KEY_FARE_FACTOR, 1);
@@ -5909,7 +5928,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						JSONObject jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 								String log = jObj.getString("log");
 								DialogPopup.alertPopup(activity, "", "" + log);
@@ -5984,7 +6003,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
@@ -6097,7 +6116,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_STARTED.getOrdinal());
 						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
 
 								Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
@@ -6495,7 +6514,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					String errorMessage = jObj.getString("error");
 
 					if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-						HomeActivity.logoutUser(activity);
+						HomeActivity.logoutUser(activity, null);
 					} else {
 						DialogPopup.alertPopup(activity, "", errorMessage);
 					}
@@ -7056,7 +7075,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.getInt("flag");
 						if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
-							HomeActivity.logoutUser(activity);
+							HomeActivity.logoutUser(activity, null);
 						} else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
 							String errorMessage = jObj.getString("error");
 							DialogPopup.alertPopup(activity, "", errorMessage);
@@ -7124,7 +7143,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
 							Log.i("fetchHeatmapData", ">message=" + message);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
 									heatMapResponseGlobal = heatMapResponse;
 									drawHeatMapData(heatMapResponseGlobal);
@@ -7224,7 +7243,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -7379,7 +7398,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -7497,7 +7516,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons_tour);
 
-				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
+				RelativeLayout frameLayout = (RelativeLayout) dialogEndRidePopup.findViewById(R.id.rv);
 				new ASSL(activity, frameLayout, 1134, 720, true);
 
 				WindowManager.LayoutParams layoutParams = dialogEndRidePopup.getWindow().getAttributes();
@@ -7786,7 +7805,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
-				Intent intent = new Intent(HomeActivity.this, SplashNewActivity.class);
+				Intent intent = new Intent(HomeActivity.this, DriverSplashActivity.class);
 				intent.putExtra("no_anim", "yes");
 				startActivity(intent);
 				finish();
@@ -8176,7 +8195,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	public static void logoutUser(final Activity cont) {
+	public static void logoutUser(final Activity cont, final LogoutCallback callback) {
 		try {
 
 			try {
@@ -8208,13 +8227,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						public void onClick(DialogInterface dialog, int which) {
 							try {
 								dialog.dismiss();
-								Intent intent = new Intent(cont, SplashNewActivity.class);
-								intent.putExtra("no_anim", "yes");
-								cont.startActivity(intent);
-								cont.finish();
-								cont.overridePendingTransition(
-										R.anim.left_in,
-										R.anim.left_out);
+								if(callback == null || callback.redirectToSplash()){
+									// TODO: 07/05/18 Handle Driver Splash check
+									Intent intent = new Intent(cont, DriverSplashActivity.class);
+									intent.putExtra("no_anim", "yes");
+									cont.startActivity(intent);
+									cont.finish();
+									cont.overridePendingTransition(
+											R.anim.left_in,
+											R.anim.left_out);
+								}
 							} catch (Exception e) {
 								Log.i("excption logout",
 										e.toString());
@@ -8510,7 +8532,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.getInt("flag");
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", errorMessage);
 							} else {
@@ -9246,6 +9268,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //				textViewRideInstructionsInRide.setVisibility(View.GONE);
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, 0);
+					layoutParams.setMarginStart((int)(18f*ASSL.Xscale()));
+					layoutParams.setMarginEnd(0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
 				}
@@ -9256,6 +9280,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
+					layoutParams.setMarginStart((int)(18f*ASSL.Xscale()));
+					layoutParams.setMarginEnd(0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
@@ -9315,13 +9341,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverEndRideBtn.getLayoutParams();
 			if(isDefault) {
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_new) * ASSL.Xscale());
-				params.leftMargin = 0;
+				params.setMarginStart(0);
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				driverEndRideBtn.setLayoutParams(params);
 				driverEndRideBtn.setBackgroundResource(R.drawable.menu_black_btn_selector);
 			} else{
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_extra_new) * ASSL.Xscale());
-				params.leftMargin = (int) (30f * ASSL.Xscale());
+				params.setMarginStart((int) (30f * ASSL.Xscale()));
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 				driverEndRideBtn.setLayoutParams(params);
 				driverEndRideBtn.setBackgroundResource(R.drawable.orange_btn_selector);
@@ -9336,25 +9362,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonMakeDelivery.getLayoutParams();
 			if(isDefault) {
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_new) * ASSL.Xscale());
-				params.rightMargin = 0;
+				params.setMarginEnd(0);
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-					params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+					params.removeRule(RelativeLayout.ALIGN_PARENT_END);
 				} else{
-					params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+					params.addRule(RelativeLayout.ALIGN_PARENT_END, 0);
 				}
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
 				buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
 			} else{
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
-				params.rightMargin = (int) (30f * ASSL.Xscale());
+				params.setMarginEnd((int) (30f * ASSL.Xscale()));
 				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
 					params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
 				} else{
 					params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 				}
-				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				params.addRule(RelativeLayout.ALIGN_PARENT_END);
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
 			}
@@ -10021,7 +10047,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else {
 								updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
@@ -10077,7 +10103,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
@@ -10490,7 +10516,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								handleTourView(false, "");
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								if(isTourFlag) {
@@ -10590,7 +10616,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								}
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
 								Log.e("isTourFlag1", String.valueOf(isTourFlag));
@@ -10682,7 +10708,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(HomeActivity.this);
+									HomeActivity.logoutUser(HomeActivity.this, null);
 								} else {
 									Toast.makeText(HomeActivity.this, getString(R.string.error_occured_tap_to_retry), Toast.LENGTH_SHORT).show();
 									//updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);

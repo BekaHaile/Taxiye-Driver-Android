@@ -276,15 +276,15 @@
                 android:layout_height="81px"
                 android:layout_marginTop="12px"
                 android:background="@drawable/dropoff_1"
-                android:layout_marginLeft="70px"/>
+                android:layout_marginStart="70px"/>
 
             <LinearLayout
                 android:id="@+id/imageViewDeliveryAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
+                android:layout_marginStart="40px"
                 android:layout_marginTop="9px"
-                android:layout_toRightOf="@+id/imageViewDeliveryList"
+                android:layout_toEndOf="@+id/imageViewDeliveryList"
                 android:orientation="vertical">
 
                 <TextView
@@ -332,7 +332,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px"
-            android:layout_marginLeft="360px"
+            android:layout_marginStart="360px"
             android:visibility="gone"
             android:text="@string/drop_points"
             android:textSize="26px"/>
@@ -461,9 +461,9 @@
                 android:layout_width="290px"
                 android:layout_height="69px"
                 android:text="@string/cancel"
-                android:layout_marginLeft="30px"
+                android:layout_marginStart="30px"
                 android:background="@drawable/menu_black_btn_selector"
-                android:layout_toRightOf="@+id/buttonAcceptRide"
+                android:layout_toEndOf="@+id/buttonAcceptRide"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 

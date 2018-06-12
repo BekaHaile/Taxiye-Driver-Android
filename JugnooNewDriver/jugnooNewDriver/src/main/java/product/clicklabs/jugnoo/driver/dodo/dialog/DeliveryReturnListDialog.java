@@ -8,8 +8,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -66,7 +66,7 @@ public class DeliveryReturnListDialog {
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_delivery_return_reason);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -235,7 +235,7 @@ public class DeliveryReturnListDialog {
 							JSONObject jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									deliveryInfo.setStatus(DeliveryStatus.CANCELLED.getOrdinal());
 									deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);

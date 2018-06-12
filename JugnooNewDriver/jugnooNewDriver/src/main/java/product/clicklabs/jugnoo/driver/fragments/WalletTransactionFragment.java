@@ -15,17 +15,14 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.DriverEarningsNew;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.WalletActivity;
 import product.clicklabs.jugnoo.driver.adapters.WalletTransAadapter;
-import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletTransactionBinding;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -126,7 +123,7 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
                             if (!jObj.isNull("error")) {
                                 String errorMessage = jObj.getString("error");
                                 if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                    HomeActivity.logoutUser(walletActivity);
+                                    HomeActivity.logoutUser(walletActivity, null);
                                 }
                             } else {
                                 arrayList.addAll(transactionResponse.getTransactions());

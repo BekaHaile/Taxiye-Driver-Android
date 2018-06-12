@@ -349,10 +349,13 @@ public class JSONParser implements Constants {
 
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
+        int stripeAccountStatus = userData.optInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
+        Prefs.with(context).save(Constants.STRIPE_ACCOUNT_STATUS, stripeAccountStatus);
+		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
 		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
 		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
 		Prefs.with(context).save(Constants.BID_INCREMENT_PERCENT, (float)userData.optDouble(Constants.BID_INCREMENT_PERCENT, 10d));
-
+		Prefs.with(context).save(Constants.STRIPE_REDIRECT_URI, userData.optString("stripe_redirect_uri", ""));
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
 				|| fatafatAvailable == 1
@@ -375,6 +378,7 @@ public class JSONParser implements Constants {
 		Double creditsEarned = userData.has(Constants.KEY_CREDIT_BALANCE)?userData.optDouble(Constants.KEY_CREDIT_BALANCE):null;
 		Double commissionSaved = userData.has(Constants.KEY_COMMISSION_SAVED)?userData.optDouble(Constants.KEY_COMMISSION_SAVED):null;
 		parseSideMenu(context, userData);
+		Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,

@@ -145,7 +145,7 @@ public class ShareActivityFragment extends Fragment {
 								jObj = new JSONObject(jsonString);
 								int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										ShareActivityFragment.this.leaderboardActivityResponse = leaderboardActivityResponse;
 										update();

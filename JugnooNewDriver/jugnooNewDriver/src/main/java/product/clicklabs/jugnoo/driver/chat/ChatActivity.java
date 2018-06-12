@@ -35,6 +35,8 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
@@ -149,7 +151,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
 		if(Data.getCurrentCustomerInfo() == null){
 			if(HomeActivity.activity == null){
-				Intent homeScreen = new Intent(this, SplashNewActivity.class);
+				Intent homeScreen = new Intent(this, DriverSplashActivity.class);
 				homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(homeScreen);
 			}

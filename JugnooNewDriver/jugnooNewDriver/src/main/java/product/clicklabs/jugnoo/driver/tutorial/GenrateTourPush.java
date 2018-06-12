@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -161,7 +162,7 @@ public class GenrateTourPush {
                                         context.startActivity(newIntent);
                                     }
                                 } else {
-                                    Intent homeScreen = new Intent(context, SplashNewActivity.class);
+                                    Intent homeScreen = new Intent(context, DriverSplashActivity.class);
                                     homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(homeScreen);
                                 }

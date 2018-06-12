@@ -15,6 +15,8 @@ public interface SupportKeys {
         String SUPPORT_TRANSACTION_ID = "support_transaction_id";
         String SUPPORT_CATEGORY_ID = "support_category_id";
         String SUPPORT_CATEGORY_DATA = "support_category_data";
+        String SUPPORT_POWERED_VIA = "powered_via";
+        String SUPPORT_TAGS = "support_tags";
     }
 
     enum SupportQueryType {

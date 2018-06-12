@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.ActivityCompat;
 
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 
@@ -52,7 +53,7 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 							== GpsState.TWO_LESS_FOUR.getOrdinal()) {
 						if(HomeActivity.activity != null) {
 							ActivityCompat.finishAffinity(HomeActivity.activity);
-							Intent i = new Intent(context, SplashNewActivity.class);
+							Intent i = new Intent(context, DriverSplashActivity.class);
 							i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

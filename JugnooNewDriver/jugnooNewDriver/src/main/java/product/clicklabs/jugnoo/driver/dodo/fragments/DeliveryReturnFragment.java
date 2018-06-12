@@ -202,7 +202,7 @@ public class DeliveryReturnFragment extends Fragment {
 							JSONObject jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									deliveryInfo.setStatus(DeliveryStatus.CANCELLED.getOrdinal());
 									deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);

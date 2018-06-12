@@ -12,8 +12,8 @@
         />
     
     <stroke 
-        android:width="1px" 
-        android:color="#999999"
+        android:width="0.5dp"
+        android:color="#bcbcbc"
         />
     
     

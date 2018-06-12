@@ -315,7 +315,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 									jObj = new JSONObject(jsonString);
 									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 									String message = JSONParser.getServerMessage(jObj);
-									if (!SplashNewActivity.checkIfTrivialAPIErrors(DeliveryDetailsActivity.this, jObj, flag)) {
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(DeliveryDetailsActivity.this, jObj, flag, null)) {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 											DeliveryDetailsActivity.this.deliveryDetailResponse = deliveryDetailResponse;
 											update();

@@ -48,7 +48,7 @@ public class DriverLocationUpdateService extends Service {
     	
     	//TODO Toggle live to trial
 		String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-		String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
+		String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
 		String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
         String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";

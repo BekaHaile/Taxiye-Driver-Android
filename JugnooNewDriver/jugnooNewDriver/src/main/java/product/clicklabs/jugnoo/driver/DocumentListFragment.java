@@ -20,7 +20,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -582,11 +581,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			});
 
-			if(holder.deleteImage2.getVisibility() == View.VISIBLE){
-				holder.imageViewAddImageDisabled.setVisibility(View.VISIBLE);
-			} else {
-				holder.imageViewAddImageDisabled.setVisibility(View.GONE);
-			}
+//			if(holder.deleteImage2.getVisibility() == View.VISIBLE){
+//				holder.imageViewAddImageDisabled.setVisibility(View.INVISIBLE);
+//			} else {
+//				holder.imageViewAddImageDisabled.setVisibility(View.GONE);
+//			}
 
 			return convertView;
 		}
@@ -623,7 +622,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							}
 						} else {
 							imgPixel = docRequirementResponse.getImgPixel();
@@ -695,7 +694,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_upload_document);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.addImage);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.addImage);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -944,7 +943,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
 
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
@@ -1020,7 +1019,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
 
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);

@@ -1,10 +1,10 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -17,12 +17,6 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-
-    <style name="CustomRatingBar" parent="android:style/Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/star_rating_bar_full</item>
-        <item name="android:minHeight">56dip</item>
-        <item name="android:maxHeight">56dip</item>
-    </style>
 
     <style name="RatingBarBlue" parent="android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/driver_ratting_star_orange_selector</item>
@@ -45,41 +39,18 @@
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
-    <style name="AudioFileInfoOverlayText">
-        <item name="android:paddingLeft">4px</item>
-        <item name="android:paddingBottom">4px</item>
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:shadowColor">#000000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
+    <style name="SplashTheme" parent="AppBaseTheme">
+        <item name="android:windowBackground">@drawable/app_startup_bg</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
     </style>
 
-    <style name="title">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:textSize">40px</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="back_image">
-        <item name="android:layout_width">60.7px</item>
-        <item name="android:layout_height">76.9px</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:padding">20px</item>
-        <item name="android:src">@drawable/ic_back_selector</item>
-        <item name="android:layout_marginLeft">10px</item>
-        <item name="android:tag">mwar</item>
-    </style>
 
     <style name="DialogButtonOrange" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">116dp</item>
-        <item name="android:minHeight">46dp</item>
+        <item name="android:minHeight">42dp</item>
         <item name="android:background">@drawable/button_white_theme_border</item>
         <item name="android:textColor">@color/theme_color</item>
         <item name="android:textSize">17sp</item>
@@ -92,7 +63,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">116dp</item>
-        <item name="android:minHeight">46dp</item>
+        <item name="android:minHeight">42dp</item>
         <item name="android:background">@drawable/button_white_grey_border</item>
         <item name="android:textColor">@color/grey_dark_button</item>
         <item name="android:textSize">17sp</item>

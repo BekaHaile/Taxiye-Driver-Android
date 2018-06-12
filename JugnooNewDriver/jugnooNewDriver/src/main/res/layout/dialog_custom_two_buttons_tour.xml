@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/rv"
+<RelativeLayout android:id="@+id/rv"
              xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="720px"
-             android:layout_height="1134px"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
              android:orientation="vertical"
              android:splitMotionEvents="false">
 
@@ -24,16 +24,16 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:padding="26px"
-            android:layout_toLeftOf="@+id/cross_tour"
-            android:layout_alignParentLeft="true"
+            android:layout_toStartOf="@+id/cross_tour"
+            android:layout_alignParentStart="true"
         />
 
         <ImageView
             android:id="@+id/cross_tour"
             android:layout_width="50px"
             android:layout_height="50px"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="18px"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="18px"
             android:layout_centerVertical="true"
             android:padding="8px"
             android:src="@drawable/ic_tutorial_cross"
@@ -49,6 +49,7 @@
         android:layout_margin="80px"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
         >
 
 
@@ -69,8 +70,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:text="@string/alert"
                 android:textColor="@color/text_color"
                 android:textSize="50px"
@@ -90,8 +91,8 @@
                 android:text="@string/message"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:textColor="@color/black"
                 android:textSize="34px"
 
@@ -101,26 +102,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="center"
-                android:splitMotionEvents="false"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
                 android:tag="@string/dont_touch_me"
+                android:splitMotionEvents="false"
                 >
+
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
                     style="@style/DialogButtonGrey"
                     android:text="@string/cancel"
                     />
+
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"
                     style="@style/DialogButtonOrange"
                     android:text="@string/ok"
                     android:layout_marginStart="20dp"
                     />
-
-
             </LinearLayout>
 
 
@@ -128,4 +129,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

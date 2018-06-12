@@ -13,8 +13,8 @@
         android:layout_height="8px"
         android:id="@+id/topRlOuterSlide"
         android:background="@drawable/transparent"
-        android:layout_marginLeft="11px"
-        android:layout_marginRight="11px"
+        android:layout_marginStart="11px"
+        android:layout_marginEnd="11px"
         android:layout_marginTop="8px"
         />
 
@@ -46,7 +46,7 @@
                 android:id="@+id/textViewHeadText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24px"
+                android:layout_marginStart="24px"
                 android:text="llllllllllllll"
                 android:textColor="@color/grey_light_v2"
                 android:textSize="30px"/>
@@ -56,10 +56,11 @@
                 android:layout_width="23px"
                 android:layout_height="22px"
                 android:layout_marginTop="7px"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="36px"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="36px"
                 android:visibility="gone"
-                android:src="@drawable/arrow_thick_new"/>
+                android:src="@drawable/arrow_thick_new"
+                android:rotationY="@integer/locale_mirror_flip"/>
 
         </RelativeLayout>
 
@@ -79,23 +80,24 @@
                 android:id="@+id/relativeLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textViewEmpty">
+                android:layout_toEndOf="@+id/textViewEmpty"
+                android:layout_toStartOf="@+id/rlValue">
 
                 <TextView
                     android:id="@+id/textView1Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24px"
+                    android:layout_marginStart="24px"
                     android:text="lll"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
 
                 <TextView
                     android:id="@+id/textView1"
-                    android:layout_width="450px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10px"
-                    android:layout_toRightOf="@+id/textView1Value"
+                    android:layout_marginStart="10px"
+                    android:layout_toEndOf="@+id/textView1Value"
                     android:text="llllllllllllll"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
@@ -108,23 +110,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativeLayout1"
                 android:layout_marginTop="4px"
-                android:layout_toRightOf="@+id/textViewEmpty">
+                android:layout_toEndOf="@+id/textViewEmpty"
+                android:layout_toStartOf="@+id/rlValue">
 
                 <TextView
                     android:id="@+id/textView2Value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24px"
+                    android:layout_marginStart="24px"
                     android:text="lll"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="450px"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10px"
-                    android:layout_toRightOf="@+id/textView2Value"
+                    android:layout_marginStart="10px"
+                    android:layout_toEndOf="@+id/textView2Value"
                     android:text="llllllllllllll"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
@@ -134,10 +137,11 @@
 
 
             <RelativeLayout
+                android:id="@+id/rlValue"
                 android:layout_width="180px"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15px"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="15px"
                 android:gravity="center">
 
                 <TextView

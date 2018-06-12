@@ -34,7 +34,7 @@ public class Style {
   public static final Style ALERT;
   /** Default style for confirming an action. */
   public static final Style CONFIRM;
-  /** Default style for general information. */
+  /** Default style for general ic_doc_info. */
   public static final Style INFO;
 
   static {

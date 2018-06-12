@@ -142,11 +142,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
-		if(!inSideApp) {
+		/*if(!inSideApp) {
 			JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-			Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
+			Intent intent = new Intent(DriverDocumentActivity.this, DriverSplashActivity.class);
 			startActivity(intent);
-		}
+		}*/
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
@@ -216,8 +216,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
-								DialogPopup.dismissLoadingDialog();
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag, null)) {
+                                DialogPopup.dismissLoadingDialog();
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
@@ -369,7 +369,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
-							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
 									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
@@ -20,6 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 import java.util.Map;
 
+import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
@@ -47,6 +49,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
         Paper.init(this);
 

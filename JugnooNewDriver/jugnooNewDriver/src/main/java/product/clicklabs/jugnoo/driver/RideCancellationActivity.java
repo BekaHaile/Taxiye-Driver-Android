@@ -210,7 +210,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
 									performBackPressed(true);
 									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);

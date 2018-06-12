@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -95,7 +96,7 @@ public class SharingRidesActivity extends BaseActivity {
 		setContentView(R.layout.activity_jugnoo_share_payments);
 
 		if(getIntent().hasExtra("wakeUp")){
-			Intent homeScreen = new Intent(this, SplashNewActivity.class);
+			Intent homeScreen = new Intent(this, DriverSplashActivity.class);
 			startActivity(homeScreen);
 			finish();
 		}
@@ -183,7 +184,7 @@ public class SharingRidesActivity extends BaseActivity {
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+								HomeActivity.logoutUser(activity, null);
 							} else {
 								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}

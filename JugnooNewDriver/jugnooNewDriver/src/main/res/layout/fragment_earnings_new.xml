@@ -9,7 +9,7 @@
         android:layout_width="252px"
         android:layout_height="match_parent"
         android:background="@color/new_orange_op_30"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentEnd="true">
 
     </RelativeLayout>
 
@@ -17,9 +17,9 @@
         android:id="@+id/relativeLayoutgrey"
         android:layout_width="252px"
         android:layout_height="match_parent"
-        android:layout_marginRight="4px"
+        android:layout_marginEnd="4px"
         android:background="@color/light_grey_op_77"
-        android:layout_toLeftOf="@+id/relativeLayoutOrange">
+        android:layout_toStartOf="@+id/relativeLayoutOrange">
     </RelativeLayout>
 
     <ScrollView
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/NA"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:textColor="@color/new_orange"
                 android:textSize="28px" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewYesterday"
@@ -92,7 +92,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/relativeLayoutYesterday">
+                android:layout_toStartOf="@+id/relativeLayoutYesterday">
 
                 <TextView
                     android:id="@+id/textViewToday"
@@ -126,7 +126,7 @@
                 android:id="@+id/textViewYesterdayValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -136,7 +136,7 @@
                 android:id="@+id/textViewTodayValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/textViewYesterdayValue"
+                android:layout_toStartOf="@+id/textViewYesterdayValue"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -154,25 +154,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewYesterdayRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewYesterdayRidesValue"
-                    android:layout_toRightOf="@+id/textViewYesterdayRidesNumber"
+                    android:layout_toEndOf="@+id/textViewYesterdayRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -184,26 +184,26 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlYesterdayEarningsRides">
+                android:layout_toStartOf="@+id/rlYesterdayEarningsRides">
 
                 <TextView
                     android:id="@+id/textViewTodayRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="10px"
+                    android:layout_marginEnd="10px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewTodayRidesValue"
-                    android:layout_toRightOf="@+id/textViewTodayRidesNumber"
+                    android:layout_toEndOf="@+id/textViewTodayRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:text="00"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
@@ -214,7 +214,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/rides"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -231,25 +231,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewYesterdayReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewYesterdayReferralValue"
-                    android:layout_toRightOf="@+id/textViewYesterdayReferralNumber"
+                    android:layout_toEndOf="@+id/textViewYesterdayReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -261,25 +261,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlYesterdayEarningsReferral">
+                android:layout_toStartOf="@+id/rlYesterdayEarningsReferral">
 
                 <TextView
                     android:id="@+id/textViewTodayReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewTodayReferralValue"
-                    android:layout_toRightOf="@+id/textViewTodayReferralNumber"
+                    android:layout_toEndOf="@+id/textViewTodayReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -291,7 +291,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/referral"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -309,25 +309,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewYesterdayDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewYesterdayDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewYesterdayDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewYesterdayDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -339,25 +339,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlYesterdayEarningsDeliveries">
+                android:layout_toStartOf="@+id/rlYesterdayEarningsDeliveries">
 
                 <TextView
                     android:id="@+id/textViewTodayDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewTodayDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewTodayDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewTodayDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -369,7 +369,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/deliveries"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -393,7 +393,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewWeek"
@@ -421,7 +421,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/relativeLayoutWeek">
+                android:layout_toStartOf="@+id/relativeLayoutWeek">
 
                 <TextView
                     android:id="@+id/textViewCurrentWeek"
@@ -455,7 +455,7 @@
                 android:id="@+id/textViewWeekValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -465,7 +465,7 @@
                 android:id="@+id/textViewCurrentWeekValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/textViewWeekValue"
+                android:layout_toStartOf="@+id/textViewWeekValue"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -483,25 +483,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewWeekRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewWeekRidesValue"
-                    android:layout_toRightOf="@+id/textViewWeekRidesNumber"
+                    android:layout_toEndOf="@+id/textViewWeekRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -513,25 +513,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlWeekEarningsRides">
+                android:layout_toStartOf="@+id/rlWeekEarningsRides">
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekRidesValue"
-                    android:layout_toRightOf="@+id/textViewCurrentWeekRidesNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentWeekRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -543,7 +543,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/rides"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -560,25 +560,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewWeekReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewWeekReferralValue"
-                    android:layout_toRightOf="@+id/textViewWeekReferralNumber"
+                    android:layout_toEndOf="@+id/textViewWeekReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_alignParentRight="true"
+                    android:gravity="end"
+                    android:layout_alignParentEnd="true"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -590,25 +590,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlWeekEarningsReferrals">
+                android:layout_toStartOf="@+id/rlWeekEarningsReferrals">
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekReferralValue"
-                    android:layout_toRightOf="@+id/textViewCurrentWeekReferralNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentWeekReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -620,7 +620,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/referral"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -638,25 +638,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewWeekDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewWeekDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewWeekDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewWeekDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -668,25 +668,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlWeekEarningsDeliveries">
+                android:layout_toStartOf="@+id/rlWeekEarningsDeliveries">
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentWeekDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewCurrentWeekDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentWeekDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -698,7 +698,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/deliveries"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -721,7 +721,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewMonth"
@@ -749,7 +749,7 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/relativeLayoutMonth">
+                android:layout_toStartOf="@+id/relativeLayoutMonth">
 
                 <TextView
                     android:id="@+id/textViewCurrentMonth"
@@ -783,7 +783,7 @@
                 android:id="@+id/textViewMonthValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -793,7 +793,7 @@
                 android:id="@+id/textViewCurrentMonthValue"
                 android:layout_width="252px"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/textViewMonthValue"
+                android:layout_toStartOf="@+id/textViewMonthValue"
                 android:gravity="center"
                 android:text="00"
                 android:textColor="@color/new_orange"
@@ -811,25 +811,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewMonthRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewMonthRidesValue"
-                    android:layout_toRightOf="@+id/textViewMonthRidesNumber"
+                    android:layout_toEndOf="@+id/textViewMonthRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -841,25 +841,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlMonthEarningsRides">
+                android:layout_toStartOf="@+id/rlMonthEarningsRides">
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthRidesValue"
-                    android:layout_toRightOf="@+id/textViewCurrentMonthRidesNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentMonthRidesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -871,7 +871,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/rides"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -888,25 +888,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewMonthReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewMonthReferralValue"
-                    android:layout_toRightOf="@+id/textViewMonthReferralNumber"
+                    android:layout_toEndOf="@+id/textViewMonthReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:layout_alignParentRight="true"
+                    android:gravity="end"
+                    android:layout_alignParentEnd="true"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -918,25 +918,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlMonthEarningsReferrals">
+                android:layout_toStartOf="@+id/rlMonthEarningsReferrals">
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthReferralValue"
-                    android:layout_toRightOf="@+id/textViewCurrentMonthReferralNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentMonthReferralNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -948,7 +948,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/referral"
                 android:textColor="@color/black"
                 android:textSize="28px"/>
@@ -967,25 +967,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_alignParentRight="true">
+                android:layout_alignParentEnd="true">
 
                 <TextView
                     android:id="@+id/textViewMonthDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewMonthDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewMonthDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewMonthDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -997,25 +997,25 @@
                 android:layout_width="252px"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_toLeftOf="@+id/rlMonthEarningsDeliveries">
+                android:layout_toStartOf="@+id/rlMonthEarningsDeliveries">
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginRight="11px"
+                    android:layout_marginEnd="11px"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
 
                 <TextView
                     android:id="@+id/textViewCurrentMonthDeliveriesValue"
-                    android:layout_toRightOf="@+id/textViewCurrentMonthDeliveriesNumber"
+                    android:layout_toEndOf="@+id/textViewCurrentMonthDeliveriesNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="28px" />
@@ -1027,7 +1027,7 @@
                 android:layout_width="195px"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="32px"
+                android:layout_marginStart="32px"
                 android:text="@string/deliveries"
                 android:textColor="@color/black"
                 android:textSize="28px"/>

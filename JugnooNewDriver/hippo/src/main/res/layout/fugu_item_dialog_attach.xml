@@ -11,9 +11,11 @@
         android:layout_height="51dp"
         android:clickable="true"
         android:drawableLeft="@drawable/camera_icon"
+        android:drawableStart="@drawable/camera_icon"
         android:drawablePadding="@dimen/fugu_padding_10"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/fugu_padding_10"
+        android:paddingStart="@dimen/fugu_padding_10"
         android:text="@string/fugu_camera"
         android:textColor="@color/fugu_attachment_dialog_text_selector"
         android:textSize="@dimen/fugu_text_size_large" />

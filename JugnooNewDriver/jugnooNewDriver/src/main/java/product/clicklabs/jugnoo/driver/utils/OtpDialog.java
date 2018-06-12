@@ -152,6 +152,7 @@ public class OtpDialog {
 
                 @Override
                 public void onClick(View v) {
+
                     alertDialog.dismiss();
                     if (listener != null)
                         listener.performPostAlertAction(AppConstants.OperationType.ENTER_OTP, backpack);

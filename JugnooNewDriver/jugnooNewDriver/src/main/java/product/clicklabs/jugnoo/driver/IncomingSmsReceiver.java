@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.SmsMessage;
 import product.clicklabs.jugnoo.driver.utils.Log;
 
@@ -32,6 +33,7 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
 					String message = currentMessage.getDisplayMessageBody();
 
 					Log.i("SmsReceiver", "senderNum: " + senderNum + "; message: " + message);
+		/*
 
 					if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
 						Intent otpConfirmScreen = new Intent(context, LoginViaOTP.class);
@@ -39,7 +41,13 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
 						otpConfirmScreen.putExtra("sender_num", senderNum);
 						otpConfirmScreen.putExtra("message", message);
 						context.startActivity(otpConfirmScreen);
-					}
+					}*/
+
+					// broadcast of new message received
+					Intent broadcastIntent = new Intent(Constants.INTENT_ACTION_NEW_MESSAGE);
+					broadcastIntent.putExtra("sender_num", senderNum);
+					broadcastIntent.putExtra("message", message);
+					LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent);
 				} // end for loop
 			} // bundle is null
 

@@ -87,7 +87,7 @@ public class Data {
 
 	//TODO
 	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-	public static final String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
+	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
 	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
@@ -185,7 +185,7 @@ public class Data {
 			editor.clear();
 			editor.apply();
 			Prefs.with(context).save(Constants.IS_OFFLINE, 1);
-			HippoConfig.clearHippoData((Activity) context);
+			HippoConfig.clearFuguData((Activity) context);
 		} catch(Exception e){
 			e.printStackTrace();
 		}

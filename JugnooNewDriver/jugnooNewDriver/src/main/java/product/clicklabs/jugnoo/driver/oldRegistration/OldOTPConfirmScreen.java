@@ -38,6 +38,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
@@ -233,7 +234,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 	public static void checkIfRegisterDataNull(Activity activity) {
 		try {
 			if (emailRegisterData == null) {
-				activity.startActivity(new Intent(activity, SplashNewActivity.class));
+				activity.startActivity(new Intent(activity, DriverSplashActivity.class));
 				activity.finish();
 				activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			}
@@ -284,7 +285,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 								jObj = new JSONObject(jsonString);
 								int flag = jObj.getInt("flag");
 								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 									if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if (ApiResponseFlags.AUTH_VERIFICATION_FAILURE.getOrdinal() == flag) {

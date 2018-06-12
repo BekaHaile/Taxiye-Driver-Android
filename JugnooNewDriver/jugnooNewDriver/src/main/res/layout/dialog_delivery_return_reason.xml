@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/rv"
+<RelativeLayout android:id="@+id/rv"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="1134px"
@@ -13,7 +13,9 @@
         android:layout_gravity="center"
         android:layout_margin="40px"
         android:background="@drawable/dialog_background_color"
-        android:splitMotionEvents="false">
+        android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
+        >
 
 
         <LinearLayout
@@ -35,8 +37,8 @@
                 android:text="@string/return_reasons_confirmation"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingStart="20px"
+                android:paddingEnd="20px"
                 android:textColor="@color/black"
                 android:textSize="36px"
 
@@ -50,13 +52,13 @@
                 android:fadeScrollbars="true"
                 android:scrollbars="vertical"/>
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="75px"
-                android:layout_marginRight="75px"
+                android:layout_marginStart="45px"
+                android:layout_marginEnd="45px"
                 android:layout_marginBottom="25px"
                 android:splitMotionEvents="false"
                 >
@@ -71,13 +73,13 @@
                     android:id="@+id/btnSubmit"
                     style="@style/DialogButtonOrange"
                     android:text="@string/submit"
-                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="20dp"
                     />
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </LinearLayout>
 
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

@@ -113,7 +113,7 @@ public class JugnooPlanPaymentFragment extends Fragment {
      * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * >Communicating with Other Fragments</a> for more ic_doc_info.
      */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(boolean isSuccess);

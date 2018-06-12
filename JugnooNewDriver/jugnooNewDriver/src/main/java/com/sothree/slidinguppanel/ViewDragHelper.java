@@ -142,14 +142,14 @@ public class ViewDragHelper {
     /**
      * A Callback is used as a communication channel with the ViewDragHelper back to the
      * parent view using it. <code>on*</code>methods are invoked on siginficant events and several
-     * accessor methods are expected to provide the ViewDragHelper with more information
+     * accessor methods are expected to provide the ViewDragHelper with more ic_doc_info
      * about the state of the parent view upon request. The callback also makes decisions
      * governing the range and draggability of child views.
      */
     public static abstract class Callback {
         /**
          * Called when the drag state changes. See the <code>STATE_*</code> constants
-         * for more information.
+         * for more ic_doc_info.
          *
          * @param state The new drag state
          *
@@ -341,7 +341,7 @@ public class ViewDragHelper {
      * Factory method to create a new ViewDragHelper.
      *
      * @param forParent Parent view to monitor
-     * @param cb Callback to provide information and receive events
+     * @param cb Callback to provide ic_doc_info and receive events
      * @return a new ViewDragHelper instance
      */
     public static ViewDragHelper create(ViewGroup forParent, Callback cb) {
@@ -354,7 +354,7 @@ public class ViewDragHelper {
      * @param forParent Parent view to monitor
      * @param sensitivity Multiplier for how sensitive the helper should be about detecting
      *                    the start of a drag. Larger values are more sensitive. 1.0f is normal.
-     * @param cb Callback to provide information and receive events
+     * @param cb Callback to provide ic_doc_info and receive events
      * @return a new ViewDragHelper instance
      */
     public static ViewDragHelper create(ViewGroup forParent, float sensitivity, Callback cb) {
@@ -856,10 +856,10 @@ public class ViewDragHelper {
      * Check if the given pointer ID represents a pointer that is currently down (to the best
      * of the ViewDragHelper's knowledge).
      *
-     * <p>The state used to report this information is populated by the methods
+     * <p>The state used to report this ic_doc_info is populated by the methods
      * {@link #shouldInterceptTouchEvent(MotionEvent)} or
      * {@link #processTouchEvent(MotionEvent)}. If one of these methods has not
-     * been called for all relevant MotionEvents to track, the information reported
+     * been called for all relevant MotionEvents to track, the ic_doc_info reported
      * by this method may be stale or incorrect.</p>
      *
      * @param pointerId pointer ID to check; corresponds to IDs provided by MotionEvent

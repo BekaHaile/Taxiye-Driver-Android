@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.EnglishNumberToWords;
@@ -111,7 +112,7 @@ public class MultipleAccountsActivity extends BaseActivity {
 	
 	
 	public void performBackPressed(){
-        Intent intent = new Intent(MultipleAccountsActivity.this, SplashNewActivity.class);
+        Intent intent = new Intent(MultipleAccountsActivity.this, DriverSplashActivity.class);
         intent.putExtra("back_from_otp", true);
         startActivity(intent);
 		finish();

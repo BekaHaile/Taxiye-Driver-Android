@@ -37,8 +37,8 @@
                         android:id="@+id/wallet_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:drawableLeft="@drawable/wallet_balance"
+                        android:layout_marginStart="12dp"
+                        android:drawableStart="@drawable/wallet_balance"
                         android:drawablePadding="12dp"
                         android:textSize="@dimen/text_size_16_sp"
                         android:gravity="center_vertical"
@@ -51,10 +51,10 @@
                         android:id="@+id/wallet_balance_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:gravity="right"
-                        android:layout_marginRight="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:layout_marginEnd="15dp"
                         android:layout_centerVertical="true"
                         android:textSize="@dimen/text_size_10_sp"
                         android:text="@string/rupee_100" />
@@ -71,7 +71,7 @@
                 android:layout_below="@+id/wallet_card_view"
                 android:layout_marginBottom="7dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:textSize="@dimen/text_size_14_sp"
                 android:text="@string/how_to_recharge" />
 
@@ -108,8 +108,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="15dp"
                 card_view:cardBackgroundColor="@color/grey_default"
                 card_view:cardCornerRadius="@dimen/button_corner_radius">
@@ -124,7 +124,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:src="@drawable/recent_transaction" />
 
                     <TextView
@@ -132,9 +132,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:textSize="@dimen/text_size_16_sp"
-                        android:layout_toRightOf="@+id/imageViewWalletTransactionsIcon"
+                        android:layout_toEndOf="@+id/imageViewWalletTransactionsIcon"
                         android:text="@string/view_wallet_transactions"
                         android:textColor="@color/text_color_light_selector"
                         />
@@ -143,10 +143,11 @@
                         android:id="@+id/imageViewWalletArrow"
                         android:layout_width="7dp"
                         android:layout_height="12dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginEnd="20dp"
                         android:src="@drawable/arrow_thick_new"
+                        android:rotationY="@integer/locale_mirror_flip"
                         android:tag="mwar" />
 
 

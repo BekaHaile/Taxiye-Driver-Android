@@ -226,7 +226,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 									JSONObject jObj = new JSONObject(jsonString);
 									int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 									String message = JSONParser.getServerMessage(jObj);
-									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
 										if(flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()){
 
 											dailyEarningItems.clear();
@@ -322,7 +322,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+									HomeActivity.logoutUser(activity, null);
 								} else {
 									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 								}

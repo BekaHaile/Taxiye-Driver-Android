@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppConstants;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -475,7 +476,7 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                         int flag = jObj.getInt("flag");
                         String message = JSONParser.getServerMessage(jObj);
 
-                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                             if (ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", message);
                             } else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {

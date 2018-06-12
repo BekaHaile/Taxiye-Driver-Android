@@ -177,7 +177,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 						jObj = new JSONObject(jsonString);
 						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 								performBackPressed();
@@ -214,7 +214,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 						jObj = new JSONObject(jsonString);
 						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								destinationDataResponseGlobal = destinationDataResponse;
 								parseDestinationData(destinationDataResponseGlobal);
