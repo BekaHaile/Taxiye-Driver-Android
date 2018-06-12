@@ -26,7 +26,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_notification_center.*
 import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
@@ -52,8 +51,9 @@ class SplashFragment : Fragment() {
     private lateinit var parentActivity : Activity
     private val behaviourSubject by lazy { executePending() }
     private val deviceTokenObservable by lazy { PublishSubject.create<Void>() }
-    private var disposable : Disposable? = null
+    private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
+    private var isPendingExecutionOngoing = false
 
     init {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
@@ -191,17 +191,19 @@ class SplashFragment : Fragment() {
     private fun pushAPIs(context: Context?){
         if(isMockLocationEnabled()) return
 
-        disposable = behaviourSubject.
+        apiDisposable = behaviourSubject.
                     retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
                   .subscribeOn(Schedulers.newThread())
                //   .delay(7000,TimeUnit.MILLISECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
+                  .doAfterTerminate { isPendingExecutionOngoing = false }
                   .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
-        compositeDisposable.add(disposable!!)
+        compositeDisposable.add(apiDisposable!!)
     }
 
 
     fun executePending(): BehaviorSubject<Boolean> {
+        isPendingExecutionOngoing = true
 
         val subject =  BehaviorSubject.create<Boolean>()
 
@@ -375,18 +377,31 @@ class SplashFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        // check if device token has been generated in paused state,
+        // complete subject if generated else register broadcast
         if (FirebaseInstanceId.getInstance().token != null) {
             deviceTokenObservable.onComplete()
         } else {
             LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter)
+        }
+
+        // if the pending api execution has already been subscribed once, resubscribe
+        if (isPendingExecutionOngoing) {
+            pushAPIs(parentActivity)
         }
     }
 
     override fun onPause() {
         super.onPause()
 
+        // unregister the device token broadcast in paused state
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
 
+        // if pending api execution has been started dispose the api disposable
+        // which will be resubscribed in onResume
+        if (isPendingExecutionOngoing && apiDisposable?.isDisposed == false) {
+            apiDisposable?.dispose()
+        }
     }
 
     interface InteractionListener{
