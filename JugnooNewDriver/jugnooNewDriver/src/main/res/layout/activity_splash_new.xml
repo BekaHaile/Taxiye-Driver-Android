@@ -129,6 +129,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="20px"
                 android:text="@string/driver_app"
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="32px"/>
         </RelativeLayout>
