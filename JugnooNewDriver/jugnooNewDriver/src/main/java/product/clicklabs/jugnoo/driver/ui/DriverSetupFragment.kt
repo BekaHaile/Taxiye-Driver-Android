@@ -35,7 +35,7 @@ class DriverSetupFragment : Fragment() {
     private lateinit var parentActivity: DriverSplashActivity
 
     private lateinit var accessToken: String
-    private lateinit var cityId: String
+    private var cityId: String? = null
     private lateinit var toolbarChangeListener: ToolbarChangeListener
 
     private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
@@ -134,6 +134,13 @@ class DriverSetupFragment : Fragment() {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
             return false
         }
+
+
+        if (cityId == null || cityId == "0") {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.city_unavailable))
+            return false
+        }
+
         return true
     }
 
@@ -143,7 +150,7 @@ class DriverSetupFragment : Fragment() {
                 KEY_ACCESS_TOKEN to accessToken,
                 "user_name" to editTextName.text.trim().toString(),
                 "alt_phone_no" to "",
-                "city" to cityId,
+                "city" to cityId!!,
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
                 "vehicle_type" to "" + adapter.getCurrentSelectedVehicle()!!.vehicleType,
