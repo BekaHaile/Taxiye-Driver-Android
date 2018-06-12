@@ -550,7 +550,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
                             scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                         }
                     };
-					handler.postDelayed(scrollBottomRunnable,150);
+					handler.postDelayed(scrollBottomRunnable,175);
 				}
 
 				return false;

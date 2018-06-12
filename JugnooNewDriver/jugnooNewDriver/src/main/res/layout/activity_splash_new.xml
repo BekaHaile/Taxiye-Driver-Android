@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/driver_splash_val"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:fillViewport="true"
@@ -7,13 +11,13 @@
     android:layout_height="match_parent">
 <LinearLayout
     android:id="@+id/relative"
-    android:layout_width="720px"
-    android:layout_height="1134px"
-
-    android:background="@color/red"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:baselineAligned="false"
     android:orientation="vertical"
     android:splitMotionEvents="false">
+
+
 
 
 
@@ -54,11 +58,11 @@
             <ImageView
                 android:id="@+id/imageViewJugnooLogo"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="375dp"
                 android:scaleType="fitXY"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@+id/textViewDriver"
-                android:src="@drawable/ic_splash_logo_drawable"
+                android:src="@drawable/driver_splash_logo_val"
                 android:tag="@string/dont_touch_me"
                 android:visibility="visible" />
 
@@ -335,3 +339,4 @@
     <include layout="@layout/layout_splash_signup"/>
 </LinearLayout>
 </ScrollView>
+</LinearLayout>

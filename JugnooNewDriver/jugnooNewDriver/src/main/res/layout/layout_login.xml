@@ -17,15 +17,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="30px"
         android:layout_marginEnd="30px"
-        android:layout_marginTop="20px"
-        android:layout_marginBottom="20px"
+        android:layout_marginTop="60px"
+        android:layout_marginBottom="60px"
         android:orientation="vertical"
         android:visibility="visible">
 
         <LinearLayout
             android:layout_width="640px"
-            android:layout_height="82px"
-            android:background="@drawable/background_white_rounded_bordered"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:padding="2px">
@@ -68,13 +67,24 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="640px"
+            android:background="#979797"
+
+            android:layout_height="2px"/>
+
 
         <Button
             android:id="@+id/btnGenerateOtp"
-            android:layout_width="470px"
-            android:layout_height="94px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32px"
             android:text="@string/GENERATE_OTP"
+            android:textAllCaps="true"
+            android:paddingTop="30px"
+            android:paddingBottom="30px"
+            android:paddingStart="50px"
+            android:paddingEnd="50px"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_button_selector"
             android:textColor="@color/white"
