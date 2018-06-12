@@ -110,13 +110,19 @@ class SplashFragment : Fragment() {
                 snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
 
-                        this@SplashFragment.activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                        if(this@SplashFragment.activity!=null){
+                            this@SplashFragment.activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+                        }
 
                     }
 
 
                     override fun onViewDetachedFromWindow(p0: View?) {
-                        this@SplashFragment.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                        if(this@SplashFragment.activity!=null){
+                            this@SplashFragment.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+                        }
 
                     }
 

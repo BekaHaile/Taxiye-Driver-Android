@@ -218,19 +218,7 @@ class DriverSetupFragment : Fragment() {
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
                 vehicleTypes.removeAt(0)
                 cityId = t.currentCityId
-
-                var defaultIndex: Int = -1
-
-                for ((index, item) in vehicleTypes.withIndex()) {
-                    if (item.vehicleType == VehicleTypeValue.AUTOS.value) {
-                        item.isSelected = true
-                        defaultIndex = index
-                        break
-                    }
-                }
-
-                adapter.setList(vehicleTypes)
-                adapter.setCurrentSelectedPos(defaultIndex)
+                adapter.setList(vehicleTypes,0)
                 groupView.visible()
             }
 
