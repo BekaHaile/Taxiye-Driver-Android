@@ -404,6 +404,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun animateViews() {
+
+        if(view==null){
+            return
+        }
         getLanguageList(false)
 
         with(rootView){

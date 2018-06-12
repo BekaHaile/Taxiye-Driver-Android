@@ -112,6 +112,7 @@ public class CreditsHistoryFragment extends Fragment {
             RestClient.getApiServices().creditHistory(params, new Callback<DriverCreditResponse>() {
                 @Override
                 public void success(DriverCreditResponse rateCardResponse, Response response) {
+                    if(getActivity()==null)return;
                     try {
                         String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
                         JSONObject jObj = new JSONObject(jsonString);
@@ -134,6 +135,8 @@ public class CreditsHistoryFragment extends Fragment {
                 }
                 @Override
                 public void failure(RetrofitError error) {
+                    if(getActivity()==null)return;
+
                     Log.i("error", String.valueOf(error));
                     DialogPopup.alertPopup(getActivity(), "", getString(R.string.server_not_responding));
                     swipeRefreshLayout.setRefreshing(false);
