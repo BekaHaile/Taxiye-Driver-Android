@@ -408,7 +408,11 @@ class LoginFragment : Fragment() {
 
 
         try {
-            getLanguageList(false)
+            if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+                getLanguageList(false)
+
+
+            }
 
             with(rootView){
                 tvLabel.visible()

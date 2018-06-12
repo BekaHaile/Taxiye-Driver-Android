@@ -104,7 +104,7 @@
     <color name="orange_text">#FBBC12</color>
 
     <color name="orange_btn">#F99613</color>
-    <color name="orange_btn_pressed">#E98603</color>
+    <!--<color name="orange_btn_pressed">#E98603</color>-->
 
     <color name="orange_dark">#F96f01</color>
 

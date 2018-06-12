@@ -43,7 +43,6 @@
     <drawable name="bg_on_boarding_drawable">@drawable/splash_new_background</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <integer name="show_t_and_c">@integer/view_gone</integer>
 
 
 
@@ -56,7 +55,6 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_gone</integer>
-    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
 
 
 

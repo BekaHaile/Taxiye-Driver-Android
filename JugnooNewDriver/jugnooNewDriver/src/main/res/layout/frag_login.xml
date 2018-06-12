@@ -12,7 +12,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:animateLayoutChanges="true"
         android:id="@+id/constraint"
-        android:background="@android:color/white"
+        android:background="@color/app_background_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,7 +29,7 @@
             android:padding="4dp"
             android:popupBackground="@drawable/background_white_rounded_orange_bordered"
             android:textAlignment="center"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
