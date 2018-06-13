@@ -1549,7 +1549,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
 			if (link.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-				logoutRl.setVisibility(View.GONE);
+				logoutRl.setVisibility(View.VISIBLE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
 			}
@@ -4194,8 +4194,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
-					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
-							getResources().getColor(R.color.new_orange));
+//					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
+//							getResources().getColor(R.color.new_orange));
 
 
 					try {
@@ -8761,14 +8761,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (arrived || actualDispalcement < arrivingDistance) {
 							buttonMarkArrived.setText(getResources().getString(R.string.arrived));
 							buttonMarkArrived.setEnabled(true);
-							buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
+							buttonMarkArrived.setAlpha(1f);
 							if(isTourFlag){
 								handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
 							}
 						} else {
 							buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
 							buttonMarkArrived.setEnabled(false);
-							buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
+							buttonMarkArrived.setAlpha(0.8f);
 							if(isTourFlag){
 								handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
 							}
