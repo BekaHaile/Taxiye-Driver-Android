@@ -48,12 +48,13 @@ class SplashFragment : Fragment() {
     private val TAG = SplashFragment::class.simpleName
     private val intentFilter = IntentFilter()
     private var mListener:InteractionListener?=null
-    private lateinit var parentActivity : Activity
+    private var parentActivity : Activity? = null
     private val behaviourSubject by lazy { executePending() }
     private val deviceTokenObservable by lazy { PublishSubject.create<Void>() }
     private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
     private var isPendingExecutionOngoing = false
+    private var isFirstTime = true
 
     init {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
@@ -89,6 +90,12 @@ class SplashFragment : Fragment() {
         }
     }
 
+    override fun onDetach() {
+        parentActivity = null
+        mListener = null
+        super.onDetach()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.frag_splash)
     }
@@ -101,7 +108,7 @@ class SplashFragment : Fragment() {
 
     private fun checkForInternet(rootView: View) {
 
-        parentActivity.withNetwork( { start() }, false, {
+        parentActivity?.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
 
             val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
@@ -109,28 +116,29 @@ class SplashFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
-
-                        if(this@SplashFragment.activity!=null){
-                            this@SplashFragment.activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
+                        parentActivity?.let {
+                            parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
                         }
+
 
                     }
 
 
                     override fun onViewDetachedFromWindow(p0: View?) {
-                        if(this@SplashFragment.activity!=null){
-                            this@SplashFragment.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
+                        parentActivity?.let {
+                            parentActivity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
                         }
-
                     }
 
 
                 });
             }
 
-
+            if (isFirstTime) {
+                parentActivity?.let { parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION) }
+                isFirstTime = false
+            }
             snackBar.setAction("Retry", {
 
                 // add on screen navigation translucent flags for smooth image shared animation
@@ -156,14 +164,14 @@ class SplashFragment : Fragment() {
                 .timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({},{ showTokenNotFoundDialog()},{
-                    pushAPIs(this@SplashFragment.activity)
+                    pushAPIs(parentActivity)
                     LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
                 }))
     }
 
     private fun isMockLocationEnabled():Boolean{
         if (Utils.mockLocationEnabled(Data.locationFetcher.locationUnchecked)) {
-            DialogPopup.alertPopupWithListener(this@SplashFragment.activity, "", resources.getString(R.string.disable_mock_location)) {
+            DialogPopup.alertPopupWithListener(parentActivity, "", resources.getString(R.string.disable_mock_location)) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
                 activity.finish()
             }
@@ -203,7 +211,7 @@ class SplashFragment : Fragment() {
                //   .delay(7000,TimeUnit.MILLISECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
                   .doAfterTerminate { isPendingExecutionOngoing = false }
-                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
+                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(parentActivity) })
         compositeDisposable.add(apiDisposable!!)
     }
 
@@ -229,7 +237,9 @@ class SplashFragment : Fragment() {
         return subject
     }
 
-    fun accessTokenLogin(activity: Activity) {
+    private fun accessTokenLogin(activity: Activity?) {
+
+        if (activity == null) return
 
         val accPair = JSONParser.getAccessTokenPair(activity)
         val responseTime = System.currentTimeMillis()
@@ -336,7 +346,7 @@ class SplashFragment : Fragment() {
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(activity, accessToken)
-                                    (parentActivity as DriverSplashActivity).addDriverSetupFragment(accessToken)
+                                    parentActivity?.let { (it as DriverSplashActivity).addDriverSetupFragment(accessToken) }
                                 } else {
                                     DialogPopup.alertPopup(activity, "", message)
                                 }
@@ -358,7 +368,7 @@ class SplashFragment : Fragment() {
 
             } else {
                 DialogPopup.alertPopupWithListener(activity, "", Data.CHECK_INTERNET_MSG,{
-                    this@SplashFragment.activity.finish()
+                    parentActivity?.finish()
                 })
             }
         }else{
@@ -377,7 +387,7 @@ class SplashFragment : Fragment() {
 
     private fun showTokenNotFoundDialog(){
         DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
-                , { this@SplashFragment.activity.finish(); })
+                , { parentActivity?.finish(); })
     }
 
     override fun onResume() {
