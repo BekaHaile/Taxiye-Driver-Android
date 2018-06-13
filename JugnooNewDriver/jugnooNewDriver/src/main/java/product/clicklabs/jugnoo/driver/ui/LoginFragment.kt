@@ -389,6 +389,7 @@ class LoginFragment : Fragment() {
         val sharedElementEnterTransition = sharedElementEnterTransition as TransitionSet
         sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
+
                 animateViews()
             }
 
@@ -405,17 +406,18 @@ class LoginFragment : Fragment() {
 
     private fun animateViews() {
 
-        if(view==null){
-            return
-        }
-        getLanguageList(false)
 
-        with(rootView){
-            tvLabel.visible()
-            backgroundPhone.visible()
-            tvCountryCode.visible()
-            edtPhoneNo.visible()
-            btnGenerateOtp.visible()
+        try {
+            getLanguageList(false)
+
+            with(rootView){
+                tvLabel.visible()
+                backgroundPhone.visible()
+                tvCountryCode.visible()
+                edtPhoneNo.visible()
+                btnGenerateOtp.visible()
+            }
+        } catch (e: Exception) {
         }
     }
 
