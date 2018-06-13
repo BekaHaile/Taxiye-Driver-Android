@@ -321,8 +321,6 @@ public interface Constants {
 	String KEY_NAVIGATION_TYPE = "navigation_type";
 	String STRIPE_ACCOUNT_STATUS = "is_stripe_enabled";
 	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
-	String KEY_DRIVER_LOGOUT_ENABLED = "driver_logout_enabled";
-
-
+	String KEY_LOGOUT = "logout";
 }
 

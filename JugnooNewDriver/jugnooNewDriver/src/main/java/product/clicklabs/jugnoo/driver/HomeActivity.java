@@ -1548,7 +1548,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
-			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_LOGOUT_ENABLED, getResources().getInteger(R.integer.driver_logout_enabled)) == 1) {
+			if (Prefs.with(this).getInt(Constants.KEY_LOGOUT, getResources().getInteger(R.integer.driver_logout_enabled)) == 1) {
 				logoutRl.setVisibility(View.VISIBLE);
 			} else {
 				logoutRl.setVisibility(View.GONE);
