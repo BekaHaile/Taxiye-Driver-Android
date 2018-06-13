@@ -69,7 +69,7 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
-
+    <integer name="driver_logout_enabled">1</integer>
 
 
 </resources>

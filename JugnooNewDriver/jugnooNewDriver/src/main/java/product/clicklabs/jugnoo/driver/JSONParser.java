@@ -379,6 +379,8 @@ public class JSONParser implements Constants {
 		Double commissionSaved = userData.has(Constants.KEY_COMMISSION_SAVED)?userData.optDouble(Constants.KEY_COMMISSION_SAVED):null;
 		parseSideMenu(context, userData);
 		Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
+		Prefs.with(context).save(Constants.KEY_DRIVER_LOGOUT_ENABLED, userData.optInt(Constants.KEY_DRIVER_LOGOUT_ENABLED,
+				context.getResources().getInteger(R.integer.driver_logout_enabled)));
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
