@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import com.picker.CountryPicker
 import kotlinx.android.synthetic.main.activity_driver_credits.*
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.tvLanguage
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -91,6 +93,16 @@ class LoginFragment : Fragment() {
         val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
 
         with(rootView) {
+
+            //apply fonts
+
+            tvLanguage.typeface = Fonts.mavenLight(parentActivity)
+            tvLabel.typeface = Fonts.mavenRegular(parentActivity)
+            tvCountryCode.typeface = Fonts.mavenRegular(parentActivity)
+            edtPhoneNo.typeface = Fonts.mavenRegular(parentActivity)
+            btnGenerateOtp.typeface = Fonts.mavenRegular(parentActivity)
+
+
             imageView.setOnLongClickListener {
                 confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
                 FlurryEventLogger.debugPressed("no_token")
@@ -194,7 +206,8 @@ class LoginFragment : Fragment() {
 
                         setLanguageLoading(text = -1, showText = false, showProgress = false)
 
-                        val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
+                        val dataAdapter: ArrayAdapter<String>
+                                = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
                         rootView.language_spinner.visible()
@@ -421,6 +434,30 @@ class LoginFragment : Fragment() {
             }
         } catch (e: Exception) {
         }
+    }
+
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<String>?) : ArrayAdapter<String>(context, resource, objects) {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View = super.getView(position, convertView, parent)
+            if(view is TextView) {
+                (view).typeface = Fonts.mavenRegular(context)
+            }
+
+            return view
+        }
+
+
+
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View = super.getDropDownView(position, convertView, parent)
+            if(view is TextView) {
+                (view).typeface = Fonts.mavenRegular(context)
+            }
+
+            return view
+        }
+
     }
 
     override fun onDestroyView() {

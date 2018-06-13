@@ -70,9 +70,13 @@ class DriverSetupFragment : Fragment() {
         toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
         toolbarChangeListener.setToolbarVisibility(true)
 
-        tvEnterName.typeface = Fonts.mavenLight(activity)
-        editTextName.typeface = Fonts.mavenRegular(activity)
-        tvSelectVehicle.typeface = Fonts.mavenLight(activity)
+            tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
+            editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvSelectVehicle.typeface = Fonts.mavenLight(parentActivity!!)
+            bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
+            bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
+
 
 
         bContinue.typeface = Fonts.mavenRegular(activity)

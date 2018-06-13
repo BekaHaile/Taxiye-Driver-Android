@@ -101,6 +101,18 @@ class OTPConfirmFragment : Fragment() {
         labelNumber.text = "$countryCode $phoneNumber"
         tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
 
+        // applyFonts
+
+        parentActivity?.let {
+            (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenLight(parentActivity!!)
+            labelNumber.typeface = Fonts.mavenRegular(parentActivity!!)
+            edtOTP.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvResendOTP.typeface = Fonts.mavenRegular(parentActivity!!)
+            btnSubmit.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvCall.typeface = Fonts.mavenLight(parentActivity!!)
+        }
+
+
         tvResendOTP.setOnClickListener({ generateOTP() })
         btnSubmit.setOnClickListener({ verifyOTP(edtOTP.text.toString()) })
         tvCall.setOnClickListener({

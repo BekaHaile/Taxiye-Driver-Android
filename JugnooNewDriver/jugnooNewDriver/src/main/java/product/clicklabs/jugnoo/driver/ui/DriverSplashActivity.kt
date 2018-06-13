@@ -67,6 +67,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
 
+        tvToolbar.typeface = Fonts.mavenRegular(this)
+
         setToolbarVisibility(false)
 
         val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
