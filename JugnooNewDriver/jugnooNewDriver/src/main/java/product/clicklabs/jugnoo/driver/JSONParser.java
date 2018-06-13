@@ -991,6 +991,8 @@ public class JSONParser implements Constants {
 				Constants.MAIL_SUPPORT,
 				Constants.BRANDING_IMAGE,
 				Constants.DRIVER_CREDITS,
+				Constants.SHOW_MANUAL_RIDE,
+				Constants.DRIVER_CREDITS,
 				Constants.KEY_LOGOUT
 		};
 		List<String> keysArr = Arrays.asList(keys);

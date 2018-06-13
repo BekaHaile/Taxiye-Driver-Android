@@ -8,5 +8,6 @@ public  enum ApiName {
     VERIFY_OTP,
     GET_CITIES,
     GET_LANGUAGES,
-    REGISTER_DRIVER
+    REGISTER_DRIVER,
+    MANUAL_RIDE
 }

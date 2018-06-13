@@ -8,6 +8,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
+import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
 import product.clicklabs.jugnoo.driver.utils.AppStatus
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import retrofit.Callback
@@ -144,6 +145,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
             ApiName.GENERATE_OTP -> RestClient.getApiServices().generateOtpK(params, callback as Callback<RegisterScreenResponse>)
             ApiName.GET_CITIES -> RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback as Callback<CityResponse>)
             ApiName.GET_LANGUAGES -> RestClient.getApiServices().fetchLanguageListKotlin(params, callback as Callback<DriverLanguageResponse>)
+            ApiName.MANUAL_RIDE -> RestClient.getApiServices().requestManualRide(params, callback as Callback<ManualRideResponse>)
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             else -> throw IllegalArgumentException("API Type not declared")
         }

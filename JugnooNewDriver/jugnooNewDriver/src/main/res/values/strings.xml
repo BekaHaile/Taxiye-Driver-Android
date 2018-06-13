@@ -810,6 +810,12 @@
     <string name="login_with_stripe">View Stripe account</string>
     <string name="city_unavailable">Sorry! Currently our services are not available in your city.</string>
 
+    <string name="title_manual_ride">Manual Ride</string>
+    <string name="label_edt_manual_ride">Please enter customer\'s phone number.</string>
+    <string name="action_request_manual_ride">Request Ride</string>
+    <string name="descrption_manual_ride">Manually start a ride for a customer by entering their phone number.</string>
+    <string name="menu_label_manual_ride">Manual Ride</string>
+    <string name="ride_assigned_success">Ride assigned successfully</string>
 
     <string-array name="CountryCodes">
         <item>+93,AF</item>

@@ -15,6 +15,8 @@ import android.widget.FrameLayout
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import kotlinx.android.synthetic.main.activity_toolbar.*
+import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
 import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
