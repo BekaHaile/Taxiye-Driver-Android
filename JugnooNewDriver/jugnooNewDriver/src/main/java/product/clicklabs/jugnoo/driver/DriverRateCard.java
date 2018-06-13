@@ -71,7 +71,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		relativeLayoutNoData.setVisibility(View.GONE);
 
 		linearLayoutMain = (LinearLayout) rootView.findViewById(R.id.linearLayoutMain);
-		linearLayoutMain.setVisibility(View.VISIBLE);
+		linearLayoutMain.setVisibility(View.INVISIBLE);
 
 		textViewPickupChargesValues = (TextView) rootView.findViewById(R.id.textViewPickupChargesValues);
 		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(activity));
