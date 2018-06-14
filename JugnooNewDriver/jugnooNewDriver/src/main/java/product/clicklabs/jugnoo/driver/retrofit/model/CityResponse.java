@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 
 /**
  * Created by aneeshbansal on 29/01/16.
  */
-public class CityResponse extends FeedCommonResponse implements Serializable {
+public class CityResponse extends FeedCommonResponseKotlin implements Serializable {
 
 
 	@SerializedName("cities")

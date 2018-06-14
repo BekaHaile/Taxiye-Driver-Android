@@ -39,6 +39,7 @@ import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -138,7 +139,7 @@ class LoginFragment : Fragment() {
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
                 Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-                ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+                ApiCommonKt<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
                     override fun onNotConnected(): Boolean {
                         return false
                     }
@@ -182,7 +183,7 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKt<DriverLanguageResponse>(activity = activity, showLoader = false, checkForActionComplete = true)
+        ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
@@ -357,6 +358,7 @@ class LoginFragment : Fragment() {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
                 btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+                TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }
         } catch (e: Exception) {
@@ -365,7 +367,7 @@ class LoginFragment : Fragment() {
         }
 
         // animate
-        TransitionManager.beginDelayedTransition(constraint)
+
     }
 
     private fun setLanguageLoading(@StringRes text: Int, showErrorImage: Boolean = false,

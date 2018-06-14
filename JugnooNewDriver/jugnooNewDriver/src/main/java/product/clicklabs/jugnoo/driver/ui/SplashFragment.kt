@@ -173,7 +173,7 @@ class SplashFragment : Fragment() {
         if (Utils.mockLocationEnabled(Data.locationFetcher.locationUnchecked)) {
             DialogPopup.alertPopupWithListener(parentActivity, "", resources.getString(R.string.disable_mock_location)) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                activity.finish()
+                parentActivity?.finish()
             }
             return true
         }

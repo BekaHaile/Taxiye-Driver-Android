@@ -14,18 +14,21 @@ import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.MultipartTypedOutput
+import java.lang.ref.WeakReference
 
 class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
-        private val activity: Activity,
+        activityM: Activity,
         private val showLoader: Boolean = true,
         private val putDefaultParams: Boolean = true,
         private var putAccessToken: Boolean = false,
-        private var checkForActionComplete: Boolean = true,
+        private var checkForActionComplete: Boolean = false,
         val isCancelled: Boolean = false) {
 
-    private lateinit var callback: Callback<T>
-    private var apiCommonCallback: APICommonCallbackKotlin<T>? = null
+    private val activity:WeakReference<Activity> = WeakReference(activityM)
+
+
+    private var apiCommonCallback: WeakReference<APICommonCallbackKotlin<T>?>? = null
     private lateinit var params: HashMap<String, String>
     private lateinit var multipartTypedOutput: MultipartTypedOutput
     private lateinit var apiName: ApiName
@@ -34,7 +37,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
     fun execute(params: HashMap<String, String>? = null, apiName: ApiName,
                 apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
-        this.apiCommonCallback = apiCommonCallback
+        this.apiCommonCallback = WeakReference(apiCommonCallback)
         this.apiName = apiName
 
         this.params = params ?: HashMap()
@@ -44,7 +47,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
     fun execute(multipartTypedOutput: MultipartTypedOutput? = null, apiName: ApiName,
                 apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
-        this.apiCommonCallback = apiCommonCallback
+        this.apiCommonCallback = WeakReference(apiCommonCallback)
         this.apiName = apiName
 
         this.multipartTypedOutput = multipartTypedOutput ?: MultipartTypedOutput()
@@ -53,45 +56,46 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
     private fun hitApi(isMultiPartRequest: Boolean) {
 
-        if (!AppStatus.getInstance(activity).isOnline(activity)) {
-            apiCommonCallback?.onFinish()
-            if (apiCommonCallback?.onNotConnected() != true) {
-                DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
+        if (!AppStatus.getInstance(activity.get()).isOnline(activity.get())) {
+            apiCommonCallback?.get()?.onFinish()
+            if (apiCommonCallback?.get()?.onNotConnected() != true) {
+                DialogPopup.alertPopup(activity.get(), "", Data.CHECK_INTERNET_MSG)
             }
             return
         }
 
-        callback = object : Callback<T> {
+       val callback = object : Callback<T> {
             override fun success(feedCommonResponse: T, response: Response?) {
                 isInProgress = false
                 if (showLoader) {
                     DialogPopup.dismissLoadingDialog()
                 }
 
-                if (isCancelled) return
+
+                if (isCancelled || activity.get()==null || activity.get()!!.isFinishing) return
 
                 try {
                     if (!isTrivialError(feedCommonResponse.flag) && (!checkForActionComplete
                                     || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())) {
 
-                        apiCommonCallback?.onFinish()
-                        apiCommonCallback?.onSuccess(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag)
+                        apiCommonCallback?.get()?.onFinish()
+                        apiCommonCallback?.get()?.onSuccess(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag)
 
 
                     } else if (feedCommonResponse.flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()) {
-                        apiCommonCallback?.onFinish()
-                        HomeActivity.logoutUser(activity, null)
+                        apiCommonCallback?.get()?.onFinish()
+                        HomeActivity.logoutUser(activity.get(), null)
                     } else {
-                        apiCommonCallback?.onFinish()
-                        if (apiCommonCallback?.onError(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag) != true) {
+                        apiCommonCallback?.get()?.onFinish()
+                        if (apiCommonCallback?.get()?.onError(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag) != true) {
                             retryDialog(feedCommonResponse.message)
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    apiCommonCallback?.onFinish()
+                    apiCommonCallback?.get()?.onFinish()
 
-                    if (apiCommonCallback?.onException(e) != true) {
+                    if (apiCommonCallback?.get()?.onException(e) != true) {
                         retryDialog(Data.CHECK_INTERNET_MSG)
                     }
                 }
@@ -104,11 +108,12 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
                     DialogPopup.dismissLoadingDialog()
                 }
 
-                if (isCancelled) return
+                 if (isCancelled || activity.get()==null || activity.get()!!.isFinishing) return
+
 
                 error?.printStackTrace()
-                apiCommonCallback?.onFinish()
-                if (apiCommonCallback?.onFailure(error) != true) {
+                apiCommonCallback?.get()?.onFinish()
+                if (apiCommonCallback?.get()?.onFailure(error) != true) {
                     retryDialog(Data.CHECK_INTERNET_MSG)
                 }
             }
@@ -127,7 +132,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
         }
 
         if (showLoader) {
-            DialogPopup.showLoadingDialog(activity, activity.resources.getString(R.string.loading))
+            DialogPopup.showLoadingDialog(activity.get(), activity.get()!!.resources.getString(R.string.loading))
         }
 
         isInProgress = true
@@ -138,6 +143,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
             ApiName.GENERATE_OTP -> RestClient.getApiServices().generateOtpK(params, callback as Callback<RegisterScreenResponse>)
             ApiName.GET_CITIES -> RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback as Callback<CityResponse>)
             ApiName.GET_LANGUAGES -> RestClient.getApiServices().fetchLanguageListKotlin(params, callback as Callback<DriverLanguageResponse>)
+            ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }
@@ -148,7 +154,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
     }
 
     private fun retryDialog(message: String) {
-        DialogPopup.alertPopupWithListener(activity, "", message) { apiCommonCallback?.onDialogClick() }
+        DialogPopup.alertPopupWithListener(activity.get(), "", message) { apiCommonCallback?.get()?.onDialogClick() }
     }
 
 }

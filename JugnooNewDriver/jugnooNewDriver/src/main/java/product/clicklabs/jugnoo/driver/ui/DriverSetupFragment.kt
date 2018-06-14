@@ -25,9 +25,7 @@ import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommon
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.utils.*
 
 
@@ -169,7 +167,7 @@ class DriverSetupFragment : Fragment() {
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
         HomeUtil.putDefaultParams(params)
-        ApiCommon<RegisterScreenResponse>(parentActivity).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallback<RegisterScreenResponse>() {
+        ApiCommonKt<RegisterScreenResponse>(parentActivity).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
@@ -209,9 +207,9 @@ class DriverSetupFragment : Fragment() {
 
         HomeUtil.putDefaultParams(params)
 
-        ApiCommon<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
+        ApiCommonKt<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
-                if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.getFlag()) {
+                if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
                     onError(t, t.message, t.flag)
                     return
                 }
