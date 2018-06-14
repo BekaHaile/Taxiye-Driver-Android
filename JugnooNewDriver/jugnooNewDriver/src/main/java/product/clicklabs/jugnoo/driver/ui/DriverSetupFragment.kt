@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
@@ -218,7 +217,7 @@ class DriverSetupFragment : Fragment() {
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
                 vehicleTypes.removeAt(0)
                 cityId = t.currentCityId
-                adapter.setList(vehicleTypes,0)
+                adapter.setList(vehicleTypes, 0)
                 groupView.visible()
             }
 

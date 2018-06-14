@@ -159,6 +159,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		if(DriverProfileActivity.openedProfileInfo != null){
 
 			if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+				accountDetailsLayout.setVisibility(View.VISIBLE);
 				buttonStripe.setVisibility(View.VISIBLE);
 				layoutBankDetails.setVisibility(View.GONE);
 				if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){

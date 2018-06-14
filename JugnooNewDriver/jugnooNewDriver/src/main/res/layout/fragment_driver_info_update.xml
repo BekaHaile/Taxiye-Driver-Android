@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel"/>
 
     </android.support.constraint.ConstraintLayout>
 
