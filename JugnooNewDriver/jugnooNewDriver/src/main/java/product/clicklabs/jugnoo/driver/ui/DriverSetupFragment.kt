@@ -175,7 +175,7 @@ class DriverSetupFragment : Fragment() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
-                    Log.d("", t.message)
+                    Log.d("", t.serverMessage())
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
                             openDocumentUploadActivity()
@@ -214,7 +214,7 @@ class DriverSetupFragment : Fragment() {
         ApiCommonKt<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
                 if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
-                    onError(t, t.message, t.flag)
+                    onError(t, t.serverMessage(), t.flag)
                     return
                 }
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>

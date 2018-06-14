@@ -79,7 +79,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
                                     || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())) {
 
                         apiCommonCallback?.onFinish()
-                        apiCommonCallback?.onSuccess(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag)
+                        apiCommonCallback?.onSuccess(feedCommonResponse, feedCommonResponse.serverMessage(), feedCommonResponse.flag)
 
 
                     } else if (feedCommonResponse.flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()) {
@@ -87,8 +87,8 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
                         HomeActivity.logoutUser(activity.get(), null)
                     } else {
                         apiCommonCallback?.onFinish()
-                        if (apiCommonCallback?.onError(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag) != true) {
-                            retryDialog(feedCommonResponse.message)
+                        if (apiCommonCallback?.onError(feedCommonResponse, feedCommonResponse.serverMessage(), feedCommonResponse.flag) != true) {
+                            retryDialog(feedCommonResponse.serverMessage())
                         }
                     }
                 } catch (e: Exception) {
