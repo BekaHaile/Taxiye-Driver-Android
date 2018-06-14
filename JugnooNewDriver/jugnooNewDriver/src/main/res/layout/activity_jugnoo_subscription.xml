@@ -116,7 +116,7 @@
                 android:textSize="20sp"
                 android:visibility="gone"
                 android:gravity="center"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:layout_height="wrap_content" />
 
 
@@ -133,7 +133,7 @@
                 android:textSize="18sp"
                 android:gravity="center"
                 android:visibility="gone"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:layout_height="wrap_content" />
 
             <android.support.v7.widget.CardView

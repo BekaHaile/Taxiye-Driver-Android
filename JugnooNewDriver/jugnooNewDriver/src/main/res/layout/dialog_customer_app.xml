@@ -34,7 +34,7 @@
                 android:paddingStart="20px"
                 android:paddingEnd="20px"
                 android:text="@string/update"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="50px" />
 
             <TextView

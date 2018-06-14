@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="70%"
-                    android:textColor="@color/red_v2"
+                    android:textColor="@color/themeColor"
                     android:textSize="58px"/>
 
                 <TextView

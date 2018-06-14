@@ -409,7 +409,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 					textViewStatus.setVisibility(View.VISIBLE);
 					textViewTicketDate.setVisibility(View.VISIBLE);
 					textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.rejected));
-					textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+					textViewStatus.setTextColor(getResources().getColor(R.color.themeColor));
 					textViewTicketDate.setText(extras.getTicketDate());
 				}
 

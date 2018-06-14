@@ -60,7 +60,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="75px"
             android:tag="mwar"
-            wheel:matProg_barColor="@color/theme_color"
+            wheel:matProg_barColor="@color/themeColor"
             wheel:matProg_barWidth="3dp"
             wheel:matProg_fillRadius="true"
             wheel:matProg_progressIndeterminate="true" />

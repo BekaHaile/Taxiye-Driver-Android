@@ -37,7 +37,7 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:text="@string/alert"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="50px" 
                 android:paddingStart="20px"
                 android:paddingEnd="20px"

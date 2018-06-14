@@ -28,7 +28,7 @@
         android:singleLine="true"
         android:layout_marginTop="10px"
         android:text="@string/rupee_zero"
-        android:textColor="@color/red_v2"
+        android:textColor="@color/themeColor"
         android:textSize="70px"/>
 
     <TextView
@@ -39,7 +39,7 @@
         android:singleLine="true"
         android:layout_marginTop="10px"
         android:text="@string/rides"
-        android:textColor="@color/red_v2"
+        android:textColor="@color/themeColor"
         android:textSize="70px"/>
 
     <TextView
@@ -51,7 +51,7 @@
         android:visibility="gone"
         android:layout_marginTop="10px"
         android:text="@string/rupee_zero"
-        android:textColor="@color/red_v2"
+        android:textColor="@color/themeColor"
         android:textSize="70px"/>
     <TextView
         android:id="@+id/textViewInvoiceStatus"

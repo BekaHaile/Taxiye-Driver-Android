@@ -57,7 +57,7 @@
             android:text="@string/daily_leaderboard"
             android:textColor="@color/white"
             android:textSize="@dimen/share_lb_text_size"
-            android:background="@color/new_orange"
+            android:background="@color/themeColor"
             />
         <TextView
             android:id="@+id/textViewWeekly"
@@ -65,7 +65,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/weekly_leaderboard"
-            android:textColor="@drawable/text_color_grey_dark_white_selector"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/share_lb_text_size"
             android:layout_alignParentEnd="true"
             android:background="@drawable/background_white_bordered"

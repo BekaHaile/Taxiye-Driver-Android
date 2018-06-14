@@ -55,7 +55,7 @@
                 android:maxHeight="800px"
                 android:paddingStart="20px"
                 android:paddingEnd="20px"
-                android:textColor="@color/red_v2"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <TextView

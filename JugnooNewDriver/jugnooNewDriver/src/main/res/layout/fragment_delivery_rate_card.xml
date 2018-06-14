@@ -47,7 +47,7 @@
                 android:layout_marginStart="22px"
                 android:layout_marginTop="24px"
                 android:text="@string/base_fare"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -89,7 +89,7 @@
                 android:layout_marginTop="24px"
                 android:textAllCaps="true"
                 android:text="@string/per_km_wo_brack_format"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -131,7 +131,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/per_delivery"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -173,7 +173,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/return_fare"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -215,7 +215,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/pick_up_wait_time"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
 
@@ -258,7 +258,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/accept_subsidy"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -299,7 +299,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/loading_fare"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout
@@ -340,7 +340,7 @@
                 android:layout_marginTop="24px"
                 android:text="@string/unloading_fare"
                 android:textAllCaps="true"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="38px"/>
 
             <LinearLayout

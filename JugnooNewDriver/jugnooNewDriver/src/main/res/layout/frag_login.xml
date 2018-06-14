@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="2dp"
             android:visibility="gone"
-            android:textColor="@color/new_orange"
+            android:textColor="@color/themeColor"
             android:text="Languages"
             app:layout_goneMarginEnd="8dp"
             android:textSize="14sp"

@@ -70,7 +70,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/editTextPhone"
@@ -120,7 +120,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <EditText
                     android:id="@+id/editTextCashAmount"
@@ -152,7 +152,7 @@
                     android:layout_height="98px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_100"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
                 <Button
@@ -163,7 +163,7 @@
                     android:layout_marginEnd="15px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_200"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
                 <Button
@@ -172,7 +172,7 @@
                     android:layout_height="98px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_500"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
             </LinearLayout>

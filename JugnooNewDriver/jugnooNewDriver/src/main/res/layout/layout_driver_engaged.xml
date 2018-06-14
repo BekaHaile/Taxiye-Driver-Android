@@ -883,7 +883,7 @@
             android:layout_marginStart="-20dp"
             android:layout_marginTop="5dp"
             android:text="3"
-            android:textColor="@color/theme_color"
+            android:textColor="@color/themeColor"
             android:textSize="12sp"
             android:gravity="center"
             android:visibility="visible"

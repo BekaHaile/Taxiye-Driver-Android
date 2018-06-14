@@ -87,7 +87,7 @@
                     android:layout_marginStart="5px"
                     android:singleLine="true"
                     android:text="@string/NA"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:layout_toEndOf="@+id/dateTimeTextFrom"
                     android:textSize="32px"
                     />
@@ -125,7 +125,7 @@
                     android:singleLine="true"
                     android:layout_toEndOf="@+id/dateTimeTextTo"
                     android:text="@string/NA"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="32px"
                     />
 
@@ -481,7 +481,7 @@
             android:layout_width="match_parent"
             android:layout_height="2px"
             android:layout_marginTop="20px"
-            android:background="@color/new_orange"/>
+            android:background="@color/themeColor"/>
 
 
         <RelativeLayout
@@ -634,7 +634,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/rupee_zero"
-            android:textColor="@color/new_orange"
+            android:textColor="@color/themeColor"
             android:layout_marginTop="24px"
             android:textSize="42px"/>
 
@@ -646,7 +646,7 @@
             android:layout_below="@+id/textViewTotalAmntValue"
             android:layout_marginStart="@dimen/share_activity_text_margin_left"
             android:text="@string/acc_credited"
-            android:textColor="@color/new_orange"
+            android:textColor="@color/themeColor"
             android:layout_marginTop="12px"
             android:layout_marginBottom="24px"
             android:textSize="36px"/>

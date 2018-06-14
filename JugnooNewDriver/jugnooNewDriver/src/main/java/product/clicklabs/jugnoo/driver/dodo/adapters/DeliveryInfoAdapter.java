@@ -13,10 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -100,7 +98,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					if (activity.getDeliveryPos() == deliveryInfo.getIndex()) {
 						holder.linearLayoutCard1.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 						holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.in_progress));
-						holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.red_v2));
+						holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.themeColor));
 						holder.imageViewStatus.setBackgroundResource(R.drawable.delivery_in_progress);
 					} else {
 						holder.imageViewStatus.setBackgroundResource(R.drawable.delivery_pending_clock);

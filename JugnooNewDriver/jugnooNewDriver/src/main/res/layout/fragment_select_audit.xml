@@ -24,7 +24,7 @@
             android:textSize="35px"
             android:layout_marginStart="32px"
             android:text="@string/self_audit_caps"
-            android:textColor="@color/new_orange"/>
+            android:textColor="@color/themeColor"/>
 
         <TextView
             android:id="@+id/textViewSelfAuditLast"
@@ -92,7 +92,7 @@
             android:layout_marginStart="32px"
             android:layout_height="wrap_content"
             android:text="@string/non_jugnoo_auto_branding"
-            android:textColor="@color/new_orange"/>
+            android:textColor="@color/themeColor"/>
 
         <TextView
             android:id="@+id/textViewNJBOffer"
@@ -160,7 +160,7 @@
             android:textSize="35px"
             android:layout_marginStart="32px"
             android:text="@string/non_jugnoo_auto_audit"
-            android:textColor="@color/new_orange"/>
+            android:textColor="@color/themeColor"/>
 
         <TextView
             android:id="@+id/textViewNJAOffer"

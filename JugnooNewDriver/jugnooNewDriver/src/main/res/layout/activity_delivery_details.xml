@@ -47,7 +47,7 @@
                     android:layout_toEndOf="@+id/imageViewTime"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="32px"
                     />
 
@@ -332,7 +332,7 @@
                 android:singleLine="true"
                 android:layout_marginTop="15px"
                 android:text="@string/rupee_zero"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="52px"/>
             <TextView
                 android:id="@+id/textViewActualFareText"
@@ -342,7 +342,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/total_fare"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="45px"/>
 
             <TextView
@@ -361,7 +361,7 @@
                 <ImageView
                 android:layout_width="720px"
                 android:layout_height="2px"
-                android:background="@color/new_orange"/>
+                android:background="@color/themeColor"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -412,7 +412,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:id="@+id/imageViewVertical"
-                        android:background="@color/new_orange"/>
+                        android:background="@color/themeColor"/>
 
                     <RelativeLayout
                         android:layout_width="0px"
@@ -522,7 +522,7 @@
                     <!--android:layout_centerHorizontal="true"-->
                     <!--android:layout_centerVertical="true"-->
                     <!--android:id="@+id/imageViewVertical"-->
-                    <!--android:background="@color/new_orange"/>-->
+                    <!--android:background="@color/themeColor"/>-->
 
                 <!--<TextView-->
                     <!--android:id="@+id/textViewAccountBalance"-->

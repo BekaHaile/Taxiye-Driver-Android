@@ -71,7 +71,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="@string/resend_OTP"
-        android:textColor="@color/new_orange"
+        android:textColor="@color/themeColor"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

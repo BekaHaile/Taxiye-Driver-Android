@@ -29,7 +29,7 @@
                 android:layout_marginTop="24px"
                 android:layout_marginStart="52px"
                 android:text="@string/Document_type"
-                android:textColor="@color/document_text_color"
+                android:textColor="@color/themeColor"
                 android:textSize="36px"
             />
 
@@ -146,7 +146,7 @@
                     android:layout_marginStart="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="20px"
                     android:visibility="gone"/>
 
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/uploaded"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="26px"/>
 
                 <ImageView
@@ -226,7 +226,7 @@
                     android:layout_marginStart="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="20px"
                     android:visibility="gone"/>
 

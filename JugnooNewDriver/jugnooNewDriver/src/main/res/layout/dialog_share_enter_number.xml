@@ -82,7 +82,7 @@
                 <ImageView 
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:src="@color/musturd_jugnoo"
+                    android:src="@color/themeColor"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     />

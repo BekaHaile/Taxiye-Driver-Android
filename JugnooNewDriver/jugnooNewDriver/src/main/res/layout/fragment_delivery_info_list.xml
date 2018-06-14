@@ -30,7 +30,7 @@
                android:layout_gravity="center_horizontal"
                android:gravity="center_vertical"
                android:layout_marginTop="20px"
-               android:textColor="@color/new_orange"
+               android:textColor="@color/themeColor"
                android:textSize="38px"/>
 
            <ImageView
@@ -39,7 +39,7 @@
                android:layout_height="4px"
                android:layout_marginTop="20px"
                android:layout_gravity="bottom"
-               android:background="@color/new_orange"/>
+               android:background="@color/themeColor"/>
 
        </LinearLayout>
 

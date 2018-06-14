@@ -157,7 +157,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="26px"
                         android:text="@string/NA"
-                        android:textColor="@color/new_orange"
+                        android:textColor="@color/themeColor"
                         android:textSize="44px"/>
 
                 </RelativeLayout>

@@ -43,7 +43,7 @@
                 android:layout_centerVertical="true"
                 android:text="@string/NA"
                 android:layout_marginStart="32px"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px" />
 
         </RelativeLayout>
@@ -129,7 +129,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
             <TextView
@@ -139,7 +139,7 @@
                 android:layout_toStartOf="@+id/textViewYesterdayValue"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
         </RelativeLayout>
@@ -458,7 +458,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
             <TextView
@@ -468,7 +468,7 @@
                 android:layout_toStartOf="@+id/textViewWeekValue"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
         </RelativeLayout>
@@ -786,7 +786,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
             <TextView
@@ -796,7 +796,7 @@
                 android:layout_toStartOf="@+id/textViewMonthValue"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="28px"/>
 
         </RelativeLayout>

@@ -184,9 +184,9 @@ public class DeliveryInfosListFragment extends Fragment {
 
 			textViewPlaceholderMessage.setVisibility(View.GONE);
 //			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()){
-//				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+//				textViewCurrent.setTextColor(getResources().getColor(R.color.themeColor));
 //				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
-//				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
+//				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.themeColor));
 //				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
 //				if(deliveryInfos.size() == 0){
 //					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
@@ -194,9 +194,9 @@ public class DeliveryInfosListFragment extends Fragment {
 //				}
 //			} else{
 //				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
-//				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
+//				textViewCompleted.setTextColor(getResources().getColor(R.color.themeColor));
 //				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
-//				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
+//				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.themeColor));
 //				if(deliveryInfos.size() == 0){
 //					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
 //					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_completed));

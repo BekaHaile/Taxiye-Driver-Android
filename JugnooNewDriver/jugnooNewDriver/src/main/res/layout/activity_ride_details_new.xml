@@ -53,7 +53,7 @@
             android:singleLine="true"
             android:layout_marginTop="10px"
             android:text="@string/rupee_zero"
-            android:textColor="@color/red_v2"
+            android:textColor="@color/themeColor"
             android:textSize="72px"/>
 
 

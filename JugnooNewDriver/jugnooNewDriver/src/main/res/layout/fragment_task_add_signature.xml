@@ -65,7 +65,7 @@
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/background_white_red_v2_bordered"
                             android:text="@string/clear"
-                            android:textColor="@color/red_v2"
+                            android:textColor="@color/themeColor"
                             android:textSize="32px"
                             android:visibility="gone"/>
 
@@ -84,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:text="@string/loading"
-                            android:textColor="@color/red_v2"
+                            android:textColor="@color/themeColor"
                             android:textSize="28px"/>
 
                         <ImageView

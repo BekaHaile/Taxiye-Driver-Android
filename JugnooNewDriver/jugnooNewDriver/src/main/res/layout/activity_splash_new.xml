@@ -57,7 +57,7 @@
                 android:layout_width="2px"
                 android:layout_height="match_parent"
                 android:layout_marginStart="6px"
-                android:background="@color/new_orange"
+                android:background="@color/themeColor"
                 android:visibility="gone"/>
 
             <Spinner

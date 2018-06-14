@@ -283,7 +283,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
 				holder.imageViewDocStatusImage.setVisibility(View.GONE);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.document_text_color));
+				holder.docStatus.setTextColor(getResources().getColor(R.color.themeColor));
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
@@ -440,7 +440,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout.setVisibility(View.VISIBLE);
 				holder.addImageLayout2.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatus.setVisibility(View.GONE);
-				holder.docType.setTextColor(getResources().getColor(R.color.document_text_color));
+				holder.docType.setTextColor(getResources().getColor(R.color.themeColor));
 			}
 
 			holder.docType.setTag(holder);
@@ -1126,7 +1126,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		if(mandatoryDocsSubmitted){
 			DialogPopup.dialogBanner(activity,
 					activity.getString(R.string.please_press_submit_button), null, 5000,
-					R.color.white, R.color.red_v2);
+					R.color.white, R.color.themeColor);
 		}
 	}
 

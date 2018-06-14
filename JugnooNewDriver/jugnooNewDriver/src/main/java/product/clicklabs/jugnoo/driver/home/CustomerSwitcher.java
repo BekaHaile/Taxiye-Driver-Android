@@ -184,7 +184,7 @@ public class CustomerSwitcher {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if (engagementId == customerInfo.getEngagementId()) {
 				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
-						activity.getResources().getColor(R.color.new_orange));
+						activity.getResources().getColor(R.color.themeColor));
 
 				textViewCustomerName1.setText(customerInfo.getName().toUpperCase());
 				textViewCustomerName.setText(customerInfo.getName());

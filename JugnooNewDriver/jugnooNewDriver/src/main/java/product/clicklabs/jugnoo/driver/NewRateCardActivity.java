@@ -68,8 +68,8 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(rateCardFragmentAdapter);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.red_v2));
-		tabs.setTextColorResource(R.color.red_v2, R.color.white);
+		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
+		tabs.setTextColorResource(R.color.themeColor, R.color.white);
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 		tabs.setBackgroundColor(getResources().getColor(R.color.colorPrimary));

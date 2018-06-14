@@ -4136,7 +4136,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 //					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
-//							getResources().getColor(R.color.new_orange));
+//							getResources().getColor(R.color.themeColor));
 
 					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
 						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
@@ -4206,7 +4206,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
 //					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
-//							getResources().getColor(R.color.new_orange));
+//							getResources().getColor(R.color.themeColor));
 
 
 					try {
@@ -7316,7 +7316,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			else if(customerInfo.getIsPooled() == 1){
 				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.setBitmapColor(CustomMapMarkerCreator
 								.createCustomMarkerBitmap(HomeActivity.this, assl, 30f, 72f, R.drawable.ic_pool_marker),
-								customerInfo.getColor(), activity.getResources().getColor(R.color.new_orange))));
+								customerInfo.getColor(), activity.getResources().getColor(R.color.themeColor))));
 			}
 			else{
 				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator

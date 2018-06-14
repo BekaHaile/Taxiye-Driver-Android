@@ -125,12 +125,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("500");
-				btnRupee500.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee500.setTextColor(getResources().getColor(R.color.white));
 				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});
@@ -140,12 +140,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("200");
-				btnRupee200.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee200.setTextColor(getResources().getColor(R.color.white));
 				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});
@@ -155,12 +155,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("100");
-				btnRupee100.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setTextColor(getResources().getColor(R.color.white));
 				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});

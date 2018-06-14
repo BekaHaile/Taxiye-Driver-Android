@@ -38,7 +38,7 @@
                     android:paddingStart="20px"
                     android:paddingEnd="20px"
                     android:text="@string/did_you_know"
-                    android:textColor="@color/theme_color"
+                    android:textColor="@color/themeColor"
                     android:textSize="38px"
                     android:visibility="visible"/>
                 <View

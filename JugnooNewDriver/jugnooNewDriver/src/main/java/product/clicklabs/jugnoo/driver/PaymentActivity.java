@@ -66,8 +66,8 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		viewPager.setAdapter(paymentFragmentAdapter);
 		invoiceHistoryFragment = new InvoiceHistoryFragment();
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
-		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
+		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
+		tabs.setTextColorResource(R.color.themeColor, R.color.menu_black);
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 

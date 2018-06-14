@@ -159,7 +159,7 @@ public class DriverTicketDetails extends BaseActivity {
 				} else if(extras.getStatus().equalsIgnoreCase("registered")){
 					textViewStatus.setVisibility(View.VISIBLE);
 					textViewStatus.setText(getResources().getString(R.string.registered));
-					textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+					textViewStatus.setTextColor(getResources().getColor(R.color.themeColor));
 					imageViewStatus.setImageResource(R.drawable.ic_tick_orange_20);
 
 				} else if(extras.getStatus().equalsIgnoreCase("pending")){

@@ -384,7 +384,7 @@
                         android:background="@drawable/circle_white_stroke_grey_selector"
                         android:text="-"
                         android:gravity="center"
-                        android:textColor="@color/theme_color"
+                        android:textColor="@color/themeColor"
                         android:textSize="30sp"
                         />
 
@@ -435,7 +435,7 @@
                         android:background="@drawable/circle_white_stroke_grey_selector"
                         android:text="+"
                         android:gravity="center"
-                        android:textColor="@color/theme_color"
+                        android:textColor="@color/themeColor"
                         android:textSize="26sp"
                         />
 

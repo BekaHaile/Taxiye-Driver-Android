@@ -5,6 +5,7 @@
     android:layout_height="120px"
     android:orientation="vertical"
         android:splitMotionEvents="false"
+              android:background="?attr/selectableItemBackground"
      >
 
     <RelativeLayout

@@ -78,7 +78,7 @@ public class NotificationMessagesFragment extends android.support.v4.app.Fragmen
 
 
 		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
-		swipeRefreshLayout.setColorSchemeResources(R.color.new_orange);
+		swipeRefreshLayout.setColorSchemeResources(R.color.themeColor);
 		linearLayoutNoNotifications = (LinearLayout) rootView.findViewById(R.id.linearLayoutNoNotifications);
 		linearLayoutNoNotifications.setVisibility(View.GONE);
 		((TextView)rootView.findViewById(R.id.textViewNoNotifications)).setTypeface(Fonts.mavenRegular(activity));

@@ -39,7 +39,7 @@
                 android:paddingStart="40px"
                 android:paddingEnd="40px"
                 android:text="@string/confirmation_code"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="50px"
 
                 />

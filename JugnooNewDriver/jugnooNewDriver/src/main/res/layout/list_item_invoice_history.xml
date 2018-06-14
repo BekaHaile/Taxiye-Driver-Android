@@ -222,7 +222,7 @@
                     android:layout_toEndOf="@+id/dateTimeTextGenerated"
                     android:singleLine="true"
                     android:text="23 June, 2014"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="34px"
                     />
 

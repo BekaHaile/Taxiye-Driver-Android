@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/call"
                         android:layout_marginTop="18px"
-                        android:textColor="@color/new_orange"
+                        android:textColor="@color/themeColor"
                         android:layout_gravity="center_horizontal"
                         android:textSize="32px"/>
 
@@ -137,7 +137,7 @@
                         android:layout_marginTop="18px"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:textColor="@color/new_orange"
+                        android:textColor="@color/themeColor"
                         android:textSize="32px"/>
 
 

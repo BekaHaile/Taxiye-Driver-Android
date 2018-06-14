@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import product.clicklabs.jugnoo.driver.Data;
+
 import product.clicklabs.jugnoo.driver.DriverTicketHistory;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
@@ -99,7 +99,7 @@ public class DriverTicketHistoryAdapter extends RecyclerView.Adapter<RecyclerVie
 			} else if(itr.getStatus().equalsIgnoreCase("registered")){
 				holder.textViewStatus.setVisibility(View.VISIBLE);
 				holder.textViewStatus.setText(activity.getResources().getString(R.string.registered));
-				holder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_v2));
+				holder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.themeColor));
 				holder.imageViewStatus.setImageResource(R.drawable.ic_tick_orange_20);
 
 			} else if(itr.getStatus().equalsIgnoreCase("pending")){
