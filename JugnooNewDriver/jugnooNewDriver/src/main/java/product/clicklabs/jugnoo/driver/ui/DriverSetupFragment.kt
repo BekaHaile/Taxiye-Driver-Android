@@ -30,11 +30,11 @@ import product.clicklabs.jugnoo.driver.utils.*
 
 
 class DriverSetupFragment : Fragment() {
-    private lateinit var parentActivity: DriverSplashActivity
+    private var parentActivity: DriverSplashActivity? = null
 
     private lateinit var accessToken: String
     private var cityId: String? = null
-    private lateinit var toolbarChangeListener: ToolbarChangeListener
+    private var toolbarChangeListener: ToolbarChangeListener? = null
 
     private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
 
@@ -67,8 +67,8 @@ class DriverSetupFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
-        toolbarChangeListener.setToolbarVisibility(true)
+        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        toolbarChangeListener?.setToolbarVisibility(true)
 
             tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
             editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
@@ -83,12 +83,12 @@ class DriverSetupFragment : Fragment() {
         bContinue.setOnClickListener { if (validateData()) registerDriver() }
 
         bCancel.typeface = Fonts.mavenRegular(activity)
-        bCancel.setOnClickListener { parentActivity.onBackPressed() }
+        bCancel.setOnClickListener { parentActivity?.onBackPressed() }
 
 
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(activity, 3)
-            addItemDecoration(ItemOffsetDecoration(parentActivity, R.dimen.spacing_grid_recycler_view));
+            addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
             adapter = this@DriverSetupFragment.adapter
         }
 
@@ -120,8 +120,8 @@ class DriverSetupFragment : Fragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
-            toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
-            toolbarChangeListener.setToolbarVisibility(true)
+            toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+            toolbarChangeListener?.setToolbarVisibility(true)
         }
         super.onHiddenChanged(hidden)
     }
@@ -171,7 +171,7 @@ class DriverSetupFragment : Fragment() {
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
         HomeUtil.putDefaultParams(params)
-        ApiCommonKt<RegisterScreenResponse>(parentActivity).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+    ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
@@ -187,8 +187,8 @@ class DriverSetupFragment : Fragment() {
 
                         ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
                             DialogPopup.alertPopupWithListener(activity, "", message, {
-                                parentActivity.openPhoneLoginScreen()
-                                parentActivity.setToolbarVisibility(false)
+                                parentActivity?.openPhoneLoginScreen()
+                                parentActivity?.setToolbarVisibility(false)
                             })
 
                         }
@@ -246,5 +246,11 @@ class DriverSetupFragment : Fragment() {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
         toolbarChangeListener = context as ToolbarChangeListener
+    }
+
+    override fun onDetach() {
+        parentActivity = null
+        toolbarChangeListener = null
+        super.onDetach()
     }
 }

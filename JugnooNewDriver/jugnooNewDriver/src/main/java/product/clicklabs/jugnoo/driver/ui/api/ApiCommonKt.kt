@@ -28,7 +28,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
     private val activity:WeakReference<Activity> = WeakReference(activityM)
 
 
-    private var apiCommonCallback: WeakReference<APICommonCallbackKotlin<T>?>? = null
+    private var apiCommonCallback: APICommonCallbackKotlin<T>? = null
     private lateinit var params: HashMap<String, String>
     private lateinit var multipartTypedOutput: MultipartTypedOutput
     private lateinit var apiName: ApiName
@@ -37,7 +37,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
     fun execute(params: HashMap<String, String>? = null, apiName: ApiName,
                 apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
-        this.apiCommonCallback = WeakReference(apiCommonCallback)
+        this.apiCommonCallback = apiCommonCallback
         this.apiName = apiName
 
         this.params = params ?: HashMap()
@@ -47,7 +47,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
     fun execute(multipartTypedOutput: MultipartTypedOutput? = null, apiName: ApiName,
                 apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
-        this.apiCommonCallback = WeakReference(apiCommonCallback)
+        this.apiCommonCallback = apiCommonCallback
         this.apiName = apiName
 
         this.multipartTypedOutput = multipartTypedOutput ?: MultipartTypedOutput()
@@ -57,8 +57,8 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
     private fun hitApi(isMultiPartRequest: Boolean) {
 
         if (!AppStatus.getInstance(activity.get()).isOnline(activity.get())) {
-            apiCommonCallback?.get()?.onFinish()
-            if (apiCommonCallback?.get()?.onNotConnected() != true) {
+            apiCommonCallback?.onFinish()
+            if (apiCommonCallback?.onNotConnected() != true) {
                 DialogPopup.alertPopup(activity.get(), "", Data.CHECK_INTERNET_MSG)
             }
             return
@@ -78,24 +78,24 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
                     if (!isTrivialError(feedCommonResponse.flag) && (!checkForActionComplete
                                     || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())) {
 
-                        apiCommonCallback?.get()?.onFinish()
-                        apiCommonCallback?.get()?.onSuccess(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag)
+                        apiCommonCallback?.onFinish()
+                        apiCommonCallback?.onSuccess(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag)
 
 
                     } else if (feedCommonResponse.flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()) {
-                        apiCommonCallback?.get()?.onFinish()
+                        apiCommonCallback?.onFinish()
                         HomeActivity.logoutUser(activity.get(), null)
                     } else {
-                        apiCommonCallback?.get()?.onFinish()
-                        if (apiCommonCallback?.get()?.onError(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag) != true) {
+                        apiCommonCallback?.onFinish()
+                        if (apiCommonCallback?.onError(feedCommonResponse, feedCommonResponse.message, feedCommonResponse.flag) != true) {
                             retryDialog(feedCommonResponse.message)
                         }
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    apiCommonCallback?.get()?.onFinish()
+                    apiCommonCallback?.onFinish()
 
-                    if (apiCommonCallback?.get()?.onException(e) != true) {
+                    if (apiCommonCallback?.onException(e) != true) {
                         retryDialog(Data.CHECK_INTERNET_MSG)
                     }
                 }
@@ -112,8 +112,8 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
 
 
                 error?.printStackTrace()
-                apiCommonCallback?.get()?.onFinish()
-                if (apiCommonCallback?.get()?.onFailure(error) != true) {
+                apiCommonCallback?.onFinish()
+                if (apiCommonCallback?.onFailure(error) != true) {
                     retryDialog(Data.CHECK_INTERNET_MSG)
                 }
             }
@@ -154,7 +154,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
     }
 
     private fun retryDialog(message: String) {
-        DialogPopup.alertPopupWithListener(activity.get(), "", message) { apiCommonCallback?.get()?.onDialogClick() }
+        DialogPopup.alertPopupWithListener(activity.get(), "", message) { apiCommonCallback?.onDialogClick() }
     }
 
 }
