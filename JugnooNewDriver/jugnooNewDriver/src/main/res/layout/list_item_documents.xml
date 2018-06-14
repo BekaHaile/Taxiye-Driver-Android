@@ -18,8 +18,7 @@
             android:id="@+id/relativeLayoutSelectPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="52px"
-            android:background="@drawable/background_white_white_dark_selector"
+            android:background="@color/white"
             android:gravity="center_horizontal">
 
             <TextView
@@ -29,7 +28,7 @@
                 android:layout_marginTop="24px"
                 android:layout_marginStart="52px"
                 android:text="@string/Document_type"
-                android:textColor="@color/themeColor"
+                android:textColor="@color/textColor"
                 android:textSize="36px"
             />
 
@@ -43,7 +42,7 @@
                 android:layout_toEndOf="@+id/docType"
                 android:text="@string/upload_again"
                 android:textColor="@color/red_status"
-                android:textSize="18px"
+                android:textSize="20px"
                 android:visibility="gone"
             />
 
@@ -56,7 +55,7 @@
                 android:layout_toEndOf="@+id/docType"
                 android:text="@string/Requirement"
                 android:textColor="@color/red_status"
-                android:textSize="24px"
+                android:textSize="20px"
                 android:visibility="gone"
             />
 
@@ -69,7 +68,7 @@
                 android:layout_marginTop="32px"
                 android:layout_marginStart="52px"
                 android:text="@string/Requirement"
-                android:textColor="@color/grey_black_light"
+                android:textColor="@color/textColorMedium"
                 android:textSize="24px"
             />
 
@@ -78,33 +77,25 @@
                 android:id="@+id/imageViewInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="10px"
-                android:layout_marginTop="10px"
-                android:paddingTop="20px"
-                android:paddingEnd="10px"
+                android:layout_marginTop="30px"
                 android:layout_below="@id/docType"
+                android:tag="mwar"
                 android:layout_toEndOf="@id/docRequirement"
-                android:src="@drawable/ic_information"/>
+                android:src="@drawable/ic_information"
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/imageViewUploadDoc"
-                android:layout_width="150px"
-                android:layout_height="150px"
+                android:layout_width="100px"
+                android:layout_height="100px"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:tag="mwar"
                 android:layout_marginEnd="20px"
                 android:src="@drawable/ic_addimage"/>
 
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="680px"
-            android:layout_height="2px"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="20px"
-            android:layout_marginTop="5px"
-            android:background="@color/menu_black"
-            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayoutImageStatus"
@@ -126,6 +117,7 @@
                 android:layout_marginTop="10px"
                 android:background="@drawable/add_img_selector"
                 android:orientation="vertical"
+                android:tag="mwar"
                 android:padding="0px"
                 android:visibility="visible">
 
@@ -136,6 +128,7 @@
                     android:layout_marginStart="50px"
                     android:layout_marginTop="24px"
                     android:background="@drawable/image_icon"
+                    android:tag="mwar"
                     android:visibility="gone"/>
 
                 <TextView
@@ -216,6 +209,7 @@
                     android:layout_marginStart="50px"
                     android:layout_marginTop="24px"
                     android:background="@drawable/image_icon"
+                    android:tag="mwar"
                     android:visibility="gone"/>
 
                 <TextView
@@ -248,16 +242,6 @@
                 android:tag="mwar"
                 android:visibility="gone"/>
 
-            <ImageView
-                android:id="@+id/imageViewAddImageDisabled"
-                android:layout_width="203px"
-                android:layout_height="203px"
-                android:layout_marginTop="10px"
-                android:layout_toEndOf="@+id/addImageLayout2"
-                android:src="@drawable/add_img_dsble"
-                android:tag="mwar"
-                android:visibility="invisible"/>
-
 
             <ImageView
                 android:id="@+id/imageViewDocStatus"
@@ -265,6 +249,7 @@
                 android:layout_height="40px"
                 android:layout_marginEnd="60px"
                 android:layout_alignParentEnd="true"
+                android:tag="mwar"
                 android:src="@drawable/doc_uploaded"/>
 
 
@@ -274,7 +259,9 @@
             android:id="@+id/bottomLine"
             android:layout_width="match_parent"
             android:layout_height="3px"
-            android:background="@color/grey_light"/>
+            android:layout_marginStart="30px"
+            android:layout_marginEnd="30px"
+            android:background="@color/dividerColor"/>
 
     </LinearLayout>
 
