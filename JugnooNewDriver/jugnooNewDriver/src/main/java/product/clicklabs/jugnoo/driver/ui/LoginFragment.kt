@@ -367,8 +367,11 @@ class LoginFragment : Fragment() {
         super.onHiddenChanged(hidden)
 
         if (!hidden) {
+            mListener?.toggleDisplayFlags(false)
             toolbarChangeListener.setToolbarVisibility(false)
             JSONParser.saveAccessToken(parentActivity, "")
+        }else{
+            mListener?.toggleDisplayFlags(true)
         }
     }
 
@@ -471,6 +474,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        mListener?.toggleDisplayFlags(true)
         super.onDestroyView()
     }
 }

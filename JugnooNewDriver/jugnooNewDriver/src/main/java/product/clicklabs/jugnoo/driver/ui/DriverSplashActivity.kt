@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.widget.FrameLayout
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
@@ -63,6 +64,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driver_splash_activity)
+        AndroidBug5497Workaround.assistActivity(this)
         FlurryAgent.init(this, Data.FLURRY_KEY)
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
@@ -237,6 +239,27 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
+    }
+
+    override fun toggleDisplayFlags(remove:Boolean) {
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+
+                if(remove){
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+
+                }else{
+                    window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    window?.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                }
+
+
+            }
+
+
     }
 
     override fun setToolbarText(title: String) {

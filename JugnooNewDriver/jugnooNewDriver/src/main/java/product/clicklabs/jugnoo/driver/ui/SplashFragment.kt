@@ -56,6 +56,7 @@ class SplashFragment : Fragment() {
     private val compositeDisposable by lazy { CompositeDisposable() }
     private var isPendingExecutionOngoing = false
     private var isFirstTime = true
+    private var redirectedToLogin = false
 
     init {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
@@ -384,7 +385,7 @@ class SplashFragment : Fragment() {
                 })
             }
         }else{
-            mListener?.openPhoneLoginScreen(true, imageView)
+            redirectToLogin()
         }
 
     }
@@ -392,9 +393,14 @@ class SplashFragment : Fragment() {
 
     private var logoutCallback = object: LogoutCallback {
         override fun redirectToSplash(): Boolean {
-            mListener?.openPhoneLoginScreen(true, imageView)
+            redirectToLogin()
             return false
         }
+    }
+
+    private fun redirectToLogin() {
+        redirectedToLogin = true;
+        mListener?.openPhoneLoginScreen(true, imageView)
     }
 
     private fun showTokenNotFoundDialog(){
@@ -440,6 +446,8 @@ class SplashFragment : Fragment() {
         fun registerForSmsReceiver(register: Boolean)
 
         fun getPrefillOtpIfany():String?
+
+        fun toggleDisplayFlags(remove:Boolean)
     }
 
     override fun onDestroy() {
@@ -457,21 +465,19 @@ class SplashFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        removeNavigationFlags()
+
+        if (!redirectedToLogin ) {
+            /**
+             * removes the translucent flags on the onscreen navigation bar for kikat above devices
+             */
+            mListener?.toggleDisplayFlags(true)
+
+
+        }
         super.onDestroyView()
     }
 
 
-    /**
-     * removes the translucent flags on the onscreen navigation bar for kikat above devices
-     */
-    private fun removeNavigationFlags() {
 
-        val w = parentActivity?.getWindow()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
 
 }
