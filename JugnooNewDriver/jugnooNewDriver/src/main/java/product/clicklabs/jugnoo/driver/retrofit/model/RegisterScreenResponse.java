@@ -4,12 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 
 /**
  * Created by aneeshbansal on 09/09/15.
  */
 
-public class RegisterScreenResponse extends FeedCommonResponse {
+public class RegisterScreenResponse extends FeedCommonResponseKotlin {
 
 
 	@SerializedName("phone_no")

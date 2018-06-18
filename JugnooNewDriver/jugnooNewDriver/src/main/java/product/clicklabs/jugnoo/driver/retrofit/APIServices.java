@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
+import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -399,6 +400,10 @@ public interface APIServices {
 	@POST("/fetch_active_locales")
 	void fetchLanguageListKotlin(@FieldMap Map<String, String> params,
 					 Callback<DriverLanguageResponse> callback);
+	@FormUrlEncoded
+	@POST("/driver/self_assign")
+	void requestManualRide(@FieldMap Map<String, String> params,
+					 Callback<ManualRideResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/set_locale_preference")

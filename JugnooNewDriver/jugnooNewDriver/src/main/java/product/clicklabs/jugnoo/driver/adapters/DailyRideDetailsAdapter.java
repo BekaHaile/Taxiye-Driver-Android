@@ -190,7 +190,12 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					totalRides = dailyEarningResponse.getTotalTrips() - dailyEarningResponse.getTotalDelivery();
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides+" "+ activity.getResources().getString(R.string.rides));
-					((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+dailyEarningResponse.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
+					if(dailyEarningResponse.getTotalDelivery() > 0) {
+						((ViewHolderHeader) holder).textViewDeliveryCount.setText("" + dailyEarningResponse.getTotalDelivery() + " " + activity.getResources().getString(R.string.deliveries));
+						((ViewHolderHeader) holder).textViewDeliveryCount.setVisibility(View.VISIBLE);
+					} else {
+						((ViewHolderHeader) holder).textViewDeliveryCount.setVisibility(View.GONE);
+					}
 
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings(),invoiceDetailResponseNew.getCurrencyUnit()));
@@ -198,12 +203,13 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderHeader) holder).onlineTimeValue.setText(Utils.getKilometers(invoiceDetailResponseNew.getTotalDistanceTravelled(),activity, invoiceDetailResponseNew.getDistanceUnit()));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount(),invoiceDetailResponseNew.getCurrencyUnit()));
 
-					if(invoiceDetailResponseNew.getTotalDelivery() == -1){
+					if(invoiceDetailResponseNew.getTotalDelivery() < 0){
 						((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.trips));
 						((ViewHolderHeader) holder).textViewDeliveryCount.setVisibility(View.GONE);
 					} else {
 						((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.rides));
 						((ViewHolderHeader) holder).textViewDeliveryCount.setText(""+invoiceDetailResponseNew.getTotalDelivery()+" "+ activity.getResources().getString(R.string.deliveries));
+						((ViewHolderHeader) holder).textViewDeliveryCount.setVisibility(View.VISIBLE);
 					}
 
 

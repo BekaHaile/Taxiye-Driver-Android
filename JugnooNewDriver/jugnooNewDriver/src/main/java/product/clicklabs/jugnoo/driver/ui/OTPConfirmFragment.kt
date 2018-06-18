@@ -21,9 +21,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommon
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -102,6 +100,18 @@ class OTPConfirmFragment : Fragment() {
 
         labelNumber.text = "$countryCode $phoneNumber"
         tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
+
+        // applyFonts
+
+        parentActivity?.let {
+            (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenLight(parentActivity!!)
+            labelNumber.typeface = Fonts.mavenRegular(parentActivity!!)
+            edtOTP.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvResendOTP.typeface = Fonts.mavenRegular(parentActivity!!)
+            btnSubmit.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvCall.typeface = Fonts.mavenLight(parentActivity!!)
+        }
+
 
         tvResendOTP.setOnClickListener({ generateOTP() })
         btnSubmit.setOnClickListener({ verifyOTP(edtOTP.text.toString()) })
@@ -340,7 +350,7 @@ class OTPConfirmFragment : Fragment() {
         params.put(Constants.LOGIN_TYPE, "1")
         Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
         Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-        ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+        ApiCommonKt<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }

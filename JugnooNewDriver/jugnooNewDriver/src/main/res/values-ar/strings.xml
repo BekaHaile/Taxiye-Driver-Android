@@ -667,5 +667,6 @@
     <string name="get_credits">تلقي الاعتمادات من صديق</string>
     <string name="get_credits_from_friends">الحصول على أرصدة من الأصدقاء</string>
     <string name="earn_credits_format">(ائتمانات %s كسب)</string>
+    <string name="city_unavailable">آسف! حاليا خدماتنا غير متوفرة في مدينتك</string>
 
 </resources>

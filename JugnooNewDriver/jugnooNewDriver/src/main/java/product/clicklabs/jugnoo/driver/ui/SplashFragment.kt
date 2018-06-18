@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.design.widget.Snackbar
@@ -26,7 +27,6 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_notification_center.*
 import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
@@ -49,11 +49,13 @@ class SplashFragment : Fragment() {
     private val TAG = SplashFragment::class.simpleName
     private val intentFilter = IntentFilter()
     private var mListener:InteractionListener?=null
-    private lateinit var parentActivity : Activity
+    private var parentActivity : Activity? = null
     private val behaviourSubject by lazy { executePending() }
     private val deviceTokenObservable by lazy { PublishSubject.create<Void>() }
-    private var disposable : Disposable? = null
+    private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
+    private var isPendingExecutionOngoing = false
+    private var isFirstTime = true
 
     init {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
@@ -89,6 +91,12 @@ class SplashFragment : Fragment() {
         }
     }
 
+    override fun onDetach() {
+        parentActivity = null
+        mListener = null
+        super.onDetach()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.frag_splash)
     }
@@ -101,30 +109,40 @@ class SplashFragment : Fragment() {
 
     private fun checkForInternet(rootView: View) {
 
-        parentActivity.withNetwork( { start() }, false, {
+        parentActivity?.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
 
             val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
+                        parentActivity?.let {
+                            parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                        }
 
-                        this@SplashFragment.activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
                     }
 
 
                     override fun onViewDetachedFromWindow(p0: View?) {
-                        this@SplashFragment.activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
+                        parentActivity?.let {
+                            parentActivity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                        }
                     }
 
 
-                });
+                })
+
+                if (isFirstTime) {
+                    parentActivity?.let {
+                        parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+                    }
+                }
+
             }
-
-
             snackBar.setAction("Retry", {
 
                 // add on screen navigation translucent flags for smooth image shared animation
@@ -132,8 +150,16 @@ class SplashFragment : Fragment() {
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
-            snackBar.show()
 
+            if(isFirstTime) {
+                // delay showing the first snackbar to allow navigation flags to be set
+
+                Handler().postDelayed({ snackBar.show() }, 100)
+                isFirstTime = false
+
+            } else {
+                snackBar.show()
+            }
 
         })
     }
@@ -150,16 +176,16 @@ class SplashFragment : Fragment() {
                 .timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({},{ showTokenNotFoundDialog()},{
-                    pushAPIs(this@SplashFragment.activity)
+                    pushAPIs(parentActivity)
                     LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
                 }))
     }
 
     private fun isMockLocationEnabled():Boolean{
         if (Utils.mockLocationEnabled(Data.locationFetcher.locationUnchecked)) {
-            DialogPopup.alertPopupWithListener(this@SplashFragment.activity, "", resources.getString(R.string.disable_mock_location)) {
+            DialogPopup.alertPopupWithListener(parentActivity, "", resources.getString(R.string.disable_mock_location)) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                activity.finish()
+                parentActivity?.finish()
             }
             return true
         }
@@ -191,17 +217,19 @@ class SplashFragment : Fragment() {
     private fun pushAPIs(context: Context?){
         if(isMockLocationEnabled()) return
 
-        disposable = behaviourSubject.
+        apiDisposable = behaviourSubject.
                     retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
                   .subscribeOn(Schedulers.newThread())
                //   .delay(7000,TimeUnit.MILLISECONDS)
                   .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(this@SplashFragment.activity) })
-        compositeDisposable.add(disposable!!)
+                  .doAfterTerminate { isPendingExecutionOngoing = false }
+                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(parentActivity) })
+        compositeDisposable.add(apiDisposable!!)
     }
 
 
     fun executePending(): BehaviorSubject<Boolean> {
+        isPendingExecutionOngoing = true
 
         val subject =  BehaviorSubject.create<Boolean>()
 
@@ -221,7 +249,9 @@ class SplashFragment : Fragment() {
         return subject
     }
 
-    fun accessTokenLogin(activity: Activity) {
+    private fun accessTokenLogin(activity: Activity?) {
+
+        if (activity == null) return
 
         val accPair = JSONParser.getAccessTokenPair(activity)
         val responseTime = System.currentTimeMillis()
@@ -328,7 +358,7 @@ class SplashFragment : Fragment() {
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(activity, accessToken)
-                                    (parentActivity as DriverSplashActivity).addDriverSetupFragment(accessToken)
+                                    parentActivity?.let { (it as DriverSplashActivity).addDriverSetupFragment(accessToken) }
                                 } else {
                                     DialogPopup.alertPopup(activity, "", message)
                                 }
@@ -350,7 +380,7 @@ class SplashFragment : Fragment() {
 
             } else {
                 DialogPopup.alertPopupWithListener(activity, "", Data.CHECK_INTERNET_MSG,{
-                    this@SplashFragment.activity.finish()
+                    parentActivity?.finish()
                 })
             }
         }else{
@@ -369,24 +399,37 @@ class SplashFragment : Fragment() {
 
     private fun showTokenNotFoundDialog(){
         DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
-                , { this@SplashFragment.activity.finish(); })
+                , { parentActivity?.finish(); })
     }
 
     override fun onResume() {
         super.onResume()
 
+        // check if device token has been generated in paused state,
+        // complete subject if generated else register broadcast
         if (FirebaseInstanceId.getInstance().token != null) {
             deviceTokenObservable.onComplete()
         } else {
             LocalBroadcastManager.getInstance(activity).registerReceiver(deviceTokenReceiver,intentFilter)
+        }
+
+        // if the pending api execution has already been subscribed once, resubscribe
+        if (isPendingExecutionOngoing) {
+            pushAPIs(parentActivity)
         }
     }
 
     override fun onPause() {
         super.onPause()
 
+        // unregister the device token broadcast in paused state
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
 
+        // if pending api execution has been started dispose the api disposable
+        // which will be resubscribed in onResume
+        if (isPendingExecutionOngoing && apiDisposable?.isDisposed == false) {
+            apiDisposable?.dispose()
+        }
     }
 
     interface InteractionListener{
@@ -424,10 +467,10 @@ class SplashFragment : Fragment() {
      */
     private fun removeNavigationFlags() {
 
-        val w = activity.getWindow()
+        val w = parentActivity?.getWindow()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 

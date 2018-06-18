@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.utils.Fonts
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
@@ -28,17 +29,17 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         else vehicleTypes[currentSelectedPos]
     }
 
-    fun setCurrentSelectedPos(pos: Int) {
-        currentSelectedPos = pos
-    }
+
 
     override fun getItemCount(): Int {
         return vehicleTypes.size
     }
 
-    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>) {
+    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>,defaultIndex: Int) {
         this.vehicleTypes = vehicleTypes
         notifyDataSetChanged()
+        setNewPosition(defaultIndex);
+
     }
 
     override fun onBindViewHolder(holder: ViewHolderVehicle, i: Int) {
@@ -73,6 +74,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
 
 
         init {
+            tvName.typeface = Fonts.mavenRegular(context)
             clRoot.setOnClickListener { v -> itemListener.onClickItem(convertView, v); }
         }
     }
@@ -81,15 +83,24 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         val pos = recyclerView.getChildAdapterPosition(parentView);
         if (pos != RecyclerView.NO_POSITION) {
 
-            if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes.size && currentSelectedPos != pos) {
+            setNewPosition(pos)
+
+        }
+    }
+
+    private fun setNewPosition(pos: Int) {
+        if (pos>=0 && pos < vehicleTypes.size && currentSelectedPos != pos) {
+
+
+          if(currentSelectedPos>=0 && currentSelectedPos<vehicleTypes.size){
                 vehicleTypes[currentSelectedPos].isSelected = false;
                 notifyItemChanged(currentSelectedPos)
+         }
 
-                vehicleTypes[pos].isSelected = true;
-                currentSelectedPos = pos;
-                notifyItemChanged(currentSelectedPos);
-            }
 
+            vehicleTypes[pos].isSelected = true;
+            currentSelectedPos = pos;
+            notifyItemChanged(currentSelectedPos);
         }
     }
 

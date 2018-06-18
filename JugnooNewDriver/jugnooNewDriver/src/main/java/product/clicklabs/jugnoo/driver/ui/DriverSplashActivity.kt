@@ -15,6 +15,8 @@ import android.widget.FrameLayout
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import kotlinx.android.synthetic.main.activity_toolbar.*
+import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
 import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
@@ -53,6 +55,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.SplashThemeNormal)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driver_splash_activity)
         FlurryAgent.init(this, Data.FLURRY_KEY)
@@ -65,6 +68,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
+
+        tvToolbar.typeface = Fonts.mavenRegular(this)
 
         setToolbarVisibility(false)
 

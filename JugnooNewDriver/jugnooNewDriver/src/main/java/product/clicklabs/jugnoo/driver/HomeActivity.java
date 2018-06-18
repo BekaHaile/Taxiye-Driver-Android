@@ -51,7 +51,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -172,9 +171,9 @@ import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
-import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
+import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -233,7 +232,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl,manaulRequestRl;
 	TextView inviteFriendText, notificationCenterText;
 
 	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
@@ -569,6 +568,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
 			driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
+			manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
@@ -631,6 +631,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.tvDriverCredits)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.tvManualRequest)).setTypeface(Fonts.mavenRegular(this));
 
 			btnChatHead = (TextView) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1265,6 +1266,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				}
 			});
+			manaulRequestRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					drawerLayout.closeDrawer(GravityCompat.START);
+					startActivity(new Intent(HomeActivity.this, ManualRideActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}
+			});
 
 			notificationCenterRl.setOnClickListener(new OnClickListener() {
 				@Override
@@ -1548,10 +1559,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
-			if (link.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-				logoutRl.setVisibility(View.GONE);
-			} else {
+			if (Prefs.with(this).getInt(Constants.KEY_LOGOUT, getResources().getInteger(R.integer.driver_logout_enabled)) == 1) {
 				logoutRl.setVisibility(View.VISIBLE);
+			} else {
+				logoutRl.setVisibility(View.GONE);
 			}
 
 			if(!currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
@@ -2331,6 +2342,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverCreditsRl.setVisibility(View.VISIBLE);
 			} else {
 				driverCreditsRl.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_MANUAL_RIDE, 0) == 1){
+				manaulRequestRl.setVisibility(View.VISIBLE);
+			} else {
+				manaulRequestRl.setVisibility(View.GONE);
 			}
 
 
@@ -4194,8 +4211,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
-					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
-							getResources().getColor(R.color.new_orange));
+//					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
+//							getResources().getColor(R.color.new_orange));
 
 
 					try {
@@ -8761,14 +8778,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (arrived || actualDispalcement < arrivingDistance) {
 							buttonMarkArrived.setText(getResources().getString(R.string.arrived));
 							buttonMarkArrived.setEnabled(true);
-							buttonMarkArrived.setBackgroundResource(R.drawable.new_orange_btn_normal_rounded);
+							buttonMarkArrived.setAlpha(1f);
 							if(isTourFlag){
 								handleTourView(isTourFlag, getString(R.string.tutorial_tap_arrived_if_at_pickup));
 							}
 						} else {
 							buttonMarkArrived.setText(getResources().getString(R.string.arrivingdot));
 							buttonMarkArrived.setEnabled(false);
-							buttonMarkArrived.setBackgroundResource(R.drawable.new_fadded_orange_btn_normal_rounded);
+							buttonMarkArrived.setAlpha(0.8f);
 							if(isTourFlag){
 								handleTourView(isTourFlag, getString(R.string.tutorial_driver_to_pickup_point));
 							}

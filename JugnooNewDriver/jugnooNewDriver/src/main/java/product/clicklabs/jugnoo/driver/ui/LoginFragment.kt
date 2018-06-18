@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import com.picker.CountryPicker
 import kotlinx.android.synthetic.main.activity_driver_credits.*
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.tvLanguage
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -39,6 +41,7 @@ import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -90,6 +93,16 @@ class LoginFragment : Fragment() {
         val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
 
         with(rootView) {
+
+            //apply fonts
+
+            tvLanguage.typeface = Fonts.mavenLight(parentActivity)
+            tvLabel.typeface = Fonts.mavenRegular(parentActivity)
+            tvCountryCode.typeface = Fonts.mavenRegular(parentActivity)
+            edtPhoneNo.typeface = Fonts.mavenRegular(parentActivity)
+            btnGenerateOtp.typeface = Fonts.mavenRegular(parentActivity)
+
+
             imageView.setOnLongClickListener {
                 confirmDebugPasswordPopup(DriverDebugOpenMode.DEBUG)
                 FlurryEventLogger.debugPressed("no_token")
@@ -138,7 +151,7 @@ class LoginFragment : Fragment() {
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
                 Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
                 Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-                ApiCommon<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
+                ApiCommonKt<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
                     override fun onNotConnected(): Boolean {
                         return false
                     }
@@ -182,7 +195,7 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKt<DriverLanguageResponse>(activity = activity, showLoader = false, checkForActionComplete = true)
+        ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
@@ -193,7 +206,8 @@ class LoginFragment : Fragment() {
 
                         setLanguageLoading(text = -1, showText = false, showProgress = false)
 
-                        val dataAdapter: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_spinner_item, t.languageList)
+                        val dataAdapter: ArrayAdapter<String>
+                                = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
                         rootView.language_spinner.visible()
@@ -357,6 +371,7 @@ class LoginFragment : Fragment() {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
                 btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+                TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }
         } catch (e: Exception) {
@@ -365,7 +380,7 @@ class LoginFragment : Fragment() {
         }
 
         // animate
-        TransitionManager.beginDelayedTransition(constraint)
+
     }
 
     private fun setLanguageLoading(@StringRes text: Int, showErrorImage: Boolean = false,
@@ -389,6 +404,7 @@ class LoginFragment : Fragment() {
         val sharedElementEnterTransition = sharedElementEnterTransition as TransitionSet
         sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition) {
+
                 animateViews()
             }
 
@@ -404,15 +420,44 @@ class LoginFragment : Fragment() {
     }
 
     private fun animateViews() {
-        getLanguageList(false)
 
-        with(rootView){
-            tvLabel.visible()
-            backgroundPhone.visible()
-            tvCountryCode.visible()
-            edtPhoneNo.visible()
-            btnGenerateOtp.visible()
+
+        try {
+            getLanguageList(false)
+
+            with(rootView){
+                tvLabel.visible()
+                backgroundPhone.visible()
+                tvCountryCode.visible()
+                edtPhoneNo.visible()
+                btnGenerateOtp.visible()
+            }
+        } catch (e: Exception) {
         }
+    }
+
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<String>?) : ArrayAdapter<String>(context, resource, objects) {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View = super.getView(position, convertView, parent)
+            if(view is TextView) {
+                (view).typeface = Fonts.mavenRegular(context)
+            }
+
+            return view
+        }
+
+
+
+        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val view: View = super.getDropDownView(position, convertView, parent)
+            if(view is TextView) {
+                (view).typeface = Fonts.mavenRegular(context)
+            }
+
+            return view
+        }
+
     }
 
     override fun onDestroyView() {

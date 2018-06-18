@@ -1731,7 +1731,9 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
 																									
 <string name="hide">Cacher</string>																									
 																									
-<string name="drop_location">Lieu de dépôt</string>																									
+<string name="drop_location">Lieu de dépôt</string>
+
+ <string name="city_unavailable">Pardon! Actuellement, nos services ne sont pas disponibles dans votre ville.</string>
 																									
 																									
 -<string-array name="CountryCodes">																									

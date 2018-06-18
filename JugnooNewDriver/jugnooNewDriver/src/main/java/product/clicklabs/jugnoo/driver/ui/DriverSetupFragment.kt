@@ -25,18 +25,16 @@ import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommon
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.utils.*
 
 
 class DriverSetupFragment : Fragment() {
-    private lateinit var parentActivity: DriverSplashActivity
+    private var parentActivity: DriverSplashActivity? = null
 
     private lateinit var accessToken: String
-    private lateinit var cityId: String
-    private lateinit var toolbarChangeListener: ToolbarChangeListener
+    private var cityId: String? = null
+    private var toolbarChangeListener: ToolbarChangeListener? = null
 
     private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
 
@@ -69,24 +67,28 @@ class DriverSetupFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
-        toolbarChangeListener.setToolbarVisibility(true)
+        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        toolbarChangeListener?.setToolbarVisibility(true)
 
-        tvEnterName.typeface = Fonts.mavenLight(activity)
-        editTextName.typeface = Fonts.mavenRegular(activity)
-        tvSelectVehicle.typeface = Fonts.mavenLight(activity)
+            tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
+            editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvSelectVehicle.typeface = Fonts.mavenLight(parentActivity!!)
+            bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
+            bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
+
 
 
         bContinue.typeface = Fonts.mavenRegular(activity)
         bContinue.setOnClickListener { if (validateData()) registerDriver() }
 
         bCancel.typeface = Fonts.mavenRegular(activity)
-        bCancel.setOnClickListener { parentActivity.onBackPressed() }
+        bCancel.setOnClickListener { parentActivity?.onBackPressed() }
 
 
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(activity, 3)
-            addItemDecoration(ItemOffsetDecoration(parentActivity, R.dimen.spacing_grid_recycler_view));
+            addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
             adapter = this@DriverSetupFragment.adapter
         }
 
@@ -118,8 +120,8 @@ class DriverSetupFragment : Fragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         if (!hidden) {
-            toolbarChangeListener.setToolbarText(getString(R.string.register_as_driver))
-            toolbarChangeListener.setToolbarVisibility(true)
+            toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+            toolbarChangeListener?.setToolbarVisibility(true)
         }
         super.onHiddenChanged(hidden)
     }
@@ -134,6 +136,13 @@ class DriverSetupFragment : Fragment() {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
             return false
         }
+
+
+        if (cityId == null || cityId == "0") {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.city_unavailable))
+            return false
+        }
+
         return true
     }
 
@@ -143,7 +152,7 @@ class DriverSetupFragment : Fragment() {
                 KEY_ACCESS_TOKEN to accessToken,
                 "user_name" to editTextName.text.trim().toString(),
                 "alt_phone_no" to "",
-                "city" to cityId,
+                "city" to cityId!!,
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
                 "vehicle_type" to "" + adapter.getCurrentSelectedVehicle()!!.vehicleType,
@@ -162,11 +171,11 @@ class DriverSetupFragment : Fragment() {
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
         HomeUtil.putDefaultParams(params)
-        ApiCommon<RegisterScreenResponse>(parentActivity).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallback<RegisterScreenResponse>() {
+    ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
-                    Log.d("", t.message)
+                    Log.d("", t.serverMessage())
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
                             openDocumentUploadActivity()
@@ -178,8 +187,8 @@ class DriverSetupFragment : Fragment() {
 
                         ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
                             DialogPopup.alertPopupWithListener(activity, "", message, {
-                                parentActivity.openPhoneLoginScreen()
-                                parentActivity.setToolbarVisibility(false)
+                                parentActivity?.openPhoneLoginScreen()
+                                parentActivity?.setToolbarVisibility(false)
                             })
 
                         }
@@ -202,28 +211,16 @@ class DriverSetupFragment : Fragment() {
 
         HomeUtil.putDefaultParams(params)
 
-        ApiCommon<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
+        ApiCommonKt<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
-                if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.getFlag()) {
-                    onError(t, t.message, t.flag)
+                if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
+                    onError(t, t.serverMessage(), t.flag)
                     return
                 }
                 vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
                 vehicleTypes.removeAt(0)
                 cityId = t.currentCityId
-
-                var defaultIndex: Int = -1
-
-                for ((index, item) in vehicleTypes.withIndex()) {
-                    if (item.vehicleType == VehicleTypeValue.AUTOS.value) {
-                        item.isSelected = true
-                        defaultIndex = index
-                        break
-                    }
-                }
-
-                adapter.setList(vehicleTypes)
-                adapter.setCurrentSelectedPos(defaultIndex)
+                adapter.setList(vehicleTypes,0)
                 groupView.visible()
             }
 
@@ -249,5 +246,11 @@ class DriverSetupFragment : Fragment() {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
         toolbarChangeListener = context as ToolbarChangeListener
+    }
+
+    override fun onDetach() {
+        parentActivity = null
+        toolbarChangeListener = null
+        super.onDetach()
     }
 }
