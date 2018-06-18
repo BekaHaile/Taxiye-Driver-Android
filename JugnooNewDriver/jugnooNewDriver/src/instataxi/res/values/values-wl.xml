@@ -53,6 +53,7 @@
     <integer name="show_invoices">@integer/view_visible</integer>
     <integer name="show_driver_resources">@integer/view_visible</integer>
     <integer name="show_refer_earn">@integer/view_visible</integer>
+    <integer name="show_t_and_c">@integer/view_visible</integer>
 
 
     <!--Profile Screen-->
