@@ -180,7 +180,7 @@ public class DriverProfileActivity extends BaseActivity {
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DriverProfileActivity.this, HelpActivity.class));
+                startActivity(new Intent(DriverProfileActivity.this, AboutActivity.class));
                 FlurryEventLogger.event(FlurryEventNames.TERMS_OF_USE);
             }
         });

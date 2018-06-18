@@ -91,4 +91,55 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <style name="title">
+        <item name="android:layout_width">
+            wrap_content
+        </item>
+        <item name="android:layout_height">
+            wrap_content
+        </item>
+        <item name="android:layout_centerVertical">
+            true
+        </item>
+        <item name="android:textColor">
+            @color/white
+        </item>
+        <item name="android:layout_centerInParent">
+            true
+        </item>
+        <item name="android:textSize">
+            17sp
+        </item>
+        <item name="android:textAllCaps">
+            true
+        </item>
+        <item name="android:tag">
+            @string/dont_touch_me
+        </item>
+    </style>
+
+    <style name="forward_image">
+        <item name="android:layout_width">
+            60.7px
+        </item>
+        <item name="android:layout_height">
+            76.9px
+        </item>
+        <item name="android:layout_centerVertical">
+            true
+        </item>
+        <item name="android:padding">
+            20px
+        </item>
+        <item name="android:rotation">
+            180
+        </item>
+        <item name="android:src">
+            @drawable/arrow_icon_selector
+        </item>
+        <item name="android:tag">
+            mwar
+        </item>
+    </style>
+
 </resources>

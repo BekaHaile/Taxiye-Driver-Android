@@ -1033,6 +1033,12 @@
         blank
         fragment
     </string>
+    <string name="rate_us_on_play_store">Rate us on Play Store</string>
+    <string name="like_us_on_facebook">Like us on Facebook</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="who_are_we">Who are we?</string>
+    <string name="facebook_not_installed">Facebook app not enabled</string>
 
 
 </resources>
