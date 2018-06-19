@@ -1039,6 +1039,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="who_are_we">Who are we?</string>
     <string name="facebook_not_installed">Facebook app not enabled</string>
+    <string name="about">About</string>
 
 
 </resources>

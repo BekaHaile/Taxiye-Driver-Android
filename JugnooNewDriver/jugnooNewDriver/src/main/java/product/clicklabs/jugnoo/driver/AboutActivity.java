@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ public class AboutActivity extends BaseActivity {
         facebookPageId = getString(R.string.facebook_page_id);
         facebookPageName = getString(R.string.facebook_page_name);
         relative = (RelativeLayout) findViewById(R.id.relative);
-        new ASSL(this, (ViewGroup) relative, 1134, 720, false);
 
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         textViewTitle.setTypeface(Fonts.mavenMedium(this));
@@ -156,7 +154,6 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        ASSL.closeActivity(relative);
         System.gc();
         super.onDestroy();
     }
