@@ -60,7 +60,7 @@
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_gone</integer>
     <integer name="show_t_and_c_profile">@integer/view_invisible</integer>
-    <drawable name="bg_profile_background">@color/red_v2</drawable>
+    <drawable name="bg_profile_background">@color/theme_color</drawable>
 
 
 
@@ -70,6 +70,6 @@
     <integer name="show_call_in_otp">@integer/view_gone</integer>
 
 
-
+    <drawable name="windowBackgroundColor">@color/theme_color</drawable>
 
 </resources>
