@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
 import android.support.constraint.ConstraintSet
@@ -18,10 +19,7 @@ import android.text.InputType
 import android.text.TextUtils
 import android.transition.TransitionInflater
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -66,6 +64,7 @@ class LoginFragment : Fragment() {
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
     private var applyTransition = false;
+    private var handler = Handler()
 
 
     override fun onAttach(activity: Activity?) {
@@ -178,12 +177,24 @@ class LoginFragment : Fragment() {
                 })
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
+            edtPhoneNo.setOnTouchListener(object: View.OnTouchListener{
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                    this@LoginFragment.handler.postDelayed(showKeyboardRunnable,200);
 
+                    return false
+                }
+
+            })
 //            progressLanguage.getProgressDrawable()
 //                    .setColorFilter(ContextCompat.getColor(getActivity(),R.color.new_orange), PorterDuff.Mode.MULTIPLY)
         }
 
         return rootView
+    }
+    val  showKeyboardRunnable = Runnable{
+        if(scrollView!=null ){
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
     private fun getLanguageList(showError: Boolean) {
