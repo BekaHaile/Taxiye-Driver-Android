@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,10 +83,14 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 		if(cancelOption.checked){
 			holder.relative.setBackgroundColor(Color.WHITE);
 			holder.imageViewCancelOptionCheck.setImageResource(R.drawable.option_checked_orange);
+			holder.imageViewCancelOptionCheck.setColorFilter(ContextCompat.getColor(holder.imageViewCancelOptionCheck.getContext(), R.color.red_v2),
+					android.graphics.PorterDuff.Mode.MULTIPLY);
+
 		}
 		else{
 			holder.relative.setBackgroundColor(Color.TRANSPARENT);
 			holder.imageViewCancelOptionCheck.setImageResource(R.drawable.option_unchecked);
+			holder.imageViewCancelOptionCheck.setColorFilter(null);
 		}
 
 		holder.relative.setOnClickListener(new View.OnClickListener() {

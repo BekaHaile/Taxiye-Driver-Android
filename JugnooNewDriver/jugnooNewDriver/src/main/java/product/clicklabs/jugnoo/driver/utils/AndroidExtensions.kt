@@ -29,6 +29,10 @@ fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
+fun  View.isGone():Boolean{
+    return  visibility==View.GONE
+}
+
 // ========================= VIEW INFLATE =========================
 
 fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {

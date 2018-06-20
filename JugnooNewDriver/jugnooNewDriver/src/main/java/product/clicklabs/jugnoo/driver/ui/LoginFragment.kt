@@ -426,11 +426,11 @@ class LoginFragment : Fragment() {
             getLanguageList(false)
 
             with(rootView){
-                tvLabel.visible()
-                backgroundPhone.visible()
-                tvCountryCode.visible()
-                edtPhoneNo.visible()
-                btnGenerateOtp.visible()
+                if(!tvLabel.isGone())tvLabel.visible()
+                if(!backgroundPhone.isGone())backgroundPhone.visible()
+                if(!tvCountryCode.isGone())tvCountryCode.visible()
+                if(!edtPhoneNo.isGone())edtPhoneNo.visible()
+                if(!btnGenerateOtp.isGone())btnGenerateOtp.visible()
             }
         } catch (e: Exception) {
         }

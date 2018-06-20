@@ -744,7 +744,7 @@
     <string name="update_location_notif_label">You are online</string>
     <string name="cd_jugnoo_logo">Jugnoo Logo</string>
     <string name="label_edt_phone">Please enter your phone number</string>
-    <string name="hint_edt_phone">Phone number</string>
+    <string name="hint_edt_phone">Phone Number</string>
     <string name="btn_text_OTP">GENERATE OTP</string>
     <string name="enter_one_time_pwd">Enter One Time Password</string>
     <string name="please_enter_your_name">Please enter your name</string>
