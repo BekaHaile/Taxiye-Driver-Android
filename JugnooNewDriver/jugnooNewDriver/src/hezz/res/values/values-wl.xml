@@ -18,7 +18,7 @@
     <!--White Label Key-->
     <string name="white_label_key">1ac6f54692c22e08ab9ddd9c383ff0a3</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">5272bed2276ac0c2fe3cdc2bfb5723c1</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
     <string name="file_provider">production.hezz.driver.provider</string>
@@ -66,7 +66,7 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
-
+    <bool name="use_fugu_key_hardcode">true</bool>
 
 
 </resources>

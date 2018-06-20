@@ -371,7 +371,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
                             android:visibility="visible"
-                            android:background="@drawable/new_orange_btn_corner_selector">
+                            android:background="@drawable/green_btn_call_selector">
 
                             <ImageView
                                 android:id="@+id/driverCallIcon"

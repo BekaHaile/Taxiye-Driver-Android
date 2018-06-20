@@ -77,7 +77,7 @@
     <color name="blue_dark_btn">#3B5999</color>
     <color name="blue_dark_btn_pressed">#1B3979</color>
     <color name="blue_black_v2">#3f3f4e</color>
-    <color name="black_earnings_bg">#2a2a3c</color>
+    <!--<color name="black_earnings_bg">#2a2a3c</color>-->
 
     <color name="red_btn">#8E8E8E</color>
     <color name="red_btn_pressed">#7E7E7E</color>
@@ -106,10 +106,10 @@
     <color name="orange_btn">#F99613</color>
     <!--<color name="orange_btn_pressed">#E98603</color>-->
 
-    <color name="orange_dark">#F96f01</color>
+    <!--<color name="orange_dark">#F96f01</color>-->
 
     <color name="black_text">#242424</color>
-    <color name="black_top_bar_bg">#232937</color>
+    <!--<color name="black_top_bar_bg">#232937</color>-->
     <color name="black_text_v2">#595968</color>
     <color name="black_text_v2_50op">#70595968</color>
     <color name="black_text_alpha">#99242424</color>
@@ -168,6 +168,8 @@
 
     <color name="dialog_border_color">#AA7E7D78</color>
     <color name="instataxi_yellow">#F8CE00</color>
+    <color name="call">#00cc00</color>
+    <color name="call_selected">#9000cc00</color>
   <!--  <color name="gradient_orange_v2">#ff8162</color>
     <color name="gradient_yellow_v2">#f8b542</color>-->
 

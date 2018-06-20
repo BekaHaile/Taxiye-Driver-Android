@@ -14,8 +14,10 @@ import android.transition.Transition
 import android.support.transition.TransitionManager
 import android.transition.TransitionSet
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.transition.TransitionInflater
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -97,6 +99,26 @@ class LoginFragment : Fragment() {
             }
             tvCountryCode.text = Utils.getCountryCode(parentActivity)
             tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+            edtPhoneNo.addTextChangedListener(object: TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+                    val s = p0?.toString() ?: ""
+                    if (s.startsWith("0")) {
+                        if (s.length > 1) {
+                            edtPhoneNo.setText(s.toString().substring(1))
+                        } else {
+                            edtPhoneNo.setText("")
+                        }
+                        Toast.makeText(parentActivity, "Phone number should not start with 0", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+            })
+
             btnGenerateOtp.setOnClickListener(View.OnClickListener {
                 val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
                 val countryCode: String = rootView.tvCountryCode.text.trim().toString()
