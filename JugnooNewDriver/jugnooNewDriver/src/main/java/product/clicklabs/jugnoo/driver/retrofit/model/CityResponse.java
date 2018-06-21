@@ -34,6 +34,22 @@ public class CityResponse extends FeedCommonResponseKotlin implements Serializab
 	@Expose
 	private List<OfferingType> offeringTypes = null;
 
+	@SerializedName("promo_code")
+	@Expose
+	private String promoCode;
+
+	@SerializedName("show_promo")
+	@Expose
+	private int showPromo;
+
+	public String getPromoCode() {
+		return promoCode;
+	}
+
+	public boolean getShowPromo() {
+		return showPromo==1;
+	}
+
 	/**
 	 * @return The currentCity
 	 */

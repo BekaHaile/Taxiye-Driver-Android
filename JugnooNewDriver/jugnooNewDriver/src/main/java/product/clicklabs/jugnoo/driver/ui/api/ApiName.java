@@ -9,5 +9,6 @@ public  enum ApiName {
     GET_CITIES,
     GET_LANGUAGES,
     REGISTER_DRIVER,
-    MANUAL_RIDE
+    MANUAL_RIDE,
+    APPLY_PROMO
 }

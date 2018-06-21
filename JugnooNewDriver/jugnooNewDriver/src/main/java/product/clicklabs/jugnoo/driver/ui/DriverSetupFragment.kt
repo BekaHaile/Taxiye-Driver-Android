@@ -21,11 +21,11 @@ import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 
 
@@ -80,7 +80,7 @@ class DriverSetupFragment : Fragment() {
 
 
         bContinue.typeface = Fonts.mavenRegular(activity)
-        bContinue.setOnClickListener { if (validateData()) registerDriver() }
+        bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
 
         bCancel.typeface = Fonts.mavenRegular(activity)
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
@@ -146,6 +146,16 @@ class DriverSetupFragment : Fragment() {
         return true
     }
 
+    private fun checkForPromoCode(){
+
+        if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled){
+            applyPromoCodeApi()
+            return
+        }
+
+        registerDriver()
+    }
+
     private fun registerDriver() {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val params = hashMapOf<String, String>(
@@ -170,7 +180,7 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
-        HomeUtil.putDefaultParams(params)
+    HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
@@ -204,6 +214,27 @@ class DriverSetupFragment : Fragment() {
         })
     }
 
+    private fun applyPromoCodeApi(){
+
+        val promoCode =  edtPromo.text.toString().trim()
+        ApiCommonKt<FeedCommonResponseKotlin>(activity,putAccessToken = true,successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+                .execute( hashMapOf(Constants.CODE to promoCode),ApiName.APPLY_PROMO,
+                object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
+
+                    override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+                        setPromoLayout(true,promoCode)
+                        registerDriver()
+                    }
+
+                    override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                        return false
+                    }
+
+
+                })
+
+    }
+
     private fun getCitiesAPI() {
         val params = hashMapOf(
                 Constants.KEY_LATITUDE to Data.latitude.toString(),
@@ -222,6 +253,8 @@ class DriverSetupFragment : Fragment() {
                 cityId = t.currentCityId
                 adapter.setList(vehicleTypes,0)
                 groupView.visible()
+                setPromoLayout(t.showPromo,t.promoCode)
+
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
@@ -230,6 +263,21 @@ class DriverSetupFragment : Fragment() {
                 return false;
             }
         })
+    }
+
+    private fun setPromoLayout(show:Boolean,promoText:String? = null) {
+        if (show) {
+            promoGroupView.visible()
+            if (promoText != null && !promoText.isBlank()) {
+                edtPromo.setText(promoText)
+                edtPromo.isEnabled = false
+            } else {
+                edtPromo.isEnabled = true
+                edtPromo.setText(null)
+            }
+        } else {
+            promoGroupView.gone()
+        }
     }
 
     private fun openDocumentUploadActivity() {

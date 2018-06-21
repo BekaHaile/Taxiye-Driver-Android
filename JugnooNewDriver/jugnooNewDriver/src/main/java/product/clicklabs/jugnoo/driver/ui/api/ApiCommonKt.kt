@@ -24,6 +24,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
         private val putDefaultParams: Boolean = true,
         private var putAccessToken: Boolean = false,
         private var checkForActionComplete: Boolean = false,
+        private var successFlag: Int? = null,
         val isCancelled: Boolean = false) {
 
     private val activity:WeakReference<Activity> = WeakReference(activityM)
@@ -76,8 +77,9 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
                 if (isCancelled || activity.get()==null || activity.get()!!.isFinishing) return
 
                 try {
-                    if (!isTrivialError(feedCommonResponse.flag) && (!checkForActionComplete
-                                    || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())) {
+                    if (!isTrivialError(feedCommonResponse.flag) &&
+                        (!checkForActionComplete || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+                          && (successFlag==null || successFlag==feedCommonResponse.flag)) {
 
                         apiCommonCallback?.onFinish()
                         apiCommonCallback?.onSuccess(feedCommonResponse, feedCommonResponse.serverMessage(), feedCommonResponse.flag)
@@ -147,6 +149,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
             ApiName.GET_LANGUAGES -> RestClient.getApiServices().fetchLanguageListKotlin(params, callback as Callback<DriverLanguageResponse>)
             ApiName.MANUAL_RIDE -> RestClient.getApiServices().requestManualRide(params, callback as Callback<ManualRideResponse>)
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
+            ApiName.APPLY_PROMO ->  RestClient.getApiServices().applyPromo(params, callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

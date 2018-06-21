@@ -1040,6 +1040,8 @@
     <string name="who_are_we">Who are we?</string>
     <string name="facebook_not_installed">Facebook app not enabled</string>
     <string name="about">About</string>
+    <string name="please_enter_promo_code">Enter promo code (Optional)</string>
+    <string name="hint_promo_code">Promo code</string>
 
 
 </resources>
