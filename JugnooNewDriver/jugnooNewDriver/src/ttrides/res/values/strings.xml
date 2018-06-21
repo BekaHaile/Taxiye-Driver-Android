@@ -887,7 +887,7 @@
     <string name="slots">ONLINE HOURS</string>
     <string name="hour">hour</string>
     <string name="hours">hours</string>
-    <string name="day_wise_breakup">DAY WISE BREAKUP</string>
+    <string name="day_wise_breakup">DAILY TRIP EARNINGS</string>
     <string name="target_distance">Target Distance</string>
     <string name="cash_collected_from_user">Cash collected from user</string>
     <string name="adjusted_distance">Adjusted Distance</string>
@@ -1124,6 +1124,7 @@
         <item>+46,SE</item>
         <item>+41,CH</item>
         <item>+963,SY</item>
+        <item>+1,TT</item>
         <item>+886,TW</item>
         <item>+992,TJ</item>
         <item>+255,TZ</item>
