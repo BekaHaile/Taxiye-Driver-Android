@@ -2426,7 +2426,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				textMessage.setMovementMethod(new ScrollingMovementMethod());
 				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 				
-				textMessage.setText(activity.getResources().getString(R.string.network_problem));
+				textMessage.setText(activity.getString(R.string.network_problem, activity.getString(R.string.appname)));
 				
 	
 				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);

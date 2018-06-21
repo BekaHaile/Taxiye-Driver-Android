@@ -547,6 +547,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			textViewAutosOn = (TextView) findViewById(R.id.textViewAutosOn);
 			textViewAutosOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
 			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
@@ -751,6 +752,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverInformationBtn = (Button) findViewById(R.id.driverInformationBtn);
 			jugnooOffText = (TextView) findViewById(R.id.jugnooOffText);
 			jugnooOffText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooOffText.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 			jugnooOffText.setVisibility(View.GONE);
 
 			buttonUploadOnInitial = (Button) findViewById(R.id.buttonUploadOnInitial);
@@ -920,6 +922,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Fonts.mavenBold(getApplicationContext()));
 
@@ -3098,7 +3101,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 		if(isTourFlag){
 			if(toggleDelivery){
-				DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.turn_jugnooo_for_training));
+				DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.turn_jugnooo_for_training, getString(R.string.appname)));
 				dismissLoadingFromBackground();
 			} else {
 				new Thread(new Runnable() {
@@ -3399,11 +3402,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (Data.userData != null) {
 						if (1 == Data.userData.autosAvailable) {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
-							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_on));
+							textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
 
 						} else {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
-							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
+							textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
 						}
 
@@ -3670,7 +3673,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				linearLayoutDEI.setVisibility(View.GONE);
 
 				imageViewTitleBarDEI.setVisibility(View.GONE);
-				textViewTitleBarDEI.setText(getResources().getString(R.string.jugnoo));
+				textViewTitleBarDEI.setText(getResources().getString(R.string.appname));
 			} else {
 				linearLayoutDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
@@ -3807,7 +3810,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
 					}
 					else{
-						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
+						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
 								+Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
@@ -10317,7 +10320,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										try {
 											isTourBtnClicked = true;
 											try {
-												croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
+												croutonTourTextView.setText(getString(R.string.tutorial_accept_ride, getString(R.string.appname)));
 											} catch (Exception e) {
 
 											}

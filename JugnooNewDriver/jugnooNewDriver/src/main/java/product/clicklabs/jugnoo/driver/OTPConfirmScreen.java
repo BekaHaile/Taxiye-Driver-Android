@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -676,7 +677,12 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 });
 
         dialog = builder.build();
-        dialog.show();
+        dialog.show(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
         customCountDownTimer.start();
         editTextOTP.setCursorVisible(false);
     }

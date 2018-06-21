@@ -92,11 +92,13 @@ public class InvoiceDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.textViewPaidByCstmr)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPaidUsingCstmr)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPaidByJugnoo)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
+		((TextView) findViewById(R.id.textViewPaidByJugnoo)).setText(getString(R.string.paid_by_jugnoo, getString(R.string.appname)));
 		((TextView) findViewById(R.id.textViewCancelSubsidy)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPhoneDeduction)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewManualAdj)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewJugnooCmsn)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
+		((TextView) findViewById(R.id.textViewJugnooCmsn)).setText(getString(R.string.jugnoo_cmsn, getString(R.string.appname)));
 		((TextView) findViewById(R.id.textViewOutstandingAmnt)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPaytmCash)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewRideMoney)).setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);

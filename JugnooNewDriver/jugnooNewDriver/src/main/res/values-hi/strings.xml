@@ -2,7 +2,6 @@
 <resources>
 
 
-	<string name="app_name">Jingo Drivers</string>
 
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -63,7 +62,7 @@
 	<string name="no_missed_rides_currently">वर्तमान में कोई  राइड  नहीं चूकी</string>
 	<string name="update">अपडेट</string>
 
-    <string name="jugnoo_on">Jugnoo ऑन है</string>
+    <string name="jugnoo_on">%s ऑन है</string>
     <string name="ride_type"> राइड  टाइप</string>
     <string name="support">Support</string>
     <string name="language_preferences">भाषा प्राथमिकताएँ</string>
@@ -161,9 +160,8 @@
 	<string name="create_new_account_msg">अगर आप अब भी एक नया खता बनाना चाहते </string>
 	<string name="not_recived_otp">मुझे ओ टी प प्राप्त नहीं हुआ </string>
 
-	<string name="jugnoo">Jugnoo</string>
-	<string name="jugnoo_off">Jugnoo बंद है</string>
-	<string name="jugnoo_cut">Jugnoo कटौती</string>
+	<string name="jugnoo_off">%s बंद है</string>
+	<string name="jugnoo_cut">%s कटौती</string>
 
 	<string name="loading">लोड हो रहा है ...</string>
     <string name="location_setting">Location सेटिंग्स</string>
@@ -180,7 +178,7 @@
 	<string name="no_luggage">कोई सामान नहीं जोड़ा गया । </string>
 	<string name="luggage_added">सामान जोड़ा गया है। </string>
 	<string name="no_lugage">कोई सामान नहीं जोड़ा गया है। </string>
-	<string name="network_problem">नेटवर्क समस्या। Jugnoo का उपयोग जारी रखने के लिएअपने फ़ोन को स्विच ऑफ करें और पुनः ओन करें।</string>
+	<string name="network_problem">नेटवर्क समस्या। %s का उपयोग जारी रखने के लिएअपने फ़ोन को स्विच ऑफ करें और पुनः ओन करें।</string>
 	<string name="no_data_to_show"> प्रदर्शन के लिए कोई डेटा नहीं है </string>
     <string name="no_of_rides">राइड्स की संख्या</string>
 	<string name="name">नाम </string>
@@ -229,7 +227,7 @@
 	<string name="app_needs_network_time">एप्लिकेशन को नेटवर्क द्वारा प्रदान किये गए समय क ज़रूरत है। </string>
     <string name="amount_entered">दर्ज की गई राशि है</string>
 	<string name="time">अवधि</string>
-    <string name="jugnoo_ride_over"> Jugnoo राइड खत्म हो गई है </string>
+    <string name="jugnoo_ride_over"> %s राइड खत्म हो गई है </string>
 	<string name="today">आज</string>
 	<string name="Today">आज</string>
 	<string name="this_month">इस महीने</string>
@@ -257,7 +255,7 @@
     <string name="no_internet_tap_to_retry">कोई इंटरनेट कनेक्शन नहीं। फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
 	<string name="no_rides">वर्तमान में कोई राइड नहीं </string>
 	<string name="pickup_location">आपका पिकअप स्थान </string>
-	<string name="money_to">पैसे Jugnoo को</string>
+	<string name="money_to">पैसे %s को</string>
 	<string name="start_ride_loc">start ride location</string>
 
     <string name="km_away">km दूर </string>
@@ -312,11 +310,11 @@
     <string name="Last_week">पिछले सप्ताह</string>
     <string name="Last_month">पिछले महीने</string>
     <string name="Outstanding_amnt">बकाया राशि</string>
-    <string name="jugnoo_cmsn">जुगनू कमीशन</string>
+    <string name="jugnoo_cmsn">%s कमीशन</string>
     <string name="Manual_adjustment">मनुअल अड्जस्टमेंट</string>
     <string name="referral_amount">रेफरल राशि</string>
     <string name="phone_deduction">फ़ोन कटौती</string>
-    <string name="paid_by_jugnoo">जुगनू द्वारा अदा</string>
+    <string name="paid_by_jugnoo">%s द्वारा अदा</string>
     <string name="paid_by_customer">नकद में भुगतान</string>
     <string name="paid_using_wallet">वॉलेट का उपयोग करके भुगतान किया</string>
     <string name="acc_credited">राशि जमा</string>
@@ -371,7 +369,6 @@
 	<string name="enter_less_amount">कृपया कम राशि प्रवेश करें</string>
 	<string name="enter_valid_amount">कृपया वैध राशि दर्ज करें</string>
 	<string name="amnt_credited">खाते में भुगतान करने के लिए </string>
-	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
 
     <string name="give_missed_call_dialog_text">हमें एक मिस कॉल दे और हम आपकी पहचान वैरिफाई करेंगे</string>
@@ -479,8 +476,8 @@
     <string name="left">बाएं</string>
 	<string name="right">दाएँ </string>
 	<string name="Audit">आडिट</string>
-	<string name="non_jugnoo_auto_branding">नॉन जुगनू ऑटो ब्रांडिंग</string>
-	<string name="non_jugnoo_auto_audit">नॉन जुगनू ऑटो ऑडिट</string>
+	<string name="non_jugnoo_auto_branding">नॉन %s ऑटो ब्रांडिंग</string>
+	<string name="non_jugnoo_auto_audit">नॉन %s ऑटो ऑडिट</string>
 	<string name="auto_from_front">ऑटो सामने से </string>
 	<string name="auto_from_back">ऑटो पीछे से</string>
 	<string name="auto_from_left">ऑटो बाएँ से</string>
@@ -601,7 +598,7 @@
 
 	<string name="auto_detect_otp_failed">कृपया ओटीपी भरे </string>
 	<string name="auto_detect_otp_wait">रुके ! ओटीपी आ रही है </string>
-	<string name="tutorial_accept_ride">अपना जुगनू न करे और राइड उठाये </string>
+	<string name="tutorial_accept_ride">अपना %s न करे और राइड उठाये </string>
 	<string name="tutorial_tap_ok">ओके दबाये </string>
 	<string name="tutorial_wait_for_customer">कस्टमर के लिए इंतज़ार करे </string>
 	<string name="tutorial_your_location">ब्लू डॉट आपकी जगह बताता है </string>
@@ -634,7 +631,7 @@
 	<string name="pickup_from">यहाँ से माल उठाये</string>
 	<string name="switch_confiramtion">क्या आप वाकई डिलीवरी स्विच करना चाहते हैं?</string>
 	<string name="delivery_route">डिलीवरी का मार्ग</string>
-	<string name="turn_jugnooo_for_training">कृपया जुगनू चालू करें</string>
+	<string name="turn_jugnooo_for_training">कृपया %s चालू करें</string>
 
 	<string name="complainId">शिकायत आईडी</string>
 	<string name="createdOn">शिकायत दर्ज कराने की तारीख</string>
@@ -665,7 +662,7 @@
 
     <string name="your_income">Your Income</string>
 	<string name="did_you_know">Did you know?</string>
-	<string name="keep_jugnoo_on">Kepp your Jugnoo ON to earn more</string>
+	<string name="keep_jugnoo_on">Kepp your %s ON to earn more</string>
 	<string name="average_days_text">In last %s days drivers in your area have earned:</string>
 	<string name="day">day</string>
 	<string name="update_webview">Please update your WebView to latest version.</string>
@@ -684,7 +681,7 @@
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
     <string name="view_wallet_transactions">लेन-देन प्रकिर्या ब्यौरा</string>
-    <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
+    <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
 	<string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 

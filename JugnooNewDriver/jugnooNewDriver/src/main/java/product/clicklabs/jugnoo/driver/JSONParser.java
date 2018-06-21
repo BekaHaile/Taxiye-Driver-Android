@@ -265,7 +265,7 @@ public class JSONParser implements Constants {
 
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-		context.getResources().getString(R.string.referal_sms_message,referralCode,context.getResources().getString(R.string.customer_app_download_link)));
+		context.getResources().getString(R.string.referal_sms_message,referralCode, context.getString(R.string.appname), context.getString(R.string.appname),context.getString(R.string.customer_app_download_link)));
 		String referralMessage = userData.optString(Constants.KEY_REFERRAL_MESSAGE);
 		String referralMessageDriver = userData.optString(Constants.KEY_REFERRAL_MESSAGE_DRIVER);
 		String referralButtonText = userData.optString("referral_button_text", "Share");

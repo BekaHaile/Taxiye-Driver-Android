@@ -100,6 +100,7 @@ public class RideDetailsActivity extends BaseActivity {
 		textViewAcceptSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
 		textViewCancelSubsidyValue.setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.textViewJugnooCut)).setText(getString(R.string.jugnoo_cut, getString(R.string.appname)));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
 		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
@@ -115,6 +116,7 @@ public class RideDetailsActivity extends BaseActivity {
 		textViewToValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
 		textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(this));
+		textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 
 		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
@@ -214,7 +216,7 @@ public class RideDetailsActivity extends BaseActivity {
 				textViewAccountBalance.setText((Utils.formatCurrencyValue(openedRideInfo.currency,Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+				textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 			} else {
 				textViewAccountBalance.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.accountBalance));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));

@@ -15,6 +15,11 @@
         3. application_id in build.gradle
     -->
 
+
+
+    <string name="appname">Jingos</string>
+    <string name="app_name">Jingos Drivers</string>
+
     <!--White Label Key-->
     <string name="white_label_key">839f5be8cced4d17ad3e6264762136fe</string>
 

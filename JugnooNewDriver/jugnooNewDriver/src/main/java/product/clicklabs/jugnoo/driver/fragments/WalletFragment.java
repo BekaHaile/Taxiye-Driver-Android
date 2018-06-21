@@ -150,7 +150,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
             } else if(addressSize == 1) {
                 address = rechargeOptionList.get(position).getAddresses().get(0).getAddress();
             } else {
-                address = getResources().getString(R.string.visit_office_in_city);
+                address = getString(R.string.visit_office_in_city, getString(R.string.appname));
             }
             DialogPopup.alertPopup(walletActivity, "", address);
         }

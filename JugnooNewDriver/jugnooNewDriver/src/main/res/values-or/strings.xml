@@ -3,8 +3,6 @@
 
 
 
-    <string name="app_name">Jingo Drivers</string>
-
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
     <string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
@@ -51,7 +49,7 @@
     <string name="missed">ଛାଡ଼ିଛନ୍ତି</string>
     <string name="no_missed_rides_currently">ବର୍ତମାନ୍ କୌଣଷି ରାଇଡ୍ ଛାଡ଼ିନାହନ୍ତି</string>
     <string name="update">ଅପ୍-ଡେଟ୍</string>
-    <string name="jugnoo_on">ଜୁଗ୍ନୁ ଖୋଲନ୍ତୁ</string>
+    <string name="jugnoo_on">%s ଖୋଲନ୍ତୁ</string>
     <string name="ride_type">ରାଇଡ୍ ବିଭାଗିକରଣ</string>
     <string name="support">ସାହାଯ୍ୟ</string>
     <string name="language_preferences">ଭାଷା ଚୟନ</string>
@@ -131,9 +129,8 @@
     <string name="invite_earn">ଆମନ୍ତ୍ରଣ କରନ୍ତୁ ଅଉ ପାନ୍ତୁ</string>
     <string name="create_new_account_msg">ଆପଣ ଏବେ ବି ଅଉ ଏକ ନୁଆ ଆକାଉନ୍ତ ଖୋଲିବାକୁ ଚାହୁଁଛନ୍ତି କି </string>
     <string name="not_recived_otp">ମୋ ପାଖକୁ ଓଟିପି ଆସିନାହିଁ</string>
-    <string name="jugnoo">ଜୁଗ୍ନୁ</string>
-    <string name="jugnoo_off">ଜୁଗ୍ନୁ ବର୍ତମାନ୍ ଅଫ୍ ଅଛି</string>
-    <string name="jugnoo_cut">ଜୁଗ୍ନୁ କାଟିଛି</string>
+    <string name="jugnoo_off">%s ବର୍ତମାନ୍ ଅଫ୍ ଅଛି</string>
+    <string name="jugnoo_cut">%s କାଟିଛି</string>
     <string name="loading">ଲୋଅଡ଼ ହେଉଛି </string>
     <string name="location_setting">ସ୍ତାନ ବ୍ୟବସ୍ତାପନ</string>
     <string name="location_setting_enable_message">ଆପଣଂକର ଲୋକେସନ ମିଳୁ ନାହିଁ.ଦୟାକରି ସେଟିଗଂ ମେନୁ କୁ ଯାଇ ଲୋକେସନ ଠିକ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି? </string>
@@ -216,7 +213,7 @@
     <string name="no_internet_tap_to_retry">ଇନ୍ଟରନେଟ୍ କନେକ୍ସନ୍ ନହିଁ.ପୁନର୍ବାର ଚେସ୍ଟା କରିବାକୁ ଅପଣଂକ ଫୋନ୍ ର ସ୍କ୍ରିନ୍ କୁ ଛୁଅନ୍ତୁ</string>
     <string name="no_rides">ବର୍ତମାନ ସୁଧା କୌଣସି ରାଇଡ ନହିଁ</string>
     <string name="pickup_location">ଅପଣଂକ ପିକପ୍ ଲୋକେସନ୍</string>
-    <string name="money_to">ଜୁଗ୍ନୁ ର ମୁଲ୍ୟ </string>
+    <string name="money_to">%s ର ମୁଲ୍ୟ </string>
     <string name="start_ride_loc">ରଇଡ ଆରମ୍ଭ ର ଲୋକେସନ </string>
     <string name="km_away">କି.ମି ଦୁର</string>
     <string name="m_away">ମି ଦୁର</string>

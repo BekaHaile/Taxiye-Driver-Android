@@ -88,8 +88,10 @@ public class SelectAuditFragment extends Fragment {
 		textViewSelfAudit.setTypeface(Fonts.mavenBold(activity));
 		textViewNJAutoBranding = (TextView) rootView.findViewById(R.id.textViewNJAutoBranding);
 		textViewNJAutoBranding.setTypeface(Fonts.mavenBold(activity));
+		textViewNJAutoBranding.setText(getString(R.string.non_jugnoo_auto_branding, getString(R.string.appname)));
 		textViewNJAutoAudit = (TextView) rootView.findViewById(R.id.textViewNJAutoAudit);
 		textViewNJAutoAudit.setTypeface(Fonts.mavenBold(activity));
+		textViewNJAutoAudit.setText(getString(R.string.non_jugnoo_auto_audit, getString(R.string.appname)));
 
 		textViewSelfAuditLast = (TextView) rootView.findViewById(R.id.textViewSelfAuditLast);
 		textViewSelfAuditLast.setTypeface(Fonts.mavenRegular(activity));

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY appname "Jugnoo Driver">
-    <!ENTITY currency "\u20B9">
-    ]>
 <resources>
     <string name="email_id">عنوان الايميل</string>
     <string name="confirm_email_id">أكد عنوانك الإلكتروني</string>
@@ -29,7 +25,7 @@
     <string name="missed">افتقد</string>
     <string name="no_missed_rides_currently">لا رحلات غاب حاليا</string>
     <string name="update">تحديث</string>
-    <string name="jugnoo_on">على &appname;</string>
+    <string name="jugnoo_on">على %s</string>
     <string name="ride_type">نوع الرحلة</string>
     <string name="support">الدعم</string>
     <string name="language_preferences">تفضيلات اللغة</string>
@@ -112,9 +108,8 @@
     <string name="invite_earn">كسب &amp; دعا</string>
     <string name="create_new_account_msg">إذا كنت لا تزال ترغب في إنشاء حساب جديد</string>
     <string name="not_recived_otp">لم استلم كلمة المرور</string>
-    <string name="jugnoo">&appname;</string>
-    <string name="jugnoo_off">&appname; إيقاف</string>
-    <string name="jugnoo_cut">&appname; يقطع</string>
+    <string name="jugnoo_off">%s إيقاف</string>
+    <string name="jugnoo_cut">%s يقطع</string>
     <string name="loading">... جار التحميل</string>
     <string name="location_setting">إعدادات الموقع</string>
     <string name="location_setting_enable_message">لم يتم تمكين الموقع. هل ترغب في تمكينه من قائمة الإعدادات؟</string>
@@ -128,7 +123,7 @@
     <string name="no_luggage">وأضافت لا الأمتعة</string>
     <string name="luggage_added">البنود الأمتعة وأضافت</string>
     <string name="no_lugage">لا أمتعة</string>
-    <string name="network_problem">.&appname; مشكلة شبكة. يرجى إيقاف تشغيل وتشغيل الهاتف والانتظار لمدة 5 دقائق للاستمرار في استخدام</string>
+    <string name="network_problem">.%s مشكلة شبكة. يرجى إيقاف تشغيل وتشغيل الهاتف والانتظار لمدة 5 دقائق للاستمرار في استخدام</string>
     <string name="no_data_to_show">لا توجد بيانات لاظهار</string>
     <string name="no_of_rides">عدد الرحلات</string>
     <string name="name">اسم</string>
@@ -173,7 +168,7 @@
     <string name="app_needs_network_time">يحتاج التطبيق قدمت شبكة حان الوقت ليكون ممكنا. تمكينه من الإعدادات</string>
     <string name="amount_entered">كمية بإدخاله</string>
     <string name="time">زمن</string>
-    <string name="jugnoo_ride_over">انتهت الرحلة &appname;</string>
+    <string name="jugnoo_ride_over">انتهت الرحلة %s</string>
     <string name="today">اليوم</string>
     <string name="this_month">هذا الشهر</string>
     <string name="title">عنوان</string>
@@ -196,7 +191,7 @@
     <string name="no_internet_tap_to_retry">أي اتصال إنترنت. إضغط لإعادة المحاولة</string>
     <string name="no_rides">لا ركوب الخيل حاليا</string>
     <string name="pickup_location">لديك لاقط الموقع</string>
-    <string name="money_to">&appname; المال إلى</string>
+    <string name="money_to">%s المال إلى</string>
     <string name="start_ride_loc">بدء موقع الركوب</string>
     <string name="km_away">كيلو متر بعيدا</string>
     <string name="m_away">متر بعيدا</string>
@@ -248,11 +243,11 @@
     <string name="Last_week">الاسبوع الماضى</string>
     <string name="Last_month">الشهر الماضي</string>
     <string name="Outstanding_amnt">التعديلات الفاتورة السابقة</string>
-    <string name="jugnoo_cmsn">عمولة &appname;</string>
+    <string name="jugnoo_cmsn">عمولة %s</string>
     <string name="Manual_adjustment">دليل التكيف</string>
     <string name="referral_amount">المبلغ الإحالة</string>
     <string name="phone_deduction">خصم الهاتف</string>
-    <string name="paid_by_jugnoo">&appname; دفعت بواسطة</string>
+    <string name="paid_by_jugnoo">%s دفعت بواسطة</string>
     <string name="paid_by_customer">دفعت نقدا</string>
     <string name="paid_using_wallet">دفع عن طريق محفظة</string>
     <string name="acc_credited">حساب الفضل</string>
@@ -297,7 +292,6 @@
     <string name="total_distance">المسافة الكلية</string>
     <string name="valid_email_phone_no">أدخل البريد الإلكتروني صالح أو رقم الهاتف</string>
     <string name="select_destination">الرجاء تحديد الوجهة أتلست واحد</string>
-    <string name="JUGNOO">&appname;</string>
     <string name="Notifications">إخطارات</string>
     <string name="enter_customer_phone_no">أدخل الهاتف العملاء رقم</string>
     <string name="invoice_detail">تفاصيل الفاتورة</string>
@@ -400,7 +394,7 @@
     <string name="left">اليسار</string>
     <string name="right">حق</string>
     <string name="Audit">تدقيق</string>
-    <string name="non_jugnoo_auto_branding">NON &appname; AUTO BRANDING</string>
+    <string name="non_jugnoo_auto_branding">NON %s AUTO BRANDING</string>
     <string name="auto_from_front">Auto From Front</string>
     <string name="auto_from_back">Auto From Back</string>
     <string name="auto_from_left">Auto From Left</string>
@@ -412,7 +406,7 @@
     <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
     <string name="has_smart_phone">The driver has a smart phone</string>
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON &appname; AUTO AUDIT</string>
+    <string name="non_jugnoo_auto_audit">NON %s AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="self_audit_caps">مراجعة النفس</string>
     <string name="audit_required">المراجعة المطلوبة</string>
@@ -493,7 +487,7 @@
     <string name="provide_sign_msg">يرجى تقديم توقيع قبل تقديم</string>
     <string name="pls_type_name">يرجى كتابة اسمك قبل تقديم</string>
     <string name="looking_for_customer_app"><u>تبحث عن تطبيق العملاء؟</u></string>
-    <string name="tutorial_accept_ride">لبدء قبول الرحلات &appname; قم بتشغيله</string>
+    <string name="tutorial_accept_ride">لبدء قبول الرحلات %s قم بتشغيله</string>
     <string name="tutorial_tap_ok">انقر فوق موافق</string>
     <string name="tutorial_wait_for_customer">...انتظر العميل</string>
     <string name="tutorial_your_location">تعرض النقطة الزرقاء موقعك الحالي</string>
@@ -527,7 +521,7 @@
     <string name="pickup_from">:تلتقط من</string>
     <string name="switch_confiramtion">هل أنت متأكد أنك تريد أن تتحول التسليم؟</string>
     <string name="delivery_route">Delivery Route</string>
-    <string name="turn_jugnooo_for_training">Please turn &appname; On</string>
+    <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>
     <string name="complainId">:معرف الشكوى</string>
     <string name="createdOn">:تم إنشاؤها على </string>
@@ -552,7 +546,7 @@
     <string name="super_biker">سوبر السائق</string>
     <string name="your_income">دخلك</string>
     <string name="did_you_know">هل كنت تعلم؟</string>
-    <string name="keep_jugnoo_on">Keep your &appname; ON to earn more</string>
+    <string name="keep_jugnoo_on">Keep your %s ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">يرجى تحديث عرض ويب الخاص بك إلى أحدث إصدار.</string>
@@ -571,7 +565,7 @@
     <string name="deducted">خصم</string>
     <string name="view_wallet_transactions">المعاملات عرض المحفظة</string>
     <string name="dont_touch_me">لا تلمسني</string>
-    <string name="schedule_call_message">Press the below button to get support from &appname;. Our executive will call you shortly.</string>
+    <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
     <string name="get_call">الحصول على دعوة</string>
     <string name="get_support_call">الحصول على دعم الدعوة</string>
     <!--Strings for Subscription plans-->
@@ -610,9 +604,9 @@
     <string name="unable_to_fetch_wallet">Unable to fetch wallet detail. Please try again</string>
     <string name="money_to_jugnoo">Money to Jugnoo</string>
     <string name="no_internet">لا يوجد اتصال إنترنت. إضغط لإعادة المحاولة</string>
-    <string name="visit_office_in_city">مكتب في مدينتك &appname; يزور</string>
-    <string name="support_subject">الدعم &appname;</string>
-    <string name="referal_sms_message">Use my code %1$s to download &appname; customer App and earn &appname; cash.\nDownload it from here\n %2$s </string>
+    <string name="visit_office_in_city">مكتب في مدينتك %s يزور</string>
+    <string name="support_subject">الدعم %s</string>
+    <string name="referal_sms_message">Use my code %1$s to download %2$s customer App and earn %3$s cash.\nDownload it from here\n %4$s </string>
     <string name="device_token_not_found_message">كانت هناك مشكلة مع الجهاز، الرجاء إعادة تشغيل التطبيق الخاص بك مرة واحدة على المضي قدما</string>
     <string name="no_country_found">العثور على أي بلد</string>
     <string name="error_no_countries_found">!لا البلدان العثور</string>
@@ -632,7 +626,7 @@
     <string name="increase_by_10">10% زيادة بنسبة</string>
     <string name="reduce_by_format">%s تقليل بواسطة</string>
     <string name="increase_by_format">%s زيادة بنسبة</string>
-    <string name="documents_authentication">أوافق على أن الوثائق التي قمت بتحميلها صحيحة وصحيحة. أعي أن أي محاولة لتقديم معلومات غير صحيحة أو مضللة أو مستندات مزيفة ستؤدي إلى تعريف القائمة السوداء لبرنامج &appname; تحتفظ منصة &appname; بالحق في رفع الأمر إلى سلطات إنفاذ القانون في حالة المستندات المزورة.</string>
+    <string name="documents_authentication">أوافق على أن الوثائق التي قمت بتحميلها صحيحة وصحيحة. أعي أن أي محاولة لتقديم معلومات غير صحيحة أو مضللة أو مستندات مزيفة ستؤدي إلى تعريف القائمة السوداء لبرنامج %1$s تحتفظ منصة %2$s بالحق في رفع الأمر إلى سلطات إنفاذ القانون في حالة المستندات المزورة.</string>
     <string name="i_agree">أنا أتفق</string>
     <string name="dont_agree">أنا أعترض</string>
     <string name="chat_support">دعم الدردشة</string>

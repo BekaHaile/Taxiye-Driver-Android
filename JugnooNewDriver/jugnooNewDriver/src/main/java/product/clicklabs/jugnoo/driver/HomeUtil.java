@@ -25,7 +25,7 @@ public class HomeUtil {
 
 	public static void scheduleCallDriver(final Activity context) {
 		DialogPopup.alertPopupTwoButtonsWithListeners(context, "",
-				context.getString(R.string.schedule_call_message),
+				context.getString(R.string.schedule_call_message, context.getString(R.string.appname)),
 				context.getString(R.string.get_call), context.getString(R.string.cancel),
 				new View.OnClickListener() {
 					@Override

@@ -5,12 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -20,8 +19,8 @@ public class AboutActivity extends BaseActivity {
 
     RelativeLayout relative;
 
-    TextView textViewTitle;
-    Button imageViewBack;
+    TextView title;
+    ImageView backBtn;
 
     RelativeLayout relativeLayoutRateUs, relativeLayoutLikeUs, relativeLayoutTNC, relativeLayoutPrivacy, relativeLayoutAbout;
     TextView textViewRateUs, textViewLikeUs, textViewTNC, textViewPrivacy, textViewAbout;
@@ -40,9 +39,10 @@ public class AboutActivity extends BaseActivity {
         facebookPageName = getString(R.string.facebook_page_name);
         relative = (RelativeLayout) findViewById(R.id.relative);
 
-        textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Fonts.mavenMedium(this));
-        imageViewBack = (Button) findViewById(R.id.backBtn);
+        title = (TextView) findViewById(R.id.title);
+        title.setTypeface(Fonts.mavenMedium(this));
+        title.setText(R.string.about);
+        backBtn = (ImageView) findViewById(R.id.backBtn);
 
         relativeLayoutRateUs = (RelativeLayout) findViewById(R.id.relativeLayoutRateUs);
         relativeLayoutLikeUs = (RelativeLayout) findViewById(R.id.relativeLayoutLikeUs);
@@ -131,7 +131,7 @@ public class AboutActivity extends BaseActivity {
         });
 
 
-        imageViewBack.setOnClickListener(new OnClickListener() {
+        backBtn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {

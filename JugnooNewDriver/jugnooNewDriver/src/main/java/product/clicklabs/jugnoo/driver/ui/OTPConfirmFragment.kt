@@ -185,7 +185,10 @@ class OTPConfirmFragment : Fragment() {
                 })
 
         otpDialog = builder.build()
-        otpDialog?.show()
+        otpDialog?.show({
+            edtOTP.requestFocus();
+            Utils.showSoftKeyboard(activity, edtOTP)
+        })
 
 
         countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {

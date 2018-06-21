@@ -483,7 +483,6 @@
                             <!--android:layout_weight="1"-->
                             <!--android:gravity="center"-->
                             <!--android:singleLine="true"-->
-                            <!--android:text="@string/jugnoo_cut"-->
                             <!--android:textColor="@color/grey_ride_history"-->
                             <!--android:textSize="30px"/>-->
 

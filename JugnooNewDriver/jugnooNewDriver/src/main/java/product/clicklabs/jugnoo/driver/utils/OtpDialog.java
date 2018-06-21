@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -183,7 +184,7 @@ public class OtpDialog {
     /**
      * Method to init the initialized alertDialog
      */
-    public void show() {
+    public void show(DialogInterface.OnDismissListener onDismissListener) {
 
         // Check if activity lives
         if (activity != null)
@@ -192,6 +193,7 @@ public class OtpDialog {
                 try {
                     // Show the Dialog
                     alertDialog.show();
+                    alertDialog.setOnDismissListener(onDismissListener);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -251,7 +253,7 @@ public class OtpDialog {
     }
 
 
-    /**
+	/**
      * Interfaces the events from the AlertDialog
      * to the Calling Context
      */

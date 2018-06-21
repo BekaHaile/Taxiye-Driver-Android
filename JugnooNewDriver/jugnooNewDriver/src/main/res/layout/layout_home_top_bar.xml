@@ -30,7 +30,8 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/JUGNOO"
+            android:text="@string/appname"
+            android:textAllCaps="true"
             android:textColor="@color/textColorTitle"
             android:textSize="48px"/>
 

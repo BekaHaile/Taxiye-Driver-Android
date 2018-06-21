@@ -97,7 +97,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				if(brandingImagesOnly == 1){
 					docSubmission();
 				} else {
-					DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+					DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "",
+							getString(R.string.documents_authentication, getString(R.string.appname), getString(R.string.appname)),
 							getString(R.string.i_agree), "", new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {

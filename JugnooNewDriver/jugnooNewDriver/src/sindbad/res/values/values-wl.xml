@@ -15,6 +15,10 @@
         3. application_id in build.gradle
     -->
 
+
+    <string name="appname">Sindbad</string>
+    <string name="app_name">Sindbad Drivers</string>
+
     <!--White Label Key-->
     <string name="white_label_key">08a0fec5f1b7543e90667e1f2e039c21</string>
 

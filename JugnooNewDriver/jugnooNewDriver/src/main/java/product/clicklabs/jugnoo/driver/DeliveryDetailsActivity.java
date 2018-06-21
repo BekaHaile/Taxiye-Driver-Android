@@ -115,6 +115,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		textViewReturnSubsidyValue = (TextView) findViewById(R.id.textViewReturnSubsidyValue);
 		textViewReturnSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 
+		((TextView)findViewById(R.id.textViewJugnooCut)).setText(getString(R.string.jugnoo_cut, getString(R.string.appname)));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
 		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this));
 
@@ -239,7 +240,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
 					textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
-					textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+					textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 				} else {
 					textViewAccountBalance.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails().getCurrencyUnit(),
 							deliveryDetailResponse.getDetails().getAccountBalance()));

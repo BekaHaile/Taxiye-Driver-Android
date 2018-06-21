@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY appname "Jugnoo">
-    ]>
 <resources>
-    <string name="app_name">&appname; Drivers</string>
 
 
-    <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <!--<string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>-->
 
@@ -65,7 +60,7 @@
     <string name="update">Update</string>
 
     <string name="driver_mode">Driver Mode</string>
-    <string name="jugnoo_on">&appname; ON</string>
+    <string name="jugnoo_on">%s ON</string>
     <string name="driver_type">Driver Type</string>
     <string name="ride_type">Ride Type</string>
     <string name="support">Support</string>
@@ -174,11 +169,8 @@
     <string name="create_new_account_msg">If you would still like to create a new account</string>
     <string name="not_recived_otp">I didn\'t receive the OTP</string>
 
-    <string name="jugnoo">&appname;</string>
-    <string name="jugnoo_off">&appname;
-        OFF</string>
-    <string name="jugnoo_cut">&appname;
-        Cut</string>
+    <string name="jugnoo_off">%s OFF</string>
+    <string name="jugnoo_cut">%s Cut</string>
 
     <string name="loading">Loading ...</string>
     <string name="location_setting">Location Settings</string>
@@ -197,7 +189,7 @@
     <string name="no_luggage">No luggage added</string>
     <string name="luggage_added">luggage items added</string>
     <string name="no_lugage">NO LUGGAGE</string>
-    <string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using &appname;.</string>
+    <string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using %s.</string>
     <string name="no_data_to_show">No data to show</string>
     <string name="no_of_rides">No. of rides</string>
     <string name="name">Name</string>
@@ -247,7 +239,7 @@
     <string name="app_needs_network_time">The app needs Network Provided Time to be enabled. Enable it from Settings.</string>
     <string name="amount_entered">The amount entered is</string>
     <string name="time">Time</string>
-    <string name="jugnoo_ride_over">&appname; ride over</string>
+    <string name="jugnoo_ride_over">%s ride over</string>
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="title">Title</string>
@@ -274,7 +266,7 @@
     <string name="no_internet_tap_to_retry">No Internet connection. Tap to retry</string>
     <string name="no_rides">No rides currently</string>
     <string name="pickup_location">Your Pickup Location</string>
-    <string name="money_to">Money to &appname;</string>
+    <string name="money_to">Money to %s</string>
     <string name="start_ride_loc">start ride location</string>
 
     <string name="km_away">km away</string>
@@ -330,12 +322,11 @@
     <string name="Last_week">Last Week</string>
     <string name="Last_month">Last Month</string>
     <string name="Outstanding_amnt">Previous invoice adjustments</string>
-    <string name="jugnoo_cmsn">&appname;
-        Commission</string>
+    <string name="jugnoo_cmsn">%s Commission</string>
     <string name="Manual_adjustment">Manual Adjustment</string>
     <string name="referral_amount">Referral Amount</string>
     <string name="phone_deduction">Phone Deduction</string>
-    <string name="paid_by_jugnoo">Paid By &appname;</string>
+    <string name="paid_by_jugnoo">Paid By %s</string>
     <string name="paid_by_customer">Paid In Cash</string>
     <string name="paid_using_wallet">Paid Using Wallet</string>
     <string name="acc_credited">Account Credited</string>
@@ -384,7 +375,6 @@
     <string name="total_distance">TOTAL DISTANCE</string>
     <string name="valid_email_phone_no">Enter valid Email or Phone No.</string>
     <string name="select_destination">Please select atleast one Destination</string>
-    <string name="JUGNOO">&appname;</string>
     <string name="Notifications">Notifications</string>
     <string name="enter_customer_phone_no">Enter Customer Phone No.</string>
     <string name="invoice_detail">INVOICE DETAILS</string>
@@ -496,8 +486,7 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="Audit">AUDIT</string>
-    <string name="non_jugnoo_auto_branding">NON &appname;
-        AUTO BRANDING</string>
+    <string name="non_jugnoo_auto_branding">NON %s AUTO BRANDING</string>
 
     <string name="auto_from_front">Auto From Front</string>
     <string name="auto_from_back">Auto From Back</string>
@@ -510,8 +499,7 @@
     <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
     <string name="has_smart_phone">The driver has a smart phone</string>
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON &appname;
-        AUTO AUDIT</string>
+    <string name="non_jugnoo_auto_audit">NON %s AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="self_audit_caps">SELF AUDIT</string>
     <string name="audit_required">Audit Required</string>
@@ -594,7 +582,7 @@
     <string name="pls_type_name">Please type your name before submit</string>
     <string name="looking_for_customer_app"><u>Looking for Customer App?</u></string>
     <string name="image">image</string>
-    <string name="tutorial_accept_ride">Turn &appname; on to start accepting rides</string>
+    <string name="tutorial_accept_ride">Turn %s on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
@@ -629,8 +617,7 @@
     <string name="pickup_from">Pickup From:</string>
     <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
-    <string name="turn_jugnooo_for_training">Please turn &appname;
-        On</string>
+    <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
@@ -659,8 +646,7 @@
     <string name="super_biker">Super Biker</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
-    <string name="keep_jugnoo_on">Keep your &appname;
-        ON to earn more</string>
+    <string name="keep_jugnoo_on">Keep your %s ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">Please update your WebView to latest version.</string>
@@ -680,7 +666,7 @@
     <string name="deducted">Deducted</string>
     <string name="view_wallet_transactions">View Wallet Transactions</string>
     <string name="dont_touch_me">DontTouchMe</string>
-    <string name="schedule_call_message">Press the below button to get support from &appname;. Our executive will call you shortly.</string>
+    <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 
@@ -726,12 +712,9 @@
     <string name="no_internet">No internet connection. Tap to retry.</string>
 
 
-    <string name="visit_office_in_city">Visit &appname;
-        office in your city</string>
-    <string name="support_subject">&appname;Support</string>
-    <string name="referal_sms_message">Use my code %1$s to download &appname;
-        customer App and earn &appname;
-        cash.\nDownload it from here\n %2$s </string>
+    <string name="visit_office_in_city">Visit %s office in your city</string>
+    <string name="support_subject">%s Support</string>
+    <string name="referal_sms_message">Use my code %1$s to download %2$s customer App and earn %3$s cash.\nDownload it from here\n %4$s </string>
     <string name="device_token_not_found_message">There was a problem with with your device, please restart your app once to proceed</string>
     <string name="no_country_found">No country found</string>
     <string name="error_no_countries_found">No Countries Found!</string>
@@ -759,7 +742,7 @@
     <string name="increase_by_10">Increase\nby 10%</string>
     <string name="reduce_by_format">Reduce\nby %s</string>
     <string name="increase_by_format">Increase\nby %s</string>
-    <string name="documents_authentication">I accept that documents uploaded by me are true and correct. I understand that any attempt of providing incorrect, misleading information or fake documents will lead to my immediate black listing from the &appname; platform. &appname; platform reserves the right to take the matter to the law enforcement authorities in case of forged documents.</string>
+    <string name="documents_authentication">I accept that documents uploaded by me are true and correct. I understand that any attempt of providing incorrect, misleading information or fake documents will lead to my immediate black listing from the %1$s platform. %2$s platform reserves the right to take the matter to the law enforcement authorities in case of forged documents.</string>
     <string name="i_agree">I agree</string>
     <string name="dont_agree">I disagree</string>
     <string name="chat_support">Chat Support</string>
@@ -1026,13 +1009,6 @@
         <item>+263,ZW</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string
-        name="hello_blank_fragment">
-        Hello
-        blank
-        fragment
-    </string>
     <string name="rate_us_on_play_store">Rate us on Play Store</string>
     <string name="like_us_on_facebook">Like us on Facebook</string>
     <string name="terms_and_conditions">Terms and Conditions</string>

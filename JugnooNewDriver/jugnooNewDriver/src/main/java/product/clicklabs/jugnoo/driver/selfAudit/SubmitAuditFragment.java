@@ -205,9 +205,9 @@ public class SubmitAuditFragment extends Fragment {
 		if(auditType == 0){
 			title.setText(getResources().getString(R.string.self_audit));
 		} else if (auditType == 1){
-			title.setText(getResources().getString(R.string.non_jugnoo_auto_branding));
+			title.setText(getResources().getString(R.string.non_jugnoo_auto_branding, getString(R.string.appname)));
 		} else if (auditType == 2){
-			title.setText(getResources().getString(R.string.non_jugnoo_auto_audit));
+			title.setText(getResources().getString(R.string.non_jugnoo_auto_audit, getString(R.string.appname)));
 		}
 
 		nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {

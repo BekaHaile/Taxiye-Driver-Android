@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
 																									
-<string name="app_name">Hezz Drivers</string>																									
-																									
-<string name="hello_world">Bonne route</string>																									
+<string name="hello_world">Bonne route</string>
 																									
 <string name="action_settings">Paramètres</string>																									
 																									
@@ -129,7 +127,7 @@
 
 <string name="driver_mode">Mode Chauffeur </string>
 
-<string name="jugnoo_on">Hezz ON</string>
+<string name="jugnoo_on">%s ON</string>
 
 <string name="driver_type">Type de chauffeur</string>
 
@@ -393,13 +391,9 @@
 
 <string name="not_recived_otp">Je n\'ai pas reçu le code OTP</string>
 
-<string name="jugnoo_cash">Hezz Cash</string>
+<string name="jugnoo_off">%s OFF</string>
 
-<string name="jugnoo">Hezz Taxi</string>
-
-<string name="jugnoo_off">Hezz OFF</string>
-
-<string name="jugnoo_cut">Hezz Cut</string>
+<string name="jugnoo_cut">%s Cut</string>
 
 <string name="loading">Chargement ...</string>
 
@@ -433,7 +427,7 @@
 
 <string name="no_lugage">PAS DE BAGAGES</string>
 
-<string name="network_problem">Problème de réseau. Veuillez éteindre et allumer votre téléphone et attendez 5 minutes pour continuer à utiliser Hezz.</string>
+<string name="network_problem">Problème de réseau. Veuillez éteindre et allumer votre téléphone et attendez 5 minutes pour continuer à utiliser %s.</string>
 
 <string name="no_data_to_show">Aucune donnée à afficher</string>
 
@@ -561,7 +555,7 @@
 
 <string name="time_new">Temps/n</string>
 
-<string name="jugnoo_ride_over">Hezz </string>
+<string name="jugnoo_ride_over">%s chevaucher</string>
 
 <string name="today">Aujourd\'hui</string>
 
@@ -617,7 +611,7 @@
 
 <string name="pickup_location">l\'emplacement de départ</string>
 
-<string name="money_to">Commissions pour Hezz</string>
+<string name="money_to">Commissions pour %s</string>
 
 <string name="start_ride_loc">sCommencer la course</string>
 
@@ -758,7 +752,7 @@
 
 <string name="Outstanding_amnt">Ajustements de facture précédents</string>
 
-<string name="jugnoo_cmsn">Hezz Commission</string>
+<string name="jugnoo_cmsn">%s Commission</string>
 
 <string name="Manual_adjustment">Réglage manuel</string>
 
@@ -766,7 +760,7 @@
 
 <string name="phone_deduction">Déduction téléphonique</string>
 
-<string name="paid_by_jugnoo">Déduction téléphonique Hezz</string>
+<string name="paid_by_jugnoo">Déduction téléphonique %s</string>
 
 <string name="paid_by_customer">Payé en espèces</string>
 
@@ -868,8 +862,6 @@
 <string name="valid_email_phone_no">Entrez un e-mail ou un numéro de téléphone valide</string>
 
 <string name="select_destination">Veuillez sélectionner au moins une destination</string>
-
-<string name="JUGNOO">Hezz Taxi</string>
 
 <string name="fatafat_on">Fatafat On</string>
 
@@ -1142,7 +1134,7 @@ I accept
 
 <string name="Audit">AUDIT</string>
 
-<string name="non_jugnoo_auto_branding">Hezz Taxi</string>
+<string name="non_jugnoo_auto_branding">NON %s MARQUE AUTO</string>
 
 <string name="auto_from_front">Auto From Front</string>
 
@@ -1166,7 +1158,7 @@ I accept
 
 <string name="optional_brack">(Optionnel)</string>
 
-<string name="non_jugnoo_auto_audit">NON Hezz AUTO AUDIT</string>
+<string name="non_jugnoo_auto_audit">NON %s AUTO AUDIT</string>
 
 <string name="name_cant_empty">Le nom ne peut pas être vide</string>
 
@@ -1379,7 +1371,7 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="image"></string>
 
-<string name="tutorial_accept_ride">Balayez Hezz ON pour commencer à accepter les trajets</string>
+<string name="tutorial_accept_ride">Balayez %s ON pour commencer à accepter les trajets</string>
 
 <string name="tutorial_tap_ok">Appuyez sur \'OK\'</string>
 
@@ -1457,7 +1449,7 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="delivery_route">Delivery Route</string>
 
-<string name="turn_jugnooo_for_training">S\'il vous plaît tournez Hezz sur</string>
+<string name="turn_jugnooo_for_training">S\'il vous plaît tournez %s sur</string>
 
 <string name="delivery_1">Delivery 1</string>
 
@@ -1527,7 +1519,7 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="did_you_know">Le saviez-vous?</string>
 
-<string name="keep_jugnoo_on">Gardez votre Hezz ON pour gagner plus</string>
+<string name="keep_jugnoo_on">Gardez votre %s ON pour gagner plus</string>
 
 <string name="average_days_text">En dernier %s jours les chauffeurs dans votre région ont gagné:</string>
 
@@ -1573,7 +1565,7 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="get_support">Obtenir de l\'aide</string>
 
-<string name="schedule_call_message">Appuyez sur le bouton ci-dessous pour obtenir l\'aide de Hezz. Notre exécutif vous appellera sous peu.</string>
+<string name="schedule_call_message">Appuyez sur le bouton ci-dessous pour obtenir l\'aide de %s. Notre exécutif vous appellera sous peu.</string>
 
 <string name="get_call">Recevoir un appel</string>
 
@@ -1658,11 +1650,11 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="no_internet">Pas de connexion Internet. Cliquer pour réessayer.</string>
 
-<string name="visit_office_in_city">Visitez le bureau de Hezz dans votre ville</string>
+<string name="visit_office_in_city">Visitez le bureau de %s dans votre ville</string>
 
-<string name="support_subject">Hezz Support</string>
+<string name="support_subject">%s Support</string>
 
-<string name="referal_sms_message">Utilise mon code %1$s télécharger Hezz App et gagner des réductions avec Hezz. \ nTéléchargez-le ici \ n %2$s </string>
+<string name="referal_sms_message">Utilise mon code %1$s télécharger %2$s App et gagner des réductions avec %3$s. \nTéléchargez-le ici \n %4$s </string>
 
 <string name="device_token_not_found_message">Il y a eu un problème avec votre appareil, veuillez redémarrer votre application une fois pour continuer</string>
 
@@ -1698,7 +1690,7 @@ Vous n\'avez pas de compte chauffeur?"
 
 <string name="increase_by_format">Augmenté \nde %s</string>
 
-<string name="documents_authentication">J\'accepte que les documents que j\'ai importé sont vrais et corrects. Je comprends que toute tentative de fournir des informations incorrectes ou trompeuses ou de faux documents mènera au blacklist immédiat de la plate-forme Hezz. La plate-forme Hezz se réserve le droit de porter l'affaire devant les autorités répressives en cas de falsification de documents.</string>
+<string name="documents_authentication">J\'accepte que les documents que j\'ai importé sont vrais et corrects. Je comprends que toute tentative de fournir des informations incorrectes ou trompeuses ou de faux documents mènera au blacklist immédiat de la plate-forme %1$s. La plate-forme %2$s se réserve le droit de porter l'affaire devant les autorités répressives en cas de falsification de documents.</string>
 
 <string name="i_agree">Je suis d\'accord</string>
 

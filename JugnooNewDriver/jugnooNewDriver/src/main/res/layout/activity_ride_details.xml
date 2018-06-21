@@ -377,7 +377,6 @@
                     <!--android:layout_height="45px"-->
                     <!--android:gravity="center_vertical"-->
                     <!--android:layout_marginStart="38px"-->
-                    <!--android:text="@string/jugnoo_cut"-->
                     <!--android:textColor="@color/black"-->
                     <!--android:textSize="32px"/>-->
 

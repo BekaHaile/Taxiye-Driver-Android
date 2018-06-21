@@ -1382,6 +1382,7 @@ public class DialogPopup {
 			textMessageEarnings.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 			TextView textMessage2 = (TextView) dialog.findViewById(R.id.textMessage2);
 			textMessage2.setTypeface(Fonts.mavenRegular(activity));
+			textMessage2.setText(activity.getString(R.string.keep_jugnoo_on, activity.getString(R.string.appname)));
 
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());

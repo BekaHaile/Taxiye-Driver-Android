@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -682,7 +683,12 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
 
 
         dialog = builder.build();
-        dialog.show();
+        dialog.show(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
         customCountDownTimer.start();
         otpEt.setCursorVisible(false);
     }

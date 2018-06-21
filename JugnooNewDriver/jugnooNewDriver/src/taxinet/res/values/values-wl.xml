@@ -15,6 +15,10 @@
         3. application_id in build.gradle
     -->
 
+
+    <string name="appname">Taxinet</string>
+    <string name="app_name">Taxinet Drivers</string>
+
     <!--White Label Key-->
     <string name="white_label_key">5bb40d7c0caa35d207433fe74302e7c2</string>
 
