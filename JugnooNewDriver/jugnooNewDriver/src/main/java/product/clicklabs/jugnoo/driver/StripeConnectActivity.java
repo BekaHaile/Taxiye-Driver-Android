@@ -5,13 +5,17 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -119,12 +123,37 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            if(url.contains(urlToLoad)){
+            if(DialogPopup.isDialogShowing()){
+                DialogPopup.dismissLoadingDialog();
 
-                if(DialogPopup.isDialogShowing()){
-                    DialogPopup.dismissLoadingDialog();
+            }
+        }
 
-                }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            if(DialogPopup.isDialogShowing()){
+                DialogPopup.dismissLoadingDialog();
+
+            }
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+            if(DialogPopup.isDialogShowing()){
+                DialogPopup.dismissLoadingDialog();
+
+            }
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+            if(DialogPopup.isDialogShowing()){
+                DialogPopup.dismissLoadingDialog();
+
             }
         }
 
