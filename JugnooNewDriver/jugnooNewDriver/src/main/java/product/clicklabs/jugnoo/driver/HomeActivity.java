@@ -51,7 +51,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -172,9 +171,9 @@ import product.clicklabs.jugnoo.driver.tutorial.GenrateTourPush;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
-import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
+import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -233,7 +232,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl,manaulRequestRl;
 	TextView inviteFriendText, notificationCenterText;
 
 	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
@@ -569,6 +568,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
 			driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
+			manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
@@ -631,6 +631,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewSupport)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.textViewSupportTicket)).setTypeface(Fonts.mavenRegular(this));
 			((TextView) findViewById(R.id.tvDriverCredits)).setTypeface(Fonts.mavenRegular(this));
+			((TextView) findViewById(R.id.tvManualRequest)).setTypeface(Fonts.mavenRegular(this));
 
 			btnChatHead = (TextView) findViewById(R.id.btnChatHead);
 			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
@@ -1261,6 +1262,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, DriverCreditsActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}
+			});
+			manaulRequestRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					drawerLayout.closeDrawer(GravityCompat.START);
+					startActivity(new Intent(HomeActivity.this, ManualRideActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}
@@ -2331,6 +2342,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverCreditsRl.setVisibility(View.VISIBLE);
 			} else {
 				driverCreditsRl.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(Constants.SHOW_MANUAL_RIDE, 0) == 1){
+				manaulRequestRl.setVisibility(View.VISIBLE);
+			} else {
+				manaulRequestRl.setVisibility(View.GONE);
 			}
 
 

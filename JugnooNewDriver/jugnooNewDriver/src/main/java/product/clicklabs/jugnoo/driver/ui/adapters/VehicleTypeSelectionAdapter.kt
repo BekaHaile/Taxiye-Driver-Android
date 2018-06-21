@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.utils.Fonts
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
@@ -73,6 +74,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
 
 
         init {
+            tvName.typeface = Fonts.mavenRegular(context)
             clRoot.setOnClickListener { v -> itemListener.onClickItem(convertView, v); }
         }
     }

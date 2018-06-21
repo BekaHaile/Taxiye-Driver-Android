@@ -17,4 +17,6 @@ abstract class FeedCommonResponseKotlin {
     @Expose
     @SerializedName("error")
     val error: String = ""
+
+    fun serverMessage() = if(message == null || message.isBlank()) error ?: "" else message
 }

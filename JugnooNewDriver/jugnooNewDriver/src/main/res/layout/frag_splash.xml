@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:transitionName="logoTransition"
-        android:src="@drawable/splash_driver_logo"
+        android:src="@drawable/ic_splash_logo_drawable"
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

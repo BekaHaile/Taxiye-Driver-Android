@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.design.widget.Snackbar
@@ -113,8 +114,9 @@ class SplashFragment : Fragment() {
 
             val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+                snackBar.view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
                         parentActivity?.let {
                             parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
@@ -146,11 +148,20 @@ class SplashFragment : Fragment() {
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
-            snackBar.show()
 
+            if(isFirstTime) {
+                // delay showing the first snackbar to allow navigation flags to be set
+
+                Handler().postDelayed({ snackBar.show() }, 100)
+                isFirstTime = false
+
+            } else {
+                snackBar.show()
+            }
 
         })
     }
+
 
 
     private fun start() {
@@ -173,7 +184,7 @@ class SplashFragment : Fragment() {
         if (Utils.mockLocationEnabled(Data.locationFetcher.locationUnchecked)) {
             DialogPopup.alertPopupWithListener(parentActivity, "", resources.getString(R.string.disable_mock_location)) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                activity.finish()
+                parentActivity?.finish()
             }
             return true
         }
@@ -455,10 +466,10 @@ class SplashFragment : Fragment() {
      */
     private fun removeNavigationFlags() {
 
-        val w = activity.getWindow()
+        val w = parentActivity?.getWindow()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
