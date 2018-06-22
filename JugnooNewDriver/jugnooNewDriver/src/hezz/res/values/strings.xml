@@ -40,7 +40,7 @@
     <string name="about_1_text">&appname; helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">Rate card</string>
 
-    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
     <string name="email_id">Email ID</string>
@@ -437,7 +437,7 @@
     <string name="Rate_Your_Customer">Rate Your Customer</string>
     <string name="skip">Skip</string>
     <string name="destination_menu">Destination</string>
-    <string name="no_current_notification">No Current Notification</string>
+    <string name="no_current_notification">No Messages to show</string>
     <string name="phone">Phone :</string>
     <string name="GENERATE_OTP">Generate OTP</string>
     <string name="otp">OTP</string>
