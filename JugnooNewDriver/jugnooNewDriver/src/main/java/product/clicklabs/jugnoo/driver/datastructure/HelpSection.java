@@ -4,7 +4,7 @@ public enum HelpSection {
 	MAIL_US(-2, "Send Us an Email"),
 	CALL_US(-1, "Call Us"),
 	
-	ABOUT(0, "About Jugnoo"), 
+	ABOUT(0, "About"),
 	FAQ(1, "FAQs"),
 	PRIVACY(2, "Privacy Policy"),
 	TERMS(3, "Terms of Use"),

@@ -28,7 +28,7 @@
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">TT Rideshare</string><!--* IMP-->
-    <string name="support_email">support@jugnoo.in</string>
+    <string name="support_email">support@ttideshare.com</string>
     <string name="support_email_subject">TT Ride Share Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
@@ -68,6 +68,7 @@
     <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
 
     <integer name="driver_logout_enabled">1</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
