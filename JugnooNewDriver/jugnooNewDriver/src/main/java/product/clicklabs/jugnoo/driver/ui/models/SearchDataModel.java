@@ -8,11 +8,8 @@ import android.content.Context;
 public  abstract class SearchDataModel {
 
 
-    private String name;
+    public abstract String getLabel();
 
     public abstract int getImage(Context context);
 
-    public String getName() {
-        return name;
-    }
 }

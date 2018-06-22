@@ -15,8 +15,7 @@ import java.util.Locale;
 import product.clicklabs.jugnoo.driver.R;
 
 
-public class CountryPicker
-    implements CountryPickerDialog.CountryPickerDialogInteractionListener {
+public class CountryPicker implements CountryPickerDialog.CountryPickerDialogInteractionListener<Country> {
 
   // region Countries
   private final Country[] COUNTRIES = {

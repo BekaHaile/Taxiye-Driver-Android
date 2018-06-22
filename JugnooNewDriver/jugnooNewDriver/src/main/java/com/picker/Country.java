@@ -91,6 +91,11 @@ public class Country extends SearchDataModel{
   }
 
   @Override
+  public String getLabel() {
+    return name;
+  }
+
+  @Override
   public int getImage(Context context) {
     return loadFlagByCode(context);
   }

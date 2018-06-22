@@ -49,6 +49,24 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
             />
 
+        <TextView
+            android:id="@+id/tvCities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvSelectVehicle"
+            app:layout_constraintLeft_toRightOf="@id/tvSelectVehicle"
+            android:text="@string/select_city"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/new_orange"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvVehicleTypes"
@@ -106,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse,tvCities"/>
 
     </android.support.constraint.ConstraintLayout>
 

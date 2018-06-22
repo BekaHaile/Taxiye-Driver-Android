@@ -44,7 +44,7 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final T country = countries.get(position);
-        holder.countryNameText.setText(country.getName());
+        holder.countryNameText.setText(country.getLabel());
         int image = country.getImage(context);
         if (image != -1) {
             holder.countryFlagImageView.setImageResource(image);
@@ -61,7 +61,7 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
 
     @Override
     public int getItemCount() {
-        return countries.size();
+        return countries==null ?0:countries.size();
     }
     // endregion
 

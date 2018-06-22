@@ -355,7 +355,6 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 		});
 
 
-
 		VehicleType.setAdapter(new VehicyleArrayAdapter(this, R.layout.spinner_layout, res.getVehicleTypes()));
 
 		VehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

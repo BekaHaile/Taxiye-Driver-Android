@@ -13,29 +13,31 @@ import com.squareup.picasso.Picasso
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.utils.Fonts
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
-                                  private var vehicleTypes: MutableList<CityResponse.VehicleType>)
+                                  private var vehicleTypes: MutableList<CityResponse.VehicleType>?)
     : RecyclerView.Adapter<VehicleTypeSelectionAdapter.ViewHolderVehicle>(), ItemListener {
 
 
     private var currentSelectedPos = -1
 
     fun getCurrentSelectedVehicle(): CityResponse.VehicleType? {
-        return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes.size) null
-        else vehicleTypes[currentSelectedPos]
+        return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes!!.size) null
+        else vehicleTypes!![currentSelectedPos]
     }
 
 
 
     override fun getItemCount(): Int {
-        return vehicleTypes.size
+        return if(vehicleTypes==null) 0 else vehicleTypes!!.size
     }
 
     fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>,defaultIndex: Int) {
+        resetCurrentSelectedPosition()
+        currentSelectedPos= -1;
         this.vehicleTypes = vehicleTypes
         notifyDataSetChanged()
         setNewPosition(defaultIndex);
@@ -43,7 +45,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: ViewHolderVehicle, i: Int) {
-        val vehicle = vehicleTypes[i]
+        val vehicle = vehicleTypes!![i]
         val imageRes: Int = when (vehicle.vehicleType) {
             VehicleTypeValue.AUTOS.value -> R.drawable.ic_auto_request
             VehicleTypeValue.BIKES.value -> R.drawable.ic_ride_accept_bike
@@ -53,7 +55,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             else -> R.drawable.ic_auto_request
         }
         if(!TextUtils.isEmpty(vehicle.driverIcon)){
-            Picasso.with(context).load(vehicle.driverIcon).placeholder(imageRes).error(imageRes).into(holder.ivVehicle)
+            Picasso.with(context).load(vehicle.driverIcon).error(imageRes).into(holder.ivVehicle)
         } else {
             holder.ivVehicle.setImageResource(imageRes)
         }
@@ -89,18 +91,21 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     private fun setNewPosition(pos: Int) {
-        if (pos>=0 && pos < vehicleTypes.size && currentSelectedPos != pos) {
+        if (pos>=0 && pos < vehicleTypes!!.size && currentSelectedPos != pos) {
 
 
-          if(currentSelectedPos>=0 && currentSelectedPos<vehicleTypes.size){
-                vehicleTypes[currentSelectedPos].isSelected = false;
-                notifyItemChanged(currentSelectedPos)
-         }
+            resetCurrentSelectedPosition()
 
-
-            vehicleTypes[pos].isSelected = true;
+            vehicleTypes!![pos].isSelected = true;
             currentSelectedPos = pos;
             notifyItemChanged(currentSelectedPos);
+        }
+    }
+
+    private fun resetCurrentSelectedPosition() {
+        if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes!!.size) {
+            vehicleTypes!![currentSelectedPos].isSelected = false;
+            notifyItemChanged(currentSelectedPos)
         }
     }
 

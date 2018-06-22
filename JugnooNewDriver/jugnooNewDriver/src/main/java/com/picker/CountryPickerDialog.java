@@ -94,7 +94,7 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     private void search(String searchQuery) {
         searchResults.clear();
         for (T country : dialogInteractionListener.getAllCountries()) {
-            if (country.getName().toLowerCase(Locale.ENGLISH).contains(searchQuery.toLowerCase())) {
+            if (country.getLabel().toLowerCase(Locale.ENGLISH).contains(searchQuery.toLowerCase())) {
                 searchResults.add(country);
             }
         }
