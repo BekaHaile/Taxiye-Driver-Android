@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Parminder Saini on 26/03/17.
  */
 
-abstract class FeedCommonResponseKotlin {
+ open class FeedCommonResponseKotlin {
     @Expose
     @SerializedName("flag")
     var flag:Int = 0

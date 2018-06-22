@@ -27,6 +27,8 @@ import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
+import retrofit.RetrofitError
+import java.lang.Exception
 
 
 class DriverSetupFragment : Fragment() {
@@ -76,6 +78,8 @@ class DriverSetupFragment : Fragment() {
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvPromo.typeface = Fonts.mavenLight(parentActivity!!)
+            edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
 
@@ -148,7 +152,7 @@ class DriverSetupFragment : Fragment() {
 
     private fun checkForPromoCode(){
 
-        if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled){
+        if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled && edtPromo.text.toString().trim().isNotEmpty()){
             applyPromoCodeApi()
             return
         }
@@ -217,8 +221,8 @@ class DriverSetupFragment : Fragment() {
     private fun applyPromoCodeApi(){
 
         val promoCode =  edtPromo.text.toString().trim()
-        ApiCommonKt<FeedCommonResponseKotlin>(activity,putAccessToken = true,successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
-                .execute( hashMapOf(Constants.CODE to promoCode),ApiName.APPLY_PROMO,
+        ApiCommonKt<FeedCommonResponseKotlin>(activity,successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+                .execute( hashMapOf(Constants.CODE to promoCode,Constants.KEY_ACCESS_TOKEN to accessToken),ApiName.APPLY_PROMO,
                 object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
 
                     override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
@@ -253,14 +257,29 @@ class DriverSetupFragment : Fragment() {
                 cityId = t.currentCityId
                 adapter.setList(vehicleTypes,0)
                 groupView.visible()
-                setPromoLayout(t.showPromo,t.promoCode)
+                setPromoLayout(t.getShowPromo(),t.promoCode)
 
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
                 groupView.gone()
-                DialogPopup.alertPopupWithListener(parentActivity, "", message, { getCitiesAPI() })
-                return false;
+                DialogPopup.alertPopupWithListener(parentActivity, "", message, { parentActivity?.onBackPressed() })
+                return true;
+            }
+
+            override fun onNotConnected(): Boolean {
+                onError(null,parentActivity?.getString(R.string.check_internet_message),0)
+                return true
+            }
+
+            override fun onFailure(error: RetrofitError?): Boolean {
+                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                return true
+            }
+
+            override fun onException(e: Exception?): Boolean {
+                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                return true
             }
         })
     }
@@ -270,10 +289,12 @@ class DriverSetupFragment : Fragment() {
             promoGroupView.visible()
             if (promoText != null && !promoText.isBlank()) {
                 edtPromo.setText(promoText)
+                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
                 edtPromo.isEnabled = false
             } else {
                 edtPromo.isEnabled = true
                 edtPromo.setText(null)
+                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,0,0)
             }
         } else {
             promoGroupView.gone()

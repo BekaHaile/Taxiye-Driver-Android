@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui.api
 
 import android.app.Activity
+import android.text.TextUtils
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
@@ -131,7 +132,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
             }
         }
 
-        if (putAccessToken) {
+        if (putAccessToken && Data.userData!=null && !TextUtils.isEmpty(Data.userData.accessToken)) {
             params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken
         }
 
