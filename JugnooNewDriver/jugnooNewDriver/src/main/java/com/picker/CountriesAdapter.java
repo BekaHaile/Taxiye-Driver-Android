@@ -13,23 +13,23 @@ import android.widget.TextView;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
 
 
-public class CountriesAdapter extends
-        RecyclerView.Adapter<CountriesAdapter.ViewHolder> {
+public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.Adapter<CountriesAdapter<T>.ViewHolder> {
 
     // region Variables
-    private OnItemClickListener listener;
-    private List<Country> countries;
+    private OnItemClickListener<T> listener;
+    private List<T> countries;
     private Context context;
     // endregion
 
     //region Constructor
-    public CountriesAdapter(Context context, List<Country> countries,
-							OnItemClickListener listener) {
+      CountriesAdapter (Context context, List<T> countries, OnItemClickListener<T> listener) {
         this.context = context;
         this.countries = countries;
         this.listener = listener;
+
     }
     // endregion
 
@@ -43,11 +43,13 @@ public class CountriesAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Country country = countries.get(position);
+        final T country = countries.get(position);
         holder.countryNameText.setText(country.getName());
-        country.loadFlagByCode(context);
-        if (country.getFlag() != -1) {
-            holder.countryFlagImageView.setImageResource(country.getFlag());
+        int image = country.getImage(context);
+        if (image != -1) {
+            holder.countryFlagImageView.setImageResource(image);
+        }else{
+            holder.countryFlagImageView.setImageResource(0);
         }
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override

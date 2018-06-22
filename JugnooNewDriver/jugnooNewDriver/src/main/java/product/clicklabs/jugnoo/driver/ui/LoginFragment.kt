@@ -26,7 +26,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import com.picker.Country
 import com.picker.CountryPicker
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
@@ -90,7 +92,11 @@ class LoginFragment : Fragment() {
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
-        val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
+        val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener<Country>{
+            override fun onSelectCountry(country: Country?) {
+                rootView.tvCountryCode.text = country?.dialCode
+            }
+        }).build()
 
         with(rootView) {
 

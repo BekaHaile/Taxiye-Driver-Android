@@ -52,7 +52,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class RegisterScreen extends BaseFragmentActivity implements LocationUpdate, OnCountryPickerListener{
+public class RegisterScreen extends BaseFragmentActivity implements LocationUpdate, OnCountryPickerListener<Country>{
 	
 	Button backBtn;
 	TextView title;

@@ -5,7 +5,9 @@ import android.text.TextUtils;
 
 import java.util.Locale;
 
-public class Country {
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
+
+public class Country extends SearchDataModel{
 
   // region Variables
   private String code;
@@ -72,9 +74,9 @@ public class Country {
     this.flag = flag;
   }
 
-  public void loadFlagByCode(Context context) {
+  public int loadFlagByCode(Context context) {
     if (this.flag != -1) {
-      return;
+      return this.flag;
     }
 
     try {
@@ -85,6 +87,11 @@ public class Country {
       e.printStackTrace();
       this.flag = -1;
     }
+    return this.flag;
   }
-  // endregion
+
+  @Override
+  public int getImage(Context context) {
+    return loadFlagByCode(context);
+  }
 }
