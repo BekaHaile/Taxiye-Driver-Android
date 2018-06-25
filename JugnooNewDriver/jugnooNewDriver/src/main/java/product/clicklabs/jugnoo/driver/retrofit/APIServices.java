@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -622,6 +623,13 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/driver/fetch_stripe_login_link")
 	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
+
+
+	@FormUrlEncoded
+	@POST("/enter_code")
+	void applyPromo(@FieldMap Map<String, String> params,
+						  Callback<FeedCommonResponseKotlin> callback);
+
 
 
 }
