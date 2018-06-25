@@ -241,6 +241,7 @@ class DriverSetupFragment : Fragment() {
 
     private fun getCitiesAPI() {
         val params = hashMapOf(
+                Constants.KEY_ACCESS_TOKEN to accessToken,
                 Constants.KEY_LATITUDE to Data.latitude.toString(),
                 Constants.KEY_LONGITUDE to Data.longitude.toString())
 
