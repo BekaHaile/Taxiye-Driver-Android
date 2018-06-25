@@ -473,6 +473,11 @@ public interface APIServices {
 					  Callback<CityResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/get_driver_signup_details")
+	void getDriverSignUpDetails(@FieldMap Map<String, String> params,
+					  Callback<CityResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/upload_ring_count_data")
 	void sendRingCountData(@FieldMap Map<String, String> params,
 						   Callback<RegisterScreenResponse> callback);

@@ -152,15 +152,15 @@ class DriverSetupFragment : Fragment() {
 
     private fun checkForPromoCode(){
 
+        var promoText:String? = null
         if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled && edtPromo.text.toString().trim().isNotEmpty()){
-            applyPromoCodeApi()
-            return
+             promoText = edtPromo.text.toString().trim()
         }
 
-        registerDriver()
+        registerDriver(promoText)
     }
 
-    private fun registerDriver() {
+    private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
@@ -184,6 +184,10 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
+        if(referralCode!=null){
+            params["referral_code"] = referralCode;
+
+        }
     HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
@@ -212,7 +216,6 @@ class DriverSetupFragment : Fragment() {
             }
 
             override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-                DialogPopup.alertPopupWithListener(parentActivity, "", message, { registerDriver() })
                 return false
             }
         })
@@ -227,7 +230,7 @@ class DriverSetupFragment : Fragment() {
 
                     override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
                         setPromoLayout(true,promoCode)
-                        registerDriver()
+                       // registerDriver(nu)
                     }
 
                     override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
