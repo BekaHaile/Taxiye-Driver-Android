@@ -24,6 +24,8 @@
     <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4</string> <!--IMP-->
 
+    <string name="facebook_page_id">2056791887904505</string>
+    <string name="facebook_page_name">ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
@@ -71,6 +73,7 @@
     <integer name="show_driver_timer">@integer/view_invisible</integer>
 
     <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
 
