@@ -20,13 +20,9 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.picker.Country
-import com.picker.CountryPicker
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
-import kotlinx.android.synthetic.main.frag_login.view.*
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
-import kotlinx.android.synthetic.main.item_country.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -276,7 +272,7 @@ class DriverSetupFragment : Fragment() {
             }
         }else{
             rvVehicleTypes.gone()
-            tvCities.text = getString(R.string.select_city)
+            tvCities.text = getString(R.string.label_select_city)
             cityId = null
 
 
@@ -292,7 +288,7 @@ class DriverSetupFragment : Fragment() {
         if (citiesList == null || citiesList!!.isEmpty()) {
             throw IllegalArgumentException(context.getString(R.string.error_no_cities_found))
         } else {
-            val countryPickerDialog = CountryPickerDialog.newInstance()
+            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
             countryPickerDialog.setCountryPickerListener(onCountryPickerListener)
             countryPickerDialog.setDialogInteractionListener(countryPickerDialogInteractionListener)
             countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by aneeshbansal on 29/01/16.
  */
-public class CityResponse extends FeedCommonResponseKotlin implements Serializable {
+public class CityResponse extends FeedCommonResponseKotlin {
 
 
 	@SerializedName("cities")
@@ -54,7 +54,7 @@ public class CityResponse extends FeedCommonResponseKotlin implements Serializab
 
 
 
-	public class City extends SearchDataModel implements Serializable {
+	public class City extends SearchDataModel {
 
 		@SerializedName("city_id")
 		@Expose
@@ -104,9 +104,14 @@ public class CityResponse extends FeedCommonResponseKotlin implements Serializab
 		public int getImage(Context context) {
 			return -1;
 		}
+
+		@Override
+		public boolean showImage() {
+			return false;
+		}
 	}
 
-	public class VehicleType implements Serializable {
+	public class VehicleType{
 
 		@SerializedName("vehicle_name")
 		@Expose

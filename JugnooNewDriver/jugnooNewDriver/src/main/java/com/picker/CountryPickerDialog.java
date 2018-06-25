@@ -31,11 +31,17 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     private List<T> searchResults;
     private OnCountryPickerListener<T> listener;
     private LinearLayout llNoData;
+    public  static final String SEARCH_DIALOG_TITLE = "search_dialog_title";
+
     // endregion
 
     // region Constructors
-    public static CountryPickerDialog newInstance() {
-        return new CountryPickerDialog();
+    public static CountryPickerDialog newInstance(String string) {
+        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(SEARCH_DIALOG_TITLE,string);
+        countryPickerDialog.setArguments(bundle);
+        return countryPickerDialog;
     }
     // endregion
 
@@ -45,7 +51,13 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 							 Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.country_picker,null);
-        getDialog().setTitle(R.string.country_picker_header);
+        if(getArguments()!=null && getArguments().containsKey(SEARCH_DIALOG_TITLE)){
+            getDialog().setTitle(getArguments().getString(SEARCH_DIALOG_TITLE,null));
+
+        }else{
+            getDialog().setTitle(R.string.title_search_dialog_default);
+
+        }
         EditText searchEditText = (EditText) view.findViewById(R.id.country_code_picker_search);
         countriesRecyclerView = (RecyclerView) view.findViewById(R.id.countries_recycler_view);
         llNoData = (LinearLayout) view.findViewById(R.id.llNoData);

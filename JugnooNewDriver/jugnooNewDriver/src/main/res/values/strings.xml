@@ -1040,9 +1040,11 @@
     <string name="who_are_we">Who are we?</string>
     <string name="facebook_not_installed">Facebook app not enabled</string>
     <string name="about">About</string>
-    <string name="select_city">Select City</string>
+    <string name="label_select_city">Select City</string>
     <string name="no_vehicles_available">No vehicles available for the selected city</string>
     <string name="error_no_cities_found">No Cities Found!</string>
+    <string name="title_dialog_select_city">Select City</string>
+    <string name="title_search_dialog_default">Select</string>
 
 
 </resources>

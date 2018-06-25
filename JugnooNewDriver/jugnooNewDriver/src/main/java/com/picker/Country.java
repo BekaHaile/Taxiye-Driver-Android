@@ -99,4 +99,9 @@ public class Country extends SearchDataModel{
   public int getImage(Context context) {
     return loadFlagByCode(context);
   }
+
+  @Override
+  public boolean showImage() {
+    return true;
+  }
 }

@@ -60,7 +60,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/tvSelectVehicle"
             app:layout_constraintLeft_toRightOf="@id/tvSelectVehicle"
-            android:text="@string/select_city"
+            android:text="@string/label_select_city"
             android:clickable="true"
             android:focusable="true"
             android:textColor="@color/new_orange"

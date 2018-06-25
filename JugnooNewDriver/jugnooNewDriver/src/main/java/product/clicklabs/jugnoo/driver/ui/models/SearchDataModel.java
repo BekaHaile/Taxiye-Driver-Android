@@ -12,4 +12,6 @@ public  abstract class SearchDataModel {
 
     public abstract int getImage(Context context);
 
+    public abstract boolean showImage();
+
 }

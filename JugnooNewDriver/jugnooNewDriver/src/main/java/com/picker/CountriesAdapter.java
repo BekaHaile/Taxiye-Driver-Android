@@ -14,6 +14,7 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.Adapter<CountriesAdapter<T>.ViewHolder> {
@@ -46,11 +47,18 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
         final T country = countries.get(position);
         holder.countryNameText.setText(country.getLabel());
         int image = country.getImage(context);
-        if (image != -1) {
-            holder.countryFlagImageView.setImageResource(image);
+
+        if(country.showImage()){
+            holder.countryFlagImageView.setVisibility(View.VISIBLE);
+            if (image != -1) {
+                holder.countryFlagImageView.setImageResource(image);
+            }else{
+                holder.countryFlagImageView.setImageResource(0);
+            }
         }else{
-            holder.countryFlagImageView.setImageResource(0);
+            holder.countryFlagImageView.setVisibility(View.GONE);
         }
+
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +83,7 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
             super(itemView);
             countryFlagImageView = (ImageView) itemView.findViewById(R.id.country_flag);
             countryNameText = (TextView) itemView.findViewById(R.id.country_title);
+            countryNameText.setTypeface(Fonts.mavenRegular(context));
             rootView = (RelativeLayout) itemView.findViewById(R.id.rootView);
         }
     }
