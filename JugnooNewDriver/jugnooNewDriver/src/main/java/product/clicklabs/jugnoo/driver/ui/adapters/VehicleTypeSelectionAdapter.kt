@@ -35,7 +35,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         return if(vehicleTypes==null) 0 else vehicleTypes!!.size
     }
 
-    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>,defaultIndex: Int) {
+    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>?,defaultIndex: Int) {
         resetCurrentSelectedPosition()
         currentSelectedPos= -1;
         this.vehicleTypes = vehicleTypes
@@ -91,7 +91,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     private fun setNewPosition(pos: Int) {
-        if (pos>=0 && pos < vehicleTypes!!.size && currentSelectedPos != pos) {
+        if (pos>=0 && vehicleTypes!=null && pos < vehicleTypes!!.size && currentSelectedPos != pos) {
 
 
             resetCurrentSelectedPosition()
@@ -103,7 +103,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     private fun resetCurrentSelectedPosition() {
-        if (currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes!!.size) {
+        if ( vehicleTypes!=null && currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes!!.size) {
             vehicleTypes!![currentSelectedPos].isSelected = false;
             notifyItemChanged(currentSelectedPos)
         }

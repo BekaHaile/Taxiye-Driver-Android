@@ -73,11 +73,11 @@
             android:layout_width="match_parent"
             android:clipToPadding="false"
             android:padding="@dimen/spacing_grid_recycler_view"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle" />
 
 
         <Button
@@ -124,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse,tvCities"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse,tvCities"/>
 
     </android.support.constraint.ConstraintLayout>
 

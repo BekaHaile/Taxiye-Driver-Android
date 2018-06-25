@@ -1041,6 +1041,7 @@
     <string name="facebook_not_installed">Facebook app not enabled</string>
     <string name="about">About</string>
     <string name="select_city">Select City</string>
+    <string name="no_vehicles_available">No vehicles available for the selected city</string>
     <string name="error_no_cities_found">No Cities Found!</string>
 
 

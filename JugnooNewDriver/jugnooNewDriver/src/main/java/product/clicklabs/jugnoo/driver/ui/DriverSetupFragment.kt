@@ -4,7 +4,9 @@ package product.clicklabs.jugnoo.driver.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
@@ -24,6 +26,7 @@ import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.frag_login.view.*
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
+import kotlinx.android.synthetic.main.item_country.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -80,6 +83,7 @@ class DriverSetupFragment : Fragment() {
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
 
@@ -89,7 +93,7 @@ class DriverSetupFragment : Fragment() {
         bCancel.typeface = Fonts.mavenRegular(activity)
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
         tvCities.setOnClickListener{showCountriesDialog(activity.supportFragmentManager)}
-
+        tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(activity, 3)
             addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
@@ -98,6 +102,7 @@ class DriverSetupFragment : Fragment() {
 
         getCitiesAPI()
         setupTermsAndConditionsTextView()
+
 
     }
 
@@ -258,16 +263,31 @@ class DriverSetupFragment : Fragment() {
         super.onDetach()
     }
 
-    private fun setCityData(city: CityResponse.City){
-        tvCities.text = city.cityName
-        cityId = city.cityId.toString()
-        adapter.setList(city.vehicleTypes,0)
+    private fun setCityData(city: CityResponse.City?){
+        if(city!=null){
+            tvCities.text = city.cityName
+            cityId = city.cityId.toString()
+            adapter.setList(city.vehicleTypes,0)
+            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+                rvVehicleTypes.gone()
+                Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
+            }else{
+                rvVehicleTypes.visible()
+            }
+        }else{
+            rvVehicleTypes.gone()
+            tvCities.text = getString(R.string.select_city)
+            cityId = null
+
+
+        }
+
 
     }
 
 
 
-    // region Utility Methods
+
     fun showCountriesDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty()) {
             throw IllegalArgumentException(context.getString(R.string.error_no_cities_found))
