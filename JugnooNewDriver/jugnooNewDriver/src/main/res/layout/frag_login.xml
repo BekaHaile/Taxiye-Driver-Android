@@ -142,6 +142,7 @@
             android:background="@null"
             android:drawablePadding="4dp"
             android:hint="@string/hint_edt_phone"
+            android:tag="@integer/tag_scroll_down_on_touch"
             android:inputType="phone"
             android:maxLines="1"
             android:padding="2dp"

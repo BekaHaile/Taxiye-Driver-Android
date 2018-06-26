@@ -40,7 +40,6 @@
 
 
     <!--Login sign-up -->
-    <drawable name="bg_on_boarding_drawable">@drawable/driver_splash_val</drawable>
     <drawable name="bg_splash">@drawable/driver_splash_val</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@null</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
@@ -48,6 +47,7 @@
     <dimen name="ic_splash_logo_height">350dp</dimen>
     <integer name="show_t_and_c">@integer/view_gone</integer>
     <bool name="animate_splash_logo">false</bool>
+    <drawable name="windowBackgroundColor">@color/theme_color</drawable>
 
 
     <!--Side Menu Properties-->
@@ -70,6 +70,5 @@
     <integer name="show_call_in_otp">@integer/view_gone</integer>
 
 
-    <drawable name="windowBackgroundColor">@color/theme_color</drawable>
 
 </resources>

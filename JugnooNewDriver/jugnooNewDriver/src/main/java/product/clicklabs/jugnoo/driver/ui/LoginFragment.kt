@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
-import android.support.constraint.ConstraintSet
 import android.transition.Transition
 import android.support.transition.TransitionManager
 import android.transition.TransitionSet
@@ -25,12 +24,10 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import com.picker.CountryPicker
-import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.tvLanguage
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -39,7 +36,6 @@ import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
-import java.lang.ref.WeakReference
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -177,16 +173,18 @@ class LoginFragment : Fragment() {
                 })
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
-            edtPhoneNo.setOnTouchListener(object: View.OnTouchListener{
-                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    this@LoginFragment.handler.postDelayed(showKeyboardRunnable,200);
+            if(edtPhoneNo.tag!=null && edtPhoneNo.tag is Int
+               && (edtPhoneNo.tag as Int)==resources.getInteger(R.integer.tag_scroll_down_on_touch)){
+                edtPhoneNo.setOnTouchListener(object: View.OnTouchListener{
+                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                        this@LoginFragment.handler.postDelayed(showKeyboardRunnable,200);
 
-                    return false
-                }
+                        return false
+                    }
 
-            })
-//            progressLanguage.getProgressDrawable()
-//                    .setColorFilter(ContextCompat.getColor(getActivity(),R.color.new_orange), PorterDuff.Mode.MULTIPLY)
+                })
+            }
+
         }
 
         return rootView

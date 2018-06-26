@@ -222,6 +222,11 @@ class DriverSetupFragment : Fragment() {
                 cityId = t.currentCityId
                 adapter.setList(vehicleTypes,0)
                 groupView.visible()
+                if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
+                    tvTermsOfUse.visible()
+                }else{
+                    tvTermsOfUse.gone()
+                }
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
