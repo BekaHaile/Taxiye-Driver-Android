@@ -137,7 +137,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     private fun addPhoneNumberScreen(enableSharedTransition: Boolean, view: View?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && enableSharedTransition && view != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && enableSharedTransition
+                && view != null && resources.getBoolean(R.bool.animate_splash_logo)) {
             try {
 
                 supportFragmentManager.inTransactionWithSharedTransition(view, {

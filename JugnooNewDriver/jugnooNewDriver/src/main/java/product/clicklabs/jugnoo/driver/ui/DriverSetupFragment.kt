@@ -116,7 +116,7 @@ class DriverSetupFragment : Fragment() {
         val start = 31
         val end = 49
         ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.new_orange1)), start, end, 0);
+        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.new_orange)), start, end, 0);
         tvTermsOfUse.text = ss
         tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         tvTermsOfUse.highlightColor = Color.TRANSPARENT
@@ -260,6 +260,11 @@ class DriverSetupFragment : Fragment() {
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
 
+                if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
+                    tvTermsOfUse.visible()
+                }else{
+                    tvTermsOfUse.gone()
+                }
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {

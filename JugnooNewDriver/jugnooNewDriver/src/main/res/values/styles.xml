@@ -46,6 +46,7 @@
     </style>
 
     <style name="SplashThemeNormal" parent="AppBaseTheme">
+        <item name="android:windowBackground">@drawable/windowBackgroundColor</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
     </style>
