@@ -205,6 +205,12 @@ class DriverSetupFragment : Fragment() {
                             openDocumentUploadActivity()
                         }
 
+                         ApiResponseFlags.SHOW_MESSAGE.getOrdinal() -> {
+                             DialogPopup.alertPopupWithListener(parentActivity, "", message, {openDocumentUploadActivity() })
+
+                         }
+
+
                         ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {
                             DialogPopup.alertPopup(activity, "", message)
                         }
