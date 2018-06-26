@@ -143,7 +143,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		countryPicker = new CountryPicker.Builder().with(this)
-				.listener(new OnCountryPickerListener() {
+				.listener(new OnCountryPickerListener<Country>() {
 					@Override
 					public void onSelectCountry(Country country) {
 						tvCountryCode.setText(country.getDialCode());

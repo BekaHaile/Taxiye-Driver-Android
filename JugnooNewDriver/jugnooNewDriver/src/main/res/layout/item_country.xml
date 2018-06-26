@@ -2,9 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
+    android:background="@drawable/background_white_selector"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
     android:orientation="horizontal"
     >
 
@@ -12,7 +15,7 @@
       android:id="@+id/country_flag"
       android:layout_width="48dp"
       android:layout_height="48dp"
-      android:layout_marginStart="16dp"
+      android:visibility="visible"
       android:padding="10dp"
       />
 
@@ -21,6 +24,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center_vertical"
+      android:textSize="15sp"
       android:padding="16dp"
       android:layout_toEndOf="@+id/country_flag"
       />

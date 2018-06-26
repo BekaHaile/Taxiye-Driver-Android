@@ -8,7 +8,7 @@ import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
@@ -468,9 +468,14 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_all_cities")
-	void getCityRetro(@FieldMap Map<String, String> params,
+	void getCities(@FieldMap Map<String, String> params,
 					  @Field("password") String password,
 					  Callback<CityResponse> callback);
+	@FormUrlEncoded
+	@POST("/get_all_cities")
+	void getCityRetro(@FieldMap Map<String, String> params,
+					  @Field("password") String password,
+					  Callback<product.clicklabs.jugnoo.driver.retrofit.model.CityResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_driver_signup_details")

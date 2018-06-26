@@ -108,7 +108,7 @@ import retrofit.mime.TypedByteArray;
 
 //import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
-public class SplashNewActivity extends BaseFragmentActivity implements LocationUpdate, FlurryEventNames, OnCountryPickerListener {
+public class SplashNewActivity extends BaseFragmentActivity implements LocationUpdate, FlurryEventNames, OnCountryPickerListener<Country> {
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 	public final static String DEVICE_TOKEN_TAG = "DEVICE_TOKEN_TAG";

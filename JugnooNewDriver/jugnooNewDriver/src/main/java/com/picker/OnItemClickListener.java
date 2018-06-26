@@ -1,5 +1,7 @@
 package com.picker;
 
-public interface OnItemClickListener {
-  void onItemClicked(Country country);
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
+
+public interface OnItemClickListener<T extends SearchDataModel> {
+  void onItemClicked(T country);
 }

@@ -121,6 +121,8 @@ public class StripeConnectActivity extends BaseFragmentActivity  {
             }
         }
 
+
+
         @Override
         public void onPageFinished(WebView view, String url) {
             if(DialogPopup.isDialogShowing()){

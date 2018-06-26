@@ -291,6 +291,8 @@ class OTPConfirmFragment : Fragment() {
                             } else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", resources.getString(R.string.no_not_verified))
                             } else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
+
+
                                 if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
                                     JSONParser().parseAccessTokenLoginData(activity, jsonString)
                                     activity.startService(Intent(activity.applicationContext, DriverLocationUpdateService::class.java))

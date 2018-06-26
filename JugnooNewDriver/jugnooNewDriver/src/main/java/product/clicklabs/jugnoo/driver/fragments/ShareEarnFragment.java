@@ -193,7 +193,7 @@ public class ShareEarnFragment extends BaseFragment {
             final TextView tvCountryCode = (TextView) dialog.findViewById(R.id.tvCountryCode);
             tvCountryCode.setText(Utils.getCountryCode(activity));
             final CountryPicker countryPicker = new CountryPicker.Builder().with(activity)
-                    .listener(new OnCountryPickerListener() {
+                    .listener(new OnCountryPickerListener<Country>() {
                         @Override
                         public void onSelectCountry(Country country) {
                             tvCountryCode.setText(country.getDialCode());

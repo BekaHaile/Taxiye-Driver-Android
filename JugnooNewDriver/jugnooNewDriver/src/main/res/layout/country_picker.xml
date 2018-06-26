@@ -43,7 +43,7 @@
             android:layout_below="@+id/ivNoData"
             android:gravity="center_horizontal"
             android:letterSpacing="0.03"
-            android:text="@string/no_country_found"
+            android:text="@string/no_results_found"
             android:textColor="#979797"
             android:textSize="10sp"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"

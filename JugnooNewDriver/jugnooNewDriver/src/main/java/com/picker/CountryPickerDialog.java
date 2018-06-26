@@ -19,23 +19,29 @@ import java.util.List;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
 
 
-public class CountryPickerDialog extends DialogFragment implements OnItemClickListener {
+public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragment implements OnItemClickListener<T> {
 
     // region Variables
-    private CountryPickerDialogInteractionListener dialogInteractionListener;
-    private EditText searchEditText;
+    private CountryPickerDialogInteractionListener<T> dialogInteractionListener;
     private RecyclerView countriesRecyclerView;
-    private CountriesAdapter adapter;
-    private List<Country> searchResults;
-    private OnCountryPickerListener listener;
+    private CountriesAdapter<T> adapter;
+    private List<T> searchResults;
+    private OnCountryPickerListener<T> listener;
     private LinearLayout llNoData;
+    public  static final String SEARCH_DIALOG_TITLE = "search_dialog_title";
+
     // endregion
 
     // region Constructors
-    public static CountryPickerDialog newInstance() {
-        return new CountryPickerDialog();
+    public static CountryPickerDialog newInstance(String string) {
+        CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(SEARCH_DIALOG_TITLE,string);
+        countryPickerDialog.setArguments(bundle);
+        return countryPickerDialog;
     }
     // endregion
 
@@ -44,9 +50,15 @@ public class CountryPickerDialog extends DialogFragment implements OnItemClickLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 							 Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.country_picker, null);
-        getDialog().setTitle(R.string.country_picker_header);
-        searchEditText = (EditText) view.findViewById(R.id.country_code_picker_search);
+        View view = inflater.inflate(R.layout.country_picker,null);
+        if(getArguments()!=null && getArguments().containsKey(SEARCH_DIALOG_TITLE)){
+            getDialog().setTitle(getArguments().getString(SEARCH_DIALOG_TITLE,null));
+
+        }else{
+            getDialog().setTitle(R.string.title_search_dialog_default);
+
+        }
+        EditText searchEditText = (EditText) view.findViewById(R.id.country_code_picker_search);
         countriesRecyclerView = (RecyclerView) view.findViewById(R.id.countries_recycler_view);
         llNoData = (LinearLayout) view.findViewById(R.id.llNoData);
         setupRecyclerView();
@@ -71,7 +83,7 @@ public class CountryPickerDialog extends DialogFragment implements OnItemClickLi
     }
 
     @Override
-    public void onItemClicked(Country country) {
+    public void onItemClicked(T country) {
         if (listener != null) {
             listener.onSelectCountry(country);
             dismiss();
@@ -93,8 +105,8 @@ public class CountryPickerDialog extends DialogFragment implements OnItemClickLi
     // region Utility Methods
     private void search(String searchQuery) {
         searchResults.clear();
-        for (Country country : dialogInteractionListener.getAllCountries()) {
-            if (country.getName().toLowerCase(Locale.ENGLISH).contains(searchQuery.toLowerCase())) {
+        for (T country : dialogInteractionListener.getAllCountries()) {
+            if (country.getLabel().toLowerCase(Locale.ENGLISH).contains(searchQuery.toLowerCase())) {
                 searchResults.add(country);
             }
         }
@@ -113,7 +125,7 @@ public class CountryPickerDialog extends DialogFragment implements OnItemClickLi
     private void setupRecyclerView() {
         searchResults = new ArrayList<>();
         searchResults.addAll(dialogInteractionListener.getAllCountries());
-        adapter = new CountriesAdapter(getActivity(), searchResults, this);
+        adapter = new CountriesAdapter<>(getActivity(), searchResults, this);
         countriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -124,10 +136,10 @@ public class CountryPickerDialog extends DialogFragment implements OnItemClickLi
     // endregion
 
     //region Interface
-    public interface CountryPickerDialogInteractionListener {
-        List<Country> getAllCountries();
+    public interface CountryPickerDialogInteractionListener<T extends SearchDataModel> {
+        List<T> getAllCountries();
 
-        void sortCountries(List<Country> searchResults);
+        void sortCountries(List<T> searchResults);
 
         boolean canSearch();
     }

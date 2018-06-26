@@ -5,7 +5,9 @@ import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.picker.Country
 import com.picker.CountryPicker
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.activity_manual_ride.*
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
@@ -42,7 +44,12 @@ class ManualRideActivity: BaseFragmentActivity() {
             setHomeAsUpIndicator(R.drawable.ic_back_arrow)
         }
         toolbar.tvToolbar.text = title
-        val countryPicker = CountryPicker.Builder().with(this).listener { country -> tvCountryCode.text = country?.dialCode }.build()
+        val countryPicker = CountryPicker.Builder().with(this).listener(object : OnCountryPickerListener<Country>{
+            override fun onSelectCountry(country: Country?) {
+                tvCountryCode.text = country?.dialCode
+            }
+
+        }).build()
         tvCountryCode.text = Utils.getCountryCode(this)
         tvCountryCode.setOnClickListener({ countryPicker.showDialog(supportFragmentManager) })
         toolbar.tvToolbar.typeface = Fonts.mavenMedium(this)

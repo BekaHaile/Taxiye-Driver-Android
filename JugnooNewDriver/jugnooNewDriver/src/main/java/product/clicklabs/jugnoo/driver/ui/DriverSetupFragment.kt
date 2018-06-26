@@ -4,8 +4,11 @@ package product.clicklabs.jugnoo.driver.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.text.SpannableString
@@ -17,11 +20,13 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.picker.CountryPickerDialog
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.*
@@ -37,11 +42,10 @@ class DriverSetupFragment : Fragment() {
     private lateinit var accessToken: String
     private var cityId: String? = null
     private var toolbarChangeListener: ToolbarChangeListener? = null
+    private var citiesList:MutableList<CityResponse.City>? = null
+    private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
 
-    private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
-
-
-    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, vehicleTypes) }
+    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, null) }
 
     companion object {
         @JvmStatic
@@ -80,6 +84,7 @@ class DriverSetupFragment : Fragment() {
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
             tvPromo.typeface = Fonts.mavenLight(parentActivity!!)
             edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
 
@@ -88,8 +93,8 @@ class DriverSetupFragment : Fragment() {
 
         bCancel.typeface = Fonts.mavenRegular(activity)
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
-
-
+        tvCities.setOnClickListener{showCountriesDialog(activity.supportFragmentManager)}
+        tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(activity, 3)
             addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
@@ -98,6 +103,7 @@ class DriverSetupFragment : Fragment() {
 
         getCitiesAPI()
         setupTermsAndConditionsTextView()
+
 
     }
 
@@ -256,10 +262,8 @@ class DriverSetupFragment : Fragment() {
                     onError(t, t.serverMessage(), t.flag)
                     return
                 }
-                vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
-                vehicleTypes.removeAt(0)
-                cityId = t.currentCityId
-                adapter.setList(vehicleTypes,0)
+                setCityData(t!!.currentCity)
+                citiesList = t.cities;
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
 
@@ -331,4 +335,64 @@ class DriverSetupFragment : Fragment() {
         toolbarChangeListener = null
         super.onDetach()
     }
+
+    private fun setCityData(city: CityResponse.City?){
+        if(city!=null){
+            tvCities.text = city.cityName
+            cityId = city.cityId.toString()
+            adapter.setList(city.vehicleTypes,0)
+            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+                rvVehicleTypes.gone()
+                Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
+            }else{
+                rvVehicleTypes.visible()
+            }
+        }else{
+            rvVehicleTypes.gone()
+            tvCities.text = getString(R.string.label_select_city)
+            cityId = null
+
+
+        }
+
+
+    }
+
+
+
+
+    fun showCountriesDialog(supportFragmentManager: FragmentManager) {
+        if (citiesList == null || citiesList!!.isEmpty()) {
+            throw IllegalArgumentException(context.getString(R.string.error_no_cities_found))
+        } else {
+            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
+            countryPickerDialog.setCountryPickerListener(onCountryPickerListener)
+            countryPickerDialog.setDialogInteractionListener(countryPickerDialogInteractionListener)
+            countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)
+        }
+    }
+    val onCountryPickerListener = object : OnCountryPickerListener<CityResponse.City> {
+        override fun onSelectCountry(country: CityResponse.City?) {
+                if(country!=null){
+                    setCityData(country)
+                }
+        }
+
+    };
+
+    val countryPickerDialogInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.City> {
+        override fun getAllCountries(): MutableList<CityResponse.City> {
+            return citiesList!!
+        }
+
+        override fun sortCountries(searchResults: MutableList<CityResponse.City>?) {
+
+        }
+
+        override fun canSearch(): Boolean {
+           return citiesList!=null && citiesList!!.size>7
+        }
+
+
+    };
 }
