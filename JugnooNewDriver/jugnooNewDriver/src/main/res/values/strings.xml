@@ -1018,6 +1018,7 @@
     <string name="about">About</string>
     <string name="please_enter_promo_code">Enter referral code (Optional)</string>
     <string name="hint_promo_code">Referral code</string>
+    <string name="history">History</string>
     <string name="label_select_city">Select City</string>
     <string name="no_vehicles_available">No vehicles available for the selected city</string>
     <string name="error_no_cities_found">No Cities Found!</string>

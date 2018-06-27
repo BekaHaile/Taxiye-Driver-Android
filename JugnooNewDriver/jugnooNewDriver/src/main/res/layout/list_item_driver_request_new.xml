@@ -461,7 +461,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20px"
-            android:splitMotionEvents="false">
+            android:splitMotionEvents="false"
+            android:tag="@string/dont_touch_me"
+            >
 
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/buttonCancelRide"

@@ -83,7 +83,7 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 		if(cancelOption.checked){
 			holder.relative.setBackgroundColor(Color.WHITE);
 			holder.imageViewCancelOptionCheck.setImageResource(R.drawable.option_checked_orange);
-			holder.imageViewCancelOptionCheck.setColorFilter(ContextCompat.getColor(holder.imageViewCancelOptionCheck.getContext(), R.color.red_v2),
+			holder.imageViewCancelOptionCheck.setColorFilter(ContextCompat.getColor(holder.imageViewCancelOptionCheck.getContext(), R.color.themeColor),
 					android.graphics.PorterDuff.Mode.MULTIPLY);
 
 		}

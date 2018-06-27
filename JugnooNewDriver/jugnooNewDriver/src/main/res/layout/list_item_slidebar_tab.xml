@@ -143,8 +143,9 @@
                 android:layout_width="180px"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="15px"
-                android:gravity="center">
+                android:layout_marginEnd="25px"
+                android:layout_marginTop="25px"
+                android:gravity="center|end">
 
                 <TextView
                     android:id="@+id/textViewValue"
@@ -153,7 +154,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="70%"
                     android:textColor="@color/themeColor"
-                    android:textSize="58px"/>
+                    android:textSize="36px"/>
 
                 <TextView
                     android:id="@+id/textViewValueSub"
@@ -164,7 +165,7 @@
                     android:text="fulfillment"
                     android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="24px"/>
+                    android:textSize="20px"/>
 
             </RelativeLayout>
 

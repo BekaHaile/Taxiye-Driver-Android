@@ -280,7 +280,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.imageViewDocStatusImage.setVisibility(View.GONE);
 			} else if (docInfo.status.equalsIgnoreCase("1")) {
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
-				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
+				holder.imageViewDocStatus.setImageResource(R.drawable.doc_waiting);
 				holder.imageViewDocStatusImage.setVisibility(View.GONE);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.themeColor));
 			}
