@@ -46,7 +46,8 @@
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>
-
+    <drawable name="bg_splash">@null</drawable>
+    <drawable name="windowBackgroundColor">@drawable/app_start_bg</drawable>
 
 
     <!--Side Menu Properties-->
