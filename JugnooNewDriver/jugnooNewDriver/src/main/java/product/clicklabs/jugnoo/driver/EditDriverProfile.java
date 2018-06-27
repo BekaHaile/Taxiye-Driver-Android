@@ -62,13 +62,15 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	CountryPicker countryPicker;
 	private LinearLayout accountDetailsLayout,layoutBankDetails;
 	private Button buttonStripe;
-	public static final int REQUEST_CODE_STRIPE_CONNECT = 0x23;
+	public static final int REQUEST_CODE_STRIPE_CONNECT_EXPRESS = 0x23;
+	public static final int REQUEST_CODE_STRIPE_CONNECT_STANDARD = 0x24;
     private int stripeStatus;
     //	public static ProfileInfo openProfileInfo;
 
 
 	@Override
 	protected void onStart() {
+
 		super.onStart();
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
@@ -91,7 +93,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activty_edit_driver_profile);
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
-
 		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
@@ -158,11 +159,12 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 		if(DriverProfileActivity.openedProfileInfo != null){
 
-			if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+			if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
+				|| stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_AVAILABLE || stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
 				accountDetailsLayout.setVisibility(View.VISIBLE);
 				buttonStripe.setVisibility(View.VISIBLE);
 				layoutBankDetails.setVisibility(View.GONE);
-				if(stripeStatus==StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+				if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED || stripeStatus ==StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
 					buttonStripe.setText(getString(R.string.login_with_stripe));
 				}
 
@@ -256,15 +258,28 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		buttonStripe.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(stripeStatus == StripeUtils.STRIPE_ACCOUNT_CONNECTED){
+				if(stripeStatus == StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED){
 					loginToStripe();
 
 
-				}else if(stripeStatus ==StripeUtils.STRIPE_ACCOUNT_AVAILABLE){
+				}else if(stripeStatus ==StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE){
 
 					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
-					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectBuilder(EditDriverProfile.this).toString()), REQUEST_CODE_STRIPE_CONNECT);
+					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeExpressConnectBuilder(EditDriverProfile.this).toString()), REQUEST_CODE_STRIPE_CONNECT_EXPRESS);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}else if(stripeStatus ==StripeUtils.STRIPE_STANDARD_ACCOUNT_AVAILABLE){
+
+					startActivityForResult(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+					putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeStandardConnectBuilder(EditDriverProfile.this).toString()), REQUEST_CODE_STRIPE_CONNECT_STANDARD);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}else if(stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
+
+					loginToStripe();
+				/*	startActivity(new Intent(EditDriverProfile.this, StripeConnectActivity.class).
+							putExtra(StripeConnectActivity.ARGS_URL_TO_OPEN,StripeUtils.stripeConnectLoginBuilder(EditDriverProfile.this).toString()));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);*/
 
 				}
 
@@ -422,10 +437,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode==REQUEST_CODE_STRIPE_CONNECT){
+		if(requestCode==REQUEST_CODE_STRIPE_CONNECT_EXPRESS || requestCode == REQUEST_CODE_STRIPE_CONNECT_STANDARD) {
 
 			if(resultCode==RESULT_OK){
-				stripeStatus = StripeUtils.STRIPE_ACCOUNT_CONNECTED;
+				stripeStatus = StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED;
+				if(requestCode==REQUEST_CODE_STRIPE_CONNECT_STANDARD){
+					stripeStatus = StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED;
+				}
 				Prefs.with(EditDriverProfile.this).save(Constants.STRIPE_ACCOUNT_STATUS, stripeStatus);
 				buttonStripe.setText(getString(R.string.login_with_stripe));
 

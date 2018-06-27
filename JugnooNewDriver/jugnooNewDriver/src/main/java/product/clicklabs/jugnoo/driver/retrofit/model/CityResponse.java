@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 
 /**
@@ -33,6 +32,22 @@ public class CityResponse extends FeedCommonResponseKotlin implements Serializab
 	@SerializedName("offering_types")
 	@Expose
 	private List<OfferingType> offeringTypes = null;
+
+	@SerializedName("promo_code")
+	@Expose
+	private String promoCode;
+
+	@SerializedName("show_promo")
+	@Expose
+	private int showPromo;
+
+	public String getPromoCode() {
+		return promoCode;
+	}
+
+	public boolean getShowPromo() {
+		return showPromo==1;
+	}
 
 	/**
 	 * @return The currentCity

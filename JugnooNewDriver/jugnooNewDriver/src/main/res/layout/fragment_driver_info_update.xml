@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:fillViewport="true"
     android:background="@android:color/white"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,9 +33,37 @@
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_edit_text_start_drawable"
             android:hint="@string/name"
+            android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
+            />
+
+        <TextView
+            android:id="@+id/tvPromo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/please_enter_promo_code"
+            android:textColor="@color/text_color_splash_heading"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            android:textSize="14sp"
+            />
+
+
+        <EditText
+            android:id="@+id/edtPromo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_ref_code"
+            android:hint="@string/hint_promo_code"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapCharacters"
+            android:padding="13dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvPromo"
             />
 
         <TextView
@@ -46,7 +74,7 @@
             android:text="@string/select_vehicle_type"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            app:layout_constraintTop_toBottomOf="@+id/edtPromo"
             />
 
 
@@ -98,7 +126,7 @@
             android:text="@string/by_signing_you_agree"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
-            android:visibility="@integer/show_t_and_c"
+            android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
             />
 
@@ -106,8 +134,16 @@
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel"/>
+
+
+        <android.support.constraint.Group
+            android:id="@+id/promoGroupView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvPromo,edtPromo"/>
 
     </android.support.constraint.ConstraintLayout>
 
