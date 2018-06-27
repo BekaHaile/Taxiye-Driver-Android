@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.list_item_driver_vehicle.view.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.utils.Fonts
+import product.clicklabs.jugnoo.driver.utils.gone
+import product.clicklabs.jugnoo.driver.utils.visible
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
@@ -55,8 +59,20 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             else -> R.drawable.ic_auto_request
         }
         if(!TextUtils.isEmpty(vehicle.driverIcon)){
-            Picasso.with(context).load(vehicle.driverIcon).error(imageRes).into(holder.ivVehicle)
+            holder.pBar.visible()
+            Picasso.with(context).load(vehicle.driverIcon).placeholder(null).into(holder.ivVehicle,object: Callback{
+                override fun onSuccess() {
+                    holder.pBar.gone()
+                }
+
+                override fun onError() {
+                    holder.pBar.gone()
+                    holder.ivVehicle.setImageResource(R.drawable.ic_error_grey_light)
+
+                }
+            })
         } else {
+            holder.pBar.gone()
             holder.ivVehicle.setImageResource(imageRes)
         }
         holder.ivVehicleTick.setImageResource(if (vehicle.isSelected) R.drawable.ic_tick_green_20 else R.drawable.circle_grey_stroke_theme)
@@ -73,6 +89,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         var ivVehicle: ImageView = convertView.findViewById(R.id.ivVehicle) as ImageView
         var tvName: TextView = convertView.findViewById(R.id.tvName) as TextView
         var ivVehicleTick: ImageView = convertView.findViewById(R.id.ivVehicleTick) as ImageView
+        var pBar: View = convertView.findViewById(R.id.progress_bar) as View
 
 
         init {

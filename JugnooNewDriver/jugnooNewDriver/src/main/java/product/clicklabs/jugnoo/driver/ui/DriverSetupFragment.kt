@@ -205,12 +205,6 @@ class DriverSetupFragment : Fragment() {
                             openDocumentUploadActivity()
                         }
 
-                         ApiResponseFlags.SHOW_MESSAGE.getOrdinal() -> {
-                             DialogPopup.alertPopupWithListener(parentActivity, "", message, {openDocumentUploadActivity() })
-
-                         }
-
-
                         ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {
                             DialogPopup.alertPopup(activity, "", message)
                         }
@@ -228,7 +222,17 @@ class DriverSetupFragment : Fragment() {
             }
 
             override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-                return false
+                if(flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal()){
+                    DialogPopup.alertPopupWithListener(activity, "", message, {
+                        setPromoLayout(true,referralCode)
+                        openDocumentUploadActivity()
+                    })
+                    return true
+                }else{
+                    return false
+
+                }
+
             }
         })
     }
