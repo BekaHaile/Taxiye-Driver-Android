@@ -192,8 +192,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     fun addDriverSetupFragment(accessToken: String) {
 
         supportFragmentManager.inTransaction {
-            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
-                    .add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+//            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left).
+                    add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
 
