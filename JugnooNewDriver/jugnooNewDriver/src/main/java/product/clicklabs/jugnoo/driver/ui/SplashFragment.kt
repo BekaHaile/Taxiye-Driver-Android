@@ -55,7 +55,7 @@ class SplashFragment : Fragment() {
     private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
     private var isPendingExecutionOngoing = false
-    private var isFirstTime = true
+//    private var isFirstTime = true
     private var redirectedToLogin = false
 
     init {
@@ -115,7 +115,7 @@ class SplashFragment : Fragment() {
 
             val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
-
+/*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
@@ -143,7 +143,7 @@ class SplashFragment : Fragment() {
                     }
                 }
 
-            }
+            }*/
             snackBar.setAction("Retry", {
 
                 // add on screen navigation translucent flags for smooth image shared animation
@@ -151,16 +151,16 @@ class SplashFragment : Fragment() {
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
+            snackBar.show()
 
-            if(isFirstTime) {
+           /* if(isFirstTime) {
                 // delay showing the first snackbar to allow navigation flags to be set
 
                 Handler().postDelayed({ snackBar.show() }, 100)
                 isFirstTime = false
 
             } else {
-                snackBar.show()
-            }
+            }*/
 
         })
     }
@@ -466,14 +466,14 @@ class SplashFragment : Fragment() {
 
     override fun onDestroyView() {
 
-        if (!redirectedToLogin ) {
-            /**
+       /* if (!redirectedToLogin ) {
+            *//**
              * removes the translucent flags on the onscreen navigation bar for kikat above devices
-             */
+             *//*
             mListener?.toggleDisplayFlags(true)
 
 
-        }
+        }*/
         super.onDestroyView()
     }
 

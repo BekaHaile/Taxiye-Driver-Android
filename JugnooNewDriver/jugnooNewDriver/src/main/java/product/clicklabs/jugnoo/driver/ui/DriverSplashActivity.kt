@@ -57,14 +57,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if(savedInstanceState==null){
-            setTheme(R.style.SplashThemeNormal)
-        }else{
-            setTheme(R.style.SplashThemeWithoutFlags)
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driver_splash_activity)
-        AndroidBug5497Workaround.assistActivity(this)
         FlurryAgent.init(this, Data.FLURRY_KEY)
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
@@ -243,7 +237,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun toggleDisplayFlags(remove:Boolean) {
 
-
+/*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
 
@@ -257,7 +251,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                 }
 
 
-            }
+            }*/
 
 
     }
