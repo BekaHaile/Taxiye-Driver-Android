@@ -14,7 +14,7 @@ public class AndroidBug5497Workaround {
     // For more information, see https://issuetracker.google.com/issues/36911528
     // To use this class, simply invoke assistActivity() on an Activity that already has its content view set.
 
-    public static void assistActivity (Activity activity) {
+    public static void assistActivity (DriverSplashActivity activity) {
         new AndroidBug5497Workaround(activity);
     }
 
@@ -22,12 +22,15 @@ public class AndroidBug5497Workaround {
     private int usableHeightPrevious;
     private FrameLayout.LayoutParams frameLayoutParams;
 
-    private AndroidBug5497Workaround(Activity activity) {
+    private AndroidBug5497Workaround(final DriverSplashActivity activity) {
         FrameLayout content = (FrameLayout) activity.findViewById(android.R.id.content);
         mChildOfContent = content.getChildAt(0);
         mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
-                possiblyResizeChildOfContent();
+                if(activity.isLoginFragmentVisible()){
+                    possiblyResizeChildOfContent();
+
+                }
             }
         });
         frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();

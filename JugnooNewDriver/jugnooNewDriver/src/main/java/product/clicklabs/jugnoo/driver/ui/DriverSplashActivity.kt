@@ -344,6 +344,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
     }
+    public fun isLoginFragmentVisible():Boolean{
+        val loginFragment= supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)
+        return loginFragment!=null && loginFragment.isVisible/* && (loginFragment as LoginFragment).assist*/
+    }
 
 
 }
