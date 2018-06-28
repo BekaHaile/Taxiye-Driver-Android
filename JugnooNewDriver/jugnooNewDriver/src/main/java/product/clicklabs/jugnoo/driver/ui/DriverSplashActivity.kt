@@ -12,15 +12,12 @@ import android.support.v4.content.LocalBroadcastManager
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.FrameLayout
 import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
-import kotlinx.android.synthetic.main.driver_splash_activity.*
-import kotlinx.android.synthetic.main.driver_splash_activity.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
 import java.util.regex.Pattern
@@ -70,7 +67,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             setHomeAsUpIndicator(R.drawable.ic_back_selector)
         }
 
-        tvToolbar.typeface = Fonts.mavenRegular(this)
+        tvToolbar.typeface = Fonts.mavenMedium(this)
 
         setToolbarVisibility(false)
 

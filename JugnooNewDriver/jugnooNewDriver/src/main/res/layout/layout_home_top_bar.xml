@@ -33,7 +33,8 @@
             android:text="@string/appname"
             android:textAllCaps="true"
             android:textColor="@color/textColorTitle"
-            android:textSize="48px"/>
+            android:tag="@string/dont_touch_me"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/checkServerBtn"

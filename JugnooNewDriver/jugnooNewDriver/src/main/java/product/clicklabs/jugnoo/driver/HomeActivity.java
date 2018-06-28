@@ -555,7 +555,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
 			temptext  = (TextView) findViewById(R.id.temptext);
-			temptext.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			temptext.setTypeface(Fonts.mavenMedium(getApplicationContext()));
 //			textShader=new LinearGradient(0, 0, 0, 20,
 //					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //					new float[]{0, 1}, Shader.TileMode.CLAMP);

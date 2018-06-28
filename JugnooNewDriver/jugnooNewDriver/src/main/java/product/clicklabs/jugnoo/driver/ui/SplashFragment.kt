@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.design.widget.Snackbar
@@ -19,7 +18,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -113,7 +111,7 @@ class SplashFragment : Fragment() {
         parentActivity?.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
 
-            val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
+            val snackBar = Snackbar.make(rootView, getString(R.string.check_internet_message), Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
 /*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -144,7 +142,7 @@ class SplashFragment : Fragment() {
                 }
 
             }*/
-            snackBar.setAction("Retry", {
+            snackBar.setAction(getString(R.string.retry), {
 
                 // add on screen navigation translucent flags for smooth image shared animation
                 snackBar.dismiss()
