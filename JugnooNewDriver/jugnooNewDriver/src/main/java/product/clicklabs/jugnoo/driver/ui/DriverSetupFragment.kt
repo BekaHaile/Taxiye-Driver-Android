@@ -26,12 +26,12 @@ import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
@@ -85,7 +85,7 @@ class DriverSetupFragment : Fragment() {
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvPromo.typeface = Fonts.mavenLight(parentActivity!!)
+            tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
             edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
             tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
 

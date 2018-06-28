@@ -47,9 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
-            android:textColor="@color/text_color_splash_heading"
+            android:textColor="@color/textColorMedium"
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
 
 
@@ -64,7 +64,10 @@
             android:hint="@string/hint_promo_code"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapCharacters"
-            android:padding="13dp"
+            android:padding="13sp"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
             app:layout_constraintTop_toBottomOf="@+id/tvPromo"
             />
 
@@ -93,7 +96,7 @@
             android:text="@string/label_select_city"
             android:clickable="true"
             android:focusable="true"
-            android:textColor="@color/new_orange"
+            android:textColor="@color/themeColor"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
             />

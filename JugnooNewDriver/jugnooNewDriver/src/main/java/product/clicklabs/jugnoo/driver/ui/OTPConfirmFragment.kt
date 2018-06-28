@@ -176,19 +176,20 @@ class OTPConfirmFragment : Fragment() {
         val builder = OtpDialog.Builder(activity)
                 .purpose(AppConstants.OperationType.CALL)
                 .isNumberExist(missedCallNumber != null)
-                .listener({ purpose, _ ->
+                .listener { purpose, _ ->
                     if (purpose == AppConstants.OperationType.CALL) {
 
                     } else if (purpose == AppConstants.OperationType.ENTER_OTP) {
-                       mListener?.registerForSmsReceiver(false);
+                        mListener?.registerForSmsReceiver(false);
                     }
-                })
+                }
 
         otpDialog = builder.build()
-        otpDialog?.show({
+        otpDialog?.show {
             edtOTP.requestFocus();
             Utils.showSoftKeyboard(activity, edtOTP)
-        })
+            mListener?.registerForSmsReceiver(false);
+        }
 
 
         countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {

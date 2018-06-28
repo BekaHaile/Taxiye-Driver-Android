@@ -38,7 +38,7 @@
         wheel:layout_constraintTop_toTopOf="@id/ivVehicle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.5"
-        wheel:matProg_barColor="@color/theme_color"
+        wheel:matProg_barColor="@color/themeColor"
         wheel:matProg_barWidth="3dp"
         wheel:matProg_fillRadius="true"
         wheel:matProg_progressIndeterminate="true" />
