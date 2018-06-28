@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -55,7 +56,11 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.SplashThemeNormal)
+        if(savedInstanceState==null){
+            setTheme(R.style.SplashThemeNormal)
+        }else{
+            setTheme(R.style.SplashThemeWithoutFlags)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driver_splash_activity)
         FlurryAgent.init(this, Data.FLURRY_KEY)
@@ -142,21 +147,22 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             try {
 
                 supportFragmentManager.inTransactionWithSharedTransition(view, {
-                    setReorderingAllowed(true)
-                            .replace(container.id, LoginFragment.newInstance(true), LoginFragment::class.simpleName)
+                    val fragment = LoginFragment()
+                    fragment.sharedElementEnterTransition = TransitionInflater.from(this@DriverSplashActivity).inflateTransition(android.R.transition.move)
+                    setReorderingAllowed(true).replace(container.id, fragment, LoginFragment::class.simpleName)
                 })
 
             } catch (e: Exception) {
 
                 supportFragmentManager.inTransactionWithAnimation {
                     setReorderingAllowed(true)
-                            .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                            .replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
                 }
             }
         } else {
             supportFragmentManager.inTransactionWithAnimation {
                 setReorderingAllowed(true)
-                        .replace(container.id, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                        .replace(container.id, LoginFragment(), LoginFragment::class.simpleName)
             }
         }
     }
@@ -270,7 +276,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             super.onBackPressed()
 
             supportFragmentManager.inTransaction {
-                replace(R.id.container, LoginFragment.newInstance(false), LoginFragment::class.simpleName)
+                replace(R.id.container, LoginFragment(), LoginFragment::class.simpleName)
             }
 
             JSONParser.saveAccessToken(this, "")

@@ -48,13 +48,7 @@ class LoginFragment : Fragment() {
     companion object {
         private const val IS_SHARED_TRANSITION_ENABLED = "is_shared_transition_enabled"
 
-        fun newInstance(isSharedTransitionEnabled: Boolean): LoginFragment {
-            return LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(IS_SHARED_TRANSITION_ENABLED, isSharedTransitionEnabled)
-                }
-            }
-        }
+
     }
 
     private lateinit var parentActivity: Activity
@@ -75,13 +69,12 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.frag_login, container, false)!!
-        applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
-        if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // animate logo using shared transitions and then onEnd animate other view's visibility
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-            addTransitionEndListenerAndAnimateView()
-        } else {
-            // animate other view's visibility
+
+        if(sharedElementEnterTransition!=null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                addTransitionEndListenerAndAnimateView()
+            }
+        }else{
             animateViews()
         }
 

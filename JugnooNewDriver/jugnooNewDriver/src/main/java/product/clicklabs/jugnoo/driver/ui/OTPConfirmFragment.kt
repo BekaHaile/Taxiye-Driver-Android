@@ -151,13 +151,16 @@ class OTPConfirmFragment : Fragment() {
         })
 
 
-        if(mListener?.getPrefillOtpIfany()!=null){
-            edtOTP.setText(mListener?.getPrefillOtpIfany())
-            edtOTP.setSelection(edtOTP.text.length)
-        }else{
-            showCountDownPopup()
+        if (savedInstanceState==null) {
+            if(mListener?.getPrefillOtpIfany()!=null){
+                edtOTP.setText(mListener?.getPrefillOtpIfany())
+                edtOTP.setSelection(edtOTP.text.length)
+            }else{
+                showCountDownPopup()
 
+            }
         }
+
         return rootView
 
     }
@@ -414,6 +417,7 @@ class OTPConfirmFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        otpDialog?.dismiss()
         super.onDestroyView()
         Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
 

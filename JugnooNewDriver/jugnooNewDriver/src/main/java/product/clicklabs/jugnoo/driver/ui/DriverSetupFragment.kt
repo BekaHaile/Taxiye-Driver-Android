@@ -66,6 +66,8 @@ class DriverSetupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        toolbarChangeListener?.setToolbarVisibility(true)
         return container?.inflate(R.layout.fragment_driver_info_update)
     }
 
@@ -73,8 +75,7 @@ class DriverSetupFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
-        toolbarChangeListener?.setToolbarVisibility(true)
+
 
             tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
             editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
