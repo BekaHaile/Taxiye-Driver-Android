@@ -81,15 +81,15 @@ class OTPConfirmFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        phoneNumber = arguments.getString(KEY_PHONE_NUMBER)
-        countryCode = arguments.getString(KEY_COUNTRY_CODE)
-        if (arguments.containsKey(MISSED_CALL_NUMBER)) missedCallNumber = arguments.getString(MISSED_CALL_NUMBER)
+        phoneNumber = arguments!!.getString(KEY_PHONE_NUMBER)
+        countryCode = arguments!!.getString(KEY_COUNTRY_CODE)
+        if (arguments!!.containsKey(MISSED_CALL_NUMBER)) missedCallNumber = arguments!!.getString(MISSED_CALL_NUMBER)
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.frag_otp_confirm, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = inflater.inflate(R.layout.frag_otp_confirm, container, false)
 
         toolbarChangeListener.setToolbarText(getString(R.string.verification))
         toolbarChangeListener.setToolbarVisibility(true)
@@ -99,24 +99,24 @@ class OTPConfirmFragment : Fragment() {
         tvCall = rootView.findViewById(R.id.tv_call) as TextView
         labelNumber = rootView.findViewById(R.id.label_number) as TextView
         edtOTP = rootView.findViewById(R.id.edt_otp_number) as EditText
-        (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenRegular(activity)
-        labelNumber.typeface = Fonts.mavenMedium(activity)
-        edtOTP.typeface = Fonts.mavenMedium(activity)
-        tvResendOTP.typeface = Fonts.mavenRegular(activity)
-        btnSubmit.typeface = Fonts.mavenMedium(activity)
+        (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenRegular(requireActivity())
+        labelNumber.typeface = Fonts.mavenMedium(requireActivity())
+        edtOTP.typeface = Fonts.mavenMedium(requireActivity())
+        tvResendOTP.typeface = Fonts.mavenRegular(requireActivity())
+        btnSubmit.typeface = Fonts.mavenMedium(requireActivity())
 
         labelNumber.text = "$countryCode $phoneNumber"
         tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
 
         // applyFonts
 
-        parentActivity?.let {
-            (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenLight(parentActivity!!)
-            labelNumber.typeface = Fonts.mavenRegular(parentActivity!!)
-            edtOTP.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvResendOTP.typeface = Fonts.mavenRegular(parentActivity!!)
-            btnSubmit.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvCall.typeface = Fonts.mavenLight(parentActivity!!)
+        parentActivity.let {
+            (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenLight(parentActivity)
+            labelNumber.typeface = Fonts.mavenRegular(parentActivity)
+            edtOTP.typeface = Fonts.mavenRegular(parentActivity)
+            tvResendOTP.typeface = Fonts.mavenRegular(parentActivity)
+            btnSubmit.typeface = Fonts.mavenRegular(parentActivity)
+            tvCall.typeface = Fonts.mavenLight(parentActivity)
         }
 
 
@@ -125,7 +125,7 @@ class OTPConfirmFragment : Fragment() {
         tvCall.setOnClickListener({
             if (missedCallNumber != null && missedCallNumber!!.isNotEmpty()) {
 
-                DialogPopup.alertPopupTwoButtonsWithListeners(this@OTPConfirmFragment.activity, "",
+                DialogPopup.alertPopupTwoButtonsWithListeners(this@OTPConfirmFragment.requireActivity(), "",
                         resources.getString(R.string.give_missed_call_dialog_text),
                         resources.getString(R.string.call_us),
                         resources.getString(R.string.cancel),
@@ -133,7 +133,7 @@ class OTPConfirmFragment : Fragment() {
                             /* btnLogin.setVisibility(View.VISIBLE)
                              layoutResendOtp.setVisibility(View.GONE)
                              btnReGenerateOtp.setVisibility(View.GONE)*/
-                            Utils.openCallIntent(this@OTPConfirmFragment.activity, missedCallNumber)
+                            Utils.openCallIntent(this@OTPConfirmFragment.requireActivity(), missedCallNumber)
                         }, { }, false, false)
             }
         })
@@ -146,7 +146,7 @@ class OTPConfirmFragment : Fragment() {
                 if (event?.action == MotionEvent.ACTION_DOWN) {
                     if (event.rawX >= (labelNumber.right - labelNumber.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
 
-                        activity.onBackPressed()
+                        requireActivity().onBackPressed()
 
 
                         return true
@@ -173,7 +173,7 @@ class OTPConfirmFragment : Fragment() {
     }
 
     private fun showCountDownPopup() {
-        val builder = OtpDialog.Builder(activity)
+        val builder = OtpDialog.Builder(requireActivity())
                 .purpose(AppConstants.OperationType.CALL)
                 .isNumberExist(missedCallNumber != null)
                 .listener { purpose, _ ->
@@ -187,7 +187,7 @@ class OTPConfirmFragment : Fragment() {
         otpDialog = builder.build()
         otpDialog?.show {
             edtOTP.requestFocus();
-            Utils.showSoftKeyboard(activity, edtOTP)
+            Utils.showSoftKeyboard(requireActivity(), edtOTP)
             mListener?.registerForSmsReceiver(false);
         }
 
@@ -221,8 +221,8 @@ class OTPConfirmFragment : Fragment() {
 
     private fun verifyOTP(otp: String) {
         Utils.hideSoftKeyboard(parentActivity, edtOTP)
-        if (AppStatus.getInstance(activity.applicationContext).isOnline(activity.applicationContext)) {
-            val dialogLoading = DialogPopup.showLoadingDialog(activity, resources.getString(R.string.loading), true)
+        if (AppStatus.getInstance(requireActivity().applicationContext).isOnline(requireActivity().applicationContext)) {
+            val dialogLoading = DialogPopup.showLoadingDialog(requireActivity(), resources.getString(R.string.loading), true)
             val conf = resources.configuration
 
             if (Data.locationFetcher != null) {
@@ -250,26 +250,26 @@ class OTPConfirmFragment : Fragment() {
             HomeUtil.putDefaultParams(params)
 
 
-            if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
+            if (Utils.isAppInstalled(requireActivity(), Data.GADDAR_JUGNOO_APP)) {
                 params["auto_n_cab_installed"] = "1"
             } else {
                 params["auto_n_cab_installed"] = "0"
             }
 
-            if (Utils.isAppInstalled(activity, Data.UBER_APP)) {
+            if (Utils.isAppInstalled(requireActivity(), Data.UBER_APP)) {
                 params["uber_installed"] = "1"
             } else {
                 params["uber_installed"] = "0"
             }
 
-            if (Utils.telerickshawInstall(activity)) {
+            if (Utils.telerickshawInstall(requireActivity())) {
                 params["telerickshaw_installed"] = "1"
             } else {
                 params["telerickshaw_installed"] = "0"
             }
 
 
-            if (Utils.olaInstall(activity)) {
+            if (Utils.olaInstall(requireActivity())) {
                 params["ola_installed"] = "1"
             } else {
                 params["ola_installed"] = "0"
@@ -292,28 +292,28 @@ class OTPConfirmFragment : Fragment() {
                         val flag = jObj.getInt("flag")
                         val message = JSONParser.getServerMessage(jObj)
 
-                        if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
+                        if (!SplashNewActivity.checkIfTrivialAPIErrors(requireActivity(), jObj, flag, null)) {
                             if (ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag) {
-                                DialogPopup.alertPopup(activity, "", message)
+                                DialogPopup.alertPopup(requireActivity(), "", message)
                             } else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {
-                                SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity)
+                                SplashNewActivity.sendToCustomerAppPopup("Alert", message, requireActivity())
                             } else if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
-                                DialogPopup.alertPopup(activity, "", message)
+                                DialogPopup.alertPopup(requireActivity(), "", message)
                             } else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
-                                DialogPopup.alertPopup(activity, "", message)
+                                DialogPopup.alertPopup(requireActivity(), "", message)
                                 edtOTP.setText("")
                             } else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
-                                DialogPopup.alertPopup(activity, "", resources.getString(R.string.no_not_verified))
+                                DialogPopup.alertPopup(requireActivity(), "", resources.getString(R.string.no_not_verified))
                             } else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
 
 
-                                if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
-                                    JSONParser().parseAccessTokenLoginData(activity, jsonString)
-                                    activity.startService(Intent(activity.applicationContext, DriverLocationUpdateService::class.java))
-                                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
-                                    startActivity(Intent(activity, HomeActivity::class.java))
-                                    activity.finish()
-                                    activity.overridePendingTransition(R.anim.right_in, R.anim.right_out)
+                                if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())) {
+                                    JSONParser().parseAccessTokenLoginData(requireActivity(), jsonString)
+                                    requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
+                                    Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false)
+                                    startActivity(Intent(requireActivity(), HomeActivity::class.java))
+                                    requireActivity().finish()
+                                    requireActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out)
                                 }
                             }
 //                            else if () {
@@ -322,18 +322,18 @@ class OTPConfirmFragment : Fragment() {
 //                            }
                             else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                 val accessToken = jObj.getString("access_token")
-                                JSONParser.saveAccessToken(activity, accessToken)
-//                                val intent = Intent(activity, DriverDocumentActivity::class.java)
+                                JSONParser.saveAccessToken(requireActivity(), accessToken)
+//                                val intent = Intent(requireActivity(), DriverDocumentActivity::class.java)
 //                                intent.putExtra("access_token", jObj.getString("access_token"))
 //                                intent.putExtra("in_side", false)
 //                                intent.putExtra("doc_required", 3)
-//                                Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
+//                                Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false)
 //                                startActivity(intent)
 
                                 (parentActivity as DriverSplashActivity)
                                         .openDriverSetupFragment(accessToken)
                             } else {
-                                DialogPopup.alertPopup(activity, "", message)
+                                DialogPopup.alertPopup(requireActivity(), "", message)
                             }
                             dialogLoading?.dismiss()
                         } else {
@@ -341,7 +341,7 @@ class OTPConfirmFragment : Fragment() {
                         }
                     } catch (exception: Exception) {
                         exception.printStackTrace()
-                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG)
+                        DialogPopup.alertPopup(requireActivity(), "", Data.SERVER_ERROR_MSG)
                     }
 
                     dialogLoading?.dismiss()
@@ -349,12 +349,12 @@ class OTPConfirmFragment : Fragment() {
 
                 override fun failure(error: RetrofitError) {
                     dialogLoading?.dismiss()
-                    DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG)
+                    DialogPopup.alertPopup(requireActivity(), "", Data.SERVER_NOT_RESOPNDING_MSG)
                 }
             })
 
         } else {
-            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG)
+            DialogPopup.alertPopup(requireActivity(), "", Data.CHECK_INTERNET_MSG)
         }
     }
 
@@ -364,9 +364,9 @@ class OTPConfirmFragment : Fragment() {
         params.put(Constants.KEY_PHONE_NO, countryCode + phoneNumber)
         params.put(Constants.KEY_COUNTRY_CODE, countryCode)
         params.put(Constants.LOGIN_TYPE, "1")
-        Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
-        Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-        ApiCommonKt<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
+        Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
+        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }
@@ -380,7 +380,7 @@ class OTPConfirmFragment : Fragment() {
                     missedCallNumber = t?.missedCallNumber
                     showCountDownPopup()
                 } else {
-                    DialogPopup.alertPopup(activity, "", message)
+                    DialogPopup.alertPopup(requireActivity(), "", message)
                 }
 
 
@@ -411,9 +411,9 @@ class OTPConfirmFragment : Fragment() {
         if (!hidden) {
             toolbarChangeListener.setToolbarText(getString(R.string.verification))
             toolbarChangeListener.setToolbarVisibility(true)
-            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
+            Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
         }else{
-            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
+            Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
 
         }
 
@@ -430,7 +430,7 @@ class OTPConfirmFragment : Fragment() {
     override fun onDestroyView() {
         otpDialog?.dismiss()
         super.onDestroyView()
-        Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
+        Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
 
     }
 
