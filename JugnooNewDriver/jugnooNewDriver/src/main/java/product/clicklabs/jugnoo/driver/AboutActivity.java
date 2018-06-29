@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
@@ -40,7 +39,6 @@ public class AboutActivity extends BaseActivity {
         relative = (RelativeLayout) findViewById(R.id.relative);
 
         title = (TextView) findViewById(R.id.title);
-        title.setTypeface(Fonts.mavenMedium(this));
         title.setText(R.string.about);
         backBtn = (ImageView) findViewById(R.id.backBtn);
 
@@ -51,15 +49,10 @@ public class AboutActivity extends BaseActivity {
         relativeLayoutAbout = (RelativeLayout) findViewById(R.id.relativeLayoutWho);
 
         textViewRateUs = (TextView) findViewById(R.id.textViewRateUs);
-        textViewRateUs.setTypeface(Fonts.mavenLight(this));
         textViewLikeUs = (TextView) findViewById(R.id.textViewLike);
-        textViewLikeUs.setTypeface(Fonts.mavenLight(this));
         textViewTNC = (TextView) findViewById(R.id.textViewTNC);
-        textViewTNC.setTypeface(Fonts.mavenLight(this));
         textViewPrivacy = (TextView) findViewById(R.id.textViewPrivacy);
-        textViewPrivacy.setTypeface(Fonts.mavenLight(this));
         textViewAbout = (TextView) findViewById(R.id.textViewWho);
-        textViewAbout.setTypeface(Fonts.mavenLight(this));
 
         relativeLayoutRateUs.setOnClickListener(new OnClickListener() {
 

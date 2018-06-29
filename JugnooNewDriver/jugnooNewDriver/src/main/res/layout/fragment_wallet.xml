@@ -37,9 +37,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
+                        style="@style/TextNormal"
                         android:drawableStart="@drawable/wallet_balance"
                         android:drawablePadding="12dp"
-                        android:textSize="@dimen/text_size_16_sp"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
                         android:text="@string/wallet_title"
@@ -51,11 +51,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        style="@style/TextSmall"
                         android:layout_gravity="end"
                         android:gravity="end"
                         android:layout_marginEnd="15dp"
                         android:layout_centerVertical="true"
-                        android:textSize="@dimen/text_size_10_sp"
                         android:text="@string/rupee_100" />
 
                 </RelativeLayout>
@@ -68,10 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/wallet_card_view"
+                style="@style/TextSmall"
                 android:layout_marginBottom="7dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="4dp"
-                android:textSize="@dimen/text_size_14_sp"
                 android:text="@string/how_to_recharge" />
 
 
@@ -116,7 +116,8 @@
                 <RelativeLayout
                     android:id="@+id/relativeLayoutWalletTransactions"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_white_selector">
 
                     <ImageView
                         android:id="@+id/imageViewWalletTransactionsIcon"
@@ -132,10 +133,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
-                        android:textSize="@dimen/text_size_16_sp"
+                        style="@style/TextNormal"
                         android:layout_toEndOf="@+id/imageViewWalletTransactionsIcon"
                         android:text="@string/view_wallet_transactions"
-                        android:textColor="@color/text_color_light_selector"
                         />
 
                     <ImageView
