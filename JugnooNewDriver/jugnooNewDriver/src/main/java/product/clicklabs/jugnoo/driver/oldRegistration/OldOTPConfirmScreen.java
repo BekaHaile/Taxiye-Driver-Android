@@ -52,8 +52,8 @@ import retrofit.mime.TypedByteArray;
 
 public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	View backBtn;
+	TextView title;
 
 	TextView otpHelpText;
 	EditText editTextOTP;
@@ -92,9 +92,10 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(OldOTPConfirmScreen.this, relative, 1134, 720, false);
 
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this));
+		backBtn = (ImageView) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.verification);
 
 		otpHelpText = (TextView) findViewById(R.id.otpHelpText);
 		otpHelpText.setTypeface(Fonts.mavenRegular(this));
@@ -114,7 +115,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 		((TextView) findViewById(R.id.textViewChange)).setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

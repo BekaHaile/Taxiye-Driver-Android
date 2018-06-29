@@ -8,7 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,7 +46,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	public static final String EARNING_DATA = "earning_data";
     RelativeLayout linear;
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 	String date = "";
 	TextView textViewInfoDisplay;
@@ -104,9 +104,10 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DailyRideDetailsActivity.this, linear, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.daily_earnings);
 //		textShader=new LinearGradient(0, 0, 0, 20,
 //				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);

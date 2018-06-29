@@ -82,7 +82,7 @@
                 <ImageView 
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:src="@color/musturd_jugnoo"
+                    android:src="@color/themeColor"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     />
@@ -100,13 +100,13 @@
 
                 <Button
                     android:id="@+id/btnCancel"
-                    style="@style/DialogButtonGrey"
+                    style="@style/DialogButtonAlternate"
                     android:text="@string/cancel"
                     />
 
                 <Button
                     android:id="@+id/btnOk"
-                    style="@style/DialogButtonOrange"
+                    style="@style/DialogButton"
                     android:text="@string/ok"
                     android:layout_marginStart="20dp"
                     />

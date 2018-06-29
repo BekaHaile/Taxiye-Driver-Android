@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -27,15 +25,13 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 	
 	LinearLayout linearLayoutRoot;
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	ImageView backBtn;
+	TextView title;
 
 	ViewPager viewPager;
 	ShareFragmentAdapter shareFragmentAdapter;
 	PagerSlidingTabStrip tabs;
 
-	public LeaderboardResponse leaderboardResponse;
-	public LeaderboardActivityResponse leaderboardActivityResponse;
 
 
 	@Override
@@ -73,16 +69,17 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 		viewPager.setAdapter(shareFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
-		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
+		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
+		tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
+		tabs.setTypeface(Fonts.mavenMedium(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.invite_earn);
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				performbackPressed();

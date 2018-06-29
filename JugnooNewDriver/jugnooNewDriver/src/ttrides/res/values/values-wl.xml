@@ -15,6 +15,10 @@
         3. application_id in build.gradle
     -->
 
+
+    <string name="appname">TT Rides Share</string>
+    <string name="app_name">TT Rides Share Drivers</string>
+
     <!--White Label Key-->
     <string name="white_label_key">6e1314631d098db197321244c93fb7c5</string>
 
@@ -59,7 +63,6 @@
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
     <integer name="show_t_and_c_profile">@integer/view_gone</integer>
-    <drawable name="bg_profile_background">@color/red_v2</drawable>
 
 
 

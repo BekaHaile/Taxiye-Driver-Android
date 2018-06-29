@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +36,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 
 	TextView idValue, dateTimeValue, distanceValue, rideTimeValue, textViewReturnDistance,
@@ -88,9 +87,10 @@ public class DeliveryDetailsActivity extends BaseActivity {
 			ride_id = extras.getString("delivery_id");
 		}
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.delivery_details);
 
 		relativeLayoutDeliveryFare = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryFare);
 		relativeLayoutReturnSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutReturnSubsidy);
@@ -115,6 +115,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		textViewReturnSubsidyValue = (TextView) findViewById(R.id.textViewReturnSubsidyValue);
 		textViewReturnSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 
+		((TextView)findViewById(R.id.textViewJugnooCut)).setText(getString(R.string.jugnoo_cut, getString(R.string.appname)));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
 		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this));
 
@@ -239,7 +240,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
 					textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
-					textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+					textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 				} else {
 					textViewAccountBalance.setText(Utils.formatCurrencyValue(deliveryDetailResponse.getDetails().getCurrencyUnit(),
 							deliveryDetailResponse.getDetails().getAccountBalance()));

@@ -10,7 +10,6 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
         android:padding="24dp">
 
 
@@ -19,8 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/please_enter_your_name"
-            android:textColor="@color/text_color_splash_heading"
-            android:textSize="14sp"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
             />
 
 
@@ -36,6 +35,9 @@
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
             />
 
@@ -45,9 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
-            android:textColor="@color/text_color_splash_heading"
+            android:textColor="@color/textColorMedium"
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
 
 
@@ -62,7 +64,10 @@
             android:hint="@string/hint_promo_code"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapCharacters"
-            android:padding="13dp"
+            android:padding="13sp"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
             app:layout_constraintTop_toBottomOf="@+id/tvPromo"
             />
 
@@ -72,22 +77,40 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/select_vehicle_type"
-            android:textColor="@color/text_color_splash_heading"
-            android:textSize="14sp"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/edtPromo"
             />
 
+        <TextView
+            android:id="@+id/tvCities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvSelectVehicle"
+            app:layout_constraintLeft_toRightOf="@id/tvSelectVehicle"
+            android:text="@string/label_select_city"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/themeColor"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvVehicleTypes"
             android:layout_width="match_parent"
             android:clipToPadding="false"
             android:padding="@dimen/spacing_grid_recycler_view"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle" />
 
 
         <Button
@@ -126,6 +149,7 @@
             android:text="@string/by_signing_you_agree"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
+            android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
             />
 
@@ -134,8 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            app:constraint_referenced_ids="tvEnterName,editTextName,rvVehicleTypes,tvSelectVehicle,bContinue,bCancel,tvTermsOfUse"/>
-
+            app:constraint_referenced_ids="tvEnterName,editTextName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
 
         <android.support.constraint.Group
             android:id="@+id/promoGroupView"

@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,7 +23,7 @@ public class DriverHistoryActivity extends BaseFragmentActivity {
 	
 	LinearLayout relative;
 	
-	Button backBtn;
+	View backBtn;
 
 	RelativeLayout relativeLayoutRides, relativeLayoutMissed, relativeLayoutReferralMoney;
 	TextView textViewRides, textViewMissed, textViewDailyText, textViewDailyValue, textViewMonthlyText, textViewMonthlyValue,
@@ -45,7 +44,7 @@ public class DriverHistoryActivity extends BaseFragmentActivity {
 		new ASSL(DriverHistoryActivity.this, relative, 1134, 720, false);
 		
 		
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		relativeLayoutMissed = (RelativeLayout) findViewById(R.id.relativeLayoutMissed);

@@ -21,7 +21,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -97,6 +99,11 @@ class OTPConfirmFragment : Fragment() {
         tvCall = rootView.findViewById(R.id.tv_call) as TextView
         labelNumber = rootView.findViewById(R.id.label_number) as TextView
         edtOTP = rootView.findViewById(R.id.edt_otp_number) as EditText
+        (rootView.findViewById(R.id.label_otp) as TextView).typeface = Fonts.mavenRegular(activity)
+        labelNumber.typeface = Fonts.mavenMedium(activity)
+        edtOTP.typeface = Fonts.mavenMedium(activity)
+        tvResendOTP.typeface = Fonts.mavenRegular(activity)
+        btnSubmit.typeface = Fonts.mavenMedium(activity)
 
         labelNumber.text = "$countryCode $phoneNumber"
         tvResendOTP.paintFlags = labelNumber.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
@@ -151,13 +158,16 @@ class OTPConfirmFragment : Fragment() {
         })
 
 
-        if(mListener?.getPrefillOtpIfany()!=null){
-            edtOTP.setText(mListener?.getPrefillOtpIfany())
-            edtOTP.setSelection(edtOTP.text.length)
-        }else{
-            showCountDownPopup()
+        if (savedInstanceState==null) {
+            if(mListener?.getPrefillOtpIfany()!=null){
+                edtOTP.setText(mListener?.getPrefillOtpIfany())
+                edtOTP.setSelection(edtOTP.text.length)
+            }else{
+                showCountDownPopup()
 
+            }
         }
+
         return rootView
 
     }
@@ -166,16 +176,20 @@ class OTPConfirmFragment : Fragment() {
         val builder = OtpDialog.Builder(activity)
                 .purpose(AppConstants.OperationType.CALL)
                 .isNumberExist(missedCallNumber != null)
-                .listener({ purpose, _ ->
+                .listener { purpose, _ ->
                     if (purpose == AppConstants.OperationType.CALL) {
 
                     } else if (purpose == AppConstants.OperationType.ENTER_OTP) {
-                       mListener?.registerForSmsReceiver(false);
+                        mListener?.registerForSmsReceiver(false);
                     }
-                })
+                }
 
         otpDialog = builder.build()
-        otpDialog?.show()
+        otpDialog?.show {
+            edtOTP.requestFocus();
+            Utils.showSoftKeyboard(activity, edtOTP)
+            mListener?.registerForSmsReceiver(false);
+        }
 
 
         countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
@@ -291,6 +305,8 @@ class OTPConfirmFragment : Fragment() {
                             } else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
                                 DialogPopup.alertPopup(activity, "", resources.getString(R.string.no_not_verified))
                             } else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
+
+
                                 if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
                                     JSONParser().parseAccessTokenLoginData(activity, jsonString)
                                     activity.startService(Intent(activity.applicationContext, DriverLocationUpdateService::class.java))
@@ -412,6 +428,7 @@ class OTPConfirmFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        otpDialog?.dismiss()
         super.onDestroyView()
         Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false);
 

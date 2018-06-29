@@ -20,7 +20,7 @@
     <TextView
 
         android:textSize="18sp"
-        android:textColor="@color/new_orange"
+        android:textColor="@color/themeColor"
         tools:text="Plan Value"
         android:layout_gravity="end"
         android:gravity="end"

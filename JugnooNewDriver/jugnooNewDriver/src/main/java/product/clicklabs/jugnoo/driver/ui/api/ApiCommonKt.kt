@@ -5,7 +5,7 @@ import android.text.TextUtils
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
@@ -146,7 +146,7 @@ class ApiCommonKt<T : FeedCommonResponseKotlin>(
         when (apiName) {
 
             ApiName.GENERATE_OTP -> RestClient.getApiServices().generateOtpK(params, callback as Callback<RegisterScreenResponse>)
-            ApiName.GET_CITIES -> RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback as Callback<CityResponse>)
+            ApiName.GET_CITIES -> RestClient.getApiServices().getDriverSignUpDetails(params, callback as Callback<CityResponse>)
             ApiName.GET_LANGUAGES -> RestClient.getApiServices().fetchLanguageListKotlin(params, callback as Callback<DriverLanguageResponse>)
             ApiName.MANUAL_RIDE -> RestClient.getApiServices().requestManualRide(params, callback as Callback<ManualRideResponse>)
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )

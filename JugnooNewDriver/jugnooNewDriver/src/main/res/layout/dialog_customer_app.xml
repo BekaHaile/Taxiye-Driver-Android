@@ -34,7 +34,7 @@
                 android:paddingStart="20px"
                 android:paddingEnd="20px"
                 android:text="@string/update"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="50px" />
 
             <TextView
@@ -61,7 +61,7 @@
 
                 <Button
                     android:id="@+id/btnOk"
-                    style="@style/DialogButtonOrange"
+                    style="@style/DialogButton"
                     android:layout_gravity="center_horizontal"
                     android:layout_centerHorizontal="true"
                     android:singleLine="true"

@@ -5,6 +5,7 @@
     android:layout_height="120px"
     android:orientation="vertical"
         android:splitMotionEvents="false"
+              android:background="?attr/selectableItemBackground"
      >
 
     <RelativeLayout
@@ -20,31 +21,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/english"
-            android:textColor="@color/grey_dark"
-            android:textSize="42px"
+            android:textColor="@color/textColorMedium"
+            android:textSize="40px"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="20px"
             android:singleLine="true"
              />
-        
-        
-        <!--<ImageView -->
-            <!--android:id="@+id/tick"-->
-            <!--android:layout_width="80px"-->
-            <!--android:layout_height="80px"-->
-            <!--android:tag="mwar"-->
-            <!--android:src="@drawable/check_off"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_marginEnd="20px"-->
-            <!--/>-->
-        
+
         <ImageView 
             android:layout_width="match_parent"
             android:layout_height="2px"
-            android:background="@color/favorite_div"
+            android:background="@color/dividerColor"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="25px"
+            android:layout_marginEnd="25px"
             />
         
     </RelativeLayout>

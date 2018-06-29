@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,7 +40,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
-	Button backBtn;
+	View backBtn;
+	TextView title;
 
 	LanguageListAdapter languageListAdapter;
 	Configuration conf;
@@ -66,7 +66,9 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		new ASSL(LanguagePrefrencesActivity.this, relative, 1134, 720, false);
 
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title); title.setText(R.string.select_language);
+		title.setTypeface(Fonts.mavenMedium(this));
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
 		listView = (ListView) findViewById(R.id.listView);

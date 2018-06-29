@@ -11,7 +11,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/new_orange"
+        android:background="@color/themeColor"
         android:splitMotionEvents="false">
 
         <Button
@@ -19,7 +19,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
+            android:background="@drawable/ic_back_selector" android:rotationY="@integer/locale_mirror_flip"
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -74,7 +74,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="6px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/emailEt"
@@ -112,7 +112,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="6px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <EditText
                     android:id="@+id/passwordEt"
@@ -154,7 +154,7 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/transparent"
                 android:text="@string/forgot_password"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="36px"/>
 
             <LinearLayout
@@ -166,7 +166,7 @@
                     android:layout_width="290px"
                     android:layout_height="3px"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/new_orange"
+                    android:background="@color/themeColor"
                     />
 
                 <TextView
@@ -177,14 +177,14 @@
                     android:layout_marginStart="15px"
                     android:layout_marginEnd="15px"
                     android:text="or"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="40px"/>
 
                 <ImageView
                     android:layout_width="290px"
                     android:layout_height="3px"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/new_orange"
+                    android:background="@color/themeColor"
                     />
             </LinearLayout>
 

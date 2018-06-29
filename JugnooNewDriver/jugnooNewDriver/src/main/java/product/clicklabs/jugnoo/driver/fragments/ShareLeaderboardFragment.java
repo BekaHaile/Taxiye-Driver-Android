@@ -173,7 +173,7 @@ public class ShareLeaderboardFragment extends Fragment {
 
 			if (LBTimeType.DAILY == lbTimeType) {
 				if (this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.color.new_orange);
+					textViewDaily.setBackgroundResource(R.color.themeColor);
 					textViewDaily.setTextColor(getResources().getColor(R.color.white));
 					textViewWeekly.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
 					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.menu_black));
@@ -182,7 +182,7 @@ public class ShareLeaderboardFragment extends Fragment {
 				if (this.lbTimeType != lbTimeType) {
 					textViewDaily.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
 					textViewDaily.setTextColor(getResources().getColorStateList(R.color.menu_black));
-					textViewWeekly.setBackgroundResource(R.color.new_orange);
+					textViewWeekly.setBackgroundResource(R.color.themeColor);
 					textViewWeekly.setTextColor(getResources().getColor(R.color.white));
 				}
 			}
@@ -190,9 +190,9 @@ public class ShareLeaderboardFragment extends Fragment {
 			if (LBLocationType.LOCAL == lbLocationType) {
 				if (this.lbLocationType != lbLocationType) {
 					buttonLocal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
-					buttonLocal.setTextColor(getResources().getColor(R.color.white));
+					buttonLocal.setTextColor(getResources().getColor(R.color.textColorButton));
 					buttonGlobal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-					buttonGlobal.setTextColor(getResources().getColorStateList(R.color.menu_black));
+					buttonGlobal.setTextColor(getResources().getColorStateList(R.color.textColor));
 				}
 				if (LBTimeType.DAILY == lbTimeType) {
 					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getCityLeaderBoard().getDay());
@@ -210,9 +210,9 @@ public class ShareLeaderboardFragment extends Fragment {
 			} else if (LBLocationType.GLOBAL == lbLocationType) {
 				if (this.lbLocationType != lbLocationType) {
 					buttonLocal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-					buttonLocal.setTextColor(getResources().getColorStateList(R.color.menu_black));
+					buttonLocal.setTextColor(getResources().getColorStateList(R.color.textColor));
 					buttonGlobal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
-					buttonGlobal.setTextColor(getResources().getColor(R.color.white));
+					buttonGlobal.setTextColor(getResources().getColor(R.color.textColorButton));
 				}
 				if (LBTimeType.DAILY == lbTimeType) {
 					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getOverallLeaderBoard().getDay());

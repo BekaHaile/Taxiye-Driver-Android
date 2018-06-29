@@ -4,7 +4,7 @@
     >
     
     <solid 
-        android:color="@color/red_v2"
+        android:color="@color/themeColor"
         />
 
 </shape>

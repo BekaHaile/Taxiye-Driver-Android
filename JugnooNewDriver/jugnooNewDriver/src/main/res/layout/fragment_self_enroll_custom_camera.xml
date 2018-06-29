@@ -5,35 +5,7 @@
               android:layout_height="1134px"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="145px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:tag="mwar" />
-
-        <TextView
-            android:id="@+id/titleAutoSide"
-            android:layout_width="590px"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutProgressBar"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="22px"
-            android:gravity="center"
-            android:text="@string/auto_from_front"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
-
-
-    </RelativeLayout>
+    <include layout="@layout/layout_top_bar"/>
 
 
     <RelativeLayout

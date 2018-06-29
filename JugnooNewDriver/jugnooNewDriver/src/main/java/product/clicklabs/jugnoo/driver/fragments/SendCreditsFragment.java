@@ -75,7 +75,7 @@ public class SendCreditsFragment extends BaseFragment {
         tvCountryCode = (TextView) rootView.findViewById(R.id.tvCountryCode); tvCountryCode.setTypeface(Fonts.mavenRegular(activity));
         TextView tvCreditsLeft = (TextView) rootView.findViewById(R.id.tvCreditsLeft); tvCreditsLeft.setTypeface(Fonts.mavenRegular(activity));
         countryPicker = new CountryPicker.Builder().with(activity)
-                        .listener(new OnCountryPickerListener() {
+                        .listener(new OnCountryPickerListener<Country>() {
                             @Override
                             public void onSelectCountry(Country country) {
                                 tvCountryCode.setText(country.getDialCode());

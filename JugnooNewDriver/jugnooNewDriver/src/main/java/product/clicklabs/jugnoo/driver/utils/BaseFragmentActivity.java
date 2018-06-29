@@ -32,7 +32,9 @@ public class BaseFragmentActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		updateLanguage(null);
+		if(savedInstanceState==null){
+			updateLanguage(null);
+		}
 		updateStatusBar();
 	}
 

@@ -41,8 +41,8 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 
 	RelativeLayout relative;
 
-	TextView textViewTitle;
-	ImageView imageViewBack;
+	TextView title;
+	View backBtn;
 
     TextView textViewRegisterNameValue, textViewRegisterEmailValue, textViewRegisterPhoneValue, textViewRegisterHelp;
     EditText editTextMessage;
@@ -65,8 +65,9 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.request_registration);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 
         textViewRegisterNameValue = (TextView) findViewById(R.id.textViewRegisterNameValue); textViewRegisterNameValue.setTypeface(Fonts.mavenLight(this), Typeface.BOLD);
         textViewRegisterEmailValue = (TextView) findViewById(R.id.textViewRegisterEmailValue); textViewRegisterEmailValue.setTypeface(Fonts.mavenLight(this), Typeface.BOLD);
@@ -86,7 +87,7 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 
 
-		imageViewBack.setOnClickListener(new OnClickListener() {
+		backBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -118,7 +119,7 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 			textViewRegisterNameValue.setText(OldOTPConfirmScreen.emailRegisterData.name);
 			textViewRegisterEmailValue.setText(OldOTPConfirmScreen.emailRegisterData.emailId);
 			textViewRegisterPhoneValue.setText(OldOTPConfirmScreen.emailRegisterData.phoneNo);
-			editTextMessage.setHint(getResources().getString(R.string.You_have_already_created, Data.previousAccountInfoList.size()));
+			editTextMessage.setHint(getString(R.string.You_have_already_created, Data.previousAccountInfoList.size()));
 		} catch(Exception e){
             e.printStackTrace();
             performBackPressed();

@@ -36,18 +36,26 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="88px"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@color/jet_black">
+                android:layout_height="96px"
+                android:background="@color/colorPrimary">
 
                 <TextView
                     android:id="@+id/textViewRideInstructions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Invoice"
-                    android:textColor="@color/white"
-                    android:textSize="36px"/>
+                    android:textColor="@color/textColorTitle"
+                    android:textSize="36px"
+                    android:layout_centerInParent="true"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/grey_alpha_66"
+                    android:layout_alignParentBottom="true"
+                    android:tag="@string/dont_touch_me"
+                    />
 
             </RelativeLayout>
 
@@ -76,8 +84,8 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:text="@string/distance"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"/>
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewDistanceValue"
@@ -87,23 +95,23 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5px"
                         android:gravity="center"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="38px"/>
                 </RelativeLayout>
-
-                <ImageView
-                    android:layout_width="2px"
-                    android:layout_height="90px"
-                    android:background="@color/menu_black"/>
 
                 <RelativeLayout
                     android:id="@+id/reviewWaitTimeRl"
                     android:layout_width="wrap_content"
-                    android:layout_height="90px"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:splitMotionEvents="false"
                     android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="2px"
+                        android:layout_height="90px"
+                        android:background="@color/menu_black"/>
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewWaitText"
@@ -111,8 +119,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/wait_time"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"/>
 
                     <TextView
                         android:id="@+id/reviewWaitValue"
@@ -122,16 +130,10 @@
                         android:layout_marginTop="5px"
                         android:gravity="center"
                         android:text="4 min"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="38px"/>
 
                 </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/imageViewEndRideWaitSep"
-                    android:layout_width="2px"
-                    android:layout_height="90px"
-                    android:background="@color/menu_black"/>
 
                 <RelativeLayout
                     android:id="@+id/reviewRideTimeRl"
@@ -141,6 +143,11 @@
                     android:gravity="center"
                     android:splitMotionEvents="false">
 
+                    <ImageView
+                        android:layout_width="2px"
+                        android:layout_height="90px"
+                        android:background="@color/menu_black"/>
+
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewRideTimeText"
                         android:layout_width="match_parent"
@@ -148,8 +155,8 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:text="@string/ride_time"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"/>
 
                     <TextView
                         android:id="@+id/reviewRideTimeValue"
@@ -160,14 +167,9 @@
                         android:layout_marginTop="5px"
                         android:gravity="center"
                         android:text="4 min"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="38px"/>
                 </RelativeLayout>
-
-                <ImageView
-                    android:layout_width="2px"
-                    android:layout_height="90px"
-                    android:background="@color/menu_black"/>
 
                 <RelativeLayout
                     android:id="@+id/reviewFareRl"
@@ -178,6 +180,11 @@
                     android:splitMotionEvents="false"
                     android:visibility="gone">
 
+                    <ImageView
+                        android:layout_width="2px"
+                        android:layout_height="90px"
+                        android:background="@color/menu_black"/>
+
                     <TextView
                         android:id="@+id/reviewFareText"
                         android:layout_width="match_parent"
@@ -185,8 +192,8 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:text="@string/fare"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColor"
+                        android:textSize="38px"/>
 
                     <TextView
                         android:id="@+id/reviewFareValue"
@@ -198,8 +205,8 @@
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="Rs 10.00"
-                        android:textColor="@color/menu_black"
-                        android:textSize="@dimen/end_ride_details_text_size"/>
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="38px"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -272,7 +279,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="6px"
+                android:layout_height="3px"
                 android:layout_below="@+id/upLayout"
                 android:background="@drawable/shadow_down"/>
 
@@ -326,7 +333,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Customer Name"
-                android:textColor="@color/text_color"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_42"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="40px"
@@ -350,19 +357,10 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:text="@string/jugnoo_ride_over"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorMedium"
                     android:textSize="@dimen/text_size_40"
                     />
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30px"
-                    android:gravity="center"
-                    android:paddingStart="40px"
-                    android:paddingEnd="40px">
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/takeFareText"
@@ -370,10 +368,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/take_cash"
                         android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="72px"/>
-
-                </LinearLayout>
+                        android:textColor="@color/textColor"
+                        android:textSize="70px"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30px"
+                        android:gravity="center"
+                        android:paddingStart="40px"
+                        android:paddingEnd="40px"
+                        />
 
             </LinearLayout>
 
@@ -571,8 +573,8 @@
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:text="@string/Rate_Your_Customer"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_36"
+                        android:textColor="@color/textColorMedium"
+                        android:textSize="38px"
                         />
 
                     <ImageView
@@ -602,13 +604,12 @@
 
                 <Button
                     android:id="@+id/reviewSubmitBtn"
-                    android:layout_width="648px"
-                    android:layout_height="99px"
-                    android:layout_marginTop="22px"
-                    android:background="@drawable/new_orange_btn_round_corner_normal"
+                    style="@style/ButtonTheme"
+                    android:layout_width="300dp"
+                    android:layout_marginTop="11dp"
                     android:text="@string/done"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"/>
+                    android:textSize="16sp"
+                    />
 
                 <Button
                     android:id="@+id/reviewSkipBtn"
@@ -617,7 +618,7 @@
                     android:layout_marginTop="22px"
                     android:background="@drawable/white_bg"
                     android:text="@string/skip"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size"
                     android:visibility="gone"
                     />

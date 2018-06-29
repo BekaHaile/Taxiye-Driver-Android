@@ -6,34 +6,7 @@
     android:background="@drawable/background_white"
     android:splitMotionEvents="false">
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:textColor="@drawable/blue_alpha_color_selector"
-            android:textSize="@dimen/button_text_size" />
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="25px"
-            android:text="@string/verification"
-            android:textColor="@color/white"
-            android:textSize="40px" />
-
-
-    </RelativeLayout>
+    <include layout="@layout/layout_top_bar"/>
 
 
     <LinearLayout
@@ -160,7 +133,7 @@
                     android:layout_width="410px"
                     android:layout_height="2px"
                     android:layout_gravity="center_horizontal"
-                    android:src="@color/red_v2" />
+                    android:src="@color/themeColor" />
 
                 <LinearLayout
                     android:id="@+id/btnReGenerateOtp"
@@ -177,7 +150,7 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:text="@string/resend_OTP"
-                        android:textColor="@color/new_orange"
+                        android:textColor="@color/themeColor"
                         android:textSize="24px"
                         android:visibility="visible" />
 
@@ -186,7 +159,7 @@
                         android:layout_width="140px"
                         android:layout_height="1px"
                         android:layout_gravity="center_horizontal"
-                        android:background="@color/red_v2"
+                        android:background="@color/themeColor"
                         android:textColor="@drawable/white_color_selector"
                         android:visibility="visible" />
 
@@ -258,7 +231,7 @@
             android:layout_marginTop="84px"
             android:background="@drawable/background_white_rounded_orange_bordered"
             android:text="@string/login"
-            android:textColor="@color/red_v2"
+            android:textColor="@color/themeColor"
             android:textSize="@dimen/button_text_size"
             android:visibility="gone" />
 

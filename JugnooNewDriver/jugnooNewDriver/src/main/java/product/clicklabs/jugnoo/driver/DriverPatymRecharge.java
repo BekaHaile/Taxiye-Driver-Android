@@ -45,7 +45,7 @@ public class DriverPatymRecharge extends BaseActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	View backBtn;
 	TextView title;
 	ScrollView scrollView;
 	LinearLayout mainLinear, enterAmountLL;
@@ -90,9 +90,10 @@ public class DriverPatymRecharge extends BaseActivity {
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.paytm_recharge);
 
 
 		editTextCashAmount = (EditText) findViewById(R.id.editTextCashAmount);
@@ -124,12 +125,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("500");
-				btnRupee500.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee500.setTextColor(getResources().getColor(R.color.white));
 				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});
@@ -139,12 +140,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("200");
-				btnRupee200.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee200.setTextColor(getResources().getColor(R.color.white));
 				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});
@@ -154,12 +155,12 @@ public class DriverPatymRecharge extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("100");
-				btnRupee100.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setBackgroundColor(getResources().getColor(R.color.themeColor));
 				btnRupee100.setTextColor(getResources().getColor(R.color.white));
 				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setTextColor(getResources().getColor(R.color.themeColor));
 				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setTextColor(getResources().getColor(R.color.themeColor));
 
 			}
 		});

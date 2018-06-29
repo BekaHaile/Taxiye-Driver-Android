@@ -28,14 +28,12 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -93,10 +91,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			}
 		}
 
-		TextView textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Fonts.mavenRegular(this));
-		ImageView imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		imageViewBack.setOnClickListener(this);
+		TextView title = (TextView) findViewById(R.id.title);
+        title.setTypeface(Fonts.mavenRegular(this));
+        title.setText(R.string.chat);
+		ImageView backBtn = (ImageView) findViewById(R.id.backBtn);
+		backBtn.setOnClickListener(this);
 
 		input = (EditText) findViewById(R.id.input); input.setTypeface(Fonts.mavenRegular(this));
 		ImageView send = (ImageView) findViewById(R.id.action_send);
@@ -146,7 +145,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		fetchChat(ChatActivity.this);
 
 		if(Data.getCurrentCustomerInfo() != null) {
-			textViewTitle.setText(Data.getCurrentCustomerInfo().getName());
+			title.setText(Data.getCurrentCustomerInfo().getName());
 		}
 
 		if(Data.getCurrentCustomerInfo() == null){

@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
-import android.support.constraint.ConstraintSet
 import android.transition.Transition
 import android.support.transition.TransitionManager
 import android.transition.TransitionSet
@@ -18,21 +18,19 @@ import android.text.InputType
 import android.text.TextUtils
 import android.transition.TransitionInflater
 import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import com.picker.Country
 import com.picker.CountryPicker
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.tvLanguage
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -41,7 +39,6 @@ import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
-import java.lang.ref.WeakReference
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -51,13 +48,7 @@ class LoginFragment : Fragment() {
     companion object {
         private const val IS_SHARED_TRANSITION_ENABLED = "is_shared_transition_enabled"
 
-        fun newInstance(isSharedTransitionEnabled: Boolean): LoginFragment {
-            return LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(IS_SHARED_TRANSITION_ENABLED, isSharedTransitionEnabled)
-                }
-            }
-        }
+
     }
 
     private lateinit var parentActivity: Activity
@@ -66,6 +57,7 @@ class LoginFragment : Fragment() {
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
     private var applyTransition = false;
+    private var handler = Handler()
 
 
     override fun onAttach(activity: Activity?) {
@@ -77,20 +69,23 @@ class LoginFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.frag_login, container, false)!!
-        applyTransition = arguments.getBoolean(IS_SHARED_TRANSITION_ENABLED, false)
-        if (applyTransition && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // animate logo using shared transitions and then onEnd animate other view's visibility
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-            addTransitionEndListenerAndAnimateView()
-        } else {
-            // animate other view's visibility
+
+        if(sharedElementEnterTransition!=null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                addTransitionEndListenerAndAnimateView()
+            }
+        }else{
             animateViews()
         }
 
         selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
-        val countryPicker = CountryPicker.Builder().with(activity).listener { country -> rootView.tvCountryCode.text = country?.dialCode }.build()
+        val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener<Country>{
+            override fun onSelectCountry(country: Country?) {
+                rootView.tvCountryCode.text = country?.dialCode
+            }
+        }).build()
 
         with(rootView) {
 
@@ -178,12 +173,27 @@ class LoginFragment : Fragment() {
                 })
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
+            if(edtPhoneNo.tag!=null && (edtPhoneNo.tag is String) &&
+                    (edtPhoneNo.tag as String)==resources.getInteger(R.integer.tag_scroll_down_on_touch).toString()){
 
-//            progressLanguage.getProgressDrawable()
-//                    .setColorFilter(ContextCompat.getColor(getActivity(),R.color.new_orange), PorterDuff.Mode.MULTIPLY)
+                edtPhoneNo.setOnTouchListener(object: View.OnTouchListener{
+                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                        this@LoginFragment.handler.postDelayed(showKeyboardRunnable,200);
+
+                        return false
+                    }
+
+                })
+            }
+
         }
 
         return rootView
+    }
+    val  showKeyboardRunnable = Runnable{
+        if(scrollView!=null ){
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
     private fun getLanguageList(showError: Boolean) {
@@ -357,8 +367,11 @@ class LoginFragment : Fragment() {
         super.onHiddenChanged(hidden)
 
         if (!hidden) {
+            mListener?.toggleDisplayFlags(false)
             toolbarChangeListener.setToolbarVisibility(false)
             JSONParser.saveAccessToken(parentActivity, "")
+        }else{
+            mListener?.toggleDisplayFlags(true)
         }
     }
 
@@ -426,11 +439,11 @@ class LoginFragment : Fragment() {
             getLanguageList(false)
 
             with(rootView){
-                tvLabel.visible()
-                backgroundPhone.visible()
-                tvCountryCode.visible()
-                edtPhoneNo.visible()
-                btnGenerateOtp.visible()
+                if(!tvLabel.isGone())tvLabel.visible()
+                if(!backgroundPhone.isGone())backgroundPhone.visible()
+                if(!tvCountryCode.isGone())tvCountryCode.visible()
+                if(!edtPhoneNo.isGone())edtPhoneNo.visible()
+                if(!btnGenerateOtp.isGone())btnGenerateOtp.visible()
             }
         } catch (e: Exception) {
         }
@@ -461,6 +474,7 @@ class LoginFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        mListener?.toggleDisplayFlags(true)
         super.onDestroyView()
     }
 }

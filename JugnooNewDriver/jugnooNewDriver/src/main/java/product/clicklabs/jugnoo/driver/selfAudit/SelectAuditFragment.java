@@ -48,8 +48,8 @@ public class SelectAuditFragment extends Fragment {
 
 	private View rootView;
 	private SelfAuditActivity activity;
-
-	private ImageView imageViewBack, imageViewArrowSA, imageViewArrowNJB, imageViewArrowNJA;
+	private TextView title;
+	private ImageView backBtn, imageViewArrowSA, imageViewArrowNJB, imageViewArrowNJA;
 	private AuditTypeResponse auditTypeResponse;
 	private AuditStateResponse auditStateResponse;
 
@@ -88,8 +88,10 @@ public class SelectAuditFragment extends Fragment {
 		textViewSelfAudit.setTypeface(Fonts.mavenBold(activity));
 		textViewNJAutoBranding = (TextView) rootView.findViewById(R.id.textViewNJAutoBranding);
 		textViewNJAutoBranding.setTypeface(Fonts.mavenBold(activity));
+		textViewNJAutoBranding.setText(getString(R.string.non_jugnoo_auto_branding, getString(R.string.appname)));
 		textViewNJAutoAudit = (TextView) rootView.findViewById(R.id.textViewNJAutoAudit);
 		textViewNJAutoAudit.setTypeface(Fonts.mavenBold(activity));
+		textViewNJAutoAudit.setText(getString(R.string.non_jugnoo_auto_audit, getString(R.string.appname)));
 
 		textViewSelfAuditLast = (TextView) rootView.findViewById(R.id.textViewSelfAuditLast);
 		textViewSelfAuditLast.setTypeface(Fonts.mavenRegular(activity));
@@ -112,7 +114,10 @@ public class SelectAuditFragment extends Fragment {
 		textViewNJANumber = (TextView) rootView.findViewById(R.id.textViewNJANumber);
 		textViewNJANumber.setTypeface(Fonts.mavenRegular(activity));
 
-		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenMedium(activity));
+		title.setText(R.string.Audit);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 		imageViewArrowSA = (ImageView) rootView.findViewById(R.id.imageViewArrowSA);
 		imageViewArrowNJB = (ImageView) rootView.findViewById(R.id.imageViewArrowNJB);
 		imageViewArrowNJA = (ImageView) rootView.findViewById(R.id.imageViewArrowNJA);
@@ -138,7 +143,7 @@ public class SelectAuditFragment extends Fragment {
 			}
 		});
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 

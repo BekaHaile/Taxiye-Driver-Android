@@ -8,7 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,7 +39,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 
 	RelativeLayout linear;
 
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 	String date = "";
 	TextView textViewInfoDisplay;
@@ -95,7 +95,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DriverRideHistoryNew.this, linear, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
 //		textShader=new LinearGradient(0, 0, 0, 20,

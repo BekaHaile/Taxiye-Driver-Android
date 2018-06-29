@@ -183,7 +183,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
 				call.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
 				buttonMarkDeliver.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
-				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.red_v2));
+				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.themeColor));
 				buttonMarkDeliver.setText(activity.getResources().getString(R.string.delivered));
 				buttonMarkDeliver.setEnabled(false);
 				call.setEnabled(false);
@@ -211,7 +211,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 		buttonMarkFailed.setLayoutParams(params);
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
-//			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
 			textViewCashCollected.setVisibility(View.VISIBLE);
 			textViewListCount.setVisibility(View.GONE);
 			call.setVisibility(View.GONE);
@@ -357,7 +356,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 					linearLayoutProgress.addView(ivCircle, params2);
 
 					ImageView ivLine = new ImageView(activity);
-					ivLine.setImageResource(R.color.red_v2);
+					ivLine.setImageResource(R.color.themeColor);
 					LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
 					params1.weight = 1f;
 					linearLayoutProgress.addView(ivLine, params1);

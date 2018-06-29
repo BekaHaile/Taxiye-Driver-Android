@@ -14,7 +14,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/black_top_bar_bg"
+        android:background="@color/colorPrimary"
         android:textAlignment="center"
         app:titleTextColor="@color/white">
 
@@ -24,9 +24,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAllCaps="true"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:layout_gravity="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/textColorTitle" />
 
     </android.support.v7.widget.Toolbar>
 

@@ -19,7 +19,7 @@
             android:id="@+id/label_credits"
             android:text="@string/total_credits_earned"
             android:layout_width="wrap_content"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:textSize="17sp"
             android:layout_height="wrap_content" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/tv_credits_value"
             android:layout_width="wrap_content"
             android:layout_toEndOf="@id/label_credits"
-            android:textColor="@color/text_color"
+            android:textColor="@color/textColor"
             android:layout_marginBottom="5dp"
             android:textSize="17sp"
             android:gravity="end"
@@ -42,7 +42,7 @@
             android:text="@string/commission_saved"
             android:textSize="15sp"
             android:layout_width="wrap_content"
-            android:textColor="@color/text_color_light"
+            android:textColor="@color/textColorLight"
             android:layout_height="wrap_content" />
 
 
@@ -50,7 +50,7 @@
             android:id="@+id/tv_comission_value"
             android:layout_width="wrap_content"
             android:layout_toRightOf="@id/label_credits"
-            android:textColor="@color/text_color_light"
+            android:textColor="@color/textColorLight"
             android:layout_alignParentRight="true"
             android:textSize="15sp"
             android:gravity="right"
@@ -74,6 +74,7 @@
         android:padding="10dp"
         android:layout_marginBottom="1dp"
         android:text="@string/earn_more_credits"
+        android:textColor="@color/textColor"
         android:background="@drawable/bg_white_grey_light_selector"
         android:layout_width="match_parent"
         android:textSize="17sp"
@@ -85,6 +86,7 @@
         android:padding="10dp"
         android:background="@drawable/bg_white_grey_light_selector"
         android:text="@string/share_your_credits"
+        android:textColor="@color/textColor"
         android:textSize="17sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,7 +23,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 
 	RelativeLayout relative;
 	String accessToken;
-	Button backBtn;
+	View backBtn;
 	TextView title, textViewResource, textViewTraining, textViewSupport;
 	LinearLayout linearLayoutResources, linearLayoutTraining, linearLayoutSupport;
 	ImageView imageView2, imageView3;
@@ -39,6 +38,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 
 		title = (TextView) findViewById(R.id.title) ;
 		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		title.setText(R.string.driver_resources);
 		textViewResource = (TextView) findViewById(R.id.textViewResource) ;
 		textViewResource.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		textViewTraining = (TextView) findViewById(R.id.textViewTraining) ;
@@ -48,7 +48,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		textViewSupport = (TextView) findViewById(R.id.textViewSupport) ;
 		textViewSupport.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		linearLayoutSupport = (LinearLayout) findViewById(R.id.linearLayoutSupport);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 
 		imageView2 = (ImageView) findViewById(R.id.imageView2);
 		imageView3 = (ImageView) findViewById(R.id.imageView3);

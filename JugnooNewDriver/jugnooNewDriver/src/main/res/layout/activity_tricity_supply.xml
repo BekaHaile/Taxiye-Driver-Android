@@ -7,38 +7,7 @@
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:id="@+id/topBar"
-        android:layout_width="720px"
-        android:layout_height="96px"
-        android:background="@color/black_top_bar_bg">
-
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="25px"
-            android:text="@string/destination"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
-
-        <ImageView
-            android:id="@+id/imageViewBack"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10px"
-            android:padding="2px"
-            android:layout_marginTop="25px"
-            android:src="@drawable/back_btn_selector"/>
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="6px"
-        android:background="@drawable/shadow_down"
-        />
+    <include layout="@layout/layout_top_bar"/>
 
     <TextView
         android:id="@+id/definationTextView"

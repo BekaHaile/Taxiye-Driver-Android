@@ -7,47 +7,11 @@
 
 
 
-
-
-    <View
-        android:id="@+id/topBarView"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/black_top_bar_bg"
-        android:minHeight="45dp"/>
-
-
-
-
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:background="@drawable/back_btn_selector"
-        android:tag="mwar" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:text="STRIPE"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/backBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backBtn" />
-
-
+    <include layout="@layout/layout_top_bar"/>
 
     <WebView
         android:id="@+id/webView"
-        app:layout_constraintTop_toBottomOf="@id/topBarView"
+        app:layout_constraintTop_toBottomOf="@id/topRl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

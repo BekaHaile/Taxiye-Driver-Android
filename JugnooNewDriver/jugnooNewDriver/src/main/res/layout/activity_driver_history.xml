@@ -17,7 +17,7 @@
             android:id="@+id/topRl"
             android:layout_width="match_parent"
             android:layout_height="96px"
-            android:background="@color/black_top_bar_bg"
+            android:background="@color/colorPrimary"
             android:splitMotionEvents="false"
             android:orientation="horizontal"
             >
@@ -31,13 +31,10 @@
                 android:layout_weight="1"
                 >
 
-                <Button
+                <ImageView
                     android:id="@+id/backBtn"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-                    android:tag="mwar"/>
+                    style="@style/BackArrow"
+                    />
 
                 <TextView
                     android:id="@+id/textViewDailyText"
@@ -46,7 +43,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12px"
                     android:text="@string/today"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorTitle"
                     android:textSize="30px"
                     android:textStyle="bold"/>
                 <TextView
@@ -56,7 +53,7 @@
                     android:layout_below="@+id/textViewDailyText"
                     android:layout_centerHorizontal="true"
                     android:text="@string/rupee_zero"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textColorTitle"
                     android:textSize="32px"/>
 
 

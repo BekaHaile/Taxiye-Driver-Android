@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 
 /**
@@ -106,6 +106,20 @@ public class OtpDialog {
 
             RelativeLayout frameLayout = (RelativeLayout) alertDialog.findViewById(R.id.rv);
             new ASSL(activity, frameLayout, 1134, 720, false);
+            frameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(alertDialog != null) {
+                        alertDialog.dismiss();
+                    }
+                }
+            });
+            alertDialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             linearLayoutWaiting = (LinearLayout) alertDialog.findViewById(R.id.linearLayoutWaiting);
             imageViewYellowLoadingBar = (ImageView) alertDialog.findViewById(R.id.imageViewYellowLoadingBar);
@@ -170,7 +184,7 @@ public class OtpDialog {
     /**
      * Method to init the initialized alertDialog
      */
-    public void show() {
+    public void show(DialogInterface.OnDismissListener onDismissListener) {
 
         // Check if activity lives
         if (activity != null)
@@ -179,6 +193,7 @@ public class OtpDialog {
                 try {
                     // Show the Dialog
                     alertDialog.show();
+                    alertDialog.setOnDismissListener(onDismissListener);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -238,7 +253,7 @@ public class OtpDialog {
     }
 
 
-    /**
+	/**
      * Interfaces the events from the AlertDialog
      * to the Calling Context
      */

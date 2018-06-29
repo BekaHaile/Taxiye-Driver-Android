@@ -29,7 +29,7 @@
         android:singleLine="true"
         android:layout_marginTop="10px"
         android:text="@string/km"
-        android:textColor="@color/red_v2"
+        android:textColor="@color/themeColor"
         android:textSize="84px"/>
 
     <TextView
@@ -40,7 +40,7 @@
         android:singleLine="true"
         android:layout_marginTop="10px"
         android:text="@string/rides"
-        android:textColor="@color/red_v2"
+        android:textColor="@color/themeColor"
         android:textSize="84px"/>
     <TextView
         android:id="@+id/textViewInvoiceStatus"

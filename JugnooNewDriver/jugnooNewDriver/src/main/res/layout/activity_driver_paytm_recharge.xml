@@ -7,33 +7,7 @@
               android:orientation="vertical"
               android:splitMotionEvents="false">
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:textColor="@drawable/blue_alpha_color_selector"
-            android:textSize="@dimen/button_text_size"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/paytm_recharge"
-            android:textColor="@color/white"
-            android:textSize="42px"/>
-    </RelativeLayout>
-
+    <include layout="@layout/layout_top_bar"/>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -96,7 +70,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <AutoCompleteTextView
                     android:id="@+id/editTextPhone"
@@ -146,7 +120,7 @@
                     android:layout_width="2px"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10px"
-                    android:background="@color/new_orange"/>
+                    android:background="@color/themeColor"/>
 
                 <EditText
                     android:id="@+id/editTextCashAmount"
@@ -178,7 +152,7 @@
                     android:layout_height="98px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_100"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
                 <Button
@@ -189,7 +163,7 @@
                     android:layout_marginEnd="15px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_200"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
                 <Button
@@ -198,7 +172,7 @@
                     android:layout_height="98px"
                     android:background="@drawable/background_white_rounded_orange_bordered"
                     android:text="@string/rupee_500"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="@dimen/button_text_size_large"/>
 
             </LinearLayout>

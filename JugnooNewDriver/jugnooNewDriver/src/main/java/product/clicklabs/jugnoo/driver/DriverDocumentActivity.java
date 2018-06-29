@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -41,7 +43,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	RelativeLayout relative;
 
-	Button backBtn, submitButton;
+	View backBtn;
+	TextView title;
+	Button submitButton;
 
 	public RelativeLayout relativeLayoutRides, relativeLayoutContainer;
 	String accessToken;
@@ -62,7 +66,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		new ASSL(DriverDocumentActivity.this, relative, 1134, 720, false);
 
 		submitButton = (Button) findViewById(R.id.submitButton);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
+		title.setText(R.string.upload_Documents);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		relativeLayoutContainer = (RelativeLayout) findViewById(R.id.relativeLayoutContainer);
@@ -91,7 +97,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				if(brandingImagesOnly == 1){
 					docSubmission();
 				} else {
-					DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "", getString(R.string.documents_authentication),
+					DialogPopup.alertPopupTwoButtonsWithListeners(DriverDocumentActivity.this, "",
+							getString(R.string.documents_authentication, getString(R.string.appname), getString(R.string.appname)),
 							getString(R.string.i_agree), "", new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {

@@ -8,8 +8,7 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <include android:id="@+id/include"
-            layout="@layout/toolbar" />
+        <include layout="@layout/layout_top_bar" />
 
         <RelativeLayout
             android:layout_width="match_parent"

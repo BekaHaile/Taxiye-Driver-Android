@@ -47,9 +47,9 @@ public class NonJugnooAuditFragment extends Fragment {
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private boolean smartPhoneAvailable = false;
-	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton, textViewTitle;
+	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton, title;
 
-	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes, imageViewBack;
+	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes, backBtn;
 	private int auditType;
 
 
@@ -96,13 +96,15 @@ public class NonJugnooAuditFragment extends Fragment {
 		textViewNextButton = (TextView) rootView.findViewById(R.id.textViewNextButton);
 		textViewNextButton.setTypeface(Fonts.mavenRegular(activity));
 
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity));
+		title.setText(R.string.Audit);
+		title.setAllCaps(false);
 
 		imageViewSmartPhoneCheckYes = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckYes);
 		imageViewSmartPhoneCheckNo = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckNo);
 
-		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 
 		if(auditType == 2){
 			relativeLayoutNameEt.setVisibility(View.GONE);
@@ -138,11 +140,11 @@ public class NonJugnooAuditFragment extends Fragment {
 		});
 
 		if(auditType == 0){
-			textViewTitle.setText(getResources().getString(R.string.self_audit));
+			title.setText(getResources().getString(R.string.self_audit));
 		} else if (auditType == 1){
-			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_branding));
+			title.setText(getString(R.string.non_jugnoo_auto_branding, getString(R.string.appname)));
 		} else if (auditType == 2){
-			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_audit));
+			title.setText(getResources().getString(R.string.non_jugnoo_auto_audit, getString(R.string.appname)));
 		}
 
 		imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_select);
@@ -166,7 +168,7 @@ public class NonJugnooAuditFragment extends Fragment {
 			}
 		});
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				performBackPress();

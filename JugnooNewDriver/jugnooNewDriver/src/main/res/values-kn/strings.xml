@@ -2,7 +2,6 @@
 <resources>
 
 
-    <string name="app_name">Jingo Drivers</string>
 
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -49,7 +48,7 @@
     <string name="missed">ತಪ್ಪಿದ</string>
     <string name="no_missed_rides_currently">ಪ್ರಸ್ತುತ ಯಾವುದೇ ತಪ್ಪಿಸಿಕೊಂಡ ಸವಾರಿ.</string>
     <string name="update">ಅಪ್ಡೇಟ್</string>
-    <string name="jugnoo_on">ಜುಗ್ನೂ ಆರಂಭ</string>
+    <string name="jugnoo_on">%s ಆರಂಭ</string>
     <string name="ride_type">ಸವಾರಿಯ ಬಗೆ</string>
     <string name="support">ಸಹಾಯಕ್ಕಾಗಿ</string>
     <string name="language_preferences">ಭಾಷೆ ಪ್ರಾಶಸ್ತ್ಯ</string>
@@ -130,9 +129,8 @@
     <string name="have_arrived">ನೀವು ಬಂದಿದ್ದೀರಿ?</string>
     <string name="create_new_account_msg">ನೀವು ಇನ್ನೂ ಒಂದು ಹೊಸ ಖಾತೆಯನ್ನು ರಚಿಸಲು ಬಯಸಿದರೆ</string>
     <string name="not_recived_otp">ನಾನು OTP ಸ್ವೀಕರಿಸಿಲ್ಲ</string>
-    <string name="jugnoo">ಜುಗ್ನೂ</string>
-    <string name="jugnoo_off">ಜುಗ್ನೂ ಈಗ ಚಾಲನೆಯಲ್ಲಿಲ್ಲ.</string>
-    <string name="jugnoo_cut">ಜುಗ್ನೂ ಕಡಿತ</string>
+    <string name="jugnoo_off">%s ಈಗ ಚಾಲನೆಯಲ್ಲಿಲ್ಲ.</string>
+    <string name="jugnoo_cut">%s ಕಡಿತ</string>
     <string name="loading">ತುಂಬಿಸುತ್ತಿದೆ...</string>
     <string name="location_setting">ಸ್ಥಳ ಸೆಟ್ಟಿಂಗ್ಗಳು</string>
     <string name="location_setting_enable_message">ಸ್ಥಳ ಸಕ್ರಿಯಗೊಳಿಸಿಲ್ಲ . ನೀವು ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮೆನುವಿನಿಂದ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ ?</string>
@@ -147,7 +145,7 @@
     <string name="no_luggage">ಯಾವುದೇ ಸಾಮಾನು ಸೇರಿಸಲಾಗಿಲ್ಲ </string>
     <string name="luggage_added">ಸಾಮಾನು ಐಟಂಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ</string>
     <string name="no_lugage">ಸಾಮಾನು ಇಲ್ಲ</string>
-    <string name="network_problem">ನೆಟ್ವರ್ಕ್ ಸಮಸ್ಯೆ.ದಯವಿಟ್ಟು ಸ್ವಿಚ್ ಆಫ್ ಮಾಡಿ ಮತ್ತು ಫೋನ್ ಆನ್ ಮಾಡಿ.ಜುಗ್ನೂ ಅನ್ನು ಮುಂದುವರಿಸಲು 5 ನಿಮಿಷಗಳ ಕಾಲ ನಿರೀಕ್ಷಿಸಿ ದಯವಿಟ್ಟು.</string>
+    <string name="network_problem">ನೆಟ್ವರ್ಕ್ ಸಮಸ್ಯೆ. ದಯವಿಟ್ಟು ಆಫ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಫೋನ್ನಲ್ಲಿ ಬದಲಿಸಿ ಮತ್ತು %s ಅನ್ನು ಮುಂದುವರಿಸಲು 5 ನಿಮಿಷಗಳ ಕಾಲ ನಿರೀಕ್ಷಿಸಿ.</string>
     <string name="no_data_to_show">ತೋರಿಸಲು ಯಾವುದೇ ಡೇಟಾ ಇರುವುದಿಲ್ಲ</string>
     <string name="no_of_rides">
         ಸವಾರಿಗಳ ಸಂಖ್ಯೆ
@@ -204,7 +202,7 @@
     <string name="app_needs_network_time">ಅಪ್ಲಿಕೇಶನ್ಗೆ ನೆಟ್ವರ್ಕ್ ಒದಗಿಸಿದ ಟೈಮ್ ಶಕ್ತಗೊಳಿಸುವುದು ಆವಶ್ಯಕ.ಸೆಟ್ಟಿಂಗಳಲ್ಲಿ ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.</string>
     <string name="amount_entered">ನಮೂದಿಸಿರುವ ಪ್ರಮಾಣವನ್ನು</string>
     <string name="time">ಸಮಯ</string>
-    <string name="jugnoo_ride_over">ಜುಗ್ನೂ ಸವಾರಿ ಮುಗಿದಿದೆ.</string>
+    <string name="jugnoo_ride_over">%s ಸವಾರಿ ಮುಗಿದಿದೆ.</string>
     <string name="today">ಇಂದು</string>
     <string name="this_month">ಈ ತಿಂಗಳು</string>
     <string name="title">ಶೀರ್ಷಿಕೆ</string>
@@ -227,7 +225,7 @@
     <string name="no_internet_tap_to_retry">ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕ ಇಲ್ಲ. ಮರುಪ್ರಯತ್ನಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
     <string name="no_rides">ಪ್ರಸ್ತುತ ಯಾವುದೇ ಸವಾರಿ ಇಲ್ಲ </string>
     <string name="pickup_location">ನಿಮ್ಮ ಪಿಕ್ ಅಪ್ ಸ್ಥಳ</string>
-    <string name="money_to">ಜುಗ್ನೂಗೆ ಕೊಡಬೇಕಾದ ಹಣ </string>
+    <string name="money_to">%s ಕೊಡಬೇಕಾದ ಹಣ </string>
     <string name="start_ride_loc">ಸವಾರಿ ಆರಂಭಿಸುವ ಸ್ಥಳ</string>
     <string name="km_away">ಕಿಮೀ ದೂರ</string>
     <string name="m_away">m ದೂರ</string>
@@ -278,11 +276,11 @@
     <string name="Last_week">ಕಳೆದ ವಾರ</string>
     <string name="Last_month">ಕಳೆದ ತಿಂಗಳು</string>
     <string name="Outstanding_amnt">ಬಾಕಿ ಮೊತ್ತ</string>
-    <string name="jugnoo_cmsn">ಜೂಗ್ನೂ ಕಡಿತ</string>
+    <string name="jugnoo_cmsn">%s ಕಡಿತ</string>
     <string name="Manual_adjustment">ಹಸ್ತಚಾಲಿತ ಹೊಂದಾಣಿಕೆ</string>
     <string name="referral_amount">ಉಲ್ಲೇಖಿತ ಹಣ</string>
     <string name="phone_deduction">ಫೋನ್ ವ್ಯವಕಲನ</string>
-    <string name="paid_by_jugnoo">ಜೂಗ್ನೂ ನೀಡಿದ ಹಣ </string>
+    <string name="paid_by_jugnoo">%s ನೀಡಿದ ಹಣ </string>
     <string name="paid_by_customer">ನಗದು ಹಣ</string>
     <string name="paid_using_wallet">ವಾಲೆಟ್ ಮೂಲಕ ಪಾವತಿ</string>
     <string name="acc_credited">ಪಾವತಿಯಾದ ಮೊತ್ತ</string>
@@ -340,7 +338,6 @@
     <string name="enter_some_amount">ದಯವಿಟ್ಟು ಹಣದ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="enter_less_amount">ದಯವಿಟ್ಟು ಕಡಿಮೆಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="enter_valid_amount">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
-    <string name="JUGNOO">JUGNOO</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="ride_complete">ಸವಾರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="resend_OTP">ಓ ಟಿ ಪಿ ಮರುಕಳುಹಿಸಿ.</string>
@@ -450,8 +447,8 @@
     <string name="left">ಎಡ</string>
     <string name="right">ಬಲ </string>
     <string name="Audit">ಆಡಿಟ್</string>
-    <string name="non_jugnoo_auto_branding">ಜುಗ್ನೂ ಜೊತೆ ಸೇರದ ಆಟೋ ಗಳಿಗೆ ಬ್ರ್ಯಾಂಡಿಂಗ್</string>
-    <string name="non_jugnoo_auto_audit">ಜುಗ್ನೂ ಜೊತೆ ಸೇರದ ಆಟೋ ಆಡಿಟ್ </string>
+    <string name="non_jugnoo_auto_branding">%s ಜೊತೆ ಸೇರದ ಆಟೋ ಗಳಿಗೆ ಬ್ರ್ಯಾಂಡಿಂಗ್</string>
+    <string name="non_jugnoo_auto_audit">%s ಜೊತೆ ಸೇರದ ಆಟೋ ಆಡಿಟ್ </string>
     <string name="auto_from_front">ಆಟೋ ಮುಂಭಾಗದಿಂದ </string>
     <string name="auto_from_back">ಆಟೋ ಹಿಂದಿನಿಂದ</string>
     <string name="auto_from_left">ಆಟೋ ಎಡದಿಂದ </string>
@@ -570,7 +567,7 @@
     <string name="looking_for_customer_app">Looking for Customer App</string>
     <string name="auto_detect_otp_failed">Automatic detection of OTP Failed</string>
     <string name="auto_detect_otp_wait">Autodetecting OTP. Please wait...</string>
-    <string name="tutorial_accept_ride">Turn Jugnoo on to start accepting rides</string>
+    <string name="tutorial_accept_ride">Turn %s on to start accepting rides</string>
     <string name="tutorial_tap_ok">Tap \'OK\'</string>
     <string name="tutorial_wait_for_customer">Wait for customer...</string>
     <string name="tutorial_your_location">The blue dot shows your current location</string>
@@ -602,7 +599,7 @@
     <string name="pickup_from">Pickup From:</string>
     <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
-    <string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
+    <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>
     <string name="complainId">Complaint ID :</string>
     <string name="createdOn">Created On :</string>
@@ -629,7 +626,7 @@
     <string name="super_biker">Super Biker</string>
     <string name="your_income">Your Income</string>
     <string name="did_you_know">Did you know?</string>
-    <string name="keep_jugnoo_on">Kepp your Jugnoo ON to earn more</string>
+    <string name="keep_jugnoo_on">Kepp your %s ON to earn more</string>
     <string name="average_days_text">In last %s days drivers in your area have earned:</string>
     <string name="day">day</string>
     <string name="update_webview">Please update your WebView to latest version.</string>
@@ -649,7 +646,7 @@
     <string name="added">Added</string>
     <string name="deducted">Deducted</string>
     <string name="view_wallet_transactions">ವಾಲೆಟ್ ಟ್ರಾಸಾಕ್ಷನ್ಸ್ ವೀಕ್ಷಿಸಿ</string>
-    <string name="schedule_call_message">Press the below button to get support from Jugnoo. Our executive will call you shortly.</string>
+    <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
     <string name="get_call">Get call</string>
     <string name="get_support_call">Get Support Call</string>
 

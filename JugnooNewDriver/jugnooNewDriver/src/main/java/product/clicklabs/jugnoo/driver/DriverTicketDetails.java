@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,7 +22,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 public class DriverTicketDetails extends BaseActivity {
 
 	LinearLayout relative;
-	Button backBtn;
+	View backBtn;
 	TextView title, textViewComplainIdText, textViewComplainId, textViewStatus, textViewCreatedOnText,
 			textViewCreatedOn, textViewRideTypeText, textViewRideType, textViewUpdatedOnText, textViewUpdatedOn,
 			textViewManualAdjText, textViewManualAdj, textViewComplainText, textViewComplain, textViewCall;
@@ -72,7 +71,7 @@ public class DriverTicketDetails extends BaseActivity {
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
@@ -160,7 +159,7 @@ public class DriverTicketDetails extends BaseActivity {
 				} else if(extras.getStatus().equalsIgnoreCase("registered")){
 					textViewStatus.setVisibility(View.VISIBLE);
 					textViewStatus.setText(getResources().getString(R.string.registered));
-					textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+					textViewStatus.setTextColor(getResources().getColor(R.color.themeColor));
 					imageViewStatus.setImageResource(R.drawable.ic_tick_orange_20);
 
 				} else if(extras.getStatus().equalsIgnoreCase("pending")){

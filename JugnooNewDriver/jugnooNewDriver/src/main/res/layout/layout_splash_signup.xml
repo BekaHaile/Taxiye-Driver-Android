@@ -470,7 +470,7 @@
                 android:background="@drawable/button_white_selector"
                 android:text="@string/sign_up"
                 android:textAllCaps="true"
-                android:textColor="@color/red_v2"
+                android:textColor="@color/themeColor"
                 android:textSize="@dimen/text_size_34"/>
 
 

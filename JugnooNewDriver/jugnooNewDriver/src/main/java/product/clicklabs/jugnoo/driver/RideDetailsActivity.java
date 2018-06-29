@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,7 +21,7 @@ public class RideDetailsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	View backBtn;
 	TextView title;
 
 	TextView idValue, dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
@@ -66,8 +65,8 @@ public class RideDetailsActivity extends BaseActivity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RideDetailsActivity.this, relative, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title);
+		backBtn = findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title); title.setText(R.string.ride_details);
 		title.setTypeface(Fonts.mavenRegular(this));
 
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
@@ -101,6 +100,7 @@ public class RideDetailsActivity extends BaseActivity {
 		textViewAcceptSubsidyValue.setTypeface(Fonts.mavenRegular(this));
 		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
 		textViewCancelSubsidyValue.setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.textViewJugnooCut)).setText(getString(R.string.jugnoo_cut, getString(R.string.appname)));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
 		textViewJugnooCutValue.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
@@ -116,6 +116,7 @@ public class RideDetailsActivity extends BaseActivity {
 		textViewToValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
 		textViewAccountBalanceText.setTypeface(Fonts.mavenRegular(this));
+		textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 
 		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
@@ -215,7 +216,7 @@ public class RideDetailsActivity extends BaseActivity {
 				textViewAccountBalance.setText((Utils.formatCurrencyValue(openedRideInfo.currency,Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+				textViewAccountBalanceText.setText(getString(R.string.money_to, getString(R.string.appname)));
 			} else {
 				textViewAccountBalance.setText(Utils.formatCurrencyValue(openedRideInfo.currency,openedRideInfo.accountBalance));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));

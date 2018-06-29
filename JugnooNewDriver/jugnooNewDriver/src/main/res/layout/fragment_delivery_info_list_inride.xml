@@ -9,7 +9,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
+        android:background="@color/colorPrimary"
         android:splitMotionEvents="false">
 
         <Button
@@ -28,8 +28,15 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="25px"
             android:text="@string/you_have_arrived"
-            android:textColor="@color/white"
+            android:textColor="@color/textColorTitle"
             android:textSize="40px"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/grey_alpha_66"
+            android:layout_alignParentBottom="true"
+            android:tag="@string/dont_touch_me"
+            />
     </RelativeLayout>
 
     <RelativeLayout

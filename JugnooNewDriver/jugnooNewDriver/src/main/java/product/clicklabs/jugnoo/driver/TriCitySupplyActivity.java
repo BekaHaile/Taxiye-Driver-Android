@@ -36,8 +36,8 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 	LinearLayout relative;
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	ImageView backBtn;
+	TextView title;
 
 	NonScrollListView listViewDestinationOptions;
 	DestinationOptionsListAdapter destinationOptionsListAdapter;
@@ -62,9 +62,10 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 		new ASSL(TriCitySupplyActivity.this, relative, 1134, 720, false);
 
 
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		title.setText(R.string.destination);
 
 
 		listViewDestinationOptions = (NonScrollListView) findViewById(R.id.listViewDestinationOptions);
@@ -79,7 +80,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 		linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

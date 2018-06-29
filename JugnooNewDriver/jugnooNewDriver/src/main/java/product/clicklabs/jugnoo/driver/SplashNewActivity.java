@@ -108,7 +108,7 @@ import retrofit.mime.TypedByteArray;
 
 //import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
-public class SplashNewActivity extends BaseFragmentActivity implements LocationUpdate, FlurryEventNames, OnCountryPickerListener {
+public class SplashNewActivity extends BaseFragmentActivity implements LocationUpdate, FlurryEventNames, OnCountryPickerListener<Country> {
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 	public final static String DEVICE_TOKEN_TAG = "DEVICE_TOKEN_TAG";
@@ -2426,7 +2426,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				textMessage.setMovementMethod(new ScrollingMovementMethod());
 				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 				
-				textMessage.setText(activity.getResources().getString(R.string.network_problem));
+				textMessage.setText(activity.getString(R.string.network_problem, activity.getString(R.string.appname)));
 				
 	
 				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);

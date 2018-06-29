@@ -2,7 +2,9 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,16 +53,17 @@ import retrofit.mime.TypedByteArray;
 public class EditDriverProfile extends BaseFragmentActivity {
 	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
-	Button backBtn;
+	ImageView backBtn;
 	ImageView imageViewEditPhone;
-	TextView title, TextViewAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
+	TextView title, tvAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
 	ScrollView scrollView;
 
 	EditText editTextUserName, editTextPhone;
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
-	private LinearLayout accountDetailsLayout,layoutBankDetails;
+	private LinearLayout layoutBankDetails;
+	private CardView cvBankLayout;
 	private Button buttonStripe;
 	public static final int REQUEST_CODE_STRIPE_CONNECT_EXPRESS = 0x23;
 	public static final int REQUEST_CODE_STRIPE_CONNECT_STANDARD = 0x24;
@@ -95,41 +98,49 @@ public class EditDriverProfile extends BaseFragmentActivity {
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
 		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
+		buttonStripe.setTypeface(Fonts.mavenMedium(this));
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		activity_profile_screen = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
 
 		new ASSL(this, relative, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		title = (TextView) findViewById(R.id.title);
+		title.setText(R.string.profile);
 		title.setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.tvPersonalInfo)).setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
+		((TextView)findViewById(R.id.tvAccountDetails)).setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
+		((TextView)findViewById(R.id.tvAccNoText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.tvIFSCText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.tvBankNameText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView)findViewById(R.id.tvBankLocText)).setTypeface(Fonts.mavenRegular(this));
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-		editTextUserName.setTypeface(Fonts.mavenRegular(this));
+		editTextUserName.setTypeface(Fonts.mavenMedium(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-		editTextPhone.setTypeface(Fonts.mavenRegular(this));
+		editTextPhone.setTypeface(Fonts.mavenMedium(this));
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
-		tvCountryCode.setTypeface(Fonts.mavenRegular(this));
-		TextViewAccNo = (TextView) findViewById(R.id.TextViewAccNo);
-		TextViewAccNo.setTypeface(Fonts.mavenRegular(this));
+		tvCountryCode.setTypeface(Fonts.mavenMedium(this));
+		tvAccNo = (TextView) findViewById(R.id.tvAccNo);
+		tvAccNo.setTypeface(Fonts.mavenMedium(this));
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
-		textViewIFSC.setTypeface(Fonts.mavenRegular(this));
+		textViewIFSC.setTypeface(Fonts.mavenMedium(this));
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
-		textViewBankName.setTypeface(Fonts.mavenRegular(this));
+		textViewBankName.setTypeface(Fonts.mavenMedium(this));
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
-		textViewBankLoc.setTypeface(Fonts.mavenRegular(this));
+		textViewBankLoc.setTypeface(Fonts.mavenMedium(this));
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
-		accountDetailsLayout = (LinearLayout) findViewById(R.id.bankDetailsLLayout);
+		cvBankLayout = (CardView) findViewById(R.id.cvBankLayout);
 		if(Prefs.with(this).getInt(Constants.BANK_DETAILS_IN_EDIT_PROFILE, 1) == 1){
-			accountDetailsLayout.setVisibility(View.VISIBLE);
+			cvBankLayout.setVisibility(View.VISIBLE);
 		} else {
-			accountDetailsLayout.setVisibility(View.GONE);
+			cvBankLayout.setVisibility(View.GONE);
 		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +154,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		countryPicker = new CountryPicker.Builder().with(this)
-				.listener(new OnCountryPickerListener() {
+				.listener(new OnCountryPickerListener<Country>() {
 					@Override
 					public void onSelectCountry(Country country) {
 						tvCountryCode.setText(country.getDialCode());
@@ -156,7 +167,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				countryPicker.showDialog(getSupportFragmentManager());
 			}
 		});
-
+		buttonStripe.setVisibility(View.GONE);
 		if(DriverProfileActivity.openedProfileInfo != null){
 
 			if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
@@ -170,7 +181,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 
 			}else{
-				TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
+				tvAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
 				textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
 				textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
 				textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);

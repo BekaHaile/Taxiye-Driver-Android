@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -29,8 +28,8 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 
 	LinearLayout linearLayoutRoot, linearLayoutContainer;
 
-	Button buttonBack;
-	TextView textViewTitle;
+	View backBtn;
+	TextView title;
 
 	TextView textViewPositionTop, textViewDaily, textViewWeekly, textViewMonthly, textViewPositionBottom;
 
@@ -67,11 +66,12 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 		new ASSL(DriverLeaderboardActivity.this, linearLayoutRoot, 1134, 720, false);
 
 
-		buttonBack = (Button) findViewById(R.id.buttonBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this));
+		backBtn = findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.super_driver);
 		if(Prefs.with(this).getInt(SPLabels.VEHICLE_TYPE,0) == 2){
-			textViewTitle.setText(getResources().getString(R.string.super_biker));
+			title.setText(getResources().getString(R.string.super_biker));
 		}
 		textViewPositionTop = (TextView) findViewById(R.id.textViewPositionTop);
 		textViewPositionTop.setTypeface(Fonts.mavenRegular(this));
@@ -127,7 +127,7 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 			}
 		});
 
-		buttonBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

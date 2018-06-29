@@ -8,7 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,7 +38,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 	RelativeLayout linear;
 
-	Button backBtn;
+	ImageView backBtn;
 	TextView title;
 	TextView textViewInfoDisplay, textViewCall;
 	ArrayList<TicketResponse.TicketDatum> ticketHistoryItems = new ArrayList<>();
@@ -76,7 +76,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DriverTicketHistory.this, linear, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
 		title.setText(getResources().getString(R.string.support));

@@ -7,40 +7,8 @@
     android:orientation="vertical"
     >
 
-    <RelativeLayout
-        android:id="@+id/topBar"
-        android:layout_width="720px"
-        android:layout_height="96px"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/black_top_bar_bg">
+    <include layout="@layout/layout_top_bar"/>
 
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="@string/invite_earn"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
-
-        <ImageView
-            android:id="@+id/imageViewBack"
-            android:layout_width="60.7px"
-            android:layout_height="76.9px"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10px"
-            android:padding="20px"
-            android:src="@drawable/back_white_selector"
-            android:rotationY="@integer/locale_mirror_flip"/>
-    </RelativeLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="6px"
-        android:background="@drawable/shadow_down"
-        />
 
     <product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -51,7 +19,6 @@
         app:pstsIndicatorHeight="7px"
         app:pstsDividerColor="@color/menu_black"
         app:pstsShouldExpand="true"
-        app:pstsUnderlineColor="@color/new_orange"
         app:pstsUnderlineHeight="2px"
         />
 

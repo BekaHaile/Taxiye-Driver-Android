@@ -65,7 +65,8 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
     private HomeActivity activity;
 
-    private Button btnReset, backBtn;
+    private Button btnReset;
+    private ImageView backBtn;
     private Button btnAction;
 
     private TextView tvInformation, textViewTandC, title;
@@ -134,9 +135,10 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         btnReset.setTypeface(Fonts.mavenRegular(activity));
         btnReset.setOnClickListener(this);
 
-		backBtn = (Button) parentView.findViewById(R.id.backBtn);
+		backBtn = (ImageView) parentView.findViewById(R.id.backBtn);
 		backBtn.setVisibility(View.GONE);
 		title = (TextView) parentView.findViewById(R.id.title);
+		title.setText(R.string.i_accept_abv);
 		title.setTypeface(Fonts.mavenRegular(activity));
 
         tvInformation = (TextView) parentView.findViewById(R.id.tvInformation);

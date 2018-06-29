@@ -39,7 +39,7 @@ import retrofit.mime.TypedByteArray;
 public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 	
 	TextView title;
-	Button backBtn;
+	View backBtn;
 	
 	EditText emailEt;
 	Button sendEmailBtn;
@@ -75,7 +75,8 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 		
 		
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+		title.setText(R.string.forgot_password_cap);
+		backBtn =  findViewById(R.id.backBtn);
 		
 		forgotPasswordHelpText = (TextView) findViewById(R.id.forgotPasswordHelpText); forgotPasswordHelpText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 		

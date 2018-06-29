@@ -5,18 +5,18 @@ import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.picker.Country
 import com.picker.CountryPicker
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.activity_manual_ride.*
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
-import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
@@ -24,7 +24,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Fonts
 import product.clicklabs.jugnoo.driver.utils.Utils
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by Parminder Saini on 13/06/18.
@@ -39,10 +39,15 @@ class ManualRideActivity: BaseFragmentActivity() {
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            setHomeAsUpIndicator(R.drawable.ic_back_selector)
         }
         toolbar.tvToolbar.text = title
-        val countryPicker = CountryPicker.Builder().with(this).listener { country -> tvCountryCode.text = country?.dialCode }.build()
+        val countryPicker = CountryPicker.Builder().with(this).listener(object : OnCountryPickerListener<Country>{
+            override fun onSelectCountry(country: Country?) {
+                tvCountryCode.text = country?.dialCode
+            }
+
+        }).build()
         tvCountryCode.text = Utils.getCountryCode(this)
         tvCountryCode.setOnClickListener({ countryPicker.showDialog(supportFragmentManager) })
         toolbar.tvToolbar.typeface = Fonts.mavenMedium(this)

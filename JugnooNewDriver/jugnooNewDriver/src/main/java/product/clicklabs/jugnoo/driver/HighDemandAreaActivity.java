@@ -11,7 +11,6 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,8 +29,8 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	
 	LinearLayout relative;
 
-	Button backBtn;
-	TextView textViewTitle, title;
+	View backBtn;
+	TextView title;
 
 	ProgressBar progressBar;
 	TextView textViewInfo;
@@ -86,7 +85,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 			e.printStackTrace();
 		}
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
 		webview.getSettings().setDomStorageEnabled(true);

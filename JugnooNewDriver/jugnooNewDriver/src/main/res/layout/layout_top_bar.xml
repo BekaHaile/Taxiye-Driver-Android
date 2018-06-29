@@ -3,28 +3,34 @@
     android:id="@+id/topRl"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90px"
-    android:background="@color/black_top_bar_bg"
-    android:splitMotionEvents="false">
+    android:layout_height="50dp"
+    android:background="@color/colorPrimary"
+    android:splitMotionEvents="false"
+    android:tag="@string/dont_touch_me">
 
 
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="82px"
-        android:layout_height="82px"
-        android:layout_centerVertical="true"
-        android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-        android:tag="mwar"/>
+    <ImageView
+        android:id="@+id/backBtn"
+        style="@style/BackArrow"
+        />
 
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="Title"
-        android:textColor="@color/white"
-        android:textSize="48px"/>
+        android:textColor="@color/textColorTitle"
+        android:textSize="22sp"
+        android:textAllCaps="true"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey_alpha_66"
+        android:layout_alignParentBottom="true"
+        />
 
 
 </RelativeLayout>

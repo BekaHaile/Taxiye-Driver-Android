@@ -27,8 +27,8 @@ public class MultipleAccountsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
-	TextView textViewTitle;
-	ImageView imageViewBack;
+	TextView title;
+	View backBtn;
 
     ScrollView scrollView;
 
@@ -49,8 +49,8 @@ public class MultipleAccountsActivity extends BaseActivity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD); title.setText(R.string.SIGN_UP);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
@@ -75,7 +75,7 @@ public class MultipleAccountsActivity extends BaseActivity {
 
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

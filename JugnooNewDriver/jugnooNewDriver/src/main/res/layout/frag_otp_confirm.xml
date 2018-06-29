@@ -28,7 +28,7 @@
             android:gravity="center"
             android:text="@string/nl_otp_please_enter_otp"
             android:textColor="@color/text_color"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintRight_toLeftOf="parent" />
 
@@ -71,7 +71,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="@string/resend_OTP"
-        android:textColor="@color/new_orange"
+        android:textColor="@color/themeColor"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -87,6 +87,7 @@
         android:minWidth="150dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:textSize="18sp"
         android:text="@string/submit"
         android:textColor="@drawable/white_color_selector"
         app:layout_constraintEnd_toEndOf="parent"

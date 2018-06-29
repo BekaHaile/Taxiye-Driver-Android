@@ -8,31 +8,7 @@
     android:orientation="vertical"
     android:splitMotionEvents="false">
 
-    <RelativeLayout
-        android:id="@+id/topRl"
-        android:layout_width="match_parent"
-        android:layout_height="90px"
-        android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false">
-
-        <Button
-            android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_btn_selector" android:rotationY="@integer/locale_mirror_flip"
-            android:tag="mwar"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/ride_details"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
-    </RelativeLayout>
+    <include layout="@layout/layout_top_bar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -71,7 +47,7 @@
                     android:layout_toEndOf="@+id/imageViewTime"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
-                    android:textColor="@color/new_orange"
+                    android:textColor="@color/themeColor"
                     android:textSize="32px"
                     />
 
@@ -401,7 +377,6 @@
                     <!--android:layout_height="45px"-->
                     <!--android:gravity="center_vertical"-->
                     <!--android:layout_marginStart="38px"-->
-                    <!--android:text="@string/jugnoo_cut"-->
                     <!--android:textColor="@color/black"-->
                     <!--android:textSize="32px"/>-->
 
@@ -454,7 +429,7 @@
                 android:singleLine="true"
                 android:layout_marginTop="15px"
                 android:text="@string/rupee_zero"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="52px"/>
             <TextView
                 android:id="@+id/textViewActualFareText"
@@ -464,7 +439,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/total_fare"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="45px"/>
 
             <TextView
@@ -483,7 +458,7 @@
                 <ImageView
                 android:layout_width="720px"
                 android:layout_height="2px"
-                android:background="@color/new_orange"/>
+                android:background="@color/themeColor"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -533,7 +508,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:id="@+id/imageViewVertical"
-                        android:background="@color/new_orange"/>
+                        android:background="@color/themeColor"/>
 
                     <RelativeLayout
                         android:layout_width="0px"
@@ -638,7 +613,7 @@
                     <!--android:layout_centerHorizontal="true"-->
                     <!--android:layout_centerVertical="true"-->
                     <!--android:id="@+id/imageViewVertical"-->
-                    <!--android:background="@color/new_orange"/>-->
+                    <!--android:background="@color/themeColor"/>-->
 
                 <!--<TextView-->
                     <!--android:id="@+id/textViewAccountBalance"-->

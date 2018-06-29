@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,7 +30,7 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 
 	LinearLayout relative;
 
-	Button backBtn;
+	View backBtn;
 	TextView title;
 	ProgressBar progressBar;
 	TextView textViewInfo;
@@ -49,7 +48,7 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 		new ASSL(HelpParticularActivity.this, relative, 1134, 720, false);
 
 
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 

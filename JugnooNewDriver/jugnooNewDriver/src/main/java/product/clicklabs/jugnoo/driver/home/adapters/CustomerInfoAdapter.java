@@ -105,7 +105,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					if (customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
 							customerInfo.getDeliveryInfos().get(i).getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
 						ImageView ivLine = new ImageView(activity);
-						ivLine.setImageResource(R.color.red_v2);
+						ivLine.setImageResource(R.color.themeColor);
 						LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 2);
 						params1.weight = 1f;
 						holder.linearLayoutProgress.addView(ivLine, params1);
@@ -163,7 +163,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
 		if (Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId())) && (getItemCount() > 1)) {
 //            Utils.setTextColor(holder.textViewCustomer1Name, customerInfo.getColor(),
-//                    activity.getResources().getColor(R.color.new_orange));
+//                    activity.getResources().getColor(R.color.themeColor));
 			holder.linearLayoutSelection1.setVisibility(View.GONE);
 		} else {
 			holder.linearLayoutSelection1.setVisibility(View.VISIBLE);
@@ -244,8 +244,8 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			ivCircle.setImageResource(R.drawable.circle_orange);
 			ivCircle1.setImageResource(R.drawable.circle_orange);
 			ivCircle2.setImageResource(R.drawable.circle_orange);
-			ivLine.setBackgroundResource(R.color.red_v2);
-			ivLine1.setBackgroundResource(R.color.red_v2);
+			ivLine.setBackgroundResource(R.color.themeColor);
+			ivLine1.setBackgroundResource(R.color.themeColor);
 			holder.linearLayoutProgress.addView(ivCircle, params);
 			holder.linearLayoutProgress.addView(ivLine, params1);
 			holder.linearLayoutProgress.addView(ivCircle1, params);
@@ -256,7 +256,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			ivCircle.setImageResource(R.drawable.circle_orange);
 			ivCircle1.setImageResource(R.drawable.circle_orange);
 			ivCircle2.setImageResource(R.drawable.circle_grey);
-			ivLine.setBackgroundResource(R.color.red_v2);
+			ivLine.setBackgroundResource(R.color.themeColor);
 			ivLine1.setBackgroundResource(R.color.white_grey_v2);
 			holder.linearLayoutProgress.addView(ivCircle, params);
 			holder.linearLayoutProgress.addView(ivLine, params1);

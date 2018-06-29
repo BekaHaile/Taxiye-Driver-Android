@@ -4,8 +4,11 @@ package product.clicklabs.jugnoo.driver.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.text.SpannableString
@@ -17,14 +20,18 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.picker.CountryPickerDialog
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
@@ -37,11 +44,10 @@ class DriverSetupFragment : Fragment() {
     private lateinit var accessToken: String
     private var cityId: String? = null
     private var toolbarChangeListener: ToolbarChangeListener? = null
+    private var citiesList:MutableList<CityResponse.City>? = null
+    private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
 
-    private var vehicleTypes = mutableListOf<CityResponse.VehicleType>()
-
-
-    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, vehicleTypes) }
+    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, null) }
 
     companion object {
         @JvmStatic
@@ -62,6 +68,8 @@ class DriverSetupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        toolbarChangeListener?.setToolbarVisibility(true)
         return container?.inflate(R.layout.fragment_driver_info_update)
     }
 
@@ -69,27 +77,27 @@ class DriverSetupFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
-        toolbarChangeListener?.setToolbarVisibility(true)
 
-            tvEnterName.typeface = Fonts.mavenLight(parentActivity!!)
+
+            tvEnterName.typeface = Fonts.mavenMedium(parentActivity!!)
             editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvSelectVehicle.typeface = Fonts.mavenLight(parentActivity!!)
+            tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvPromo.typeface = Fonts.mavenLight(parentActivity!!)
+            tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
             edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
 
-        bContinue.typeface = Fonts.mavenRegular(activity)
+        bContinue.typeface = Fonts.mavenMedium(activity)
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
 
-        bCancel.typeface = Fonts.mavenRegular(activity)
+        bCancel.typeface = Fonts.mavenMedium(activity)
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
-
-
+        tvCities.setOnClickListener{showCountriesDialog(activity.supportFragmentManager)}
+        tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(activity, 3)
             addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
@@ -98,6 +106,7 @@ class DriverSetupFragment : Fragment() {
 
         getCitiesAPI()
         setupTermsAndConditionsTextView()
+
 
     }
 
@@ -116,10 +125,11 @@ class DriverSetupFragment : Fragment() {
         val start = 31
         val end = 49
         ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.new_orange1)), start, end, 0);
+        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.themeColor)), start, end, 0);
         tvTermsOfUse.text = ss
         tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         tvTermsOfUse.highlightColor = Color.TRANSPARENT
+        tvTermsOfUse.typeface = Fonts.mavenRegular(activity)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -152,15 +162,15 @@ class DriverSetupFragment : Fragment() {
 
     private fun checkForPromoCode(){
 
+        var promoText:String? = null
         if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled && edtPromo.text.toString().trim().isNotEmpty()){
-            applyPromoCodeApi()
-            return
+             promoText = edtPromo.text.toString().trim()
         }
 
-        registerDriver()
+        registerDriver(promoText)
     }
 
-    private fun registerDriver() {
+    private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
@@ -184,6 +194,10 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
+        if(referralCode!=null){
+            params["referral_code"] = referralCode;
+
+        }
     HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
@@ -212,8 +226,17 @@ class DriverSetupFragment : Fragment() {
             }
 
             override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-                DialogPopup.alertPopupWithListener(parentActivity, "", message, { registerDriver() })
-                return false
+                if(flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal()){
+                    DialogPopup.alertPopupWithListener(activity, "", message, {
+                        setPromoLayout(true,referralCode)
+                        openDocumentUploadActivity()
+                    })
+                    return true
+                }else{
+                    return false
+
+                }
+
             }
         })
     }
@@ -227,7 +250,7 @@ class DriverSetupFragment : Fragment() {
 
                     override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
                         setPromoLayout(true,promoCode)
-                        registerDriver()
+                       // registerDriver(nu)
                     }
 
                     override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
@@ -241,6 +264,7 @@ class DriverSetupFragment : Fragment() {
 
     private fun getCitiesAPI() {
         val params = hashMapOf(
+                Constants.KEY_ACCESS_TOKEN to accessToken,
                 Constants.KEY_LATITUDE to Data.latitude.toString(),
                 Constants.KEY_LONGITUDE to Data.longitude.toString())
 
@@ -252,13 +276,16 @@ class DriverSetupFragment : Fragment() {
                     onError(t, t.serverMessage(), t.flag)
                     return
                 }
-                vehicleTypes = t?.vehicleTypes as ArrayList<CityResponse.VehicleType>
-                vehicleTypes.removeAt(0)
-                cityId = t.currentCityId
-                adapter.setList(vehicleTypes,0)
+                setCityData(t!!.currentCity)
+                citiesList = t.cities;
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
 
+                if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
+                    tvTermsOfUse.visible()
+                }else{
+                    tvTermsOfUse.gone()
+                }
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
@@ -322,4 +349,64 @@ class DriverSetupFragment : Fragment() {
         toolbarChangeListener = null
         super.onDetach()
     }
+
+    private fun setCityData(city: CityResponse.City?){
+        if(city!=null){
+            tvCities.text = city.cityName
+            cityId = city.cityId.toString()
+            adapter.setList(city.vehicleTypes,0)
+            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+                rvVehicleTypes.gone()
+                Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
+            }else{
+                rvVehicleTypes.visible()
+            }
+        }else{
+            rvVehicleTypes.gone()
+            tvCities.text = getString(R.string.label_select_city)
+            cityId = null
+
+
+        }
+
+
+    }
+
+
+
+
+    fun showCountriesDialog(supportFragmentManager: FragmentManager) {
+        if (citiesList == null || citiesList!!.isEmpty()) {
+            throw IllegalArgumentException(context.getString(R.string.error_no_cities_found))
+        } else {
+            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
+            countryPickerDialog.setCountryPickerListener(onCountryPickerListener)
+            countryPickerDialog.setDialogInteractionListener(countryPickerDialogInteractionListener)
+            countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)
+        }
+    }
+    val onCountryPickerListener = object : OnCountryPickerListener<CityResponse.City> {
+        override fun onSelectCountry(country: CityResponse.City?) {
+                if(country!=null){
+                    setCityData(country)
+                }
+        }
+
+    };
+
+    val countryPickerDialogInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.City> {
+        override fun getAllCountries(): MutableList<CityResponse.City> {
+            return citiesList!!
+        }
+
+        override fun sortCountries(searchResults: MutableList<CityResponse.City>?) {
+
+        }
+
+        override fun canSearch(): Boolean {
+           return citiesList!=null && citiesList!!.size>7
+        }
+
+
+    };
 }

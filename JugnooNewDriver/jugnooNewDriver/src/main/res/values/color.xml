@@ -36,8 +36,6 @@
     <color name="black_translucent_level_3">#e536363f</color>
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
-    <!--<color name="theme_color">#FD7945</color>
-    <color name="document_text_color">#999c27b0</color>-->
 
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
@@ -48,7 +46,7 @@
     <color name="transparent">#0000</color>
 
     <color name="bg_grey">#D8242930</color>
-    <color name="menu_black">#3E3639</color>
+    <color name="menu_black">#3c3638</color>
 
     <color name="bg_grey_opaque">#242930</color>
     <color name="bg_white_translucent">#AAFFFFFF</color>
@@ -109,7 +107,6 @@
     <color name="orange_dark">#F96f01</color>
 
     <color name="black_text">#242424</color>
-    <color name="black_top_bar_bg">#232937</color>
     <color name="black_text_v2">#595968</color>
     <color name="black_text_v2_50op">#70595968</color>
     <color name="black_text_alpha">#99242424</color>

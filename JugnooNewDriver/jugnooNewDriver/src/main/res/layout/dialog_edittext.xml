@@ -39,7 +39,7 @@
                 android:paddingStart="40px"
                 android:paddingEnd="40px"
                 android:text="@string/confirmation_code"
-                android:textColor="@color/new_orange"
+                android:textColor="@color/themeColor"
                 android:textSize="50px"
 
                 />
@@ -83,7 +83,7 @@
 
             <Button
                 android:id="@+id/btnConfirm"
-                style="@style/DialogButtonOrange"
+                style="@style/DialogButton"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:gravity="center"

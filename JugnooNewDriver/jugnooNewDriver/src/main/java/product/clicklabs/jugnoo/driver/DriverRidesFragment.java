@@ -218,8 +218,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			holder.id = position;
 
-			PaymentActivity activity;
-			activity = (PaymentActivity) getActivity();
+			DriverHistoryActivity activity;
+			activity = (DriverHistoryActivity) getActivity();
 
 
 			if (rideInfo.type.equalsIgnoreCase("ride")) {

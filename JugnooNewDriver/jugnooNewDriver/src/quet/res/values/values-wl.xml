@@ -15,6 +15,10 @@
         3. application_id in build.gradle
     -->
 
+
+    <string name="appname">Quet</string>
+    <string name="app_name">Quet Drivers</string>
+
     <!--White Label Key-->
     <string name="white_label_key">d7f228ce89b10cb02ec9fccdb47355d5</string>
 

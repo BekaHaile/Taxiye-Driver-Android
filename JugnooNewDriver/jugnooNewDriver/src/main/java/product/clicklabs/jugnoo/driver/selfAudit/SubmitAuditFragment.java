@@ -3,8 +3,11 @@ package product.clicklabs.jugnoo.driver.selfAudit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,11 +60,11 @@ public class SubmitAuditFragment extends Fragment {
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private TextView textViewFront, textViewBack, textViewLeft, textViewRight, textViewCameraStand, textViewRetryCameraStand,
-			textViewRetryFront, textViewRetryBack, textViewRetryLeft, textViewRetryRight, textViewTitle, textViewStatusFront,
+			textViewRetryFront, textViewRetryBack, textViewRetryLeft, textViewRetryRight, title, textViewStatusFront,
 			textViewStatusBack, textViewStatusLeft, textViewStatusRight, textViewStatusMobileStand;
 
 	private ImageView imageIconFront, setCapturedImageFront, imageIconBack, setCapturedImageback, imageIconLeft, setCapturedImageLeft,
-			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, imageViewBack, deleteImageFront,
+			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, backBtn, deleteImageFront,
 			deleteImageBack, deleteImageLeft, deleteImageRight, deleteImageMobileStand, imageViewBin;
 
 	private int auditType;
@@ -112,8 +115,10 @@ public class SubmitAuditFragment extends Fragment {
 		phoneNoEt = (EditText) rootView.findViewById(R.id.phoneNoEt);
 		vehicleNoEt = (EditText) rootView.findViewById(R.id.vehicleNoEt);
 
-		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(activity));
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity));
+		title.setText(R.string.Audit);
+		title.setAllCaps(false);
 		textViewFront = (TextView) rootView.findViewById(R.id.textViewFront);
 		textViewFront.setTypeface(Fonts.mavenRegular(activity));
 		textViewBack  = (TextView) rootView.findViewById(R.id.textViewBack);
@@ -165,8 +170,9 @@ public class SubmitAuditFragment extends Fragment {
 		deleteImageRight = (ImageView) rootView.findViewById(R.id.deleteImageRight);
 		deleteImageMobileStand = (ImageView) rootView.findViewById(R.id.deleteImageMobileStand);
 
-		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 		imageViewBin = (ImageView) rootView.findViewById(R.id.imageViewBin);
+		imageViewBin.getDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.text_color), PorterDuff.Mode.SRC_ATOP);
 
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -197,11 +203,11 @@ public class SubmitAuditFragment extends Fragment {
 		});
 
 		if(auditType == 0){
-			textViewTitle.setText(getResources().getString(R.string.self_audit));
+			title.setText(getResources().getString(R.string.self_audit));
 		} else if (auditType == 1){
-			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_branding));
+			title.setText(getResources().getString(R.string.non_jugnoo_auto_branding, getString(R.string.appname)));
 		} else if (auditType == 2){
-			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_audit));
+			title.setText(getResources().getString(R.string.non_jugnoo_auto_audit, getString(R.string.appname)));
 		}
 
 		nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -461,7 +467,7 @@ public class SubmitAuditFragment extends Fragment {
 			}
 		});
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				performBackPress();

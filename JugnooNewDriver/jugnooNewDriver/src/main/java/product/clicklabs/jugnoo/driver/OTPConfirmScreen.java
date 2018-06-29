@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -31,7 +32,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppConstants;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -51,11 +51,12 @@ import retrofit.mime.TypedByteArray;
 
 public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTimer.DownTimerOperation, LocationUpdate {
 
-    TextView textViewTitle;
+    TextView title;
+    View backBtn;
 
     TextView textViewCounter, textViewOr, phoneNoEt;
     EditText editTextOTP;
-    Button buttonVerify, backBtn, btnLogin;
+    Button buttonVerify, btnLogin;
 
     RelativeLayout relative, relativeLayoutFake;
     ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber, btnOtpViaCall;
@@ -100,8 +101,9 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         relative = (RelativeLayout) findViewById(R.id.relative);
         new ASSL(OTPConfirmScreen.this, relative, 1134, 720, false);
 
-        textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Fonts.mavenRegular(this));
+        title = (TextView) findViewById(R.id.title);
+        title.setTypeface(Fonts.mavenRegular(this));
+        title.setText(R.string.verification);
 
         relativeLayoutFake = (RelativeLayout) findViewById(R.id.relativeLayoutFake);
 		relativeLayoutFake.setVisibility(View.GONE);
@@ -113,8 +115,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         buttonVerify = (Button) findViewById(R.id.verifyOtp);
         buttonVerify.setTypeface(Fonts.mavenRegular(this));
 
-        backBtn = (Button) findViewById(R.id.backBtn);
-        backBtn.setTypeface(Fonts.mavenRegular(this));
+        backBtn = findViewById(R.id.backBtn);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setTypeface(Fonts.mavenRegular(this));
@@ -676,7 +677,12 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 });
 
         dialog = builder.build();
-        dialog.show();
+        dialog.show(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+            }
+        });
         customCountDownTimer.start();
         editTextOTP.setCursorVisible(false);
     }

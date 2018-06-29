@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,11 +36,11 @@ public class DriverAuditActivity extends BaseActivity {
 
 	LinearLayout relative;
 	RelativeLayout driverDetailsRLL,driverDetailsRL;
-	Button backBtn;
+	View backBtn;
 	TextView title;
 
 	TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
-			textViewRidesCancelledValue, textViewRidesMissedValue, textViewOnlineHoursValue, textViewTitleBarDEI, textViewMonthlyText,
+			textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewMonthlyText,
 			textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText;
 
 	ImageView profileImg, imageViewTitleBarDEI;
@@ -85,8 +84,8 @@ public class DriverAuditActivity extends BaseActivity {
 
 		new ASSL(DriverAuditActivity.this, relative, 1134, 720, false);
 
-		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title);
+		backBtn = findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title); title.setText(R.string.audit_lower);
 		title.setTypeface(Fonts.mavenRegular(this));
 
 		textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
@@ -106,10 +105,6 @@ public class DriverAuditActivity extends BaseActivity {
 		textViewRidesCancelledValue.setTypeface(Fonts.mavenRegular(this));
 		textViewRidesMissedValue = (TextView) findViewById(R.id.textViewRidesMissedValue);
 		textViewRidesMissedValue.setTypeface(Fonts.mavenRegular(this));
-		textViewOnlineHoursValue = (TextView) findViewById(R.id.textViewOnlineHoursValue);
-		textViewOnlineHoursValue.setTypeface(Fonts.mavenRegular(this));
-//		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-//		textViewTitleBarDEI.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
 		textViewMonthlyText.setTypeface(Fonts.mavenRegular(this));
 		textViewMonthlyText.setText(getStringText(R.string.earnings));
@@ -326,7 +321,6 @@ public class DriverAuditActivity extends BaseActivity {
 				textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
 				textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
 				textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);
-				textViewOnlineHoursValue.setText("" + openedProfileInfo.textViewOnlineHoursValue);
 			}
 
 

@@ -60,7 +60,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 	RelativeLayout relative, relativeContainer, relativeLayoutCreateTicket;
 
-	Button backBtn, buttonReportIssue, buttonGetSupport;
+	ImageView backBtn;
+	Button buttonReportIssue, buttonGetSupport;
 	TextView title;
 
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,textViewTicketDate,
@@ -130,12 +131,13 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		assl = new ASSL(RideDetailsNewActivity.this, relative, 1134, 720, false);
 
 		relativeContainer = (RelativeLayout) findViewById(R.id.relativeContainer);
-		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn = findViewById(R.id.backBtn);
 		relativeLayoutCreateTicket = (RelativeLayout) findViewById(R.id.relativeLayoutCreateTicket);
 		buttonReportIssue = (Button) findViewById(R.id.buttonReportIssue);
 		buttonGetSupport = (Button) findViewById(R.id.buttonGetSupport);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
+		title.setText(R.string.trip_details);
 		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
 		textViewStatus.setTypeface(Fonts.mavenRegular(this));
 		textViewEngID = (TextView) findViewById(R.id.textViewEngID);
@@ -407,7 +409,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 					textViewStatus.setVisibility(View.VISIBLE);
 					textViewTicketDate.setVisibility(View.VISIBLE);
 					textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.rejected));
-					textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+					textViewStatus.setTextColor(getResources().getColor(R.color.themeColor));
 					textViewTicketDate.setText(extras.getTicketDate());
 				}
 

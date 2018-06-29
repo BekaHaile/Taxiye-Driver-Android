@@ -26,10 +26,12 @@
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginBottom="2px"
-        card_view:cardElevation="4dp"
+        card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true"
         android:background="@drawable/list_white_selector"
-        card_view:cardBackgroundColor="@color/white">
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="8dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,8 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24px"
                 android:text="llllllllllllll"
-                android:textColor="@color/grey_light_v2"
-                android:textSize="30px"/>
+                android:textColor="@color/textColorTitle"
+                android:textSize="40px"/>
 
             <ImageView
                 android:id="@+id/arrowSlider"
@@ -89,8 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24px"
                     android:text="lll"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
+                    android:textColor="@color/textColor"
+                    android:textSize="32px"/>
 
                 <TextView
                     android:id="@+id/textView1"
@@ -99,8 +101,8 @@
                     android:layout_marginStart="10px"
                     android:layout_toEndOf="@+id/textView1Value"
                     android:text="llllllllllllll"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
+                    android:textColor="@color/textColor"
+                    android:textSize="32px"/>
 
             </RelativeLayout>
 
@@ -119,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24px"
                     android:text="lll"
-                    android:textColor="@color/black_text_v2"
+                    android:textColor="@color/textColor"
                     android:textSize="30px"/>
 
                 <TextView
@@ -129,7 +131,7 @@
                     android:layout_marginStart="10px"
                     android:layout_toEndOf="@+id/textView2Value"
                     android:text="llllllllllllll"
-                    android:textColor="@color/black_text_v2"
+                    android:textColor="@color/textColor"
                     android:textSize="30px"/>
 
 
@@ -141,8 +143,9 @@
                 android:layout_width="180px"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="15px"
-                android:gravity="center">
+                android:layout_marginEnd="25px"
+                android:layout_marginTop="25px"
+                android:gravity="center|end">
 
                 <TextView
                     android:id="@+id/textViewValue"
@@ -150,8 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:text="70%"
-                    android:textColor="@color/red_v2"
-                    android:textSize="58px"/>
+                    android:textColor="@color/themeColor"
+                    android:textSize="36px"/>
 
                 <TextView
                     android:id="@+id/textViewValueSub"
@@ -162,7 +165,7 @@
                     android:text="fulfillment"
                     android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="24px"/>
+                    android:textSize="20px"/>
 
             </RelativeLayout>
 

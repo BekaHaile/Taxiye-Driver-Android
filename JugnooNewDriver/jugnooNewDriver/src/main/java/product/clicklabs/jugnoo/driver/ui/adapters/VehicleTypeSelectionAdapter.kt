@@ -9,33 +9,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.list_item_driver_vehicle.view.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.ItemListener
 import product.clicklabs.jugnoo.driver.datastructure.VehicleTypeValue
-import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.utils.Fonts
+import product.clicklabs.jugnoo.driver.utils.gone
+import product.clicklabs.jugnoo.driver.utils.visible
 
 class VehicleTypeSelectionAdapter(private val context: Context,
                                   private val recyclerView: RecyclerView,
-                                  private var vehicleTypes: MutableList<CityResponse.VehicleType>)
+                                  private var vehicleTypes: MutableList<CityResponse.VehicleType>?)
     : RecyclerView.Adapter<VehicleTypeSelectionAdapter.ViewHolderVehicle>(), ItemListener {
 
 
     private var currentSelectedPos = -1
 
     fun getCurrentSelectedVehicle(): CityResponse.VehicleType? {
-        return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes.size) null
-        else vehicleTypes[currentSelectedPos]
+        return if (currentSelectedPos == -1 || currentSelectedPos > vehicleTypes!!.size) null
+        else vehicleTypes!![currentSelectedPos]
     }
 
 
 
     override fun getItemCount(): Int {
-        return vehicleTypes.size
+        return if(vehicleTypes==null) 0 else vehicleTypes!!.size
     }
 
-    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>,defaultIndex: Int) {
+    fun setList(vehicleTypes: MutableList<CityResponse.VehicleType>?,defaultIndex: Int) {
+        resetCurrentSelectedPosition()
+        currentSelectedPos= -1;
         this.vehicleTypes = vehicleTypes
         notifyDataSetChanged()
         setNewPosition(defaultIndex);
@@ -43,7 +49,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: ViewHolderVehicle, i: Int) {
-        val vehicle = vehicleTypes[i]
+        val vehicle = vehicleTypes!![i]
         val imageRes: Int = when (vehicle.vehicleType) {
             VehicleTypeValue.AUTOS.value -> R.drawable.ic_auto_request
             VehicleTypeValue.BIKES.value -> R.drawable.ic_ride_accept_bike
@@ -53,8 +59,20 @@ class VehicleTypeSelectionAdapter(private val context: Context,
             else -> R.drawable.ic_auto_request
         }
         if(!TextUtils.isEmpty(vehicle.driverIcon)){
-            Picasso.with(context).load(vehicle.driverIcon).placeholder(imageRes).error(imageRes).into(holder.ivVehicle)
+            holder.pBar.visible()
+            Picasso.with(context).load(vehicle.driverIcon).placeholder(null).into(holder.ivVehicle,object: Callback{
+                override fun onSuccess() {
+                    holder.pBar.gone()
+                }
+
+                override fun onError() {
+                    holder.pBar.gone()
+                    holder.ivVehicle.setImageResource(R.drawable.ic_error_grey_light)
+
+                }
+            })
         } else {
+            holder.pBar.gone()
             holder.ivVehicle.setImageResource(imageRes)
         }
         holder.ivVehicleTick.setImageResource(if (vehicle.isSelected) R.drawable.ic_tick_green_20 else R.drawable.circle_grey_stroke_theme)
@@ -71,6 +89,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
         var ivVehicle: ImageView = convertView.findViewById(R.id.ivVehicle) as ImageView
         var tvName: TextView = convertView.findViewById(R.id.tvName) as TextView
         var ivVehicleTick: ImageView = convertView.findViewById(R.id.ivVehicleTick) as ImageView
+        var pBar: View = convertView.findViewById(R.id.progress_bar) as View
 
 
         init {
@@ -89,18 +108,21 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     private fun setNewPosition(pos: Int) {
-        if (pos>=0 && pos < vehicleTypes.size && currentSelectedPos != pos) {
+        if (pos>=0 && vehicleTypes!=null && pos < vehicleTypes!!.size && currentSelectedPos != pos) {
 
 
-          if(currentSelectedPos>=0 && currentSelectedPos<vehicleTypes.size){
-                vehicleTypes[currentSelectedPos].isSelected = false;
-                notifyItemChanged(currentSelectedPos)
-         }
+            resetCurrentSelectedPosition()
 
-
-            vehicleTypes[pos].isSelected = true;
+            vehicleTypes!![pos].isSelected = true;
             currentSelectedPos = pos;
             notifyItemChanged(currentSelectedPos);
+        }
+    }
+
+    private fun resetCurrentSelectedPosition() {
+        if ( vehicleTypes!=null && currentSelectedPos >= 0 && currentSelectedPos < vehicleTypes!!.size) {
+            vehicleTypes!![currentSelectedPos].isSelected = false;
+            notifyItemChanged(currentSelectedPos)
         }
     }
 

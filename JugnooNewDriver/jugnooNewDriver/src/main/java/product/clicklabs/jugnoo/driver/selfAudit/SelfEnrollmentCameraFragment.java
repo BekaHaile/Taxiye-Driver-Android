@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	private Camera mCamera;
 	private Button acceptImage;
 	private Button rejectImage;
-	private Button captureImage, backBtn, buttonGallery;
+	private Button captureImage, buttonGallery;
 	private int cameraId, auditState, auditType, auditCmeraOption;
 	private String topMessage, bottomMessage;
 	private boolean flashmode = false;
@@ -60,7 +61,8 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	private DriverDocumentActivity activity;
 	private File frontImage = null, backImage = null, leftImage = null, rightImage = null, mobileStandImage = null;
 
-	private TextView titleAutoSide;
+	private TextView title;
+	private ImageView backBtn;
 
 
 
@@ -138,13 +140,13 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 			}
 		});
 
-		backBtn = (Button) rootView.findViewById(R.id.backBtn);
+		backBtn = (ImageView) rootView.findViewById(R.id.backBtn);
 		buttonGallery = (Button) rootView.findViewById(R.id.buttonGallery);
 
-		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
-		titleAutoSide.setTypeface(Fonts.mavenRegular(activity));
+		title = (TextView) rootView.findViewById(R.id.title);
+		title.setTypeface(Fonts.mavenRegular(activity));
 
-		titleAutoSide.setText(topMessage);
+		title.setText(topMessage);
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
 		acceptImage.setOnClickListener(this);

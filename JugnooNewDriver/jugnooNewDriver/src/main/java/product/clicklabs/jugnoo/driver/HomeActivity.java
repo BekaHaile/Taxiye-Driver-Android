@@ -153,6 +153,7 @@ import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -333,7 +334,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
-	ImageView imageViewEndRideWaitSep;
 
 	LinearLayout linearLayoutMeterFareEditText;
 	TextView textViewMeterFareRupee;
@@ -547,6 +547,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			textViewAutosOn = (TextView) findViewById(R.id.textViewAutosOn);
 			textViewAutosOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
 			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
@@ -554,7 +555,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
 			temptext  = (TextView) findViewById(R.id.temptext);
-			temptext.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			temptext.setTypeface(Fonts.mavenMedium(getApplicationContext()));
 //			textShader=new LinearGradient(0, 0, 0, 20,
 //					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 //					new float[]{0, 1}, Shader.TileMode.CLAMP);
@@ -751,6 +752,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverInformationBtn = (Button) findViewById(R.id.driverInformationBtn);
 			jugnooOffText = (TextView) findViewById(R.id.jugnooOffText);
 			jugnooOffText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooOffText.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 			jugnooOffText.setVisibility(View.GONE);
 
 			buttonUploadOnInitial = (Button) findViewById(R.id.buttonUploadOnInitial);
@@ -890,9 +892,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
-			imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
 			reviewWaitTimeRl.setVisibility(View.GONE);
-			imageViewEndRideWaitSep.setVisibility(View.GONE);
 
 
 			reviewReachedDistanceRl = (LinearLayout) findViewById(R.id.reviewReachedDistanceRl);
@@ -922,6 +922,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Fonts.mavenBold(getApplicationContext()));
 
@@ -3100,7 +3101,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 		if(isTourFlag){
 			if(toggleDelivery){
-				DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.turn_jugnooo_for_training));
+				DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.turn_jugnooo_for_training, getString(R.string.appname)));
 				dismissLoadingFromBackground();
 			} else {
 				new Thread(new Runnable() {
@@ -3401,11 +3402,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (Data.userData != null) {
 						if (1 == Data.userData.autosAvailable) {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
-							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_on));
+							textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
 
 						} else {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
-							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
+							textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
 						}
 
@@ -3672,7 +3673,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				linearLayoutDEI.setVisibility(View.GONE);
 
 				imageViewTitleBarDEI.setVisibility(View.GONE);
-				textViewTitleBarDEI.setText(getResources().getString(R.string.jugnoo));
+				textViewTitleBarDEI.setText(getResources().getString(R.string.appname));
 			} else {
 				linearLayoutDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
@@ -3762,7 +3763,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if(fixedDeliveryWaitTime > -1){
 								waitTime = String.valueOf(decimalFormatNoDecimal.format(fixedDeliveryWaitTime));
 								reviewWaitTimeRl.setVisibility(View.VISIBLE);
-								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 							}
 						}
 					} catch (Resources.NotFoundException e) {
@@ -3810,7 +3810,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
 					}
 					else{
-						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
+						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
 								+Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
@@ -3833,15 +3833,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					try {
 						if (customerInfo.getWaitingChargesApplicable() == 1) {
 							reviewWaitTimeRl.setVisibility(View.VISIBLE);
-							imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 						} else {
 							reviewWaitTimeRl.setVisibility(View.GONE);
-							imageViewEndRideWaitSep.setVisibility(View.GONE);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						reviewWaitTimeRl.setVisibility(View.GONE);
-						imageViewEndRideWaitSep.setVisibility(View.GONE);
 					}
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
@@ -4142,7 +4139,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 //					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
-//							getResources().getColor(R.color.new_orange));
+//							getResources().getColor(R.color.themeColor));
 
 					if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()) != null){
 						if(getSupportFragmentManager().findFragmentByTag(DeliveryInfosListInRideFragment.class.getName()).isVisible()){
@@ -4212,7 +4209,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
 //					Utils.setDrawableColor(driverStartRideBtn, customerInfo.getColor(),
-//							getResources().getColor(R.color.new_orange));
+//							getResources().getColor(R.color.themeColor));
 
 
 					try {
@@ -7322,7 +7319,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			else if(customerInfo.getIsPooled() == 1){
 				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.setBitmapColor(CustomMapMarkerCreator
 								.createCustomMarkerBitmap(HomeActivity.this, assl, 30f, 72f, R.drawable.ic_pool_marker),
-								customerInfo.getColor(), activity.getResources().getColor(R.color.new_orange))));
+								customerInfo.getColor(), activity.getResources().getColor(R.color.themeColor))));
 			}
 			else{
 				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
@@ -8245,7 +8242,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							try {
 								dialog.dismiss();
 								if(callback == null || callback.redirectToSplash()){
-									// TODO: 07/05/18 Handle Driver Splash check
 									Intent intent = new Intent(cont, DriverSplashActivity.class);
 									intent.putExtra("no_anim", "yes");
 									cont.startActivity(intent);
@@ -10324,7 +10320,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										try {
 											isTourBtnClicked = true;
 											try {
-												croutonTourTextView.setText(getString(R.string.tutorial_accept_ride));
+												croutonTourTextView.setText(getString(R.string.tutorial_accept_ride, getString(R.string.appname)));
 											} catch (Exception e) {
 
 											}

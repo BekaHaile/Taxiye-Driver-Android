@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
 import android.support.design.widget.Snackbar
@@ -19,7 +18,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -55,7 +53,8 @@ class SplashFragment : Fragment() {
     private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
     private var isPendingExecutionOngoing = false
-    private var isFirstTime = true
+//    private var isFirstTime = true
+    private var redirectedToLogin = false
 
     init {
         intentFilter.addAction(Constants.ACTION_DEVICE_TOKEN_UPDATED)
@@ -112,9 +111,9 @@ class SplashFragment : Fragment() {
         parentActivity?.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
 
-            val snackBar = Snackbar.make(rootView, Data.CHECK_INTERNET_MSG, Snackbar.LENGTH_INDEFINITE)
+            val snackBar = Snackbar.make(rootView, getString(R.string.check_internet_message), Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
-
+/*
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(p0: View?) {
@@ -142,24 +141,24 @@ class SplashFragment : Fragment() {
                     }
                 }
 
-            }
-            snackBar.setAction("Retry", {
+            }*/
+            snackBar.setAction(getString(R.string.retry), {
 
                 // add on screen navigation translucent flags for smooth image shared animation
                 snackBar.dismiss()
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
+            snackBar.show()
 
-            if(isFirstTime) {
+           /* if(isFirstTime) {
                 // delay showing the first snackbar to allow navigation flags to be set
 
                 Handler().postDelayed({ snackBar.show() }, 100)
                 isFirstTime = false
 
             } else {
-                snackBar.show()
-            }
+            }*/
 
         })
     }
@@ -384,7 +383,7 @@ class SplashFragment : Fragment() {
                 })
             }
         }else{
-            mListener?.openPhoneLoginScreen(true, imageView)
+            redirectToLogin()
         }
 
     }
@@ -392,9 +391,14 @@ class SplashFragment : Fragment() {
 
     private var logoutCallback = object: LogoutCallback {
         override fun redirectToSplash(): Boolean {
-            mListener?.openPhoneLoginScreen(true, imageView)
+            redirectToLogin()
             return false
         }
+    }
+
+    private fun redirectToLogin() {
+        redirectedToLogin = true;
+        mListener?.openPhoneLoginScreen(true, imageView)
     }
 
     private fun showTokenNotFoundDialog(){
@@ -440,6 +444,8 @@ class SplashFragment : Fragment() {
         fun registerForSmsReceiver(register: Boolean)
 
         fun getPrefillOtpIfany():String?
+
+        fun toggleDisplayFlags(remove:Boolean)
     }
 
     override fun onDestroy() {
@@ -457,21 +463,19 @@ class SplashFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        removeNavigationFlags()
+
+       /* if (!redirectedToLogin ) {
+            *//**
+             * removes the translucent flags on the onscreen navigation bar for kikat above devices
+             *//*
+            mListener?.toggleDisplayFlags(true)
+
+
+        }*/
         super.onDestroyView()
     }
 
 
-    /**
-     * removes the translucent flags on the onscreen navigation bar for kikat above devices
-     */
-    private fun removeNavigationFlags() {
 
-        val w = parentActivity?.getWindow()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-            w?.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
 
 }

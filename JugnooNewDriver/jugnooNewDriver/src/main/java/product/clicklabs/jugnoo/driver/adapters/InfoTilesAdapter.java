@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,13 +41,6 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 	public void onBindViewHolder(infoTileViewHolder infoTileViewHolder, int i) {
 		final Tile itr = infoTileResponses.get(i);
 
-		infoTileViewHolder.textViewHeadText.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textView1Value.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textView1.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textView2Value.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textView2.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textViewValue.setTypeface(Fonts.mavenRegular(context));
-		infoTileViewHolder.textViewValueSub.setTypeface(Fonts.mavenRegular(context));
 		infoTileViewHolder.textViewEmpty.setVisibility(View.GONE);
 
 		if(i == 0){
@@ -143,7 +137,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			super(v);
 			relative = (RelativeLayout)v.findViewById(R.id.relative);
 			textViewHeadText = (TextView) v.findViewById(R.id.textViewHeadText);
-			textViewHeadText.setTypeface(Fonts.mavenRegular(context));
+			textViewHeadText.setTypeface(Fonts.mavenMedium(context), Typeface.BOLD);
 			textView1Value = (TextView) v.findViewById(R.id.textView1Value);
 			textView1Value.setTypeface(Fonts.mavenRegular(context));
 			textView1 = (TextView) v.findViewById(R.id.textView1);
@@ -159,7 +153,8 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			textViewEmpty = (TextView) v.findViewById(R.id.textViewEmpty);
 			topRlOuterSlide = (ImageView) v.findViewById(R.id.topRlOuterSlide);
 			arrowSlider = (ImageView) v.findViewById(R.id.arrowSlider);
-			relative.setLayoutParams(new RecyclerView.LayoutParams(690, ViewGroup.LayoutParams.WRAP_CONTENT));
+			relative.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(relative);
 		}
 	}

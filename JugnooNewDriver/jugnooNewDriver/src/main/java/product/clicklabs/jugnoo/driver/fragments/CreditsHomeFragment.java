@@ -55,8 +55,8 @@ public class CreditsHomeFragment extends BaseFragment {
         viewPager.setAdapter(driverCreditsAdapter);
 
         tabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.tabs);
-        tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
-        tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
+        tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
+        tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
         tabs.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.NORMAL);
         tabs.setViewPager(viewPager);
 

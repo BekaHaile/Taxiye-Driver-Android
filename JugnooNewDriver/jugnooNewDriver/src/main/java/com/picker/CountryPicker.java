@@ -15,8 +15,7 @@ import java.util.Locale;
 import product.clicklabs.jugnoo.driver.R;
 
 
-public class CountryPicker
-    implements CountryPickerDialog.CountryPickerDialogInteractionListener {
+public class CountryPicker implements CountryPickerDialog.CountryPickerDialogInteractionListener<Country> {
 
   // region Countries
   private final Country[] COUNTRIES = {
@@ -364,7 +363,7 @@ public class CountryPicker
     if (countries == null || countries.isEmpty()) {
       throw new IllegalArgumentException(context.getString(R.string.error_no_countries_found));
     } else {
-      CountryPickerDialog countryPickerDialog = CountryPickerDialog.newInstance();
+      CountryPickerDialog countryPickerDialog = CountryPickerDialog.newInstance(context.getString(R.string.country_picker_header));
       countryPickerDialog.setCountryPickerListener(onCountryPickerListener);
       countryPickerDialog.setDialogInteractionListener(this);
       countryPickerDialog.show(supportFragmentManager, COUNTRY_TAG);

@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.datastructure.RechargeType;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -78,8 +79,9 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
         } else {
             fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format, jugnooAmount));
         }
-        fragmentWalletBinding.include.textViewTitle.setText(getString(R.string.wallet_balance).toUpperCase());
-        fragmentWalletBinding.include.buttonBack.setOnClickListener(new View.OnClickListener() {
+        ((TextView)rootView.findViewById(R.id.title)).setTypeface(Fonts.mavenMedium(walletActivity));
+        ((TextView)rootView.findViewById(R.id.title)).setText(getString(R.string.wallet_balance).toUpperCase());
+        rootView.findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 walletActivity.onBackPressed();
@@ -148,7 +150,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
             } else if(addressSize == 1) {
                 address = rechargeOptionList.get(position).getAddresses().get(0).getAddress();
             } else {
-                address = getResources().getString(R.string.visit_office_in_city);
+                address = getString(R.string.visit_office_in_city, getString(R.string.appname));
             }
             DialogPopup.alertPopup(walletActivity, "", address);
         }

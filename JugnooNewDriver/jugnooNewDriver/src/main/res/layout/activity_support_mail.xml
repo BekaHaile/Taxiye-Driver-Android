@@ -7,7 +7,7 @@
     android:background="@color/white"
     >
 
-    <include layout="@layout/layout_titlebar"/>
+    <include layout="@layout/layout_top_bar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
