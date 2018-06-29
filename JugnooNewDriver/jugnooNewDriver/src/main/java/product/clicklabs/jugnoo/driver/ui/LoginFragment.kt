@@ -219,7 +219,7 @@ class LoginFragment : Fragment() {
                         val dataAdapter: ArrayAdapter<String> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
-                        if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) rootView.language_spinner.visible() else rootView.language_spinner.gone()
+                        rootView.language_spinner.visible()
 
                         if (!t.languageList.contains(selectedLanguage)) {
                             t.languageList.add(selectedLanguage)
@@ -400,14 +400,12 @@ class LoginFragment : Fragment() {
         with(rootView) {
 
 
-            if (showProgress
-                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+            if (showProgress) {
                 progressLanguage.visible()
             } else {
                 progressLanguage.gone()
             }
-            if (showText
-                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+            if (showText) {
                 tvLanguage.visible()
             } else {
                 tvLanguage.gone()
@@ -445,7 +443,9 @@ class LoginFragment : Fragment() {
 
 
         try {
-            getLanguageList(false)
+            if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)){
+                getLanguageList(false)
+            }
 
             with(rootView){
                 if(!tvLabel.isGone())tvLabel.visible()

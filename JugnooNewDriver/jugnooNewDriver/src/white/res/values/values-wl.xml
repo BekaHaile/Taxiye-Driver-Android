@@ -30,7 +30,7 @@
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">World Taxi</string><!--* IMP-->
+    <string name="white_label_name">Jugnoo Taxi</string><!--* IMP-->
     <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--IMP-->
     <string name="support_email">support@jugnoo.in</string>
     <string name="support_email_subject">Driver Support</string>
@@ -66,12 +66,12 @@
     <integer name="show_t_and_c_profile">@integer/view_visible</integer>
     <drawable name="bg_profile_background">@drawable/profile_background</drawable>
     <bool name="disable_register">true</bool>
-
+    <drawable name="windowBackgroundColor">@android:color/white</drawable>
 
 
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">false</bool>  <!--For Ticketing-->
-    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="show_language_control">@integer/view_visible</integer>
     <integer name="show_call_in_otp">@integer/view_gone</integer>
 
 
