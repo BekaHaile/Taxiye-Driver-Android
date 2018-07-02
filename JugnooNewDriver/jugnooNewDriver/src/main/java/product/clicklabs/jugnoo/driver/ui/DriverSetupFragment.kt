@@ -14,6 +14,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
@@ -117,6 +120,7 @@ class DriverSetupFragment : Fragment() {
         val end = 49
         ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.new_orange)), start, end, 0);
+        ss.setSpan(UnderlineSpan(), start, end, 0)
         tvTermsOfUse.text = ss
         tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
         tvTermsOfUse.highlightColor = Color.TRANSPARENT
