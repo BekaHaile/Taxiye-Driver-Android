@@ -12,8 +12,10 @@ import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.transition.Transition
 import android.transition.TransitionSet
 import android.util.TypedValue
@@ -42,7 +44,7 @@ import java.lang.Exception
 import java.util.*
 
 class LoginFragment : Fragment() {
-    private var mListener: SplashFragment.InteractionListener?=null
+    private var mListener: SplashFragment.InteractionListener? = null
 
 
     companion object {
@@ -105,6 +107,26 @@ class LoginFragment : Fragment() {
             }
             tvCountryCode.text = Utils.getCountryCode(parentActivity)
             tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+            edtPhoneNo.addTextChangedListener(object: TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+                    val s = p0?.toString() ?: ""
+                    if (s.startsWith("0")) {
+                        if (s.length > 1) {
+                            edtPhoneNo.setText(s.toString().substring(1))
+                        } else {
+                            edtPhoneNo.setText("")
+                        }
+                        Toast.makeText(parentActivity, context.getString(R.string.number_should_not_start_with_zero), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+            })
+
             btnGenerateOtp.setOnClickListener(View.OnClickListener {
                 val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
                 val countryCode: String = rootView.tvCountryCode.text.trim().toString()
@@ -219,7 +241,7 @@ class LoginFragment : Fragment() {
                         val dataAdapter: ArrayAdapter<String> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
-                        rootView.language_spinner.visible()
+                        if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) rootView.language_spinner.visible() else rootView.language_spinner.gone()
 
                         if (!t.languageList.contains(selectedLanguage)) {
                             t.languageList.add(selectedLanguage)
@@ -400,12 +422,14 @@ class LoginFragment : Fragment() {
         with(rootView) {
 
 
-            if (showProgress) {
+            if (showProgress
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
                 progressLanguage.visible()
             } else {
                 progressLanguage.gone()
             }
-            if (showText) {
+            if (showText
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
                 tvLanguage.visible()
             } else {
                 tvLanguage.gone()

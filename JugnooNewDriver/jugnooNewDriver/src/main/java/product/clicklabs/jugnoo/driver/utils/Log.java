@@ -24,7 +24,7 @@ public class Log {
 		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.i(tag, message);
 			if(WRITE_TO_FILE){
-				writeLogToFile(APP_NAME, tag + "<>" + message);
+				writeLogToFile(BuildConfig.APP_DB_ID, tag + "<>" + message);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class Log {
 		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.d(tag, message);
 			if(WRITE_TO_FILE){
-				writeLogToFile(APP_NAME, tag + "<>" + message);
+				writeLogToFile(BuildConfig.APP_DB_ID, tag + "<>" + message);
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public class Log {
 		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.e(tag, message);
 			if(WRITE_TO_FILE){
-				writeLogToFile(APP_NAME, tag + "<>" + message);
+				writeLogToFile(BuildConfig.APP_DB_ID, tag + "<>" + message);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class Log {
 		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.v(tag, message);
 			if(WRITE_TO_FILE){
-				writeLogToFile(APP_NAME, tag + "<>" + message);
+				writeLogToFile(BuildConfig.APP_DB_ID, tag + "<>" + message);
 			}
 		}
 	}
@@ -60,7 +60,7 @@ public class Log {
 		if(BuildConfig.DEBUG_MODE){
 			android.util.Log.w(tag, message);
 			if(WRITE_TO_FILE){
-				writeLogToFile(APP_NAME, tag + "<>" + message);
+				writeLogToFile(BuildConfig.APP_DB_ID, tag + "<>" + message);
 			}
 		}
 	}
@@ -68,8 +68,7 @@ public class Log {
 	
 	
 	static String LOG_FILE = "LOGFILE";
-	static String APP_NAME = "Jugnoo";
-	
+
 	public static void writeLogToFile(final String filePrefix, final String response) {
 		if(WRITE_TO_FILE_IN){
 			new Thread(new Runnable() {
@@ -108,7 +107,7 @@ public class Log {
 	
 	public static File getPathLogFolder(){
 		try {
-			String strFolder = Environment.getExternalStorageDirectory() + "/JugnooData";
+			String strFolder = Environment.getExternalStorageDirectory() + "/"+BuildConfig.APP_DB_ID+"Data";
 			File folder = new File(strFolder);
 			if(!folder.exists()){
 				folder.mkdirs();

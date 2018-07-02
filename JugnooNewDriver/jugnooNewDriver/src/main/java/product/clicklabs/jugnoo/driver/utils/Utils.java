@@ -1069,7 +1069,7 @@ public class Utils {
         if (TextUtils.isEmpty(currency)) {
             currency = "INR";
         }
-        NumberFormat format = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
         format.setCurrency(Currency.getInstance(currency));
         return format.format(value);
     }

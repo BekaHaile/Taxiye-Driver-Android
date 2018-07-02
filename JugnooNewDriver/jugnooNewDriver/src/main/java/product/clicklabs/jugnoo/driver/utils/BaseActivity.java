@@ -26,7 +26,6 @@ import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
@@ -113,7 +112,11 @@ public class BaseActivity extends Activity {
 			languageToLoad = "kn";
 		} else if (item.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
-		} else {
+		} else if (item.equalsIgnoreCase("français")) {
+			languageToLoad = "fr";
+		} else if (item.equalsIgnoreCase("عربى")) {
+			languageToLoad = "ar";
+		}else {
 			languageToLoad = "en";
 //			return;
 		}

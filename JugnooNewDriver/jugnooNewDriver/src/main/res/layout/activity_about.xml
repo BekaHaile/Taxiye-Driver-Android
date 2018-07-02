@@ -56,6 +56,7 @@
                 android:id="@+id/relativeLayoutLikeUs"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:visibility="@integer/like_us_on_fb_enabled"
                 android:background="@drawable/background_white_selector" >
 
                 <ImageView

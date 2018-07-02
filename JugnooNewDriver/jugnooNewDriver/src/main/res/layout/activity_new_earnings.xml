@@ -201,7 +201,7 @@
                             android:layout_width="52px"
                             android:layout_height="52px"
                             android:layout_centerVertical="true"
-                            android:rotation="180"
+                            android:rotationY="@integer/locale_mirror_flip_inverse"
                             android:src="@drawable/arrow_with_padding" />
 
                     </RelativeLayout>
@@ -238,6 +238,7 @@
                             android:layout_width="52px"
                             android:layout_height="52px"
                             android:layout_centerVertical="true"
+                            android:rotationY="@integer/locale_mirror_flip"
                             android:src="@drawable/arrow_with_padding" />
 
                     </RelativeLayout>

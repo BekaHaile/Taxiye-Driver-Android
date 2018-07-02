@@ -183,7 +183,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_centerHorizontal="true"
-        android:visibility="visible"
+        android:visibility="@integer/show_driver_timer"
         android:background="@drawable/menu_black_btn_normal_rounded">
 
         <TextView
@@ -369,7 +369,8 @@
                             android:layout_marginEnd="12dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
-                            android:visibility="visible">
+                            android:visibility="visible"
+                            android:background="@drawable/green_btn_call_selector">
 
                             <ImageView
                                 android:id="@+id/driverCallIcon"

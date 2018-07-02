@@ -46,9 +46,9 @@
     <string name="server_error">خطأ في الخادم. الرجاء معاودة المحاولة في وقت لاحق.</string>
     <string name="server_not_responding">وجه الفتاة!! الخادم لا يستجيب. الرجاء معاودة المحاولة في وقت لاحق.</string>
     <string name="check_internet_message">تحقق من اتصال الإنترنت الخاص بك.</string>
-    <string name="driver_id">:معرف السائق</string>
-    <string name="rank_city">:مدينة الرتبة:</string>
-    <string name="rank_overall">:المرتبة الإجمالية:</string>
+    <string name="driver_id">معرف السائق:</string>
+    <string name="rank_city">مدينة الرتبة:</string>
+    <string name="rank_overall">المرتبة الإجمالية:</string>
     <string name="monthly">نتيجة الشهرية</string>
     <string name="earnings">أرباح</string>
     <string name="rides_taken">رحلات مأخوذة</string>
@@ -662,5 +662,21 @@
     <string name="get_credits_from_friends">الحصول على أرصدة من الأصدقاء</string>
     <string name="earn_credits_format">(ائتمانات %s كسب)</string>
     <string name="city_unavailable">آسف! حاليا خدماتنا غير متوفرة في مدينتك</string>
+    <string name="label_edt_phone">يرجى إدخال رقم الهاتف الخاص بك</string>
+    <string name="hint_edt_phone">رقم الهاتف</string>
+    <string name="btn_text_OTP">توليد OTP</string>
+    <string name="languages">اللغات</string>
+    <string name="number_should_not_start_with_zero">يجب ألا يبدأ رقم الهاتف بالرقم 0.</string>
+    <string name="enter_one_time_pwd">أدخل كلمة المرور مرة واحدة</string>
+
+    <string name="rate_us_on_play_store">قيمنا على متجر التطبيقات</string>
+    <string name="like_us_on_facebook">اعجب بنا على الفيسبوك</string>
+    <string name="terms_and_conditions">الأحكام والشروط</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="who_are_we">من نحن؟</string>
+    <string name="facebook_not_installed">Facebook app not enabled</string>
+    <string name="about">حول</string>
+
+    <!--login with phone-->
 
 </resources>

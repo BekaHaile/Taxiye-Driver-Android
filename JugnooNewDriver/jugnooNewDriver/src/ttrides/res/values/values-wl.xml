@@ -20,20 +20,22 @@
     <string name="app_name">TT Rides Share Drivers</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">6e1314631d098db197321244c93fb7c5</string>
+    <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">acd1fc4c36da23e421c9e357785f4d4a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">TT Rides Share Driver/TT Rides Share Pictures</string>
-    <string name="file_provider">production.ttridesshare.driver.driver.provider</string>
+    <string name="images_path">TT Ride Share Driver/TT Ride Share Pictures</string>
+    <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4</string> <!--IMP-->
 
+    <string name="facebook_page_id">2056791887904505</string>
+    <string name="facebook_page_name">ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">TTRIDESSHARE</string><!--* IMP-->
-    <string name="support_email">support@jugnoo.in</string>
-    <string name="support_email_subject">TT Rides Share Driver Support</string>
+    <string name="white_label_name">TT Rideshare</string><!--* IMP-->
+    <string name="support_email">support@ttideshare.com</string>
+    <string name="support_email_subject">TT Ride Share Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
@@ -62,7 +64,7 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
 
 
 
@@ -71,8 +73,11 @@
     <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
 
     <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
+    <bool name="use_fugu_key_hardcode">true</bool>
 
 
 </resources>

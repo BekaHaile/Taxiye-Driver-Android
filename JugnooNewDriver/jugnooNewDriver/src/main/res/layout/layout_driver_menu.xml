@@ -312,7 +312,7 @@
                     android:id="@+id/imageViewdriverCreditsRl"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/invite_n_earn_v2"
                     android:tag="mwar"/>
@@ -322,8 +322,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewdriverCreditsRl"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewdriverCreditsRl"
+                    android:layout_marginStart="8px"
                     android:text="@string/menu_label_credits"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -341,7 +341,7 @@
                     android:id="@+id/imageViewManualRequestRl"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_manual_ride"
                     android:tag="mwar"/>
@@ -351,8 +351,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewManualRequestRl"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewManualRequestRl"
+                    android:layout_marginStart="8px"
                     android:text="@string/menu_label_manual_ride"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -550,7 +550,7 @@
                     android:id="@+id/imageViewCallIcon"
                     android:layout_width="56px"
                     android:layout_height="38px"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/call_v2"
                     android:tag="mwar"/>
@@ -560,8 +560,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewCallIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewCallIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/call_us"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -571,17 +571,16 @@
             <LinearLayout
                 android:id="@+id/rlGetSupport"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
+                android:layout_height="84px"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false"
                 android:gravity="center_vertical"
-                android:tag="@string/dont_touch_me"
                 >
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="19dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginStart="20px"
                     android:src="@drawable/call_v2"
                     android:tag="mwar"/>
 
@@ -592,7 +591,7 @@
                     android:layout_marginLeft="4dp"
                     android:text="@string/get_support_call"
                     android:textColor="@color/white"
-                    android:textSize="18sp"/>
+                    android:textSize="36px"/>
 
             </LinearLayout>
 
@@ -606,8 +605,8 @@
                 <ImageView
                     android:id="@+id/imageViewMailSupportIcon"
                     android:layout_width="56px"
-                    android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
@@ -617,8 +616,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewMailSupportIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewMailSupportIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/mail_us"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -635,8 +634,8 @@
                 <ImageView
                     android:id="@+id/imageViewChatSupportIcon"
                     android:layout_width="56px"
-                    android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
@@ -646,8 +645,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewChatSupportIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewChatSupportIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/chat_support"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -664,8 +663,8 @@
                 <ImageView
                     android:id="@+id/imageViewSupportTicketIcon"
                     android:layout_width="56px"
-                    android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
@@ -675,8 +674,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewSupportTicketIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewSupportTicketIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/support_tickets"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -694,7 +693,7 @@
                 <ImageView
                     android:id="@+id/imageViewSupportIcon"
                     android:layout_width="56px"
-                    android:layout_height="37px"
+                    android:layout_height="38px"
                     android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
@@ -723,8 +722,8 @@
                 <ImageView
                     android:id="@+id/imageViewSupportMainIcon"
                     android:layout_width="56px"
-                    android:layout_height="37px"
-                    android:layout_marginLeft="20px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_support_menu"
                     android:tag="mwar"/>
@@ -734,8 +733,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48px"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/imageViewSupportMainIcon"
-                    android:layout_marginLeft="8px"
+                    android:layout_toEndOf="@+id/imageViewSupportMainIcon"
+                    android:layout_marginStart="8px"
                     android:text="@string/support"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -754,7 +753,7 @@
                 <ImageView
                     android:id="@+id/imageViewAuditIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/audit_menu_v2"

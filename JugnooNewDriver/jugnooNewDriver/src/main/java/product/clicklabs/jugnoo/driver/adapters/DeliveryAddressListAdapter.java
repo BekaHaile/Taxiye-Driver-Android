@@ -10,14 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
@@ -71,9 +69,6 @@ public class DeliveryAddressListAdapter extends BaseAdapter {
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 			holder.relative.setTag(holder);
-
-			holder.relative.setLayoutParams(new ListView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
-			ASSL.DoMagic(holder.relative);
 
 			convertView.setTag(holder);
 		} else {

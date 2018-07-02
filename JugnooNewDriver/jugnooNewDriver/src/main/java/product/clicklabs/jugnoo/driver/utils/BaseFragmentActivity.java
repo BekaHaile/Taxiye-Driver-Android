@@ -111,9 +111,9 @@ public class BaseFragmentActivity extends AppCompatActivity {
 			languageToLoad = "kn";
 		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
-		} else if (selectedLanguage.equalsIgnoreCase("french")) {
+		} else if (selectedLanguage.equalsIgnoreCase("français")) {
 			languageToLoad = "fr";
-		} else if (selectedLanguage.equalsIgnoreCase("arabic")) {
+		} else if (selectedLanguage.equalsIgnoreCase("عربى")) {
 			languageToLoad = "ar";
 		} else {
 			languageToLoad = "en";

@@ -22,17 +22,17 @@
     <!--White Label Key-->
     <string name="white_label_key">1ac6f54692c22e08ab9ddd9c383ff0a3</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">5272bed2276ac0c2fe3cdc2bfb5723c1</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">Jugnoo Driver/Jugnoo Pictures</string>
+    <string name="images_path">Hezz Driver/Hezz Pictures</string>
     <string name="file_provider">production.hezz.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyCReMAp5TW8sUMQRqecpPwT-o45UC4J3Lk</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyALkY1H6pkL8WN2HFttCNSC7s15wOhB4d8</string> <!--IMP-->
 
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">HEZZ</string><!--* IMP-->
-    <string name="support_email">support@jugnoo.in</string>
+    <string name="support_email">support@hezz.ma</string>
     <string name="support_email_subject">Hezz Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
@@ -49,7 +49,6 @@
     <drawable name="bg_on_boarding_drawable">@color/splashBgColor</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <integer name="show_t_and_c">@integer/view_visible</integer>
 
 
 
@@ -62,7 +61,6 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
 
 
 
@@ -70,8 +68,8 @@
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
-
-
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
+    <bool name="use_fugu_key_hardcode">true</bool>
 
 
 </resources>

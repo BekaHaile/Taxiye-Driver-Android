@@ -695,7 +695,7 @@
     <string name="slots">ONLINE HOURS</string>
     <string name="hour">hour</string>
     <string name="hours">hours</string>
-    <string name="day_wise_breakup">DAY WISE BREAKUP</string>
+    <string name="day_wise_breakup">DAILY TRIP EARNINGS</string>
     <string name="target_distance">Target Distance</string>
     <string name="cash_collected_from_user">Cash collected from user</string>
     <string name="adjusted_distance">Adjusted Distance</string>
@@ -991,6 +991,7 @@
         <item>+216,TN</item>
         <item>+90,TR</item>
         <item>+993,TM</item>
+        <item>+1,TT</item>
         <item>+688,TV</item>
         <item>+971,AE</item>
         <item>+256,UG</item>
@@ -1016,6 +1017,7 @@
     <string name="who_are_we">Who are we?</string>
     <string name="facebook_not_installed">Facebook app not enabled</string>
     <string name="about">About</string>
+    <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
     <string name="please_enter_promo_code">Enter referral code (Optional)</string>
     <string name="hint_promo_code">Referral code</string>
     <string name="history">History</string>

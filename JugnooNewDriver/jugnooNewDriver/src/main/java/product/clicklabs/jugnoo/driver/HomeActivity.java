@@ -4753,7 +4753,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (customerInfo.getIsDelivery() == 0
 					&& customerInfo.getIsPooled() == 0
 					&& Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis() > 0) {
-				etaTimerRLayout.setVisibility(View.VISIBLE);
+				if(getResources().getInteger(R.integer.show_driver_timer)==getResources().getInteger(R.integer.view_visible)) {
+					etaTimerRLayout.setVisibility(View.VISIBLE);
+				}
 				if (Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) > 0) {
 					long eta = Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis();
 					if (eta > 0) {

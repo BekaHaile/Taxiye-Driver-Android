@@ -118,7 +118,7 @@
                     android:layout_marginTop="30px"
                     android:gravity="center"
                     android:text="@string/give_misscall_to_verify"
-                    android:textColor="@color/black_earnings_bg"
+                    android:textColor="@color/textColorMedium"
                     android:textSize="30px"
                     android:visibility="@integer/show_call_in_otp" />
 

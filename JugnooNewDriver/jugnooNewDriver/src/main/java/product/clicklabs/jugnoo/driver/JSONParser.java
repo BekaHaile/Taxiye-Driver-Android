@@ -425,7 +425,7 @@ public class JSONParser implements Constants {
 					HippoNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
 					Data.initFugu((Activity) context, captureUserData,
 							jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
-							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 1));
+							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));
 				}
 
 			}
