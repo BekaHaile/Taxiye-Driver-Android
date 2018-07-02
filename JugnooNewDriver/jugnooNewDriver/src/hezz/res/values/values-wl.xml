@@ -37,6 +37,7 @@
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
+    <integer name="show_t_and_c">@integer/view_visible</integer>
 
     <!--Notifications-->
     <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
@@ -46,7 +47,7 @@
 
 
     <!--Login sign-up -->
-    <drawable name="bg_on_boarding_drawable">@color/splashBgColor</drawable>
+    <drawable name="bg_on_boarding_drawable">@color/white</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
 
@@ -71,5 +72,6 @@
     <integer name="show_driver_timer">@integer/view_invisible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
-
+    <color name="themeColor">#CF312F</color>
+    <color name="themeColorLight">#bbCF312F</color>
 </resources>

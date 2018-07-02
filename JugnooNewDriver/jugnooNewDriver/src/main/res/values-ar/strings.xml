@@ -674,8 +674,10 @@
     <string name="terms_and_conditions">الأحكام والشروط</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="who_are_we">من نحن؟</string>
-    <string name="facebook_not_installed">Facebook app not enabled</string>
+    <string name="facebook_not_installed">تطبيق Facebook غير ممكن</string>
     <string name="about">حول</string>
+    <string name="please_enter_your_name">من فضلك أدخل إسمك</string>
+    <string name="select_vehicle_type">اختر نوع السيارة</string>
 
     <!--login with phone-->
 

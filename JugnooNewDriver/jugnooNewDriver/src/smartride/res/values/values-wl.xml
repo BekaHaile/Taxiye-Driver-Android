@@ -65,7 +65,7 @@
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
     <integer name="show_t_and_c_profile">@integer/view_visible</integer>
-    <drawable name="bg_profile_background">@color/gradient_yellow_v2</drawable>
+    <!--<drawable name="bg_profile_background">@color/gradient_yellow_v2</drawable>-->
 
 
 
@@ -80,5 +80,20 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
+    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <color name="colorDark">@color/text_color</color>
+    <color name="colorLight">@color/white</color>
 
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#000000</color>
+    <color name="textColorMedium">#333333</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColor">#CC3333</color>
+    <color name="themeColorLight">#bbCC3333</color>
+    <color name="themeColorAlternate">#3c3638</color>
+    <color name="themeColorAlternateLight">#bb3c3638</color>
 </resources>
