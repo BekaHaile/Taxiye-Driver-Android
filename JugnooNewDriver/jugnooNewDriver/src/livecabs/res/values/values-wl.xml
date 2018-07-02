@@ -22,7 +22,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">LiveCabs Driver/LiveCabs Pictures</string>
     <string name="file_provider">production.livecabs.driver.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyCReMAp5TW8sUMQRqecpPwT-o45UC4J3Lk</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyB5qFXNKXFV_3aPbVoEtjq_IAuKkUYu_kc</string> <!--IMP-->
 
 
     <!--App Level Constants-->
@@ -59,7 +59,7 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
     <drawable name="bg_profile_background">@color/red_v2</drawable>
 
 
