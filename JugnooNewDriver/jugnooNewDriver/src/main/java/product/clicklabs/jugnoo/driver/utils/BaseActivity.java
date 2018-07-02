@@ -46,8 +46,6 @@ public class BaseActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		Data.appMinimized = false;
-		stopService(new Intent(this, GeanieView.class));
 		super.onResume();
 		checkIfUserDataNull();
 	}
@@ -76,19 +74,6 @@ public class BaseActivity extends Activity {
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
-	@Override
-	public void onPause(){
-		Data.appMinimized = true;
-		super.onPause();
-	}
-
-	@Override
-	protected void onStop() {
-		if(Data.appMinimized){
-			startService(new Intent(this, GeanieView.class));
-		}
-		super.onStop();
-	}
 
 	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE, "");

@@ -40,25 +40,14 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
 	@Override
 	protected void onResume() {
-		Data.appMinimized = false;
-		stopService(new Intent(this, GeanieView.class));
+
 		super.onResume();
 		checkIfUserDataNull();
 	}
 
-	@Override
-	protected void onPause() {
-		Data.appMinimized = true;
-		super.onPause();
-	}
 
-	@Override
-	protected void onStop() {
-		if(Data.appMinimized){
-			startService(new Intent(this, GeanieView.class));
-		}
-		super.onStop();
-	}
+
+
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
