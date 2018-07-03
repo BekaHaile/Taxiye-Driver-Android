@@ -220,10 +220,11 @@
 
     <Button
         android:id="@+id/btnHelp"
-        android:layout_width="110px"
-        android:layout_height="110px"
+        android:layout_width="80px"
+        android:layout_height="80px"
         android:layout_below="@+id/inRideCustomerInfoRl"
-        android:layout_marginStart="8px"
+        android:layout_marginStart="18px"
+        android:layout_marginTop="18px"
         android:tag="mwar"
         android:background="@drawable/new_help_button"/>
 
