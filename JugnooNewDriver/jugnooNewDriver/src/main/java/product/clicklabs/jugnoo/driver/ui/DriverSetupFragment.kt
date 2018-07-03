@@ -25,6 +25,7 @@ import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter

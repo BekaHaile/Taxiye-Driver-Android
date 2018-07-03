@@ -139,7 +139,7 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorHint">@color/textColorLight</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/maven_pro_medium</item>
+        <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
     <style name="TextMedium">
         <item name="android:tag">@string/dont_touch_me</item>

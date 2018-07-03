@@ -46,7 +46,6 @@
                     android:text="Sector 28, Chandigarh"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size_30"
-                    android:drawableStart="@drawable/ic_pickup_drop"
                     android:drawablePadding="5dp"
                     android:layout_marginStart="20px"
                     />
