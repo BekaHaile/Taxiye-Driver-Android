@@ -72,7 +72,7 @@
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryDark">#001734</color>
     <color name="textColorTitle">#000000</color>
     <color name="textColor">#000000</color>
     <color name="textColorMedium">#333333</color>

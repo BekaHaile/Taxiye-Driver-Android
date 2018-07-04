@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
@@ -274,9 +275,10 @@ public class SearchListAdapter extends BaseAdapter {
         try {
 			if (!refreshingAutoComplete) {
 				searchListActionsHandler.onSearchPre();
+                AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("TT").build();
 				Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, searchText,
 						new LatLngBounds.Builder().include(latLng).build(),
-						null).setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
+                        this.context.getResources().getBoolean(R.bool.specified_country_search_result_enabled)? autocompleteFilter:null).setResultCallback(new ResultCallback<AutocompletePredictionBuffer>() {
 					@Override
 					public void onResult(AutocompletePredictionBuffer autocompletePredictions) {
 						try {

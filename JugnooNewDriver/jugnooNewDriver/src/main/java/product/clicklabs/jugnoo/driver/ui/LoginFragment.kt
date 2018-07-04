@@ -107,6 +107,7 @@ class LoginFragment : Fragment() {
             }
             tvCountryCode.text = Utils.getCountryCode(parentActivity)
             tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+
             edtPhoneNo.addTextChangedListener(object: TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
                     val s = p0?.toString() ?: ""
@@ -195,6 +196,7 @@ class LoginFragment : Fragment() {
                 })
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
+
             if(edtPhoneNo.tag!=null && (edtPhoneNo.tag is String) &&
                     (edtPhoneNo.tag as String)==resources.getInteger(R.integer.tag_scroll_down_on_touch).toString()){
 
