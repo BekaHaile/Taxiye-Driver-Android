@@ -677,7 +677,7 @@
     <string name="about">حول</string>
     <string name="please_enter_your_name">من فضلك أدخل إسمك</string>
     <string name="select_vehicle_type">اختر نوع السيارة</string>
-    <string name="by_signing_you_agree"><u>البنود و الظروف</u>عن طريق التسجيل أنت توافق على موقعنا </string>
+    <string name="by_signing_you_agree">عن طريق التسجيل أنت توافق على موقعنا</string>
     <string name="continue_text">استمر</string>
     <!--login with phone-->
 

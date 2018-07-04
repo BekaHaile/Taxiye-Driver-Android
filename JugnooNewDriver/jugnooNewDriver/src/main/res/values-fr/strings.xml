@@ -1735,6 +1735,6 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
  <string name="facebook_not_installed">L'application Facebook n'est pas activée</string>
  <string name="please_enter_your_name">S'il vous plaît entrez votre nom</string>
  <string name="select_vehicle_type">Sélectionnez le type de véhicule</string>
- <string name="by_signing_you_agree">En vous inscrivant, vous acceptez notre <u>termes et conditions</u></string>
+ <string name="by_signing_you_agree">En vous inscrivant, vous acceptez notre</string>
  <string name="continue_text">Continuer</string>
 </resources>																									
