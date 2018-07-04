@@ -105,31 +105,37 @@ class DriverSetupFragment : Fragment() {
         }
 
         getCitiesAPI()
-        setupTermsAndConditionsTextView()
-
 
     }
 
     private fun setupTermsAndConditionsTextView() {
-        val ss = SpannableString(getString(R.string.by_signing_you_agree))
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                startActivity(Intent(parentActivity, HelpActivity::class.java))
-            }
+        if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
+            val termsText = getString(R.string.terms_and_conditions);
+            val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
+            val clickableSpan = object : ClickableSpan() {
+                override fun onClick(textView: View) {
+                    startActivity(Intent(parentActivity, HelpActivity::class.java))
+                }
 
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = false
+               /* override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }*/
             }
+            val start = ss.length-termsText.length
+            val end = ss.length
+            ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.themeColor)), start, end, 0);
+            tvTermsOfUse.text = ss
+            tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
+            tvTermsOfUse.highlightColor = Color.TRANSPARENT
+            tvTermsOfUse.typeface = Fonts.mavenRegular(activity)
+
+            tvTermsOfUse.visible()
+        }else{
+            tvTermsOfUse.gone()
         }
-        val start = 31
-        val end = 49
-        ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.themeColor)), start, end, 0);
-        tvTermsOfUse.text = ss
-        tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
-        tvTermsOfUse.highlightColor = Color.TRANSPARENT
-        tvTermsOfUse.typeface = Fonts.mavenRegular(activity)
+
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -280,12 +286,7 @@ class DriverSetupFragment : Fragment() {
                 citiesList = t.cities;
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
-
-                if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
-                    tvTermsOfUse.visible()
-                }else{
-                    tvTermsOfUse.gone()
-                }
+                setupTermsAndConditionsTextView()
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
