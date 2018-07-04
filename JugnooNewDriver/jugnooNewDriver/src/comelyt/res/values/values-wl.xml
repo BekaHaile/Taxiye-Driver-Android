@@ -16,8 +16,8 @@
     -->
 
 
-    <string name="appname">TT Rides Share</string>
-    <string name="app_name">TT Rides Share Drivers</string>
+    <string name="appname">Comelyt Drivers</string>
+    <string name="app_name">Comelyt Drivers</string>
 
     <!--White Label Key-->
     <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>
@@ -26,14 +26,14 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">TT Ride Share Driver/TT Ride Share Pictures</string>
     <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyBrU2XQF8xCohlI_zA-ow-yG83HA8DI3FM</string> <!--IMP-->
 
     <string name="facebook_page_id">2056791887904505</string>
     <string name="facebook_page_name">ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">Comelyt Driver</string><!--* IMP-->
+    <string name="white_label_name">Comelyt Drivers</string><!--* IMP-->
     <string name="support_email">support@ttideshare.com</string>
     <string name="support_email_subject">TT Ride Share Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
