@@ -733,7 +733,7 @@
     <string name="please_enter_your_name">Please enter your name</string>
     <string name="select_vehicle_type">Select vehicle type</string>
     <string name="continue_text">Continue</string>
-    <string name="by_signing_you_agree">By Signing up you agree to our <u>Terms &amp; Conditions</u></string>
+    <string name="by_signing_you_agree">By Signing up you agree to our </string>
     <string name="place_bid">Place Bid</string>
     <string name="please_enter_some_value">Please enter some value</string>
     <string name="bid">Bid</string>
