@@ -536,6 +536,11 @@
         <activity
             android:name=".AboutActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".stripe.ui.StripeCardsActivity"
+            android:screenOrientation="portrait"/>
+
+
     </application>
 
 </manifest>

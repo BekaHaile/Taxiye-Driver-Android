@@ -10,5 +10,6 @@ public  enum ApiName {
     GET_LANGUAGES,
     REGISTER_DRIVER,
     MANUAL_RIDE,
-    APPLY_PROMO
+    APPLY_PROMO,
+    ADD_CARD_API
 }
