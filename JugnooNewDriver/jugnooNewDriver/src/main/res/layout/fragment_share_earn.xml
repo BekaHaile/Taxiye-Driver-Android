@@ -16,29 +16,30 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/shareImgRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="40px">
+                android:padding="20dp">
 
 
                 <ImageView
                     android:id="@+id/imageViewJugnooLogo"
                     android:layout_width="match_parent"
-                    android:layout_height="485px"
+                    android:layout_height="242dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/graphic_refer"
-                    android:tag="mwar"
-                    android:visibility="visible"/>
+                    android:visibility="visible"
+                    android:scaleType="centerInside"
+                    />
 
                 <RelativeLayout
                     android:id="@+id/showReferralRLayout"
-                    android:layout_width="500px"
-                    android:layout_height="130px"
+                    android:layout_width="250dp"
+                    android:layout_height="65dp"
                     android:layout_below="@+id/imageViewJugnooLogo"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/referral_box">
@@ -49,13 +50,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginStart="20px"
-                        android:layout_marginEnd="20px"
-                        android:layout_marginTop="15px"
                         android:gravity="center"
                         android:text="@string/your_referral_code"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"
+                        style="@style/TextLarge"
                         />
 
 
@@ -65,14 +62,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textViewReferralCodeDisplay"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginStart="20px"
-                        android:layout_marginEnd="20px"
-                        android:layout_marginTop="15px"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="12345678"
                         android:textColor="@color/themeColor"
-                        android:textSize="44px"
+                        style="@style/TextTitle"
                         />
 
                 </RelativeLayout>
@@ -101,12 +95,11 @@
                         />
                     <ImageView
                         android:id="@+id/imageShareLogo"
-                        android:layout_width="54px"
-                        android:layout_height="54px"
-                        android:layout_marginStart="80px"
-                        android:layout_marginTop="15px"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/share_button_icon"
-                        android:tag="mwar"
                         android:visibility="visible"/>
                 </RelativeLayout>
 
@@ -114,16 +107,14 @@
                     android:id="@+id/textViewShareReferral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewReferUs"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="20px"
-                    android:layout_marginEnd="20px"
-                    android:layout_marginTop="30px"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="center"
-                    android:lineSpacingExtra="10px"
+                    android:lineSpacingExtra="5dp"
                     android:text="Share your referral code 12345678"
-                    android:textColor="@color/textColorMedium"
-                    android:textSize="32px"
+                    style="@style/TextNormal"
                     />
 
             </LinearLayout>

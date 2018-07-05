@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.fragments.BaseFragment;
@@ -15,7 +14,6 @@ import product.clicklabs.jugnoo.driver.fragments.GetCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.SendCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 
@@ -25,7 +23,6 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
  */
 public class DriverCreditsActivity extends BaseFragmentActivity implements DriverCreditsListener {
 
-    private LinearLayout root;
     private TextView tvTitle;
 
 
@@ -35,8 +32,6 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
         setContentView(R.layout.activity_driver_credits);
 
 
-        root = (LinearLayout)findViewById(R.id.root);
-        new ASSL(this, root, 1134, 720, false);
 
 		tvTitle = (TextView) findViewById(R.id.title);
 		tvTitle.setText(getString(R.string.title_credits_activity));
@@ -86,13 +81,6 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 			return;
 		}
 		super.onBackPressed();
-	}
-
-	@Override
-	protected void onDestroy() {
-		ASSL.closeActivity(root);
-		super.onDestroy();
-		System.gc();
 	}
 
 

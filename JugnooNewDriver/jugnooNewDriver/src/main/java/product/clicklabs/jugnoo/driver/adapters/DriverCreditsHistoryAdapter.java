@@ -12,7 +12,6 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -84,10 +83,6 @@ public class DriverCreditsHistoryAdapter extends RecyclerView.Adapter<DriverCred
 			tvAmount = (TextView) v.findViewById(R.id.tv_amount);
 			tvDesc = (TextView) v.findViewById(R.id.tv_credit_history_desc);
 			tvDate = (TextView) v.findViewById(R.id.tv_credit_history_date);
-			tvDesc.setTypeface(Fonts.mavenRegular(context));
-			tvDate.setTypeface(Fonts.mavenRegular(context));
-			tvAmount.setTypeface(Fonts.mavenRegular(context));
-			tvId.setTypeface(Fonts.mavenRegular(context));
 			relativeLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

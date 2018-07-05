@@ -65,7 +65,7 @@
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
     <integer name="show_t_and_c_profile">@integer/view_visible</integer>
-    <drawable name="bg_profile_background">@color/gradient_yellow_v2</drawable>
+    <drawable name="bg_profile_background">@color/themeColor</drawable>
 
 
 
