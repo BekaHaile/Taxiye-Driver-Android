@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!--Don't Touch -->
+    <integer name="view_visible">0</integer>
+    <integer name="view_invisible">1</integer>
+    <integer name="view_gone">2</integer>
+    <!--Don't Touch -->
+
+
+    <!--Other things to change
+        1. google-services.json
+        2. Doc entity in strings.xml
+        3. application_id in build.gradle
+    -->
+
+
+    <string name="appname">Hitch</string>
+    <string name="app_name">Hitch Drivers</string>
+
+    <!--White Label Key-->
+    <string name="white_label_key">24a1592fe2e6a9a77d5b0d7b83496d56</string>
+
+    <string name="fugu_app_key">5272bed2276ac0c2fe3cdc2bfb5723c1</string>
+    <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
+    <string name="images_path">Hitch Driver/Hitch Pictures</string>
+    <string name="file_provider">com.hitch.driver.provider</string>
+    <string name="google_maps_api_key">AIzaSyA9cnlLOey1b9UPXXzReBp6MYhZg1O5sqU</string> <!--IMP-->
+
+
+    <!--App Level Constants-->
+    <string name="white_label_name">Hitch</string><!--* IMP-->
+    <string name="support_email">support@hitch.com</string>
+    <string name="support_email_subject">Hitch Driver Support</string>
+    <string name="support_phone_number">+919023121121</string>
+    <string name="customer_app_download_link">https://www.hitch.com/</string>
+    <integer name="show_t_and_c">@integer/view_visible</integer>
+
+
+    <drawable name="bg_splash">@drawable/bg_hitch</drawable>
+    <dimen name="ic_splash_logo_width">150dp</dimen>
+    <dimen name="ic_splash_logo_height">150dp</dimen>
+
+
+
+
+    <!--General Features Enable/Disable-->
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
+    <bool name="use_fugu_key_hardcode">true</bool>
+    <string name="facebook_page_id">1497119970363540</string>
+    <string name="facebook_page_name">Hezzmaroc</string>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
+
+    <!--theme colors-->
+    <color name="themeColor">#10426C</color>
+    <color name="themeColorLight">#bb10426C</color>
+    <color name="themeColorAlternate">#6D615B</color>
+    <color name="themeColorAlternateLight">#bb6D615B</color>
+</resources>

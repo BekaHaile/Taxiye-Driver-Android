@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "9377941695",
+    "firebase_url": "https://jugnoo-blue-android.firebaseio.com",
+    "project_id": "jugnoo-blue-android",
+    "storage_bucket": "jugnoo-blue-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9377941695:android:3b0e7b219a4b74ee",
+        "android_client_info": {
+          "package_name": "com.hitch.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9377941695-hij04k65kufgi1gqvj3uf0n6qj60tj3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP3eRFMh4l2H8dhfCNRHuWrePFM1N57Nk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9377941695:android:0f6c4ad95c95c511",
+        "android_client_info": {
+          "package_name": "com.jugnoo.blue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9377941695-6i2iug0od6lcpp6ht90jh0008j9cbpv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jugnoo.blue",
+            "certificate_hash": "87914682838fc8e70369b102dd89fd8eea9e4009"
+          }
+        },
+        {
+          "client_id": "9377941695-hij04k65kufgi1gqvj3uf0n6qj60tj3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP3eRFMh4l2H8dhfCNRHuWrePFM1N57Nk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9377941695-hij04k65kufgi1gqvj3uf0n6qj60tj3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
