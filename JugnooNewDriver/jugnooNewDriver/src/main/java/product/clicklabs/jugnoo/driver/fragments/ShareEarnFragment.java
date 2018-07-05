@@ -19,8 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +39,10 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -63,7 +59,6 @@ public class ShareEarnFragment extends BaseFragment {
     TextView textViewShareReferral;
     ImageView imageViewJugnooLogo;
     SpannableString sstr;
-    private LinearLayout linearLayoutRoot;
     private boolean isCustomerSharing;
     private FragmentActivity activity;
 
@@ -90,19 +85,14 @@ public class ShareEarnFragment extends BaseFragment {
 
         activity =  getActivity();
 
-        linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
-        new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
 
-        buttonShare = (Button) rootView.findViewById(R.id.buttonShare); buttonShare.setTypeface(Fonts.mavenRegular(activity));
+        buttonShare = (Button) rootView.findViewById(R.id.buttonShare);
 
         imageViewJugnooLogo = (ImageView) rootView.findViewById(R.id.imageViewJugnooLogo);
         textViewReferralCodeDisplay = (TextView) rootView.findViewById(R.id.textViewReferralCodeDisplay);
-        textViewReferralCodeDisplay.setTypeface(Fonts.mavenRegular(activity));
         textViewReferralCodeValue = (TextView) rootView.findViewById(R.id.textViewReferralCodeValue);
-        textViewReferralCodeValue.setTypeface(Fonts.mavenRegular(activity));
         textViewShareReferral = (TextView) rootView.findViewById(R.id.textViewShareReferral);
-        textViewShareReferral.setTypeface(Fonts.mavenRegular(activity));
 
         try {
             buttonShare.setText(Data.userData.referralButtonText);
@@ -114,7 +104,6 @@ public class ShareEarnFragment extends BaseFragment {
             textViewReferralCodeDisplay.setText("");
             textViewReferralCodeDisplay.append(getResources().getString(R.string.your_referral_code));
             textViewReferralCodeValue.setText(sstr);
-            textViewReferralCodeValue.setTypeface(Fonts.mavenBold(activity));
 
             if(Data.userData != null){
                 textViewShareReferral.setText(isCustomerSharing ? Data.userData.referralMessage : Data.userData.getReferralMessageDriver());
@@ -155,25 +144,12 @@ public class ShareEarnFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            ASSL.closeActivity(linearLayoutRoot);
-        } catch (Exception e) {
-        }
-        System.gc();
-    }
-
     public void confirmCustomerNumberPopup(final FragmentActivity activity) {
 
         try {
             final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
             dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
             dialog.setContentView(R.layout.dialog_share_enter_number);
-
-            RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
-            new ASSL(activity, frameLayout, 1134, 720, true);
 
             WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
             layoutParams.dimAmount = 0.6f;
@@ -183,7 +159,6 @@ public class ShareEarnFragment extends BaseFragment {
 
 
             TextView textViewDialogTitle = (TextView) dialog.findViewById(R.id.textViewDialogTitle);
-            textViewDialogTitle.setTypeface(Fonts.mavenRegular(activity));
             final EditText customerNumber = (EditText) dialog.findViewById(R.id.customerNumber);
             final TextView tvCountryCode = (TextView) dialog.findViewById(R.id.tvCountryCode);
             tvCountryCode.setText(Utils.getCountryCode(activity));
@@ -201,14 +176,11 @@ public class ShareEarnFragment extends BaseFragment {
                     countryPicker.showDialog(activity.getSupportFragmentManager());
                 }
             });
-            customerNumber.setTypeface(Fonts.mavenRegular(activity));
             customerNumber.setHint(Data.userData.referralDialogHintText);
             textViewDialogTitle.setText(Data.userData.referralDialogText);
 
             final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-            btnOk.setTypeface(Fonts.mavenRegular(activity));
             final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-            btnCancel.setTypeface(Fonts.mavenRegular(activity));
 
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override

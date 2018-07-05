@@ -9,24 +9,22 @@
     <TextView
         android:id="@+id/textViewTripsText"
         android:layout_width="match_parent"
-        android:layout_height="98px"
+        android:layout_height="49dp"
         android:background="@color/grey_ride_detail_bg"
         android:gravity="center_vertical"
-        android:paddingStart="50px"
+        android:paddingStart="25dp"
         android:text="@string/trips"
-        android:textColor="@color/grey_ride_detail"
-        android:textSize="30px" />
+        style="@style/TextNormal" />
 
     <TextView
         android:id="@+id/textViewNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="15dp"
         android:text="@string/no_rides_currently"
         android:visibility="gone"
-        android:textColor="@color/grey_ride_detail"
-        android:textSize="30px" />
+        style="@style/TextNormal" />
 
 </LinearLayout>
 

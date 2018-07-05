@@ -65,6 +65,7 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:padding">8dp</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
 
     <style name="DialogButtonAlternate" parent="@android:style/Widget.Button">
@@ -78,6 +79,7 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:padding">8dp</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
 
 
@@ -91,6 +93,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
     <style name="ButtonThemeAlternate" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
@@ -102,6 +105,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
 
     <style name="BackArrow">
@@ -116,55 +120,40 @@
         <item name="android:rotationY">@integer/locale_mirror_flip</item>
     </style>
 
-    <style name="title">
-        <item name="android:layout_width">
-            wrap_content
-        </item>
-        <item name="android:layout_height">
-            wrap_content
-        </item>
-        <item name="android:layout_centerVertical">
-            true
-        </item>
-        <item name="android:textColor">
-            @color/white
-        </item>
-        <item name="android:layout_centerInParent">
-            true
-        </item>
-        <item name="android:textSize">
-            17sp
-        </item>
-        <item name="android:textAllCaps">
-            true
-        </item>
-        <item name="android:tag">
-            @string/dont_touch_me
-        </item>
+    <style name="TextTitle">
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
-
-    <style name="forward_image">
-        <item name="android:layout_width">
-            60.7px
-        </item>
-        <item name="android:layout_height">
-            76.9px
-        </item>
-        <item name="android:layout_centerVertical">
-            true
-        </item>
-        <item name="android:padding">
-            20px
-        </item>
-        <item name="android:rotation">
-            180
-        </item>
-        <item name="android:src">
-            @drawable/arrow_icon_selector
-        </item>
-        <item name="android:tag">
-            mwar
-        </item>
+    <style name="TextLarge">
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:fontFamily">@font/maven_pro_medium</item>
+    </style>
+    <style name="TextNormal">
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/maven_pro_regular</item>
+    </style>
+    <style name="TextMedium">
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:textColor">@color/textColorMedium</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/maven_pro_regular</item>
+    </style>
+    <style name="TextSmall">
+        <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:textColor">@color/textColorLight</item>
+        <item name="android:textColorHint">@color/textColorLight</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
 
 </resources>
