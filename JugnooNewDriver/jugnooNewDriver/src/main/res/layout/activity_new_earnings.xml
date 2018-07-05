@@ -180,7 +180,7 @@
                 </RelativeLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60px"
                     android:layout_marginBottom="32px"
@@ -191,10 +191,12 @@
 
                     <RelativeLayout
                         android:id="@+id/relativeLayoutPrev"
-                        android:layout_width="0px"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
+                        android:layout_alignParentStart="true"
                         android:layout_weight="1"
+                        android:layout_toStartOf="@+id/rlWeeks"
                         android:gravity="center">
 
                         <ImageView
@@ -208,9 +210,11 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="0px"
+                        android:id="@+id/rlWeeks"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
+                        android:layout_centerHorizontal="true"
                         android:layout_weight="1"
                         android:gravity="center">
 
@@ -221,6 +225,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:text="@string/this_week_cap"
+                            android:lines="1"
                             android:textColor="@color/white"
                             style="@style/TextNormal"/>
 
@@ -228,8 +233,10 @@
 
                     <RelativeLayout
                         android:id="@+id/relativeLayoutNext"
-                        android:layout_width="0px"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@+id/rlWeeks"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center">
@@ -244,7 +251,7 @@
 
                     </RelativeLayout>
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 

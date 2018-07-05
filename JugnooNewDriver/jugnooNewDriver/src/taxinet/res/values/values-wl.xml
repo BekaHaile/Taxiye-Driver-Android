@@ -40,7 +40,7 @@
 
     <!--Notifications-->
     <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
-    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_small</drawable>
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
 
@@ -70,7 +70,8 @@
     <integer name="show_language_control">@integer/view_invisible</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
-
+    <color name="themeColor">#4D4D4D</color>
+    <color name="themeColorLight">#bb4D4D4D</color>
 
 
 </resources>

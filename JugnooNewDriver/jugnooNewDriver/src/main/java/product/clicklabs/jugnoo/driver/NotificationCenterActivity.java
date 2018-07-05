@@ -82,6 +82,7 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 		tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		tabs.setViewPager(viewPager);
+		tabs.setVisibility(notificationFragmentAdapter.getCount() == 1 ? View.GONE : View.VISIBLE);
 
 		try {
 			if(getIntent().getExtras().getInt("trick_page") ==1){
