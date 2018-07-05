@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rv"
-    android:layout_width="720px"
-    android:layout_height="1134px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:splitMotionEvents="false" >
 
     <RelativeLayout
         android:id="@+id/innerRl"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200px"
-        android:layout_marginStart="50px"
-        android:layout_marginEnd="50px"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false" >
 
         <LinearLayout
             android:id="@+id/rl1"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="1px"
@@ -29,21 +29,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="40px"
-                android:layout_marginTop="40px"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="@string/enter_customer_phone_no"
-                android:textColor="@color/grey_dark_more"
-                android:textSize="44px" />
+                style="@style/TextLarge" />
 
 
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutCustomerNumber"
-                android:layout_width="460px"
-                android:layout_height="80px"
+                android:layout_width="230dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="60px" >
+                android:layout_marginBottom="30dp" >
 
                 <TextView
                     android:id="@+id/tvCountryCode"
@@ -52,8 +51,7 @@
                     android:includeFontPadding="false"
                     android:text=""
                     android:hint="@string/code"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp"
+                    style="@style/TextNormal"
                     android:drawableEnd="@drawable/ic_arrow_down_vector"
                     android:drawablePadding="3dp"
                     android:paddingTop="8dp"
@@ -72,16 +70,15 @@
                     android:inputType="number"
                     android:maxLength="14"
                     android:hint="@string/phone_number"
-                    android:textSize="44px"
+                    style="@style/TextLarge"
                     android:singleLine="true"
-                    android:textColor="@color/grey_black"
                     android:background="@drawable/transparent"
                     android:layout_toEndOf="@+id/tvCountryCode"
                     />
 
                 <ImageView 
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
+                    android:layout_height="1dp"
                     android:src="@color/themeColor"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"

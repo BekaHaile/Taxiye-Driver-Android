@@ -20,7 +20,6 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 /**
@@ -41,12 +40,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 		View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_item, viewGroup, false);
-
-		RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-		itemView.setLayoutParams(layoutParams);
-		ASSL.DoMagic(itemView);
-
-
 		return new ChatViewHolder(itemView, context);
 	}
 
@@ -99,13 +92,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 			super(itemView);
 
 			relative = (RelativeLayout) itemView.findViewById(R.id.relative);
-			chatTextYou = (TextView) itemView.findViewById(R.id.chat_txt_you);chatTextYou.setTypeface(Fonts.mavenRegular(context));
-			chatTimeYou = (TextView) itemView.findViewById(R.id.chat_time_you);chatTimeYou.setTypeface(Fonts.mavenRegular(context));
+			chatTextYou = (TextView) itemView.findViewById(R.id.chat_txt_you);
+			chatTimeYou = (TextView) itemView.findViewById(R.id.chat_time_you);
 			userIconYou = (ImageView) itemView.findViewById(R.id.usr_icon_you);
 			layoutYou = (RelativeLayout) itemView.findViewById(R.id.layout_you);
 
-			chatTextMe = (TextView) itemView.findViewById(R.id.chat_txt_me);chatTextMe.setTypeface(Fonts.mavenRegular(context));
-			chatTimeMe = (TextView) itemView.findViewById(R.id.chat_time_me);chatTimeMe.setTypeface(Fonts.mavenRegular(context));
+			chatTextMe = (TextView) itemView.findViewById(R.id.chat_txt_me);
+			chatTimeMe = (TextView) itemView.findViewById(R.id.chat_time_me);
 			userIconMe = (ImageView) itemView.findViewById(R.id.usr_icon_me);
 			layoutMe = (RelativeLayout) itemView.findViewById(R.id.layout_me);
 		}

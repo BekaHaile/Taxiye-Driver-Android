@@ -16,8 +16,7 @@
         android:id="@+id/tv_credit_history_id"
         tools:text="#21213213"
         android:layout_width="wrap_content"
-        android:textColor="@color/text_color_light"
-        android:textSize="15sp"
+        style="@style/TextMedium"
         android:layout_height="wrap_content" />
 
 
@@ -25,9 +24,8 @@
         android:id="@+id/tv_credit_history_date"
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/label_credits"
-        android:textColor="@color/text_color_light"
         android:layout_marginBottom="5dp"
-        android:textSize="15sp"
+        style="@style/TextMedium"
         android:gravity="right"
         android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
@@ -37,9 +35,8 @@
         android:id="@+id/tv_credit_history_desc"
         android:layout_below="@id/tv_credit_history_date"
         tools:text="Lorem Ipsum "
-        android:textSize="17sp"
+        style="@style/TextNormal"
         android:layout_width="wrap_content"
-        android:textColor="@color/text_color"
         android:layout_height="wrap_content" />
 
 
@@ -47,9 +44,8 @@
         android:id="@+id/tv_amount"
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/tv_credit_history_desc"
-        android:textColor="@color/text_color"
         android:layout_alignParentRight="true"
-        android:textSize="17sp"
+        style="@style/TextNormal"
         android:gravity="right"
         android:layout_below="@id/tv_credit_history_date"
         android:layout_height="wrap_content"
