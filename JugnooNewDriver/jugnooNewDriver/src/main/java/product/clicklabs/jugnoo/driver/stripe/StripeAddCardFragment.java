@@ -79,7 +79,7 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
         edtCvv = rootView.findViewById(R.id.edt_cvv);
         rootView.findViewById(R.id.btn_add_card).setOnClickListener(this);
         rootView.findViewById(R.id.backBtn).setOnClickListener(this);
-        ((TextView)rootView.findViewById(R.id.textViewTitle)).setText(R.string.title_add_card);
+        ((TextView)rootView.findViewById(R.id.title)).setText(R.string.title_add_card);
         stripe = new Stripe(getActivity(), Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)? BuildConfig.STRIPE_KEY_LIVE:BuildConfig.STRIPE_KEY_DEV);
         updateIcon(null);
         edtCardNumber.setErrorColor(ContextCompat.getColor(getActivity(), R.color.red_status));
@@ -202,6 +202,8 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
     }
 
     private void addCardApi(Token token) {
+        if(getActivity()==null)return;
+
         HashMap<String,String> params = new HashMap<>();
         params.put("stripe_token",token.getId());
         params.put("last_4",token.getCard().getLast4());
@@ -213,7 +215,8 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
 
 
 
-        new ApiCommonKt<StripeCardResponse>(getActivity()).execute(params, ApiName.ADD_CARD_API, new APICommonCallbackKotlin<StripeCardResponse>() {
+        new ApiCommonKt<StripeCardResponse>(getActivity(),true,true,true)
+                .execute(params, ApiName.ADD_CARD_API, new APICommonCallbackKotlin<StripeCardResponse>() {
             @Override
             public void onSuccess(StripeCardResponse stripeCardResponse, String message, int flag) {
 

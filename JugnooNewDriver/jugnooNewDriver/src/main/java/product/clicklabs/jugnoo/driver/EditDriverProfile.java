@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.StripeLoginResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.stripe.ui.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -126,6 +127,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			cvBankLayout.setVisibility(View.GONE);
 		}
 
+		findViewById(R.id.btn_cards).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(EditDriverProfile.this, StripeCardsActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override

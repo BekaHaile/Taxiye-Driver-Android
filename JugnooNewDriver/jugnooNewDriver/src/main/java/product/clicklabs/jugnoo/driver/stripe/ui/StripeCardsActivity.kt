@@ -21,7 +21,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener {
 
     }
 
-    private var stripeData:ArrayList<StripeCardData>? = null
+    private var stripeData:List<StripeCardData>? = null /*listOf(StripeCardData("v_3","4444","Discover"))*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stripe_cards)
@@ -31,7 +31,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener {
 
         if (savedInstanceState == null) {
 
-            val stripeData:ArrayList<StripeCardData>? = this.stripeData
+            val stripeData:List<StripeCardData>? = this.stripeData
 
             if(stripeData!=null && stripeData.size >0){
 

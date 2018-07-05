@@ -28,7 +28,7 @@
                  android:id="@+id/edt_card_number"
                  style="@style/TextMedium"
                  android:drawablePadding="10dp"
-                 android:layout_marginBottom="10dp"
+                 android:layout_marginBottom="15dp"
                  android:background="@drawable/bottom_border_grey"
                  android:hint="@string/hint_card_number"
                  android:layout_width="match_parent"

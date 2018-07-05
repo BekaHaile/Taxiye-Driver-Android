@@ -358,7 +358,7 @@ public class DialogPopup {
 		}
 	}
 
-	public static void alertPopupTwoButtonsWithListeners(Activity activity,String message,View.OnClickListener listenerPositive,){
+	public static void alertPopupTwoButtonsWithListeners(Activity activity,String message,View.OnClickListener listenerPositive){
 		alertPopupTwoButtonsWithListeners(activity, "", message,"","", listenerPositive, null, true,false);
 	}
 

@@ -160,7 +160,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
 
     fun isTrivialError(flag: Int): Boolean {
         return (flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() || flag == ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal()
-                || flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+                || flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal() || flag == ApiResponseFlags.PARAMETER_MISSING.getOrdinal() )
     }
 
     private fun retryDialog(message: String) {

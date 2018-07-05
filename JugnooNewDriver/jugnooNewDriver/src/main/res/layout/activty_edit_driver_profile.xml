@@ -359,6 +359,52 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvCardDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cvBankLayout"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="20px"
+                android:layout_marginTop="24px"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="3dp"
+                card_view:cardUseCompatPadding="true">
+
+
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tvCardDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/bgColor"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:gravity="center"
+                        android:text="@string/card_details"
+                        style="@style/TextLarge" />
+
+                    <Button
+                        android:id="@+id/btn_cards"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/view_cards"
+                        style="@style/ButtonTheme" />
+
+                </LinearLayout>
+
+
+
+
+            </android.support.v7.widget.CardView>
+
+
         </RelativeLayout>
     </ScrollView>
 

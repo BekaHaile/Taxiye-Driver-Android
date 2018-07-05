@@ -86,11 +86,11 @@ public class StripeViewCardFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_view_card, container, false);
-        ((TextView)rootView.findViewById(R.id.textViewTitle)).setText(R.string.title_view_card);
+        ((TextView)rootView.findViewById(R.id.title)).setText(R.string.title_view_card);
         tvCard = rootView.findViewById(R.id.tv_card);
         ImageView ivMore = rootView.findViewById(R.id.ivMore);
         ivMore.setOnClickListener(this);
-        rootView.findViewById(R.id.ivMore).setOnClickListener(this);
+        rootView.findViewById(R.id.backBtn).setOnClickListener(this);
 
         if (stripeCardData != null) {
 
@@ -169,12 +169,14 @@ public class StripeViewCardFragment extends Fragment implements View.OnClickList
     }
 
     private void deleteCardApi(final StripeCardData stripeCardData) {
+        if(getActivity()==null)return;
+
         HashMap<String,String> params = new HashMap<>();
         params.put("card_id",stripeCardData.getCardId());
         params.put("is_delete","1");
 
 
-        new ApiCommonKt<StripeCardResponse>(getActivity()).execute(params, ApiName.ADD_CARD_API, new APICommonCallbackKotlin<StripeCardResponse>() {
+        new ApiCommonKt<StripeCardResponse>(getActivity(),true,true,true).execute(params, ApiName.ADD_CARD_API, new APICommonCallbackKotlin<StripeCardResponse>() {
             @Override
             public void onSuccess(StripeCardResponse stripeCardResponse, String message, int flag) {
                 if(stripeCardsStateListener!=null){

@@ -1043,6 +1043,8 @@
     <string name="title_add_card">ADD CARD</string>
     <string name="delete">Delete</string>
     <string name="bullet">\u2022</string>
+    <string name="card_details">Card Details</string>
+    <string name="view_cards">View Cards</string>
 
 
 </resources>
