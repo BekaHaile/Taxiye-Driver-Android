@@ -679,6 +679,7 @@
     <string name="select_vehicle_type">اختر نوع السيارة</string>
     <string name="by_signing_you_agree">عن طريق التسجيل أنت توافق على موقعنا</string>
     <string name="continue_text">استمر</string>
+    <string name="neft_pending">Neft Pending</string>
     <!--login with phone-->
 
 </resources>

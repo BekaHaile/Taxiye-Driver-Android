@@ -581,7 +581,7 @@
                     android:layout_toEndOf="@+id/imageViewNefy"
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true"
-                    android:text="Neft Pending"
+                    android:text="@string/neft_pending"
                     android:textAllCaps="true"
                     android:textColor="@color/black_text_v2"
                     android:textSize="36px" />
