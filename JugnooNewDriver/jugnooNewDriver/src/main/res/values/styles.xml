@@ -155,5 +155,12 @@
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="colorAccent">@color/themeColor</item>
+        <item name="android:popupBackground">@drawable/menu_black_btn_selector</item>
+        <item name="android:textAppearance">@style/TextNormal</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/TextLarge</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/TextSmall</item>
+    </style>
 
 </resources>
