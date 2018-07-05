@@ -15,7 +15,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -106,8 +105,6 @@ public class NewEarningsPerDayAdapter extends RecyclerView.Adapter<NewEarningsPe
 			relativeLayout = (RelativeLayout) v.findViewById(R.id.relativeLayout);
 			textViewDayDateVal = (TextView) v.findViewById(R.id.textViewDayDateVal);
 			textViewDailyValue = (TextView) v.findViewById(R.id.textViewDailyValue);
-			textViewDayDateVal.setTypeface(Fonts.mavenRegular(context));
-			textViewDailyValue.setTypeface(Fonts.mavenRegular(context));
 			relativeLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

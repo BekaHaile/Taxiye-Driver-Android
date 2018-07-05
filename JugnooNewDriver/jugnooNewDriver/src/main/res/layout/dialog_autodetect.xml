@@ -62,7 +62,7 @@
                     android:layout_marginTop="26px"
                     android:gravity="center"
                     android:text="0:30"
-                    android:textColor="@color/black_text_v2"
+                    android:textColor="@color/textColor"
                     android:textSize="36px" />
 
                 <TextView
@@ -74,7 +74,7 @@
                     android:layout_marginTop="100px"
                     android:gravity="center"
                     android:text="@string/auto_detect_otp_wait"
-                    android:textColor="@color/dialog_brown"
+                    android:textColor="@color/textColorMedium"
                     android:textSize="30px" />
 
             </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_marginTop="50px"
                     android:gravity="center"
                     android:text="@string/auto_detect_otp_failed"
-                    android:textColor="@color/grey_dark"
+                    android:textColor="@color/textColorMedium"
                     android:textSize="30px"
                     android:visibility="@integer/show_call_in_otp" />
 
@@ -131,6 +131,7 @@
                     android:layout_margin="20px"
                     android:text="@string/or"
                     android:textAllCaps="false"
+                    android:textColor="@color/textColorMedium"
                     android:textSize="32px"
                     android:visibility="@integer/show_call_in_otp" />
 

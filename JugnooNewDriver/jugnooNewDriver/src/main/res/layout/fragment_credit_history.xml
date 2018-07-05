@@ -21,7 +21,7 @@
         android:id="@+id/tvError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        style="@style/TextNormal"
         android:text="@string/no_transactions"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"

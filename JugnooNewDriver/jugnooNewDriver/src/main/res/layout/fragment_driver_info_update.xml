@@ -15,8 +15,10 @@
 
         <TextView
             android:id="@+id/tvEnterName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/please_enter_your_name"
             android:textColor="@color/textColorMedium"
             android:textSize="18sp"
@@ -25,13 +27,16 @@
 
         <EditText
             android:id="@+id/editTextName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_edit_text_start_drawable"
             android:hint="@string/name"
+            android:textDirection="locale"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
@@ -43,8 +48,10 @@
 
         <TextView
             android:id="@+id/tvPromo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
             android:textColor="@color/textColorMedium"
@@ -55,8 +62,11 @@
 
         <EditText
             android:id="@+id/edtPromo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textDirection="locale"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:drawablePadding="6dp"

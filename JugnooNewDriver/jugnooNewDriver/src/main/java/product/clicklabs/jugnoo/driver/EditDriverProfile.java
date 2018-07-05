@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -39,7 +38,6 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -98,7 +96,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
 		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
-		buttonStripe.setTypeface(Fonts.mavenMedium(this));
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		activity_profile_screen = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
@@ -110,28 +107,14 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.profile);
-		title.setTypeface(Fonts.mavenRegular(this));
-		((TextView)findViewById(R.id.tvPersonalInfo)).setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
-		((TextView)findViewById(R.id.tvAccountDetails)).setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
-		((TextView)findViewById(R.id.tvAccNoText)).setTypeface(Fonts.mavenRegular(this));
-		((TextView)findViewById(R.id.tvIFSCText)).setTypeface(Fonts.mavenRegular(this));
-		((TextView)findViewById(R.id.tvBankNameText)).setTypeface(Fonts.mavenRegular(this));
-		((TextView)findViewById(R.id.tvBankLocText)).setTypeface(Fonts.mavenRegular(this));
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-		editTextUserName.setTypeface(Fonts.mavenMedium(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-		editTextPhone.setTypeface(Fonts.mavenMedium(this));
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
-		tvCountryCode.setTypeface(Fonts.mavenMedium(this));
 		tvAccNo = (TextView) findViewById(R.id.tvAccNo);
-		tvAccNo.setTypeface(Fonts.mavenMedium(this));
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
-		textViewIFSC.setTypeface(Fonts.mavenMedium(this));
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
-		textViewBankName.setTypeface(Fonts.mavenMedium(this));
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
-		textViewBankLoc.setTypeface(Fonts.mavenMedium(this));
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);

@@ -19,24 +19,16 @@
         android:layout_width="match_parent"
         android:layout_above="@+id/shadowUp"
         android:layout_centerVertical="true"
-        android:layout_height="80px"
-        android:layout_marginTop="18px"
-        android:layout_marginBottom="6px"
+        android:layout_height="40dp"
+        android:layout_marginTop="9dp"
         android:splitMotionEvents="false"
         android:visibility="visible"
         />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="6px"
-        android:background="@drawable/shadow_down"
-        android:layout_below="@+id/topBar"/>
-
-    <ImageView
         android:id="@+id/shadowUp"
         android:layout_width="match_parent"
-        android:layout_height="6px"
-        android:layout_marginTop="8px"
+        android:layout_height="3dp"
         android:background="@drawable/shadow_up_light"
         android:layout_above="@+id/rlInput"/>
 
@@ -46,33 +38,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:padding="20px">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/input"
             android:layout_width="match_parent"
-            android:layout_height="80px"
+            android:layout_height="40dp"
             android:layout_toStartOf="@+id/action_send"
             android:background="@color/white"
             android:hint="@string/type_message_here"
             android:layout_centerVertical="true"
-            android:maxHeight="96px"
-            android:paddingStart="20px"
-            android:textColor="@color/text_color"
-            android:textColorHint="@color/text_color_light"
-            android:textSize="@dimen/text_size_30" />
+            android:inputType="text"
+            android:maxHeight="48dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            style="@style/TextNormal"/>
 
         <ImageView
             android:id="@+id/action_send"
-            android:layout_width="59px"
-            android:layout_height="59px"
-            android:layout_marginStart="20px"
-            android:layout_marginEnd="10px"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:padding="10px"
-            android:tag="mwar"
-            android:background="@android:color/transparent"
+            android:padding="5dp"
             android:src="@drawable/ic_send_msg" />
     </RelativeLayout>
 

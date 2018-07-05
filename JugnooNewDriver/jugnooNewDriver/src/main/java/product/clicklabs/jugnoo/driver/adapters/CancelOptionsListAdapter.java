@@ -8,15 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by aneeshbansal on 24/10/15.
@@ -59,15 +56,12 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 			holder = new ViewHolderCancelOption();
 			convertView = mInflater.inflate(R.layout.list_item_cancel_option, null);
 
-			holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption); holder.textViewCancelOption.setTypeface(Fonts.mavenRegular(context));
+			holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption);
 			holder.imageViewCancelOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewCancelOptionCheck);
 
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 			holder.relative.setTag(holder);
-
-			holder.relative.setLayoutParams(new ListView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
-			ASSL.DoMagic(holder.relative);
 
 			convertView.setTag(holder);
 		} else {

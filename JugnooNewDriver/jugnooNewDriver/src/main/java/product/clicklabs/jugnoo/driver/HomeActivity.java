@@ -9566,7 +9566,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				if(latLngs.size() > 1) {
-					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), false,
+					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false,
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
 								public void onPre() {

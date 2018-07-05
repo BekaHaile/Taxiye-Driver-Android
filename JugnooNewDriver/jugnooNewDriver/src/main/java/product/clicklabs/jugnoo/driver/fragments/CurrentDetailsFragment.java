@@ -52,10 +52,6 @@ public class CurrentDetailsFragment extends Fragment {
 
             }
         });
-        Utils.setTypeface(getActivity(), rootView.findViewById(R.id.label_credits),
-                rootView.findViewById(R.id.tv_credits_value),rootView.findViewById(R.id.label_comission),
-                rootView.findViewById(R.id.tv_comission_value),rootView.findViewById(R.id.tv_earn_credits),
-                rootView.findViewById(R.id.tv_share_credits));
 
         if(Data.userData != null) {
             ((TextView) rootView.findViewById(R.id.tv_credits_value)).setText(

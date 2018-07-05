@@ -39,10 +39,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="26px"
+                        android:layout_marginStart="13dp"
                         android:text="@string/Today_earning"
                         android:textColor="@color/white"
-                        android:textSize="30px" />
+                        style="@style/TextNormal"/>
 
 
                     <TextView
@@ -52,8 +52,8 @@
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/arrow"
                         android:text="NA"
-                        android:textColor="@color/white"
-                        android:textSize="45px" />
+                        style="@style/TextLarge"
+                        android:textColor="@color/white" />
 
                     <ImageView
                         android:id="@+id/arrow"
@@ -102,7 +102,8 @@
                         android:text="@string/wallet_balance"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"
+                        android:textStyle="bold"/>
 
 
                     <ImageView
@@ -122,10 +123,10 @@
                         android:layout_toStartOf="@+id/wallet_arrow"
                         android:gravity="center_vertical|end"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="20px"
+                        android:layout_marginEnd="10dp"
                         android:textColor="@color/white"
                         android:text="--"
-                        android:textSize="20px" />
+                        style="@style/TextMedium"/>
 
 
                 </RelativeLayout>
@@ -169,10 +170,10 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="18px"
+                        android:layout_marginEnd="9dp"
                         android:text="@string/no_data"
                         android:textColor="@color/white"
-                        android:textSize="34px"
+                        style="@style/TextNormal"
                         android:visibility="gone" />
 
 
@@ -221,7 +222,7 @@
                             android:layout_centerVertical="true"
                             android:text="@string/this_week_cap"
                             android:textColor="@color/white"
-                            android:textSize="32px" />
+                            style="@style/TextNormal"/>
 
                     </RelativeLayout>
 
@@ -261,21 +262,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="20px"
+                    android:layout_marginBottom="10dp"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
-                    android:textColor="@color/grey_light_v2"
-                    android:textSize="30px" />
+                    style="@style/TextNormal"/>
 
                 <TextView
                     android:id="@+id/tvDistanceCaptiveLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_marginBottom="20px"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/distance_covered"
-                    android:textColor="@color/text_color"
-                    android:textSize="36px" />
+                    style="@style/TextNormal" />
 
                 <TextView
                     android:id="@+id/tvDistanceCaptive"
@@ -284,9 +283,10 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/rupee_zero"
-                    android:layout_marginBottom="25px"
+                    style="@style/TextNormal"
+                    android:layout_marginBottom="12dp"
                     android:textColor="@color/themeColor"
-                    android:textSize="70px"/>
+                    android:textSize="35sp"/>
                 <RelativeLayout
                     android:id="@+id/relativeLayoutWalletCaptive"
                     android:layout_width="match_parent"
@@ -320,8 +320,7 @@
                         android:layout_centerVertical="true"
                         android:text="@string/wallet_balance"
                         android:textAllCaps="true"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal" />
 
 
                     <ImageView
@@ -339,15 +338,14 @@
                         android:id="@+id/textViewWalletBalanceAmountCaptive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10px"
+                        android:layout_marginStart="5dp"
                         android:layout_alignWithParentIfMissing="true"
                         android:layout_toEndOf="@id/textViewWalletBalanceCaptive"
                         android:layout_toStartOf="@+id/wallet_arrow_captive"
                         android:gravity="center_vertical|end"
                         android:layout_centerVertical="true"
-                        android:textColor="@color/text_color"
                         android:text="--"
-                        android:textSize="20px" />
+                        style="@style/TextMedium" />
 
 
                 </RelativeLayout>
@@ -365,8 +363,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/target_distance"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
                     <TextView
                         android:id="@+id/tvTargetDistance"
                         android:layout_width="wrap_content"
@@ -374,8 +371,7 @@
                         android:layout_alignParentEnd="true"
                         android:gravity="end"
                         android:layout_toEndOf="@id/tvTargetDistanceLabel"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -390,8 +386,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/days_left"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
                     <TextView
                         android:id="@+id/tvDaysLeft"
                         android:layout_width="wrap_content"
@@ -400,8 +395,7 @@
                         android:layout_toEndOf="@id/tvDaysLeftLabel"
                         android:layout_alignParentEnd="true"
                         android:text="@string/days_left"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_marginStart="35px"
@@ -413,8 +407,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cash_collected_from_user"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
 
                     <TextView
                         android:id="@+id/tvAmountCollected"
@@ -424,8 +417,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/amount_collected"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
                 </RelativeLayout>
 
 
@@ -442,8 +434,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/adjusted_distance"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
 
                     <TextView
                         android:id="@+id/tvAdjustedDistanceValue"
@@ -452,8 +443,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_color"
-                        android:textSize="36px" />
+                        style="@style/TextNormal"/>
                 </RelativeLayout>
 
 
@@ -478,7 +468,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <!--<include layout="@layout/layout_item_earning_per_day" />-->
 
 
 
@@ -525,12 +514,11 @@
                     <TextView
                         android:id="@+id/textViewRideHistory"
                         android:layout_width="wrap_content"
-                        android:layout_height="55px"
+                        android:layout_height="28dp"
                         android:layout_toEndOf="@+id/imageViewRideHistory"
                         android:gravity="center_vertical"
                         android:text="@string/ride_history_cap"
-                        android:textColor="@color/black_text_v2"
-                        android:textSize="36px" />
+                        style="@style/TextNormal" />
 
 
                     <ImageView
@@ -583,8 +571,7 @@
                     android:layout_centerVertical="true"
                     android:text="@string/neft_pending"
                     android:textAllCaps="true"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="36px" />
+                    style="@style/TextNormal" />
 
 
                 <ImageView
@@ -604,10 +591,9 @@
                     android:layout_toStartOf="@+id/nefy_arrow"
                     android:gravity="center_vertical|end"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="20px"
-                    android:textColor="@color/black_text_v2"
+                    android:layout_marginEnd="10dp"
                     android:text="--"
-                    android:textSize="36px" />
+                    style="@style/TextNormal" />
 
 
             </RelativeLayout>

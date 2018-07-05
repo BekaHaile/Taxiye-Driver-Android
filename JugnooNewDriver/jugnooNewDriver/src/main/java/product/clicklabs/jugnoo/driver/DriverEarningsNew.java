@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,7 +50,6 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -120,24 +118,14 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		layoutCaptivePlanDetails = (LinearLayout) findViewById(R.id.layout_captive_plan_details);
 		tvDistanceCaptive = (TextView) findViewById(R.id.tvDistanceCaptive);
 		tvDistanceCaptiveLabel = (TextView) findViewById(R.id.tvDistanceCaptiveLabel);
-		tvDistanceCaptive.setTypeface(Fonts.mavenRegular(this));
-		tvDistanceCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvDaysLeftCaptive = (TextView) findViewById(R.id.tvDaysLeft);
-		tvDaysLeftCaptive.setTypeface(Fonts.mavenRegular(this));
 		tvDaysLeftCaptiveLabel = (TextView) findViewById(R.id.tvDaysLeftLabel);
-		tvDaysLeftCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptive = (TextView) findViewById(R.id.tvAmountCollected);
-		tvAmountCollectedCaptive.setTypeface(Fonts.mavenRegular(this));
 		TextView tvAdjustedDistanceLabel = (TextView) findViewById(R.id.tvAdjustedDistanceLabel);
-		tvAdjustedDistanceLabel.setTypeface(Fonts.mavenRegular(this));
 		tvAdjustedDistanceValue = (TextView) findViewById(R.id.tvAdjustedDistanceValue);
-		tvAdjustedDistanceValue.setTypeface(Fonts.mavenRegular(this));
 		tvAmountCollectedCaptiveLabel = (TextView) findViewById(R.id.tvAmountCollectedLabel);
-		tvAmountCollectedCaptiveLabel.setTypeface(Fonts.mavenRegular(this));
 		tvTargetDistanceLabel = (TextView) findViewById(R.id.tvTargetDistanceLabel);
-		tvTargetDistanceLabel.setTypeface(Fonts.mavenRegular(this));
 		tvTargetDistance = (TextView) findViewById(R.id.tvTargetDistance);
-		tvTargetDistance.setTypeface(Fonts.mavenRegular(this));
 		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
@@ -158,30 +146,18 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		imageViewPrev = (ImageView) findViewById(R.id.imageViewPrev);
 		imageViewNext = (ImageView) findViewById(R.id.imageViewNext);
 		textViewEstPayout = (TextView) findViewById(R.id.textViewEstPayout);
-		textViewEstPayout.setTypeface(Fonts.mavenRegular(this));
 		textViewInvPeriod = (TextView) findViewById(R.id.textViewInvPeriod);
-		textViewInvPeriod.setTypeface(Fonts.mavenRegular(this));
 		textViewPayOutValue = (TextView) findViewById(R.id.textViewPayOutValue);
-		textViewPayOutValue.setTypeface(Fonts.mavenRegular(this));
 		textViewRideHistory = (TextView) findViewById(R.id.textViewRideHistory);
-		textViewRideHistory.setTypeface(Fonts.mavenBold(this));
 		textViewNoChartData = (TextView) findViewById(R.id.textViewNoChartData);
-		textViewNoChartData.setTypeface(Fonts.mavenRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
-		dateTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewNefy = (TextView) findViewById(R.id.textViewNefy);
-		textViewNefy.setTypeface(Fonts.mavenBold(this));
 		textViewNefyAmount = (TextView) findViewById(R.id.textViewNefyAmount);
-		textViewNefyAmount.setTypeface(Fonts.mavenRegular(this));
 		textViewWalletBalance = (TextView) findViewById(R.id.textViewWalletBalance);
-		textViewWalletBalance.setTypeface(Fonts.mavenBold(this));
 		textViewWalletBalanceCaptive = (TextView) findViewById(R.id.textViewWalletBalanceCaptive);
 		walletArrowCaptive = (ImageView) findViewById(R.id.wallet_arrow_captive);
-		textViewWalletBalanceCaptive.setTypeface(Fonts.mavenBold(this));
 		textViewWalletBalanceAmount = (TextView) findViewById(R.id.textViewWalletBalanceAmount);
-		textViewWalletBalanceAmount.setTypeface(Fonts.mavenRegular(this));
 		textViewWalletBalanceAmountCaptive = (TextView) findViewById(R.id.textViewWalletBalanceAmountCaptive);
-		textViewWalletBalanceAmountCaptive.setTypeface(Fonts.mavenRegular(this));
 		ImageView imageViewWalletBalance = (ImageView) findViewById(R.id.imageViewWalletBalance);
 		int color = Color.parseColor("#FFFFFF");
 		imageViewWalletBalance.setColorFilter(color, PorterDuff.Mode.SRC_IN);
@@ -189,7 +165,6 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.earnings_caps);
-		title.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
 //		textShader=new LinearGradient(0, 0, 0, 20,
@@ -321,7 +296,6 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 		textViewTripsLabel = (TextView)findViewById(R.id.textViewTripsText);
 		textViewTripsLabel.setText(getString(R.string.day_wise_breakup));
-		textViewTripsLabel.setTypeface(Fonts.mavenRegular(this));
 		findViewById(R.id.layout_recycler).setVisibility(View.GONE);
 		if(Data.isCaptive()){
 			relativeLayoutRideHistory.setVisibility(View.GONE);

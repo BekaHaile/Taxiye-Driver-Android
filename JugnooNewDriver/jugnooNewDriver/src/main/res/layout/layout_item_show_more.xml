@@ -50,12 +50,12 @@
                 android:id="@+id/textViewShowMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextMedium"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="106px"
                 android:text="@string/show_more"
-                android:textColor="@color/grey_black_light"
-                android:textSize="26px" />
+                />
 
 
         </RelativeLayout>
