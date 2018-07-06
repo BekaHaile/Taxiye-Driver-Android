@@ -68,7 +68,7 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 
 
 		if (helpSection != null) {
-			title.setText(helpSection.getName());
+			title.setText(helpSection.getName(HelpParticularActivity.this));
 		}
 
 

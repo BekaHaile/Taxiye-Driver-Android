@@ -671,6 +671,7 @@
     <string name="rate_us_on_play_store">قيمنا على متجر التطبيقات</string>
     <string name="like_us_on_facebook">اعجب بنا على الفيسبوك</string>
     <string name="terms_and_conditions">الأحكام والشروط</string>
+    <string name="terms_of_use">تعليمات الاستخدام</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="who_are_we">من نحن؟</string>
     <string name="facebook_not_installed">تطبيق Facebook غير ممكن</string>
@@ -679,7 +680,9 @@
     <string name="select_vehicle_type">اختر نوع السيارة</string>
     <string name="by_signing_you_agree">عن طريق التسجيل أنت توافق على موقعنا</string>
     <string name="continue_text">استمر</string>
-    <string name="neft_pending">Neft Pending</string>
+    <string name="neft_pending">Neft معلق</string>
+    <string name="terms_of_schedule">شروط الجدول</string>
+    <string name="faqs">أسئلة وأجوبة</string>
     <!--login with phone-->
 
 </resources>

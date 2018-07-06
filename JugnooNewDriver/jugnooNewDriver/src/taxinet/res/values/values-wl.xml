@@ -69,6 +69,9 @@
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <integer name="show_language_control">@integer/view_invisible</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <string name="facebook_page_id">204825336990225</string>
+    <string name="facebook_page_name">TaxiNet-Kenya</string>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <color name="themeColor">#4D4D4D</color>
     <color name="themeColorLight">#bb4D4D4D</color>
