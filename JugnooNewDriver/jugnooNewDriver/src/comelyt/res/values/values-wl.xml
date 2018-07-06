@@ -20,9 +20,9 @@
     <string name="app_name">Comelyt Drivers</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>
+    <string name="white_label_key">ebf012a07d7faf1513e531422d907abe</string>
 
-    <string name="fugu_app_key">acd1fc4c36da23e421c9e357785f4d4a</string>
+    <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">TT Ride Share Driver/TT Ride Share Pictures</string>
     <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
@@ -34,9 +34,9 @@
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">Comelyt Drivers</string><!--* IMP-->
-    <string name="support_email">support@ttideshare.com</string>
-    <string name="support_email_subject">TT Ride Share Driver Support</string>
-    <string name="support_phone_number">+919023121121</string>
+    <string name="support_email">info@comelyt.com</string>
+    <string name="support_email_subject">Comelyt Driver Support</string>
+    <string name="support_phone_number">+243999614774</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
@@ -79,7 +79,7 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
-    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <drawable name="bg_splash">@drawable/splash_bg</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 
