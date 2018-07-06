@@ -15,7 +15,6 @@
         3. application_id in build.gradle
     -->
 
-
     <string name="appname">Kardi Drivers</string>
     <string name="app_name">Kardi Drivers</string>
 
