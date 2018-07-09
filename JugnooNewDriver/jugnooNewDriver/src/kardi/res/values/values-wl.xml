@@ -15,27 +15,27 @@
         3. application_id in build.gradle
     -->
 
-    <string name="appname">Kardi Drivers</string>
-    <string name="app_name">Kardi Drivers</string>
+    <string name="appname">Kardi Driver</string>
+    <string name="app_name">Kardi Driver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">3d83f508c28f09ef4ef0c5aaf0d6c636</string>
 
     <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">TT Ride Share Driver/TT Ride Share Pictures</string>
-    <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
+    <string name="images_path">kardi Driver/kardi Pictures</string>
+    <string name="file_provider">production.kardi.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyAYtGKg7n3qVyMYz6FI87998DUbsfX4g1w</string> <!--IMP-->
 
     <string name="facebook_page_id">2056791887904505</string>
-    <string name="facebook_page_name">ttrideshare</string>
+    <string name="facebook_page_name">kardi</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">Comelyt Drivers</string><!--* IMP-->
-    <string name="support_email">info@comelyt.com</string>
-    <string name="support_email_subject">Comelyt Driver Support</string>
-    <string name="support_phone_number">+243999614774</string>
+    <string name="white_label_name">Kardi Driver</string><!--* IMP-->
+    <string name="support_email">hello@kardi.sg</string>
+    <string name="support_email_subject">Kardi Driver Support</string>
+    <string name="support_phone_number">+6587766554</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
@@ -78,7 +78,7 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
-    <drawable name="bg_splash">@drawable/splash_bg</drawable>
+    <drawable name="bg_splash">@color/white</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 
