@@ -80,7 +80,7 @@
 
     <drawable name="bg_splash">@color/white</drawable>
     <color name="colorDark">@color/text_color</color>
-    <color name="colorLight">@color/white</color>
+    <color name="colorLight">@color/black</color>
 
     <!--theme colors-->
     <color name="colorPrimary">#FFFFFF</color>
