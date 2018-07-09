@@ -20,13 +20,13 @@
     <string name="app_name">PamDrive Drivers</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">99f30666b06f54717b21328fcd5a0c7c</string>
+    <string name="white_label_key">0af5e0e5e6ab898cc714f9a5b5545451</string>
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">PamDrive Driver/PamDrive Pictures</string>
     <string name="file_provider">production.pamdrive.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyD1NROD8yHHbHyOJ1vPg0D7iZIqP0s9tiE</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
 
     <!--App Level Constants-->
@@ -71,6 +71,10 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
+
+    <color name="themeColor">#001743</color>
+    <color name="themeColorLight">#bb001743</color>
+
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#001734</color>
     <color name="textColorTitle">#000000</color>
@@ -79,8 +83,6 @@
     <color name="textColorLight">#9b9b9b</color>
     <color name="textColorButton">#FFFFFF</color>
     <color name="dividerColor">#dbdbdb</color>
-    <color name="themeColor">#CC3333</color>
-    <color name="themeColorLight">#bbCC3333</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
 

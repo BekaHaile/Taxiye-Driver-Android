@@ -1,31 +1,27 @@
 {
   "project_info": {
-    "project_number": "157118433798",
-    "firebase_url": "https://instataxi-db055.firebaseio.com",
-    "project_id": "instataxi-db055",
-    "storage_bucket": "instataxi-db055.appspot.com"
+    "project_number": "196730039656",
+    "firebase_url": "https://pamdrive-drivers-209406.firebaseio.com",
+    "project_id": "pamdrive-drivers-209406",
+    "storage_bucket": "pamdrive-drivers-209406.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:157118433798:android:d22b395423ee47b0",
+        "mobilesdk_app_id": "1:196730039656:android:f63c3e205a85a565",
         "android_client_info": {
-          "package_name": "production.instataxi.customer"
+          "package_name": "production.pamdrive.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "157118433798-3qnhggs82rr80ns1pen4f17utsp250f2.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "157118433798-3qnhggs82rr80ns1pen4f17utsp250f2.apps.googleusercontent.com",
+          "client_id": "196730039656-0453s6v4p049c3c947tupnhnhql6dkj4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD1NROD8yHHbHyOJ1vPg0D7iZIqP0s9tiE"
+          "current_key": "AIzaSyD7tFrKZmuqb0630h2vVUIZKi2tVLxLI70"
         }
       ],
       "services": {
@@ -43,24 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:157118433798:android:59250c40998635ef",
+        "mobilesdk_app_id": "1:196730039656:android:366d9357841c5bfe",
         "android_client_info": {
-          "package_name": "production.instataxi.driver"
+          "package_name": "production.pamdrive.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "157118433798-3qnhggs82rr80ns1pen4f17utsp250f2.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "157118433798-3qnhggs82rr80ns1pen4f17utsp250f2.apps.googleusercontent.com",
+          "client_id": "196730039656-0453s6v4p049c3c947tupnhnhql6dkj4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD1NROD8yHHbHyOJ1vPg0D7iZIqP0s9tiE"
+          "current_key": "AIzaSyD7tFrKZmuqb0630h2vVUIZKi2tVLxLI70"
         }
       ],
       "services": {
