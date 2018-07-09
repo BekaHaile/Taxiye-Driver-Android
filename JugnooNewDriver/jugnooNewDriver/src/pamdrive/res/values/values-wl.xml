@@ -16,8 +16,8 @@
     -->
 
 
-    <string name="appname">PamDrive</string>
-    <string name="app_name">PamDrive Drivers</string>
+    <string name="appname">PamDriver</string>
+    <string name="app_name">PamDriver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">0af5e0e5e6ab898cc714f9a5b5545451</string>
