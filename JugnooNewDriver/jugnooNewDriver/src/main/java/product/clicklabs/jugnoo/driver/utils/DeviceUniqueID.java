@@ -16,7 +16,7 @@ public class DeviceUniqueID {
                 return imei + (BuildConfig.DEBUG ? "mn" : "");
             }
             else{
-                return android.os.Build.SERIAL + (BuildConfig.DEBUG ? "mn" : "");
+                return android.os.Build.SERIAL + (BuildConfig.DEBUG ? "mnrfr" : "");
             }
 		} catch (Exception e) {
 			e.printStackTrace();

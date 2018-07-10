@@ -20,7 +20,6 @@ import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -36,10 +35,8 @@ import retrofit.mime.TypedByteArray;
 public class RideCancellationActivity extends BaseActivity implements ActivityCloser {
 
 
-	LinearLayout relative;
-
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	ImageView backBtn;
+	TextView title;
 
 	NonScrollListView listViewCancelOptions;
 	CancelOptionsListAdapter cancelOptionsListAdapter;
@@ -66,13 +63,11 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			return;
 		}
 
-		relative = (LinearLayout) findViewById(R.id.relative);
-		new ASSL(RideCancellationActivity.this, relative, 1134, 720, false);
 
-
-		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
+		backBtn = (ImageView) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setText(R.string.cancel_ride);
+		title.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
 
 		listViewCancelOptions = (NonScrollListView) findViewById(R.id.listViewCancelOptions);
@@ -87,7 +82,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -170,12 +165,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	public void onDestroy() {
 		RideCancellationActivity.activityCloser = null;
 		super.onDestroy();
-		try {
-			ASSL.closeActivity(relative);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.gc();
 	}
 
 

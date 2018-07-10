@@ -30,7 +30,6 @@ import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverCreditResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -85,7 +84,7 @@ public class CreditsHistoryFragment extends Fragment {
         recyclerView.setAdapter(driverCreditsHistoryAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
-        tvError = (TextView) rootView.findViewById(R.id.tvError); tvError.setTypeface(Fonts.mavenRegular(getActivity()));
+        tvError = (TextView) rootView.findViewById(R.id.tvError);
         tvError.setVisibility(View.GONE);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

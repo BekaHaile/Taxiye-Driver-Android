@@ -74,7 +74,6 @@
     <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
-    <integer name="show_driver_timer">@integer/view_invisible</integer>
 
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>

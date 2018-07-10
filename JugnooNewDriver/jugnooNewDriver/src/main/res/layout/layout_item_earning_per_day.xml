@@ -18,8 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:text="day, date"
-        android:textColor="@color/black_text_v2"
-        android:textSize="18sp" />
+        style="@style/TextNormal" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -35,8 +34,7 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/arrow"
             android:text="Rs. NA"
-            android:textColor="@color/black_text_v2"
-            android:textSize="18sp" />
+            style="@style/TextNormal" />
 
         <ImageView
             android:id="@+id/arrow"

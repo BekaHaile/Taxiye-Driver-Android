@@ -733,7 +733,7 @@
     <string name="please_enter_your_name">Please enter your name</string>
     <string name="select_vehicle_type">Select vehicle type</string>
     <string name="continue_text">Continue</string>
-    <string name="by_signing_you_agree">By Signing up you agree to our <u>Terms &amp; Conditions</u></string>
+    <string name="by_signing_you_agree">By Signing up you agree to our </string>
     <string name="place_bid">Place Bid</string>
     <string name="please_enter_some_value">Please enter some value</string>
     <string name="bid">Bid</string>
@@ -1013,6 +1013,7 @@
     <string name="rate_us_on_play_store">Rate us on Play Store</string>
     <string name="like_us_on_facebook">Like us on Facebook</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_of_use">Terms of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="who_are_we">Who are we?</string>
     <string name="facebook_not_installed">Facebook app not enabled</string>
@@ -1026,6 +1027,9 @@
     <string name="error_no_cities_found">No Cities Found!</string>
     <string name="title_dialog_select_city">Select City</string>
     <string name="title_search_dialog_default">Select</string>
+    <string name="neft_pending">Neft Pending</string>
+    <string name="terms_of_schedule">Terms of Schedule</string>
+    <string name="faqs">FAQs</string>
 
 
 </resources>

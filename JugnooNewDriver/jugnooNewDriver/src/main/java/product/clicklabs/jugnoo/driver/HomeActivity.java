@@ -3403,11 +3403,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (1 == Data.userData.autosAvailable) {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
 							textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
+							textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
 						} else {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
 							textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
+							textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 						}
 
 						if (1 == Data.userData.sharingAvailable) {
@@ -9564,7 +9566,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				if(latLngs.size() > 1) {
-					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), false,
+					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false,
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
 								public void onPre() {

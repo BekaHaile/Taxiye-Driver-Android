@@ -288,7 +288,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 			
 			holder.id = position;
 			
-			holder.name.setText(helpSections.get(position).getName());
+			holder.name.setText(helpSections.get(position).getName(HelpActivity.this));
 			
 			holder.relative.setOnClickListener(new View.OnClickListener() {
 				
@@ -330,7 +330,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 
 							default:
 								getHelpAsync(HelpActivity.this, helpSections.get(holder.id), false);
-								FlurryEventLogger.event(helpSections.get(holder.id).getName());
+								FlurryEventLogger.event(helpSections.get(holder.id).getName(HelpActivity.this));
 
 
 						}

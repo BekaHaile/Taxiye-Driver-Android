@@ -15,8 +15,10 @@
 
         <TextView
             android:id="@+id/tvEnterName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/please_enter_your_name"
             android:textColor="@color/textColorMedium"
             android:textSize="18sp"
@@ -25,13 +27,16 @@
 
         <EditText
             android:id="@+id/editTextName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:drawablePadding="5dp"
             android:drawableStart="@drawable/ic_edit_text_start_drawable"
             android:hint="@string/name"
+            android:textDirection="locale"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
@@ -43,8 +48,10 @@
 
         <TextView
             android:id="@+id/tvPromo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
             android:textColor="@color/textColorMedium"
@@ -55,8 +62,11 @@
 
         <EditText
             android:id="@+id/edtPromo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textDirection="locale"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:drawablePadding="6dp"
@@ -73,7 +83,8 @@
 
         <TextView
             android:id="@+id/tvSelectVehicle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/select_vehicle_type"
@@ -84,15 +95,15 @@
 
         <TextView
             android:id="@+id/tvCities"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingRight="5dp"
             android:paddingLeft="5dp"
-            app:layout_constraintHorizontal_bias="0.95"
-            app:layout_constraintRight_toRightOf="parent"
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBaseline_toBaselineOf="@id/tvSelectVehicle"
-            app:layout_constraintLeft_toRightOf="@id/tvSelectVehicle"
+            app:layout_constraintStart_toEndOf="@id/tvSelectVehicle"
             android:text="@string/label_select_city"
             android:clickable="true"
             android:focusable="true"
@@ -100,6 +111,13 @@
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
             />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierCityLabel"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tvSelectVehicle,tvCities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvVehicleTypes"
@@ -110,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            app:layout_constraintTop_toBottomOf="@+id/tvSelectVehicle" />
+            app:layout_constraintTop_toBottomOf="@+id/barrierCityLabel" />
 
 
         <Button
@@ -151,7 +169,7 @@
             android:text="@string/by_signing_you_agree"
             android:textColor="@color/text_color_splash_heading"
             android:textSize="14sp"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
             />
 

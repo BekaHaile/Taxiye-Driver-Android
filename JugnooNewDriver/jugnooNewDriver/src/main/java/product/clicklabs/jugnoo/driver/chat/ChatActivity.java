@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -35,7 +34,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
@@ -74,9 +72,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-		RelativeLayout relative = (RelativeLayout) findViewById(R.id.relative);
-        new ASSL(this, relative, 1134, 720, false);
 
 		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
 			engagementId = getIntent().getIntExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(Data.getCurrentEngagementId()));
@@ -185,7 +180,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-			case R.id.imageViewBack:
+			case R.id.backBtn:
 				performBackPressed();
 				break;
 			case R.id.action_send:

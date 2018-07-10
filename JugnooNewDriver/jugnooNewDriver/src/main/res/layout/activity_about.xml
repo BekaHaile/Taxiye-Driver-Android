@@ -42,14 +42,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/rate_us_on_play_store"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp" />
+                    style="@style/TextNormal" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/stroke_color_light" />
+                    android:background="@color/dividerColor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -76,14 +75,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/like_us_on_facebook"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp" />
+                    style="@style/TextNormal" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/stroke_color_light" />
+                    android:background="@color/dividerColor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -109,14 +107,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/terms_and_conditions"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp" />
+                    style="@style/TextNormal" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/stroke_color_light" />
+                    android:background="@color/dividerColor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -142,14 +139,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/privacy_policy"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp" />
+                    style="@style/TextNormal" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/stroke_color_light" />
+                    android:background="@color/dividerColor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -175,14 +171,13 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/who_are_we"
-                    android:textColor="@color/text_color"
-                    android:textSize="17sp" />
+                    style="@style/TextNormal" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/stroke_color_light" />
+                    android:background="@color/dividerColor" />
             </RelativeLayout>
             
         </LinearLayout>

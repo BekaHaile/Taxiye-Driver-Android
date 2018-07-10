@@ -70,7 +70,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text=""
+                            android:textDirection="ltr"
+                            android:text="+91 8859888755"
                             android:textColor="@color/black_text_v2"
                             android:textSize="@dimen/text_size_32" />
 
@@ -79,7 +80,7 @@
                             android:layout_width="2px"
                             android:layout_height="35px"
                             android:layout_marginStart="10px"
-                            android:background="@color/stroke_color_light" />
+                            android:background="@color/dividerColor" />
 
                         <ImageView
                             android:id="@+id/imageViewChangePhoneNumber"
@@ -99,7 +100,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="2px"
-                android:background="@color/stroke_color_light" />
+                android:background="@color/dividerColor" />
 
             <LinearLayout
                 android:id="@+id/otpETextLLayout"

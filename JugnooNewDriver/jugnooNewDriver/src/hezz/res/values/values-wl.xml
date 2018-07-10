@@ -69,8 +69,10 @@
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
-    <integer name="show_driver_timer">@integer/view_invisible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
+    <string name="facebook_page_id">1497119970363540</string>
+    <string name="facebook_page_name">Hezzmaroc</string>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <color name="themeColor">#CF312F</color>
     <color name="themeColorLight">#bbCF312F</color>
