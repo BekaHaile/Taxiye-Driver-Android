@@ -11,5 +11,6 @@ public  enum ApiName {
     REGISTER_DRIVER,
     MANUAL_RIDE,
     APPLY_PROMO,
-    ADD_CARD_API
+    ADD_CARD_API,
+    VEHICLE_MAKE_DATA
 }

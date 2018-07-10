@@ -39,6 +39,8 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleDetails;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelDetails;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -646,6 +648,10 @@ public interface APIServices {
 	@POST("/add_card_to_customer_account")
 	void addCardToCustomer(@FieldMap Map<String, String> params,
 						   Callback<StripeCardResponse> callback);
+	@FormUrlEncoded
+	@POST("/get_vehicle_make_details")
+	void getVehicleMakeDetails(@FieldMap Map<String, String> params,
+						   Callback<VehicleDetails> callback);
 
 
 

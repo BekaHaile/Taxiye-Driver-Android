@@ -5,12 +5,9 @@ import android.text.TextUtils
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
-import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
-import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
-import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
-import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
+import product.clicklabs.jugnoo.driver.ui.models.*
 import product.clicklabs.jugnoo.driver.utils.AppStatus
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import retrofit.Callback
@@ -154,6 +151,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             ApiName.APPLY_PROMO ->  RestClient.getApiServices().applyPromo(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToCustomer(params, callback as Callback<StripeCardResponse> )
+            ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetails> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }
