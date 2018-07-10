@@ -24,7 +24,7 @@
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">PamDrive Driver/PamDrive Pictures</string>
+    <string name="images_path">PamDriver/PamDriver Pictures</string>
     <string name="file_provider">production.pamdrive.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
@@ -33,8 +33,8 @@
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">PAMDRIVE</string><!--* IMP-->
     <string name="support_email">support@pamdrive.in</string>
-    <string name="support_email_subject">PamDrive Driver Support</string>
-    <string name="support_phone_number">+919023121121</string>
+    <string name="support_email_subject">PamDriver Support</string>
+    <string name="support_phone_number">+2348099904442</string>
     <string name="customer_app_download_link">https://www.pamdrive.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
