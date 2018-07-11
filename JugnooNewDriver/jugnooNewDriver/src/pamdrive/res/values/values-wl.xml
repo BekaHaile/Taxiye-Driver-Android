@@ -16,15 +16,15 @@
     -->
 
 
-    <string name="appname">PamDriver</string>
-    <string name="app_name">PamDriver</string>
+    <string name="appname">Pamdriver</string>
+    <string name="app_name">Pamdriver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">0af5e0e5e6ab898cc714f9a5b5545451</string>
 
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">PamDriver/PamDriver Pictures</string>
+    <string name="images_path">Pamdriver/Pamdriver Pictures</string>
     <string name="file_provider">production.pamdrive.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
@@ -33,7 +33,7 @@
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">PAMDRIVE</string><!--* IMP-->
     <string name="support_email">support@pamdrive.in</string>
-    <string name="support_email_subject">PamDriver Support</string>
+    <string name="support_email_subject">Pamdriver Support</string>
     <string name="support_phone_number">+2348099904442</string>
     <string name="customer_app_download_link">https://www.pamdrive.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
@@ -62,6 +62,8 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <bool name="specified_country_search_result_enabled">false</bool>
 
 
 
