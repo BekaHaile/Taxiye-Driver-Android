@@ -233,6 +233,15 @@ class VehicleDetailsFragment : Fragment() {
             if(currentMakeSelected==null || !currentMakeSelected!!.makeName.equals(country.makeName)){
                 currentMakeSelected = country
                 edtMake.setText(country.makeName)
+                if(currentModelSelected!=null){
+                    currentModelSelected=null;
+                    edtModel.setText(null)
+                    currentCustomisationSelected=null
+                    edtColor.setText(null)
+                    edtYear.setText(null)
+                    vehicleDetailsGroup.gone()
+                    btn_continue.isEnabled=true
+                }
             }
 
         }
