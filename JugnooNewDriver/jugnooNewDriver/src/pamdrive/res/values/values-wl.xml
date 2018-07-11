@@ -28,6 +28,8 @@
     <string name="file_provider">production.pamdrive.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
+    <string name="facebook_page_id">1110113865716816</string>
+    <string name="facebook_page_name">Pamdrive, Nigeria #1 Taxi Company</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
@@ -41,19 +43,22 @@
     <!--Notifications-->
     <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
     <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
-    <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
-    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
+    <drawable name="floating_icon_drawable">@drawable/app_icon
+    </drawable><!--App Floating Service Icon, preferably circular-->
+    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder
+    </drawable><!--680 * 340 px-->
 
 
     <!--Login sign-up -->
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
-    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo
+    </drawable> <!--400 * 400 px MAX--> <!--* IMP-->
 
 
     <!--Side Menu Properties-->
-    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
+    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon
+    </drawable><!--* IMP-->
     <integer name="show_invoices">@integer/view_visible</integer>
     <integer name="show_driver_resources">@integer/view_visible</integer>
     <integer name="show_refer_earn">@integer/view_visible</integer>
@@ -66,13 +71,19 @@
     <bool name="specified_country_search_result_enabled">false</bool>
 
 
-
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
+    <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
+    <bool name="use_fugu_key_hardcode">true</bool>
+
+    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <color name="colorDark">@color/text_color</color>
+    <color name="colorLight">@color/white</color>
 
     <color name="themeColor">#001743</color>
     <color name="themeColorLight">#bb001743</color>
@@ -87,7 +98,6 @@
     <color name="dividerColor">#dbdbdb</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
-
 
 
 </resources>
