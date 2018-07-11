@@ -5,12 +5,23 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_title"
+        android:padding="10dp"
+        android:text="@string/select"
+        style="@style/TextLarge"
+        android:gravity="center"
+        android:background="@color/bgColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/country_code_picker_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawablePadding="3dp"
+        android:layout_below="@id/tv_title"
         android:drawableStart="@drawable/ic_search"
         android:hint="@string/search"
         android:imeOptions="actionSearch"
