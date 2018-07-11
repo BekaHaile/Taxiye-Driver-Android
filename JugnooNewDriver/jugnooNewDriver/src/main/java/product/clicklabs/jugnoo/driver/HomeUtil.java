@@ -100,10 +100,12 @@ public class HomeUtil {
 
 	public static void putDefaultParams(HashMap<String, String> params){
 		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
+		params.put(Constants.LOGIN_TYPE, Data.LOGIN_TYPE);
 	}
 
 	public static void putDefaultParams(MultipartTypedOutput params){
 		params.addPart(Constants.KEY_OPERATOR_TOKEN, new TypedString(MyApplication.getInstance().getString(R.string.white_label_key)));
+		params.addPart(Constants.LOGIN_TYPE, new TypedString(Data.LOGIN_TYPE));
 	}
 
 }
