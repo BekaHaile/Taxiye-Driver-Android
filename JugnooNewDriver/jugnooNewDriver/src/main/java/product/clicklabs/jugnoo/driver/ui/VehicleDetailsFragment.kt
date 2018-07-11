@@ -24,10 +24,7 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.*
-import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.Utils
-import product.clicklabs.jugnoo.driver.utils.gone
-import product.clicklabs.jugnoo.driver.utils.inflate
+import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
 import java.lang.Exception
 import java.util.*
@@ -100,11 +97,13 @@ class VehicleDetailsFragment : Fragment() {
         }}
         edtModel.setOnClickListener{if (currentMakeSelected!=null){
             showSelectionDialog(vehicleModelInteractionListener,modelSelectionListener,VEHICLE_MODEL_DIALOG_FRAGMENT_TAG,getString(R.string.select_model))
+        }else{
+            Toast.makeText(requireContext(),getString(R.string.invalid_make),Toast.LENGTH_SHORT).show();
         }}
         edtColor.setOnClickListener{if (currentModelSelected!=null){
             showSelectionDialog(vehicleColorInteractionListener,colorSelectionListener,VEHICLE_COLOR_DIALOG_FRAGMENT_TAG,getString(R.string.select_color))
         }else{
-            Toast.makeText(requireContext(),getString(R.string.error_select_car_make),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),getString(R.string.invalid_model),Toast.LENGTH_SHORT).show();
         }}
         edtYear.addTextChangedListener(yearWatcher);
         btn_continue.setOnClickListener{
@@ -169,7 +168,10 @@ class VehicleDetailsFragment : Fragment() {
                     override fun onSuccess(t: VehicleModelCustomisationsResponse?, message: String?, flag: Int) {
 
 
-
+                        if(currentModelSelected==null){
+                            vehicleDetailsGroup.visible()
+                            btn_continue.isEnabled=true
+                        }
                         currentModelSelected = modelRequested
                         edtModel.setText(modelRequested.modelName)
                         edtSeatBelt.setText(""+modelRequested.noOfSeatBelts)
@@ -289,12 +291,7 @@ class VehicleDetailsFragment : Fragment() {
 
     fun submitVehicleDetails(){
 
-        val year = edtYear.text.toString().trim();
-        if(!isYearValid(year))
-        {
-            Toast.makeText(requireContext(),getString(R.string.invalid_year_error,minYear,calendar.get(Calendar.YEAR)),Toast.LENGTH_SHORT).show();
-            return;
-        }
+
 
         if(currentMakeSelected==null)
         {
@@ -313,6 +310,12 @@ class VehicleDetailsFragment : Fragment() {
             return;
         }
 
+        val year = edtYear.text.toString().trim();
+        if(!isYearValid(year))
+        {
+            Toast.makeText(requireContext(),getString(R.string.invalid_year_error,minYear,calendar.get(Calendar.YEAR)),Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         val params = hashMapOf(

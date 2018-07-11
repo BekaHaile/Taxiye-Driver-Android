@@ -14,44 +14,17 @@
         android:paddingStart="20dp">
 
 
-        <TextView
-            android:id="@+id/labelYear"
-            style="@style/TextNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/year"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <EditText
-            android:id="@+id/edtYear"
-            style="@style/TextNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            android:hint="@string/year"
-            android:maxLength="4"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:padding="13dp"
-            android:textDirection="locale"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelYear" />
 
         <TextView
             android:id="@+id/labelMake"
             style="@style/TextNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text="@string/make"
             app:layout_constrainedHeight="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtYear" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -101,6 +74,64 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelModel" />
 
+
+
+        <TextView
+            android:id="@+id/labelColor"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/color"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtModel" />
+
+
+        <TextView
+            android:id="@+id/edtColor"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/color"
+            android:focusable="true"
+            android:clickable="true"
+            android:padding="13dp"
+            android:textDirection="locale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelColor" />
+        <TextView
+            android:id="@+id/labelYear"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/year"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtColor" />
+
+
+        <EditText
+            android:id="@+id/edtYear"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/year"
+            android:maxLength="4"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:padding="13dp"
+            android:textDirection="locale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelYear" />
+
         <TextView
             android:id="@+id/labelDoor"
             style="@style/TextNormal"
@@ -110,7 +141,7 @@
             android:text="@string/number_of_doors"
             app:layout_constrainedHeight="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtModel" />
+            app:layout_constraintTop_toBottomOf="@id/edtYear" />
 
 
         <TextView
@@ -130,34 +161,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelDoor" />
 
-        <TextView
-            android:id="@+id/labelColor"
-            style="@style/TextNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/color"
-            app:layout_constrainedHeight="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtDoor" />
 
-
-        <TextView
-            android:id="@+id/edtColor"
-            style="@style/TextNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            android:hint="@string/color"
-            android:focusable="true"
-            android:clickable="true"
-            android:padding="13dp"
-            android:textDirection="locale"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelColor" />
 
         <TextView
             android:id="@+id/labelSeatBelts"
@@ -168,7 +172,7 @@
             android:text="@string/no_of_seat_belts"
             app:layout_constrainedHeight="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtColor" />
+            app:layout_constraintTop_toBottomOf="@id/edtDoor" />
 
 
         <TextView
@@ -191,20 +195,25 @@
         <Button
             android:id="@+id/btn_continue"
             style="@style/ButtonTheme"
+            android:enabled="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/save"
-            app:layout_constraintVertical_bias="1.0"
+            android:text="@string/continue_text"
+            app:layout_constraintVertical_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtSeatBelt" />
 
+
+
+
         <android.support.constraint.Group
             android:id="@+id/vehicleDetailsGroup"
-            app:constraint_referenced_ids="labelDoor,edtDoor,labelColor,edtColor,labelSeatBelts,edtSeatBelt"
+            android:visibility="gone"
+            app:constraint_referenced_ids="labelYear,edtYear,labelDoor,edtDoor,labelColor,edtColor,labelSeatBelts,edtSeatBelt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

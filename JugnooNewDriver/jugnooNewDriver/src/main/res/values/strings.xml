@@ -1050,13 +1050,12 @@
     <string name="model">Model</string>
     <string name="number_of_doors">Number of Doors</string>
     <string name="color">Color</string>
-    <string name="no_of_seat_belts">Number of seatbelts</string>
+    <string name="no_of_seat_belts">Number of Seatbelts</string>
     <string name="select_make">Select Make</string>
     <string name="select_model">Select Model</string>
     <string name="select_color">Select Color</string>
-    <string name="error_select_car_make">Please select a make</string>
     <string name="invalid_year_error">Year should be betweeen %d and %d</string>
-    <string name="invalid_make">Please select vehicle make to proceed.</string>
+    <string name="invalid_make">Please select a vehicle make to proceed.</string>
     <string name="invalid_model">Please select a vehicle model to proceed.</string>
     <string name="invalid_color">Please select a color.</string>
     <string name="title_vehicle_details">Vehicle Information</string>
