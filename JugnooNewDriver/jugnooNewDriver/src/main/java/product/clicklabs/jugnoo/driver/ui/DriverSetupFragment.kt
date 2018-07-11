@@ -213,7 +213,8 @@ class DriverSetupFragment : Fragment() {
                     Log.d("", t.serverMessage())
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                            openDocumentUploadActivity()
+                            //openDocumentUploadActivity()
+                            (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,"" + adapter.getCurrentSelectedVehicle()!!.vehicleType)
                         }
 
                         ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {
@@ -411,4 +412,6 @@ class DriverSetupFragment : Fragment() {
 
 
     };
+
+
 }

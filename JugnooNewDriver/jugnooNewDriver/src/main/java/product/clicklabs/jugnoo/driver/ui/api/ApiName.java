@@ -12,5 +12,6 @@ public  enum ApiName {
     MANUAL_RIDE,
     APPLY_PROMO,
     ADD_CARD_API,
-    VEHICLE_MAKE_DATA
+    VEHICLE_MAKE_DATA,
+    VEHICLE_MODEL_DATA
 }

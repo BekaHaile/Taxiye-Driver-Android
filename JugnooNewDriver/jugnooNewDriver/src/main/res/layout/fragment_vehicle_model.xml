@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/year"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -33,6 +33,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/year"
+            android:maxLength="4"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:padding="13dp"
@@ -49,21 +50,21 @@
             android:layout_marginTop="12dp"
             android:text="@string/make"
             app:layout_constrainedHeight="true"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtYear" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/edtMake"
             style="@style/TextNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/make"
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
             android:textDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,21 +80,21 @@
             android:layout_marginTop="12dp"
             android:text="@string/model"
             app:layout_constrainedHeight="true"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtMake" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/edtModel"
             style="@style/TextNormal"
             android:layout_width="0dp"
+            android:focusable="true"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/model"
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
             android:textDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,11 +109,11 @@
             android:layout_marginTop="12dp"
             android:text="@string/number_of_doors"
             app:layout_constrainedHeight="true"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtModel" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/edtDoor"
             style="@style/TextNormal"
             android:layout_width="0dp"
@@ -121,8 +122,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/number_of_doors"
-            android:imeOptions="actionDone"
-            android:inputType="number"
+            android:focusable="true"
+            android:clickable="true"
             android:padding="13dp"
             android:textDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,11 +138,11 @@
             android:layout_marginTop="12dp"
             android:text="@string/color"
             app:layout_constrainedHeight="true"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtDoor" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/edtColor"
             style="@style/TextNormal"
             android:layout_width="0dp"
@@ -150,8 +151,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/color"
-            android:imeOptions="actionDone"
-            android:inputType="textPersonName|textCapWords"
+            android:focusable="true"
+            android:clickable="true"
             android:padding="13dp"
             android:textDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,11 +167,11 @@
             android:layout_marginTop="12dp"
             android:text="@string/no_of_seat_belts"
             app:layout_constrainedHeight="true"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtColor" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/edtSeatBelt"
             style="@style/TextNormal"
             android:layout_width="0dp"
@@ -179,8 +180,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             android:hint="@string/no_of_seat_belts"
-            android:imeOptions="actionDone"
-            android:inputType="number"
+            android:focusable="true"
+            android:clickable="true"
             android:padding="13dp"
             android:textDirection="locale"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,13 +189,17 @@
             app:layout_constraintTop_toBottomOf="@+id/labelSeatBelts" />
 
         <Button
+            android:id="@+id/btn_continue"
             style="@style/ButtonTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/save"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edtSeatBelt" />
 
         <android.support.constraint.Group
