@@ -21,7 +21,7 @@
     <!--White Label Key-->
     <string name="white_label_key">3d83f508c28f09ef4ef0c5aaf0d6c636</string>
 
-    <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
+    <string name="fugu_app_key">46a30bd40da9ae24b774cde4eed79d97</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">kardi Driver/kardi Pictures</string>
     <string name="file_provider">production.kardi.driver.driver.provider</string>
