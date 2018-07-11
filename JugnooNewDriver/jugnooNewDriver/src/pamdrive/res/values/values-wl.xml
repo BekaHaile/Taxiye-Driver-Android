@@ -22,7 +22,7 @@
     <!--White Label Key-->
     <string name="white_label_key">0af5e0e5e6ab898cc714f9a5b5545451</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">59f842a6fc56fabf00f0bd99fbba3440</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Pamdriver/Pamdriver Pictures</string>
     <string name="file_provider">production.pamdrive.driver.provider</string>
