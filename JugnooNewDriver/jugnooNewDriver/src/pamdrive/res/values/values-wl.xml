@@ -50,6 +50,9 @@
 
 
     <!--Login sign-up -->
+    <drawable name="generate_otp">@drawable/orange_generate_otp_selector</drawable>
+    <drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>
+
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo
