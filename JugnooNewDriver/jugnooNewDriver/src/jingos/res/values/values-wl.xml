@@ -21,8 +21,7 @@
     <string name="app_name">Jingos Drivers</string>
 
     <!--White Label Key-->
-    <!--<string name="white_label_key">839f5be8cced4d17ad3e6264762136fe</string>-->
-    <string name="white_label_key">d7f228ce89b10cb02ec9fccdb47355d5</string>
+    <string name="white_label_key">839f5be8cced4d17ad3e6264762136fe</string>
 
     <string name="fugu_app_key">a79f81a521c43b443388f84871e02ebb</string>
     <string name="fugu_app_key_test">a79f81a521c43b443388f84871e02ebb</string>
