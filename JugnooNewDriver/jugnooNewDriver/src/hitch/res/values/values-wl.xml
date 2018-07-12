@@ -36,6 +36,8 @@
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.hitch.com/</string>
     <integer name="show_t_and_c">@integer/view_visible</integer>
+    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="driver_logout_enabled">1</integer>
 
 
     <drawable name="bg_splash">@drawable/bg_hitch</drawable>
@@ -49,7 +51,7 @@
     <integer name="show_driver_timer">@integer/view_invisible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
     <string name="facebook_page_id">1497119970363540</string>
-    <string name="facebook_page_name">Hezzmaroc</string>
+    <string name="facebook_page_name">Hitch</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <!--theme colors-->
