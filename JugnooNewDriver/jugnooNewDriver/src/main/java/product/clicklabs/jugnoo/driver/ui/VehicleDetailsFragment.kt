@@ -15,10 +15,7 @@ import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import kotlinx.android.synthetic.main.fragment_vehicle_model.*
-import product.clicklabs.jugnoo.driver.Constants
-import product.clicklabs.jugnoo.driver.DriverDocumentActivity
-import product.clicklabs.jugnoo.driver.IncomingSmsReceiver
-import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
@@ -36,9 +33,11 @@ class VehicleDetailsFragment : Fragment() {
 
     private val  ARGS_CITY_ID = "city_id"
     private val  ARGS_VEHICLE_TYPE = "vehicle_type"
+    private val  ARGS_USER_NAME = "user_name"
 
     private lateinit var toolbarChangeListener: ToolbarChangeListener
     private lateinit var cityId:String
+    private lateinit var userName:String
     private lateinit var vehicleType:String
     private lateinit var accessToken:String
     private val  VEHICLE_MAKE_DIALOG_FRAGMENT_TAG = "vehicle_make_dialog"
@@ -56,12 +55,13 @@ class VehicleDetailsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(accessToken: String,cityId:String,vehicleType:String) =
+        fun newInstance(accessToken: String,cityId:String,vehicleType:String,userName:String) =
                 VehicleDetailsFragment().apply {
                     arguments = Bundle().apply {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putString(ARGS_CITY_ID, cityId)
                         putString(ARGS_VEHICLE_TYPE, vehicleType)
+                        putString(ARGS_USER_NAME, userName)
                     }
                 }
     }
@@ -79,6 +79,7 @@ class VehicleDetailsFragment : Fragment() {
             accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)
             cityId = it.getString(ARGS_CITY_ID)
             vehicleType = it.getString(ARGS_VEHICLE_TYPE)
+            userName = it.getString(ARGS_USER_NAME)
         }
 
     }
@@ -95,11 +96,7 @@ class VehicleDetailsFragment : Fragment() {
         edtMake.setOnClickListener{if (::vehiceMakeModelData.isInitialized){
             showSelectionDialog(vehicleMakeInteractionListener,makeSelectionListener,VEHICLE_MAKE_DIALOG_FRAGMENT_TAG,getString(R.string.select_make))
         }}
-        edtModel.setOnClickListener{if (currentMakeSelected!=null){
-            showSelectionDialog(vehicleModelInteractionListener,modelSelectionListener,VEHICLE_MODEL_DIALOG_FRAGMENT_TAG,getString(R.string.select_model))
-        }else{
-            Toast.makeText(requireContext(),getString(R.string.invalid_make),Toast.LENGTH_SHORT).show();
-        }}
+        edtModel.setOnClickListener{ showModelDialogIfPossible() }
         edtColor.setOnClickListener{if (currentModelSelected!=null){
             showSelectionDialog(vehicleColorInteractionListener,colorSelectionListener,VEHICLE_COLOR_DIALOG_FRAGMENT_TAG,getString(R.string.select_color))
         }else{
@@ -111,6 +108,14 @@ class VehicleDetailsFragment : Fragment() {
         }
 
         getVehicleDetails();
+    }
+
+    private fun showModelDialogIfPossible() {
+        if (currentMakeSelected != null) {
+            showSelectionDialog(vehicleModelInteractionListener, modelSelectionListener, VEHICLE_MODEL_DIALOG_FRAGMENT_TAG, getString(R.string.select_model))
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.invalid_make), Toast.LENGTH_SHORT).show();
+        }
     }
 
     fun getVehicleDetails(){
@@ -128,7 +133,6 @@ class VehicleDetailsFragment : Fragment() {
                     }
 
                     override fun onError(t: VehicleDetailsResponse?, message: String?, flag: Int): Boolean {
-                        groupView.gone()
                         DialogPopup.alertPopupWithListener(requireActivity(), "", message, { requireActivity().onBackPressed() })
                         return true;
                     }
@@ -181,6 +185,7 @@ class VehicleDetailsFragment : Fragment() {
                             currentCustomisationSelected = vehicleColorList!![0]
                             edtColor.setText(vehicleColorList!![0].color)
                         }
+                        edtYear.requestFocus();
 
 
 
@@ -242,6 +247,7 @@ class VehicleDetailsFragment : Fragment() {
                     vehicleDetailsGroup.gone()
                     btn_continue.isEnabled=true
                 }
+                 showModelDialogIfPossible();
             }
 
         }
@@ -329,9 +335,26 @@ class VehicleDetailsFragment : Fragment() {
 
         val params = hashMapOf(
                 Constants.KEY_ACCESS_TOKEN to accessToken,
+                "user_name" to userName,
+                "latitude" to "" + Data.latitude,
+                "longitude" to "" + Data.longitude,
                 "city" to ""+cityId,
+                "offering_type" to "" + 1,
+                "vehicle_status" to getString(R.string.owned),
+                "device_type" to Data.DEVICE_TYPE,
+                "device_name" to Data.deviceName,
+                "app_version" to "" + Data.appVersion,
+                "os_version" to Data.osVersion,
+                "country" to Data.country,
+                "client_id" to Data.CLIENT_ID,
+                "login_type" to Data.LOGIN_TYPE,
+                "referral_code" to "",
+                "device_token" to Data.deviceToken,
+                "unique_device_id" to Data.uniqueDeviceId,
+                "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0",
+                //vehicle model specific details
                 "vehicle_make_id" to ""+currentCustomisationSelected!!.id,
-                 "vehicle_type" to vehicleType,
+                "vehicle_type" to vehicleType,
                 "vehicle_year" to ""+year)
 
 
@@ -353,7 +376,7 @@ class VehicleDetailsFragment : Fragment() {
                             })
 
                         }
-                        else ->onError(t,message,flag)
+                        else -> DialogPopup.alertPopup(requireActivity(), "", message)
                     }
                 }
 

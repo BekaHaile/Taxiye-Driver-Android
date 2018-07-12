@@ -18,7 +18,7 @@ data class VehicleModelDetails(
         @Expose @SerializedName("brand") val make:String,
         @Expose @SerializedName("name") val modelName:String,
         @Expose @SerializedName("model_id") val id:Int,
-        @Expose @SerializedName("no_of_seats") val noOfSeatBelts:Int,
+        @Expose @SerializedName("no_of_seat_belts") val noOfSeatBelts:Int,
         @Expose @SerializedName("no_of_doors") val noOfDoors:Int) :SearchDataModel() {
     override fun getLabel(): String {
        return modelName;

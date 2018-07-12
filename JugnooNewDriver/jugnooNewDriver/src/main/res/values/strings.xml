@@ -1046,7 +1046,9 @@
     <string name="card_details">Card Details</string>
     <string name="view_cards">View Cards</string>
     <string name="year">Year</string>
+    <string name="hing_year">Enter Year</string>
     <string name="make">Make</string>
+    <string name="hint_make">Select Make</string>
     <string name="model">Model</string>
     <string name="number_of_doors">Number of Doors</string>
     <string name="color">Color</string>

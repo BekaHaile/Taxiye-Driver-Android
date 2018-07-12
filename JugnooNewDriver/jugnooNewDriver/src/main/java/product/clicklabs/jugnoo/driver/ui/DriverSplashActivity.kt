@@ -340,10 +340,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         return loginFragment!=null && loginFragment.isVisible/* && (loginFragment as LoginFragment).assist*/
     }
 
-    public fun openVehicleDetails(accessToken: String,cityId:String,vehicleType:String ){
+    public fun openVehicleDetails(accessToken: String,cityId:String,vehicleType:String,userName:String ){
        supportFragmentManager.inTransactionWithAnimation {
 
-            add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType), VehicleDetailsFragment::class.simpleName)
+            add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType,userName), VehicleDetailsFragment::class.simpleName)
                     .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName))
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
