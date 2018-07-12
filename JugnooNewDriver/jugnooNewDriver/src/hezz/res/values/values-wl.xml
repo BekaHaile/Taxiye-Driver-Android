@@ -76,4 +76,5 @@
 
     <color name="themeColor">#CF312F</color>
     <color name="themeColorLight">#bbCF312F</color>
+    <string name="default_lang">français</string>
 </resources>

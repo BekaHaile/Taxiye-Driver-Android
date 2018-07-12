@@ -80,7 +80,7 @@ class LoginFragment : Fragment() {
             animateViews()
         }
 
-        selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
+        selectedLanguage = BaseFragmentActivity.selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
         val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener<Country>{
@@ -258,7 +258,7 @@ class LoginFragment : Fragment() {
                                 val item = parent?.getItemAtPosition(position).toString()
                                 if (!item.equals(selectedLanguage, true)) {
                                     selectedLanguage = item
-                                    (activity as DriverSplashActivity).updateLanguage(item)
+                                    BaseFragmentActivity.updateLanguage(activity, item)
                                 }
                             }
                         }

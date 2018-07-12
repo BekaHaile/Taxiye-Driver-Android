@@ -1748,4 +1748,9 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="neft_pending">Neft en attente</string>
     <string name="terms_of_schedule">Conditions d'horaire</string>
     <string name="faqs">FAQ</string>
+    <string name="label_edt_phone">S\'il vous plait, entrez votre numéro de téléphone</string>
+    <string name="btn_text_OTP">GÉNÉRER OTP</string>
+    <string name="hint_edt_phone">Numéro de téléphone</string>
+    <string name="enter_one_time_pwd">Entrez un mot de passe unique</string>
+
 </resources>																									

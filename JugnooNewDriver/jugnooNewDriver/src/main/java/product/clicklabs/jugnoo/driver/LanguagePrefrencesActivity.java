@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -215,7 +216,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 						Prefs.with(LanguagePrefrencesActivity.this).save(SPLabels.SELECTED_LANGUAGE, languages.get(holder.id).toString());
 						MyApplication.getInstance().logEvent(FirebaseEvents.HOME_SCREEN+"_"+
 								FirebaseEvents.LANGUAGE+"_"+languages.get(holder.id).toString()+"_"+position,null);
-						updateLanguage();
+						BaseFragmentActivity.updateLanguage(LanguagePrefrencesActivity.this,null);
 						conf = getResources().getConfiguration();
 						setPreferredLanguage();
 						finish();
