@@ -15,7 +15,7 @@
         3. application_id in build.gradle
     -->
 
-    <string name="appname">Kardi Driver</string>
+    <string name="appname">Kardi</string>
     <string name="app_name">Kardi Driver</string>
 
     <!--White Label Key-->
