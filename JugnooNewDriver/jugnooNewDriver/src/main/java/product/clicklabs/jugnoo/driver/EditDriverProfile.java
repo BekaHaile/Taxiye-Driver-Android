@@ -2,7 +2,9 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -106,6 +108,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		backBtn = findViewById(R.id.backBtn);
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
+		imageViewEditPhone.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.profile);
 

@@ -22,7 +22,7 @@
     <!--White Label Key-->
     <string name="white_label_key">24a1592fe2e6a9a77d5b0d7b83496d56</string>
 
-    <string name="fugu_app_key">5272bed2276ac0c2fe3cdc2bfb5723c1</string>
+    <string name="fugu_app_key">e78ce86035d743fc851a1473821595b2</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Hitch Driver/Hitch Pictures</string>
     <string name="file_provider">com.hitch.driver.provider</string>
@@ -50,8 +50,8 @@
     <!--General Features Enable/Disable-->
     <integer name="show_driver_timer">@integer/view_invisible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
-    <string name="facebook_page_id">1497119970363540</string>
-    <string name="facebook_page_name">Hitch</string>
+    <string name="facebook_page_id">hitchbm</string>
+    <string name="facebook_page_name">hitchbm</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <!--theme colors-->

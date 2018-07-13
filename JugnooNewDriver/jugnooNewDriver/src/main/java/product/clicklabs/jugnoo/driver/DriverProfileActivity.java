@@ -2,8 +2,10 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -52,7 +54,7 @@ public class DriverProfileActivity extends BaseActivity {
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
-    ImageView profileImg, imageViewTitleBarDEI;
+    ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
     SwitchCompat switchNavigation;
 
@@ -116,6 +118,8 @@ public class DriverProfileActivity extends BaseActivity {
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this)); title.setText(R.string.profile);
 
+        ivEditIcon = (ImageView) findViewById(R.id.ivEditIcon);
+        ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
