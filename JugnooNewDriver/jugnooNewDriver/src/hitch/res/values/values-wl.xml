@@ -49,7 +49,6 @@
 
     <!--General Features Enable/Disable-->
     <integer name="show_driver_timer">@integer/view_invisible</integer>
-    <bool name="use_fugu_key_hardcode">true</bool>
     <string name="facebook_page_id">hitchbm</string>
     <string name="facebook_page_name">hitchbm</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
