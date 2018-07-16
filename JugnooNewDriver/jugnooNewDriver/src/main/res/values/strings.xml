@@ -1030,6 +1030,7 @@
     <string name="neft_pending">Neft Pending</string>
     <string name="terms_of_schedule">Terms of Schedule</string>
     <string name="faqs">FAQs</string>
+    <string name="waze_navigation">Waze Navigation</string>
 
 
 </resources>

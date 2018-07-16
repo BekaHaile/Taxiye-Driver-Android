@@ -156,4 +156,13 @@
         <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
 
+    <style name="ThemeSwitch">
+        <item name="colorControlActivated">
+            @color/themeColor
+        </item>
+        <item name="android:colorForeground">
+            @color/grey_light_more
+        </item>
+    </style>
+
 </resources>
