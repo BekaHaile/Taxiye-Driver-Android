@@ -202,7 +202,7 @@
                         <ImageView
                             android:id="@+id/imageViewPrev"
                             android:layout_width="52px"
-                            android:layout_height="52px"
+                            android:layout_height="60px"
                             android:layout_centerVertical="true"
                             android:rotationY="@integer/locale_mirror_flip_inverse"
                             android:src="@drawable/arrow_with_padding" />
@@ -244,7 +244,7 @@
                         <ImageView
                             android:id="@+id/imageViewNext"
                             android:layout_width="52px"
-                            android:layout_height="52px"
+                            android:layout_height="60px"
                             android:layout_centerVertical="true"
                             android:rotationY="@integer/locale_mirror_flip"
                             android:src="@drawable/arrow_with_padding" />

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -638,13 +639,18 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(relativelayoutChart.getWidth(), View.MeasureSpec.UNSPECIFIED);
 		int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(relativelayoutChart.getHeight(), View.MeasureSpec.UNSPECIFIED);
 		relativelayoutRandom.measure(widthMeasureSpec, heightMeasureSpec);
+		//relativelayoutRandom.setBackgroundColor(getResources().getColor(R.color.red));
 
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		int height = displayMetrics.heightPixels;
+		int width = displayMetrics.widthPixels;
 		// set up layout parameters so our marker is in the same position as the mpchart marker would be (based no the x and y)
 		RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) relativelayoutRandom.getLayoutParams();
-		lps.height = (int) (155f * ASSL.Yscale());
-		lps.width = (int) (150f * ASSL.Xscale());
-		lps.setMarginStart((x) - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (75f * ASSL.Xscale()));
-		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (145f * ASSL.Yscale());
+		lps.height = (int) (height>1000?80f:60f * ASSL.Yscale());
+		lps.width = (int) (height>1000?240f:200f * ASSL.Xscale());
+		lps.setMarginStart(x);// - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (100f * ASSL.Xscale()));
+		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (height>1000?220f:170f * ASSL.Yscale());
 		relativelayoutRandom.setLayoutParams(lps);
 	}
 
