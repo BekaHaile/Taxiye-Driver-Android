@@ -1240,4 +1240,9 @@ public class Utils {
         }
         return appInstalled;
     }
+
+    public static boolean checkIfOnlyDigitsDecimal(String strTocheck){
+        String regex = "[0-9.]*";
+        return strTocheck.matches(regex);
+    }
 }

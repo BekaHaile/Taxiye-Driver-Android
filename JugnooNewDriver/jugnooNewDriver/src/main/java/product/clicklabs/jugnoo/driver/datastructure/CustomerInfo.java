@@ -62,6 +62,7 @@ public class CustomerInfo {
 	private double bidValue;
 	private double initialBidValue;
 	private double estimatedTripDistance;
+	private double tollFare;
 
 
 	/**
@@ -657,5 +658,13 @@ public class CustomerInfo {
 
 	public void setEstimatedTripDistance(double estimatedTripDistance) {
 		this.estimatedTripDistance = estimatedTripDistance;
+	}
+
+	public double getTollFare() {
+		return tollFare;
+	}
+
+	public void setTollFare(double tollFare) {
+		this.tollFare = tollFare;
 	}
 }

@@ -1032,6 +1032,10 @@
     <string name="terms_of_schedule">Terms of Schedule</string>
     <string name="faqs">FAQs</string>
     <string name="waze_navigation">Waze Navigation</string>
+    <string name="enter_toll">Enter Toll</string>
+    <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
+    <string name="toll_value">Toll fare: %s</string>
+    <string name="please_enter_valid_fare">Please enter valid fare</string>
 
 
 </resources>

@@ -153,8 +153,8 @@ import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
+import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
-import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -5024,7 +5024,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			waitTimeInMin = 0d;
 		}
 
-		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin);
+		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin, customerInfo.getTollFare());
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -6419,6 +6419,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
 		params.put(KEY_RIDE_TIME_SECONDS_DB, rideTimeInSecFromDBStr);
 		params.put(KEY_IS_CACHED, "0");
+		params.put(Constants.KEY_TOLL_FARE, String.valueOf(customerInfo.getTollFare()));
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
@@ -7463,6 +7464,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Fonts.mavenRegular(activity));
+			Button btnEnterToll = (Button) dialog.findViewById(R.id.btnEnterToll);
+			btnEnterToll.setVisibility(View.GONE);
+			TextView tvTollValue = (TextView) dialog.findViewById(R.id.tvTollValue);
+			tvTollValue.setVisibility(View.GONE);
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -7577,6 +7582,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				btnOk.setTypeface(Fonts.mavenRegular(activity));
 				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
 				btnCancel.setTypeface(Fonts.mavenRegular(activity));
+				final Button btnEnterToll = (Button) dialogEndRidePopup.findViewById(R.id.btnEnterToll);
+				btnEnterToll.setVisibility(View.VISIBLE);
+				final TextView tvTollValue = (TextView) dialogEndRidePopup.findViewById(R.id.tvTollValue);
+				tvTollValue.setVisibility(View.GONE);
 
 				btnOk.setOnClickListener(new View.OnClickListener() {
 					@SuppressWarnings("unused")
@@ -7617,6 +7626,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 				});
+
+				View.OnClickListener clickListener = new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						new EnterTollDialog(HomeActivity.this).show(customerInfo.getTollFare(), new EnterTollDialog.Callback() {
+							@Override
+							public void tollEntered(double tollValue) {
+								tvTollValue.setVisibility(View.VISIBLE);
+								btnEnterToll.setVisibility(View.GONE);
+								customerInfo.setTollFare(tollValue);
+								tvTollValue.setText(getString(R.string.toll_value, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), tollValue)));
+							}
+						});
+					}
+				};
+
+				btnEnterToll.setOnClickListener(clickListener);
+				tvTollValue.setOnClickListener(clickListener);
 
 				cross_tour.setOnClickListener(new View.OnClickListener() {
 					@Override
