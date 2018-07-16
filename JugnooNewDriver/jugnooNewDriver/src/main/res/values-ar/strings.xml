@@ -589,7 +589,7 @@
     <string name="slots">ساعة على الانترنت</string>
     <string name="hour">ساعة</string>
     <string name="hours">ساعات</string>
-    <string name="day_wise_breakup">DAY WISE BREAKUP</string>
+    <string name="day_wise_breakup">ربح رحلة يومية</string>
     <string name="target_distance">بعد الهدف</string>
     <string name="cash_collected_from_user">النقدية التي تم جمعها من مستخدم</string>
     <string name="adjusted_distance">بعد تعديلها</string>

@@ -17,7 +17,7 @@
         android:ellipsize="end"
         android:paddingStart="10dp"
         android:singleLine="true"
-        android:text="100jdnjbjdsbjbjbjbj"
+        android:text="100"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/themeColor"
         android:textSize="12sp" />

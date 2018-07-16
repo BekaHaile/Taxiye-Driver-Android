@@ -223,7 +223,7 @@
 
     <string name="check_internet_message">Merci de vérifier votre connexion internet</string>
 
-    <string name="driver_id">ID du chauffeur </string>
+    <string name="driver_id">ID du chauffeur:</string>
 
     <string name="rank_city">Classement des villes </string>
 
