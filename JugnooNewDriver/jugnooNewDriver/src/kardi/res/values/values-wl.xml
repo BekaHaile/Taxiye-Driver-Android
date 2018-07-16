@@ -50,6 +50,7 @@
     <drawable name="bg_on_boarding_drawable">@color/black</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">@drawable/ic_login_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>
 
 
@@ -78,7 +79,7 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
     <bool name="use_fugu_key_hardcode">true</bool>
 
-    <drawable name="bg_splash">@color/white</drawable>
+    <drawable name="bg_splash">@drawable/kardi_splash_back</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/black</color>
 
@@ -96,7 +97,9 @@
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
 
-
+    <bool name="animate_splash_logo">false</bool>
+    <integer name="splash_scene_bottom_bg_visibility">@integer/view_visible</integer>
+    <integer name="scale_type">@integer/fit_start</integer>
     <!--resValue "color", 'red_v2', "#000000"-->
     <!--resValue "color", 'red_v2_fadded', "#90000000"-->
     <!--resValue "color", 'theme_color', "#000000"-->
