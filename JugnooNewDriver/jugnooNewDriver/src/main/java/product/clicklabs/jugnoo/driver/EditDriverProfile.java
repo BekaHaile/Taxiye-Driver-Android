@@ -33,7 +33,9 @@ import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.StripeLoginResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.stripe.ui.StripeCardsActivity;
+import product.clicklabs.jugnoo.driver.stripe.connect.StripeConnectActivity;
+import product.clicklabs.jugnoo.driver.stripe.StripeUtils;
+import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -161,7 +163,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		buttonStripe.setVisibility(View.GONE);
 		if(DriverProfileActivity.openedProfileInfo != null){
 
-			if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
+			if(stripeStatus== StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
 				|| stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_AVAILABLE || stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
 //				accountDetailsLayout.setVisibility(View.VISIBLE);
 				buttonStripe.setVisibility(View.VISIBLE);

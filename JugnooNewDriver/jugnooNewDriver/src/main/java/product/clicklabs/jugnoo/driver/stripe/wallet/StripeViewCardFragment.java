@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.stripe;
+package product.clicklabs.jugnoo.driver.stripe.wallet;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -22,7 +22,8 @@ import java.util.HashMap;
 
 
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.StripeUtils;
+import product.clicklabs.jugnoo.driver.stripe.StripeCardsStateListener;
+import product.clicklabs.jugnoo.driver.stripe.StripeUtils;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;

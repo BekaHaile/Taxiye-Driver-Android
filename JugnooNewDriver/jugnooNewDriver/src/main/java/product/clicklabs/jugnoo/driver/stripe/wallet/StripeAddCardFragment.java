@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.stripe;
+package product.clicklabs.jugnoo.driver.stripe.wallet;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,7 +13,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +32,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.stripe.StripeCardsStateListener;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
@@ -79,7 +79,7 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
         edtCvv = rootView.findViewById(R.id.edt_cvv);
         rootView.findViewById(R.id.btn_add_card).setOnClickListener(this);
         rootView.findViewById(R.id.backBtn).setOnClickListener(this);
-        ((TextView)rootView.findViewById(R.id.title)).setText(R.string.title_add_card);
+        ((TextView)rootView.findViewById(R.id.title)).setText(R.string.add_card_title);
         stripe = new Stripe(getActivity(), Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)? BuildConfig.STRIPE_KEY_LIVE:BuildConfig.STRIPE_KEY_DEV);
         updateIcon(null);
         edtCardNumber.setErrorColor(ContextCompat.getColor(getActivity(), R.color.red_status));

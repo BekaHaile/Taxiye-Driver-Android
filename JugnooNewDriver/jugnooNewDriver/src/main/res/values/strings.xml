@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
 
@@ -1040,11 +1040,15 @@
     <string name="cvc">CVC</string>
     <string name="save">Save</string>
     <string name="title_view_card">VIEW CARD</string>
-    <string name="title_add_card">ADD CARD</string>
+    <string name="label_add_card" >Add Card</string>
     <string name="delete">Delete</string>
     <string name="bullet">\u2022</string>
     <string name="card_details">Card Details</string>
     <string name="view_cards">View Cards</string>
+    <string name="wallet_details">Wallet Details</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="add_cash">Add Cash</string>
+    <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>
 
 
 </resources>

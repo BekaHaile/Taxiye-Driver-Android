@@ -1,10 +1,14 @@
-package product.clicklabs.jugnoo.driver;
+package product.clicklabs.jugnoo.driver.stripe;
 
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import product.clicklabs.jugnoo.driver.BuildConfig;
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 /**
