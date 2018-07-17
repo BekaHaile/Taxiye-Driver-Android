@@ -103,12 +103,14 @@ public class HomeUtil {
 	public static void putDefaultParams(HashMap<String, String> params){
 		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
 		params.put(Constants.LOGIN_TYPE, Data.LOGIN_TYPE);
+		params.put(Constants.KEY_DEVICE_TYPE, Data.DEVICE_TYPE);
 		params.put(Constants.KEY_LOCALE, Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang)));
 	}
 
 	public static void putDefaultParams(MultipartTypedOutput params){
 		params.addPart(Constants.KEY_OPERATOR_TOKEN, new TypedString(MyApplication.getInstance().getString(R.string.white_label_key)));
 		params.addPart(Constants.LOGIN_TYPE, new TypedString(Data.LOGIN_TYPE));
+		params.addPart(Constants.KEY_DEVICE_TYPE, new TypedString(Data.DEVICE_TYPE));
 		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
 	}
 

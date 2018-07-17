@@ -971,7 +971,7 @@ public class JSONParser implements Constants {
 			return;
 		}
 
-		String keys[] = new String[]{
+		List<String> keysArr = Arrays.asList(
 				Constants.LANGUAGE_PREFERENCE_IN_MENU,
 				Constants.INVITE_FRIENDS_IN_MENU,
 				Constants.DRIVER_RESOURCES_IN_MENU,
@@ -997,24 +997,25 @@ public class JSONParser implements Constants {
 				Constants.SHOW_MANUAL_RIDE,
 				Constants.DRIVER_CREDITS,
 				Constants.KEY_LOGOUT,
-				Constants.KEY_SHOW_WAZE_TOGGLE
-		};
-		List<String> keysArr = Arrays.asList(keys);
+				Constants.KEY_SHOW_WAZE_TOGGLE,
+				Constants.KEY_SHOW_TOLL_CHARGE
+		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
 		}
 
 		ArrayList<SupportOption> supportOptions = new ArrayList<>(), creditOptions = new ArrayList<>();
+		List<String> allowedSupportTags = Arrays.asList(CHAT_SUPPORT, TICKET_SUPPORT, SHOW_CALL_US_MENU, SHOW_IN_APP_CALL_US, MAIL_SUPPORT);
+		List<String> allowedCreditsTags = Arrays.asList(KEY_REFER_A_DRIVER, KEY_REFER_A_CUSTOMER, KEY_ADVERTISE_WITH_US, KEY_GET_CREDITS);
 		for(int i=0; i<menu.length(); i++){
 			JSONObject menuItem = menu.optJSONObject(i);
-			if(menuItem.optInt(Constants.KEY_SHOW_IN_ACCOUNT, 0) == 1) {
-				supportOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME),
-						menuItem.optString(Constants.KEY_TAG)));
-			} else if(menuItem.optInt(Constants.KEY_SHOW_IN_EARN_CREDITS, 0) == 1) {
-				creditOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME),
-						menuItem.optString(Constants.KEY_TAG),menuItem.optDouble(Constants.KEY_AMOUNT)));
+			String tag = menuItem.optString(Constants.KEY_TAG);
+			if(allowedSupportTags.contains(tag) && menuItem.optInt(Constants.KEY_SHOW_IN_ACCOUNT, 0) == 1) {
+				supportOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME), tag));
+			} else if(allowedCreditsTags.contains(tag) && menuItem.optInt(Constants.KEY_SHOW_IN_EARN_CREDITS, 0) == 1) {
+				creditOptions.add(new SupportOption(menuItem.optString(Constants.KEY_NAME), tag, menuItem.optDouble(Constants.KEY_AMOUNT)));
 			} else {
-				Prefs.with(context).save(menuItem.optString(Constants.KEY_TAG), 1);
+				Prefs.with(context).save(tag, 1);
 			}
 		}
 		Data.setSupportOptions(supportOptions);
@@ -1038,6 +1039,23 @@ public class JSONParser implements Constants {
 			}
 		}
 		return fuguInSupport;
+	}
+
+	public static boolean isTagEnabled(Context context, String tag){
+		if(Prefs.with(context).getInt(tag, 0) == 1){
+			return true;
+		}
+
+		boolean enabled = false;
+		if(Data.getSupportOptions() != null){
+			for(SupportOption supportOption : Data.getSupportOptions()){
+				if(supportOption.getTag().equalsIgnoreCase(tag)){
+					enabled = true;
+					break;
+				}
+			}
+		}
+		return enabled;
 	}
 
 }

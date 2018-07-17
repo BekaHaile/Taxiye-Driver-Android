@@ -5024,7 +5024,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			waitTimeInMin = 0d;
 		}
 
-		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin, customerInfo.getTollFare());
+		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -6419,7 +6420,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
 		params.put(KEY_RIDE_TIME_SECONDS_DB, rideTimeInSecFromDBStr);
 		params.put(KEY_IS_CACHED, "0");
-		params.put(Constants.KEY_TOLL_FARE, String.valueOf(customerInfo.getTollFare()));
+		if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)) {
+			params.put(Constants.KEY_TOLL_CHARGE, String.valueOf(customerInfo.getTollFare()));
+		}
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
@@ -7583,7 +7586,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
 				btnCancel.setTypeface(Fonts.mavenRegular(activity));
 				final Button btnEnterToll = (Button) dialogEndRidePopup.findViewById(R.id.btnEnterToll);
-				btnEnterToll.setVisibility(View.VISIBLE);
+				btnEnterToll.setVisibility(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? View.VISIBLE : View.GONE);
 				final TextView tvTollValue = (TextView) dialogEndRidePopup.findViewById(R.id.tvTollValue);
 				tvTollValue.setVisibility(View.GONE);
 

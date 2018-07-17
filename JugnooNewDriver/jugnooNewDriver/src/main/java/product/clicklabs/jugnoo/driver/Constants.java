@@ -325,8 +325,10 @@ public interface Constants {
 	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
 	String KEY_LOGOUT = "logout";
 	String CODE = "code";
-	String KEY_TOLL_FARE = "toll_fare";
 	String KEY_DEFAULT_LANG = "default_lang";
 	String KEY_LOCALE = "locale";
+	String KEY_TOLL_CHARGE = "toll_charge";
+	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
+	String KEY_DEVICE_TYPE = "device_type";
 }
 
