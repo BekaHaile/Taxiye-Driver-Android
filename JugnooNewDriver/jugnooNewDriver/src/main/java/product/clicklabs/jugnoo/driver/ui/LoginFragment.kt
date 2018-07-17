@@ -40,6 +40,7 @@ import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
 import java.util.*
+import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginFragment : Fragment() {
     private var mListener: SplashFragment.InteractionListener?=null
@@ -131,7 +132,7 @@ class LoginFragment : Fragment() {
                 params[Constants.KEY_COUNTRY_CODE] = countryCode
                 params[Constants.LOGIN_TYPE] = "1"
                 params[Constants.KEY_COUNTRY_CODE] = countryCode
-                params["device_token"] = Data.deviceToken
+                params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
                 params["unique_device_id"] = Data.uniqueDeviceId
                 params["device_name"] = Data.deviceName
                 params["device_type"] = Data.DEVICE_TYPE

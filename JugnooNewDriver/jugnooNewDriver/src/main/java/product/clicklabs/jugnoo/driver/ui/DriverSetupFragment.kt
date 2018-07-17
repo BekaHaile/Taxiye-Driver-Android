@@ -20,6 +20,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
@@ -36,6 +37,7 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
 import java.lang.Exception
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class DriverSetupFragment : Fragment() {
@@ -190,7 +192,7 @@ class DriverSetupFragment : Fragment() {
                 "client_id" to Data.CLIENT_ID,
                 "login_type" to Data.LOGIN_TYPE,
                 "referral_code" to "",
-                "device_token" to Data.deviceToken,
+                "device_token" to FirebaseInstanceId.getInstance().getToken()!!,
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
@@ -377,7 +379,7 @@ class DriverSetupFragment : Fragment() {
 
     fun showCountriesDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty()) {
-            throw IllegalArgumentException(context.getString(R.string.error_no_cities_found))
+            Toast.makeText(context,context.getString(R.string.error_no_cities_found),Toast.LENGTH_SHORT).show()
         } else {
             val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
             countryPickerDialog.setCountryPickerListener(onCountryPickerListener)

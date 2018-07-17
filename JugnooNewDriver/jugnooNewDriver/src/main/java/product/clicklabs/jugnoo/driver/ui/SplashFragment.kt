@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.iid.FirebaseInstanceId
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.utils.*
@@ -39,6 +41,7 @@ import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class SplashFragment : Fragment() {
 
@@ -48,7 +51,7 @@ class SplashFragment : Fragment() {
     private val intentFilter = IntentFilter()
     private var mListener:InteractionListener?=null
     private var parentActivity : Activity? = null
-    private val behaviourSubject by lazy { executePending() }
+    private val behaviourSubject by lazy { BehaviorSubject.create<Void>() }
     private val deviceTokenObservable by lazy { PublishSubject.create<Void>() }
     private var apiDisposable : Disposable? = null
     private val compositeDisposable by lazy { CompositeDisposable() }
@@ -62,6 +65,7 @@ class SplashFragment : Fragment() {
 
     companion object {
         private const val DEVICE_TOKEN_WAIT_TIME = 10 * 1000L
+        private const val CACHED_API_RETRY_COUNT:Long = 3
 
     }
 
@@ -107,76 +111,36 @@ class SplashFragment : Fragment() {
     }
 
     private fun checkForInternet(rootView: View) {
-
         parentActivity?.withNetwork( { start() }, false, {
             // remove on screen navigation flags to display the snackbar above them
 
             val snackBar = Snackbar.make(rootView, getString(R.string.check_internet_message), Snackbar.LENGTH_INDEFINITE)
                     .setActionTextColor(ContextCompat.getColor(activity, android.R.color.white))
-/*
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                snackBar.view.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
-                    override fun onViewAttachedToWindow(p0: View?) {
-                        parentActivity?.let {
-                            parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-                        }
-
-
-                    }
-
-
-                    override fun onViewDetachedFromWindow(p0: View?) {
-
-                        parentActivity?.let {
-                            parentActivity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-                        }
-                    }
-
-
-                })
-
-                if (isFirstTime) {
-                    parentActivity?.let {
-                        parentActivity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-                    }
-                }
-
-            }*/
-            snackBar.setAction(getString(R.string.retry), {
-
-                // add on screen navigation translucent flags for smooth image shared animation
-                snackBar.dismiss()
+                snackBar.setAction(getString(R.string.retry), { snackBar.dismiss()
                 checkForInternet(rootView)
             })
             snackBar.view.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
             snackBar.show()
 
-           /* if(isFirstTime) {
-                // delay showing the first snackbar to allow navigation flags to be set
 
-                Handler().postDelayed({ snackBar.show() }, 100)
-                isFirstTime = false
-
-            } else {
-            }*/
 
         })
     }
 
 
     private fun start() {
-
-        val w = activity.getWindow()
-
-
         checkForBatteryOptimisation()
-
-        compositeDisposable.add(deviceTokenObservable
-                .timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({},{ showTokenNotFoundDialog()},{
-                    pushAPIs(parentActivity)
-                    LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+        compositeDisposable.add(deviceTokenObservable.timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({},
+                { showBlockerDialog(getString(R.string.device_token_not_found_message))},
+                {
+                    if(!isMockLocationEnabled()){
+                        LocalBroadcastManager.getInstance(activity).unregisterReceiver(deviceTokenReceiver)
+                        subscribeSubjectForAccessTokenLogin()
+                        startExecutionForPendingAPis()
+                    } else {
+                        showBlockerDialog(getString(R.string.disable_mock_location))
+                    }
                 }))
     }
 
@@ -212,40 +176,43 @@ class SplashFragment : Fragment() {
     }
 
 
-
-    private fun pushAPIs(context: Context?){
-        if(isMockLocationEnabled()) return
-
-        apiDisposable = behaviourSubject.
-                    retryUntil({ Database2.getInstance(context).allPendingAPICallsCount<=0; })
-                  .subscribeOn(Schedulers.newThread())
-               //   .delay(7000,TimeUnit.MILLISECONDS)
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .doAfterTerminate { isPendingExecutionOngoing = false }
-                  .subscribe({},{ Log.d(TAG, "pushAPIs : ${it.message}") },{ accessTokenLogin(parentActivity) })
+    private fun subscribeSubjectForAccessTokenLogin(){
+        apiDisposable = behaviourSubject.subscribe({},
+                { Log.d(TAG, "onError: subscribeSubjectForAccessTokenLogin : ${it.message}") },
+                { Log.d(TAG, "onComplete: subscribeSubjectForAccessTokenLogin")
+                 isPendingExecutionOngoing = false ; accessTokenLogin(parentActivity)})
         compositeDisposable.add(apiDisposable!!)
     }
 
+    private fun hitPendingApis(): Observable<Boolean> {
+        return Observable.create<Boolean> {
 
-    fun executePending(): BehaviorSubject<Boolean> {
+            if(it.isDisposed) return@create
+
+            val pendingAPICalls: ArrayList<PendingAPICall> = Database2.getInstance(context).allPendingAPICalls
+
+            for (pendingAPICall in pendingAPICalls) {
+                PendingApiHit().startAPI(context, pendingAPICall)
+            }
+
+            val  pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount
+
+            if(pendingApisCount >0) {
+                it.onError(Throwable("Pending Apis"))
+            } else {
+                it.onComplete()
+            }
+        }
+    }
+
+    private fun startExecutionForPendingAPis() {
         isPendingExecutionOngoing = true
+        compositeDisposable.add(hitPendingApis().subscribeOn(Schedulers.io()).retry(CACHED_API_RETRY_COUNT)
+                .observeOn(AndroidSchedulers.mainThread()).
+                    subscribe({Log.i(TAG,"onNext for startExecutionForPendingAPis")},{
+                    Log.i(TAG,"onError for startExecutionForPendingAPis {${it.message}}");showBlockerDialog(getString(R.string.cached_api_error))
+                }, {Log.i(TAG,"onComplete for startExecutionForPendingAPis"); behaviourSubject.onComplete() } ))
 
-        val subject =  BehaviorSubject.create<Boolean>()
-
-        val pendingAPICalls = Database2.getInstance(context).allPendingAPICalls
-        for (pendingAPICall in pendingAPICalls) {
-            Log.e(TAG, "pendingApiCall=$pendingAPICall")
-            PendingApiHit().startAPI(context, pendingAPICall)
-        }
-        val pendingApisCount = Database2.getInstance(context).allPendingAPICallsCount
-
-        if(pendingApisCount <= 0) {
-
-            subject.onComplete()
-        } else {
-            subject.onError(Throwable("Pending apis count"))
-        }
-        return subject
     }
 
     private fun accessTokenLogin(activity: Activity?) {
@@ -266,7 +233,7 @@ class SplashFragment : Fragment() {
                 val params = HashMap<String, String>()
 
                 params["access_token"] = accPair.first
-                params["device_token"] = Data.deviceToken
+                params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
 
                 params["latitude"] = "" + Data.latitude
                 params["longitude"] = "" + Data.longitude
@@ -401,14 +368,15 @@ class SplashFragment : Fragment() {
         mListener?.openPhoneLoginScreen(true, imageView)
     }
 
-    private fun showTokenNotFoundDialog(){
-        DialogPopup.alertPopupWithListener(activity,"",getString(R.string.device_token_not_found_message)
+    private fun showBlockerDialog(message:String){
+        DialogPopup.alertPopupWithListener(activity,"",message
                 , { parentActivity?.finish(); })
     }
 
     override fun onResume() {
         super.onResume()
 
+        Log.i(TAG,"onResume Created Called")
         // check if device token has been generated in paused state,
         // complete subject if generated else register broadcast
         if (FirebaseInstanceId.getInstance().token != null) {
@@ -418,8 +386,9 @@ class SplashFragment : Fragment() {
         }
 
         // if the pending api execution has already been subscribed once, resubscribe
-        if (isPendingExecutionOngoing) {
-            pushAPIs(parentActivity)
+        if (isPendingExecutionOngoing && apiDisposable?.isDisposed == true) {
+            Log.i(TAG,"onResume resubscribing to subscribeSubjectForAccessTokenLogin")
+            subscribeSubjectForAccessTokenLogin()
         }
     }
 

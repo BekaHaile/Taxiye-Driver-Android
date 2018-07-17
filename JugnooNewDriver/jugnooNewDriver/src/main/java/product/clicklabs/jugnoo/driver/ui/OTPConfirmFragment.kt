@@ -30,6 +30,7 @@ import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class OTPConfirmFragment : Fragment() {
@@ -235,7 +236,7 @@ class OTPConfirmFragment : Fragment() {
 
             params["phone_no"] = countryCode + phoneNumber
             params["login_otp"] = otp
-            params["device_token"] = Data.deviceToken
+            params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
             params["device_type"] = Data.DEVICE_TYPE
             params["device_name"] = Data.deviceName
             params["app_version"] = "" + Data.appVersion

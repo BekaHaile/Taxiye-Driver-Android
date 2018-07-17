@@ -1024,6 +1024,7 @@
     <string name="error_no_cities_found">No Cities Found!</string>
     <string name="title_dialog_select_city">Select City</string>
     <string name="title_search_dialog_default">Select</string>
+    <string name="cached_api_error">We are facing some problem connecting to the server. Please try again in some time.</string>
 
 
 </resources>

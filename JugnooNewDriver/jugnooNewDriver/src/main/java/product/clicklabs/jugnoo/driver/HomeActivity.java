@@ -208,6 +208,7 @@ import retrofit.mime.TypedByteArray;
 
 import static product.clicklabs.jugnoo.driver.Data.context;
 import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
@@ -2845,7 +2846,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				changeJugnooONUIAndInitService();
 
 
-				Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
+				Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, FirebaseInstanceId.getInstance().getToken(), Data.SERVER_URL);
 
 			} catch (Exception e) {
 				e.printStackTrace();
