@@ -8,5 +8,17 @@ import com.google.gson.annotations.SerializedName
  */
 data class DriverLanguageResponse(
 @Expose @SerializedName("locale_preference_enabled") val languagePrefStatus:Int,
-@Expose @SerializedName("locales") val languageList:ArrayList<String>
+@Expose @SerializedName("default_lang") val defaultLang:String?,
+@Expose @SerializedName("locale_set") val languageList:ArrayList<LocaleModel>
 ):FeedCommonResponseKotlin()
+
+class LocaleModel(@Expose @SerializedName("locale") val locale:String?,
+                       @Expose @SerializedName("name") val name:String?){
+    override fun equals(other: Any?): Boolean {
+        return other is LocaleModel && other.locale.equals(locale, ignoreCase = false)
+    }
+
+    override fun toString(): String {
+        return name!!;
+    }
+}

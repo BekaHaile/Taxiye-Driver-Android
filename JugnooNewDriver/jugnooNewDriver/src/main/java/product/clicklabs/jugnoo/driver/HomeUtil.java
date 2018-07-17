@@ -7,9 +7,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -101,11 +103,13 @@ public class HomeUtil {
 	public static void putDefaultParams(HashMap<String, String> params){
 		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
 		params.put(Constants.LOGIN_TYPE, Data.LOGIN_TYPE);
+		params.put(Constants.KEY_LOCALE, Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang)));
 	}
 
 	public static void putDefaultParams(MultipartTypedOutput params){
 		params.addPart(Constants.KEY_OPERATOR_TOKEN, new TypedString(MyApplication.getInstance().getString(R.string.white_label_key)));
 		params.addPart(Constants.LOGIN_TYPE, new TypedString(Data.LOGIN_TYPE));
+		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
 	}
 
 }

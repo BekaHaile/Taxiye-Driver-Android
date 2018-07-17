@@ -395,7 +395,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/fetch_active_locales")
 	void fetchLanguageList(@FieldMap Map<String, String> params,
-					 Callback<RegisterScreenResponse> callback);
+					 Callback<DriverLanguageResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_active_locales")

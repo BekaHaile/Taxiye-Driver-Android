@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -30,7 +29,6 @@ import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 
 /**
@@ -81,7 +79,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
-	public static String selectedLanguage="English";
+	public static String selectedLanguage="en";
 	public static void updateLanguage(Activity activity, String language){
 		if(language == null) {
 			selectedLanguage = Prefs.with(activity).getString(SPLabels.SELECTED_LANGUAGE,activity.getString(R.string.default_lang));
@@ -89,36 +87,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 			Prefs.with(activity).save(SPLabels.SELECTED_LANGUAGE, language);
 			selectedLanguage = language;
 		}
-		String languageToLoad;
-
-		if (selectedLanguage.equalsIgnoreCase("English")) {
-			languageToLoad = "en";
-		} else if (selectedLanguage.equalsIgnoreCase("हिन्दी")) {
-			languageToLoad = "hi";
-		} else if (selectedLanguage.equalsIgnoreCase("ગુજરાતી")) {
-			languageToLoad = "gu";
-		} else if (selectedLanguage.equalsIgnoreCase("ଓଡ଼ିଆ")) {
-			languageToLoad = "or";
-		} else if (selectedLanguage.equalsIgnoreCase("മലയാളം")) {
-			languageToLoad = "ml";
-		} else if (selectedLanguage.equalsIgnoreCase("தமிழ்")) {
-			languageToLoad = "ta";
-		} else if (selectedLanguage.equalsIgnoreCase("తెలుగు")) {
-			languageToLoad = "te";
-		} else if (selectedLanguage.equalsIgnoreCase("ಕನ್ನಡ")) {
-			languageToLoad = "kn";
-		} else if (selectedLanguage.equalsIgnoreCase("অসমীয়া")) {
-			languageToLoad = "as";
-		} else if (selectedLanguage.equalsIgnoreCase("français")) {
-			languageToLoad = "fr";
-		} else if (selectedLanguage.equalsIgnoreCase("عربى")) {
-			languageToLoad = "ar";
-		} else {
-			languageToLoad = "en";
-//			return;
-		}
-
-		Locale locale = new Locale(languageToLoad);
+		Locale locale = new Locale(selectedLanguage);
 		Locale.setDefault(locale);
 
 		Configuration config = new Configuration();

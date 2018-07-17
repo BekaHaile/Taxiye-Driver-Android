@@ -39,6 +39,7 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
+import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
 import java.util.*
@@ -241,25 +242,32 @@ class LoginFragment : Fragment() {
 
                         setLanguageLoading(text = -1, showText = false, showProgress = false)
 
-                        val dataAdapter: ArrayAdapter<String> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
+                        val dataAdapter: ArrayAdapter<LocaleModel> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
                         if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) rootView.language_spinner.visible() else rootView.language_spinner.gone()
 
-                        if (!t.languageList.contains(selectedLanguage)) {
-                            t.languageList.add(selectedLanguage)
+                        if (t.defaultLang != null && Prefs.with(context).getString(Constants.KEY_DEFAULT_LANG, "eee").equals("eee")) {
+                            Prefs.with(context).save(Constants.KEY_DEFAULT_LANG, t.defaultLang)
+                            selectedLanguage = t.defaultLang
+                            BaseFragmentActivity.updateLanguage(activity, t.defaultLang)
                         }
-                        rootView.language_spinner.setSelection(t.languageList.indexOf(selectedLanguage))
+
+                        if (!t.languageList.contains(LocaleModel(selectedLanguage, ""))) {
+                            selectedLanguage = t.languageList.get(0).locale!!
+                            BaseFragmentActivity.updateLanguage(activity, selectedLanguage)
+                        }
+                        rootView.language_spinner.setSelection(t.languageList.indexOf(LocaleModel(selectedLanguage, "")))
                         rootView.language_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
 
                             }
 
                             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                val item = parent?.getItemAtPosition(position).toString()
-                                if (!item.equals(selectedLanguage, true)) {
-                                    selectedLanguage = item
-                                    BaseFragmentActivity.updateLanguage(activity, item)
+                                val item = parent?.getItemAtPosition(position) as LocaleModel
+                                if (!item.equals(LocaleModel(selectedLanguage, ""))) {
+                                    selectedLanguage = item.locale!!
+                                    BaseFragmentActivity.updateLanguage(activity, selectedLanguage)
                                 }
                             }
                         }
@@ -485,7 +493,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<String>?) : ArrayAdapter<String>(context, resource, objects) {
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context, resource, objects) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view: View = super.getView(position, convertView, parent)

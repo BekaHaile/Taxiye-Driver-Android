@@ -85,6 +85,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
+import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -2602,9 +2603,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
 					HomeUtil.putDefaultParams(params);
 
-					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+					RestClient.getApiServices().fetchLanguageList(params, new Callback<DriverLanguageResponse>() {
 						@Override
-						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						public void success(DriverLanguageResponse registerScreenResponse, Response response) {
 							String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
 							DialogPopup.dismissLoadingDialog();
 							try {
