@@ -481,7 +481,7 @@
             android:value="@string/google_maps_api_key"/>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f96b4d9d9886e413041e7b14fa52434b87709356"/>
+            android:value="9d73a02e879ad27845d7be4619eeeedd1be7b270"/>
 
         <!-- nudgesopt integration -->
         <receiver

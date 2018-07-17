@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "110041346145",
+    "firebase_url": "https://kardi-cl.firebaseio.com",
+    "project_id": "kardi-cl",
+    "storage_bucket": "kardi-cl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110041346145:android:d6f59a70ad6c198e",
+        "android_client_info": {
+          "package_name": "production.kardi.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110041346145-424qd7u3llqmmkmi0ghuq2havvar240q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYtGKg7n3qVyMYz6FI87998DUbsfX4g1w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110041346145:android:8427cf76895041e1",
+        "android_client_info": {
+          "package_name": "production.kardi.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110041346145-424qd7u3llqmmkmi0ghuq2havvar240q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYtGKg7n3qVyMYz6FI87998DUbsfX4g1w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
