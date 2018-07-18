@@ -92,8 +92,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     private fun setLoginData() {
         try {
-            Data.generateKeyHash(this@DriverSplashActivity)
             Data.filldetails(this@DriverSplashActivity)
+            Data.generateKeyHash(this@DriverSplashActivity)
         } catch (e: Exception) {
             android.util.Log.e(TAG, e.localizedMessage)
         }

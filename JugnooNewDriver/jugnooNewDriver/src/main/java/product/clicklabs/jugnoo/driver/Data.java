@@ -144,7 +144,7 @@ public class Data {
 	public static final String DEVICE_TYPE = "0";
 	public static String deviceToken = "",
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
-	public static int appVersion;
+	public static int appVersion = BuildConfig.VERSION_CODE;
 
 	public static Activity context = null;
 
@@ -221,7 +221,7 @@ public class Data {
 
 	public static void filldetails(Context context){
 		try {																						// to get AppVersion, OS version, country code and device name
-			Data.appVersion = Utils.getAppVersion(context);
+//			Data.appVersion = Utils.getAppVersion(context);
 			Log.i("appVersion", Data.appVersion + "..");
 			Data.osVersion = android.os.Build.VERSION.RELEASE;
 			Log.i("osVersion", Data.osVersion + "..");

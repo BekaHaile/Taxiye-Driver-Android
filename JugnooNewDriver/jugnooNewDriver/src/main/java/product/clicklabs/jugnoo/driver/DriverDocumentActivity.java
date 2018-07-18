@@ -36,6 +36,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class DriverDocumentActivity extends BaseFragmentActivity {
@@ -311,7 +312,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accessToken);
-				params.put("device_token", Data.deviceToken);
+				params.put("device_token", FirebaseInstanceId.getInstance().getToken());
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
