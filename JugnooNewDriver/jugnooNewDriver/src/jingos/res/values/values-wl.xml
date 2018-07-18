@@ -71,7 +71,5 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
-    <bool name="use_fugu_key_hardcode">true</bool>
-
 
 </resources>

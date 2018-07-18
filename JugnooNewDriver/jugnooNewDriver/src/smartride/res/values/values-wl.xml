@@ -28,8 +28,8 @@
     <string name="file_provider">production.smartride.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyC0LUM94aPlHwPRQaUd3wp0b4wZn4xMbmo</string> <!--IMP-->
 
-    <string name="facebook_page_id">2056791887904505</string>
-    <string name="facebook_page_name">smartride</string>
+    <string name="facebook_page_id">""</string>
+    <string name="facebook_page_name">""</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
@@ -77,9 +77,9 @@
 
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
-    <bool name="use_fugu_key_hardcode">true</bool>
 
     <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <drawable name="bg_login">@color/colorPrimaryDark</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 

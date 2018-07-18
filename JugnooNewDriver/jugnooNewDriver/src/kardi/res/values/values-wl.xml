@@ -77,7 +77,6 @@
 
     <integer name="driver_logout_enabled">@integer/view_visible</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
-    <bool name="use_fugu_key_hardcode">true</bool>
 
     <drawable name="bg_splash">@drawable/kardi_splash_back</drawable>
     <color name="colorDark">@color/text_color</color>
