@@ -390,6 +390,37 @@
             </RelativeLayout>
 
 
+
+            <RelativeLayout
+                android:id="@+id/walletRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:gravity="center_vertical"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewWalletIcon"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
+                    android:layout_marginTop="5px"
+                    android:src="@drawable/icon_cash_xxx"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/walletText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44px"
+                    android:layout_toEndOf="@+id/imageViewWalletIcon"
+                    android:layout_marginStart="8px"
+                    android:text="@string/wallet"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+
             <RelativeLayout
                 android:id="@+id/paymentRL"
                 android:layout_width="match_parent"

@@ -1049,6 +1049,9 @@
     <string name="current_balance">Current Balance</string>
     <string name="add_cash">Add Cash</string>
     <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>
+    <string name="wallet">Wallet</string>
+    <string name="add_cash_stripe_confirmation">Add %s to your wallet using %s ?</string>
+    <string name="add">Add</string>
 
 
 </resources>

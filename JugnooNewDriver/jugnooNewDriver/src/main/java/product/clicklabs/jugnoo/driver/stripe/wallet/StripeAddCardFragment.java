@@ -224,7 +224,6 @@ public class StripeAddCardFragment extends Fragment implements View.OnClickListe
                     stripeCardsStateListener.onCardsUpdated(stripeCardResponse.getStripeCardData());
                 }
 
-
                 if(getView()==null || getActivity()==null){
                     return;
                 }

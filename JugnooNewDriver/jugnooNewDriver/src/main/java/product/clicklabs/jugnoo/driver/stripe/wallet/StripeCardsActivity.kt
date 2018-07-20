@@ -23,32 +23,33 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
             add(container.id, StripeAddCardFragment(), StripeAddCardFragment::class.simpleName).
                     addToBackStack(StripeAddCardFragment::class.simpleName).
-                    hide(supportFragmentManager.run { findFragmentByTag(getBackStackEntryAt(backStackEntryCount-1).name)})
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
 
 
         }
     }
 
-    override fun openViewCard() {
-        stripeData?.let {
+    override fun openViewCard(stripeCardData: StripeCardData) {
 
-            if(it.size>0){
-                supportFragmentManager.inTransactionWithAnimation {
-                    add(container.id, StripeViewCardFragment.newInstance( it[0]), StripeViewCardFragment::class.simpleName)
-                    addToBackStack(StripeViewCardFragment::class.simpleName).
-                            hide(supportFragmentManager.run { findFragmentByTag(getBackStackEntryAt(backStackEntryCount-1).name)})
+        supportFragmentManager.inTransactionWithAnimation {
+            add(container.id, StripeViewCardFragment.newInstance( stripeCardData), StripeViewCardFragment::class.simpleName)
+            addToBackStack(StripeViewCardFragment::class.simpleName).
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
 
-                }
-            }
         }
 
     }
 
     override fun onCardsUpdated(stripeCardData: ArrayList<StripeCardData>?) {
+        (supportFragmentManager.findFragmentByTag(frag_wallet.tag) as StripeWalletFragment).setStripeData(
+                stripeCardData?.run { if (this.size>0) this[0] else null}
+        )
 
-    }
 
-    private var stripeData:List<StripeCardData>? = null /*listOf(StripeCardData("v_3","4444","Discover"))*/
+
+
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stripe_cards)

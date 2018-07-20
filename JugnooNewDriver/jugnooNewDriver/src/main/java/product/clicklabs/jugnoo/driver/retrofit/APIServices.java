@@ -9,6 +9,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
@@ -643,9 +644,18 @@ public interface APIServices {
 
 
 	@FormUrlEncoded
-	@POST("/add_card_to_customer_account")
-	void addCardToCustomer(@FieldMap Map<String, String> params,
-						   Callback<StripeCardResponse> callback);
+	@POST("/driver/add_stripe_card")
+	void addCardToDriver(@FieldMap Map<String, String> params,
+						 Callback<StripeCardResponse> callback);
+	@FormUrlEncoded
+	@POST("/driver/fetch_wallet_balance")
+	void fetchWalletBalance(@FieldMap Map<String, String> params,
+							Callback<WalletModelResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/add_money_via_stripe")
+	void addMoneyViaStripe(@FieldMap Map<String, String> params,
+						   Callback<WalletModelResponse> callback);
 
 
 

@@ -5,6 +5,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <fragment
+        android:id="@+id/frag_wallet"
+        android:tag="StripeWalletFragment"
         android:name="product.clicklabs.jugnoo.driver.stripe.wallet.StripeWalletFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

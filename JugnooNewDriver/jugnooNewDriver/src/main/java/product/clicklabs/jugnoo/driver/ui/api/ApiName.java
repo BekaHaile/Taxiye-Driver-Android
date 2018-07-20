@@ -11,5 +11,7 @@ public  enum ApiName {
     REGISTER_DRIVER,
     MANUAL_RIDE,
     APPLY_PROMO,
-    ADD_CARD_API
+    ADD_CARD_API,
+    FETCH_WALLET,
+    ADD_CASH_WALLET
 }

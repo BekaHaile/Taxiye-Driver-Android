@@ -8,6 +8,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
@@ -64,7 +65,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
         if (!AppStatus.getInstance(activity.get()).isOnline(activity.get())) {
             apiCommonCallback?.onFinish()
             if (apiCommonCallback?.onNotConnected() != true) {
-                DialogPopup.alertPopup(activity.get(), "", Data.CHECK_INTERNET_MSG)
+                retryDialog(Data.CHECK_INTERNET_MSG)
             }
             return
         }
@@ -153,14 +154,17 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.MANUAL_RIDE -> RestClient.getApiServices().requestManualRide(params, callback as Callback<ManualRideResponse>)
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             ApiName.APPLY_PROMO ->  RestClient.getApiServices().applyPromo(params, callback as Callback<FeedCommonResponseKotlin> )
-            ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToCustomer(params, callback as Callback<StripeCardResponse> )
+            ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToDriver(params, callback as Callback<StripeCardResponse> )
+            ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
+            ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }
 
     fun isTrivialError(flag: Int): Boolean {
         return (flag == ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() || flag == ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal()
-                || flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal() || flag == ApiResponseFlags.PARAMETER_MISSING.getOrdinal() )
+                || flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal() || flag == ApiResponseFlags.PARAMETER_MISSING.getOrdinal()
+                || flag == ApiResponseFlags.ACTION_FAILED.getOrdinal()   )
     }
 
     private fun retryDialog(message: String) {

@@ -164,6 +164,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.support.SupportMailActivity;
 import product.clicklabs.jugnoo.driver.support.SupportOptionsActivity;
 import product.clicklabs.jugnoo.driver.tutorial.AcceptResponse;
@@ -233,7 +234,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl,manaulRequestRl;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl,driverCreditsRl,manaulRequestRl,walletRl;
 	TextView inviteFriendText, notificationCenterText;
 
 	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
@@ -571,6 +572,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
 			manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
+			walletRl = (RelativeLayout) findViewById(R.id.walletRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			inviteFriendText.setText(getStringText(R.string.invite_earn));
@@ -1254,6 +1256,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(INVITE_OPENED);
+
+				}
+			});
+
+			walletRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, StripeCardsActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				}
 			});

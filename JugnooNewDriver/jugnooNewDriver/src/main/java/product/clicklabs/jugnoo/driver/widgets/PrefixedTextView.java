@@ -11,19 +11,19 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-public class PrefixedEditText extends AppCompatEditText {
+public class PrefixedTextView extends AppCompatTextView {
 
 	private ColorStateList mPrefixTextColor;
 
-	public PrefixedEditText(Context context) {
+	public PrefixedTextView(Context context) {
 		this(context, null);
 	}
 
-	public PrefixedEditText(Context context, AttributeSet attrs) {
+	public PrefixedTextView(Context context, AttributeSet attrs) {
 		this(context, attrs, android.R.attr.editTextStyle);
 	}
 
-	public PrefixedEditText(Context context, AttributeSet attrs, int defStyle) {
+	public PrefixedTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		mPrefixTextColor = getTextColors();
 	}
