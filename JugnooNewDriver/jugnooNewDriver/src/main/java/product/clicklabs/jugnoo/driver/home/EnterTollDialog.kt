@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.utils.Utils
 
 class EnterTollDialog(var activity: Activity) {
@@ -31,11 +32,11 @@ class EnterTollDialog(var activity: Activity) {
             btnConfirm.setOnClickListener {
                 val code = etCode.text.toString().trim()
                 if (code.isEmpty() || !Utils.checkIfOnlyDigitsDecimal(code)) {
-                    Utils.showToast(activity, activity.getString(R.string.please_enter_valid_fare))
+                    callback.tollEntered(0.0)
                 } else {
                     callback.tollEntered(code.toDouble())
-                    dismiss()
                 }
+                dismiss()
             }
 
 

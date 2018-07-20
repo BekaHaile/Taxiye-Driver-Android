@@ -7620,6 +7620,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				btnCancel.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						customerInfo.setTollFare(0.0);
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE+"_"+FirebaseEvents.CONFIRM_NO, null);
 						dialogEndRidePopup.dismiss();
 						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);

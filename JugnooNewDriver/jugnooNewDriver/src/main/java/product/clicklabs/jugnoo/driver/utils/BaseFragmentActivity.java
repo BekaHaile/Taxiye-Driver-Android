@@ -40,6 +40,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
+			recoverLastSavedLanguage();
 			updateLanguage(this,null);
 		}
 		updateStatusBar();
@@ -202,5 +203,40 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		orig.recycle();
 		bitmap.recycle();
 		return res;
+	}
+
+	private void recoverLastSavedLanguage(){
+		if(Prefs.with(this).getInt(SPLabels.FIRST_TIME, 1000) == 1000) {
+			Prefs.with(this).save(SPLabels.FIRST_TIME, 0);
+
+			String lastLang = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE, getString(R.string.default_lang));
+			String languageToLoad = "en";
+			if (lastLang.equalsIgnoreCase("English")) {
+				languageToLoad = "en";
+			} else if (lastLang.equalsIgnoreCase("हिन्दी")) {
+				languageToLoad = "hi";
+			} else if (lastLang.equalsIgnoreCase("ગુજરાતી")) {
+				languageToLoad = "gu";
+			} else if (lastLang.equalsIgnoreCase("ଓଡ଼ିଆ")) {
+				languageToLoad = "or";
+			} else if (lastLang.equalsIgnoreCase("മലയാളം")) {
+				languageToLoad = "ml";
+			} else if (lastLang.equalsIgnoreCase("தமிழ்")) {
+				languageToLoad = "ta";
+			} else if (lastLang.equalsIgnoreCase("తెలుగు")) {
+				languageToLoad = "te";
+			} else if (lastLang.equalsIgnoreCase("ಕನ್ನಡ")) {
+				languageToLoad = "kn";
+			} else if (lastLang.equalsIgnoreCase("অসমীয়া")) {
+				languageToLoad = "as";
+			} else if (lastLang.equalsIgnoreCase("français")) {
+				languageToLoad = "fr";
+			} else if (lastLang.equalsIgnoreCase("عربى")) {
+				languageToLoad = "ar";
+			} else {
+				languageToLoad = lastLang;
+			}
+			Prefs.with(this).save(SPLabels.SELECTED_LANGUAGE, languageToLoad);
+		}
 	}
 }
