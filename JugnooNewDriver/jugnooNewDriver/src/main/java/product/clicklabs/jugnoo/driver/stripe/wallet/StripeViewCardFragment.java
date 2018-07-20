@@ -110,7 +110,7 @@ public class StripeViewCardFragment extends Fragment implements View.OnClickList
     private @Card.CardBrand
     String brand;
 
-    private void updateIcon(@Card.CardBrand String brand) {
+    private  void updateIcon(@Card.CardBrand String brand) {
 
 
         if (this.brand != null && this.brand.equals(brand)) {

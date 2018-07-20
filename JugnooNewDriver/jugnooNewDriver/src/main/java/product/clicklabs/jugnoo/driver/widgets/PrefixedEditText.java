@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 public class PrefixedEditText extends AppCompatEditText {
 
 	private ColorStateList mPrefixTextColor;
+	private TextDrawable textDrawable;
 
 	public PrefixedEditText(Context context) {
 		this(context, null);
@@ -28,8 +29,14 @@ public class PrefixedEditText extends AppCompatEditText {
 		mPrefixTextColor = getTextColors();
 	}
 
-	public void setPrefix(String prefix) {
-		setCompoundDrawables(new TextDrawable(prefix), null, null, null);
+	public TextDrawable setPrefix(String prefix) {
+		 textDrawable = new TextDrawable(prefix);
+		setCompoundDrawables(textDrawable, null, null, null);
+		return textDrawable;
+	}
+
+	public TextDrawable getTextDrawable() {
+		return textDrawable;
 	}
 
 	public void setPrefixTextColor(int color) {

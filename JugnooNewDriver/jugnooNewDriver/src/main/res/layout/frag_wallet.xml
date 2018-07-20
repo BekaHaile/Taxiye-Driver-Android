@@ -1,255 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-<android.support.constraint.ConstraintLayout
     android:id="@+id/rootLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
+    android:fillViewport="true">
 
-    <include layout="@layout/layout_top_bar" />
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-
-    <TextView
-        android:id="@+id/labelWalletDetails"
-        style="@style/TextMedium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/bgColor"
-        android:padding="15dp"
-        android:text="@string/wallet_details"
-        android:textAllCaps="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topRl" />
+        <include layout="@layout/layout_top_bar" />
 
 
-    <TextView
-        android:id="@+id/labelCurrentBalance"
-        style="@style/TextNormal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:padding="15dp"
-        android:text="@string/current_balance"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/labelWalletDetails" />
+        <TextView
+            android:id="@+id/labelWalletDetails"
+            style="@style/TextMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/bgColor"
+            android:padding="15dp"
+            android:text="@string/wallet_details"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topRl" />
 
 
-    <TextView
-        android:id="@+id/tvCurrentBalance"
-        style="@style/TextNormal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:maxLines="1"
-        android:padding="15dp"
-        tools:text="3 Rs"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelCurrentBalance"
-        app:layout_constraintTop_toBottomOf="@id/labelWalletDetails" />
-
-    <TextView
-        android:id="@+id/labelCardDetails"
-        style="@style/TextMedium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/bgColor"
-        android:padding="15dp"
-        android:text="@string/card_details"
-        android:textAllCaps="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCurrentBalance" />
+        <TextView
+            android:id="@+id/labelCurrentBalance"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="15dp"
+            android:text="@string/current_balance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/labelWalletDetails" />
 
 
-    <TextView
-        android:id="@+id/tvAddCard"
-        style="@style/TextLarge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:text="@string/label_add_card"
-        android:clickable="true"
-        android:focusable="true"
-        android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
-        android:background="@drawable/background_white_selector"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelCardDetails" />
+        <TextView
+            android:id="@+id/tvCurrentBalance"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:padding="15dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/labelCurrentBalance"
+            app:layout_constraintTop_toBottomOf="@id/labelWalletDetails"
+            tools:text="3 Rs" />
 
-    <TextView
-        android:id="@+id/tvInfoCard"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="10dp"
-        android:visibility="gone"
-        android:text="@string/no_cards_linked"
-        app:layout_constraintTop_toBottomOf="@id/tvAddCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:id="@+id/dividerBelowAddCard"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/bgColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoCard" />
-
-    <TextView
-        android:id="@+id/labelAddCash"
-        style="@style/TextLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="start"
-        android:textAllCaps="true"
-        android:text="@string/add_cash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dividerBelowAddCard" />
+        <TextView
+            android:id="@+id/labelCardDetails"
+            style="@style/TextMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/bgColor"
+            android:padding="15dp"
+            android:text="@string/card_details"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCurrentBalance" />
 
 
-    <View
-        android:id="@+id/currentBalanceDividerEnd"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="10dp"
-        android:background="@color/bgColor"
-        app:layout_constraintBottom_toBottomOf="@id/labelAddCash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/labelAddCash"
-        app:layout_constraintTop_toTopOf="@id/labelAddCash" />
+        <TextView
+            android:id="@+id/tvAddCard"
+            style="@style/TextLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_white_selector"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+            android:focusable="true"
+            android:gravity="start"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="20dp"
+            android:text="@string/label_add_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelCardDetails" />
 
-    <View
-        android:id="@+id/currentBalanceDividerStart"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="20dp"
-        android:background="@color/bgColor"
-        app:layout_constraintBottom_toBottomOf="@id/labelAddCash"
-        app:layout_constraintEnd_toStartOf="@+id/labelAddCash"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/labelAddCash" />
+        <TextView
+            android:id="@+id/tvInfoCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:text="@string/no_cards_linked"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAddCard" />
 
+        <View
+            android:id="@+id/dividerBelowAddCard"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvInfoCard" />
 
-    <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
-        android:id="@+id/tvHintAmountTwo"
-        style="@style/TextNormal"
-        tools:text="400"
-        android:paddingTop="10dp"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/button_white_grey_border"
-        app:layout_constraintStart_toEndOf="@+id/tvHintAmountOne"
-        app:layout_constraintEnd_toStartOf="@+id/tvHintAmountThree"
-        app:layout_constraintTop_toBottomOf="@id/labelAddCash"
-        android:layout_width="0dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_height="wrap_content" />
-
-    <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
-        android:id="@+id/tvHintAmountOne"
-        tools:text="100"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:gravity="center"
-        style="@style/TextNormal"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        android:background="@drawable/button_white_grey_border"
-        app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
-        app:layout_constraintEnd_toStartOf="@id/tvHintAmountTwo"
-        app:layout_constraintTop_toTopOf="@id/tvHintAmountTwo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/labelAddCash"
+            style="@style/TextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:text="@string/add_cash"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerBelowAddCard" />
 
 
-    <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
-        android:id="@+id/tvHintAmountThree"
-        style="@style/TextNormal"
-        tools:text="500"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:gravity="center"
-        android:background="@drawable/button_white_grey_border"
-        app:layout_constraintStart_toEndOf="@id/tvHintAmountTwo"
-        app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
-        app:layout_constraintTop_toTopOf="@id/tvHintAmountTwo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/currentBalanceDividerEnd"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/bgColor"
+            app:layout_constraintBottom_toBottomOf="@id/labelAddCash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/labelAddCash"
+            app:layout_constraintTop_toTopOf="@id/labelAddCash" />
 
-    
-    <product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
-        android:id="@+id/edtAmount"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvHintAmountTwo"
-        app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
-        app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:hint="@string/enter_amount"
-        style="@style/TextNormal"
-        android:textAllCaps="true"
-        android:inputType="number"
-        android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
-    
-    <Button
-        android:id="@+id/btnAddCash"
-        app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
-        app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
-        style="@style/ButtonTheme"
-        android:layout_marginTop="20dp"
-        android:text="@string/add_cash"
-        app:layout_constraintTop_toBottomOf="@id/edtAmount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/currentBalanceDividerStart"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/bgColor"
+            app:layout_constraintBottom_toBottomOf="@id/labelAddCash"
+            app:layout_constraintEnd_toStartOf="@+id/labelAddCash"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/labelAddCash" />
+
+        <FrameLayout
+            android:id="@+id/layoutQuickAmountTwo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_white_grey_border"
+            app:layout_constraintEnd_toStartOf="@+id/layoutQuickAmountThree"
+            app:layout_constraintStart_toEndOf="@+id/layoutQuickAmountOne"
+            app:layout_constraintTop_toBottomOf="@id/labelAddCash">
 
 
+            <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
+                android:id="@+id/tvQuickAmtTwo"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                tools:text="400" />
 
-    <android.support.constraint.Group
-        android:id="@+id/groupAddCash"
-        app:constraint_referenced_ids="btnAddCash,edtAmount,labelAddCash,currentBalanceDividerStart,currentBalanceDividerEnd"
-        android:layout_width="wrap_content"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
-
-    <android.support.constraint.Group
-        android:id="@+id/groupQuickAmounts"
-        app:constraint_referenced_ids="tvHintAmountThree,tvHintAmountTwo,tvHintAmountOne"
-        android:layout_width="wrap_content"
-        android:visibility="visible"
-        android:layout_height="wrap_content" />
-
-
-
-
-
+        </FrameLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/layoutQuickAmountOne"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_white_grey_border"
+            app:layout_constraintEnd_toStartOf="@id/layoutQuickAmountTwo"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
+            app:layout_constraintTop_toTopOf="@id/layoutQuickAmountTwo">
+
+            <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
+                android:id="@+id/tvQuickAmtOne"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                tools:text="100" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/layoutQuickAmountThree"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/button_white_grey_border"
+            app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
+            app:layout_constraintStart_toEndOf="@id/layoutQuickAmountTwo"
+            app:layout_constraintTop_toTopOf="@id/layoutQuickAmountTwo">
+
+
+            <product.clicklabs.jugnoo.driver.widgets.PrefixedTextView
+                android:id="@+id/tvQuickAmtThree"
+                style="@style/TextNormal"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                tools:text="500" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layoutAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/edittext_background"
+            app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
+            app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
+            app:layout_constraintTop_toBottomOf="@+id/layoutQuickAmountTwo">
+
+            <product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
+                android:id="@+id/edtAmount"
+                style="@style/TextNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="@string/enter_amount"
+                android:inputType="number"
+                android:padding="10dp"
+                android:textAllCaps="true" />
+
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/btnAddCash"
+            style="@style/ButtonTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/add_cash"
+            app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
+            app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
+            app:layout_constraintTop_toBottomOf="@id/layoutAmount" />
+
+
+        <android.support.constraint.Group
+            android:id="@+id/groupAddCash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="btnAddCash,layoutAmount,labelAddCash,currentBalanceDividerStart,currentBalanceDividerEnd" />
+
+        <android.support.constraint.Group
+            android:id="@+id/groupQuickAmounts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="layoutQuickAmountThree,layoutQuickAmountTwo,layoutQuickAmountOne" />
+
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
