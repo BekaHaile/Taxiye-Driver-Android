@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -26,7 +27,6 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.*
-import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_SMS
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
@@ -34,7 +34,7 @@ import retrofit.mime.TypedByteArray
 import java.util.*
 
 
-class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
+class OTPConfirmFragment : Fragment(){
 
     private lateinit var countryCode: String
     private var missedCallNumber: String? = null
@@ -49,8 +49,6 @@ class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
     private  var mListener: SplashFragment.InteractionListener?  = null;
-
-    private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
 
 
     companion object {
@@ -168,18 +166,19 @@ class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
                 edtOTP.setText(mListener?.getPrefillOtpIfany())
                 edtOTP.setSelection(edtOTP.text.length)
             }else{
-                checkReadSMSPermission()
-
+                if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, activity)){
+                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
+                    mListener?.registerForSmsReceiver(true);
+                    showCountDownPopup()
+                } else {
+                    mListener?.registerForSmsReceiver(false);
+                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
+                }
             }
         }
 
         return rootView
 
-    }
-
-    private fun checkReadSMSPermission() {
-
-        permissionCommon.getPermission(REQUEST_CODE_READ_SMS, android.Manifest.permission.READ_SMS)
     }
 
     private fun showCountDownPopup() {
@@ -424,7 +423,6 @@ class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
         }else{
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
-            permissionCommon.dismissSnackbars()
         }
 
     }
@@ -444,32 +442,6 @@ class OTPConfirmFragment : Fragment(), PermissionCommon.PermissionListener {
 
     }
 
-
-    override fun permissionGranted(requestCode: Int) {
-        if (requestCode == REQUEST_CODE_READ_SMS) {
-            mListener?.registerForSmsReceiver(true);
-            showCountDownPopup()
-        }
-
-    }
-
-    override fun permissionDenied(requestCode: Int) {
-        if (requestCode == REQUEST_CODE_READ_SMS) {
-            mListener?.registerForSmsReceiver(false);
-            Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        permissionCommon.dismissSnackbars()
-    }
 
 }
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -81,16 +80,7 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onStop() {
 		if(Data.appMinimized){
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				if(!Settings.canDrawOverlays(this)){
-					// ask for setting
-					Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-							Uri.parse("package:" + getPackageName()));
-					startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
-				} else {
-					startService(new Intent(this, GeanieView.class));
-				}
-			}
+			BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, true);
 		}
 		super.onStop();
 	}

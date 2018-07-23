@@ -88,6 +88,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -217,7 +218,6 @@ import retrofit.mime.TypedByteArray;
 
 import static product.clicklabs.jugnoo.driver.Data.context;
 import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
-import com.google.firebase.iid.FirebaseInstanceId;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 @SuppressLint("DefaultLocale")
@@ -1394,7 +1394,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 
 						@Override
-						public void permissionDenied(final int requestCode) { }
+						public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+						@Override
+						public void onRationalRequestIntercepted() {
+
+						}
 					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
 				}
 			});
@@ -3668,18 +3673,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(latLng != null) {
 						Utils.openNavigationIntent(HomeActivity.this, latLng);
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-							if(!Settings.canDrawOverlays(HomeActivity.this)){
-								// ask for setting
-								Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-										Uri.parse("package:" + getPackageName()));
-								startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
-							} else {
-								Intent intent = new Intent(HomeActivity.this, GeanieView.class);
-								startService(intent);
-							}
-						}
-
+						BaseFragmentActivity.checkOverlayPermissionOpenJeanie(HomeActivity.this, true, true);
 					}
 				} else {
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
@@ -6258,8 +6252,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									}
 
 									@Override
-									public void permissionDenied(final int requestCode) {
-										Log.e(TAG, "READ_CALL_LOG NOT GRANTED");
+									public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+									@Override
+									public void onRationalRequestIntercepted() {
+
 									}
 								}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
@@ -8216,8 +8213,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 
 							@Override
-							public void permissionDenied(final int requestCode) {
-								Log.e(TAG, "READ_CALL_LOG NOT GRANTED");
+							public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+							@Override
+							public void onRationalRequestIntercepted() {
+
 							}
 						}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 

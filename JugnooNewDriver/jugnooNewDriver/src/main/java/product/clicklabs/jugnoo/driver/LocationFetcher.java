@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -44,7 +43,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			this.priority = priority;
 	}
 
-	public synchronized void connect(){
+	public  void connect(){
 		destroy();
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if(resp == ConnectionResult.SUCCESS){														// google play services working
@@ -59,7 +58,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}
 	}
 
-	public synchronized void destroyWaitAndConnect(){
+	public  void destroyWaitAndConnect(){
 		destroy();
 		new Handler().postDelayed(new Runnable() {
 			@Override
@@ -69,7 +68,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}, 2000);
 	}
 
-	private synchronized void saveLatLngToSP(Location location){
+	private  void saveLatLngToSP(Location location){
 		Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 	}
 
@@ -90,7 +89,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	 * @param context application context
 	 * @return true if any location provider is enabled else false
 	 */
-	private synchronized boolean isLocationEnabled(Context context) {
+	private  boolean isLocationEnabled(Context context) {
 		try{
 			ContentResolver contentResolver = context.getContentResolver();
 			boolean gpsStatus = Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.GPS_PROVIDER);
@@ -121,7 +120,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	}
 
 
-	protected synchronized void buildGoogleApiClient(Context context) {
+	protected  void buildGoogleApiClient(Context context) {
 		try {
 			googleApiClient = new GoogleApiClient.Builder(context)
 					.addConnectionCallbacks(this)
@@ -208,7 +207,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 
 
 
-	public synchronized void destroy(){
+	public  void destroy(){
 		try{
 			this.location = null;
 			Log.e("location", "destroy");
@@ -229,7 +228,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	}
 
 
-	private synchronized void startRequest(){
+	private  void startRequest(){
 		try {
 			startLocationUpdates(requestInterval, priority);
 		} catch (Exception e) {

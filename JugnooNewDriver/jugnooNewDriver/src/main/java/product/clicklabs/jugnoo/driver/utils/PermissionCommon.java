@@ -2,15 +2,17 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -18,8 +20,17 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.R;
+
+/**
+ * Created by socomo-46 on 22/09/16.
+ */
+
 
 public final class PermissionCommon {
     public static final int REQUEST_CODE_READ_SMS = 2001;
@@ -32,7 +43,6 @@ public final class PermissionCommon {
 
     private static final int REQUEST_CODE = 0x8;
     private static final int REQUEST_CODE_RATIONAL = 0x9;
-
     private int requestCodeInitiated;
     private View view;
     private String[] permissionsInitiated;
@@ -42,9 +52,15 @@ public final class PermissionCommon {
     private PermissionListener permissionListener;
     private HashMap<String, String> rationalMessageMap;
     private Fragment fragment;
+    private boolean showRetryAlertOnFirstDenial;
 
-    private boolean showRationaleSnackbar = true;
+    public static final int SHOW_RATIONAL_MESSAGE = 1;
+    public static final int SKIP_RATIONAL_MESSAGE = 2;
+    public static final int SKIP_RATIONAL_REQUEST = 3;
 
+    @IntDef({SHOW_RATIONAL_MESSAGE, SKIP_RATIONAL_MESSAGE, SKIP_RATIONAL_REQUEST})
+    @Retention(RetentionPolicy.SOURCE)
+    private  @interface RationalMessageStatus {}
 
     @SuppressWarnings("unused")
     private PermissionCommon() {
@@ -88,17 +104,11 @@ public final class PermissionCommon {
     }
 
 
-    /**
-     * Sets the showRationaleSnackbar
-     *
-     * @param showRationaleSnackbar : showRationaleSnackbar
-     */
-    public PermissionCommon showRationale(final boolean showRationaleSnackbar) {
-        this.showRationaleSnackbar = showRationaleSnackbar;
-        return this;
-    }
 
-    public final void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+
+
+
+    public final void onRequestPermissionsResult(final int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
 
             case REQUEST_CODE:
@@ -118,26 +128,59 @@ public final class PermissionCommon {
 
                 } else {
 
+                    String permissionDenied = permissionsInitiated[0];
                     for (String permission : permissions) {
 
-                        if (!isGranted(permission,activity) && !shouldShowRationalPermission(permission) && showRationaleSnackbar) {
+                        if (!isGranted(permission,activity)) {
+                            permissionDenied = permission;
+
+                            if(!shouldShowRationalPermission(permission)){
 
 
-                            String messageToShow = "You have disabled the permission to " + getPermissionLabel(permission) + ".Please go to app settings to allow permission";
-                            showPermissionDenied(messageToShow);
-                            //this means the user has blocked a permission and chosen "Never ask again" for the that permission.
+
+                                String messageToShow = "You have disabled the permission to " + getPermissionLabel(permission) + ".Please go to app settings to allow permission";
+
+                                //this means the user has blocked a permission and chosen "Never ask again" for the that permission.
 
 
-                            if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+                                if(permissionListener!=null){
+                                    if(permissionListener.permissionDenied(requestCodeInitiated, true)){
+                                        showPermissionDenied(messageToShow);
+                                    }
+                                }else{
+                                    showPermissionDenied(messageToShow);
+                                }
 
-                            return;
+                                return;
 
+                            }
                         }
 
                     }
 
                     //the user has denied permission normally.Wait for user's action to ask for permission again
-                    if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+
+                    if(showRetryAlertOnFirstDenial){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                        builder.setMessage(getRationalMessage(permissionDenied) +  activity.getString(R.string.are_you_sure))
+                                .setNegativeButton(activity.getString(R.string.i_am_sure), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if(permissionListener!=null) { permissionListener.permissionDenied(requestCodeInitiated, false); }
+
+                                    }
+                                }).setPositiveButton(activity.getString(R.string.retry), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                getPermission(requestCode,SKIP_RATIONAL_MESSAGE,false,permissionsInitiated);
+
+                            }
+                        });
+                        builder.show();
+
+                    }else if(permissionListener!=null) {
+                        permissionListener.permissionDenied(requestCodeInitiated, false);
+                    }
 
 
                 }
@@ -148,21 +191,25 @@ public final class PermissionCommon {
 
             case REQUEST_CODE_RATIONAL:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    getPermission(requestCodeInitiated, permissionsInitiated);
-                //continues to check again if all permissions have been granted or there is still a rational permission pending
+                    getPermission(requestCodeInitiated,  permissionsInitiated); //continues to check again if all permissions have been granted or there is still a rational permission pending
                 else {
-                    if (shouldShowRationalPermission(permissions[0]) && showRationaleSnackbar) {
+                    if (!shouldShowRationalPermission(permissions[0])) {
 
                         String messageToShow = "You have disabled the permission to " + getPermissionLabel(permissions[0]) + ".Please go to app settings to allow permission";
-                        showPermissionDenied(messageToShow);
                         //activity means the user has blocked a permission and chosen "Never ask again" for the same
-                        if(permissionListener!=null)permissionListener.permissionDenied(requestCodeInitiated);
+                        if(permissionListener!=null){
+                            if(permissionListener.permissionDenied(requestCodeInitiated, true)){
+                                showPermissionDenied(messageToShow);
+                            }
+                        }else{
+                            showPermissionDenied(messageToShow);
+                        }
 
                         return;
 
                     }
 
-                    if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated);
+                    if(permissionListener!=null) permissionListener.permissionDenied(requestCodeInitiated, false);
 
                 }
 
@@ -185,22 +232,18 @@ public final class PermissionCommon {
 
 
         if (appName == null)
-            appName = activity.getString(activity.getApplicationInfo().labelRes);
+            appName = activity.getString(R.string.app_name);
 
 
         switch (permission) {
             case Manifest.permission.CAMERA:
-                return appName + " needs permission to access the camera to save images";
+                return appName + " needs permission to access the camera to save images. ";
             case Manifest.permission.ACCESS_COARSE_LOCATION:
-                return appName + " needs permission fetch current location address";
+                return appName + " needs permission fetch current location address. ";
             case Manifest.permission.ACCESS_FINE_LOCATION:
-                return appName + " needs permission fetch current location address";
-            case Manifest.permission.READ_SMS:
-                return appName + " needs read sms permission to fetch otp";
-            case Manifest.permission.READ_PHONE_STATE:
-                return appName + " needs to call permission to make support calls";
-            case Manifest.permission.CALL_PHONE:
-                return appName + " needs to call permission to make support calls";
+                return appName + " needs permission fetch current location address. ";
+            case Manifest.permission.RECEIVE_SMS:
+                return appName + " needs this permission to auto-detect OTP. ";
             default:
                 return appName + " needs this permission to proceed.";
         }
@@ -208,16 +251,32 @@ public final class PermissionCommon {
     }
 
 
+
+    public void getPermission(int requestCode,final String... permissionArray) {
+        getPermission(requestCode,SHOW_RATIONAL_MESSAGE,false,permissionArray);
+
+    }
+
+    public void getPermission(int requestCode,boolean showRetryAlertOnFirstDenial ,final String... permissionArray){
+        getPermission(requestCode,SHOW_RATIONAL_MESSAGE,showRetryAlertOnFirstDenial,permissionArray);
+    }
+
+    public void getPermission(int requestCode, @RationalMessageStatus int rationalOperationRequired,final String... permissionArray){
+        getPermission(requestCode,rationalOperationRequired,false,permissionArray);
+    }
     /**
      * @param requestCode     request code corresponding to set of permissions that would be returned onGranted() or onDenied()
      * @param permissionArray set of permissions needed for the feature
      */
 
-    public void getPermission(int requestCode, final String... permissionArray) {
+
+
+    public void getPermission(int requestCode, @RationalMessageStatus int rationalOperationRequired,boolean showRetryAlertOnFirstDenial,final String... permissionArray) {
 
 
         // Android code Build is lower than Marshmallow no need to check for permissions
 
+        this.showRetryAlertOnFirstDenial = showRetryAlertOnFirstDenial;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if(permissionListener!=null)permissionListener.permissionGranted(requestCode);
 
@@ -251,7 +310,19 @@ public final class PermissionCommon {
         for (final String permission : permissionsToAsk) {
 
 
+
             if (shouldShowRationalPermission(permission)) {
+                if(rationalOperationRequired==SKIP_RATIONAL_REQUEST){
+                    if(permissionListener!=null)permissionListener.onRationalRequestIntercepted();
+                    return;
+                }
+
+                if(rationalOperationRequired==SKIP_RATIONAL_MESSAGE){
+                    requestPermissions(new String[]{permission}, REQUEST_CODE_RATIONAL);
+                    return;
+
+                }
+
                 getRationalSnackBar(getRationalMessage(permission)).setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -265,7 +336,7 @@ public final class PermissionCommon {
 
 
         }
-        //At activity point if shouldAsk is true there is no rational Permission that exists and  No explanation needed, we can request for  the permissions.
+        //At activity point if shouldAsk is true there is no rational Permission that exists and  No explanation needed, we can request for the permissions.
         requestPermissions(permissionsToAsk.toArray(new String[permissionsToAsk.size()]), REQUEST_CODE);
 
 
@@ -334,7 +405,8 @@ public final class PermissionCommon {
     private void showPermissionDenied(String message) {
 
         if (snackBarPermissionDenied == null) {
-            snackBarPermissionDenied = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+            view.setVisibility(View.VISIBLE);
+            snackBarPermissionDenied = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
             snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
             snackBarPermissionDenied.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
             ((TextView) snackBarPermissionDenied.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
@@ -390,8 +462,12 @@ public final class PermissionCommon {
         /**
          * @param requestCode requestCode used to ask for specific set of permissions
          *                    activity method is called if any of the permission has been denied
+         * @param neverAsk
          */
-        void permissionDenied(int requestCode);
+        boolean permissionDenied(int requestCode, boolean neverAsk);
+
+        void onRationalRequestIntercepted();
+
 
 
     }
@@ -406,13 +482,21 @@ public final class PermissionCommon {
     }
 
     public void dismissSnackbars(){
-        if (snackBarPermissionDenied != null  && snackBarPermissionDenied.isShownOrQueued()) {
+        if(snackBarPermissionDenied != null){
             snackBarPermissionDenied.dismiss();
         }
-
-        if (snackBarRational != null  && snackBarRational.isShownOrQueued()) {
+        if(snackBarRational != null){
             snackBarRational.dismiss();
         }
+    }
 
+    public Snackbar getDisplayedSnackbar(){
+        if(snackBarPermissionDenied != null){
+            return snackBarPermissionDenied;
+        }
+        if(snackBarRational != null){
+            return snackBarRational;
+        }
+        return null;
     }
 }

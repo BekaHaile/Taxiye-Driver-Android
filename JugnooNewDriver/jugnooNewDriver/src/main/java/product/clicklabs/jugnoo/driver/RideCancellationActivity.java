@@ -27,7 +27,6 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -230,9 +229,15 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 												e.printStackTrace();
 											}
 										}
+										@Override
+										public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+											return true;
+										}
 
 										@Override
-										public void permissionDenied(final int requestCode) { Log.e(TAG, "READ_CALL_LOG NOT GRANTED"); }
+										public void onRationalRequestIntercepted() {
+
+										}
 									}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
 

@@ -38,6 +38,8 @@ public class DeviceUniqueID {
 
             imei += (BuildConfig.DEBUG ? "mnq121" : "");
 
+            DeviceUniqueID.saveUniqueId(context, imei);
+
             return imei;
 
         } catch (Exception e) {
@@ -52,7 +54,7 @@ public class DeviceUniqueID {
         return preferences.getString(SP_DEVICE_UNIQUE_ID, "");
     }
 
-    public static void saveUniqueId(final Context context, @NotNull final String id) {
+    private static void saveUniqueId(final Context context, @NotNull final String id) {
 
         // save id to shared preferences for future use
             SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);

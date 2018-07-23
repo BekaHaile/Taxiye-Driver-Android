@@ -181,7 +181,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	}
 
 	@Override
-	public void permissionDenied(final int requestCode) {
+	public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+		return true;
+	}
+
+	@Override
+	public void onRationalRequestIntercepted() {
 
 	}
 

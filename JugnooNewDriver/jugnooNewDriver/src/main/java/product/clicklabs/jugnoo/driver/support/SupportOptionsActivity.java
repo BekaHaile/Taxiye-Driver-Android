@@ -100,7 +100,12 @@ public class SupportOptionsActivity extends BaseActivity implements View.OnClick
 						}
 
 						@Override
-						public void permissionDenied(final int requestCode) {
+						public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+							return true;
+						}
+
+						@Override
+						public void onRationalRequestIntercepted() {
 
 						}
 					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);

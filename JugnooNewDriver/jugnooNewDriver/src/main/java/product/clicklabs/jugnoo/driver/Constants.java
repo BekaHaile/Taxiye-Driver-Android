@@ -333,5 +333,8 @@ public interface Constants {
 	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
 	String KEY_DEVICE_TYPE = "device_type";
 	String WALLET = "wallet";
+	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
+
+	String NOTIF_CHANNEL_DEFAULT = "Notifications";
 }
 

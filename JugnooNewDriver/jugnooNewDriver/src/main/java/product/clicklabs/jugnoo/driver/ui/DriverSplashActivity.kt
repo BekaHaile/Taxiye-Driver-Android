@@ -1,8 +1,9 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
@@ -21,10 +22,9 @@ import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
-import java.util.regex.Pattern
-
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_PHONE_STATE
+import java.util.regex.Pattern
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -48,32 +48,31 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     };
     private var isSavedInstanceStateNull = false;
 
-    private val permissionCommon by lazy { PermissionCommon(this).setCallback(this).showRationale(false) }
+    private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
 
     @SuppressLint("MissingPermission")
     override fun permissionGranted(requestCode: Int) {
         Log.d(TAG, " permissionGranted : requestCode  $requestCode")
 
         if (requestCode == REQUEST_CODE_FINE_LOCATION) {
-
-            Log.d(TAG, " requestCode  REQUEST_CODE_FINE_LOCATION")
-            Log.d(TAG, " requestCode  REQUEST_CODE_FINE_LOCATION")
-            Data.locationFetcher = LocationFetcher(this, 1000, 1)
+            if(Data.locationFetcher != null) {
+                Data.locationFetcher.connect()
+            } else {
+                Data.locationFetcher = LocationFetcher(this, 1000, 1)
+                Data.locationFetcher.connect()
+            }
 
             val uid = DeviceUniqueID.getCachedUniqueId(this)
-
             Log.d(TAG, "UID : $uid")
 
             if (uid.isBlank()) {
-                permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, android.Manifest.permission.READ_PHONE_STATE)
+                permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE)
             } else {
                 setupSplashFragment()
             }
-
-        } else if (requestCode == REQUEST_CODE_READ_PHONE_STATE) {
+        } else if(requestCode == REQUEST_CODE_READ_PHONE_STATE){
             val uid = DeviceUniqueID.getUniqueId(this)
-            DeviceUniqueID.saveUniqueId(this, uid)
-
+            Log.d(TAG, "UID : $uid")
             setupSplashFragment()
         }
     }
@@ -96,17 +95,25 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             supportFragmentManager.inTransaction {
                 add(container.id, SplashFragment(), SplashFragment::class.simpleName)
             }
+            BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, false)
         }
     }
 
-    override fun permissionDenied(requestCode: Int) {
+    private var neverAskClicked = false
+    override fun permissionDenied(requestCode: Int, neverAsk: Boolean) : Boolean {
         Log.d(TAG, " permissionDenied : requestCode  $requestCode")
 
-        if (requestCode == REQUEST_CODE_FINE_LOCATION) {
-            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
-        } else if (requestCode == REQUEST_CODE_READ_PHONE_STATE) {
-            permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, android.Manifest.permission.READ_PHONE_STATE)
+        if (requestCode == REQUEST_CODE_FINE_LOCATION && !neverAsk) {
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        } else if (requestCode == REQUEST_CODE_READ_PHONE_STATE && !neverAsk) {
+            permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE)
         }
+        neverAskClicked = neverAsk
+        return true
+    }
+
+    override fun onRationalRequestIntercepted() {
+
     }
 
     override fun onLocationChanged(location: Location?, priority: Int) {
@@ -144,9 +151,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
 
         isSavedInstanceStateNull = savedInstanceState == null
+        neverAskClicked = false
         if (isSavedInstanceStateNull) {
             Log.d(TAG, " calling permission for location onCreate")
-            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             //  if activity is recreated, required permissions may have been revoked,
             // restart activityO to check complete flow of permissions and prevent fragments to reattach without permissions check
@@ -168,22 +176,46 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onResume() {
         super.onResume()
-        if (Data.locationFetcher != null) Data.locationFetcher.connect()
-        LocationInit.showLocationAlertDialog(this)
+        if(neverAskClicked){
+            if(permissionCommon.getDisplayedSnackbar() != null && !permissionCommon.getDisplayedSnackbar().isShown) {
+                if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
+                    DialogPopup.alertPopupTwoButtonsWithListeners(this, "", getString(R.string.app_needs_location_permission),
+                            getString(R.string.grant), getString(R.string.cancel),
+                            { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
+                            { finish() }, false, false)
+                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this) && DeviceUniqueID.getCachedUniqueId(this).isBlank()){
+                    DialogPopup.alertPopupTwoButtonsWithListeners(this, "", getString(R.string.app_needs_phone_state_permission),
+                            getString(R.string.grant), getString(R.string.cancel),
+                            { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
+                            { finish() }, false, false)
+                } else {
+                    restartApp()
+                }
+            } else if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                    && (!DeviceUniqueID.getCachedUniqueId(this).isBlank() || PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this))){
+                restartApp()
+            }
+        }
+        if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
+            if (Data.locationFetcher != null) Data.locationFetcher.connect()
+            LocationInit.showLocationAlertDialog(this)
+        }
         registerbackForOTPDetection()
 
 
     }
 
     private fun registerbackForOTPDetection() {
-        var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
-        if (otpFragment != null) {
-            otpFragment = otpFragment as OTPConfirmFragment;
-            if (otpFragment.isWaitingForOTPDetection()) {
-                registerForSmsReceiver(true)
+        if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
+            var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
+            if (otpFragment != null) {
+                otpFragment = otpFragment as OTPConfirmFragment;
+                if (otpFragment.isWaitingForOTPDetection()) {
+                    registerForSmsReceiver(true)
+
+                }
 
             }
-
         }
     }
 
@@ -412,12 +444,5 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-}
-
-interface ToolbarChangeListener {
-
-    fun setToolbarText(title: String)
-
-    fun setToolbarVisibility(isVisible: Boolean)
 }
 

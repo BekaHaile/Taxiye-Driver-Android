@@ -1037,6 +1037,16 @@
     <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
     <string name="toll_value">Toll fare: %s</string>
     <string name="please_enter_valid_fare">Please enter valid fare</string>
+    <string name="are_you_sure">Are you sure you want to proceed?</string>
+    <string name="i_am_sure">I\'m Sure</string>
+    <string name="app_needs_overlay_permission">App needs overlay permission to display helper button on screen</string>
+    <string name="grant">Grant</string>
+    <string name="ignore">Ignore</string>
+    <string name="app_needs_location_permission">App needs Location permission to continue</string>
+    <string name="app_needs_phone_state_permission">App needs Phone State permission to continue</string>
+
+    <string name="notification_channel_default">Notifications</string>
+    <string name="notification_channel_description_default">Latest Updates</string>
 
 
     <string name="hint_card_number">CARD NUMBER</string>
