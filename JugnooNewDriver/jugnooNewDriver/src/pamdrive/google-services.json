@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196730039656:android:f63c3e205a85a565",
+        "mobilesdk_app_id": "1:196730039656:android:6ac201b154e3e257",
         "android_client_info": {
-          "package_name": "production.pamdrive.customer"
+          "package_name": "com.tryapptivities.pamdrive"
         }
       },
       "oauth_client": [
@@ -39,9 +39,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196730039656:android:366d9357841c5bfe",
+        "mobilesdk_app_id": "1:196730039656:android:0658137cab625d59",
         "android_client_info": {
-          "package_name": "production.pamdrive.driver"
+          "package_name": "com.tryapptivities.pamdriver"
         }
       },
       "oauth_client": [
