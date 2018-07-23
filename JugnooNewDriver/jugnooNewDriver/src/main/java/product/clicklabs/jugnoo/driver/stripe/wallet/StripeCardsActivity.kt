@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import kotlinx.android.synthetic.main.activity_stripe_cards.*
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.fragments.WalletTransactionFragment
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeAddCardFragment
 import product.clicklabs.jugnoo.driver.stripe.StripeCardsStateListener
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeViewCardFragment
@@ -18,6 +19,19 @@ import java.util.*
 class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,StripeWalletFragment.StripeWalletInteractor {
 
 
+    override fun openWalletTransactions() {
+
+        supportFragmentManager.inTransactionWithAnimation {
+
+            add(container.id, WalletTransactionFragment(), WalletTransactionFragment::class.simpleName).
+                    addToBackStack(WalletTransactionFragment::class.simpleName).
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
+
+
+        }
+    }
+
+
     override fun openAddCard() {
         supportFragmentManager.inTransactionWithAnimation {
 
@@ -28,6 +42,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
         }
     }
+
 
     override fun openViewCard(stripeCardData: StripeCardData) {
 

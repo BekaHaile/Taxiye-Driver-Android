@@ -36,6 +36,7 @@ class StripeWalletFragment:Fragment(){
     interface StripeWalletInteractor{
         fun openAddCard();
         fun openViewCard(stripeCardData: StripeCardData);
+        fun openWalletTransactions();
 
     }
 
@@ -86,6 +87,9 @@ class StripeWalletFragment:Fragment(){
                }
            }
 
+        }
+        tvWalletTransactions.setOnClickListener {
+            stripeWalletInteractor?.openWalletTransactions()
         }
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)

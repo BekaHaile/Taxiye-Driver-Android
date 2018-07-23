@@ -57,6 +57,39 @@
             app:layout_constraintTop_toBottomOf="@id/labelWalletDetails"
             tools:text="3 Rs" />
 
+
+
+        <View
+            android:id="@+id/dividerBelowCurrentBalance"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/bgColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCurrentBalance" />
+
+        <TextView
+            android:id="@+id/tvWalletTransactions"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_white_selector"
+            android:clickable="true"
+            android:drawableEnd="@drawable/ic_navigate_next_black_18dp"
+            android:focusable="true"
+            android:gravity="start"
+            android:paddingBottom="20dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:paddingTop="20dp"
+            android:text="@string/wallet_transactions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerBelowCurrentBalance" />
+
+
+
+
         <TextView
             android:id="@+id/labelCardDetails"
             style="@style/TextMedium"
@@ -69,7 +102,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCurrentBalance" />
+            app:layout_constraintTop_toBottomOf="@+id/tvWalletTransactions" />
 
 
         <TextView
@@ -269,8 +302,9 @@
                 android:layout_gravity="center"
                 android:background="@null"
                 android:gravity="center"
+                android:maxLength="8"
                 android:hint="@string/enter_amount"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:padding="10dp"
                 android:textAllCaps="true" />
 
@@ -283,10 +317,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:visibility="gone"
             android:text="@string/add_cash"
             app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
             app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutAmount" />
 
 <!--

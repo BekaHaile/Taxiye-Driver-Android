@@ -649,6 +649,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			earningsRL = (RelativeLayout) findViewById(R.id.earningsRL);
 			earningsText = (TextView) findViewById(R.id.earningsText);
 			earningsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			((TextView) findViewById(R.id.walletText)).setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			auditRL = (RelativeLayout) findViewById(R.id.auditRL);
 			auditText = (TextView) findViewById(R.id.auditText);
