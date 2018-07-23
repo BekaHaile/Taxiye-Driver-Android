@@ -99,7 +99,7 @@
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
             android:text="@string/no_cards_linked"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAddCard" />
@@ -111,7 +111,7 @@
             android:background="@color/bgColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvInfoCard" />
+            app:layout_constraintTop_toBottomOf="@id/tvInfoCard" />
 
         <TextView
             android:id="@+id/labelAddCash"
@@ -119,6 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             android:gravity="start"
             android:text="@string/add_cash"
             android:textAllCaps="true"
@@ -132,6 +133,7 @@
             android:id="@+id/currentBalanceDividerEnd"
             android:layout_width="0dp"
             android:layout_height="2dp"
+            android:visibility="gone"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="10dp"
             android:background="@color/bgColor"
@@ -145,6 +147,7 @@
             android:id="@+id/currentBalanceDividerStart"
             android:layout_width="0dp"
             android:layout_height="2dp"
+            android:visibility="gone"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="20dp"
             android:background="@color/bgColor"
@@ -157,6 +160,7 @@
             android:id="@+id/layoutQuickAmountTwo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="20dp"
@@ -189,6 +193,7 @@
             android:id="@+id/layoutQuickAmountOne"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@drawable/button_white_grey_border"
             app:layout_constraintEnd_toStartOf="@id/layoutQuickAmountTwo"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -219,6 +224,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="gone"
             android:background="@drawable/button_white_grey_border"
             app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
             app:layout_constraintStart_toEndOf="@id/layoutQuickAmountTwo"
@@ -245,6 +251,7 @@
         <FrameLayout
             android:id="@+id/layoutAmount"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:clickable="true"
@@ -276,11 +283,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             android:text="@string/add_cash"
             app:layout_constraintEnd_toEndOf="@id/currentBalanceDividerEnd"
             app:layout_constraintStart_toStartOf="@id/currentBalanceDividerStart"
             app:layout_constraintTop_toBottomOf="@id/layoutAmount" />
 
+<!--
 
         <android.support.constraint.Group
             android:id="@+id/groupAddCash"
@@ -295,6 +304,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="layoutQuickAmountThree,layoutQuickAmountTwo,layoutQuickAmountOne" />
+-->
 
 
     </android.support.constraint.ConstraintLayout>

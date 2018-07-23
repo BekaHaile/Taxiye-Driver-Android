@@ -538,6 +538,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".stripe.wallet.StripeCardsActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
 
 

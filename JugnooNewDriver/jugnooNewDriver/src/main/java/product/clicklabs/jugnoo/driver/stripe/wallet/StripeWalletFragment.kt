@@ -124,8 +124,8 @@ class StripeWalletFragment:Fragment(){
         stripeCardData?.let {
             tvAddCard.text = StripeUtils.getStripeCardDisplayString(activity, it.getLast4())
             tvInfoCard.visibility = View.GONE
-            groupAddCash.visibility = View.VISIBLE
-            groupQuickAmounts.visibility = quickAddAmounts?.run {if(this.size==3){
+            groupAddCash( View.VISIBLE)
+            groupQuickAmounts(quickAddAmounts?.run {if(this.size==3){
                 for(i in 0 until this.size){
                     val textAmount = this[i].roundToInt().toString();
                     when(i){
@@ -144,14 +144,14 @@ class StripeWalletFragment:Fragment(){
                     }
                 }
             View.VISIBLE
-            }else View.GONE }?:View.GONE
+            }else View.GONE }?:View.GONE)
 
             applyTouchDelegateToLayoutAmount()
         } ?: run {
             tvAddCard.text = getString(R.string.label_add_card)
             tvInfoCard.visibility = View.VISIBLE
-            groupAddCash.visibility = View.GONE
-            groupQuickAmounts.visibility = View.GONE
+            groupAddCash(View.GONE)
+            groupQuickAmounts( View.GONE)
         }
     }
 
@@ -230,6 +230,39 @@ class StripeWalletFragment:Fragment(){
             }
         }
 
+    }
+
+
+
+    fun groupAddCash(visibility: Int){
+
+        if(visibility==View.VISIBLE){
+            btnAddCash.visibility = View.VISIBLE
+            layoutAmount.visibility = View.VISIBLE
+            labelAddCash.visibility = View.VISIBLE
+            currentBalanceDividerStart.visibility = View.VISIBLE
+            currentBalanceDividerEnd.visibility = View.VISIBLE
+
+        }else{
+            btnAddCash.visibility = View.GONE
+            layoutAmount.visibility = View.GONE
+            labelAddCash.visibility = View.GONE
+            currentBalanceDividerStart.visibility = View.GONE
+            currentBalanceDividerEnd.visibility = View.GONE
+        }
+    }
+
+    fun groupQuickAmounts(visibility: Int){
+        if(visibility==View.VISIBLE){
+            layoutQuickAmountThree.visibility = View.VISIBLE
+            layoutQuickAmountTwo.visibility = View.VISIBLE
+            layoutQuickAmountOne.visibility = View.VISIBLE
+        }else{
+
+            layoutQuickAmountThree.visibility = View.GONE
+            layoutQuickAmountTwo.visibility = View.GONE
+            layoutQuickAmountOne.visibility = View.GONE
+        }
     }
 
 
