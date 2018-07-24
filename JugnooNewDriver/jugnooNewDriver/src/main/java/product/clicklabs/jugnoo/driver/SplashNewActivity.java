@@ -44,7 +44,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -86,6 +85,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
+import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -260,7 +260,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
 
 		buttonLogin.setVisibility(View.VISIBLE);
-		buttonRegister.setVisibility(View.VISIBLE);
+		buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 		buttonRegisterTookan.setVisibility(View.GONE);
 
 		viewInitJugnoo.setVisibility(View.VISIBLE);
@@ -308,6 +308,8 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 
 		tvCountryCode.setText(Utils.getCountryCode(this));
 		tvCountryCodeL.setText(Utils.getCountryCode(this));
+
+		textViewLoginRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
@@ -1635,7 +1637,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			fetchLanguageList();
 
 			buttonLogin.setVisibility(View.VISIBLE);
-			buttonRegister.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 //			toggleRegistrationButton();
 		}
 
@@ -1644,7 +1646,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	public void toggleRegistrationButton(){
 		if((registerViaTooken == RegisterOption.BOTH_TOOKAN_SELF_REGISTER.getOrdinal()
 				|| registerViaTooken == RegisterOption.ONLY_SELF_REGISTER.getOrdinal())) {
-			buttonRegister.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(getResources().getBoolean(R.bool.disable_register) ? View.GONE : View.VISIBLE);
 		}
 	}
 
@@ -2601,9 +2603,9 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
 					HomeUtil.putDefaultParams(params);
 
-					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+					RestClient.getApiServices().fetchLanguageList(params, new Callback<DriverLanguageResponse>() {
 						@Override
-						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						public void success(DriverLanguageResponse registerScreenResponse, Response response) {
 							String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
 							DialogPopup.dismissLoadingDialog();
 							try {

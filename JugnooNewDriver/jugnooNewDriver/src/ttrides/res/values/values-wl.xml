@@ -16,24 +16,26 @@
     -->
 
 
-    <string name="appname">TT Rides Share</string>
-    <string name="app_name">TT Rides Share Drivers</string>
+    <string name="appname">TT RideShare</string>
+    <string name="app_name">TT RideShare Drivers</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">6e1314631d098db197321244c93fb7c5</string>
+    <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">acd1fc4c36da23e421c9e357785f4d4a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">TT Rides Share Driver/TT Rides Share Pictures</string>
-    <string name="file_provider">production.ttridesshare.driver.driver.provider</string>
+    <string name="images_path">TT RideShare Driver/TT RideShare Pictures</string>
+    <string name="file_provider">production.ttrideshare.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4</string> <!--IMP-->
 
+    <string name="facebook_page_id">2056791887904505</string>
+    <string name="facebook_page_name">ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">TTRIDESSHARE</string><!--* IMP-->
-    <string name="support_email">support@jugnoo.in</string>
-    <string name="support_email_subject">TT Rides Share Driver Support</string>
+    <string name="white_label_name">Comelyt Driver</string><!--* IMP-->
+    <string name="support_email">support@ttideshare.com</string>
+    <string name="support_email_subject">TT RideShare Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
@@ -62,8 +64,8 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
-
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <bool name="specified_country_search_result_enabled">true</bool>
 
 
     <!--General Features Enable/Disable-->
@@ -73,6 +75,40 @@
     <integer name="show_call_in_otp">@integer/view_visible</integer>
 
     <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
+    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <color name="colorDark">@color/text_color</color>
+    <color name="colorLight">@color/white</color>
+
+    <!--theme colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#000000</color>
+    <color name="textColorMedium">#333333</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColor">#CC3333</color>
+    <color name="themeColorLight">#bbCC3333</color>
+    <color name="themeColorAlternate">#3c3638</color>
+    <color name="themeColorAlternateLight">#bb3c3638</color>
+
+
+    <!--resValue "color", 'red_v2', "#000000"-->
+    <!--resValue "color", 'red_v2_fadded', "#90000000"-->
+    <!--resValue "color", 'theme_color', "#000000"-->
+    <!--resValue "color", 'theme_color_alpha', "#BB000000"-->
+    <!--resValue "color", 'document_text_color', "#99000000"-->
+    <!--resValue "color", 'new_orange', "#CC3333"-->
+    <!--resValue "color", 'orange_btn_pressed', "#90CC3333"-->
+    <!--resValue "color", 'musturd_jugnoo', "#000000"-->
+    <!--resValue "color", 'gradient_yellow_v2', "#CC3333"-->
+    <!--resValue "color", 'gradient_orange_v2', "#CC3333"-->
+    <!--resValue "color", 'app_background_color', "#000000"-->
+    <!--resValue "color", 'orange_dark', "#CC3333"-->
+    <!--resValue "color", 'black_earnings_bg', "#000000"-->
+    <!--resValue "color", 'black_top_bar_bg', "#000000"-->
 
 </resources>

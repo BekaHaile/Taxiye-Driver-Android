@@ -125,6 +125,30 @@
             </LinearLayout>
 
 
+            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                android:id="@+id/btnEnterToll"
+                style="@style/DialogButton"
+                android:text="@string/enter_toll"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tvTollValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/message"
+                style="@style/TextLarge"
+                android:visibility="gone"
+                android:drawableEnd="@drawable/ic_edit_black"
+                android:drawablePadding="5dp"
+                />
+
+
         </LinearLayout>
 
     </RelativeLayout>

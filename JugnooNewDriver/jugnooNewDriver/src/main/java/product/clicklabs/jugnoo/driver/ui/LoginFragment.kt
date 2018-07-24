@@ -10,13 +10,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.annotation.StringRes
-import android.transition.Transition
 import android.support.transition.TransitionManager
-import android.transition.TransitionSet
 import android.support.v4.app.Fragment
+import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
-import android.transition.TransitionInflater
+import android.text.TextWatcher
+import android.transition.Transition
+import android.transition.TransitionSet
 import android.util.TypedValue
 import android.view.*
 import android.widget.AdapterView
@@ -26,7 +27,6 @@ import android.widget.Toast
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
-import kotlinx.android.synthetic.main.activity_driver_credits.*
 import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
@@ -35,15 +35,18 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
+import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
+import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Exception
 import java.util.*
 import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginFragment : Fragment() {
-    private var mListener: SplashFragment.InteractionListener?=null
+    private var mListener: SplashFragment.InteractionListener? = null
 
 
     companion object {
@@ -63,7 +66,7 @@ class LoginFragment : Fragment() {
 
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
-        if(activity is SplashFragment.InteractionListener){
+        if (activity is SplashFragment.InteractionListener) {
             mListener = activity;
         }
     }
@@ -79,7 +82,7 @@ class LoginFragment : Fragment() {
             animateViews()
         }
 
-        selectedLanguage = (activity as DriverSplashActivity).selectedLanguage
+        selectedLanguage = BaseFragmentActivity.selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
         val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener<Country>{
@@ -106,6 +109,27 @@ class LoginFragment : Fragment() {
             }
             tvCountryCode.text = Utils.getCountryCode(parentActivity)
             tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
+
+            edtPhoneNo.addTextChangedListener(object: TextWatcher{
+                override fun afterTextChanged(p0: Editable?) {
+                    val s = p0?.toString() ?: ""
+                    if (s.startsWith("0")) {
+                        if (s.length > 1) {
+                            edtPhoneNo.setText(s.toString().substring(1))
+                        } else {
+                            edtPhoneNo.setText("")
+                        }
+                        Toast.makeText(parentActivity, context.getString(R.string.number_should_not_start_with_zero), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+            })
+
             btnGenerateOtp.setOnClickListener(View.OnClickListener {
                 val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
                 val countryCode: String = rootView.tvCountryCode.text.trim().toString()
@@ -158,7 +182,7 @@ class LoginFragment : Fragment() {
 
                     override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                         if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber,t?.otpLength)
+                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
                         } else {
                             DialogPopup.alertPopup(activity, "", message)
                         }
@@ -174,6 +198,7 @@ class LoginFragment : Fragment() {
                 })
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
+
             if(edtPhoneNo.tag!=null && (edtPhoneNo.tag is String) &&
                     (edtPhoneNo.tag as String)==resources.getInteger(R.integer.tag_scroll_down_on_touch).toString()){
 
@@ -217,26 +242,32 @@ class LoginFragment : Fragment() {
 
                         setLanguageLoading(text = -1, showText = false, showProgress = false)
 
-                        val dataAdapter: ArrayAdapter<String>
-                                = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
+                        val dataAdapter: ArrayAdapter<LocaleModel> = LanguageAdapter(parentActivity, android.R.layout.simple_spinner_item, t.languageList)
                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                         rootView.language_spinner.adapter = dataAdapter
-                        rootView.language_spinner.visible()
+                        if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) rootView.language_spinner.visible() else rootView.language_spinner.gone()
 
-                        if (!t.languageList.contains(selectedLanguage)) {
-                            t.languageList.add(selectedLanguage)
+                        if (t.defaultLang != null && Prefs.with(context).getString(Constants.KEY_DEFAULT_LANG, "eee").equals("eee")) {
+                            Prefs.with(context).save(Constants.KEY_DEFAULT_LANG, t.defaultLang)
+                            selectedLanguage = t.defaultLang
+                            BaseFragmentActivity.updateLanguage(activity, t.defaultLang)
                         }
-                        rootView.language_spinner.setSelection(t.languageList.indexOf(selectedLanguage))
+
+                        if (!t.languageList.contains(LocaleModel(selectedLanguage, ""))) {
+                            selectedLanguage = t.languageList.get(0).locale!!
+                            BaseFragmentActivity.updateLanguage(activity, selectedLanguage)
+                        }
+                        rootView.language_spinner.setSelection(t.languageList.indexOf(LocaleModel(selectedLanguage, "")))
                         rootView.language_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                             override fun onNothingSelected(parent: AdapterView<*>?) {
 
                             }
 
                             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                                val item = parent?.getItemAtPosition(position).toString()
-                                if (!item.equals(selectedLanguage, true)) {
-                                    selectedLanguage = item
-                                    (activity as DriverSplashActivity).updateLanguage(item)
+                                val item = parent?.getItemAtPosition(position) as LocaleModel
+                                if (!item.equals(LocaleModel(selectedLanguage, ""))) {
+                                    selectedLanguage = item.locale!!
+                                    BaseFragmentActivity.updateLanguage(activity, selectedLanguage)
                                 }
                             }
                         }
@@ -402,8 +433,18 @@ class LoginFragment : Fragment() {
         with(rootView) {
 
 
-            if (showProgress) progressLanguage.visible() else progressLanguage.gone()
-            if (showText) tvLanguage.visible() else tvLanguage.gone()
+            if (showProgress
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+                progressLanguage.visible()
+            } else {
+                progressLanguage.gone()
+            }
+            if (showText
+                    && resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)) {
+                tvLanguage.visible()
+            } else {
+                tvLanguage.gone()
+            }
 
             tvLanguage.isClickable = isClickable
             if (text != -1) tvLanguage.text = getString(text)
@@ -437,7 +478,9 @@ class LoginFragment : Fragment() {
 
 
         try {
-            getLanguageList(false)
+            if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)){
+                getLanguageList(false)
+            }
 
             with(rootView){
                 if(!tvLabel.isGone())tvLabel.visible()
@@ -450,11 +493,11 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<String>?) : ArrayAdapter<String>(context, resource, objects) {
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context, resource, objects) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view: View = super.getView(position, convertView, parent)
-            if(view is TextView) {
+            if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)
             }
 
@@ -462,10 +505,9 @@ class LoginFragment : Fragment() {
         }
 
 
-
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view: View = super.getDropDownView(position, convertView, parent)
-            if(view is TextView) {
+            if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)
             }
 

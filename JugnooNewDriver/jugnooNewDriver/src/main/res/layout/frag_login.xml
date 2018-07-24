@@ -2,6 +2,7 @@
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +15,7 @@
         android:animateLayoutChanges="true"
         android:id="@+id/constraint"
         android:focusableInTouchMode="true"
-        android:background="@android:color/white"
+        android:background="@drawable/bg_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,7 +24,7 @@
             android:layout_height="102dp"
             android:src="@drawable/splash_top_bg"
             android:scaleType="fitXY"
-            android:visibility="@integer/splash_scene_bg_visibility"
+            android:visibility="@integer/login_scene_top_bg_visibility"
             />
 
         <Spinner
@@ -39,7 +40,7 @@
             android:padding="4dp"
             android:popupBackground="@drawable/background_white_rounded_orange_bordered"
             android:textAlignment="center"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -74,15 +75,15 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView"
-            android:layout_width="@dimen/ic_splash_logo_width"
+            android:layout_width="147dp"
             android:layout_height="@dimen/ic_splash_logo_height"
-            android:src="@drawable/ic_splash_logo_drawable"
+            android:src="@drawable/ic_login_logo_drawable"
             android:transitionName="logoTransition"
             app:layout_constraintBottom_toTopOf="@+id/tvLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.65"/>
+            app:layout_constraintVertical_bias="0.65" />
 
 
         <android.support.constraint.Guideline
@@ -100,6 +101,7 @@
             app:layout_constrainedWidth="true"
             android:text="@string/label_edt_phone"
             android:textSize="17sp"
+            android:textColor="@color/colorLight"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/backgroundPhone"
             app:layout_constraintEnd_toEndOf="@+id/backgroundPhone"
@@ -147,13 +149,15 @@
             android:layout_marginEnd="8dp"
             android:visibility="invisible"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@null"
             android:drawablePadding="4dp"
             android:hint="@string/hint_edt_phone"
-            android:inputType="phone"
+            android:inputType="phone|number"
             android:maxLines="1"
+            android:gravity="start"
             android:padding="2dp"
+            android:textAlignment="viewStart"
             android:textColor="@color/text_color_splash"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/backgroundPhone"
@@ -189,7 +193,7 @@
             android:src="@drawable/splash_bottom_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             android:scaleType="fitXY"
-            android:visibility="@integer/splash_scene_bg_visibility"
+            android:visibility="@integer/login_scene_bottom_bg_visibility"
             />
 
     </android.support.constraint.ConstraintLayout>

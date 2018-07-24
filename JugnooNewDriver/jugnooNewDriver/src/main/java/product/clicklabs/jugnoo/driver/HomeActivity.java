@@ -37,6 +37,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -152,8 +153,8 @@ import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
+import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
-import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -2385,6 +2386,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		int height = displayMetrics.heightPixels;
+		int width = displayMetrics.widthPixels;
+		Log.e("device_height",height+"");
+		Log.e("device_width",width+"");
 	}
 
 
@@ -3404,11 +3411,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (1 == Data.userData.autosAvailable) {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
 							textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
+							textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
 						} else {
 							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
 							textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
+							textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 						}
 
 						if (1 == Data.userData.sharingAvailable) {
@@ -4754,7 +4763,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (customerInfo.getIsDelivery() == 0
 					&& customerInfo.getIsPooled() == 0
 					&& Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis() > 0) {
-				etaTimerRLayout.setVisibility(View.VISIBLE);
+				if(getResources().getInteger(R.integer.show_driver_timer)==getResources().getInteger(R.integer.view_visible)) {
+					etaTimerRLayout.setVisibility(View.VISIBLE);
+				}
 				if (Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) > 0) {
 					long eta = Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis();
 					if (eta > 0) {
@@ -5013,7 +5024,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			waitTimeInMin = 0d;
 		}
 
-		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin);
+		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -6408,6 +6420,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
 		params.put(KEY_RIDE_TIME_SECONDS_DB, rideTimeInSecFromDBStr);
 		params.put(KEY_IS_CACHED, "0");
+		if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)) {
+			params.put(Constants.KEY_TOLL_CHARGE, String.valueOf(customerInfo.getTollFare()));
+		}
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
@@ -7452,6 +7467,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			btnOk.setTypeface(Fonts.mavenRegular(activity));
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Fonts.mavenRegular(activity));
+			Button btnEnterToll = (Button) dialog.findViewById(R.id.btnEnterToll);
+			btnEnterToll.setVisibility(View.GONE);
+			TextView tvTollValue = (TextView) dialog.findViewById(R.id.tvTollValue);
+			tvTollValue.setVisibility(View.GONE);
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -7566,6 +7585,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				btnOk.setTypeface(Fonts.mavenRegular(activity));
 				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
 				btnCancel.setTypeface(Fonts.mavenRegular(activity));
+				final Button btnEnterToll = (Button) dialogEndRidePopup.findViewById(R.id.btnEnterToll);
+				btnEnterToll.setVisibility(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? View.VISIBLE : View.GONE);
+				final TextView tvTollValue = (TextView) dialogEndRidePopup.findViewById(R.id.tvTollValue);
+				tvTollValue.setVisibility(View.GONE);
 
 				btnOk.setOnClickListener(new View.OnClickListener() {
 					@SuppressWarnings("unused")
@@ -7597,6 +7620,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				btnCancel.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						customerInfo.setTollFare(0.0);
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE+"_"+FirebaseEvents.CONFIRM_NO, null);
 						dialogEndRidePopup.dismiss();
 						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
@@ -7606,6 +7630,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 				});
+
+				View.OnClickListener clickListener = new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						new EnterTollDialog(HomeActivity.this).show(customerInfo.getTollFare(), new EnterTollDialog.Callback() {
+							@Override
+							public void tollEntered(double tollValue) {
+								tvTollValue.setVisibility(View.VISIBLE);
+								btnEnterToll.setVisibility(View.GONE);
+								customerInfo.setTollFare(tollValue);
+								tvTollValue.setText(getString(R.string.toll_value, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), tollValue)));
+							}
+						});
+					}
+				};
+
+				btnEnterToll.setOnClickListener(clickListener);
+				tvTollValue.setOnClickListener(clickListener);
 
 				cross_tour.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -9563,7 +9605,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				if(latLngs.size() > 1) {
-					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), false,
+					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false,
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
 								public void onPre() {

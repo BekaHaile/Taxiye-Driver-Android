@@ -179,6 +179,8 @@ public class Data {
 			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
 
 
+			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
+
 			AuthKeySaver.writeAuthToFile("");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			Editor editor = pref.edit();

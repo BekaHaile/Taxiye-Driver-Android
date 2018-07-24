@@ -976,14 +976,13 @@ public class Utils {
         return Math.round(dp * scale);
     }
 
-    public static Shader textColorGradient(Context context, TextView textView) {
+    public static Shader textColorGradient(Context context, TextView textView, int colorStart, int colorEnd) {
         textView.measure(0, 0);
         int mWidth = textView.getMeasuredWidth();
         Shader shader;
         Shader.TileMode tile_mode = Shader.TileMode.CLAMP; // or TileMode.REPEAT;
         LinearGradient lin_grad = new LinearGradient(0, 0, (int) (mWidth / 1.3), 0,
-                context.getResources().getColor(R.color.theme_color_start),
-                context.getResources().getColor(R.color.theme_color_end), tile_mode);
+                colorStart, colorEnd, tile_mode);
         shader = lin_grad;
 
         return shader;
@@ -1069,7 +1068,7 @@ public class Utils {
         if (TextUtils.isEmpty(currency)) {
             currency = "INR";
         }
-        NumberFormat format = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
         format.setCurrency(Currency.getInstance(currency));
         return format.format(value);
     }
@@ -1240,5 +1239,10 @@ public class Utils {
             appInstalled = false;
         }
         return appInstalled;
+    }
+
+    public static boolean checkIfOnlyDigitsDecimal(String strTocheck){
+        String regex = "[0-9.]*";
+        return strTocheck.matches(regex);
     }
 }

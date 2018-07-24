@@ -27,7 +27,6 @@ import product.clicklabs.jugnoo.driver.databinding.FragmentWalletBinding;
 import product.clicklabs.jugnoo.driver.datastructure.RechargeType;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -79,7 +78,6 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
         } else {
             fragmentWalletBinding.walletBalanceView.setText(getString(R.string.rupees_value_format, jugnooAmount));
         }
-        ((TextView)rootView.findViewById(R.id.title)).setTypeface(Fonts.mavenMedium(walletActivity));
         ((TextView)rootView.findViewById(R.id.title)).setText(getString(R.string.wallet_balance).toUpperCase());
         rootView.findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
             @Override

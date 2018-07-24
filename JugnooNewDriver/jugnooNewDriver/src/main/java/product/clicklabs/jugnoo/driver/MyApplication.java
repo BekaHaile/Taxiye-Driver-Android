@@ -4,7 +4,10 @@ package product.clicklabs.jugnoo.driver;
  * Created by aneeshbansal on 17/03/16.
  */
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
@@ -24,16 +27,18 @@ import java.util.Map;
 import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.fragments.BaseFragment;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
     public static final String TAG = MyApplication.class
             .getSimpleName();
 
@@ -52,7 +57,7 @@ public class MyApplication extends MultiDexApplication {
         Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
         Paper.init(this);
-
+        registerActivityLifecycleCallbacks(this);
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
 //            // You should not init your app in this process.
@@ -251,5 +256,44 @@ public class MyApplication extends MultiDexApplication {
     }
     public void setToast(Toast toast){
         this.toast = toast;
+    }
+
+
+
+    private boolean appMinimized = false;
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+        appMinimized= false;
+        stopService(new Intent(this, GeanieView.class));
+
+    }
+
+    @Override
+    public void onActivityPaused(Activity activity) {
+        appMinimized = true;
+    }
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+        if(appMinimized){
+            startService(new Intent(this, GeanieView.class));
+        }
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+    }
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+
     }
 }

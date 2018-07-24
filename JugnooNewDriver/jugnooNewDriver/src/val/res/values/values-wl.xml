@@ -51,7 +51,7 @@
     <dimen name="ic_splash_logo_height">350dp</dimen>
     <integer name="show_t_and_c">@integer/view_gone</integer>
     <bool name="animate_splash_logo">false</bool>
-    <drawable name="windowBackgroundColor">@color/theme_color</drawable>
+    <drawable name="windowBackgroundColor">@color/colorPrimaryDark</drawable>
 
 
     <!--Side Menu Properties-->
@@ -72,6 +72,21 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_gone</integer>
 
+    <integer name="show_driver_timer">@integer/view_visible</integer>
+
+    <!--theme colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#141414</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#000000</color>
+    <color name="textColorMedium">#333333</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColor">#BE1E2E</color>
+    <color name="themeColorLight">#90BE1E2E</color>
+    <color name="themeColorAlternate">#141414</color>
+    <color name="themeColorAlternateLight">#90141414</color>
 
 
 </resources>

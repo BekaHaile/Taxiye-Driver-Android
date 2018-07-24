@@ -80,7 +80,7 @@
                             android:layout_width="2px"
                             android:layout_height="35px"
                             android:layout_marginStart="10px"
-                            android:background="@color/stroke_color_light" />
+                            android:background="@color/dividerColor" />
 
                         <ImageView
                             android:id="@+id/imageViewChangePhoneNumber"
@@ -100,7 +100,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="2px"
-                android:background="@color/stroke_color_light" />
+                android:background="@color/dividerColor" />
 
             <LinearLayout
                 android:id="@+id/otpETextLLayout"

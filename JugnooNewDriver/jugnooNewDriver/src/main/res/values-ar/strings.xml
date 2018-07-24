@@ -46,9 +46,9 @@
     <string name="server_error">خطأ في الخادم. الرجاء معاودة المحاولة في وقت لاحق.</string>
     <string name="server_not_responding">وجه الفتاة!! الخادم لا يستجيب. الرجاء معاودة المحاولة في وقت لاحق.</string>
     <string name="check_internet_message">تحقق من اتصال الإنترنت الخاص بك.</string>
-    <string name="driver_id">:معرف السائق</string>
-    <string name="rank_city">:مدينة الرتبة:</string>
-    <string name="rank_overall">:المرتبة الإجمالية:</string>
+    <string name="driver_id">معرف السائق:</string>
+    <string name="rank_city">مدينة الرتبة:</string>
+    <string name="rank_overall">المرتبة الإجمالية:</string>
     <string name="monthly">نتيجة الشهرية</string>
     <string name="earnings">أرباح</string>
     <string name="rides_taken">رحلات مأخوذة</string>
@@ -564,7 +564,6 @@
     <string name="added">وأضاف</string>
     <string name="deducted">خصم</string>
     <string name="view_wallet_transactions">المعاملات عرض المحفظة</string>
-    <string name="dont_touch_me">لا تلمسني</string>
     <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
     <string name="get_call">الحصول على دعوة</string>
     <string name="get_support_call">الحصول على دعم الدعوة</string>
@@ -590,7 +589,7 @@
     <string name="slots">ساعة على الانترنت</string>
     <string name="hour">ساعة</string>
     <string name="hours">ساعات</string>
-    <string name="day_wise_breakup">DAY WISE BREAKUP</string>
+    <string name="day_wise_breakup">ربح رحلة يومية</string>
     <string name="target_distance">بعد الهدف</string>
     <string name="cash_collected_from_user">النقدية التي تم جمعها من مستخدم</string>
     <string name="adjusted_distance">بعد تعديلها</string>
@@ -662,5 +661,28 @@
     <string name="get_credits_from_friends">الحصول على أرصدة من الأصدقاء</string>
     <string name="earn_credits_format">(ائتمانات %s كسب)</string>
     <string name="city_unavailable">آسف! حاليا خدماتنا غير متوفرة في مدينتك</string>
+    <string name="label_edt_phone">يرجى إدخال رقم الهاتف الخاص بك</string>
+    <string name="hint_edt_phone">رقم الهاتف</string>
+    <string name="btn_text_OTP">توليد OTP</string>
+    <string name="languages">اللغات</string>
+    <string name="number_should_not_start_with_zero">يجب ألا يبدأ رقم الهاتف بالرقم 0.</string>
+    <string name="enter_one_time_pwd">أدخل كلمة المرور مرة واحدة</string>
+
+    <string name="rate_us_on_play_store">قيمنا على متجر التطبيقات</string>
+    <string name="like_us_on_facebook">اعجب بنا على الفيسبوك</string>
+    <string name="terms_and_conditions">الأحكام والشروط</string>
+    <string name="terms_of_use">تعليمات الاستخدام</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="who_are_we">من نحن؟</string>
+    <string name="facebook_not_installed">تطبيق Facebook غير ممكن</string>
+    <string name="about">حول</string>
+    <string name="please_enter_your_name">من فضلك أدخل إسمك</string>
+    <string name="select_vehicle_type">اختر نوع السيارة</string>
+    <string name="by_signing_you_agree">عن طريق التسجيل أنت توافق على موقعنا</string>
+    <string name="continue_text">استمر</string>
+    <string name="neft_pending">Neft معلق</string>
+    <string name="terms_of_schedule">شروط الجدول</string>
+    <string name="faqs">أسئلة وأجوبة</string>
+    <!--login with phone-->
 
 </resources>

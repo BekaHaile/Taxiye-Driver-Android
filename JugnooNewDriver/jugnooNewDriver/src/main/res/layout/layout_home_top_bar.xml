@@ -82,37 +82,38 @@
 
         <RelativeLayout
             android:id="@+id/RelativeLayoutNotificationCenter"
-            android:layout_width="90px"
-            android:layout_height="80px"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="15px"
-            android:layout_marginTop="9px"
+            android:layout_marginEnd="7dp"
+            android:layout_marginTop="4dp"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
+            android:tag="@string/dont_touch_me"
             >
 
 
             <ImageView
                 android:id="@+id/imageViewNotification"
-                android:layout_width="32dp"
-                android:layout_height="34dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:padding="5dp"
+                android:padding="3dp"
+                android:tint="@color/themeColor"
                 android:src="@drawable/ic_notification_icon"
-                android:tag="@string/dont_touch_me"
+                android:scaleType="centerCrop"
                 />
 
             <TextView
                 android:id="@+id/textViewNotificationValue"
-                android:layout_width="32px"
-                android:layout_height="35px"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/ic_notification_unread"
                 android:gravity="center_horizontal"
-                android:paddingTop="2px"
                 android:tag="mwar"
-                android:text="0"
                 android:textColor="@color/white"
-                android:textSize="20px"
+                android:textSize="10sp"
                 />
 
 

@@ -2,28 +2,28 @@
 <RelativeLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="720px"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
 
     <TextView
         android:id="@+id/textViewCancelOption"
-        android:layout_width="600px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="40px"
+        android:padding="16dp"
         android:text="@string/driver_is_late"
-        android:textColor="@color/grey_dark"
-        android:textSize="30px"/>
+        android:layout_toStartOf="@+id/imageViewCancelOptionCheck"
+        android:layout_marginEnd="10dp"
+        style="@style/TextNormal"/>
 
     <ImageView
         android:id="@+id/imageViewCancelOptionCheck"
-        android:layout_width="36px"
-        android:layout_height="36px"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="40px"
+        android:layout_marginEnd="20dp"
         android:src="@drawable/option_checked_orange"
-        android:tag="mwar"
         />
 </RelativeLayout>

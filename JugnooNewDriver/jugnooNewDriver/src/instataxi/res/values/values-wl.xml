@@ -49,7 +49,6 @@
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <integer name="show_t_and_c">@integer/view_visible</integer>
 
 
 
@@ -58,11 +57,11 @@
     <integer name="show_invoices">@integer/view_visible</integer>
     <integer name="show_driver_resources">@integer/view_visible</integer>
     <integer name="show_refer_earn">@integer/view_visible</integer>
+    <integer name="show_t_and_c">@integer/view_visible</integer>
 
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-    <integer name="show_t_and_c_profile">@integer/view_gone</integer>
 
 
 

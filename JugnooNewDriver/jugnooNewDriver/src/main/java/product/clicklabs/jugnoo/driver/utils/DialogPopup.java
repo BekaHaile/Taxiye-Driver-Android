@@ -519,6 +519,11 @@ public class DialogPopup {
 				btnCancel.setText(canceltext);
 			}
 
+			Button btnEnterToll = (Button) dialog.findViewById(R.id.btnEnterToll);
+			btnEnterToll.setVisibility(View.GONE);
+			TextView tvTollValue = (TextView) dialog.findViewById(R.id.tvTollValue);
+			tvTollValue.setVisibility(View.GONE);
+
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {

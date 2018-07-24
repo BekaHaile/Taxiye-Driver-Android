@@ -64,14 +64,12 @@
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
     <integer name="show_t_and_c_profile">@integer/view_gone</integer>
 
-
+    <integer name="show_driver_timer">@integer/view_visible</integer>
 
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
-    <integer name="show_language_control">@integer/view_visible</integer>
+    <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
-
-
 
 
 </resources>

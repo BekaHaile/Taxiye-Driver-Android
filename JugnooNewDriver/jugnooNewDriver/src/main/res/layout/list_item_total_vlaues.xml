@@ -32,9 +32,8 @@
 
             <TextView
                 android:id="@+id/textViewBankDepositeValue"
-                android:layout_width="140px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/textViewBankDeposite"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical|end"
                 android:text="0000.00"
@@ -58,8 +57,7 @@
                 android:textSize="34px"/>
             <TextView
                 android:id="@+id/textViewCustomerPaid"
-                android:layout_toEndOf="@id/textViewCustomerPaidText"
-                android:layout_width="140px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical|end"
@@ -95,7 +93,6 @@
                 android:id="@+id/textViewActualFareValue"
                 android:layout_width="wrap_content"
                 android:layout_height="74px"
-                android:layout_toEndOf="@id/textViewActualFareText"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical|end"
                 android:text="0000.00"

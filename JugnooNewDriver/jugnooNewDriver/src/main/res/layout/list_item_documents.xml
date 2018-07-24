@@ -2,7 +2,7 @@
 <RelativeLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="720px"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:splitMotionEvents="false">
 
@@ -16,33 +16,35 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayoutSelectPicture"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_horizontal">
+            >
 
             <TextView
                 android:id="@+id/docType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24px"
-                android:layout_marginStart="52px"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="26dp"
                 android:text="@string/Document_type"
+                android:tag="@string/dont_touch_me"
                 android:textColor="@color/textColor"
-                android:textSize="36px"
-            />
+                android:layout_alignParentStart="true"
+                android:textSize="18sp"
+                android:layout_marginEnd="15dp"
+                />
 
 
             <TextView
                 android:id="@+id/docRejected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12px"
-                android:layout_marginTop="42px"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="21dp"
                 android:layout_toEndOf="@+id/docType"
                 android:text="@string/upload_again"
                 android:textColor="@color/red_status"
-                android:textSize="20px"
+                android:textSize="9sp"
                 android:visibility="gone"
             />
 
@@ -50,12 +52,12 @@
                 android:id="@+id/docRejectionReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18px"
-                android:layout_marginTop="32px"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="16dp"
                 android:layout_toEndOf="@+id/docType"
                 android:text="@string/Requirement"
                 android:textColor="@color/red_status"
-                android:textSize="20px"
+                android:textSize="12sp"
                 android:visibility="gone"
             />
 
@@ -64,12 +66,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docType"
-                android:layout_marginBottom="34px"
-                android:layout_marginTop="32px"
-                android:layout_marginStart="52px"
+                android:layout_marginBottom="17dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="26dp"
                 android:text="@string/Requirement"
                 android:textColor="@color/textColorMedium"
-                android:textSize="24px"
+                android:textSize="12sp"
             />
 
 
@@ -77,21 +79,19 @@
                 android:id="@+id/imageViewInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="10dp"
                 android:layout_below="@id/docType"
-                android:tag="mwar"
                 android:layout_toEndOf="@id/docRequirement"
-                android:src="@drawable/ic_information"
-                android:visibility="gone"/>
+                android:src="@drawable/ic_information"/>
 
             <ImageView
                 android:id="@+id/imageViewUploadDoc"
-                android:layout_width="100px"
-                android:layout_height="100px"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:tag="mwar"
-                android:layout_marginEnd="20px"
+                android:layout_marginEnd="10dp"
+                android:visibility="visible"
                 android:src="@drawable/ic_addimage"/>
 
         </RelativeLayout>
@@ -102,33 +102,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="24px"
-            android:layout_marginTop="24px"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
             android:visibility="visible"
         >
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
-                android:layout_width="193px"
-                android:layout_height="193px"
-                android:layout_marginBottom="10px"
-                android:layout_marginStart="44px"
-                android:layout_marginEnd="28px"
-                android:layout_marginTop="10px"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/add_img_selector"
                 android:orientation="vertical"
-                android:tag="mwar"
-                android:padding="0px"
+                android:padding="0dp"
                 android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/image_icon"
-                    android:layout_width="60px"
-                    android:layout_height="60px"
-                    android:layout_marginStart="50px"
-                    android:layout_marginTop="24px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/image_icon"
-                    android:tag="mwar"
                     android:visibility="gone"/>
 
                 <TextView
@@ -136,17 +134,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginStart="28px"
-                    android:layout_marginTop="12px"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="6dp"
                     android:text="@string/add_image"
                     android:textColor="@color/themeColor"
-                    android:textSize="20px"
+                    android:textSize="10sp"
                     android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage"
-                    android:layout_width="173px"
-                    android:layout_height="173px"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
                     android:layout_centerInParent="true"
                     android:tag="mwar"/>
 
@@ -154,9 +152,9 @@
 
             <ImageView
                 android:id="@+id/deleteImage1"
-                android:layout_width="48px"
-                android:layout_height="48px"
-                android:layout_marginStart="197px"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="95dp"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="visible"/>
@@ -166,8 +164,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/addImageLayout"
-                android:layout_marginTop="10px"
-                android:layout_marginStart="52px">
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="26dp">
 
                 <TextView
                     android:id="@+id/docStatus"
@@ -176,14 +174,14 @@
                     android:layout_centerVertical="true"
                     android:text="@string/uploaded"
                     android:textColor="@color/themeColor"
-                    android:textSize="26px"/>
+                    android:textSize="13sp"/>
 
                 <ImageView
                     android:id="@+id/imageViewDocStatusImage"
-                    android:layout_width="23px"
-                    android:layout_height="23px"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="8px"
+                    android:layout_marginStart="4dp"
                     android:layout_toEndOf="@+id/docStatus"
                     android:src="@drawable/orange_cross"
                     android:tag="mwar"
@@ -193,23 +191,22 @@
 
             <RelativeLayout
                 android:id="@+id/addImageLayout2"
-                android:layout_width="193px"
-                android:layout_height="193px"
-                android:layout_marginStart="10px"
-                android:layout_marginEnd="28px"
-                android:layout_marginTop="10px"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/addImageLayout"
                 android:background="@drawable/add_img_selector"
                 android:tag="mwar">
 
                 <ImageView
                     android:id="@+id/image_icon2"
-                    android:layout_width="60px"
-                    android:layout_height="60px"
-                    android:layout_marginStart="50px"
-                    android:layout_marginTop="24px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/image_icon"
-                    android:tag="mwar"
                     android:visibility="gone"/>
 
                 <TextView
@@ -217,17 +214,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon2"
-                    android:layout_marginStart="28px"
-                    android:layout_marginTop="12px"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="6dp"
                     android:text="@string/add_image"
                     android:textColor="@color/themeColor"
-                    android:textSize="20px"
+                    android:textSize="10sp"
                     android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage2"
-                    android:layout_width="173px"
-                    android:layout_height="173px"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp"
                     android:layout_centerInParent="true"
                     android:tag="mwar"/>
 
@@ -235,9 +232,9 @@
 
             <ImageView
                 android:id="@+id/deleteImage2"
-                android:layout_width="48px"
-                android:layout_height="48px"
-                android:layout_marginStart="433px"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="216dp"
                 android:src="@drawable/orange_cross"
                 android:tag="mwar"
                 android:visibility="gone"/>
@@ -245,11 +242,10 @@
 
             <ImageView
                 android:id="@+id/imageViewDocStatus"
-                android:layout_width="40px"
-                android:layout_height="40px"
-                android:layout_marginEnd="60px"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="30dp"
                 android:layout_alignParentEnd="true"
-                android:tag="mwar"
                 android:src="@drawable/doc_uploaded"/>
 
 
@@ -258,9 +254,9 @@
         <ImageView
             android:id="@+id/bottomLine"
             android:layout_width="match_parent"
-            android:layout_height="3px"
-            android:layout_marginStart="30px"
-            android:layout_marginEnd="30px"
+            android:layout_height="1dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:background="@color/dividerColor"/>
 
     </LinearLayout>

@@ -39,6 +39,10 @@
     </RelativeLayout>
 
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/driverDetailsRLL"
         android:layout_width="match_parent"
@@ -188,7 +192,8 @@
 
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+            android:id="@+id/cvScore"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cvDriverInfo"
             android:layout_marginEnd="20px"
@@ -360,6 +365,39 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvSwitchNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvScore"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            android:tag="@string/dont_touch_me"
+            >
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switchNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextLarge"
+            android:text="@string/waze_navigation"
+            android:theme="@style/ThemeSwitch"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+
+        </android.support.v7.widget.CardView>
+
     </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "715827262249-p46olfhhn9r69urlpnr08hvgfpvilll2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "production.hezz.customer",
+            "certificate_hash": "680748e983552b428e27f9c3a48da9ff990cf909"
+          }
+        },
+        {
+          "client_id": "715827262249-2dd339eq9ab3sio1jiknn48la9fruvm2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "production.hezz.customer",
+            "certificate_hash": "6494b012fa28428635247a1d0db8472336d87e48"
+          }
+        },
+        {
           "client_id": "715827262249-gaad7acs49k1l2ush83sivcqp0e6misb.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715827262249-cpnckrnqcoqa86q4nmrj5lnb944djthn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "715827262249-d90eb54els9q5f4t2u04luv3jrjf3n3l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.HezzPassenger.ios"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -46,6 +74,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "715827262249-qq4vlsnd6n5p0ajk411s6sge0prg59r4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "production.hezz.driver",
+            "certificate_hash": "680748e983552b428e27f9c3a48da9ff990cf909"
+          }
+        },
+        {
           "client_id": "715827262249-gaad7acs49k1l2ush83sivcqp0e6misb.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -60,8 +96,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715827262249-cpnckrnqcoqa86q4nmrj5lnb944djthn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "715827262249-d90eb54els9q5f4t2u04luv3jrjf3n3l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.HezzPassenger.ios"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

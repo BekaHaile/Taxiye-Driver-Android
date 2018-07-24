@@ -13,10 +13,10 @@ public class DeviceUniqueID {
 			String imei = telephonyManager.getDeviceId();
 			Log.e("imei", "="+imei);
             if(imei != null && !imei.isEmpty()){
-                return imei + (BuildConfig.DEBUG ? "mn" : "");
+                return imei + (BuildConfig.DEBUG ? "shankar" : "");
             }
             else{
-                return android.os.Build.SERIAL + (BuildConfig.DEBUG ? "mn" : "");
+                return android.os.Build.SERIAL + (BuildConfig.DEBUG ? "mnrfr" : "");
             }
 		} catch (Exception e) {
 			e.printStackTrace();

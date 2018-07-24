@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,8 +24,11 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
+import product.clicklabs.jugnoo.driver.ui.models.LocaleModel;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -48,7 +50,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 	LinearLayout relative;
 
-	List<String> languages = new ArrayList<>();
+	List<LocaleModel> localeModels = new ArrayList<>();
 
 	UpdateDriverEarnings updateDriverEarnings;
 
@@ -57,7 +59,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		languages.clear();
+		localeModels.clear();
 
 		setContentView(R.layout.activity_language);
 
@@ -106,10 +108,10 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 			textViewInfoDisplay.setText(message);
 			textViewInfoDisplay.setVisibility(View.VISIBLE);
 
-			languages.clear();
+			localeModels.clear();
 			languageListAdapter.notifyDataSetChanged();
 		} else {
-			if (languages.size() == 0) {
+			if (localeModels.size() == 0) {
 				textViewInfoDisplay.setText(message);
 				textViewInfoDisplay.setVisibility(View.VISIBLE);
 			} else {
@@ -166,7 +168,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 		@Override
 		public int getCount() {
-			return languages.size();
+			return localeModels.size();
 		}
 
 		@Override
@@ -202,9 +204,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 
 			try {
-				languages.get(position);
 				holder.id = position;
-				holder.languageName.setText(languages.get(position));
+				holder.languageName.setText(localeModels.get(position).getName());
 
 
 				holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -212,10 +213,10 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 					@Override
 					public void onClick(View v) {
 						holder = (ViewHolderLanguages) v.getTag();
-						Prefs.with(LanguagePrefrencesActivity.this).save(SPLabels.SELECTED_LANGUAGE, languages.get(holder.id).toString());
+						Prefs.with(LanguagePrefrencesActivity.this).save(SPLabels.SELECTED_LANGUAGE, localeModels.get(holder.id).getLocale());
 						MyApplication.getInstance().logEvent(FirebaseEvents.HOME_SCREEN+"_"+
-								FirebaseEvents.LANGUAGE+"_"+languages.get(holder.id).toString()+"_"+position,null);
-						updateLanguage();
+								FirebaseEvents.LANGUAGE+"_"+ localeModels.get(holder.id).toString()+"_"+position,null);
+						BaseFragmentActivity.updateLanguage(LanguagePrefrencesActivity.this,null);
 						conf = getResources().getConfiguration();
 						setPreferredLanguage();
 						finish();
@@ -243,9 +244,9 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 			params.put("android_version", android.os.Build.VERSION.RELEASE);
 			params.put("access_token", Data.userData.accessToken);
 			HomeUtil.putDefaultParams(params);
-			RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+			RestClient.getApiServices().fetchLanguageList(params, new Callback<DriverLanguageResponse>() {
                 @Override
-                public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                public void success(DriverLanguageResponse registerScreenResponse, Response response) {
                     try {
                         String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
                         JSONObject jObj;
@@ -258,14 +259,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
                                 updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
                             }
                         } else {
-
-                            JSONArray jArray = jObj.getJSONArray("locales");
-                            if (jArray != null) {
-								languages.clear();
-                                for (int i = 0; i < jArray.length(); i++) {
-                                    languages.add(jArray.get(i).toString());
-                                }
-                            }
+                        	localeModels.clear();
+                        	localeModels.addAll(registerScreenResponse.getLanguageList());
                             updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
                         }
                     } catch (Exception exception) {
@@ -300,8 +295,6 @@ public class LanguagePrefrencesActivity extends BaseActivity {
                 public void success(RegisterScreenResponse registerScreenResponse, Response response) {
                     try {
                         String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-                        JSONObject jObj;
-                        jObj = new JSONObject(jsonString);
 
                     } catch (Exception exception) {
                         exception.printStackTrace();

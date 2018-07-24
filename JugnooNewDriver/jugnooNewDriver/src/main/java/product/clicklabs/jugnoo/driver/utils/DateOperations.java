@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -426,7 +427,7 @@ public class DateOperations {
 		try {
 			SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date newDate = inFormat.parse(date);
-			SimpleDateFormat outFormat = new SimpleDateFormat("EEE");
+			SimpleDateFormat outFormat = new SimpleDateFormat("EEE", Locale.ENGLISH);
 			day = outFormat.format(newDate);
 			return day.toUpperCase();
 		} catch (ParseException e) {

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +33,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -49,6 +53,8 @@ public class DriverProfileActivity extends BaseActivity {
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
     ImageView profileImg, imageViewTitleBarDEI;
+    CardView cvSwitchNavigation;
+    SwitchCompat switchNavigation;
 
 
     public static ProfileInfo openedProfileInfo;
@@ -110,6 +116,8 @@ public class DriverProfileActivity extends BaseActivity {
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this)); title.setText(R.string.profile);
 
+		cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
+        switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
         textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
         textViewDriverId = (TextView) findViewById(R.id.textViewDriverId);
@@ -180,6 +188,15 @@ public class DriverProfileActivity extends BaseActivity {
             public void onClick(View v) {
                 startActivity(new Intent(DriverProfileActivity.this, AboutActivity.class));
                 FlurryEventLogger.event(FlurryEventNames.TERMS_OF_USE);
+            }
+        });
+
+		cvSwitchNavigation.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_WAZE_TOGGLE, 0) == 1 ? View.VISIBLE : View.GONE);
+        switchNavigation.setChecked(Prefs.with(this).getInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS) == Constants.NAVIGATION_TYPE_WAZE);
+        switchNavigation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_NAVIGATION_TYPE, isChecked ? Constants.NAVIGATION_TYPE_WAZE : Constants.NAVIGATION_TYPE_GOOGLE_MAPS);
             }
         });
 

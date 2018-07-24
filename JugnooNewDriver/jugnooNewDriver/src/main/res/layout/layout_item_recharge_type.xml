@@ -16,8 +16,7 @@
             android:gravity="center_vertical"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
-            android:textColor="@color/text_color_light_selector"
-            android:textSize="@dimen/text_size_16_sp" />
+            style="@style/TextNormal" />
 
         <LinearLayout
             android:id="@+id/extras_view"
@@ -32,9 +31,8 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:textColor="@color/text_color_light_selector"
                 android:text="@string/enter_amount"
-                android:textSize="@dimen/text_size_14_sp" />
+                style="@style/TextMedium" />
 
             <EditText
                 android:id="@+id/amount_edtxt"
@@ -44,20 +42,20 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginTop="7dp"
-                android:background="@drawable/bg_white"
+                android:background="@null"
                 android:inputType="number"
                 android:singleLine="true"
-                android:textSize="@dimen/text_size_16_sp" />
+                style="@style/TextNormal" />
 
             <Button
                 android:id="@+id/btnConfirm"
+                style="@style/ButtonTheme"
                 android:layout_width="128dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/orange_btn_selector"
                 android:text="@string/confirm"
-                android:textColor="@drawable/white_color_selector" />
+                />
 
         </LinearLayout>
 

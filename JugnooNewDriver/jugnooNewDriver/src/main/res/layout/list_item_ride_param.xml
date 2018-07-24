@@ -22,8 +22,6 @@
         android:id="@+id/textViewInfoValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:layout_toEndOf="@id/textViewInfoText"
         android:layout_alignParentEnd="true"
         android:text="0"
         android:textColor="@color/black_text_v2"

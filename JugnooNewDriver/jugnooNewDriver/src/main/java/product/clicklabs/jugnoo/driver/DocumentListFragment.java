@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -223,9 +222,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.relativeLayoutSelectPicture.setTag(holder);
 				holder.addImageLayout.setTag(holder);
 				holder.addImageLayout2.setTag(holder);
-
-				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
-				ASSL.DoMagic(holder.relative);
 
 
 				convertView.setTag(holder);

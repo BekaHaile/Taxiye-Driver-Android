@@ -38,7 +38,7 @@ public class FareStructure {
 		this.fareMinimum = fareMinimum;
 	}
 	
-	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){
+	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, double tollFare){
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
 			totalTimeInMin = 0;
@@ -95,7 +95,7 @@ public class FareStructure {
 			}
 		}
 
-		return fare;
+		return fare + tollFare;
 	}
 
 	public double getEffectiveConvenienceCharge(){
