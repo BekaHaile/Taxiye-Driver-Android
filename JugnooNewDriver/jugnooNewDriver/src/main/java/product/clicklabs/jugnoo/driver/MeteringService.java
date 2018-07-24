@@ -3,19 +3,15 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.location.Location;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -26,8 +22,8 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -287,9 +283,6 @@ public class MeteringService extends Service {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				createNotificationChannel(context);
-			}
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(false);
@@ -319,22 +312,5 @@ public class MeteringService extends Service {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(METER_NOTIF_ID);
     }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-	private static void createNotificationChannel(final Context context) {
-		// Default channel
-		NotificationChannel mChannel = new NotificationChannel(MeteringService.class.getSimpleName(),
-				context.getString(R.string.Notifications), NotificationManager.IMPORTANCE_DEFAULT);
-		// v
-		mChannel.setDescription(context.getString(R.string.Notifications));
-		mChannel.enableLights(true);
-		// Sets the notification light color for notifications posted to this
-		// channel, if the device supports this feature.
-		mChannel.setLightColor(Color.RED);
-		mChannel.enableVibration(true);
-		((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(mChannel);
-
-	}
 
 }

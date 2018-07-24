@@ -1108,7 +1108,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
 		long index2 = System.currentTimeMillis();
-		File f = new File(context.getExternalCacheDir(), "temp" + index2 + ".jpg");
+		File f = new File(context.getFilesDir(), "temp" + index2 + ".jpg");
 		try {
 			f.createNewFile();
 			byte[] bitmapdata = os.toByteArray();

@@ -406,7 +406,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 											DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 										}
 
-										Utils.deleteMFile();
+										Utils.deleteMFile(activity);
 										Utils.clearApplicationData(DriverDocumentActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 

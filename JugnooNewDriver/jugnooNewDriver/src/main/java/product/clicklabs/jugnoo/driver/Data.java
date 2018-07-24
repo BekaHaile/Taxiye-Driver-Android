@@ -181,7 +181,7 @@ public class Data {
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
 
-			AuthKeySaver.writeAuthToFile("");
+			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			Editor editor = pref.edit();
 			editor.clear();

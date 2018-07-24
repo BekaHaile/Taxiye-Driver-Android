@@ -27,7 +27,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
@@ -545,7 +544,7 @@ public class GeanieView extends Service {
 	}
 
 	public void saveGenieParams(WindowManager.LayoutParams params) {
-		GeniePositonsSaver.writeGenieParams(params.x, params.y);
+		GeniePositonsSaver.writeGenieParams(this, params.x, params.y);
 	}
 
 	@Nullable

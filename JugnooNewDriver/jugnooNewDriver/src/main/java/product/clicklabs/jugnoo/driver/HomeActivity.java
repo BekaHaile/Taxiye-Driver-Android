@@ -6086,7 +6086,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
-									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
+									Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "arrived sucessful");
 									if(jObj.has("pickup_data")) {
 										Gson gson = new Gson();
 										DeliveryInfoInRideDetails deliveryInfoInRideDetails1 = new DeliveryInfoInRideDetails();
@@ -6364,7 +6364,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 								PathUploadReceiver.uploadInRidePath(activity, false);
 								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
-								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+								Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 							} else {
 								throw new Exception();
 							}
@@ -6374,12 +6374,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 						customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 					}
 				} else {
 					if(currentPathItemPair != null) {
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.second.dLatLng=" + currentPathItemPair.second.dLatLng + " and drop=" + new LatLng(dropLatitude, dropLongitude));
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.first=" + currentPathItemPair.first + " and global dist=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.second.dLatLng=" + currentPathItemPair.second.dLatLng + " and drop=" + new LatLng(dropLatitude, dropLongitude));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.first=" + currentPathItemPair.first + " and global dist=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
 					}
 				}
@@ -6889,12 +6889,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "Data.fareStructure = " + Data.fareStructure);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "rideTime = " + rideTime);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "waitTime = " + waitTime);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalDistance = " + finalDistance);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalFare = " + totalFare);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "assignedCustomerInfo = " + customerInfo);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "Data.fareStructure = " + Data.fareStructure);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "rideTime = " + rideTime);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "waitTime = " + waitTime);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "totalDistance = " + finalDistance);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "totalFare = " + totalFare);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "assignedCustomerInfo = " + customerInfo);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -6978,7 +6978,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit());
 
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -7011,7 +7011,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
 			}
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "url = " + url + " params = " + params);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "url = " + url + " params = " + params);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -7749,15 +7749,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Log.e("lastGPSLocation on end ride", "=======" + lastGPSLocation);
 				Log.e("lastFusedLocation on end ride", "=======" + lastFusedLocation);
 
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
 
 				LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
 
 				long lastloctime = GpsDistanceCalculator.lastLocationTime;
 
 				Log.e("oldGPSLatLng on end ride", "=======" + oldGPSLatLng);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
 
 				if (lastGPSLocation != null && lastFusedLocation != null) {
 					long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
@@ -7766,7 +7766,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.e("gpsLocTimeDiff on end ride", "=======" + gpsLocTimeDiff);
 					Log.e("fusedLocTimeDiff on end ride", "=======" + fusedLocTimeDiff);
 
-					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
+					Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
 
 					if (gpsLocTimeDiff <= threeMinuteMillis) {                                // gps location is fine
 						locationToUse = lastGPSLocation;
@@ -7787,7 +7787,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					locationToUse = myLocation;
 					fusedLocationUsed = true;
 					Log.e("locationToUse on end ride from myLocation", "=======" + locationToUse);
-					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "locationToUse on end ride from myLocation=" + locationToUse);
+					Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "locationToUse on end ride from myLocation=" + locationToUse);
 				}
 
 
@@ -7796,14 +7796,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						&& (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)) {
 					oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
 				}
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
 
 
 				Log.e("locationToUse on end ride", "=======" + locationToUse);
 				Log.e("fusedLocationUsed on end ride", "=======" + fusedLocationUsed);
 
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "locationToUse on end ride=" + locationToUse);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "locationToUse on end ride=" + locationToUse);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
 
 				if (locationToUse != null) {
 
@@ -7876,7 +7876,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (distanceOfPath > 0.0001 && endDistanceSpeed < 14) {
 								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this)+distanceOfPath);
 								flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
-								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+								Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 							} else {
 
 								throw new Exception();
@@ -7885,7 +7885,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							e.printStackTrace();
 							customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this)+displacement);
 							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal();
-							Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+							Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
 						}
 					} else {

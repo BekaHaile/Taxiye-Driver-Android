@@ -315,7 +315,7 @@ class SplashFragment : Fragment() {
 
                                         }
 
-                                        Utils.deleteMFile()
+                                        Utils.deleteMFile(mActivity)
                                         Utils.clearApplicationData(mActivity)
                                         FlurryEventLogger.logResponseTime(mActivity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE)
 

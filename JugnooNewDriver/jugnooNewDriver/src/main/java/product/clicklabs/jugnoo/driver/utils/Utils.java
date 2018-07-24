@@ -846,8 +846,8 @@ public class Utils {
         return string.toString();
     }
 
-    public static void deleteMFile() {
-        File dir = new File(Environment.getExternalStorageDirectory() + "/JugnooData");
+    public static void deleteMFile(Context context) {
+        File dir = new File(context.getFilesDir()+ "/JugnooData");
         if (dir.isDirectory()) {
             String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {
@@ -908,7 +908,7 @@ public class Utils {
                                       int quality, int index) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         src.compress(format, quality, os);
-        File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+        File f = new File(context.getFilesDir(), "temp" + index + ".jpg");
         try {
             f.createNewFile();
             byte[] bitmapdata = os.toByteArray();

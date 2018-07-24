@@ -1587,7 +1587,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 											DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 										}
 
-										Utils.deleteMFile();
+										Utils.deleteMFile(activity);
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 

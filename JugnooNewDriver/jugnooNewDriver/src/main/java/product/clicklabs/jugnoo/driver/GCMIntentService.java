@@ -102,7 +102,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -155,7 +155,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -204,7 +204,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -320,7 +320,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 			Intent notificationIntent = new Intent(context, notifClass);
 
@@ -371,7 +371,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 
 			Intent notificationIntent = new Intent(context, notifClass);
@@ -424,7 +424,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 			Intent notificationIntent = new Intent(context, notifClass);
 
@@ -468,7 +468,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static void clearNotifications(Context context) {
 		try {
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			if (notificationManager != null) {
 				notificationManager.cancelAll();
 			}
