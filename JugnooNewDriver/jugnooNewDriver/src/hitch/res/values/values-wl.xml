@@ -17,7 +17,7 @@
 
 
     <string name="appname">Hitch</string>
-    <string name="app_name">Hitch Drivers</string>
+    <string name="app_name">Hitch Driver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">24a1592fe2e6a9a77d5b0d7b83496d56</string>
@@ -41,6 +41,7 @@
 
 
     <drawable name="bg_splash">@drawable/bg_hitch</drawable>
+    <drawable name="bg_login">@drawable/bg_hitch</drawable>
     <dimen name="ic_splash_logo_width">150dp</dimen>
     <dimen name="ic_splash_logo_height">150dp</dimen>
 
@@ -58,4 +59,9 @@
     <color name="themeColorLight">#bb10426C</color>
     <color name="themeColorAlternate">#6D615B</color>
     <color name="themeColorAlternateLight">#bb6D615B</color>
+
+
+    <integer name="visibility_faq">@integer/view_visible</integer>
+    <integer name="visibility_driver_agreement">@integer/view_visible</integer>
+    <integer name="path_filter_distance">65</integer>
 </resources>

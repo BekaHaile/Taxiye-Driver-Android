@@ -21,7 +21,8 @@ public class AboutActivity extends BaseActivity {
     TextView title;
     ImageView backBtn;
 
-    RelativeLayout relativeLayoutRateUs, relativeLayoutLikeUs, relativeLayoutTNC, relativeLayoutPrivacy, relativeLayoutAbout;
+    RelativeLayout relativeLayoutRateUs, relativeLayoutLikeUs, relativeLayoutTNC, relativeLayoutPrivacy,
+            relativeLayoutAbout, relativeLayoutFAQ, relativeLayoutDriverAgreement;
     TextView textViewRateUs, textViewLikeUs, textViewTNC, textViewPrivacy, textViewAbout;
 
 
@@ -47,6 +48,8 @@ public class AboutActivity extends BaseActivity {
         relativeLayoutTNC = (RelativeLayout) findViewById(R.id.relativeLayoutTNC);
         relativeLayoutPrivacy = (RelativeLayout) findViewById(R.id.relativeLayoutPrivacy);
         relativeLayoutAbout = (RelativeLayout) findViewById(R.id.relativeLayoutWho);
+        relativeLayoutFAQ = (RelativeLayout) findViewById(R.id.relativeLayoutFAQ);
+        relativeLayoutDriverAgreement = (RelativeLayout) findViewById(R.id.relativeLayoutDriverAgreement);
 
         textViewRateUs = (TextView) findViewById(R.id.textViewRateUs);
         textViewLikeUs = (TextView) findViewById(R.id.textViewLike);
@@ -118,6 +121,26 @@ public class AboutActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 HelpParticularActivity.helpSection = HelpSection.ABOUT;
+                startActivity(new Intent(AboutActivity.this, HelpParticularActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
+
+        relativeLayoutFAQ.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                HelpParticularActivity.helpSection = HelpSection.FAQ;
+                startActivity(new Intent(AboutActivity.this, HelpParticularActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
+
+        relativeLayoutDriverAgreement.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                HelpParticularActivity.helpSection = HelpSection.DRIVER_AGREEMENT;
                 startActivity(new Intent(AboutActivity.this, HelpParticularActivity.class));
                 overridePendingTransition(R.anim.right_in, R.anim.right_out);
             }
