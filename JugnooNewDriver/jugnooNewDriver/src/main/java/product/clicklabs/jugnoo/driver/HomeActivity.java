@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -650,6 +651,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			earningsText = (TextView) findViewById(R.id.earningsText);
 			earningsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			((TextView) findViewById(R.id.walletText)).setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			((ImageView) findViewById(R.id.imageViewWalletIcon)).setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN);
+
 
 			auditRL = (RelativeLayout) findViewById(R.id.auditRL);
 			auditText = (TextView) findViewById(R.id.auditText);
@@ -2362,6 +2365,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				manaulRequestRl.setVisibility(View.VISIBLE);
 			} else {
 				manaulRequestRl.setVisibility(View.GONE);
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1){
+				walletRl.setVisibility(View.VISIBLE);
+			} else {
+				walletRl.setVisibility(View.GONE);
 			}
 
 

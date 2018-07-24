@@ -993,7 +993,8 @@ public class JSONParser implements Constants {
 				Constants.DRIVER_CREDITS,
 				Constants.SHOW_MANUAL_RIDE,
 				Constants.DRIVER_CREDITS,
-				Constants.KEY_LOGOUT
+				Constants.KEY_LOGOUT,
+				Constants.WALLET
 		};
 		List<String> keysArr = Arrays.asList(keys);
 		for(String key : keysArr){

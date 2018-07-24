@@ -129,13 +129,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			cvBankLayout.setVisibility(View.GONE);
 		}
 
-		findViewById(R.id.btn_cards).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(EditDriverProfile.this, StripeCardsActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			}
-		});
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override

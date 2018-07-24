@@ -324,5 +324,6 @@ public interface Constants {
 	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
 	String KEY_LOGOUT = "logout";
 	String CODE = "code";
+	String WALLET = "wallet";
 }
 

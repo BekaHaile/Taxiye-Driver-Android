@@ -7,14 +7,12 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.TouchDelegate
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
@@ -78,11 +76,8 @@ class StripeWalletFragment:Fragment(){
                val input = edtAmount.text.toString().trim();
 
                if(input.length>0){
-                   Snackbar.make(requireActivity().findViewById(R.id.coordinator_layout),
-                   getString(R.string.add_cash_stripe_confirmation,Utils.formatCurrencyValue(currencyUnit,input),it.last4),
-                    Snackbar.LENGTH_LONG).setAction(getString(R.string.add)) {
-                       addStripeCash(input);
-                   }.show();
+                   DialogPopup.alertPopupTwoButtonsWithListeners(requireActivity(),getString(R.string.add_cash_stripe_confirmation,Utils.formatCurrencyValue(currencyUnit,input),it.last4),
+                    {addStripeCash(input);});
 
                }
            }
@@ -183,8 +178,12 @@ class StripeWalletFragment:Fragment(){
         execute(params,apiName = ApiName.ADD_CASH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
                         DialogPopup.alertPopup(requireActivity(),"",message);
-                        tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.walletBalance);
+                        tvCurrentBalance.text = Utils.formatCurrencyValue(currencyUnit,t.walletBalance);
                         edtAmount.text = null
+                        if(Data.userData!=null){
+                            Data.userData.currency = currencyUnit;
+                            Data.userData.creditsEarned = t.walletBalance;
+                        }
 
                     }
 
