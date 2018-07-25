@@ -1,200 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/linear"
-              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/white"
               android:gravity="center_horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:orientation="vertical">
 
 
-        <ImageView
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="24px"
-            android:layout_marginBottom="24px"
-            android:background="@color/grey_light"/>
+    <ImageView
+        android:layout_width="640px"
+        android:layout_height="2px"
+        android:layout_marginBottom="24px"
+        android:layout_marginTop="24px"
+        android:background="@color/grey_light"/>
 
-        <RelativeLayout
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2px">
+    <RelativeLayout
+        android:layout_width="620px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2px">
 
-            <TextView
-                android:id="@+id/textViewBankDeposite"
-                android:layout_width="wrap_content"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/bank_deposit_text"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-
-
-            <TextView
-                android:id="@+id/textViewBankDepositeValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-                android:id="@+id/textViewCustomerPaidText"
-                android:layout_width="wrap_content"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/cash_collected"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-            <TextView
-                android:id="@+id/textViewCustomerPaid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="24px"
-            android:layout_marginBottom="15px"
-            android:background="@color/grey_light"/>
-
-        <RelativeLayout
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0px">
-
-            <TextView
-                android:id="@+id/textViewActualFareText"
-                android:layout_width="wrap_content"
-                android:layout_height="74px"
-                android:gravity="center_vertical"
-                android:text="@string/your_income"
-                android:textColor="@color/black"
-                android:textSize="38px"/>
-
-
-            <TextView
-                android:id="@+id/textViewActualFareValue"
-                android:layout_width="wrap_content"
-                android:layout_height="74px"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black"
-                android:textSize="38px"/>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="12px"
-            android:layout_marginBottom="38px"
-            android:background="@color/grey_light"/>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/textViewBankDeposite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="34px"
-            android:orientation="horizontal">
+            android:layout_toStartOf="@+id/textViewBankDepositeValue"
+            android:gravity="center_vertical"
+            android:text="@string/bank_deposit_text"
+            android:textColor="@color/black_text_v2"
+            android:textSize="34px"/>
 
-            <RelativeLayout
-                android:layout_width="0px"
+
+        <TextView
+            android:id="@+id/textViewBankDepositeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical|end"
+            android:text="0000.00"
+            android:textColor="@color/black_text_v2"
+            android:textSize="34px"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="620px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px">
+
+        <TextView
+            android:id="@+id/textViewCustomerPaidText"
+            android:layout_width="wrap_content"
+            android:layout_height="45px"
+            android:gravity="center_vertical"
+            android:text="@string/cash_collected"
+            android:textColor="@color/black_text_v2"
+            android:textSize="34px"/>
+
+        <TextView
+            android:id="@+id/textViewCustomerPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical|end"
+            android:text="0000.00"
+            android:textColor="@color/black_text_v2"
+            android:textSize="34px"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="640px"
+        android:layout_height="2px"
+        android:layout_marginBottom="15px"
+        android:layout_marginTop="24px"
+        android:background="@color/grey_light"/>
+
+    <RelativeLayout
+        android:layout_width="620px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0px">
+
+        <TextView
+            android:id="@+id/textViewActualFareText"
+            android:layout_width="wrap_content"
+            android:layout_height="74px"
+            android:gravity="center_vertical"
+            android:text="@string/your_income"
+            android:textColor="@color/black"
+            android:textSize="38px"/>
+
+
+        <TextView
+            android:id="@+id/textViewActualFareValue"
+            android:layout_width="wrap_content"
+            android:layout_height="74px"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical|end"
+            android:text="0000.00"
+            android:textColor="@color/black"
+            android:textSize="38px"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="640px"
+        android:layout_height="2px"
+        android:layout_marginBottom="38px"
+        android:layout_marginTop="12px"
+        android:background="@color/grey_light"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34px"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/onlineTimeValue"
+                android:layout_width="250px"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8px"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/NA"
+                android:textColor="@color/black_text_v2"
+                android:textSize="32px"/>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/onlineTimeValue"
-                    android:layout_width="250px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="8px"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/rideTimeValueText"
-                    android:layout_width="250px"
-                    android:layout_height="48px"
-                    android:layout_below="@+id/onlineTimeValue"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/total_distance"
-                    android:textColor="@color/grey_light_v2"
-                    android:textSize="30px"/>
-
-            </RelativeLayout>
-
-            <ImageView
-                android:layout_width="2px"
-                android:layout_height="84px"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/imageViewVertical"
-                android:background="@color/grey_light"/>
-
-            <RelativeLayout
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/rideTimeValueText"
+                android:layout_width="250px"
+                android:layout_height="48px"
+                android:layout_below="@+id/onlineTimeValue"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:text="@string/total_distance"
+                android:textColor="@color/grey_light_v2"
+                android:textSize="30px"/>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewTripCount"
-                    android:layout_width="230px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="8px"
-                    android:layout_weight="1"
-                    android:text="@string/NA"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
+        </RelativeLayout>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewDeliveryCount"
-                    android:layout_width="225px"
-                    android:layout_height="48px"
-                    android:layout_below="@+id/textViewTripCount"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="@string/trips"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
+        <ImageView
+            android:id="@+id/imageViewVertical"
+            android:layout_width="2px"
+            android:layout_height="84px"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/grey_light"/>
 
-            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center">
 
-        </LinearLayout>
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewTripCount"
+                android:layout_width="230px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8px"
+                android:layout_weight="1"
+                android:text="@string/NA"
+                android:textAllCaps="true"
+                android:textColor="@color/black_text_v2"
+                android:textSize="32px"/>
 
-        <!--<ImageView-->
-            <!--android:layout_width="620px"-->
-            <!--android:layout_height="2px"-->
-            <!--android:layout_marginTop="24px"-->
-            <!--android:background="@color/grey_light"/>-->
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewDeliveryCount"
+                android:layout_width="225px"
+                android:layout_height="48px"
+                android:layout_below="@+id/textViewTripCount"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/trips"
+                android:textAllCaps="true"
+                android:textColor="@color/black_text_v2"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--<ImageView-->
+    <!--android:layout_width="620px"-->
+    <!--android:layout_height="2px"-->
+    <!--android:layout_marginTop="24px"-->
+    <!--android:background="@color/grey_light"/>-->
     <!--<include layout="@layout/list_item_trips_heading" />-->
 </LinearLayout>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/relative"
-              android:orientation="vertical"
-              android:background="@color/white"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:id="@+id/relative"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
 
     <include layout="@layout/layout_top_bar"/>
@@ -15,433 +15,434 @@
         android:layout_below="@+id/topRl">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewEngID"
-            android:layout_below="@+id/textViewStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24px"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/grey_light_v2"
-            android:textSize="26px"
-            android:text="STATUS"/>
-
-        <TextView
-            android:id="@+id/dateTimeValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10px"
-            android:layout_toEndOf="@+id/imageViewTime"
-            android:singleLine="true"
-            android:text="23 June, 2014 18:88 AM"
-            android:textColor="@color/grey_light_v2"
-            android:textSize="32px"
-            />
-
-        <TextView
-            android:id="@+id/textViewActualFare"
-            android:layout_width="match_parent"
-            android:layout_height="84px"
-            android:gravity="center"
-            android:singleLine="true"
-            android:layout_marginTop="10px"
-            android:text="@string/rupee_zero"
-            android:textColor="@color/themeColor"
-            android:textSize="72px"/>
-
-
-        <ImageView
-            android:id="@+id/imageViewSeprator"
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="36px"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/grey_light"/>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewRideInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:scrollbars="vertical"
-            android:layout_marginTop="36px"
-            android:fadeScrollbars="true"/>
-
-
-        <ImageView
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="12px"
-            android:layout_marginBottom="24px"
-            android:background="@color/grey_light"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_bank_deposit"
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2px">
-
-            <TextView
-                android:id="@+id/textViewAccountBalanceText"
-                android:layout_width="wrap_content"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/bank_deposit_text"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-            <TextView
-                android:id="@+id/textViewAccountBalance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-                android:id="@+id/textViewCustomerPaidText"
-                android:layout_width="wrap_content"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/cash_collected"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-            <TextView
-                android:id="@+id/textViewCustomerPaid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black_text_v2"
-                android:textSize="34px"/>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="24px"
-            android:layout_marginBottom="15px"
-            android:background="@color/grey_light"/>
-
-        <RelativeLayout
-            android:id="@+id/rlIncome"
-            android:layout_width="620px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0px">
-
-            <TextView
-                android:id="@+id/textViewActualFareText"
-                android:layout_width="wrap_content"
-                android:layout_height="74px"
-                android:gravity="center_vertical"
-                android:text="@string/your_income"
-                android:textColor="@color/black"
-                android:textSize="38px"/>
-            <TextView
-                android:id="@+id/textViewActualFareValue"
-                android:layout_width="wrap_content"
-                android:layout_height="74px"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical|end"
-                android:text="0000.00"
-                android:textColor="@color/black"
-                android:textSize="38px"/>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/iv_below_rl_income"
-            android:layout_width="640px"
-            android:layout_height="2px"
-            android:layout_marginTop="12px"
-            android:layout_marginBottom="35px"
-            android:background="@color/grey_light"/>
-
         <LinearLayout
-            android:id="@+id/linearLayoutFrom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginStart="48px"
-            android:layout_marginEnd="20px"
-            android:splitMotionEvents="false">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewEngID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewStatus"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24px"
+                android:text="STATUS"
+                android:textColor="@color/grey_light_v2"
+                android:textSize="26px"/>
+
+            <TextView
+                android:id="@+id/dateTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10px"
+                android:layout_toEndOf="@+id/imageViewTime"
+                android:singleLine="true"
+                android:text="23 June, 2014 18:88 AM"
+                android:textColor="@color/grey_light_v2"
+                android:textSize="32px"
+                />
+
+            <TextView
+                android:id="@+id/textViewActualFare"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:layout_marginTop="10px"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/rupee_zero"
+                android:textColor="@color/themeColor"
+                android:textSize="72px"/>
+
 
             <ImageView
-                android:layout_width="22px"
-                android:layout_height="22px"
-                android:padding="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/from"
-                android:background="@drawable/start_marker_v2"/>
-
-            <TextView
-                android:id="@+id/textViewFromValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22px"
-                android:layout_marginBottom="0px"
-                android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="24px"/>
-        </LinearLayout>
+                android:id="@+id/imageViewSeprator"
+                android:layout_width="640px"
+                android:layout_height="2px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="36px"
+                android:background="@color/grey_light"/>
 
 
-        <LinearLayout
-            android:id="@+id/linearLayoutTo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1px"
-            android:layout_marginStart="48px"
-            android:layout_marginEnd="20px"
-            android:splitMotionEvents="false">
-
-            <product.clicklabs.jugnoo.driver.utils.NonScrollListView
-                android:id="@+id/listViewDeliveryAddresses"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewRideInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20px"
-                android:divider="@color/transparent"
-                android:dividerHeight="10px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="36px"
+                android:fadeScrollbars="true"
+                android:scrollbars="vertical"/>
+
+
+            <ImageView
+                android:layout_width="640px"
+                android:layout_height="2px"
+                android:layout_marginBottom="24px"
+                android:layout_marginTop="12px"
+                android:background="@color/grey_light"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_bank_deposit"
+                android:layout_width="620px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2px">
+
+                <TextView
+                    android:id="@+id/textViewAccountBalanceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/textViewAccountBalance"
+                    android:gravity="center_vertical"
+                    android:text="@string/bank_deposit_text"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewAccountBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:text="0000.00"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:layout_width="620px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px">
+
+                <TextView
+                    android:id="@+id/textViewCustomerPaidText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45px"
+                    android:gravity="center_vertical"
+                    android:text="@string/cash_collected"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewCustomerPaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:text="0000.00"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="640px"
+                android:layout_height="2px"
+                android:layout_marginBottom="15px"
+                android:layout_marginTop="24px"
+                android:background="@color/grey_light"/>
+
+            <RelativeLayout
+                android:id="@+id/rlIncome"
+                android:layout_width="620px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0px">
+
+                <TextView
+                    android:id="@+id/textViewActualFareText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="74px"
+                    android:gravity="center_vertical"
+                    android:text="@string/your_income"
+                    android:textColor="@color/black"
+                    android:textSize="38px"/>
+
+                <TextView
+                    android:id="@+id/textViewActualFareValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="74px"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical|end"
+                    android:text="0000.00"
+                    android:textColor="@color/black"
+                    android:textSize="38px"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_below_rl_income"
+                android:layout_width="640px"
+                android:layout_height="2px"
+                android:layout_marginBottom="35px"
+                android:layout_marginTop="12px"
+                android:background="@color/grey_light"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="48px"
+                android:gravity="center_vertical"
                 android:splitMotionEvents="false">
-            </product.clicklabs.jugnoo.driver.utils.NonScrollListView>
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/from"
+                    android:layout_width="22px"
+                    android:layout_height="22px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/start_marker_v2"
+                    android:padding="2px"/>
 
-        <!-- map layout -->
+                <TextView
+                    android:id="@+id/textViewFromValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0px"
+                    android:layout_marginStart="22px"
+                    android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="24px"/>
+            </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutMapLite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36px"
-            android:visibility="visible"
-            android:background="@drawable/background_white_bordered"
-            android:padding="2px">
 
-            <fragment
-                android:id="@+id/mapLite"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <LinearLayout
+                android:id="@+id/linearLayoutTo"
                 android:layout_width="match_parent"
-                android:layout_height="300px" />
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20px"
+                android:layout_marginStart="48px"
+                android:layout_marginTop="1px"
+                android:splitMotionEvents="false">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25px"
-            android:visibility="visible"
-            android:orientation="horizontal">
+                <product.clicklabs.jugnoo.driver.utils.NonScrollListView
+                    android:id="@+id/listViewDeliveryAddresses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:divider="@color/transparent"
+                    android:dividerHeight="10px"
+                    android:splitMotionEvents="false">
+                </product.clicklabs.jugnoo.driver.utils.NonScrollListView>
+
+            </LinearLayout>
+
+            <!-- map layout -->
 
             <RelativeLayout
-                android:layout_width="0px"
+                android:id="@+id/relativeLayoutMapLite"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_marginTop="36px"
+                android:background="@drawable/background_white_bordered"
+                android:padding="2px"
+                android:visibility="visible">
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/rideTimeValue"
-                    android:layout_width="230px"
+                <fragment
+                    android:id="@+id/mapLite"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="300px"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25px"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/rupee_zero"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
+                    android:gravity="center">
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/rideTimeValueText"
-                    android:layout_width="230px"
-                    android:layout_height="38px"
-                    android:layout_below="@+id/rideTimeValue"
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/rideTimeValue"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="@string/rupee_zero"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="32px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/rideTimeValueText"
+                        android:layout_width="230px"
+                        android:layout_height="38px"
+                        android:layout_below="@+id/rideTimeValue"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/duration"
+                        android:textColor="@color/grey_light_v2"
+                        android:textSize="24px"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewVertical"
+                    android:layout_width="2px"
+                    android:layout_height="64px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/grey_light_v2"/>
+
+                <RelativeLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/duration"
-                    android:textColor="@color/grey_light_v2"
-                    android:textSize="24px"/>
+                    android:gravity="center">
 
-            </RelativeLayout>
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/distanceValue"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/rupee_zero"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="32px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/distanceValueText"
+                        android:layout_width="225px"
+                        android:layout_height="38px"
+                        android:layout_below="@+id/distanceValue"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/distance"
+                        android:textColor="@color/grey_light_v2"
+                        android:textSize="24px"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewVertical1"
+                    android:layout_width="2px"
+                    android:layout_height="64px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/grey_light_v2"/>
+
+                <RelativeLayout
+                    android:id="@+id/relativeWaitingTime"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/waitTimeValue"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/rupee_zero"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="32px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/waitTimeText"
+                        android:layout_width="225px"
+                        android:layout_height="38px"
+                        android:layout_below="@+id/waitTimeValue"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/wait_time"
+                        android:textColor="@color/grey_light_v2"
+                        android:textSize="24px"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
             <ImageView
-                android:layout_width="2px"
-                android:layout_height="64px"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/imageViewVertical"
-                android:background="@color/grey_light_v2"/>
+                android:layout_width="620px"
+                android:layout_height="2px"
+                android:layout_marginBottom="36px"
+                android:layout_marginTop="20px"
+                android:background="@color/grey_light"/>
 
             <RelativeLayout
-                android:layout_width="0px"
+                android:id="@+id/relativeLayoutCreateTicket"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_marginBottom="25px"
+                android:gravity="center_horizontal">
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/distanceValue"
-                    android:layout_width="230px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/rupee_zero"
+                <Button
+                    android:id="@+id/buttonReportIssue"
+                    android:layout_width="432px"
+                    android:layout_height="80px"
+                    android:background="@drawable/shadow_btn_selector"
+                    android:text="@string/report_issue"
                     android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
+                    android:textSize="30px"
+                    android:visibility="visible"/>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/distanceValueText"
-                    android:layout_width="225px"
-                    android:layout_height="38px"
-                    android:layout_below="@+id/distanceValue"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:text="@string/distance"
+                <TextView
+                    android:id="@+id/textViewStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="STATUS"
+                    android:textSize="32px"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/textViewTicketDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewStatus"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10px"
+                    android:text="STATUS"
                     android:textColor="@color/grey_light_v2"
-                    android:textSize="24px"/>
+                    android:textSize="22px"
+                    android:visibility="gone"/>
+
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="2px"
-                android:layout_height="64px"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/imageViewVertical1"
-                android:background="@color/grey_light_v2"/>
+            <Button
+                android:id="@+id/buttonGetSupport"
+                android:layout_width="432px"
+                android:layout_height="80px"
+                android:layout_marginBottom="25px"
+                android:background="@drawable/shadow_btn_selector"
+                android:text="@string/get_support_call"
+                android:textAllCaps="true"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"
+                android:visibility="gone"/>
 
-            <RelativeLayout
-                android:id="@+id/relativeWaitingTime"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/waitTimeValue"
-                    android:layout_width="230px"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/rupee_zero"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="32px"/>
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/waitTimeText"
-                    android:layout_width="225px"
-                    android:layout_height="38px"
-                    android:layout_below="@+id/waitTimeValue"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:text="@string/wait_time"
-                    android:textColor="@color/grey_light_v2"
-                    android:textSize="24px"/>
-
-            </RelativeLayout>
 
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="620px"
-            android:layout_height="2px"
-            android:layout_marginTop="20px"
-            android:layout_marginBottom="36px"
-            android:background="@color/grey_light"/>
-
-       <RelativeLayout 
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/relativeLayoutCreateTicket"
-           android:gravity="center_horizontal"
-           android:layout_marginBottom="25px">
-           
-           <Button
-               android:id="@+id/buttonReportIssue"
-               android:layout_width="432px"
-               android:layout_height="80px"
-               android:text="@string/report_issue"
-               android:textColor="@color/black_text_v2"
-               android:textSize="30px"
-               android:visibility="visible"
-               android:background="@drawable/shadow_btn_selector"/>
-
-           <TextView
-               android:id="@+id/textViewStatus"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_centerHorizontal="true"
-               android:visibility="gone"
-               android:textSize="32px"
-               android:text="STATUS"/>
-
-           <TextView
-               android:id="@+id/textViewTicketDate"
-               android:layout_below="@+id/textViewStatus"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:visibility="gone"
-               android:textColor="@color/grey_light_v2"
-               android:layout_marginTop="10px"
-               android:layout_centerHorizontal="true"
-               android:textSize="22px"
-               android:text="STATUS"/>
-
-
-
-
-       </RelativeLayout>
-
-        <Button
-            android:id="@+id/buttonGetSupport"
-            android:layout_width="432px"
-            android:layout_height="80px"
-            android:text="@string/get_support_call"
-            android:textColor="@color/black_text_v2"
-            android:textSize="30px"
-            android:layout_marginBottom="25px"
-            android:textAllCaps="true"
-            android:visibility="gone"
-            android:background="@drawable/shadow_btn_selector"/>
-
-
-    </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-    
-    <RelativeLayout 
+
+    <RelativeLayout
+        android:id="@+id/relativeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:id="@+id/relativeContainer">
-        
-    </RelativeLayout>
+        android:visibility="gone">
 
+    </RelativeLayout>
 
 
 </RelativeLayout>
