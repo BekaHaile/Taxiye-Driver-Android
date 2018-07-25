@@ -512,6 +512,7 @@
     <string name="audit_lower">Audit</string>
     <string name="deletion_confirmation">Are you sure you want to delete image ?</string>
     <string name="bank_deposite">Bank Deposit</string>
+    <string name="commission_to_be_deposited">Commission to be deposited</string>
     <string name="trips">TRIPS</string>
     <string name="home">Home</string>
     <string name="duration">DURATION</string>
