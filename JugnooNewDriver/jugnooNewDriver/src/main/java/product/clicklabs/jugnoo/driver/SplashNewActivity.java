@@ -54,7 +54,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -167,15 +167,13 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Splash started");
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 	
 
@@ -197,7 +195,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 
-		FlurryAgent.init(this, Data.FLURRY_KEY);
+
 
 
 
@@ -935,8 +933,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 //			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
 		}
 
-//		NudgeClient.getGcmClient(this);
-		
+
 		super.onResume();
 	}
 	

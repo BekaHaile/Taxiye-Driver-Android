@@ -15,7 +15,6 @@ import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
@@ -127,7 +126,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.driver_splash_activity)
-        FlurryAgent.init(this, Data.FLURRY_KEY)
 
         Data.locationFetcher = LocationFetcher(this, 1000, 1)
         setLoginData()

@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -61,15 +59,13 @@ public class EarningsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		FlurryAgent.init(activity, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-		FlurryAgent.onEvent(EarningsFragment.class.getSimpleName() + " started");
+
+
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(activity);
 	}
 
 

@@ -21,9 +21,6 @@ import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.flurry.android.FlurryAgent;
-
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
@@ -65,9 +62,8 @@ public class GeanieView extends Service {
 			if (Prefs.with(GeanieView.this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal())
 					!= DriverScreenMode.D_OFFLINE.getOrdinal()) {
 
-				FlurryAgent.init(this, Data.FLURRY_KEY);
-				FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-				FlurryAgent.onEvent("Navigation started");
+
+
 
 
 				try {
@@ -422,7 +418,7 @@ public class GeanieView extends Service {
 	public void onDestroy() {
 
 		try {
-			FlurryAgent.onEndSession(this);
+
 			windowManager.removeViewImmediate(convertView);
 		} catch (Exception e) {
 			e.printStackTrace();

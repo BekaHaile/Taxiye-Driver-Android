@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.gson.Gson;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
@@ -42,14 +42,14 @@ public class DriverTicketDetails extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override

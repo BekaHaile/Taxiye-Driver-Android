@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -76,15 +76,13 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Login started");
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
 	@Override
@@ -548,7 +546,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		if(hasFocus && loginDataFetched){
 			Map<String, String> articleParams = new HashMap<String, String>();
 			articleParams.put("username", Data.userData.userName);
-			FlurryAgent.logEvent("App Login", articleParams);
 			startActivity(new Intent(SplashLogin.this, HomeActivity.class));
 			loginDataFetched = false;
 			finish();

@@ -69,7 +69,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
+
 import com.fugu.HippoConfig;
 import com.fugu.HippoNotificationConfig;
 import com.fugu.HippoTicketAttributes;
@@ -204,7 +204,6 @@ import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -1128,7 +1127,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(FlurryEventNames.MENU);
 					firebaseJugnooDeliveryHomeEvent(FirebaseEvents.MENU);
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
 					if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 						FlurryEventLogger.event(FlurryEventNames.HOME_MENU);
 					} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
@@ -1315,7 +1313,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 					if(DriverScreenMode.D_INITIAL == driverScreenMode){
 						FlurryEventLogger.event(FlurryEventNames.HOME_NOTIFICATION);
 						firebaseJugnooDeliveryHomeEvent(NOTIFICATION);
@@ -1355,7 +1352,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_SUPER_DRIVER_CLICK, null);
 				}
 			});
 
@@ -2221,7 +2217,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				JSONObject map = new JSONObject();
 				map.put(KEY_LATITUDE, Data.latitude);
 				map.put(KEY_LONGITUDE, Data.longitude);
-				NudgeClient.trackEvent(this, NUDGE_APP_OPEN, map);
 			} catch(Exception e){
 				e.printStackTrace();
 			}
@@ -3183,7 +3178,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							HomeActivity.this.startService(intent1);
 							isJugnooOnTraining = false;
 						}
-						nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 						resetSharedPrefs();
 						if (jugnooOnFlag == 1) {
 							showDialogFromBackgroundWithListener(getResources().getString(R.string.request_autos));
@@ -3239,7 +3233,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									intent1.putExtra("task_id", "2");
 									HomeActivity.this.startService(intent1);
 								}
-								nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 								resetSharedPrefs();
 								showDialogFromBackground(message);
 							} else if(ApiResponseFlags.TNC_NOT_ACCEPTED.getOrdinal()==flag){
@@ -3290,20 +3283,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	private void nudgeJugnooOnOff(double latitude, double longitude){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(KEY_LATITUDE, latitude);
-			map.put(KEY_LONGITUDE, longitude);
-			if(Data.userData.autosAvailable == 1){
-				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_ON, map);
-			} else{
-				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_OFF, map);
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	public void toggleSharingModeAPI(final int mode, final LatLng latLng, final boolean disableAutos,
@@ -6019,7 +5998,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(),"");
-								nudgeRequestCancel(customerInfo);
 								new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 							}
 						}
@@ -6044,16 +6022,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	private void nudgeRequestCancel(CustomerInfo customerInfo){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-			map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
-			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_REQUEST_CANCEL, map);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	public void driverMarkArriveRideAsync(final Activity activity, final LatLng driverAtPickupLatLng,
@@ -6283,7 +6251,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
 									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
-									NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -6662,7 +6629,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					initializeStartRideVariables();
-					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 					try {
 						if(customerInfo.getIsPooled() ==1){
@@ -6743,20 +6709,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-
-	private void nudgeRideEnd(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, HashMap<String, String> params){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(KEY_LATITUDE, dropLatitude);
-			map.put(KEY_LONGITUDE, dropLongitude);
-			map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-			map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
-			map.put("params", params.toString());
-			NudgeClient.trackEvent(activity, NUDGE_RIDE_END, map);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	private double calculateCouponDiscount(double totalFare, CouponInfo couponInfo) {
@@ -7018,7 +6970,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			initializeStartRideVariables();
-			nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -7122,7 +7073,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									map.put(KEY_GIVEN_RATING, givenRating);
 									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
-									NudgeClient.trackEvent(activity, NUDGE_RATING, map);
 								} catch(Exception e){
 									e.printStackTrace();
 								}
@@ -8412,9 +8362,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onStart() {
 		try {
 			super.onStart();
-			FlurryAgent.init(this, Data.FLURRY_KEY);
-			FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-			FlurryAgent.onEvent("HomeActivity started");
+
+
 			mGoogleApiClient.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -8425,7 +8374,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onStop() {
 		super.onStop();
 		try {
-			FlurryAgent.onEndSession(this);
+
 			mGoogleApiClient.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();

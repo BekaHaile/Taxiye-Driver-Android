@@ -26,10 +26,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -242,7 +240,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-									nudgeCancelRide(reason);
 
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId, message);
@@ -286,17 +283,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		}
 	}
 
-	private void nudgeCancelRide(String reasons){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
-			map.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
-			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
