@@ -172,7 +172,7 @@ public final class PermissionCommon {
                                 }).setPositiveButton(activity.getString(R.string.retry), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                getPermission(requestCode,SKIP_RATIONAL_MESSAGE,false,permissionsInitiated);
+                                getPermission(requestCodeInitiated,SKIP_RATIONAL_MESSAGE,false,permissionsInitiated);
 
                             }
                         });
@@ -244,6 +244,10 @@ public final class PermissionCommon {
                 return appName + " needs permission fetch current location address. ";
             case Manifest.permission.RECEIVE_SMS:
                 return appName + " needs this permission to auto-detect OTP. ";
+            case Manifest.permission.READ_PHONE_STATE:
+                return appName + " needs Phone State permission to uniquely identify device.";
+            case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                return appName + " needs External storage permission to fetch selected image from gallery.";
             default:
                 return appName + " needs this permission to proceed.";
         }

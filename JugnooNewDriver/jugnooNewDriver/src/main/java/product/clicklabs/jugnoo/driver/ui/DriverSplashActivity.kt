@@ -62,14 +62,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                 Data.locationFetcher.connect()
             }
 
-            val uid = DeviceUniqueID.getCachedUniqueId(this)
-            Log.d(TAG, "UID : $uid")
-
-            if (uid.isBlank()) {
+//            val uid = DeviceUniqueID.getCachedUniqueId(this)
+//            Log.d(TAG, "UID : $uid")
+//
+//            if (uid.isBlank()) {
                 permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE)
-            } else {
-                setupSplashFragment()
-            }
+//            } else {
+//                setupSplashFragment()
+//            }
         } else if(requestCode == REQUEST_CODE_READ_PHONE_STATE){
             val uid = DeviceUniqueID.getUniqueId(this)
             Log.d(TAG, "UID : $uid")
@@ -183,7 +183,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                             getString(R.string.grant), getString(R.string.cancel),
                             { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
                             { finish() }, false, false)
-                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this) && DeviceUniqueID.getCachedUniqueId(this).isBlank()){
+                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){// && DeviceUniqueID.getCachedUniqueId(this).isBlank()){
                     DialogPopup.alertPopupTwoButtonsWithListeners(this, "", getString(R.string.app_needs_phone_state_permission),
                             getString(R.string.grant), getString(R.string.cancel),
                             { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
@@ -192,7 +192,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                     restartApp()
                 }
             } else if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
-                    && (!DeviceUniqueID.getCachedUniqueId(this).isBlank() || PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this))){
+                    && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){ //!DeviceUniqueID.getCachedUniqueId(this).isBlank() ||
                 restartApp()
             }
         }

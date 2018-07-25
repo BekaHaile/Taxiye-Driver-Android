@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -73,6 +74,7 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.RSA;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -881,9 +883,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
-								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
-								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
-								startService(intent1);
+								if(PermissionCommon.isGranted(Manifest.permission.READ_CONTACTS, this)) {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
+									intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+									startService(intent1);
+								}
 
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);

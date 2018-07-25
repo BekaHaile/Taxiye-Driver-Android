@@ -1988,8 +1988,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				dialog.setContentView(R.layout.dialog_edittext);
 
 				RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
-				new ASSL(activity, frameLayout, 1134, 720, true);
-				
+
 				WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
 				layoutParams.dimAmount = 0.6f;
 				dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

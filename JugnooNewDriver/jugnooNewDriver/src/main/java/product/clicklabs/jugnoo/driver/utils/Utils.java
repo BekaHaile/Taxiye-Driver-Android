@@ -256,8 +256,6 @@ public class Utils {
         activity.startActivity(callIntent);
     }
 
-	@SuppressLint("MissingPermission")
-	@RequiresPermission(Manifest.permission.CALL_PHONE)
 	public static void makeCallIntent(Activity activity, String phoneNumber) {
 		try {
 			Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -653,7 +651,6 @@ public class Utils {
         }
     }
 
-	@RequiresPermission(Manifest.permission.READ_CALL_LOG)
 	public static String getCallDetails(Context context, String phone) {
 		JSONArray callLogs = new JSONArray();
 		try {

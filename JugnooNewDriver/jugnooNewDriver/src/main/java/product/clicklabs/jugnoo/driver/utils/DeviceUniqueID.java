@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +16,6 @@ public class DeviceUniqueID {
     private static final String SP_DEVICE_UNIQUE_ID = "sp_device_unique_id";
 
     @SuppressLint("MissingPermission")
-    @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     public static String getUniqueId(Context context) {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);

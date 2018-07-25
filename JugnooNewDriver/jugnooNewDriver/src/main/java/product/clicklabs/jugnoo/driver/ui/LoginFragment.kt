@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -143,7 +144,7 @@ class LoginFragment : Fragment() {
                     override fun onRationalRequestIntercepted() {
                         generateOtpApi()
                     }
-                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true, Manifest.permission.RECEIVE_SMS)
+                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_CONTACTS)
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
@@ -382,7 +383,6 @@ class LoginFragment : Fragment() {
 
             etCode.setText(defaultEditTextData)
 
-            ASSL(mActivity, rv, 1134, 720, true)
             rv.setOnClickListener { dismiss() }
 
             textHead.text = title
