@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/topRl"
+<RelativeLayout android:id="@+id/topRl"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     android:background="@color/colorPrimary"
     android:splitMotionEvents="false"
-    android:tag="@string/dont_touch_me">
+    android:tag="@string/dont_touch_me"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <ImageView

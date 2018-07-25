@@ -49,25 +49,20 @@ class LoginFragment : Fragment() {
     private var mListener: SplashFragment.InteractionListener? = null
 
 
-    companion object {
-        private const val IS_SHARED_TRANSITION_ENABLED = "is_shared_transition_enabled"
 
-
-    }
 
     private lateinit var parentActivity: Activity
     val TAG = LoginFragment::class.simpleName
     lateinit var rootView: View
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
-    private var applyTransition = false;
     private var handler = Handler()
 
 
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-        if (activity is SplashFragment.InteractionListener) {
-            mListener = activity;
+    override fun onAttach(mActivity: Activity?) {
+        super.onAttach(mActivity)
+        if(mActivity is SplashFragment.InteractionListener){
+            mListener = mActivity;
         }
     }
 
@@ -85,7 +80,7 @@ class LoginFragment : Fragment() {
         selectedLanguage = BaseFragmentActivity.selectedLanguage
         toolbarChangeListener.setToolbarVisibility(false)
 
-        val countryPicker = CountryPicker.Builder().with(activity).listener(object : OnCountryPickerListener<Country>{
+        val countryPicker = CountryPicker.Builder().with(requireActivity()).listener(object : OnCountryPickerListener<Country>{
             override fun onSelectCountry(country: Country?) {
                 rootView.tvCountryCode.text = country?.dialCode
             }
@@ -108,8 +103,7 @@ class LoginFragment : Fragment() {
                 return@setOnLongClickListener false
             }
             tvCountryCode.text = Utils.getCountryCode(parentActivity)
-            tvCountryCode.setOnClickListener({ countryPicker.showDialog(activity.supportFragmentManager) })
-
+            tvCountryCode.setOnClickListener({ countryPicker.showDialog(requireActivity().supportFragmentManager) })
             edtPhoneNo.addTextChangedListener(object: TextWatcher{
                 override fun afterTextChanged(p0: Editable?) {
                     val s = p0?.toString() ?: ""
@@ -138,18 +132,18 @@ class LoginFragment : Fragment() {
                 }
 
                 if (TextUtils.isEmpty(countryCode)) {
-                    Toast.makeText(this@LoginFragment.activity, getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
 
                 if (!Utils.validPhoneNumber(phoneNo)) {
-                    Toast.makeText(this@LoginFragment.activity, getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
                     return@OnClickListener
 
                 }
 
                 mListener?.registerForSmsReceiver(true);
-                Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
+                Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
 
                 val params = HashMap<String, String>()
                 params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
@@ -168,10 +162,10 @@ class LoginFragment : Fragment() {
                 params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
 
 
-                Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
-                Prefs.with(activity).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
+                Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
+                Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
                 Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-                ApiCommonKt<RegisterScreenResponse>(activity).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+                ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
                     override fun onNotConnected(): Boolean {
                         return false
                     }
@@ -182,9 +176,9 @@ class LoginFragment : Fragment() {
 
                     override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                         if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            (activity as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
+                            (requireActivity() as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
                         } else {
-                            DialogPopup.alertPopup(activity, "", message)
+                            DialogPopup.alertPopup(requireActivity(), "", message)
                         }
 
 
@@ -306,7 +300,7 @@ class LoginFragment : Fragment() {
 
     private fun changeServerLinkPopup() {
 
-        val preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
+        val preferences = requireActivity().getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE)
         val link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL)
 
         val textMessage = when {
@@ -316,35 +310,35 @@ class LoginFragment : Fragment() {
             else -> ""
         }
 
-        DialogPopup.alertPopupThreeButtonsWithListeners(activity, "", textMessage, "LIVE", "DEV", "CUSTOM",
+        DialogPopup.alertPopupThreeButtonsWithListeners(requireActivity(), "", textMessage, "LIVE", "DEV", "CUSTOM",
                 { setServerLink(Data.LIVE_SERVER_URL) }, { setServerLink(Data.DEV_SERVER_URL) },
                 {
                     openEditTextDialog(parentActivity,
                             inputType = InputType.TYPE_CLASS_TEXT,
-                            defaultEditTextData = Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL),
+                            defaultEditTextData = Prefs.with(requireActivity()).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL),
                             title = "Custom URL",
                             message = "Please enter Custom URL",
                             errorMessage = "URL can't be empty.",
                             onTextValidated = { link ->
-                                Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, link)
+                                Prefs.with(requireActivity()).save(SPLabels.CUSTOM_SERVER_URL, link)
                                 val editor = preferences.edit()
                                 editor.putString(Data.SP_SERVER_LINK, link)
                                 editor.commit()
 
-                                MyApplication.getInstance().initializeServerURLAndRestClient(activity)
+                                MyApplication.getInstance().initializeServerURLAndRestClient(requireActivity())
                             })
                 }, true, true)
 
 
     }
 
-    private fun openEditTextDialog(activity: Activity,
+    private fun openEditTextDialog(mActivity: Activity,
                                    inputType: Int = InputType.TYPE_CLASS_NUMBER,
                                    defaultEditTextData: String = "", title: String = "", message: String = "",
                                    errorMessage: String = "", onTextValidated: ((String) -> Unit)? = null) {
 
 
-        val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
+        val dialog = Dialog(mActivity, android.R.style.Theme_Translucent_NoTitleBar)
 
         with(dialog) {
             window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
@@ -356,22 +350,22 @@ class LoginFragment : Fragment() {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
 
-            textHead.typeface = Fonts.mavenRegular(activity)
-            textMessage.typeface = Fonts.mavenRegular(activity)
-            etCode.typeface = Fonts.mavenRegular(activity)
+            textHead.typeface = Fonts.mavenRegular(mActivity)
+            textMessage.typeface = Fonts.mavenRegular(mActivity)
+            etCode.typeface = Fonts.mavenRegular(mActivity)
 
             etCode.inputType = inputType
             etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
 
             etCode.setText(defaultEditTextData)
 
-            ASSL(activity, rv, 1134, 720, true)
+            ASSL(mActivity, rv, 1134, 720, true)
             rv.setOnClickListener { dismiss() }
 
             textHead.text = title
             if (message.isBlank()) textMessage.gone() else textMessage.text = message
 
-            btnConfirm.typeface = Fonts.mavenRegular(activity)
+            btnConfirm.typeface = Fonts.mavenRegular(mActivity)
             btnConfirm.setOnClickListener {
                 val code = etCode.text.toString().trim()
                 if ("".equals(code, ignoreCase = true)) {
@@ -448,7 +442,7 @@ class LoginFragment : Fragment() {
 
             tvLanguage.isClickable = isClickable
             if (text != -1) tvLanguage.text = getString(text)
-//            tvLanguage.tag = text
+//           tvLanguage.tag = text
             tvLanguage.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                     if (showErrorImage) R.drawable.retry_icon_black else 0, 0)
         }

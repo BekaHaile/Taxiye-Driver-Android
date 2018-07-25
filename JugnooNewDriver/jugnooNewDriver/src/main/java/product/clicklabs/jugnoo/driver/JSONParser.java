@@ -998,7 +998,8 @@ public class JSONParser implements Constants {
 				Constants.DRIVER_CREDITS,
 				Constants.KEY_LOGOUT,
 				Constants.KEY_SHOW_WAZE_TOGGLE,
-				Constants.KEY_SHOW_TOLL_CHARGE
+				Constants.KEY_SHOW_TOLL_CHARGE,
+                Constants.WALLET
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
 
@@ -1036,6 +1036,32 @@
     <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
     <string name="toll_value">Toll fare: %s</string>
     <string name="please_enter_valid_fare">Please enter valid fare</string>
+
+
+    <string name="hint_card_number">CARD NUMBER</string>
+    <string name="hint_date">MM/YY</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="add_card_title">ADD CARD</string>
+    <string name="edit_card_title">EDIT CARD</string>
+    <string name="stripe_delete_card">Are you sure you want to delete your card ending with %s?</string>
+    <string name="stripe_add_card_error">%s is not valid.</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvc">CVC</string>
+    <string name="save">Save</string>
+    <string name="title_view_card">VIEW CARD</string>
+    <string name="label_add_card" >Add Card</string>
+    <string name="delete">Delete</string>
+    <string name="bullet">\u2022</string>
+    <string name="card_details">Card Details</string>
+    <string name="view_cards">View Cards</string>
+    <string name="wallet_details">Wallet Details</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="add_cash">Add Cash</string>
+    <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>
+    <string name="wallet">Wallet</string>
+    <string name="add_cash_stripe_confirmation">Add %s to your wallet using card ending with %s?</string>
+    <string name="add">Add</string>
 
 
 </resources>

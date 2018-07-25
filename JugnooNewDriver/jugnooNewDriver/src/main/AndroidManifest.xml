@@ -133,7 +133,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".StripeConnectActivity"
+            android:name=".stripe.connect.StripeConnectActivity"
             android:label="@string/stripe_connect_title"
             android:screenOrientation="portrait" />
         <activity
@@ -536,6 +536,12 @@
         <activity
             android:name=".AboutActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".stripe.wallet.StripeCardsActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+
+
     </application>
 
 </manifest>

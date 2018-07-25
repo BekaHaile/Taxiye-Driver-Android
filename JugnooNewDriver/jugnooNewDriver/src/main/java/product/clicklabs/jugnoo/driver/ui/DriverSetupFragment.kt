@@ -50,7 +50,7 @@ class DriverSetupFragment : Fragment() {
     private var citiesList:MutableList<CityResponse.City>? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
 
-    private val adapter by lazy { VehicleTypeSelectionAdapter(activity, rvVehicleTypes, null) }
+    private val adapter by lazy { VehicleTypeSelectionAdapter(requireActivity(), rvVehicleTypes, null) }
 
     companion object {
         @JvmStatic
@@ -77,7 +77,7 @@ class DriverSetupFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
@@ -94,15 +94,15 @@ class DriverSetupFragment : Fragment() {
 
 
 
-        bContinue.typeface = Fonts.mavenMedium(activity)
+        bContinue.typeface = Fonts.mavenMedium(requireActivity())
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
 
-        bCancel.typeface = Fonts.mavenMedium(activity)
+        bCancel.typeface = Fonts.mavenMedium(requireActivity())
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
-        tvCities.setOnClickListener{showCountriesDialog(activity.supportFragmentManager)}
+        tvCities.setOnClickListener{showCountriesDialog(requireActivity().supportFragmentManager)}
         tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
-            layoutManager = GridLayoutManager(activity, 3)
+            layoutManager = GridLayoutManager(requireActivity(), 3)
             addItemDecoration(ItemOffsetDecoration(parentActivity!!, R.dimen.spacing_grid_recycler_view));
             adapter = this@DriverSetupFragment.adapter
         }
@@ -128,11 +128,11 @@ class DriverSetupFragment : Fragment() {
             val start = ss.length-termsText.length
             val end = ss.length
             ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(parentActivity, R.color.themeColor)), start, end, 0);
+            ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireActivity(), R.color.themeColor)), start, end, 0);
             tvTermsOfUse.text = ss
             tvTermsOfUse.movementMethod = LinkMovementMethod.getInstance()
             tvTermsOfUse.highlightColor = Color.TRANSPARENT
-            tvTermsOfUse.typeface = Fonts.mavenRegular(activity)
+            tvTermsOfUse.typeface = Fonts.mavenRegular(requireActivity())
 
             tvTermsOfUse.visible()
         }else{
@@ -253,7 +253,7 @@ class DriverSetupFragment : Fragment() {
     private fun applyPromoCodeApi(){
 
         val promoCode =  edtPromo.text.toString().trim()
-        ApiCommonKt<FeedCommonResponseKotlin>(activity,successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity(),successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
                 .execute( hashMapOf(Constants.CODE to promoCode,Constants.KEY_ACCESS_TOKEN to accessToken),ApiName.APPLY_PROMO,
                 object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
 
@@ -279,7 +279,7 @@ class DriverSetupFragment : Fragment() {
 
         HomeUtil.putDefaultParams(params)
 
-        ApiCommonKt<CityResponse>(activity).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
+        ApiCommonKt<CityResponse>(requireActivity()).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
                 if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
                     onError(t, t.serverMessage(), t.flag)
@@ -381,7 +381,7 @@ class DriverSetupFragment : Fragment() {
 
     fun showCountriesDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty()) {
-            Toast.makeText(context,context.getString(R.string.error_no_cities_found),Toast.LENGTH_SHORT).show()
+            throw IllegalArgumentException(requireActivity().getString(R.string.error_no_cities_found))
         } else {
             val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
             countryPickerDialog.setCountryPickerListener(onCountryPickerListener)
