@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -144,7 +143,10 @@ class LoginFragment : Fragment() {
                     override fun onRationalRequestIntercepted() {
                         generateOtpApi()
                     }
-                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_CONTACTS)
+                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true,
+                        Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS,
+                        Manifest.permission.READ_CONTACTS)
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
@@ -379,7 +381,7 @@ class LoginFragment : Fragment() {
             etCode.typeface = Fonts.mavenRegular(mActivity)
 
             etCode.inputType = inputType
-            etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
+            etCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
 
             etCode.setText(defaultEditTextData)
 

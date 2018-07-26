@@ -166,7 +166,7 @@ class OTPConfirmFragment : Fragment(){
                 edtOTP.setText(mListener?.getPrefillOtpIfany())
                 edtOTP.setSelection(edtOTP.text.length)
             }else{
-                if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, activity)){
+                if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, requireActivity())){
                     Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
                     mListener?.registerForSmsReceiver(true);
                     showCountDownPopup()

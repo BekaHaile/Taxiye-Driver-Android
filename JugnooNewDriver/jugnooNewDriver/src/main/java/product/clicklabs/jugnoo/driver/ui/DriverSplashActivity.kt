@@ -204,7 +204,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
     private fun registerbackForOTPDetection() {
-        if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
+        if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, this)) {
             var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
             if (otpFragment != null) {
                 otpFragment = otpFragment as OTPConfirmFragment;
