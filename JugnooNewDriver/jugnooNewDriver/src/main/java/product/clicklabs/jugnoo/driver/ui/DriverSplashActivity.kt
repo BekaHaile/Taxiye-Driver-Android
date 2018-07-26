@@ -20,6 +20,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.tvToolbar
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_PHONE_STATE
@@ -45,14 +46,13 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             }
         }
     };
-    private var isSavedInstanceStateNull = false;
 
     private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
 
     @SuppressLint("MissingPermission")
     override fun permissionGranted(requestCode: Int) {
         Log.d(TAG, " permissionGranted : requestCode  $requestCode")
-
+        neverAskClicked = false
         if (requestCode == REQUEST_CODE_FINE_LOCATION) {
             if(Data.locationFetcher != null) {
                 Data.locationFetcher.connect()
@@ -61,41 +61,21 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                 Data.locationFetcher.connect()
             }
 
-//            val uid = DeviceUniqueID.getCachedUniqueId(this)
-//            Log.d(TAG, "UID : $uid")
-//
-//            if (uid.isBlank()) {
-                permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE)
-//            } else {
-//                setupSplashFragment()
-//            }
+            permissionCommon.getPermission(REQUEST_CODE_READ_PHONE_STATE, Manifest.permission.READ_PHONE_STATE)
         } else if(requestCode == REQUEST_CODE_READ_PHONE_STATE){
-            val uid = DeviceUniqueID.getUniqueId(this)
-            Log.d(TAG, "UID : $uid")
             setupSplashFragment()
         }
     }
 
     private fun setupSplashFragment() {
-        setTheme(R.style.AppTheme)
-        setContentView(R.layout.driver_splash_activity)
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayShowTitleEnabled(false)
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_back_arrow)
-        }
-
-        tvToolbar.typeface = Fonts.mavenRegular(this)
-        setLoginData()
-
-        if (isSavedInstanceStateNull) {
+        val uid = DeviceUniqueID.getUniqueId(this)
+        Log.d(TAG, "UID : $uid")
+        LocationInit.showLocationAlertDialog(this)
             supportFragmentManager.inTransaction {
                 add(container.id, SplashFragment(), SplashFragment::class.simpleName)
             }
             BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, false)
-        }
+
     }
 
     private var neverAskClicked = false
@@ -125,10 +105,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
-
-        Data.locationFetcher = LocationFetcher(this, 1000, 1)
-        setLoginData()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
@@ -140,6 +118,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         setToolbarVisibility(false)
 
+        Data.locationFetcher = LocationFetcher(this, 1000, 1)
+        setLoginData()
+
         val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
         if (resp != ConnectionResult.SUCCESS) {
             Log.e(TAG, "=$resp")
@@ -148,9 +129,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
 
-        isSavedInstanceStateNull = savedInstanceState == null
+
         neverAskClicked = false
-        if (isSavedInstanceStateNull) {
+        if (savedInstanceState==null) {
             Log.d(TAG, " calling permission for location onCreate")
             permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
@@ -175,28 +156,17 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     override fun onResume() {
         super.onResume()
         if(neverAskClicked){
-            if(permissionCommon.getDisplayedSnackbar() != null && !permissionCommon.getDisplayedSnackbar().isShown) {
-                if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
-                    DialogPopup.alertPopupTwoButtonsWithListeners(this, "", getString(R.string.app_needs_location_permission),
-                            getString(R.string.grant), getString(R.string.cancel),
-                            { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
-                            { finish() }, false, false)
-                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){// && DeviceUniqueID.getCachedUniqueId(this).isBlank()){
-                    DialogPopup.alertPopupTwoButtonsWithListeners(this, "", getString(R.string.app_needs_phone_state_permission),
-                            getString(R.string.grant), getString(R.string.cancel),
-                            { permissionCommon.openSettingsScreen(this@DriverSplashActivity) },
-                            { finish() }, false, false)
-                } else {
-                    restartApp()
+            if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                    && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+                neverAskClicked = false
+                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+            } else {
+                if(!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)){
+                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.ACCESS_FINE_LOCATION));
+                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.READ_PHONE_STATE));
                 }
-            } else if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
-                    && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){ //!DeviceUniqueID.getCachedUniqueId(this).isBlank() ||
-                restartApp()
             }
-        }
-        if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
-            if (Data.locationFetcher != null) Data.locationFetcher.connect()
-            LocationInit.showLocationAlertDialog(this)
         }
         registerbackForOTPDetection()
 

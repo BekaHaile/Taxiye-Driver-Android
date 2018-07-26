@@ -138,7 +138,7 @@ public final class PermissionCommon {
 
 
 
-                                String messageToShow = "You have disabled the permission to " + getPermissionLabel(permission) + ".Please go to app settings to allow permission";
+                                String messageToShow = getNeverAskMessage(permission);
 
                                 //this means the user has blocked a permission and chosen "Never ask again" for the that permission.
 
@@ -195,7 +195,7 @@ public final class PermissionCommon {
                 else {
                     if (!shouldShowRationalPermission(permissions[0])) {
 
-                        String messageToShow = "You have disabled the permission to " + getPermissionLabel(permissions[0]) + ".Please go to app settings to allow permission";
+                        String messageToShow = getNeverAskMessage(permissions[0]);
                         //activity means the user has blocked a permission and chosen "Never ask again" for the same
                         if(permissionListener!=null){
                             if(permissionListener.permissionDenied(requestCodeInitiated, true)){
@@ -217,6 +217,10 @@ public final class PermissionCommon {
             default:
                 break;
         }
+    }
+
+    public String getNeverAskMessage(String permissionName){
+        return "You have disabled the permission to " + getPermissionLabel(permissionName) + ".Please go to app settings to allow permission";
     }
 
     /**
@@ -406,7 +410,7 @@ public final class PermissionCommon {
      *
      * @param message The message that needs to be shown to the user for the corresponding permission
      */
-    private void showPermissionDenied(String message) {
+    public void showPermissionDenied(String message) {
 
         if (snackBarPermissionDenied == null) {
             view.setVisibility(View.VISIBLE);
@@ -414,17 +418,10 @@ public final class PermissionCommon {
             snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
             snackBarPermissionDenied.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
             ((TextView) snackBarPermissionDenied.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
-            snackBarPermissionDenied.setAction("Dismiss", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snackBarPermissionDenied.dismiss();
-                }
-            });
 
             snackBarPermissionDenied.setAction("Grant", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    snackBarPermissionDenied.dismiss();
                     openSettingsScreen(activity);
                 }
             });
@@ -497,9 +494,6 @@ public final class PermissionCommon {
     public Snackbar getDisplayedSnackbar(){
         if(snackBarPermissionDenied != null){
             return snackBarPermissionDenied;
-        }
-        if(snackBarRational != null){
-            return snackBarRational;
         }
         return null;
     }
