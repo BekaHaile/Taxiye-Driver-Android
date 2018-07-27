@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -36,7 +38,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class DriverDocumentActivity extends BaseFragmentActivity {
@@ -61,6 +62,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(savedInstanceState != null){
+			restartApp();
+			return;
+		}
 		setContentView(R.layout.activity_driver_documents);
 		bundleHomePush = getIntent().getExtras();
 		relative = (RelativeLayout) findViewById(R.id.relative);

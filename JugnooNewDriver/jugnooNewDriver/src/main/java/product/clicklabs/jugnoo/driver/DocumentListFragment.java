@@ -101,13 +101,19 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = (DriverDocumentActivity) getActivity();
+		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		docs.clear();
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		main = (RelativeLayout) rootView.findViewById(R.id.main);
-		activity = (DriverDocumentActivity) getActivity();
 		new ASSL(activity, main, 1134, 720, false);
 
 //		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -128,15 +134,22 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		getDocsAsync(getActivity());
 
-		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
 
 		return rootView;
 	}
 
 
 	@Override
+	public void onDetach() {
+		super.onDetach();
+		activity = null;
+	}
+
+	@Override
 	public void onDestroy() {
-		activity.unregisterReceiver(broadcastReceiver);
+		if(activity != null && broadcastReceiver != null) {
+			activity.unregisterReceiver(broadcastReceiver);
+		}
 		super.onDestroy();
 	}
 
@@ -156,28 +169,35 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 		if(requestCode == REQUEST_CODE_CAMERA){
 
-			if (mCameraImagePicker == null) {
-				mCameraImagePicker = new CameraImagePicker(getActivity());
-				mCameraImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
-				mCameraImagePicker.setImagePickerCallback(DocumentListFragment.this);
-				mCameraImagePicker.shouldGenerateThumbnails(false);
-				mCameraImagePicker.shouldGenerateMetadata(false);
-
-			}
-			mCameraImagePicker.pickImage();
+			getMCameraImagePicker().pickImage();
 
 		} else if(requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE){
 
-			if (mImagePicker == null) {
-				mImagePicker = new ImagePicker(DocumentListFragment.this);
-				mImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
-				mImagePicker.setImagePickerCallback(DocumentListFragment.this);
-				mImagePicker.shouldGenerateThumbnails(false);
-				mImagePicker.shouldGenerateMetadata(false);
-			}
-			mImagePicker.pickImage();
+			getMImagePicker().pickImage();
 		}
 
+	}
+
+	private ImagePicker getMImagePicker() {
+		if (mImagePicker == null) {
+			mImagePicker = new ImagePicker(DocumentListFragment.this);
+			mImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+			mImagePicker.setImagePickerCallback(DocumentListFragment.this);
+			mImagePicker.shouldGenerateThumbnails(false);
+			mImagePicker.shouldGenerateMetadata(false);
+		}
+		return mImagePicker;
+	}
+
+	private CameraImagePicker getMCameraImagePicker() {
+		if (mCameraImagePicker == null) {
+			mCameraImagePicker = new CameraImagePicker(getActivity());
+			mCameraImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+			mCameraImagePicker.setImagePickerCallback(DocumentListFragment.this);
+			mCameraImagePicker.shouldGenerateThumbnails(false);
+			mCameraImagePicker.shouldGenerateMetadata(false);
+		}
+		return mCameraImagePicker;
 	}
 
 	@Override
@@ -821,9 +841,9 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
             if (requestCode == Picker.PICK_IMAGE_DEVICE) {
-                mImagePicker.submit(data);
+				getMImagePicker().submit(data);
             } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
-                mCameraImagePicker.submit(data);
+				getMCameraImagePicker().submit(data);
             }
 
         } catch (Exception e) {
