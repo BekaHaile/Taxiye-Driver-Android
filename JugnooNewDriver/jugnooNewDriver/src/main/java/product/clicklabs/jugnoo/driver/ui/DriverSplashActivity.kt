@@ -19,8 +19,8 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
+import kotlinx.android.synthetic.main.driver_splash_activity.*
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.tvToolbar
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_PHONE_STATE
@@ -103,6 +103,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
+    var firstTime: Boolean = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme)
@@ -128,12 +129,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             return
         }
 
-
+        firstTime = true;
+        bGrant.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, PermissionCommon.SKIP_RATIONAL_MESSAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+            }
+        })
 
         neverAskClicked = false
         if (savedInstanceState==null) {
             Log.d(TAG, " calling permission for location onCreate")
-            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+//            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             //  if activity is recreated, required permissions may have been revoked,
             // restart activityO to check complete flow of permissions and prevent fragments to reattach without permissions check
@@ -155,19 +162,38 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onResume() {
         super.onResume()
-        if(neverAskClicked){
-            if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
-                    && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
-                neverAskClicked = false
-                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-            } else {
-                if(!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)){
-                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.ACCESS_FINE_LOCATION));
-                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
-                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.READ_PHONE_STATE));
-                }
-            }
+        if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+            llGrantPermission.gone()
+            permissionCommon.dismissSnackbars()
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        } else if (firstTime){
+            firstTime = false
+            llGrantPermission.visible()
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
         }
+        if(!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                && !PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location_phone));
+        } else if(!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)){
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location));
+        } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_phone));
+        }
+
+//        if(neverAskClicked){
+//            if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+//                    && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+//                neverAskClicked = false
+//                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+//            } else {
+//                if(!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)){
+//                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.ACCESS_FINE_LOCATION));
+//                } else if(!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+//                    permissionCommon.showPermissionDenied(permissionCommon.getNeverAskMessage(Manifest.permission.READ_PHONE_STATE));
+//                }
+//            }
+//        }
         registerbackForOTPDetection()
 
 

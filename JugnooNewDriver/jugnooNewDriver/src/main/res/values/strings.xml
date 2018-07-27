@@ -1073,6 +1073,11 @@
     <string name="wallet">Wallet</string>
     <string name="add_cash_stripe_confirmation">Add %s to your wallet using card ending with %s?</string>
     <string name="add">Add</string>
+    <string name="permissions_message">These permissions will be required to login into the app</string>
+    <string name="permissions_title">Grant permission to access %s</string>
+    <string name="permissions_location_phone">Location and Phone identity</string>
+    <string name="permissions_location">Location</string>
+    <string name="permissions_phone">Phone identity</string>
 
 
 </resources>

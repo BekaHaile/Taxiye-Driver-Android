@@ -15,4 +15,50 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+    <LinearLayout
+        android:id="@+id/llGrantPermission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/tvGrantPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextLarge"
+            android:text="@string/permissions_title"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tvGrantPermissionMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextMedium"
+            android:gravity="center"
+            android:text="@string/permissions_message"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <Button
+            android:id="@+id/bGrant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            style="@style/ButtonTheme"
+            android:text="Grant Permission"
+            />
+
+    </LinearLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>
