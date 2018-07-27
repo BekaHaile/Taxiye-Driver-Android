@@ -415,11 +415,10 @@ public final class PermissionCommon {
         if (snackBarPermissionDenied == null) {
             view.setVisibility(View.VISIBLE);
             snackBarPermissionDenied = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
-            snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
-            snackBarPermissionDenied.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark));
+            snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, R.color.themeColor));
             ((TextView) snackBarPermissionDenied.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
 
-            snackBarPermissionDenied.setAction("Grant", new View.OnClickListener() {
+            snackBarPermissionDenied.setAction(activity.getString(R.string.grant), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openSettingsScreen(activity);
@@ -440,8 +439,7 @@ public final class PermissionCommon {
 
         if (snackBarRational == null) {
             snackBarRational = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
-            snackBarRational.setActionTextColor(ContextCompat.getColor(activity, android.R.color.white));
-            snackBarRational.getView().setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_blue_dark));
+            snackBarRational.setActionTextColor(ContextCompat.getColor(activity, R.color.themeColor));
             ((TextView) snackBarRational.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
 
         }

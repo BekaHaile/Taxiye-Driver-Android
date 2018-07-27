@@ -1078,6 +1078,7 @@
     <string name="permissions_location_phone">Location and Phone identity</string>
     <string name="permissions_location">Location</string>
     <string name="permissions_phone">Phone identity</string>
+    <string name="grant_permission">Grant Permission</string>
 
 
 </resources>

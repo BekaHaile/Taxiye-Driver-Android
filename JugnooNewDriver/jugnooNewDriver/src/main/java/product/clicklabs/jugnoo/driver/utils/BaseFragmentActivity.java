@@ -89,7 +89,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
 	}
 
 	public static void checkOverlayPermissionOpenJeanie(final Activity activity, final boolean askAgain, final boolean openJeanie){
-		if(TextUtils.isEmpty(JSONParser.getAccessTokenPair(activity).first)){
+		if(openJeanie && TextUtils.isEmpty(JSONParser.getAccessTokenPair(activity).first)){
 			return;
 		}
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
