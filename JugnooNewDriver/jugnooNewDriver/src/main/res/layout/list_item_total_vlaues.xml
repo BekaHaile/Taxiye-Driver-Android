@@ -8,17 +8,20 @@
               android:orientation="vertical">
 
 
-    <ImageView
-        android:layout_width="640px"
-        android:layout_height="2px"
-        android:layout_marginBottom="24px"
-        android:layout_marginTop="24px"
-        android:background="@color/grey_light"/>
+        <ImageView
+            android:visibility="@integer/visibility_earning_bank_deposit"
+            android:layout_width="640px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="24px"
+            android:background="@color/grey_light"/>
 
-    <RelativeLayout
-        android:layout_width="620px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2px">
+        <RelativeLayout
+            android:layout_width="620px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2px"
+            android:visibility="@integer/visibility_earning_bank_deposit"
+            >
 
         <TextView
             android:id="@+id/textViewBankDeposite"
@@ -43,10 +46,11 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="620px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10px">
+        <RelativeLayout
+            android:layout_width="620px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:visibility="@integer/visibility_earning_bank_deposit">
 
         <TextView
             android:id="@+id/textViewCustomerPaidText"
@@ -69,17 +73,17 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="640px"
-        android:layout_height="2px"
-        android:layout_marginBottom="15px"
-        android:layout_marginTop="24px"
-        android:background="@color/grey_light"/>
+        <ImageView
+            android:visibility="@integer/visibility_earning_bank_deposit"
+            android:layout_width="640px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:background="@color/grey_light"/>
 
-    <RelativeLayout
-        android:layout_width="620px"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0px">
+        <RelativeLayout
+            android:layout_width="620px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15px">
 
         <TextView
             android:id="@+id/textViewActualFareText"

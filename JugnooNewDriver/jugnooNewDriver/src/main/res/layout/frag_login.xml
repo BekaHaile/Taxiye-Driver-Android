@@ -75,7 +75,7 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/imageView"
-            android:layout_width="147dp"
+            android:layout_width="@dimen/ic_splash_logo_width"
             android:layout_height="@dimen/ic_splash_logo_height"
             android:src="@drawable/ic_login_logo_drawable"
             android:transitionName="logoTransition"
