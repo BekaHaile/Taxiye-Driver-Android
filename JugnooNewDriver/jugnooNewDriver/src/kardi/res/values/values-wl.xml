@@ -25,7 +25,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">kardi Driver/kardi Pictures</string>
     <string name="file_provider">production.kardi.driver.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyAYtGKg7n3qVyMYz6FI87998DUbsfX4g1w</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyCsL-gStbpxPNGO0FiCTpHATfI-AGRKIPw</string> <!--IMP-->
 
     <string name="facebook_page_id">2056791887904505</string>
     <string name="facebook_page_name">kardi.sg</string>
