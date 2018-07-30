@@ -28,8 +28,8 @@
     <string name="file_provider">production.smartride.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyC0LUM94aPlHwPRQaUd3wp0b4wZn4xMbmo</string> <!--IMP-->
 
-    <string name="facebook_page_id">""</string>
-    <string name="facebook_page_name">""</string>
+    <string name="facebook_page_id">214323992611315</string>
+    <string name="facebook_page_name">smartridetaxi</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
