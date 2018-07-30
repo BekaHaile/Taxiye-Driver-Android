@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,23 +15,24 @@ import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import com.flurry.android.FlurryAgent
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
+import kotlinx.android.synthetic.main.driver_splash_activity.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
 import java.util.regex.Pattern
-
 
 /**
  * Created by Parminder Saini on 16/04/18.
  */
 
-class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener {
+class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener,
+        PermissionCommon.PermissionListener {
 
-    private val TAG = SplashFragment::class.simpleName
+    private val TAG = DriverSplashActivity::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
     private var otpDetectedViaSms :String? = null;
     private var otpLength:Int = 4;
@@ -43,7 +46,46 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     };
 
+    private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
 
+    private val REQUEST_CODE_FINE_LOCATION_FOR_BUTTON = 12201;
+
+    private var grantedCalled = false;
+    @SuppressLint("MissingPermission")
+    override fun permissionGranted(requestCode: Int) {
+        if (requestCode == REQUEST_CODE_FINE_LOCATION || requestCode == REQUEST_CODE_FINE_LOCATION_FOR_BUTTON) {
+            grantedCalled = true
+            if(Data.locationFetcher != null) {
+                Data.locationFetcher.connect()
+            } else {
+                Data.locationFetcher = LocationFetcher(this, 1000, 1)
+                Data.locationFetcher.connect()
+            }
+
+            setupSplashFragment()
+        }
+    }
+
+    private fun setupSplashFragment() {
+        llGrantPermission.gone()
+        val uid = DeviceUniqueID.getUniqueId(this)
+        Log.d(TAG, "UID : $uid")
+        LocationInit.showLocationAlertDialog(this)
+        supportFragmentManager.inTransaction {
+            add(container.id, SplashFragment(), SplashFragment::class.simpleName)
+        }
+        BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, false)
+    }
+
+    override fun permissionDenied(requestCode: Int, neverAsk: Boolean) : Boolean {
+        if(requestCode == REQUEST_CODE_FINE_LOCATION_FOR_BUTTON && neverAsk){
+            permissionCommon.openSettingsScreen(this)
+            return false
+        }
+        return true
+    }
+
+    override fun onRationalRequestIntercepted() {}
 
     override fun onLocationChanged(location: Location?, priority: Int) {
         if (location != null) {
@@ -53,13 +95,11 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     }
 
+    private var firstTime: Boolean = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
-        FlurryAgent.init(this, Data.FLURRY_KEY)
-
-        Data.locationFetcher = LocationFetcher(this, 1000, 1)
-        setLoginData()
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
@@ -71,6 +111,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         setToolbarVisibility(false)
 
+        Data.locationFetcher = LocationFetcher(this, 1000, 1)
+        setLoginData()
+
         val resp = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
         if (resp != ConnectionResult.SUCCESS) {
             Log.e(TAG, "=$resp")
@@ -78,13 +121,18 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             return
         }
 
-
-        if (savedInstanceState == null) {
-
-            supportFragmentManager.inTransaction {
-                add(container.id, SplashFragment(), SplashFragment::class.simpleName)
+        bGrant.setOnClickListener(object: View.OnClickListener{
+            override fun onClick(v: View?) {
+                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION_FOR_BUTTON, PermissionCommon.SKIP_RATIONAL_MESSAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
             }
+        })
 
+        firstTime = true;
+        if (savedInstanceState != null) {
+            //  if activity is recreated, required permissions may have been revoked,
+            // restart activityO to check complete flow of permissions and prevent fragments to reattach without permissions check
+            restartApp()
         }
 
 
@@ -102,22 +150,48 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun onResume() {
         super.onResume()
-        if (Data.locationFetcher != null) Data.locationFetcher.connect()
-        LocationInit.showLocationAlertDialog(this)
+        if(PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                && PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)){
+            if(!grantedCalled){
+                llGrantPermission.gone()
+                permissionCommon.dismissSnackbars()
+                permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
+            }
+        } else if (firstTime){
+            llGrantPermission.visible()
+            permissionCommon.getPermission(REQUEST_CODE_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE)
+        }
+        firstTime = false
+        grantPermissionText()
+
         registerbackForOTPDetection()
 
 
     }
 
+    private fun grantPermissionText() {
+        if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)
+                && !PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)) {
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location_phone));
+        } else if (!PermissionCommon.isGranted(Manifest.permission.ACCESS_FINE_LOCATION, this)) {
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_location));
+        } else if (!PermissionCommon.isGranted(Manifest.permission.READ_PHONE_STATE, this)) {
+            tvGrantPermission.text = getString(R.string.permissions_title, getString(R.string.permissions_phone));
+        }
+    }
+
     private fun registerbackForOTPDetection() {
-        var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
-        if (otpFragment != null) {
-            otpFragment = otpFragment as OTPConfirmFragment;
-            if (otpFragment.isWaitingForOTPDetection()) {
-                registerForSmsReceiver(true)
+        if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, this)) {
+            var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
+            if (otpFragment != null) {
+                otpFragment = otpFragment as OTPConfirmFragment;
+                if (otpFragment.isWaitingForOTPDetection()) {
+                    registerForSmsReceiver(true)
+
+                }
 
             }
-
         }
     }
 
@@ -341,12 +415,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     }
 
 
-}
 
-interface ToolbarChangeListener {
-
-    fun setToolbarText(title: String)
-
-    fun setToolbarVisibility(isVisible: Boolean)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }
 

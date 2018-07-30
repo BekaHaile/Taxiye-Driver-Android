@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.ui.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel
 
 /**
  * Created by Parminder Saini on 26/03/17.

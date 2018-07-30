@@ -62,7 +62,7 @@ public class ApiAcceptRide {
 					params.put("longitude", String.valueOf(longitude));
 
 					params.put("device_name", Utils.getDeviceName());
-					params.put("imei", DeviceUniqueID.getUniqueId(activity));
+					params.put("imei", DeviceUniqueID.getCachedUniqueId(activity));
 					params.put("app_version", "" + Utils.getAppVersion(activity));
 					params.put("is_accepting_perfect_ride", String.valueOf(perfectRide));
 

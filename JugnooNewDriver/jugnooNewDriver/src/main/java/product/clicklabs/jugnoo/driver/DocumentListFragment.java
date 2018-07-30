@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +27,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kbeanie.imagechooser.api.ChooserType;
-import com.kbeanie.imagechooser.api.ChosenImage;
-import com.kbeanie.imagechooser.api.ImageChooserListener;
-import com.kbeanie.imagechooser.api.ImageChooserManager;
+import com.kbeanie.multipicker.api.CacheLocation;
+import com.kbeanie.multipicker.api.CameraImagePicker;
+import com.kbeanie.multipicker.api.ImagePicker;
+import com.kbeanie.multipicker.api.Picker;
+import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
+import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RoundBorderTransform;
 
@@ -40,6 +43,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
@@ -50,13 +54,18 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 
-public class DocumentListFragment extends Fragment implements ImageChooserListener {
+import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CAMERA;
+import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_WRITE_EXTERNAL_STORAGE;
+
+
+public class DocumentListFragment extends Fragment implements ImagePickerCallback, PermissionCommon.PermissionListener {
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
@@ -67,8 +76,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	int requirement, brandingImagesOnly;
 	int imgPixel;
 
+	private PermissionCommon mPermissionCommon;
+	private ImagePicker mImagePicker;
+	private CameraImagePicker mCameraImagePicker;
 
-	protected ImageChooserManager imageChooserManager;
 	private Bitmap bitmap;
 	private DriverDocumentActivity activity;
 	DriverDocumentListAdapter driverDocumentListAdapter;
@@ -90,13 +101,19 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 
 	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		activity = (DriverDocumentActivity) getActivity();
+		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		docs.clear();
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		main = (RelativeLayout) rootView.findViewById(R.id.main);
-		activity = (DriverDocumentActivity) getActivity();
 		new ASSL(activity, main, 1134, 720, false);
 
 //		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -117,15 +134,22 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		getDocsAsync(getActivity());
 
-		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
 
 		return rootView;
 	}
 
 
 	@Override
+	public void onDetach() {
+		super.onDetach();
+		activity = null;
+	}
+
+	@Override
 	public void onDestroy() {
-		activity.unregisterReceiver(broadcastReceiver);
+		if(activity != null && broadcastReceiver != null) {
+			activity.unregisterReceiver(broadcastReceiver);
+		}
 		super.onDestroy();
 	}
 
@@ -138,6 +162,52 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+
+	@Override
+	public void permissionGranted(final int requestCode) {
+
+		if(requestCode == REQUEST_CODE_CAMERA){
+
+			getMCameraImagePicker().pickImage();
+
+		} else if(requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE){
+
+			getMImagePicker().pickImage();
+		}
+
+	}
+
+	private ImagePicker getMImagePicker() {
+		if (mImagePicker == null) {
+			mImagePicker = new ImagePicker(DocumentListFragment.this);
+			mImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+			mImagePicker.setImagePickerCallback(DocumentListFragment.this);
+			mImagePicker.shouldGenerateThumbnails(false);
+			mImagePicker.shouldGenerateMetadata(false);
+		}
+		return mImagePicker;
+	}
+
+	private CameraImagePicker getMCameraImagePicker() {
+		if (mCameraImagePicker == null) {
+			mCameraImagePicker = new CameraImagePicker(getActivity());
+			mCameraImagePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+			mCameraImagePicker.setImagePickerCallback(DocumentListFragment.this);
+			mCameraImagePicker.shouldGenerateThumbnails(false);
+			mCameraImagePicker.shouldGenerateMetadata(false);
+		}
+		return mCameraImagePicker;
+	}
+
+	@Override
+	public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+		return true;
+	}
+
+	@Override
+	public void onRationalRequestIntercepted() {
+
 	}
 
 
@@ -749,44 +819,34 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	private void chooseImageFromCamera() {
 
-//		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
-//		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
-//				activity.getRelativeLayoutContainer(), "top", "bottom");
-
-
-		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
-		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
-		imageChooserManager.setImageChooserListener(this);
-		imageChooserManager.clearOldFiles();
-		try {
-			String filePath = imageChooserManager.choose();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (mPermissionCommon == null) {
+			mPermissionCommon = new PermissionCommon(this).setCallback(this);
 		}
+
+		mPermissionCommon.getPermission(REQUEST_CODE_CAMERA, android.Manifest.permission.CAMERA);
 	}
 
 
 	public void chooseImageFromGallery() {
-		int chooserType = ChooserType.REQUEST_PICK_PICTURE;
-		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
-		imageChooserManager.setImageChooserListener(this);
-		try {
-			String filePath = imageChooserManager.choose();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (mPermissionCommon == null){
+            mPermissionCommon = new PermissionCommon(this).setCallback(this);
 		}
+
+		mPermissionCommon.getPermission(PermissionCommon.REQUEST_CODE_WRITE_EXTERNAL_STORAGE,
+				android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 	}
 
-
-	private final int RESULT_OK = 1;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
-			if ((requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
-				imageChooserManager.submit(requestCode, data);
-			}
-		} catch (Exception e) {
+            if (requestCode == Picker.PICK_IMAGE_DEVICE) {
+				getMImagePicker().submit(data);
+            } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
+				getMCameraImagePicker().submit(data);
+            }
+
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -794,74 +854,77 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 
 	@Override
-	public void onImageChosen(final ChosenImage image) {
+	public void onImagesChosen(final List<ChosenImage> list) {
 
-		getActivity().runOnUiThread(new Runnable() {
+		if(list.size() > 0) {
+			getActivity().runOnUiThread(new Runnable() {
 
-			@Override
-			public void run() {
+				@Override
+				public void run() {
 
-				Log.v("onImageChosen called", "onImageChosen called");
-				try {
-					if (image != null) {
-						// Use the image
-						// image.getFilePathOriginal();
-						// image.getFileThumbnail();
-						// image.getFileThumbnailSmall();
+					Log.v("onImageChosen called", "onImageChosen called");
+					try {
+						final ChosenImage image = list.get(0);
+						if (image != null) {
+							// Use the image
+							// image.getFilePathOriginal();
+							// image.getFileThumbnail();
+							// image.getFileThumbnailSmall();
 
-						BitmapFactory.Options opt;
-						opt = new BitmapFactory.Options();
-						opt.inTempStorage = new byte[16 * 1024];
-						int height11 = Integer.parseInt(image.getMediaHeight());
-						int width11 = Integer.parseInt(image.getMediaWidth());
-						float mb = (width11 * height11) / 1024000;
+							BitmapFactory.Options opt;
+							opt = new BitmapFactory.Options();
+							opt.inTempStorage = new byte[16 * 1024];
+							int height11 = image.getHeight();
+							int width11 = image.getWidth();
+							float mb = (width11 * height11) / 1024000;
 
-						if (mb > 4f)
-							opt.inSampleSize = 4;
-						else if (mb > 3f)
-							opt.inSampleSize = 2;
+							if (mb > 4f)
+								opt.inSampleSize = 4;
+							else if (mb > 3f)
+								opt.inSampleSize = 2;
 
-						opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-						Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), opt);
+							opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+							Bitmap bitmap = BitmapFactory.decodeFile(image.getOriginalPath(), opt);
 
-						Uri uri = Uri.fromFile(new File(image.getFilePathOriginal()));
-						int rotate = getCameraPhotoOrientation(activity, uri, image.getFilePathOriginal());
-						Bitmap rotatedBitmap = null;
-						Matrix rotateMatrix = new Matrix();
-						rotateMatrix.postRotate(rotate);
-						rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
+							Uri uri = Uri.fromFile(new File(image.getOriginalPath()));
+							int rotate = getCameraPhotoOrientation(activity, uri, image.getOriginalPath());
+							Bitmap rotatedBitmap = null;
+							Matrix rotateMatrix = new Matrix();
+							rotateMatrix.postRotate(rotate);
+							rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
 
 
-	//					selected_photo.setImageBitmap(bitmap);
-						Bitmap newBitmap = null;
-						if(rotatedBitmap != null) {
-							double oldHeight = rotatedBitmap.getHeight();
-							double oldWidth = rotatedBitmap.getWidth();
+							//					selected_photo.setImageBitmap(bitmap);
+							Bitmap newBitmap = null;
+							if (rotatedBitmap != null) {
+								double oldHeight = rotatedBitmap.getHeight();
+								double oldWidth = rotatedBitmap.getWidth();
 
-							if (oldWidth > oldHeight) {
-								int newHeight = imgPixel;
-								int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-								newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
-							} else {
-								int newWidth = imgPixel;
-								int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-								newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+								if (oldWidth > oldHeight) {
+									int newHeight = imgPixel;
+									int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+									newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+								} else {
+									int newWidth = imgPixel;
+									int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+									newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+								}
+							}
+
+							File f = null;
+							if (newBitmap != null) {
+								f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
+								docs.get(index).isExpended = true;
+								driverDocumentListAdapter.notifyDataSetChanged();
+								uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum);
 							}
 						}
-
-						File f = null;
-						if (newBitmap != null) {
-							f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
-							docs.get(index).isExpended = true;
-							driverDocumentListAdapter.notifyDataSetChanged();
-							uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum);
-						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+					}
+			});
+		}
 	}
 
 	@Override
@@ -1065,7 +1128,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
 		long index2 = System.currentTimeMillis();
-		File f = new File(context.getExternalCacheDir(), "temp" + index2 + ".jpg");
+		File f = new File(context.getFilesDir(), "temp" + index2 + ".jpg");
 		try {
 			f.createNewFile();
 			byte[] bitmapdata = os.toByteArray();
@@ -1122,5 +1185,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		}
 	}
 
-
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (mPermissionCommon != null) {
+			mPermissionCommon.onRequestPermissionsResult(requestCode,permissions,grantResults);
+		}
+	}
 }

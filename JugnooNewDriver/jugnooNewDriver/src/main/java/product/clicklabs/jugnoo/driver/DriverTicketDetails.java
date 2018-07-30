@@ -1,8 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,13 +13,14 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.gson.Gson;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class DriverTicketDetails extends BaseActivity {
@@ -33,18 +37,19 @@ public class DriverTicketDetails extends BaseActivity {
 	RelativeLayout relativeLayoutCall1;
 
 	TicketResponse.TicketDatum extras;
+	private PermissionCommon mPermissionCommon;
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override
@@ -132,7 +137,27 @@ public class DriverTicketDetails extends BaseActivity {
 		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Utils.makeCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
+				if (mPermissionCommon == null) {
+					mPermissionCommon = new PermissionCommon(DriverTicketDetails.this);
+				}
+				mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+					@SuppressLint("MissingPermission")
+					@Override
+					public void permissionGranted(final int requestCode) {
+						Utils.makeCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
+					}
+
+					@Override
+					public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+						return true;
+					}
+
+					@Override
+					public void onRationalRequestIntercepted() {
+
+					}
+				}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
+
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
@@ -219,4 +244,11 @@ public class DriverTicketDetails extends BaseActivity {
 		System.gc();
 	}
 
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (mPermissionCommon != null) {
+			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
 }

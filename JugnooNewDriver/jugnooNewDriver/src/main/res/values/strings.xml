@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
 
@@ -512,6 +512,7 @@
     <string name="audit_lower">Audit</string>
     <string name="deletion_confirmation">Are you sure you want to delete image ?</string>
     <string name="bank_deposite">Bank Deposit</string>
+    <string name="commission_to_be_deposited">Commission to be deposited</string>
     <string name="trips">TRIPS</string>
     <string name="home">Home</string>
     <string name="duration">DURATION</string>
@@ -1036,6 +1037,48 @@
     <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
     <string name="toll_value">Toll fare: %s</string>
     <string name="please_enter_valid_fare">Please enter valid fare</string>
+    <string name="are_you_sure">Are you sure you want to proceed?</string>
+    <string name="i_am_sure">I\'m Sure</string>
+    <string name="app_needs_overlay_permission">App needs overlay permission to display helper button on screen</string>
+    <string name="grant">Grant</string>
+    <string name="ignore">Ignore</string>
+    <string name="app_needs_location_permission">App needs Location permission to continue</string>
+    <string name="app_needs_phone_state_permission">App needs Phone State permission to continue</string>
+
+    <string name="notification_channel_default">Notifications</string>
+    <string name="notification_channel_description_default">Latest Updates</string>
+
+
+    <string name="hint_card_number">CARD NUMBER</string>
+    <string name="hint_date">MM/YY</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="add_card_title">ADD CARD</string>
+    <string name="edit_card_title">EDIT CARD</string>
+    <string name="stripe_delete_card">Are you sure you want to delete your card ending with %s?</string>
+    <string name="stripe_add_card_error">%s is not valid.</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="cvc">CVC</string>
+    <string name="save">Save</string>
+    <string name="title_view_card">VIEW CARD</string>
+    <string name="label_add_card" >Add Card</string>
+    <string name="delete">Delete</string>
+    <string name="bullet">\u2022</string>
+    <string name="card_details">Card Details</string>
+    <string name="view_cards">View Cards</string>
+    <string name="wallet_details">Wallet Details</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="add_cash">Add Cash</string>
+    <string name="no_cards_linked">You do not have any cards linked. Please add a card to add to add money to your wallet</string>
+    <string name="wallet">Wallet</string>
+    <string name="add_cash_stripe_confirmation">Add %s to your wallet using card ending with %s?</string>
+    <string name="add">Add</string>
+    <string name="permissions_message">These permissions will be required to login into the app</string>
+    <string name="permissions_title">Grant permission to access %s</string>
+    <string name="permissions_location_phone">Location and Phone identity</string>
+    <string name="permissions_location">Location</string>
+    <string name="permissions_phone">Phone identity</string>
+    <string name="grant_permission">Grant Permission</string>
 
 
 </resources>

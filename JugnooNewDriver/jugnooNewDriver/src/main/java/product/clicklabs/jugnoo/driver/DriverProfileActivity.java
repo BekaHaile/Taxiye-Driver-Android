@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
+
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -62,14 +62,14 @@ public class DriverProfileActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FlurryAgent.init(this, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        FlurryAgent.onEndSession(this);
+
     }
 
     @Override

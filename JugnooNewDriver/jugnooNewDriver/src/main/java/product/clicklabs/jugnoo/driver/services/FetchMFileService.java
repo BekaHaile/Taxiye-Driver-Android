@@ -5,35 +5,17 @@ package product.clicklabs.jugnoo.driver.services;
  */
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.Database2;
-import product.clicklabs.jugnoo.driver.DriverLocationUpdateService;
-import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
-import product.clicklabs.jugnoo.driver.utils.DownloadFile;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
@@ -52,7 +34,7 @@ public class FetchMFileService extends IntentService {
 		engagementId = intent.getStringExtra("file_id");
 		fileID = engagementId + "m";
 		try {
-			File mfile = product.clicklabs.jugnoo.driver.utils.Log.getPathLogFile(fileID, false);
+			File mfile = product.clicklabs.jugnoo.driver.utils.Log.getPathLogFile(this, fileID, false);
 			if(mfile != null) {
 				sendMFileToServer(engagementId, mfile);
 			}

@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver;
+package product.clicklabs.jugnoo.driver.stripe.connect;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -20,6 +20,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.stripe.StripeUtils;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;

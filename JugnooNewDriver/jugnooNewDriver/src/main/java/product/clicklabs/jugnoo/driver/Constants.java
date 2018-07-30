@@ -5,6 +5,8 @@ package product.clicklabs.jugnoo.driver;
  */
 public interface Constants {
 
+    int REQUEST_OVERLAY_PERMISSION = 3564;
+
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
@@ -330,5 +332,9 @@ public interface Constants {
 	String KEY_TOLL_CHARGE = "toll_charge";
 	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
 	String KEY_DEVICE_TYPE = "device_type";
+	String WALLET = "wallet";
+	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
+
+	String NOTIF_CHANNEL_DEFAULT = "Notifications";
 }
 

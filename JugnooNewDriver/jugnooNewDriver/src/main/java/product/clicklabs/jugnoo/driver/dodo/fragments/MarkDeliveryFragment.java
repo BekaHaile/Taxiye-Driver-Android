@@ -3,7 +3,9 @@ package product.clicklabs.jugnoo.driver.dodo.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -40,6 +43,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+
+import static product.clicklabs.jugnoo.driver.Constants.REQUEST_OVERLAY_PERMISSION;
 
 
 @SuppressLint("ValidFragment")
@@ -173,7 +178,7 @@ public class MarkDeliveryFragment extends Fragment {
 			public void onClick(View v) {
 				try{
 					Utils.openNavigationIntent(activity, deliveryInfo.getLatLng());
-					activity.startService(new Intent(activity, GeanieView.class));
+					BaseFragmentActivity.checkOverlayPermissionOpenJeanie(activity, true, true);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
@@ -313,5 +318,13 @@ public class MarkDeliveryFragment extends Fragment {
 		}
 	}
 
-
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (Settings.canDrawOverlays(activity)) {
+				activity.startService(new Intent(activity, GeanieView.class));
+			}
+		}
+	}
 }

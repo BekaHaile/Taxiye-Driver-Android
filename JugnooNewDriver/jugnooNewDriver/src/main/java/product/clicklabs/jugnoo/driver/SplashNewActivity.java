@@ -54,7 +54,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -167,15 +167,13 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Splash started");
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 	
 
@@ -197,7 +195,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 
-		FlurryAgent.init(this, Data.FLURRY_KEY);
+
 
 
 
@@ -935,8 +933,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 //			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
 		}
 
-//		NudgeClient.getGcmClient(this);
-		
+
 		super.onResume();
 	}
 	
@@ -1506,7 +1503,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				HomeUtil.putDefaultParams(params);
 
 				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getUniqueId(this));
+				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");
@@ -1587,7 +1584,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 											DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 										}
 
-										Utils.deleteMFile();
+										Utils.deleteMFile(activity);
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 
@@ -1988,8 +1985,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				dialog.setContentView(R.layout.dialog_edittext);
 
 				RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
-				new ASSL(activity, frameLayout, 1134, 720, true);
-				
+
 				WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
 				layoutParams.dimAmount = 0.6f;
 				dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

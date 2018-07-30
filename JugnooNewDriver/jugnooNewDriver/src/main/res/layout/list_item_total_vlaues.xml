@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
-                android:text="@string/bank_deposite"
+                android:text="@string/bank_deposit_text"
                 android:textColor="@color/black_text_v2"
                 android:textSize="34px"/>
 

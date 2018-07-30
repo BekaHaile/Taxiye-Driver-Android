@@ -38,6 +38,8 @@
     <string name="customer_app_download_link">https://www.taxinet.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
+    <string name="bank_deposit_text">@string/commission_to_be_deposited</string>
+
     <!--Notifications-->
     <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
     <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>

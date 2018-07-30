@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -70,12 +72,13 @@ public class NonJugnooAuditFragment extends Fragment {
 		super.onStop();
 	}
 
+	PermissionCommon permissionCommon;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_non_jugnoo_audit_branding, container, false);
-
 		activity = (SelfAuditActivity) getActivity();
+		permissionCommon = new PermissionCommon(this);
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
@@ -288,8 +291,23 @@ public class NonJugnooAuditFragment extends Fragment {
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								activity.getTransactionUtils().openAuditCameraFragment(activity,
-										activity.getRelativeLayoutContainer(), 0, auditType, 0);
+								permissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+									@Override
+									public void permissionGranted(int requestCode) {
+										activity.getTransactionUtils().openAuditCameraFragment(activity,
+												activity.getRelativeLayoutContainer(), 0, auditType, 0);
+									}
+
+									@Override
+									public boolean permissionDenied(int requestCode, boolean neverAsk) {
+										return true;
+									}
+
+									@Override
+									public void onRationalRequestIntercepted() {
+
+									}
+								}).getPermission(101, Manifest.permission.CAMERA);
 							} else {
 								DialogPopup.alertPopupWithImageListener(activity, "", jObj.getString("message"), R.drawable.error_icon_for_popup, new View.OnClickListener() {
 									@Override

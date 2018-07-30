@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -12,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,13 +22,11 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.ProgressWheel;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -75,13 +70,11 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
     @Override
     public void onStart() {
         super.onStart();
-        FlurryAgent.onEvent(PlaceSearchListFragment.class.getSimpleName() + " started");
     }
 
     @Override
     public void onStop() {
 		super.onStop();
-        FlurryAgent.onEndSession(activity);
     }
 	
 

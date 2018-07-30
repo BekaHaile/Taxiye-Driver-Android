@@ -1,8 +1,10 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +21,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -71,6 +74,7 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.RSA;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -100,7 +104,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -153,7 +157,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -202,7 +206,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Log.v("message", "," + message);
 
@@ -318,7 +322,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 			Intent notificationIntent = new Intent(context, notifClass);
 
@@ -369,7 +373,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 
 			Intent notificationIntent = new Intent(context, notifClass);
@@ -422,7 +426,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 		try {
 			long when = System.currentTimeMillis();
 
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			Log.v("message", "," + message);
 			Intent notificationIntent = new Intent(context, notifClass);
 
@@ -466,7 +470,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static void clearNotifications(Context context) {
 		try {
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			if (notificationManager != null) {
 				notificationManager.cancelAll();
 			}
@@ -879,9 +883,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
-								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
-								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
-								startService(intent1);
+								if(PermissionCommon.isGranted(Manifest.permission.READ_CONTACTS, this)) {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
+									intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+									startService(intent1);
+								}
 
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
@@ -900,9 +906,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
-								Intent synIntent = new Intent(this, SyncMessageService.class);
-								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
-								startService(synIntent);
+								if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
+									Intent synIntent = new Intent(this, SyncMessageService.class);
+									synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
+									startService(synIntent);
+								}
 
 							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);
@@ -1701,6 +1709,24 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 		}
 
+	}
+
+	public static NotificationManager getNotificationManager(final Context context, String channel){
+
+		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			// The user-visible name of the channel.
+			CharSequence name = context.getString(R.string.notification_channel_default);
+			// The user-visible description of the channel.
+			String description = context.getString(R.string.notification_channel_description_default);
+			int importance = NotificationManager.IMPORTANCE_LOW;
+			NotificationChannel mChannel = new NotificationChannel(channel, name, importance);
+			// Configure the notification channel.
+			mChannel.setDescription(description);
+			notificationManager.createNotificationChannel(mChannel);
+		}
+		return notificationManager;
 	}
 
 

@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.utils;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -32,6 +34,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
+import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -252,15 +256,15 @@ public class Utils {
         activity.startActivity(callIntent);
     }
 
-    public static void makeCallIntent(Activity activity, String phoneNumber) {
-        try {
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:" + phoneNumber));
-            activity.startActivity(callIntent);
-        } catch (Exception e) {
-            openCallIntent(activity, phoneNumber);
-        }
-    }
+	public static void makeCallIntent(Activity activity, String phoneNumber) {
+		try {
+			Intent callIntent = new Intent(Intent.ACTION_CALL);
+			callIntent.setData(Uri.parse("tel:" + phoneNumber));
+			activity.startActivity(callIntent);
+		} catch (Exception e) {
+			openCallIntent(activity, phoneNumber);
+		}
+	}
 
     public static String hidePhoneNoString(String phoneNo) {
         String returnPhoneNo = "";
@@ -647,16 +651,19 @@ public class Utils {
         }
     }
 
-    public static String getCallDetails(Context context, String phone) {
-        JSONArray callLogs = new JSONArray();
-        try {
-            Uri contacts = CallLog.Calls.CONTENT_URI;
-            Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
-            int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-            int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-            int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-            int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-            while (managedCursor.moveToNext()) {
+	public static String getCallDetails(Context context, String phone) {
+		JSONArray callLogs = new JSONArray();
+		try {
+			Uri contacts = CallLog.Calls.CONTENT_URI;
+			if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+				return String.valueOf(callLogs);
+			}
+			Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
+			int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+			int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+			int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+			int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+			while (managedCursor.moveToNext()) {
 
                 if ((managedCursor.getString(number).equalsIgnoreCase(phone))
                         || (("+91" + managedCursor.getString(number)).equalsIgnoreCase(phone))) {
@@ -836,8 +843,8 @@ public class Utils {
         return string.toString();
     }
 
-    public static void deleteMFile() {
-        File dir = new File(Environment.getExternalStorageDirectory() + "/JugnooData");
+    public static void deleteMFile(Context context) {
+        File dir = new File(context.getFilesDir()+ "/JugnooData");
         if (dir.isDirectory()) {
             String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {
@@ -898,7 +905,7 @@ public class Utils {
                                       int quality, int index) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         src.compress(format, quality, os);
-        File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+        File f = new File(context.getFilesDir(), "temp" + index + ".jpg");
         try {
             f.createNewFile();
             byte[] bitmapdata = os.toByteArray();
@@ -1245,4 +1252,10 @@ public class Utils {
         String regex = "[0-9.]*";
         return strTocheck.matches(regex);
     }
+	public static boolean isGPSEnabled(final Context context) {
+
+		final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+
 }

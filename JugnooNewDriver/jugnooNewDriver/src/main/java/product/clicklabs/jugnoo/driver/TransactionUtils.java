@@ -1,9 +1,9 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfEnrollmentCameraFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SubmitAuditFragment;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 
 /**
  * Created by shankar on 1/27/16.
@@ -71,15 +72,17 @@ public class TransactionUtils {
 	}
 
 	public void openAuditCameraFragment(FragmentActivity activity, View container, int auditState, int auditType, int auditCmeraOption) {
-		if(!checkIfFragmentAdded(activity, SelfAuditCameraFragment.class.getName())) {
-			activity.getSupportFragmentManager().beginTransaction()
-					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.replace(container.getId(), new SelfAuditCameraFragment(auditState, auditType, auditCmeraOption),
-							SelfAuditCameraFragment.class.getName())
+		if(PermissionCommon.isGranted(Manifest.permission.CAMERA, activity)) {
+			if (!checkIfFragmentAdded(activity, SelfAuditCameraFragment.class.getName())) {
+				activity.getSupportFragmentManager().beginTransaction()
+						.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+						.replace(container.getId(), new SelfAuditCameraFragment(auditState, auditType, auditCmeraOption),
+								SelfAuditCameraFragment.class.getName())
 //					.addToBackStack(SelfAuditCameraFragment.class.getName())
 //					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
 //							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
-					.commitAllowingStateLoss();
+						.commitAllowingStateLoss();
+			}
 		}
 	}
 
@@ -139,6 +142,7 @@ public class TransactionUtils {
 	}
 
 	public void openSelfEnrollmentCameraFragment1(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
+		if(PermissionCommon.isGranted(Manifest.permission.CAMERA, activity)) {
 			activity.getSupportFragmentManager().beginTransaction()
 //					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 					.replace(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
@@ -147,18 +151,21 @@ public class TransactionUtils {
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
 							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
+		}
 	}
 
 	public void openSelfEnrollmentCameraFragment(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
-		if(getSelfEnrollmentCameraFragment(activity) == null) {
-			activity.getSupportFragmentManager().beginTransaction()
+		if(PermissionCommon.isGranted(Manifest.permission.CAMERA, activity)) {
+			if (getSelfEnrollmentCameraFragment(activity) == null) {
+				activity.getSupportFragmentManager().beginTransaction()
 //					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
-							SelfEnrollmentCameraFragment.class.getName())
-					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
+						.add(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
+								SelfEnrollmentCameraFragment.class.getName())
+						.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
 //					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
 //							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
-					.commit();
+						.commit();
+			}
 		}
 	}
 

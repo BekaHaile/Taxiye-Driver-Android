@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 
 import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -37,14 +37,14 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 	
 	@Override
