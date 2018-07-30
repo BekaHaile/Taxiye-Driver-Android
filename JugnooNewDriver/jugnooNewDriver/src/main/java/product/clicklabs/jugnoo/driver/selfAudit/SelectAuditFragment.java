@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -52,6 +54,7 @@ public class SelectAuditFragment extends Fragment {
 	private ImageView backBtn, imageViewArrowSA, imageViewArrowNJB, imageViewArrowNJA;
 	private AuditTypeResponse auditTypeResponse;
 	private AuditStateResponse auditStateResponse;
+	private PermissionCommon permissionCommon;
 
 	public SelectAuditFragment(){
 
@@ -73,6 +76,8 @@ public class SelectAuditFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_select_audit, container, false);
 
 		activity = (SelfAuditActivity) getActivity();
+
+		permissionCommon = new PermissionCommon(this);
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
@@ -360,7 +365,22 @@ public class SelectAuditFragment extends Fragment {
 								SelectAuditFragment.this.auditStateResponse = auditStateResponse;
 								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
 								selfAuditActivity.setAuditStateResponse(auditStateResponse);
-								setFragmentState(auditType);
+								permissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+									@Override
+									public void permissionGranted(int requestCode) {
+										setFragmentState(auditType);
+									}
+
+									@Override
+									public boolean permissionDenied(int requestCode, boolean neverAsk) {
+										return true;
+									}
+
+									@Override
+									public void onRationalRequestIntercepted() {
+
+									}
+								}).getPermission(101, Manifest.permission.CAMERA);
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}

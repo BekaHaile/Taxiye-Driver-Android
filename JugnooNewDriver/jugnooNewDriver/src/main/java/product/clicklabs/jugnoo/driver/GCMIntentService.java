@@ -906,9 +906,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
-								Intent synIntent = new Intent(this, SyncMessageService.class);
-								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
-								startService(synIntent);
+								if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
+									Intent synIntent = new Intent(this, SyncMessageService.class);
+									synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
+									startService(synIntent);
+								}
 
 							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);
