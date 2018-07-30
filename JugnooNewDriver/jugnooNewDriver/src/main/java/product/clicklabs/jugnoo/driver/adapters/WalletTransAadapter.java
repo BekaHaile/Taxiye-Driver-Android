@@ -64,12 +64,15 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 amount = activity.getString(R.string.rupees_value_format_negtive, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
             }
 
+            amount = Utils.formatCurrencyValue(transactionses.get(position).getCurrencyUnit(), transactionses.get(position).getAmount(), "SGD");
             viewHolder.transactionItemBinding.textViewTransactionAmount.setText(amount);
             viewHolder.transactionItemBinding.textViewTransactionDate.setText(transactionses.get(position).getTxnDate());
             viewHolder.transactionItemBinding.textViewTransactionTime.setText(transactionses.get(position).getTxnTime());
             viewHolder.transactionItemBinding.tvPaymentType.setText(transactionses.get(position).getTxnText());
 
             viewHolder.transactionItemBinding.tvPaymentType.setVisibility(TextUtils.isEmpty(transactionses.get(position).getTxnText().trim()) ? View.GONE : View.VISIBLE);
+            // TODO: 30/07/18 revert
+            viewHolder.transactionItemBinding.tvPaymentType.setVisibility(View.GONE);
 
             viewHolder.transactionItemBinding.textViewTransactionType.setVisibility(View.VISIBLE);
             if(transactionses.get(position).getTxnType() == Data.TxnType.CREDITED) {
