@@ -454,7 +454,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning(),extras.getCurrencyUnit()));
 				textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash(),extras.getCurrencyUnit()));
 				textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount(),extras.getCurrencyUnit()));
-				fareStructureInfos.addAll(extras.getRideParam());
+				if(getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+					fareStructureInfos.addAll(extras.getRideParam());
+					recyclerViewRideInfo.setVisibility(View.VISIBLE);
+				} else {
+					recyclerViewRideInfo.setVisibility(View.GONE);
+				}
 				rideInfoTilesAdapter.notifyDataSetChanged();
 
 			}

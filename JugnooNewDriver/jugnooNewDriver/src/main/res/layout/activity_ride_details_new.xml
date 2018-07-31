@@ -84,6 +84,7 @@
                 android:background="@color/grey_light"/>
 
             <RelativeLayout
+                android:visibility="@integer/visibility_earning_bank_deposit"
                 android:id="@+id/rl_bank_deposit"
                 android:layout_width="620px"
                 android:layout_height="wrap_content"
@@ -112,7 +113,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-
+                android:visibility="@integer/visibility_earning_bank_deposit"
                 android:layout_width="620px"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10px">
@@ -143,7 +144,8 @@
                 android:layout_height="2px"
                 android:layout_marginBottom="15px"
                 android:layout_marginTop="24px"
-                android:background="@color/grey_light"/>
+                android:background="@color/grey_light"
+                android:visibility="@integer/visibility_earning_bank_deposit"/>
 
             <RelativeLayout
                 android:id="@+id/rlIncome"

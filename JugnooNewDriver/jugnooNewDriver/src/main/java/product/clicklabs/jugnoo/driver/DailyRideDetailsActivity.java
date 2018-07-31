@@ -233,7 +233,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.clear();
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-											if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == View.VISIBLE) {
+											if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
 												if (Data.isCaptive() && invoice_id == 0) {
 													if (dailyEarningResponse.getExtrasData() != null && dailyEarningResponse.getExtrasData().getCaptiveSlots() != null) {
 														for (int i = 0; i < dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
@@ -334,7 +334,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 								dailyEarningItems.clear();
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-								if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == View.VISIBLE) {
+								if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
 									for (int i = 0; i < invoiceDetailResponse.getEarningParams().size(); i++) {
 										dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
 												, invoiceDetailResponse.getEarningParams().get(i).getValue(),
