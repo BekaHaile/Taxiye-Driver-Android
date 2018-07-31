@@ -1066,6 +1066,8 @@ public class Utils {
     public static String getCurrencySymbol(String currencyCode) {
         if (TextUtils.isEmpty(currencyCode)) {
             currencyCode = "INR";
+        } else if(currencyCode.equalsIgnoreCase("BMD") || currencyCode.equalsIgnoreCase("TTD")){
+            return "$";
         }
         Currency currency = Currency.getInstance(currencyCode);
         return currency.getSymbol();
@@ -1074,6 +1076,9 @@ public class Utils {
     public static String formatCurrencyValue(String currency, double value) {
         if (TextUtils.isEmpty(currency)) {
             currency = "INR";
+        } else if(currency.equalsIgnoreCase("BMD") || currency.equalsIgnoreCase("TTD")){
+            int digits = Currency.getInstance(currency).getDefaultFractionDigits();
+            return String.format("%s%."+digits+"f", "$", value);
         }
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
         format.setCurrency(Currency.getInstance(currency));
