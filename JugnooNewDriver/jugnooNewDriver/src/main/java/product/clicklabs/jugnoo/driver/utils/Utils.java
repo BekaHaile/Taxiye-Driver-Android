@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -34,7 +33,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
@@ -1066,6 +1064,8 @@ public class Utils {
     public static String getCurrencySymbol(String currencyCode) {
         if (TextUtils.isEmpty(currencyCode)) {
             currencyCode = "INR";
+        } else if(currencyCode.equalsIgnoreCase("BMD") || currencyCode.equalsIgnoreCase("TTD")){
+            return "$";
         }
         Currency currency = Currency.getInstance(currencyCode);
         return currency.getSymbol();
@@ -1074,6 +1074,9 @@ public class Utils {
     public static String formatCurrencyValue(String currency, double value) {
         if (TextUtils.isEmpty(currency)) {
             currency = "INR";
+        } else if(currency.equalsIgnoreCase("BMD") || currency.equalsIgnoreCase("TTD")){
+            int digits = Currency.getInstance(currency).getDefaultFractionDigits();
+            return String.format("%s%."+digits+"f", "$", value);
         }
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
         format.setCurrency(Currency.getInstance(currency));

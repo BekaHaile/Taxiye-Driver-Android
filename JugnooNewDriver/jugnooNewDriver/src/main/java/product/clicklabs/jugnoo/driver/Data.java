@@ -473,12 +473,12 @@ public class Data {
 								 String keyFromServer, int appTypeFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
 			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-				if(TextUtils.isEmpty(keyFromServer)){
+				if(TextUtils.isEmpty(keyFromServer) || "null".equalsIgnoreCase(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key);
 				}
 				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
 			} else {
-				if(TextUtils.isEmpty(keyFromServer)){
+				if(TextUtils.isEmpty(keyFromServer) || "null".equalsIgnoreCase(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key_test);
 				}
 				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "test", captureUserData, activity.getString(R.string.file_provider));

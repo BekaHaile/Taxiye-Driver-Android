@@ -179,6 +179,70 @@
                     android:layout_alignParentBottom="true"
                     android:background="@color/dividerColor" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayoutFAQ"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/background_white_selector"
+                android:visibility="@integer/visibility_faq">
+
+                <ImageView
+                    android:id="@+id/ivFAQ"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_about_who_we_are"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewFAQ"
+                    android:layout_toEndOf="@+id/ivFAQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/faqs"
+                    style="@style/TextNormal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/dividerColor" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDriverAgreement"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/background_white_selector"
+                android:visibility="@integer/visibility_driver_agreement">
+
+                <ImageView
+                    android:id="@+id/ivDriverAgreement"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_about_tnc"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewDriverAgreement"
+                    android:layout_toEndOf="@+id/ivDriverAgreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/driver_agreement"
+                    style="@style/TextNormal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/dividerColor" />
+            </RelativeLayout>
             
         </LinearLayout>
     </LinearLayout>

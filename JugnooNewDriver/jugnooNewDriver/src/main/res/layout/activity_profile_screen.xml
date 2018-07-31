@@ -68,12 +68,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/ivEditIcon"
                     android:layout_width="40px"
                     android:layout_height="40px"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="30px"
                     android:layout_marginTop="30px"
-                    android:background="@drawable/edit_pencil_icon"
+                    android:src="@drawable/edit_pencil_icon"
                     android:tag="mwar"/>
 
                 <RelativeLayout
