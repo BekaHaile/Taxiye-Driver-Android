@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -29,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -208,6 +211,12 @@ public class GpsDistanceCalculator {
 		initializeFusedLocationFetcherBackgroundBalanced(context);
 
 		GSMmgr = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+				&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+				    != PackageManager.PERMISSION_GRANTED) {
+			Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
+			return;
+		}
 		GSMmgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, GSMlistener);
 
 		initializeGpsLocationUpdate();

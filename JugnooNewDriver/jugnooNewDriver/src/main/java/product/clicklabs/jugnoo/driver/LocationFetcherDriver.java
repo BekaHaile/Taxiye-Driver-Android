@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -20,21 +22,21 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 
 public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
-	
+
 	private final String TAG = this.getClass().getSimpleName();
 
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
 	private PendingIntent locationIntent;
-	
+
 	private long requestInterval;
 	private Context context;
-	
+
 	private static final int LOCATION_PI_ID = 6978;
 
 	private Handler handler;
-	
-	
+
+
 	/**
 	 * Constructor for initializing LocationFetcher class' object
 	 * @param context application context
@@ -49,9 +51,9 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 		}
 		connect();
 	}
-	
-	
-	
+
+
+
 	public boolean isConnected(){
 		if(googleApiClient != null){
 			return googleApiClient.isConnected();
@@ -76,8 +78,8 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 			return false;
 		}
 	}
-	
-	
+
+
 
 	public void connect(){
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -92,9 +94,9 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 			Log.e("Google Play Service Error ","="+resp);
 		}
 	}
-	
-	
-	
+
+
+
 	public void destroy(){
 		try{
 			Log.e("location","destroy");
@@ -137,6 +139,11 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 			createLocationRequest(interval);
 			Intent intent = new Intent(context, LocationReceiverDriver.class);
 			locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+					!= PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				return;
+			}
 			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
 		} else {
 			handler.postDelayed(new Runnable() {

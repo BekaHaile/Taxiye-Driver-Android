@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
@@ -72,14 +72,14 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override

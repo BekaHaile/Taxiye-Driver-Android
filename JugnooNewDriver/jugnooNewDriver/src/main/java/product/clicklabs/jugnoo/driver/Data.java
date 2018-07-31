@@ -181,7 +181,7 @@ public class Data {
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
 
-			AuthKeySaver.writeAuthToFile("");
+			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			Editor editor = pref.edit();
 			editor.clear();
@@ -230,7 +230,7 @@ public class Data {
 			Data.deviceName = Utils.getDeviceName();
 			Log.i("deviceName", Data.deviceName + "..");
 
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(context);
+			Data.uniqueDeviceId = DeviceUniqueID.getCachedUniqueId(context);
 			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());

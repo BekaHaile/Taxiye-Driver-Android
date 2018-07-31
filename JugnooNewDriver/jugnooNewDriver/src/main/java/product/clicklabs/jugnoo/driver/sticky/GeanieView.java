@@ -21,13 +21,9 @@ import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.flurry.android.FlurryAgent;
-
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
@@ -66,9 +62,8 @@ public class GeanieView extends Service {
 			if (Prefs.with(GeanieView.this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal())
 					!= DriverScreenMode.D_OFFLINE.getOrdinal()) {
 
-				FlurryAgent.init(this, Data.FLURRY_KEY);
-				FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-				FlurryAgent.onEvent("Navigation started");
+
+
 
 
 				try {
@@ -80,7 +75,7 @@ public class GeanieView extends Service {
 					WindowManager.LayoutParams paramRemove = new WindowManager.LayoutParams(
 							WindowManager.LayoutParams.MATCH_PARENT,
 							WindowManager.LayoutParams.WRAP_CONTENT,
-							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
 
@@ -98,7 +93,7 @@ public class GeanieView extends Service {
 					WindowManager.LayoutParams paramsNew = new WindowManager.LayoutParams(
 							WindowManager.LayoutParams.WRAP_CONTENT,
 							WindowManager.LayoutParams.WRAP_CONTENT,
-							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
 					paramsNew.gravity = Gravity.TOP | Gravity.START;
@@ -421,8 +416,9 @@ public class GeanieView extends Service {
 
 	@Override
 	public void onDestroy() {
-		FlurryAgent.onEndSession(this);
+
 		try {
+
 			windowManager.removeViewImmediate(convertView);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -544,7 +540,7 @@ public class GeanieView extends Service {
 	}
 
 	public void saveGenieParams(WindowManager.LayoutParams params) {
-		GeniePositonsSaver.writeGenieParams(params.x, params.y);
+		GeniePositonsSaver.writeGenieParams(this, params.x, params.y);
 	}
 
 	@Nullable

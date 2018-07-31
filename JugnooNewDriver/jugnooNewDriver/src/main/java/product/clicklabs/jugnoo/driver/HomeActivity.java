@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -22,10 +24,13 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
@@ -64,7 +69,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
+
 import com.fugu.HippoConfig;
 import com.fugu.HippoNotificationConfig;
 import com.fugu.HippoTicketAttributes;
@@ -83,6 +88,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -198,8 +204,8 @@ import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -211,7 +217,7 @@ import retrofit.mime.TypedByteArray;
 
 import static product.clicklabs.jugnoo.driver.Data.context;
 import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
-import com.google.firebase.iid.FirebaseInstanceId;
+import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
@@ -228,6 +234,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	//menu bar
 	LinearLayout menuLayout;
 
+	private PermissionCommon mPermissionCommon;
 
 
 	ImageView profileImg, seprator;
@@ -1120,7 +1127,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(FlurryEventNames.MENU);
 					firebaseJugnooDeliveryHomeEvent(FirebaseEvents.MENU);
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
 					if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 						FlurryEventLogger.event(FlurryEventNames.HOME_MENU);
 					} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
@@ -1307,7 +1313,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 					if(DriverScreenMode.D_INITIAL == driverScreenMode){
 						FlurryEventLogger.event(FlurryEventNames.HOME_NOTIFICATION);
 						firebaseJugnooDeliveryHomeEvent(NOTIFICATION);
@@ -1347,7 +1352,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
-					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_SUPER_DRIVER_CLICK, null);
 				}
 			});
 
@@ -1369,12 +1373,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					if(mPermissionCommon == null){
+						mPermissionCommon = new PermissionCommon(HomeActivity.this);
+					}
 
-					FlurryEventLogger.event(CALL_US);
+					mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+						@SuppressLint("MissingPermission")
+						@Override
+						public void permissionGranted(final int requestCode) {
+							Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 
-					drawerLayout.closeDrawer(GravityCompat.START);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							FlurryEventLogger.event(CALL_US);
+
+							drawerLayout.closeDrawer(GravityCompat.START);
+							overridePendingTransition(R.anim.right_in, R.anim.right_out);
+						}
+
+						@Override
+						public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+						@Override
+						public void onRationalRequestIntercepted() {
+
+						}
+					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
 				}
 			});
 			rlGetSupport.setOnClickListener(new OnClickListener() {
@@ -2195,7 +2217,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				JSONObject map = new JSONObject();
 				map.put(KEY_LATITUDE, Data.latitude);
 				map.put(KEY_LONGITUDE, Data.longitude);
-				NudgeClient.trackEvent(this, NUDGE_APP_OPEN, map);
 			} catch(Exception e){
 				e.printStackTrace();
 			}
@@ -2794,7 +2815,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (map != null) {
 				map.getUiSettings().setZoomControlsEnabled(false);
-				map.setMyLocationEnabled(true);
+
+				if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+						== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+					map.setMyLocationEnabled(true);
+				}
+
 				map.getUiSettings().setTiltGesturesEnabled(false);
 				map.getUiSettings().setMyLocationButtonEnabled(false);
 				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -3152,7 +3178,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							HomeActivity.this.startService(intent1);
 							isJugnooOnTraining = false;
 						}
-						nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 						resetSharedPrefs();
 						if (jugnooOnFlag == 1) {
 							showDialogFromBackgroundWithListener(getResources().getString(R.string.request_autos));
@@ -3208,7 +3233,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									intent1.putExtra("task_id", "2");
 									HomeActivity.this.startService(intent1);
 								}
-								nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 								resetSharedPrefs();
 								showDialogFromBackground(message);
 							} else if(ApiResponseFlags.TNC_NOT_ACCEPTED.getOrdinal()==flag){
@@ -3259,20 +3283,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	private void nudgeJugnooOnOff(double latitude, double longitude){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(KEY_LATITUDE, latitude);
-			map.put(KEY_LONGITUDE, longitude);
-			if(Data.userData.autosAvailable == 1){
-				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_ON, map);
-			} else{
-				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_OFF, map);
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	public void toggleSharingModeAPI(final int mode, final LatLng latLng, final boolean disableAutos,
@@ -3642,8 +3652,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					if(latLng != null) {
 						Utils.openNavigationIntent(HomeActivity.this, latLng);
-						Intent intent = new Intent(HomeActivity.this, GeanieView.class);
-						startService(intent);
+						BaseFragmentActivity.checkOverlayPermissionOpenJeanie(HomeActivity.this, true, true);
 					}
 				} else {
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
@@ -5733,7 +5742,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_LONGITUDE, "" + Data.longitude);
 
 			params.put(KEY_DEVICE_NAME, Utils.getDeviceName());
-			params.put(KEY_IMEI, DeviceUniqueID.getUniqueId(this));
+			params.put(KEY_IMEI, DeviceUniqueID.getCachedUniqueId(this));
 			params.put(KEY_APP_VERSION, "" + Utils.getAppVersion(this));
 
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
@@ -5989,7 +5998,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
 								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(),"");
-								nudgeRequestCancel(customerInfo);
 								new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 							}
 						}
@@ -6014,16 +6022,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	private void nudgeRequestCancel(CustomerInfo customerInfo){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-			map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
-			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_REQUEST_CANCEL, map);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	public void driverMarkArriveRideAsync(final Activity activity, final LatLng driverAtPickupLatLng,
@@ -6056,7 +6054,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
-									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
+									Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "arrived sucessful");
 									if(jObj.has("pickup_data")) {
 										Gson gson = new Gson();
 										DeliveryInfoInRideDetails deliveryInfoInRideDetails1 = new DeliveryInfoInRideDetails();
@@ -6206,12 +6204,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 								}
 
-								try {
-									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-											String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
-								} catch (Exception e) {
-									e.printStackTrace();
+								if (mPermissionCommon == null){
+									mPermissionCommon = new PermissionCommon(HomeActivity.this);
 								}
+
+								mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+									@Override
+									public void permissionGranted(final int requestCode) {
+										try {
+											new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+													String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+
+									@Override
+									public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+									@Override
+									public void onRationalRequestIntercepted() {
+
+									}
+								}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
 								initializeStartRideVariables();
 
@@ -6236,7 +6251,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
 									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
-									NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -6317,7 +6331,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 								PathUploadReceiver.uploadInRidePath(activity, false);
 								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
-								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+								Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 							} else {
 								throw new Exception();
 							}
@@ -6327,12 +6341,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 						customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 					}
 				} else {
 					if(currentPathItemPair != null) {
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.second.dLatLng=" + currentPathItemPair.second.dLatLng + " and drop=" + new LatLng(dropLatitude, dropLongitude));
-						Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.first=" + currentPathItemPair.first + " and global dist=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.second.dLatLng=" + currentPathItemPair.second.dLatLng + " and drop=" + new LatLng(dropLatitude, dropLongitude));
+						Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 else currentPathItemPair.first=" + currentPathItemPair.first + " and global dist=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
 					}
 				}
@@ -6615,7 +6629,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					initializeStartRideVariables();
-					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 					try {
 						if(customerInfo.getIsPooled() ==1){
@@ -6696,20 +6709,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-
-	private void nudgeRideEnd(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, HashMap<String, String> params){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(KEY_LATITUDE, dropLatitude);
-			map.put(KEY_LONGITUDE, dropLongitude);
-			map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-			map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
-			map.put("params", params.toString());
-			NudgeClient.trackEvent(activity, NUDGE_RIDE_END, map);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 	private double calculateCouponDiscount(double totalFare, CouponInfo couponInfo) {
@@ -6842,12 +6841,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "Data.fareStructure = " + Data.fareStructure);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "rideTime = " + rideTime);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "waitTime = " + waitTime);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalDistance = " + finalDistance);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalFare = " + totalFare);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "assignedCustomerInfo = " + customerInfo);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "Data.fareStructure = " + Data.fareStructure);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "rideTime = " + rideTime);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "waitTime = " + waitTime);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "totalDistance = " + finalDistance);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "totalFare = " + totalFare);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "assignedCustomerInfo = " + customerInfo);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -6931,7 +6930,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit());
 
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -6964,14 +6963,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
 			}
 			try {
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "url = " + url + " params = " + params);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "url = " + url + " params = " + params);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 
 			initializeStartRideVariables();
-			nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -7075,7 +7073,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									map.put(KEY_GIVEN_RATING, givenRating);
 									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
-									NudgeClient.trackEvent(activity, NUDGE_RATING, map);
 								} catch(Exception e){
 									e.printStackTrace();
 								}
@@ -7702,15 +7699,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Log.e("lastGPSLocation on end ride", "=======" + lastGPSLocation);
 				Log.e("lastFusedLocation on end ride", "=======" + lastFusedLocation);
 
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
 
 				LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
 
 				long lastloctime = GpsDistanceCalculator.lastLocationTime;
 
 				Log.e("oldGPSLatLng on end ride", "=======" + oldGPSLatLng);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
 
 				if (lastGPSLocation != null && lastFusedLocation != null) {
 					long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
@@ -7719,7 +7716,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.e("gpsLocTimeDiff on end ride", "=======" + gpsLocTimeDiff);
 					Log.e("fusedLocTimeDiff on end ride", "=======" + fusedLocTimeDiff);
 
-					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
+					Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
 
 					if (gpsLocTimeDiff <= threeMinuteMillis) {                                // gps location is fine
 						locationToUse = lastGPSLocation;
@@ -7740,7 +7737,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					locationToUse = myLocation;
 					fusedLocationUsed = true;
 					Log.e("locationToUse on end ride from myLocation", "=======" + locationToUse);
-					Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "locationToUse on end ride from myLocation=" + locationToUse);
+					Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "locationToUse on end ride from myLocation=" + locationToUse);
 				}
 
 
@@ -7749,14 +7746,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						&& (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)) {
 					oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
 				}
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
 
 
 				Log.e("locationToUse on end ride", "=======" + locationToUse);
 				Log.e("fusedLocationUsed on end ride", "=======" + fusedLocationUsed);
 
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "locationToUse on end ride=" + locationToUse);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "locationToUse on end ride=" + locationToUse);
+				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
 
 				if (locationToUse != null) {
 
@@ -7829,7 +7826,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (distanceOfPath > 0.0001 && endDistanceSpeed < 14) {
 								customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this)+distanceOfPath);
 								flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
-								Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+								Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 							} else {
 
 								throw new Exception();
@@ -7838,7 +7835,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							e.printStackTrace();
 							customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this)+displacement);
 							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal();
-							Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+							Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
 						}
 					} else {
@@ -7902,6 +7899,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		try {
 			super.onActivityResult(requestCode, resultCode, data);
+
+			if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if (Settings.canDrawOverlays(this)) {
+					startService(new Intent(this, GeanieView.class));
+				}
+			}
 
 			if(requestCode==REQUEST_CODE_TERMS_ACCEPT){
 					if(resultCode==RESULT_OK){
@@ -8142,13 +8145,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			public void run() {
 				try {
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-						try {
-							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-									engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-							stopRing(true, HomeActivity.this);
-						} catch (Exception e) {
-							e.printStackTrace();
+
+						if (mPermissionCommon == null){
+							mPermissionCommon = new PermissionCommon(HomeActivity.this);
 						}
+
+						mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+							@Override
+							public void permissionGranted(final int requestCode) {
+								try {
+									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+											engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+									stopRing(true, HomeActivity.this);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+
+							@Override
+							public boolean permissionDenied(final int requestCode, boolean neverAsk) { return true; }
+
+							@Override
+							public void onRationalRequestIntercepted() {
+
+							}
+						}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
+
+
 						try {
 							Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -8339,9 +8362,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onStart() {
 		try {
 			super.onStart();
-			FlurryAgent.init(this, Data.FLURRY_KEY);
-			FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-			FlurryAgent.onEvent("HomeActivity started");
+
+
 			mGoogleApiClient.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -8351,8 +8373,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 		try {
+
 			mGoogleApiClient.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -10833,5 +10855,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (mPermissionCommon != null ){
+			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		}
+	}
 }

@@ -30,7 +30,6 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -121,7 +120,6 @@ public class CustomerSwitcher {
 						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
 						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
-						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -157,7 +155,6 @@ public class CustomerSwitcher {
 						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
 						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
 						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
-						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

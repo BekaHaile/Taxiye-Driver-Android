@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.firebase.iid.FirebaseInstanceId
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -30,10 +32,9 @@ import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
-import com.google.firebase.iid.FirebaseInstanceId
 
 
-class OTPConfirmFragment : Fragment() {
+class OTPConfirmFragment : Fragment(){
 
     private lateinit var countryCode: String
     private var missedCallNumber: String? = null
@@ -48,6 +49,7 @@ class OTPConfirmFragment : Fragment() {
     private lateinit var labelNumber: TextView
     private lateinit var parentActivity: Activity
     private  var mListener: SplashFragment.InteractionListener?  = null;
+
 
     companion object {
 
@@ -164,8 +166,14 @@ class OTPConfirmFragment : Fragment() {
                 edtOTP.setText(mListener?.getPrefillOtpIfany())
                 edtOTP.setSelection(edtOTP.text.length)
             }else{
-                showCountDownPopup()
-
+                if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, requireActivity())){
+                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
+                    mListener?.registerForSmsReceiver(true);
+                    showCountDownPopup()
+                } else {
+                    mListener?.registerForSmsReceiver(false);
+                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
+                }
             }
         }
 
@@ -415,7 +423,6 @@ class OTPConfirmFragment : Fragment() {
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
         }else{
             Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
-
         }
 
     }

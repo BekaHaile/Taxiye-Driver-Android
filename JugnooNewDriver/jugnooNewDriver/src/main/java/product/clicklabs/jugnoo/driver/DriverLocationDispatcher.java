@@ -230,7 +230,7 @@ public class DriverLocationDispatcher {
 								Intent intent1 = new Intent(context, StartRideLocationUpdateService.class);
 								context.startService(intent1);
 								Log.e("startRideAlarmSErvice", "on");
-								Log.writePathLogToFile(engagementSPData.getEngagementId() + "m", "arrived sucessful");
+								Log.writePathLogToFile(context, engagementSPData.getEngagementId() + "m", "arrived sucessful");
 							}
 							break;
 						} else if(distance < arrivingDistance){

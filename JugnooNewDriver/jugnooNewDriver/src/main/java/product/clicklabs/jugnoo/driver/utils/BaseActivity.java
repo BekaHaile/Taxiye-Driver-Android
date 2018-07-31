@@ -1,21 +1,15 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -26,11 +20,12 @@ import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
+
+import static product.clicklabs.jugnoo.driver.Constants.REQUEST_OVERLAY_PERMISSION;
 
 /**
  * Created by clicklabs on 7/3/15.
@@ -46,6 +41,8 @@ public class BaseActivity extends Activity {
 
 	@Override
 	protected void onResume() {
+		Data.appMinimized = false;
+		stopService(new Intent(this, GeanieView.class));
 		super.onResume();
 		checkIfUserDataNull();
 	}
@@ -72,6 +69,20 @@ public class BaseActivity extends Activity {
 		startActivity(new Intent(this, DriverSplashActivity.class));
 		finish();
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
+
+	@Override
+	public void onPause(){
+		Data.appMinimized = true;
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		if(Data.appMinimized){
+			BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, true);
+		}
+		super.onStop();
 	}
 
 
@@ -118,4 +129,15 @@ public class BaseActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (Settings.canDrawOverlays(this)) {
+				startService(new Intent(this, GeanieView.class));
+			}
+		}
+	}
+
 }

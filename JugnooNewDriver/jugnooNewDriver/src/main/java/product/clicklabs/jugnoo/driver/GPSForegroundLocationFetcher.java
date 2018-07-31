@@ -2,38 +2,43 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class GPSForegroundLocationFetcher implements LocationListener{
-	
+public class GPSForegroundLocationFetcher implements LocationListener {
+	private static final String TAG = GPSForegroundLocationFetcher.class.getSimpleName();
+
 	private LocationManager locationManager;
 	private Context context;
 	private GPSLocationUpdate gpsLocationUpdate;
 	private long requestInterval;
-	
+
 	private Location location;
-	
+
 	private Handler checkLocationUpdateStartedHandler;
 	private Runnable checkLocationUpdateStartedRunnable;
 
 	private static final long CHECK_LOCATION_INTERVAL = 20000, LAST_LOCATON_TIME_THRESHOLD = 2 * 60000 * 10000;
-	
+
 	public GPSForegroundLocationFetcher(GPSLocationUpdate gpsLocationUpdate, long requestInterval){
 		this.context = (Context) gpsLocationUpdate;
 		this.gpsLocationUpdate = gpsLocationUpdate;
 		this.requestInterval = requestInterval;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Checks if location fetching is enabled in device or not
 	 * @param context application context
@@ -50,8 +55,8 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 			return false;
 		}
 	}
-	
-	
+
+
 	public synchronized void connect(){
 		destroy();
 		if(isLocationEnabled(context)){
@@ -59,6 +64,11 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 				locationManager.removeUpdates(this);
 			}
 			this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+			if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
+				return;
+			}
 			this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, this.requestInterval, 0, this);
 			Location loc = getLocation();
 			if(loc != null){
@@ -67,7 +77,7 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 		}
 		startCheckingLocationUpdates();
 	}
-	
+
 	public synchronized void destroyWaitAndConnect(){
 		destroy();
 		new Handler().postDelayed(new Runnable() {
@@ -77,7 +87,7 @@ public class GPSForegroundLocationFetcher implements LocationListener{
             }
         }, 2000);
 	}
-	
+
 	public synchronized void destroy(){
 		try{
 			this.location = null;
@@ -85,18 +95,22 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 				locationManager.removeUpdates(this);
 			}
 		} catch(Exception e){
-			
+
 		}
 		stopCheckingLocationUpdates();
 	}
-	
+
 	public Location getLocation(){
 		try{
 			if(location != null){
 				return location;
-			}
-			else{
-				if(locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+			} else{
+				if (locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+					if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+							&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+						Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
+						return null;
+					}
 					location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 					return location;
 				}
