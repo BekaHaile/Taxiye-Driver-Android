@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
@@ -73,14 +73,14 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     @Override
     protected void onStart() {
         super.onStart();
-        FlurryAgent.init(this, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        FlurryAgent.onEndSession(this);
+
     }
 
     protected void onNewIntent(Intent intent) {
@@ -138,17 +138,18 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         try {
             phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
             countryCode = getIntent().getStringExtra(Constants.KEY_COUNTRY_CODE);
-            if (emailRegisterData != null) {
-                if (emailRegisterData.phoneNo != null) {
-                    phoneNoEt.setText(emailRegisterData.phoneNo);
+          //  if (emailRegisterData != null) {
+                if (phoneNumberToVerify != null) {
+                    phoneNoEt.setText(phoneNumberToVerify);
                     intentFromRegister = true;
-                    generateOTP(emailRegisterData.phoneNo);
+                    generateOTP(phoneNumberToVerify);
                 }
-            } else if (!"".equalsIgnoreCase(phoneNumberToVerify)) {
+//            } else
+                if (!"".equalsIgnoreCase(phoneNumberToVerify)) {
                 phoneNoEt.setText(phoneNumberToVerify);
 
                 layoutResendOtp.setVisibility(View.GONE);
-                btnReGenerateOtp.setVisibility(View.GONE);
+                btnReGenerateOtp.setVisibility(View.VISIBLE);
                 editTextOTP.setEnabled(true);
                 knowlarityMissedCallNumber = getIntent().getStringExtra(Constants.KNOWLARITY_NO);
                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
@@ -229,11 +230,11 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
             public void onClick(View v) {
 
                 try {
-                    phoneNoEt.setHint(emailRegisterData.phoneNo);
+                    phoneNoEt.setHint(phoneNumberToVerify);
                     phoneNoEt.setEnabled(false);
 					editTextOTP.setText("");
 					editTextOTP.setError(null);
-                    generateOTP(emailRegisterData.phoneNo);
+                    generateOTP(phoneNumberToVerify);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -290,7 +291,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
         try {
             if (emailRegisterData != null) {
-                phoneNoEt.setText(emailRegisterData.phoneNo);
+                phoneNoEt.setText(phoneNumberToVerify);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -356,7 +357,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                 Data.longitude = Data.locationFetcher.getLongitude();
             }
             HashMap<String, String> params = new HashMap<>();
-            params.put("phone_no",emailRegisterData.phoneNo);
+            params.put("phone_no",phoneNumberToVerify);
             params.put("password",emailRegisterData.password);
             params.put("device_token",Data.deviceToken);
             params.put("device_type",Data.DEVICE_TYPE);
@@ -531,7 +532,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                 DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
                                 btnLogin.setVisibility(View.GONE);
                                 layoutResendOtp.setVisibility(View.GONE);
-                                btnReGenerateOtp.setVisibility(View.GONE);
+                                btnReGenerateOtp.setVisibility(View.VISIBLE);
                                 editTextOTP.setEnabled(true);
                                 knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "999");
                                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
@@ -584,18 +585,18 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
 
     public void performBackPressed() {
-        if (intentFromRegister) {
-            Intent intent = new Intent(OTPConfirmScreen.this, SplashNewActivity.class);
-            intent.putExtra("back_from_otp", true);
-            startActivity(intent);
-        } else if (phoneNumberToVerify != null) {
-            Intent intent = new Intent(OTPConfirmScreen.this, EditDriverProfile.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(OTPConfirmScreen.this, LoginViaOTP.class);
-            intent.putExtra("back_from_otp", true);
-            startActivity(intent);
-        }
+//        if (intentFromRegister) {
+//            Intent intent = new Intent(OTPConfirmScreen.this, SplashNewActivity.class);
+//            intent.putExtra("back_from_otp", true);
+//            startActivity(intent);
+//        } else if (phoneNumberToVerify != null) {
+//            Intent intent = new Intent(OTPConfirmScreen.this, EditDriverProfile.class);
+//            startActivity(intent);
+//        } else {
+//            Intent intent = new Intent(OTPConfirmScreen.this, LoginViaOTP.class);
+//            intent.putExtra("back_from_otp", true);
+//            startActivity(intent);
+//        }
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }

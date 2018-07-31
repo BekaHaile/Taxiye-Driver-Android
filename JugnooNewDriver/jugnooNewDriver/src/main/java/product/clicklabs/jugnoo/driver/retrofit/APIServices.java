@@ -8,6 +8,8 @@ import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
@@ -395,7 +397,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/fetch_active_locales")
 	void fetchLanguageList(@FieldMap Map<String, String> params,
-					 Callback<RegisterScreenResponse> callback);
+					 Callback<DriverLanguageResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_active_locales")
@@ -639,6 +641,21 @@ public interface APIServices {
 	@POST("/enter_code")
 	void applyPromo(@FieldMap Map<String, String> params,
 						  Callback<FeedCommonResponseKotlin> callback);
+
+
+	@FormUrlEncoded
+	@POST("/driver/add_stripe_card")
+	void addCardToDriver(@FieldMap Map<String, String> params,
+						 Callback<StripeCardResponse> callback);
+	@FormUrlEncoded
+	@POST("/driver/fetch_wallet_balance")
+	void fetchWalletBalance(@FieldMap Map<String, String> params,
+							Callback<WalletModelResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/add_money_via_stripe")
+	void addMoneyViaStripe(@FieldMap Map<String, String> params,
+						   Callback<WalletModelResponse> callback);
 
 
 

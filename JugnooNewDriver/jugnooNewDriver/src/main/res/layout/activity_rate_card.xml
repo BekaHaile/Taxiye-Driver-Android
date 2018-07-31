@@ -241,27 +241,36 @@
             </LinearLayout>
 
 
-            <RelativeLayout
-                android:layout_width="672px"
+            <!--<LinearLayout-->
+                <!--android:layout_width="672px"-->
+                <!--android:layout_height="106px"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="center">-->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="106px"
+                android:orientation="horizontal"
                 android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/textViewBaseFareValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginEnd="60px"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="70px"
+                    android:layout_marginStart="40px"
                     android:text="@string/NA"
                     android:textColor="@color/textColor"
                     android:textSize="34px"/>
 
                 <TextView
                     android:id="@+id/textViewDistancePKmValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="@string/NA"
                     android:textColor="@color/textColor"
                     android:textSize="34px"/>
@@ -269,16 +278,19 @@
 
                 <TextView
                     android:id="@+id/textViewTimePKmValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginStart="60px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="70px"
+                    android:layout_marginEnd="40px"
                     android:text="@string/NA"
                     android:textColor="@color/textColor"
                     android:textSize="34px"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewDifferentialPricingEnable"

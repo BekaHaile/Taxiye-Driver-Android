@@ -144,7 +144,7 @@ public class Data {
 	public static final String DEVICE_TYPE = "0";
 	public static String deviceToken = "",
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
-	public static int appVersion;
+	public static int appVersion = BuildConfig.VERSION_CODE;
 
 	public static Activity context = null;
 
@@ -179,7 +179,9 @@ public class Data {
 			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
 
 
-			AuthKeySaver.writeAuthToFile("");
+			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
+
+			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 			Editor editor = pref.edit();
 			editor.clear();
@@ -219,7 +221,7 @@ public class Data {
 
 	public static void filldetails(Context context){
 		try {																						// to get AppVersion, OS version, country code and device name
-			Data.appVersion = Utils.getAppVersion(context);
+//			Data.appVersion = Utils.getAppVersion(context);
 			Log.i("appVersion", Data.appVersion + "..");
 			Data.osVersion = android.os.Build.VERSION.RELEASE;
 			Log.i("osVersion", Data.osVersion + "..");
@@ -228,7 +230,7 @@ public class Data {
 			Data.deviceName = Utils.getDeviceName();
 			Log.i("deviceName", Data.deviceName + "..");
 
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(context);
+			Data.uniqueDeviceId = DeviceUniqueID.getCachedUniqueId(context);
 			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
@@ -471,7 +473,7 @@ public class Data {
 								 String keyFromServer, int appTypeFromServer) {
 		if (Data.userData!= null && captureUserData != null) {
 			if(Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-				if(activity.getResources().getBoolean(R.bool.use_fugu_key_hardcode) || TextUtils.isEmpty(keyFromServer)){
+				if(TextUtils.isEmpty(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key);
 				}
 				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));

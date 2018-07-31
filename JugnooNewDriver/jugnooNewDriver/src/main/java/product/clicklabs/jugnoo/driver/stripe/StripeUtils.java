@@ -1,9 +1,14 @@
-package product.clicklabs.jugnoo.driver;
+package product.clicklabs.jugnoo.driver.stripe;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import product.clicklabs.jugnoo.driver.BuildConfig;
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 /**
@@ -69,5 +74,23 @@ public abstract class StripeUtils {
         return uriBuilder;
 
     }
+
+    public static String getStripeCardDisplayString(Context context,String last_4){
+        StringBuilder formString = new StringBuilder();
+
+        for (int i = 0; i < 12; i++) {
+            if (i != 0 && i % 4 == 0) {
+                formString.append(" ");
+            }
+            formString.append(context.getString(R.string.bullet));
+
+        }
+        formString.append(" ");
+        formString.append(last_4);
+        return formString.toString();
+
+    }
+
+
 
 }

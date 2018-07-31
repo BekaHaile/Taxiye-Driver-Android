@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 
 import org.json.JSONObject;
 
@@ -51,14 +51,14 @@ public class InvoiceDetailsActivity extends BaseActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override

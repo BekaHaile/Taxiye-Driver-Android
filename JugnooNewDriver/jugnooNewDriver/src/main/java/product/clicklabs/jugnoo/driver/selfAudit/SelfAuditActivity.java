@@ -1,13 +1,11 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
@@ -15,22 +13,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.DocumentListFragment;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
-import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.TransactionUtils;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -53,12 +49,14 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 	SelfAuditCameraFragment selfAuditCameraFragment;
 	SelectAuditFragment selectAuditFragment;
+	private PermissionCommon permissionCommon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_self_auditing);
 
+		permissionCommon = new PermissionCommon(this);
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(SelfAuditActivity.this, relative, 1134, 720, false);
 		selectAuditFragment = new SelectAuditFragment();
@@ -209,7 +207,22 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 								SelfAuditActivity.this.auditStateResponse = auditStateResponse;
 								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
 								selfAuditActivity.setAuditStateResponse(auditStateResponse);
-								setFragmentState(auditType);
+								permissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+									@Override
+									public void permissionGranted(int requestCode) {
+										setFragmentState(auditType);
+									}
+
+									@Override
+									public boolean permissionDenied(int requestCode, boolean neverAsk) {
+										return true;
+									}
+
+									@Override
+									public void onRationalRequestIntercepted() {
+
+									}
+								}).getPermission(101, Manifest.permission.CAMERA);
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}

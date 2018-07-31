@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -60,6 +62,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if(savedInstanceState != null){
+			restartApp();
+			return;
+		}
 		setContentView(R.layout.activity_driver_documents);
 		bundleHomePush = getIntent().getExtras();
 		relative = (RelativeLayout) findViewById(R.id.relative);
@@ -311,7 +317,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accessToken);
-				params.put("device_token", Data.deviceToken);
+				params.put("device_token", FirebaseInstanceId.getInstance().getToken());
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
@@ -325,7 +331,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				params.put("login_type", Data.LOGIN_TYPE);
 
 				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getUniqueId(this));
+				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
 				HomeUtil.putDefaultParams(params);
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
@@ -405,7 +411,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 											DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 										}
 
-										Utils.deleteMFile();
+										Utils.deleteMFile(activity);
 										Utils.clearApplicationData(DriverDocumentActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 

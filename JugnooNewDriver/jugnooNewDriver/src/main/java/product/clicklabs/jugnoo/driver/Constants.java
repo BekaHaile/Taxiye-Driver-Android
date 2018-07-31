@@ -5,6 +5,8 @@ package product.clicklabs.jugnoo.driver;
  */
 public interface Constants {
 
+    int REQUEST_OVERLAY_PERMISSION = 3564;
+
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
@@ -320,9 +322,19 @@ public interface Constants {
 	int NAVIGATION_TYPE_GOOGLE_MAPS = 0;
 	int NAVIGATION_TYPE_WAZE = 1;
 	String KEY_NAVIGATION_TYPE = "navigation_type";
+	String KEY_SHOW_WAZE_TOGGLE = "show_waze_toggle";
 	String STRIPE_ACCOUNT_STATUS = "is_stripe_enabled";
 	String STRIPE_REDIRECT_URI = "stripe_redirect_uri";
 	String KEY_LOGOUT = "logout";
 	String CODE = "code";
+	String KEY_DEFAULT_LANG = "default_lang";
+	String KEY_LOCALE = "locale";
+	String KEY_TOLL_CHARGE = "toll_charge";
+	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
+	String KEY_DEVICE_TYPE = "device_type";
+	String WALLET = "wallet";
+	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
+
+	String NOTIF_CHANNEL_DEFAULT = "Notifications";
 }
 

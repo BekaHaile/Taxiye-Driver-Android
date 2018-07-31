@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:tag="@string/dont_touch_me"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <include layout="@layout/layout_top_bar"/>
+
+
+
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/ivMore"
+        android:padding="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:visibility="visible"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_more_vert"/>
+</RelativeLayout>
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv_card"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="true"
+        android:maxLines="1"
+        android:gravity="start"
+        android:text=""
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="15dp"
+        android:drawablePadding="5dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bottom_border_grey"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone"
+        style="@style/TextLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+
+
+
+
+</LinearLayout>
+

@@ -33,7 +33,7 @@
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">TT Rideshare</string><!--* IMP-->
+    <string name="white_label_name">Comelyt Driver</string><!--* IMP-->
     <string name="support_email">support@ttideshare.com</string>
     <string name="support_email_subject">TT RideShare Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
@@ -76,7 +76,6 @@
 
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
-    <bool name="use_fugu_key_hardcode">true</bool>
 
     <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
     <color name="colorDark">@color/text_color</color>

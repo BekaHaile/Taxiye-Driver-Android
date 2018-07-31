@@ -22,8 +22,8 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -268,28 +268,30 @@ public class MeteringService extends Service {
 				GpsDistanceCalculator.getTotalHaversineDistanceFromSP(context));
 	}
     
-    
-    
-    
+
+
+
     public static int METER_NOTIF_ID = 1212;
     
 	public static Notification generateNotification(Context context, String message,int notificationId) {
 		try {
 			long when = System.currentTimeMillis();
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			
 			Intent notificationIntent = new Intent(context, DriverSplashActivity.class);
 			
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-			
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(false);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
-			
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
+
 			builder.setWhen(when);
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), GCMIntentService.NOTIFICATION_BIG_ICON));
 			builder.setSmallIcon(GCMIntentService.NOTIFICATON_SMALL_ICON);
@@ -310,6 +312,5 @@ public class MeteringService extends Service {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(METER_NOTIF_ID);
     }
-    
 
 }

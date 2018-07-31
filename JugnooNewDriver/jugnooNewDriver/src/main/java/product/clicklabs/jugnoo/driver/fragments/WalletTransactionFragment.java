@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,7 +40,7 @@ import retrofit.mime.TypedByteArray;
 public class WalletTransactionFragment extends DriverBaseFragment implements WalletTransAadapter.ShowMore {
 
     private static final String TAG = WalletTransactionFragment.class.getSimpleName();
-    private WalletActivity walletActivity;
+    private Activity walletActivity;
     private View rootView;
     private FragmentWalletTransactionBinding transactionFragment;
     private WalletTransAadapter transAadapter;
@@ -51,7 +52,7 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
         transactionFragment = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_wallet_transaction, container, false);
         rootView = transactionFragment.getRoot();
-        walletActivity = (WalletActivity) getActivity();
+        walletActivity = getActivity();
         initView(transactionFragment);
 
         return rootView;

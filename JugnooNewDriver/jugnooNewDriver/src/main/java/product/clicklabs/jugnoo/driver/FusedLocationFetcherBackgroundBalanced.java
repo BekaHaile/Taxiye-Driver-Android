@@ -5,9 +5,11 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -17,19 +19,20 @@ import com.google.android.gms.location.LocationServices;
 
 import product.clicklabs.jugnoo.driver.utils.Log;
 
-public class FusedLocationFetcherBackgroundBalanced implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
+public class FusedLocationFetcherBackgroundBalanced implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+	private static final String TAG = FusedLocationFetcherBackgroundBalanced.class.getSimpleName();
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
 	private PendingIntent locationIntent;
-	
+
 	private long requestInterval;
 	private Context context;
-	
+
 	private static final int LOCATION_PI_ID = 6980;
-	
-	
-	
+
+
+
 	/**
 	 * Constructor for initializing LocationFetcher class' object
 	 * @param context application context
@@ -38,17 +41,17 @@ public class FusedLocationFetcherBackgroundBalanced implements GoogleApiClient.C
 		this.context = context;
 		this.requestInterval = requestInterval;
 	}
-	
-	
-	
+
+
+
 	public boolean isConnected(){
 		if(googleApiClient != null){
 			return googleApiClient.isConnected();
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Checks if location fetching is enabled in device or not
 	 * @param context application context
@@ -65,8 +68,8 @@ public class FusedLocationFetcherBackgroundBalanced implements GoogleApiClient.C
 			return false;
 		}
 	}
-	
-	
+
+
 
 	public void connect(){
 		destroy();
@@ -125,6 +128,11 @@ public class FusedLocationFetcherBackgroundBalanced implements GoogleApiClient.C
 			createLocationRequest(interval);
 			Intent intent = new Intent(context, FusedLocationReceiverBackgroundBalanced.class);
 			locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+					&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
+				return;
+			}
 			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
 		} catch (Exception e) {
 			e.printStackTrace();

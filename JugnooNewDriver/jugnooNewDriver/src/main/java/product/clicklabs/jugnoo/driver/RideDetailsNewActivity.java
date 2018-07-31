@@ -1,11 +1,13 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,12 +50,14 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class RideDetailsNewActivity extends BaseFragmentActivity {
+	private static final String TAG = RideDetailsNewActivity.class.getSimpleName();
 
 	LinearLayout linearLayoutTo;
 
@@ -64,7 +67,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	Button buttonReportIssue, buttonGetSupport;
 	TextView title;
 
-	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,textViewTicketDate,
+	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue, textViewTicketDate,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
 			textViewFromValue, textViewActualFareValue, textViewStatus, textViewEngID;
 
@@ -94,14 +97,14 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override
@@ -124,7 +127,6 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 
 		relative = (RelativeLayout) findViewById(R.id.relative);
@@ -163,21 +165,20 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
 		int viewHeight = 0;
-		if(extras.getRideParam().size() < 3) {
+		if (extras.getRideParam().size() < 3) {
 			viewHeight = (int) (80f * ASSL.Yscale()) * extras.getRideParam().size();
 		} else {
 			viewHeight = (int) (72f * ASSL.Yscale()) * extras.getRideParam().size();
 		}
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
-		if(Data.isCaptive()){
+		if (Data.isCaptive()) {
 			recyclerViewRideInfo.setVisibility(View.GONE);
-		}else{
+		} else {
 			fareStructureInfos = new ArrayList<>();
 			rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
 			recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
 		}
-
 
 
 		ArrayList<String> deliveryAddressList = new ArrayList<>();
@@ -205,7 +206,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 					mapLite.getUiSettings().setAllGesturesEnabled(false);
 					mapLite.getUiSettings().setZoomGesturesEnabled(false);
 					mapLite.getUiSettings().setZoomControlsEnabled(false);
-					mapLite.setMyLocationEnabled(false);
+					if (ActivityCompat.checkSelfPermission(RideDetailsNewActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+							== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(RideDetailsNewActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+							== PackageManager.PERMISSION_GRANTED) {
+						mapLite.setMyLocationEnabled(false);
+					} else { Log.d(TAG, "ACCESS_FINE_LOCATION NOT GRANTED"); }
+
 					mapLite.getUiSettings().setTiltGesturesEnabled(false);
 					mapLite.getUiSettings().setMyLocationButtonEnabled(false);
 					mapLite.setMapType(GoogleMap.MAP_TYPE_NORMAL);

@@ -501,7 +501,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 									   int quality) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
-		File f = new File(context.getExternalCacheDir(), "temp" + ".jpg");
+		File f = new File(context.getFilesDir(), "temp" + ".jpg");
 		try {
 			f.createNewFile();
 			byte[] bitmapdata = os.toByteArray();

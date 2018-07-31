@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 
 public class MeteringAlarmReceiver extends BroadcastReceiver {
@@ -61,12 +62,21 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 						}
 						FlurryEventLogger.gpsStatus(context, "App restart");
 					} else {
-						GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+						if(GpsDistanceCalculator.gpsLocationUpdate != null) {
+							GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+						} else {
+							context.stopService(new Intent(context, MeteringService.class));
+						}
 						FlurryEventLogger.gpsStatus(context, "Old Location After");
 					}
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_FOUR.getOrdinal());
 				} else if (timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE) {
-					GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+					if(GpsDistanceCalculator.gpsLocationUpdate != null) {
+						GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+					} else {
+						context.stopService(new Intent(context, MeteringService.class));
+						Log.w(MeteringAlarmReceiver.class.getSimpleName(), "MeteringService restarted ---------------------------------------");
+					}
 					Database2.getInstance(context).updateGpsState(GpsState.TWO_LESS_FOUR.getOrdinal());
 					FlurryEventLogger.gpsStatus(context, "Old Location");
 				} else {

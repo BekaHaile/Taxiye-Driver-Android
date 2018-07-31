@@ -21,7 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.picker.Country;
 import com.picker.CountryPicker;
@@ -86,15 +86,13 @@ public class RegisterScreen extends BaseFragmentActivity implements LocationUpda
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Register started");
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
 

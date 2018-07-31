@@ -121,7 +121,8 @@ public class ApiCommonKotlin<T extends FeedCommonResponseKotlin> {
         if (!AppStatus.getInstance(activity).isOnline(activity)) {
             apiCommonCallback.onFinish();
             if (!apiCommonCallback.onNotConnected()) {
-                DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+                retryDialog(Data.CHECK_INTERNET_MSG);
+
                 }
             return;
 
@@ -227,7 +228,7 @@ public class ApiCommonKotlin<T extends FeedCommonResponseKotlin> {
 
     public static boolean isTrivialError(int flag){
         return  flag ==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() || flag==ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal()
-                || flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal();
+                || flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal() || flag==ApiResponseFlags.ACTION_FAILED.getOrdinal();
     }
 
     private void retryDialog(String message) {
