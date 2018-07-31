@@ -25,7 +25,7 @@
     <string name="fugu_app_key">59f842a6fc56fabf00f0bd99fbba3440</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Pamdriver/Pamdriver Pictures</string>
-    <string name="file_provider">production.pamdrive.driver.provider</string>
+    <string name="file_provider">com.tryapptivities.pamdriver.provider</string>
     <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
     <string name="facebook_page_id">1110113865716816</string>
@@ -82,11 +82,17 @@
 
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
-    <bool name="use_fugu_key_hardcode">true</bool>
 
     <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
+
+
+    <drawable name="bg_login">@color/colorPrimaryDark</drawable>
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <dimen name="ic_splash_logo_width">147dp</dimen>
+    <dimen name="ic_splash_logo_height">157dp</dimen>
+    <bool name="animate_splash_logo">true</bool>
 
     <color name="themeColor">#001743</color>
     <color name="themeColorLight">#bb001743</color>
