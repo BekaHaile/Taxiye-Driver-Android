@@ -17,8 +17,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/ic_splash_logo_width"
+        android:layout_height="@dimen/ic_splash_logo_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:transitionName="logoTransition"

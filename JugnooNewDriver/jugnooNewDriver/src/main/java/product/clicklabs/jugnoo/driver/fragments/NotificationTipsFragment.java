@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 
 import org.json.JSONObject;
 
@@ -59,15 +59,13 @@ public class NotificationTipsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FlurryAgent.init(activity, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-        FlurryAgent.onEvent(NotificationTipsFragment.class.getSimpleName() + " started");
+
+
     }
 
     @Override
     public void onStop() {
 		super.onStop();
-        FlurryAgent.onEndSession(activity);
     }
 	
 

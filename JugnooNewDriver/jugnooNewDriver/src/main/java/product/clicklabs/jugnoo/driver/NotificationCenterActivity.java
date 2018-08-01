@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
-
 import product.clicklabs.jugnoo.driver.adapters.NotificationFragmentAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
@@ -20,7 +18,6 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
@@ -40,15 +37,13 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("Notification opened");
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
     @Override
@@ -101,11 +96,9 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 			@Override
 			public void onPageSelected(int position) {
 				if (position == 0) {
-					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_NOTIFICATION, null);
 					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_MESSAGE);
 					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.MESSAGE, null);
 				} else if (position == 1) {
-					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_HINTS, null);
 					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_TIP_TO_EARN);
 					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.TIPS_TO_EARN, null);
 				}
@@ -117,7 +110,6 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 			}
 		});
 
-		NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 
 
     }

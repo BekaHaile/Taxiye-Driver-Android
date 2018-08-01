@@ -1,9 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,17 +26,19 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
+import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
+
 public class RideCancellationActivity extends BaseActivity implements ActivityCloser {
 
+	private static final String TAG = RideCancellationActivity.class.getSimpleName();
 
 	ImageView backBtn;
 	TextView title;
@@ -49,6 +54,8 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	public static ActivityCloser activityCloser = null;
 
 	String engagementId = "";
+
+	private PermissionCommon mPermissionCommon;
 
 
 	@Override
@@ -204,14 +211,35 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									performBackPressed(true);
 									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);
 
-									try {
-										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-									} catch (Exception e) {
-										e.printStackTrace();
+
+									if (mPermissionCommon == null){
+										mPermissionCommon = new PermissionCommon(RideCancellationActivity.this);
 									}
+
+									mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
+										@SuppressLint("MissingPermission")
+										@Override
+										public void permissionGranted(final int requestCode) {
+											try {
+												new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
+														engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
+										}
+										@Override
+										public boolean permissionDenied(final int requestCode, boolean neverAsk) {
+											return true;
+										}
+
+										@Override
+										public void onRationalRequestIntercepted() {
+
+										}
+									}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
+
+
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-									nudgeCancelRide(reason);
 
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId, message);
@@ -255,16 +283,13 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		}
 	}
 
-	private void nudgeCancelRide(String reasons){
-		try{
-			JSONObject map = new JSONObject();
-			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
-			map.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
-			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
-		} catch(Exception e){
-			e.printStackTrace();
+
+	@Override
+	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (mPermissionCommon != null) {
+			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 	}
-
 }

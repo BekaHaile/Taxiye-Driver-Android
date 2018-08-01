@@ -10,35 +10,49 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
 import product.clicklabs.jugnoo.driver.HelpActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
+
+import static product.clicklabs.jugnoo.driver.Constants.REQUEST_OVERLAY_PERMISSION;
 
 /**
  * Created by aneeshbansal on 09/05/16.
  */
-public class BaseFragmentActivity extends AppCompatActivity {
+public abstract class BaseFragmentActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (!(this instanceof DriverSplashActivity  || this instanceof DriverDocumentActivity) && Data.userData == null) {
+			restartApp();
+		}
+
 		if(savedInstanceState==null){
 			recoverLastSavedLanguage();
 			updateLanguage(this,null);
@@ -46,16 +60,66 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		updateStatusBar();
 	}
 
+	protected void restartApp(){
+		startActivity(new Intent(this, DriverSplashActivity.class));
+		finishAffinity();
+	}
 	@Override
 	protected void onResume() {
-
+		Data.appMinimized = false;
+		stopService(new Intent(this, GeanieView.class));
 		super.onResume();
 		checkIfUserDataNull();
 	}
 
+	@Override
+	protected void onPause() {
+		Data.appMinimized = true;
+		super.onPause();
+	}
 
+	@Override
+	protected void onStop() {
+		if(Data.appMinimized){
 
+			checkOverlayPermissionOpenJeanie(this, false, true);
 
+		}
+		super.onStop();
+	}
+
+	public static void checkOverlayPermissionOpenJeanie(final Activity activity, final boolean askAgain, final boolean openJeanie){
+		if(openJeanie && TextUtils.isEmpty(JSONParser.getAccessTokenPair(activity).first)){
+			return;
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if(!Settings.canDrawOverlays(activity)){
+				if(askAgain || Prefs.with(activity).getInt(Constants.SP_OVERLAY_PERMISSION_ASKED, 0) == 0) {
+					DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", activity.getString(R.string.app_needs_overlay_permission),
+							activity.getString(R.string.grant), activity.getString(R.string.ignore),
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									// ask for setting
+									Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+											Uri.parse("package:" + activity.getPackageName()));
+									activity.startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION);
+								}
+							}, new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									if(openJeanie)activity.startService(new Intent(activity, GeanieView.class));
+								}
+							}, false, false);
+					Prefs.with(activity).save(Constants.SP_OVERLAY_PERMISSION_ASKED, 1);
+				}
+			} else {
+				if(openJeanie)activity.startService(new Intent(activity, GeanieView.class));
+			}
+		} else {
+			if(openJeanie)activity.startService(new Intent(activity, GeanieView.class));
+		}
+	}
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null
@@ -175,6 +239,16 @@ public class BaseFragmentActivity extends AppCompatActivity {
 		}
 		transaction.commitAllowingStateLoss();
 
+	}
+
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (Settings.canDrawOverlays(this)) {
+				startService(new Intent(this, GeanieView.class));
+			}
+		}
 	}
 
 	private static final int WIDTH_PX = 200;

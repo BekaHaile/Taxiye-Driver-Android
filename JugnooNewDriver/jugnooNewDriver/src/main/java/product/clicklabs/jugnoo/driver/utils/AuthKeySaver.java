@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.os.Environment;
+import android.content.Context;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,8 +16,8 @@ public class AuthKeySaver {
 	
 	private static final String NOT_FOUND = "";
 	
-	private static File getAuthFolder(){
-		String strFolder = Environment.getExternalStorageDirectory() + "/Android/data/"+ BuildConfig.APPLICATION_ID;
+	private static File getAuthFolder(Context context){
+		String strFolder = context.getFilesDir() + "/Android/data/"+ BuildConfig.APPLICATION_ID;
 		File folder = new File(strFolder);
 		if(!folder.exists()){
 			folder.mkdirs();
@@ -25,14 +25,14 @@ public class AuthKeySaver {
 		return folder;
 	}
 	
-	private static File getAuthFile() throws IOException {
+	private static File getAuthFile(Context context) throws IOException {
 		String fileNamePrefix = android.os.Build.SERIAL + "key2";
 		try {
 			fileNamePrefix = SHA256Convertor.getSHA256String(fileNamePrefix)+".jpg";
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		String fileName = getAuthFolder() + "/" + fileNamePrefix;
+		String fileName = getAuthFolder(context) + "/" + fileNamePrefix;
 		File gpxfile = new File(fileName);
 		if (!gpxfile.exists()) {
 			gpxfile.createNewFile();
@@ -41,9 +41,9 @@ public class AuthKeySaver {
 	}
 	
 	
-	public static void writeAuthToFile(final String authKey) {
+	public static void writeAuthToFile(Context context, final String authKey) {
 		try {
-			File gpxfile = getAuthFile();
+			File gpxfile = getAuthFile(context);
 			if (gpxfile != null) {
 				FileWriter writer = new FileWriter(gpxfile, false);
 				writer.write(authKey);
@@ -56,13 +56,13 @@ public class AuthKeySaver {
 	}
 	
 	
-	public static String readAuthFromFile() {
+	public static String readAuthFromFile(Context context) {
 		String authKey = "";
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new FileReader(getAuthFile()));
+            in = new BufferedReader(new FileReader(getAuthFile(context)));
             while ((line = in.readLine()) != null) stringBuilder.append(line);
             authKey = stringBuilder.toString();
         }catch (Exception e) {

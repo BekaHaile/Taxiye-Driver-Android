@@ -24,7 +24,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
-import com.nineoldandroids.view.animation.AnimatorProxy;
 
 import product.clicklabs.jugnoo.driver.R;
 
@@ -1154,8 +1153,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
             int mainViewOffset = getCurrentParallaxOffset();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 mMainView.setTranslationY(mainViewOffset);
-            } else {
-                AnimatorProxy.wrap(mMainView).setTranslationY(mainViewOffset);
             }
         }
     }

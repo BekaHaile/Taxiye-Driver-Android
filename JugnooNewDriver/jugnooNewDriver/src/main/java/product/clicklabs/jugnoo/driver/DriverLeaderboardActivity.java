@@ -7,7 +7,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 
 import java.util.ArrayList;
 
@@ -46,14 +46,14 @@ public class DriverLeaderboardActivity extends BaseFragmentActivity implements F
 	@Override
 	protected void onStart() {
 		super.onStart();
-		//FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		//
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override

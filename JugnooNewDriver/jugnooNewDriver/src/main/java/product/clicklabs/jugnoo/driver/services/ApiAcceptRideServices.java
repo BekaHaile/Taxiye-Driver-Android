@@ -77,7 +77,7 @@ public class ApiAcceptRideServices extends IntentService {
 					params.put(Constants.KEY_LONGITUDE, String.valueOf(longitude));
 
 					params.put(Constants.KEY_DEVICE_NAME, Utils.getDeviceName());
-					params.put(Constants.KEY_IMEI, DeviceUniqueID.getUniqueId(ApiAcceptRideServices.this));
+					params.put(Constants.KEY_IMEI, DeviceUniqueID.getCachedUniqueId(ApiAcceptRideServices.this));
 					params.put(Constants.KEY_APP_VERSION, "" + Utils.getAppVersion(ApiAcceptRideServices.this));
 
 					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(referenceId));

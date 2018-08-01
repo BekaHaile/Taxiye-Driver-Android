@@ -36,7 +36,6 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -253,7 +252,6 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 							try {
 								JSONObject map = new JSONObject();
 								map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
-								NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

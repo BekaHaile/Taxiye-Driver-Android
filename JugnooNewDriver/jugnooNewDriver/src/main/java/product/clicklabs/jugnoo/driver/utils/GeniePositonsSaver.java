@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.content.Context;
-import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,8 +10,8 @@ import java.io.IOException;
 
 public class GeniePositonsSaver {
 
-    public static File getGenieParamsFolder() {
-        String strFolder = Environment.getExternalStorageDirectory() + "/Android/data/.jugnoo_auth";
+    public static File getGenieParamsFolder(Context context) {
+        String strFolder = context.getFilesDir() + "/Android/data/.jugnoo_auth";
         File folder = new File(strFolder);
         if (!folder.exists()) {
             folder.mkdirs();
@@ -20,8 +19,8 @@ public class GeniePositonsSaver {
         return folder;
     }
 
-    public static File getGenieParamsFile() throws IOException {
-        String fileName = getGenieParamsFolder() + "/gp";
+    public static File getGenieParamsFile(Context context) throws IOException {
+        String fileName = getGenieParamsFolder(context) + "/gp";
         File gpxfile = new File(fileName);
         if (!gpxfile.exists()) {
             gpxfile.createNewFile();
@@ -30,9 +29,9 @@ public class GeniePositonsSaver {
     }
 
 
-    public static void writeGenieParams(int x, int y) {
+    public static void writeGenieParams(Context context, int x, int y) {
         try {
-            File gpxfile = getGenieParamsFile();
+            File gpxfile = getGenieParamsFile(context);
             if (gpxfile != null) {
                 FileWriter writer = new FileWriter(gpxfile, false);
                 writer.write(x+","+y);
@@ -55,7 +54,7 @@ public class GeniePositonsSaver {
         String line;
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new FileReader(getGenieParamsFile()));
+            in = new BufferedReader(new FileReader(getGenieParamsFile(context)));
             while ((line = in.readLine()) != null) stringBuilder.append(line);
             fileCont = stringBuilder.toString();
 

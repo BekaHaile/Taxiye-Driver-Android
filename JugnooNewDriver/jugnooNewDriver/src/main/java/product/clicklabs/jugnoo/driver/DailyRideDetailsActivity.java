@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.flurry.android.FlurryAgent;
+
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -63,14 +63,14 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override
@@ -233,20 +233,21 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.clear();
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-
-											if(Data.isCaptive() && invoice_id==0){
-												if (dailyEarningResponse.getExtrasData() !=null && dailyEarningResponse.getExtrasData().getCaptiveSlots()!=null) {
-													for (int i=0; i<dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
-                                                        dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
-                                                                ,dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
-                                                                null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
-                                                    }
-												}
-											}else{
-												for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
-													dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
-															, dailyEarningResponse.getDailyParam().get(i).getValue(),
-															null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, dailyEarningResponse.getDailyParam().get(i).getCurrencyUnit()));
+											if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+												if (Data.isCaptive() && invoice_id == 0) {
+													if (dailyEarningResponse.getExtrasData() != null && dailyEarningResponse.getExtrasData().getCaptiveSlots() != null) {
+														for (int i = 0; i < dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
+															dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
+																	, dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
+																	null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+														}
+													}
+												} else {
+													for (int i = 0; i < dailyEarningResponse.getDailyParam().size(); i++) {
+														dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
+																, dailyEarningResponse.getDailyParam().get(i).getValue(),
+																null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, dailyEarningResponse.getDailyParam().get(i).getCurrencyUnit()));
+													}
 												}
 											}
 
@@ -333,10 +334,12 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 								dailyEarningItems.clear();
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-								for (int i=0; i<invoiceDetailResponse.getEarningParams().size(); i++) {
-									dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
-											, invoiceDetailResponse.getEarningParams().get(i).getValue(),
-											null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+								if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+									for (int i = 0; i < invoiceDetailResponse.getEarningParams().size(); i++) {
+										dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
+												, invoiceDetailResponse.getEarningParams().get(i).getValue(),
+												null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+									}
 								}
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES, null));
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TRIP_HEADING, null));

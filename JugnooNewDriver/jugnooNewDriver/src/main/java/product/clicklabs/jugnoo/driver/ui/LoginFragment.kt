@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -24,6 +25,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.Country
 import com.picker.CountryPicker
 import com.picker.OnCountryPickerListener
@@ -31,6 +33,7 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -41,9 +44,10 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_SMS
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon.SKIP_RATIONAL_REQUEST
 import java.lang.Exception
 import java.util.*
-import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginFragment : Fragment() {
     private var mListener: SplashFragment.InteractionListener? = null
@@ -57,6 +61,8 @@ class LoginFragment : Fragment() {
     lateinit var selectedLanguage: String
     private lateinit var toolbarChangeListener: ToolbarChangeListener
     private var handler = Handler()
+
+    private val permissionCommon by lazy { PermissionCommon(this) }
 
 
     override fun onAttach(mActivity: Activity?) {
@@ -125,71 +131,23 @@ class LoginFragment : Fragment() {
             })
 
             btnGenerateOtp.setOnClickListener(View.OnClickListener {
-                val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
-                val countryCode: String = rootView.tvCountryCode.text.trim().toString()
-                if (phoneNo.length < 0) {
-                    return@OnClickListener
-                }
+                permissionCommon.setCallback(object: PermissionCommon.PermissionListener{
+                    override fun permissionGranted(requestCode: Int) {
+                        generateOtpApi()
+                    }
 
-                if (TextUtils.isEmpty(countryCode)) {
-                    Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
-                    return@OnClickListener
-                }
-
-                if (!Utils.validPhoneNumber(phoneNo)) {
-                    Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
-                    return@OnClickListener
-
-                }
-
-                mListener?.registerForSmsReceiver(true);
-                Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
-
-                val params = HashMap<String, String>()
-                params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
-                params[Constants.KEY_COUNTRY_CODE] = countryCode
-                params[Constants.LOGIN_TYPE] = "1"
-                params[Constants.KEY_COUNTRY_CODE] = countryCode
-                params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
-                params["unique_device_id"] = Data.uniqueDeviceId
-                params["device_name"] = Data.deviceName
-                params["device_type"] = Data.DEVICE_TYPE
-                params["app_version"] = "" + Data.appVersion
-                params["os_version"] = Data.osVersion
-                params["latitude"] = "" + Data.latitude
-                params["longitude"] = "" + Data.longitude
-                params["login_type"] = Data.LOGIN_TYPE
-                params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
-
-
-                Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
-                Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
-                Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-                ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
-                    override fun onNotConnected(): Boolean {
+                    override fun permissionDenied(requestCode: Int, neverAsk: Boolean): Boolean {
+                        generateOtpApi()
                         return false
                     }
 
-                    override fun onException(e: Exception?): Boolean {
-                        return false
+                    override fun onRationalRequestIntercepted() {
+                        generateOtpApi()
                     }
-
-                    override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
-                        if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
-                            (requireActivity() as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
-                        } else {
-                            DialogPopup.alertPopup(requireActivity(), "", message)
-                        }
-
-
-                    }
-
-                    override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-
-                        return false
-                    }
-
-                })
+                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true,
+                        Manifest.permission.RECEIVE_SMS,
+                        Manifest.permission.READ_SMS,
+                        Manifest.permission.READ_CONTACTS)
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
@@ -210,6 +168,75 @@ class LoginFragment : Fragment() {
 
         return rootView
     }
+
+    private fun View.generateOtpApi() {
+        val phoneNo: String = rootView.edtPhoneNo.text.trim().toString()
+        val countryCode: String = rootView.tvCountryCode.text.trim().toString()
+        if (phoneNo.length < 0) {
+            return
+        }
+
+        if (TextUtils.isEmpty(countryCode)) {
+            Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.please_select_country_code), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!Utils.validPhoneNumber(phoneNo)) {
+            Toast.makeText(this@LoginFragment.requireActivity(), getString(R.string.enter_valid_phone_number), Toast.LENGTH_SHORT).show()
+            return
+
+        }
+
+        mListener?.registerForSmsReceiver(true);
+        Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
+
+        val params = HashMap<String, String>()
+        params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
+        params[Constants.KEY_COUNTRY_CODE] = countryCode
+        params[Constants.LOGIN_TYPE] = "1"
+        params[Constants.KEY_COUNTRY_CODE] = countryCode
+        params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
+        params["unique_device_id"] = Data.uniqueDeviceId
+        params["device_name"] = Data.deviceName
+        params["device_type"] = Data.DEVICE_TYPE
+        params["app_version"] = "" + Data.appVersion
+        params["os_version"] = Data.osVersion
+        params["latitude"] = "" + Data.latitude
+        params["longitude"] = "" + Data.longitude
+        params["login_type"] = Data.LOGIN_TYPE
+        params["device_rooted"] = if (Utils.isDeviceRooted()) "1" else "0"
+
+
+        Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
+        Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
+        Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
+        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+            override fun onNotConnected(): Boolean {
+                return false
+            }
+
+            override fun onException(e: Exception?): Boolean {
+                return false
+            }
+
+            override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
+                if (flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+                    (requireActivity() as DriverSplashActivity).addLoginViaOTPScreen(phoneNo, countryCode, t?.missedCallNumber, t?.otpLength)
+                } else {
+                    DialogPopup.alertPopup(requireActivity(), "", message)
+                }
+
+
+            }
+
+            override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
+
+                return false
+            }
+
+        })
+    }
+
     val  showKeyboardRunnable = Runnable{
         if(scrollView!=null ){
             scrollView.fullScroll(View.FOCUS_DOWN)
@@ -355,11 +382,10 @@ class LoginFragment : Fragment() {
             etCode.typeface = Fonts.mavenRegular(mActivity)
 
             etCode.inputType = inputType
-            etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30f)
+            etCode.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
 
             etCode.setText(defaultEditTextData)
 
-            ASSL(mActivity, rv, 1134, 720, true)
             rv.setOnClickListener { dismiss() }
 
             textHead.text = title
@@ -513,5 +539,10 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         mListener?.toggleDisplayFlags(true)
         super.onDestroyView()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

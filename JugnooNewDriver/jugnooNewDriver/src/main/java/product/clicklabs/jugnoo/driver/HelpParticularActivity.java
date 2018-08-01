@@ -127,6 +127,7 @@ public class HelpParticularActivity extends BaseFragmentActivity {
 				webview.setVisibility(View.GONE);
 				loadHTMLContent("");
 				HashMap<String, String> params = new HashMap<>();
+				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData != null ? Data.userData.accessToken : JSONParser.getAccessTokenPair(this).first);
 				params.put("section", helpSection.getOrdinal()+"");
 				HomeUtil.putDefaultParams(params);
 

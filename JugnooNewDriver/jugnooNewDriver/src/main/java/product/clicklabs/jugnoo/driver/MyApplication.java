@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
@@ -24,10 +23,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.fragments.BaseFragment;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -54,7 +51,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        Fabric.with(this, new Crashlytics());
+      //  Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
         Paper.init(this);
         registerActivityLifecycleCallbacks(this);
@@ -191,7 +188,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             public void run() {
                 try {
                     for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
-                        Log.writePathLogToFile(engagementSPData.getEngagementId() + suffix, text);
+                        Log.writePathLogToFile(MyApplication.this, engagementSPData.getEngagementId() + suffix, text);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

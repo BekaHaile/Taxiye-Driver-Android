@@ -2,7 +2,9 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,7 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -33,9 +34,8 @@ import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.StripeLoginResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.stripe.connect.StripeConnectActivity;
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils;
-import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
+import product.clicklabs.jugnoo.driver.stripe.connect.StripeConnectActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -76,14 +76,14 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	protected void onStart() {
 
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+
+
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
+
 	}
 
 	@Override
@@ -108,6 +108,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		backBtn = findViewById(R.id.backBtn);
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
+		imageViewEditPhone.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.profile);
 

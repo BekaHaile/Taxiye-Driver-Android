@@ -129,9 +129,9 @@
     <string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
     <string name="start_ride_text">Please confirm you have picked up customer : %s</string>
 
-    <string name="battery_level_text">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
-    <string name="battery_level_start_text">Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.</string>
-    <string name="battery_level_arrived_text">Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.</string>
+    <string name="battery_level_text">Battery level must be greater than 20% to accept the ride. Please plugin to a power source to continue.</string>
+    <string name="battery_level_start_text">Battery level must be greater than 10% to start the ride. Please plugin to a power source to continue.</string>
+    <string name="battery_level_arrived_text">Battery level must be greater than 10% to to mark the ride arrived. Please plugin to a power source to continue.</string>
     <string name="back">Back</string>
 
     <string name="change_phone_no_text">Changed Phone number is same as the previous one.</string>
@@ -1037,6 +1037,17 @@
     <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
     <string name="toll_value">Toll fare: %s</string>
     <string name="please_enter_valid_fare">Please enter valid fare</string>
+    <string name="are_you_sure">Are you sure you want to proceed?</string>
+    <string name="i_am_sure">I\'m Sure</string>
+    <string name="app_needs_overlay_permission">App needs overlay permission to display helper button on screen</string>
+    <string name="grant">Grant</string>
+    <string name="ignore">Ignore</string>
+    <string name="app_needs_location_permission">App needs Location permission to continue</string>
+    <string name="app_needs_phone_state_permission">App needs Phone State permission to continue</string>
+
+    <string name="notification_channel_default">Notifications</string>
+    <string name="notification_channel_description_default">Latest Updates</string>
+    <string name="driver_agreement">Driver Agreement</string>
 
 
     <string name="hint_card_number">CARD NUMBER</string>
@@ -1063,6 +1074,12 @@
     <string name="wallet">Wallet</string>
     <string name="add_cash_stripe_confirmation">Add %s to your wallet using card ending with %s?</string>
     <string name="add">Add</string>
+    <string name="permissions_message">These permissions will be required to login into the app</string>
+    <string name="permissions_title">Grant permission to access %s</string>
+    <string name="permissions_location_phone">Location and Phone identity</string>
+    <string name="permissions_location">Location</string>
+    <string name="permissions_phone">Phone identity</string>
+    <string name="grant_permission">Grant Permission</string>
 
 
 </resources>

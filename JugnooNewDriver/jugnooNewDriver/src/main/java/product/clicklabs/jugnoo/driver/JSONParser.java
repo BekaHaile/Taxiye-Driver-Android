@@ -75,7 +75,7 @@ public class JSONParser implements Constants {
 
 
 	public static void saveAccessToken(Context context, String accessToken) {
-		AuthKeySaver.writeAuthToFile(accessToken);
+		AuthKeySaver.writeAuthToFile(context, accessToken);
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 		Editor editor = pref.edit();
 		editor.putString(Data.SP_ACCESS_TOKEN_KEY, accessToken);
@@ -88,7 +88,7 @@ public class JSONParser implements Constants {
 		String isAccessTokenNew = "1";
 
 		if(TextUtils.isEmpty(accessToken)){
-			accessToken = AuthKeySaver.readAuthFromFile();
+			accessToken = AuthKeySaver.readAuthFromFile(context);
 		}
 
 		return new Pair<String, String>(accessToken, isAccessTokenNew);
@@ -436,13 +436,6 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 
-		/*try {
-			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
-					Data.userData.getUserEmail(), Data.userData.phoneNo);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-*/
 		return resp;
 	}
 
