@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "107769701119",
-    "firebase_url": "https://swift-dragon.firebaseio.com",
-    "project_id": "swift-dragon",
-    "storage_bucket": "swift-dragon.appspot.com"
+    "project_number": "676585448141",
+    "firebase_url": "https://nickelride-211810.firebaseio.com",
+    "project_id": "nickelride-211810",
+    "storage_bucket": "nickelride-211810.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:107769701119:android:b9796a02659429a8",
+        "mobilesdk_app_id": "1:676585448141:android:9898d6d170adc572",
         "android_client_info": {
           "package_name": "production.nickelride.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "107769701119-23h67p56jsi4q51immlltntlpml3oaov.apps.googleusercontent.com",
+          "client_id": "676585448141-f3dii9e8cv66dh004ncfvmsuk1d2bsln.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDsJfrc1s83KH5CETe21pPi3YmNWbc1lUo"
+          "current_key": "AIzaSyAEHs8LbA2H3KpKKyyOwegltZmBZAyJomw"
         }
       ],
       "services": {
@@ -39,20 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:107769701119:android:c521bedb7871e592",
+        "mobilesdk_app_id": "1:676585448141:android:fbfb98b90372d582",
         "android_client_info": {
           "package_name": "production.nickelride.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "107769701119-23h67p56jsi4q51immlltntlpml3oaov.apps.googleusercontent.com",
+          "client_id": "676585448141-f3dii9e8cv66dh004ncfvmsuk1d2bsln.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDsJfrc1s83KH5CETe21pPi3YmNWbc1lUo"
+          "current_key": "AIzaSyAEHs8LbA2H3KpKKyyOwegltZmBZAyJomw"
         }
       ],
       "services": {
