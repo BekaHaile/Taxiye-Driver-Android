@@ -16,26 +16,26 @@
     -->
 
 
-    <string name="appname">NickelRide</string>
-    <string name="app_name">NickelRide</string>
+    <string name="appname">Nickel Driver</string>
+    <string name="app_name">Nickel Driver</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">fe64556b1be2fc4939cabb114df60660</string>
+    <string name="white_label_key">9672385cbae165f34516284950625e0b</string>
 
     <string name="fugu_app_key">59f842a6fc56fabf00f0bd99fbba3440</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">NickelRide/NickelRide Pictures</string>
+    <string name="images_path">Nickel Driver/Nickel Pictures</string>
     <string name="file_provider">production.NickelRide.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyDsJfrc1s83KH5CETe21pPi3YmNWbc1lUo-g</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyByBfiSz9PmAdJbrGwbpPAugDgjjrxLa9s</string> <!--IMP-->
 
-    <string name="facebook_page_id">""</string>
-    <string name="facebook_page_name">""</string>
+    <string name="facebook_page_id">1494351767251981</string>
+    <string name="facebook_page_name">TheNickelRide</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">NickelRide</string><!--* IMP-->
-    <string name="support_email">support@nickelRide.in</string>
-    <string name="support_email_subject">NickelRide Support</string>
+    <string name="white_label_name">Nickel Driver</string><!--* IMP-->
+    <string name="support_email">it@thenickelride.com</string>
+    <string name="support_email_subject">Nickel Driver Support</string>
     <string name="support_phone_number">+2348099904442</string>
     <string name="customer_app_download_link">https://www.nickelRide.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
@@ -54,17 +54,17 @@
     <!--<drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>-->
 
     <!--Login sign-up -->
-    <drawable name="generate_otp">@drawable/orange_generate_otp_selector</drawable>
-    <drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>
-    <drawable name="bg_splash">@color/colorPrimary</drawable>
-    <drawable name="bg_login">@color/colorPrimary</drawable>
-    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo
+    <!--<drawable name="generate_otp">@drawable/orange_generate_otp_selector</drawable>-->
+    <!--<drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>-->
+    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <drawable name="bg_login">@color/white</drawable>
+    <drawable name="ic_login_logo_drawable">@drawable/ic_login_logo
     </drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <dimen name="ic_splash_logo_width">157dp</dimen>
-    <dimen name="ic_splash_logo_height">167dp</dimen>
+    <dimen name="ic_splash_logo_width">200dp</dimen>
+    <dimen name="ic_splash_logo_height">200dp</dimen>
     <bool name="animate_splash_logo">true</bool>
-    <drawable name="bg_on_boarding_drawable">@color/colorPrimary</drawable>
-    <drawable name="buttons_on_boarding_drawable">@color/colorPrimary</drawable>
+    <drawable name="bg_on_boarding_drawable">@color/colorPrimaryDark</drawable>
+    <drawable name="buttons_on_boarding_drawable">@color/colorPrimaryDark</drawable>
     <!--<drawable name="ic_splash_logo_drawable">-->
     <!--</drawable> &lt;!&ndash;400 * 400 px MAX&ndash;&gt; &lt;!&ndash;* IMP&ndash;&gt;-->
 
