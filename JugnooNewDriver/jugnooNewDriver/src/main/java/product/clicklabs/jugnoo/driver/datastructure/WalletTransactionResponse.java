@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+
 /**
  * Created by gurmail on 29/08/17.
  */
@@ -71,7 +73,7 @@ public class WalletTransactionResponse {
         this.transactions = transactions;
     }
 
-    public static class Transactions {
+    public static class Transactions extends CurrencyModel {
         @SerializedName("txn_id")
         private int txnId;
         @SerializedName("txn_type")

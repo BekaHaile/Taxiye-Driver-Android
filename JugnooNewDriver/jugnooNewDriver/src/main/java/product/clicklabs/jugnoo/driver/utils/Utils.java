@@ -1072,8 +1072,12 @@ public class Utils {
     }
 
     public static String formatCurrencyValue(String currency, double value) {
+        return formatCurrencyValue(currency, value, "INR");
+    }
+
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency) {
         if (TextUtils.isEmpty(currency)) {
-            currency = "INR";
+            currency = fallbackCurrency;
         } else if(currency.equalsIgnoreCase("BMD") || currency.equalsIgnoreCase("TTD")){
             int digits = Currency.getInstance(currency).getDefaultFractionDigits();
             return String.format("%s%."+digits+"f", "$", value);

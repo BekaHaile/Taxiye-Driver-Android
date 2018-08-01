@@ -57,19 +57,17 @@ public class WalletTransAadapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(holder instanceof viewHolder) {
 
             viewHolder viewHolder = (WalletTransAadapter.viewHolder) holder;
-            String amount = "";
-            if(transactionses.get(position).getAmount()>0) {
-                amount = activity.getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
-            } else {
-                amount = activity.getString(R.string.rupees_value_format_negtive, Utils.getDecimalFormatForMoney().format(transactionses.get(position).getAmount()));
-            }
-
+            String amount = Utils.formatCurrencyValue(transactionses.get(position).getCurrencyUnit(),
+                    transactionses.get(position).getAmount(), activity.getString(R.string.currency_fallback));
             viewHolder.transactionItemBinding.textViewTransactionAmount.setText(amount);
             viewHolder.transactionItemBinding.textViewTransactionDate.setText(transactionses.get(position).getTxnDate());
             viewHolder.transactionItemBinding.textViewTransactionTime.setText(transactionses.get(position).getTxnTime());
             viewHolder.transactionItemBinding.tvPaymentType.setText(transactionses.get(position).getTxnText());
 
             viewHolder.transactionItemBinding.tvPaymentType.setVisibility(TextUtils.isEmpty(transactionses.get(position).getTxnText().trim()) ? View.GONE : View.VISIBLE);
+            if(activity.getResources().getInteger(R.integer.visibility_payment_type_in_wallet_trans) == activity.getResources().getInteger(R.integer.view_gone)) {
+                viewHolder.transactionItemBinding.tvPaymentType.setVisibility(View.GONE);
+            }
 
             viewHolder.transactionItemBinding.textViewTransactionType.setVisibility(View.VISIBLE);
             if(transactionses.get(position).getTxnType() == Data.TxnType.CREDITED) {
