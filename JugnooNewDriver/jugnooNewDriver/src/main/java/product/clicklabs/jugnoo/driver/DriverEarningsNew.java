@@ -453,7 +453,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				BarDataSet dataset = new BarDataSet(entries, "");
 				BarData data = new BarData(labels, dataset);
 				dataset.setColor(getResources().getColor(R.color.bgColor));
-				dataset.setHighLightColor(getResources().getColor(R.color.themeColorLight));
+				dataset.setHighLightColor(getResources().getColor(R.color.driverEarningHighLisghtColor));
 				dataset.setHighLightAlpha(255);
 //			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
