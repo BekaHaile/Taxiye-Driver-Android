@@ -74,7 +74,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         supportFragmentManager.inTransaction {
             add(container.id, SplashFragment(), SplashFragment::class.simpleName)
         }
-        BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, false, false)
+        BaseFragmentActivity.checkOverlayPermissionOpenJeanie(this, true, false)
     }
 
     override fun permissionDenied(requestCode: Int, neverAsk: Boolean) : Boolean {
