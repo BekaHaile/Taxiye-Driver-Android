@@ -383,6 +383,7 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
 
+		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,

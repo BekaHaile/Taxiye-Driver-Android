@@ -10,8 +10,10 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
  */
 class WalletModelResponse(
     @Expose @SerializedName("wallet_balance") val walletBalance: Double,
+    @Expose @SerializedName("user_debt") val userDebt: Double,
     @Expose @SerializedName("currency") val currencyUnit: String,
     @Expose @SerializedName("stripe_cards") val stripeCards:List<StripeCardData>?,
-    @Expose @SerializedName("quick_add_amounts") val quickAddAmounts:List<Double>?
+    @Expose @SerializedName("quick_add_amounts") val quickAddAmounts:List<Double>?): FeedCommonResponseKotlin(){
 
-): FeedCommonResponseKotlin()
+        fun getBalance()=walletBalance-userDebt;
+}

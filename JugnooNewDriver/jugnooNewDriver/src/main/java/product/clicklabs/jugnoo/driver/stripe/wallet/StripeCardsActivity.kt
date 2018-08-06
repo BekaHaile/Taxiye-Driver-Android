@@ -2,7 +2,9 @@ package product.clicklabs.jugnoo.driver.stripe.wallet
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_stripe_cards.*
+import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.fragments.WalletTransactionFragment
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeAddCardFragment
@@ -10,6 +12,7 @@ import product.clicklabs.jugnoo.driver.stripe.StripeCardsStateListener
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeViewCardFragment
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
+import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.inTransactionWithAnimation
 import java.util.*
 
@@ -19,7 +22,10 @@ import java.util.*
 class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,StripeWalletFragment.StripeWalletInteractor {
 
 
+    private  var isStripeCardsEnabled:Boolean= false
+
     override fun openWalletTransactions() {
+
 
         supportFragmentManager.inTransactionWithAnimation {
 
@@ -31,8 +37,16 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
         }
     }
 
+    override fun isStripeEnabled(): Boolean {
+       return isStripeCardsEnabled;
+    }
 
     override fun openAddCard() {
+        if(!isStripeCardsEnabled){
+            Toast.makeText(this@StripeCardsActivity,getString(R.string.no_payment_methods_available),Toast.LENGTH_LONG).show()
+            return;
+        }
+
         supportFragmentManager.inTransactionWithAnimation {
 
             add(container.id, StripeAddCardFragment(), StripeAddCardFragment::class.simpleName).
@@ -45,6 +59,11 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
 
     override fun openViewCard(stripeCardData: StripeCardData) {
+
+        if(!isStripeCardsEnabled){
+            Toast.makeText(this@StripeCardsActivity,getString(R.string.no_payment_methods_available),Toast.LENGTH_LONG).show()
+            return;
+        }
 
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, StripeViewCardFragment.newInstance( stripeCardData), StripeViewCardFragment::class.simpleName)
@@ -68,6 +87,8 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stripe_cards)
+        isStripeCardsEnabled =  Prefs.with(this).getInt(Constants.KEY_STRIPE_CARDS_ENABLED,0)==1
+
 
 
     }

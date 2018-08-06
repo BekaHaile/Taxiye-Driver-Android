@@ -334,6 +334,7 @@ public interface Constants {
 	String KEY_DEVICE_TYPE = "device_type";
 	String WALLET = "wallet";
 	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
+	String KEY_STRIPE_CARDS_ENABLED = "stripe_cards_enabled";
 
 	String NOTIF_CHANNEL_DEFAULT = "Notifications";
 }
