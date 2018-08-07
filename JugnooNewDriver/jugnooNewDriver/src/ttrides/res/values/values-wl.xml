@@ -78,6 +78,7 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <drawable name="bg_login">@color/colorPrimaryDark</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 
