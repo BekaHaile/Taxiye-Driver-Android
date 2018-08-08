@@ -1080,7 +1080,8 @@ public class Utils {
             currency = fallbackCurrency;
         } else if(currency.equalsIgnoreCase("BMD") || currency.equalsIgnoreCase("TTD")){
             int digits = Currency.getInstance(currency).getDefaultFractionDigits();
-            return String.format("%s%."+digits+"f", "$", value);
+            String result =  String.format("%s%."+digits+"f", "$", (value>0)?value:(-value));
+            return  value>0?result:"-"+result;
         }
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
         format.setCurrency(Currency.getInstance(currency));
