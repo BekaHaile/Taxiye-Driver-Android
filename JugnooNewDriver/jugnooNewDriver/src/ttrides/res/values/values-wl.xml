@@ -17,7 +17,7 @@
 
 
     <string name="appname">TT RideShare</string>
-    <string name="app_name">TT RideShare Drivers</string>
+    <string name="app_name">TT RideShare Driver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>

@@ -176,7 +176,6 @@ public class Data {
 	public static void clearDataOnLogout(Context context){
 		try{
 			userData = null;
-			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
 
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
