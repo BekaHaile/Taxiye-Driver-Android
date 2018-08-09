@@ -65,4 +65,6 @@
     <integer name="visibility_driver_agreement">@integer/view_visible</integer>
     <integer name="path_filter_distance">65</integer>
     <integer name="visibility_earning_bank_deposit">@integer/view_gone</integer>
+    <integer name="apply_default_country_code">1</integer>
+    <string name="default_country_code">+1</string>
 </resources>

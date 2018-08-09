@@ -75,7 +75,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_daily_details_new);
+		setContentView(R.layout.activity_daily_earning);
 
 
 		try {

@@ -1106,7 +1106,9 @@ public class Utils {
     }
 
     public static String getCountryCode(Context context) {
-
+        if(context.getResources().getInteger(R.integer.apply_default_country_code) == 1){
+            return context.getString(R.string.default_country_code);
+        }
         String CountryID = "";
         String CountryZipCode = "";
 
@@ -1164,17 +1166,6 @@ public class Utils {
         return "IN";
     }
 
-    public static String getSimCountryIso(Context context) {
-        String CountryID = "IN";
-        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        // getNetworkCountryIso
-        try {
-            CountryID = manager.getSimCountryIso().toUpperCase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return CountryID;
-    }
 
     public static String retrievePhoneNumberTenChars(String countryCode, String phoneNo) {
         phoneNo = phoneNo.replace(" ", "");

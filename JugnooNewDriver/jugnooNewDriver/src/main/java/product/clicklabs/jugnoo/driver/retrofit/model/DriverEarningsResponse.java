@@ -236,7 +236,7 @@ public class DriverEarningsResponse extends CurrencyModel{
 
 		@SerializedName("earnings")
 		@Expose
-		private Integer earnings;
+		private Double earnings;
 		@SerializedName("date")
 		@Expose
 		private String date;
@@ -285,7 +285,7 @@ public class DriverEarningsResponse extends CurrencyModel{
 		 * @return
 		 * The earnings
 		 */
-		public Integer getEarnings() {
+		public Double getEarnings() {
 			return earnings;
 		}
 
@@ -294,7 +294,7 @@ public class DriverEarningsResponse extends CurrencyModel{
 		 * @param earnings
 		 * The earnings
 		 */
-		public void setEarnings(Integer earnings) {
+		public void setEarnings(Double earnings) {
 			this.earnings = earnings;
 		}
 

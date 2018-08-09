@@ -59,7 +59,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.Listener, FirebaseEvents {
+public class EarningsActivity extends BaseActivity implements CustomMarkerView.Listener, FirebaseEvents {
 
 	LinearLayout  linearLayoutDriverReferral;
 	RelativeLayout relativeLayoutPayout ,
@@ -127,7 +127,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 		tvAmountCollectedCaptiveLabel = (TextView) findViewById(R.id.tvAmountCollectedLabel);
 		tvTargetDistanceLabel = (TextView) findViewById(R.id.tvTargetDistanceLabel);
 		tvTargetDistance = (TextView) findViewById(R.id.tvTargetDistance);
-		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
+		assl = new ASSL(EarningsActivity.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
 		listEarningsPerDay = (RecyclerView) findViewById(R.id.list_earnings_per_day);
@@ -179,18 +179,18 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 //				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
 				if (res != null && res.getRechargeOptions() != null) {
 					String data = new Gson().toJson(res.getRechargeOptions(), listType);
-					Intent intent = new Intent(DriverEarningsNew.this, WalletActivity.class);
+					Intent intent = new Intent(EarningsActivity.this, WalletActivity.class);
 					intent.putExtra("data", data);
 					intent.putExtra("amount", res.getJugnooBalance());
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else {
 					if (!Data.isCaptive()) {
-						DialogPopup.alertPopupWithListener(DriverEarningsNew.this, "", getString(R.string.unable_to_fetch_wallet),
+						DialogPopup.alertPopupWithListener(EarningsActivity.this, "", getString(R.string.unable_to_fetch_wallet),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        getEarningsDetails(DriverEarningsNew.this, 0, true);
+                                        getEarningsDetails(EarningsActivity.this, 0, true);
                                     }
                                 });
 					}
@@ -221,7 +221,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_THIS_WEEK);
 				MyApplication.getInstance().logEvent(EARNING + "_" + CHART + "_" + PREVIOUS, null);
-				getEarningsDetails(DriverEarningsNew.this, 1);
+				getEarningsDetails(EarningsActivity.this, 1);
 			}
 		});
 
@@ -230,7 +230,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_THIS_WEEK);
 				MyApplication.getInstance().logEvent(EARNING + "_" + CHART + "_" + NEXT, null);
-				getEarningsDetails(DriverEarningsNew.this, 2);
+				getEarningsDetails(EarningsActivity.this, 2);
 			}
 		});
 
@@ -288,7 +288,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_RIDE_HISTORY);
 				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
-				Intent intent = new Intent(DriverEarningsNew.this, DriverRideHistoryNew.class);
+				Intent intent = new Intent(EarningsActivity.this, DriverRideHistoryNew.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
@@ -332,10 +332,10 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 	}
 
 	public void getDailyDetails(String date,DriverEarningsResponse.Earning earning){
-		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
+		Intent intent = new Intent(EarningsActivity.this, DailyEarningActivity.class);
 		intent.putExtra("date", date);
 		if(earning!=null){
-			intent.putExtra(DailyRideDetailsActivity.EARNING_DATA, new Gson().toJson(earning, DriverEarningsResponse.Earning.class));
+			intent.putExtra(DailyEarningActivity.EARNING_DATA, new Gson().toJson(earning, DriverEarningsResponse.Earning.class));
 
 		}
 		startActivity(intent);
@@ -435,7 +435,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 				maxIndex = driverEarningsResponse.getEarnings().size();
 				boolean graphVisibility = false;
 				for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
-					entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings(), j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
+					entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings().intValue(), j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
 					labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
 					if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
 						graphVisibility =true;
@@ -578,7 +578,7 @@ public class DriverEarningsNew extends BaseActivity implements CustomMarkerView.
 
 			}
 		} else {
-			DialogPopup.alertPopup(DriverEarningsNew.this, "", Data.CHECK_INTERNET_MSG);
+			DialogPopup.alertPopup(EarningsActivity.this, "", Data.CHECK_INTERNET_MSG);
 		}
 		} catch (Exception e) {
 			e.printStackTrace();

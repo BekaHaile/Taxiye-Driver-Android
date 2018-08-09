@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
+import product.clicklabs.jugnoo.driver.DailyEarningActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
@@ -32,7 +32,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private DailyRideDetailsActivity activity;
+    private DailyEarningActivity activity;
     private ArrayList<DailyEarningItem> items;
     private Callback callback;
     protected String editTextStr = "";
@@ -41,7 +41,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 	int invoiceId  = 0;
 	private  boolean showCaptiveData;
 
-    public DailyRideDetailsAdapter(DailyRideDetailsActivity activity, ArrayList<DailyEarningItem> items, Callback callback,int invoiceId) {
+    public DailyRideDetailsAdapter(DailyEarningActivity activity, ArrayList<DailyEarningItem> items, Callback callback, int invoiceId) {
         this.activity = activity;
         this.items = items;
         this.callback = callback;

@@ -42,7 +42,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DailyRideDetailsActivity extends BaseFragmentActivity {
+public class DailyEarningActivity extends BaseFragmentActivity {
 
 	public static final String EARNING_DATA = "earning_data";
     RelativeLayout linear;
@@ -81,7 +81,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_daily_details_new);
+		setContentView(R.layout.activity_daily_earning);
 
 
 		try {
@@ -102,7 +102,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 
 		linear = (RelativeLayout) findViewById(R.id.linear);
-		assl = new ASSL(DailyRideDetailsActivity.this, linear, 1134, 720, false);
+		assl = new ASSL(DailyEarningActivity.this, linear, 1134, 720, false);
 
 		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
@@ -121,9 +121,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if(!"".equalsIgnoreCase(date)) {
-					getRidesAsync(date, DailyRideDetailsActivity.this);
+					getRidesAsync(date, DailyEarningActivity.this);
 				} else if(invoice_id != 0){
-					getInvoiceDetails(DailyRideDetailsActivity.this);
+					getInvoiceDetails(DailyEarningActivity.this);
 				}
 			}
 		});
@@ -141,16 +141,16 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			public void onRideClick(int position, Tile.Extras extras, String date) {
 
 				if(extras !=null) {
-					Intent intent = new Intent(DailyRideDetailsActivity.this, RideDetailsNewActivity.class);
+					Intent intent = new Intent(DailyEarningActivity.this, RideDetailsNewActivity.class);
 					Gson gson = new Gson();
 					intent.putExtra("extras", gson.toJson(extras, Tile.Extras.class));
-					DailyRideDetailsActivity.this.startActivity(intent);
-					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					DailyEarningActivity.this.startActivity(intent);
+					DailyEarningActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if(date != null) {
-					Intent intent = new Intent(DailyRideDetailsActivity.this, DailyRideDetailsActivity.class);
+					Intent intent = new Intent(DailyEarningActivity.this, DailyEarningActivity.class);
 					intent.putExtra("date", date);
-					DailyRideDetailsActivity.this.startActivity(intent);
-					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					DailyEarningActivity.this.startActivity(intent);
+					DailyEarningActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			}
 		},invoice_id);
@@ -297,7 +297,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 						}
 					});
 			} else {
-				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopup(DailyEarningActivity.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -374,7 +374,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				}
 			});
 			} else {
-				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopup(DailyEarningActivity.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

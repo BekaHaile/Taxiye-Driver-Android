@@ -1501,7 +1501,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			earningsRL.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverEarningsNew.class));
+					startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
@@ -2544,7 +2544,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedDate = df.format(c.getTime());
-			Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
+			Intent intent = new Intent(HomeActivity.this, DailyEarningActivity.class);
 			intent.putExtra("date", formattedDate);
 			startActivity(intent);
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2566,7 +2566,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
 			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
 		} else if (infoTileResponse.getDeepIndex() == 5) {
-			Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
+			Intent intent = new Intent(HomeActivity.this, EarningsActivity.class);
 			HomeActivity.this.startActivity(intent);
 			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);

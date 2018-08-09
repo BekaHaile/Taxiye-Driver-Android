@@ -248,11 +248,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".DriverEarningsNew"
+            android:name=".EarningsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".DailyRideDetailsActivity"
+            android:name=".DailyEarningActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
         <activity

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
-import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
+import product.clicklabs.jugnoo.driver.DailyEarningActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
@@ -245,7 +245,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 						@Override
 						public void onClick(View v) {
 							holder = (ViewHolderDriverRides) v.getTag();
-							Intent intent = new Intent(getActivity(), DailyRideDetailsActivity.class);
+							Intent intent = new Intent(getActivity(), DailyEarningActivity.class);
 							intent.putExtra("invoice_id", invoiceInfo.id);
 							getActivity().startActivity(intent);
 							getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
