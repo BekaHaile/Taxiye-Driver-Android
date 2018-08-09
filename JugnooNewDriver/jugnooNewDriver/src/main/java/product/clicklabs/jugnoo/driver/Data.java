@@ -179,6 +179,7 @@ public class Data {
 
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
+			Prefs.with(context).remove(Constants.SP_OVERLAY_PERMISSION_ASKED);
 
 			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);

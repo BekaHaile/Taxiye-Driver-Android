@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import product.clicklabs.jugnoo.driver.utils.Utils;
+
 public class FareStructure {
 	public double fixedFare;
 	public double thresholdDistance, farePerKmThresholdDistance;
@@ -39,6 +41,7 @@ public class FareStructure {
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, double tollFare){
+		totalDistanceInKm = Utils.round(totalDistanceInKm, 2);
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
 			totalTimeInMin = 0;
@@ -77,10 +80,9 @@ public class FareStructure {
 
 		fare = fare + getEffectiveConvenienceCharge();
 
-		fare = Math.round(fare);
 		if(mandatoryFare > 0) {
-			double cappedFareUp = Math.round(mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100));
-			double cappedFareDown = Math.round(mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100));
+			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
+			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
 			if(fare < cappedFareUp && fare > cappedFareDown){
 				fare = mandatoryFare;
 				mandatoryFareApplicable = 1;
@@ -95,7 +97,7 @@ public class FareStructure {
 			}
 		}
 
-		return fare + tollFare;
+		return Utils.currencyPrecision(fare + tollFare);
 	}
 
 	public double getEffectiveConvenienceCharge(){

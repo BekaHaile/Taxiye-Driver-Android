@@ -382,6 +382,7 @@ public class JSONParser implements Constants {
 		if(Prefs.with(context).getInt(Constants.KEY_NAVIGATION_TYPE, -100) == -100) {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
+		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		return new UserData(accessToken, userData.getString("user_name"),

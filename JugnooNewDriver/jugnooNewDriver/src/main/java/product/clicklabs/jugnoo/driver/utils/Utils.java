@@ -60,6 +60,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -1075,17 +1077,27 @@ public class Utils {
         return formatCurrencyValue(currency, value, "INR");
     }
 
+    private static NumberFormat currencyNumberFormat = null;
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency) {
+        if(currencyNumberFormat == null){
+            int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+            currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+            currencyNumberFormat.setMinimumFractionDigits(precision);
+            currencyNumberFormat.setMaximumFractionDigits(precision);
+            currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
+            currencyNumberFormat.setGroupingUsed(false);
+        }
         if (TextUtils.isEmpty(currency)) {
             currency = fallbackCurrency;
-        } else if(currency.equalsIgnoreCase("BMD") || currency.equalsIgnoreCase("TTD")){
-            int digits = Currency.getInstance(currency).getDefaultFractionDigits();
-            String result =  String.format("%s%."+digits+"f", "$", (value>0)?value:(-value));
-            return  value>0?result:"-"+result;
         }
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
-        format.setCurrency(Currency.getInstance(currency));
-        return format.format(value);
+        currencyNumberFormat.setCurrency(Currency.getInstance(currency));
+        String result = currencyNumberFormat.format(value);
+
+        result = result.replaceFirst("\\s", "");
+        result = result.replace("BMD", "$");
+        result = result.replace("TTD", "$");
+
+        return result;
     }
 
     public static String formatCurrencyValue(String currency, String value) {
@@ -1257,4 +1269,37 @@ public class Utils {
 		return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 
+	private static NumberFormat numberFormat = null;
+    private static void initNumberFormat(){
+        int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+        numberFormat = NumberFormat.getInstance();
+        numberFormat.setMinimumFractionDigits(precision);
+        numberFormat.setMaximumFractionDigits(precision);
+        numberFormat.setRoundingMode(RoundingMode.HALF_UP);
+        numberFormat.setGroupingUsed(false);
+    }
+    public static void setCurrencyPrecision(Context context, int precision){
+        Prefs.with(context).save(Constants.KEY_CURRENCY_PRECISION, precision);
+        numberFormat = null;
+        currencyNumberFormat = null;
+    }
+    public static double currencyPrecision(double value) {
+        if(numberFormat == null){
+            initNumberFormat();
+        }
+        String result = numberFormat.format(value);
+        if(numberFormat.getMaximumFractionDigits() > 0){
+            return Double.parseDouble(result);
+        } else {
+            return Integer.parseInt(result);
+        }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

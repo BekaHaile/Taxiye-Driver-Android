@@ -665,6 +665,6 @@ public class CustomerInfo {
 	}
 
 	public void setTollFare(double tollFare) {
-		this.tollFare = tollFare;
+		this.tollFare = Utils.currencyPrecision(tollFare);
 	}
 }

@@ -6447,8 +6447,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 		params.put(KEY_LATITUDE, String.valueOf(dropLatitude));
 		params.put(KEY_LONGITUDE, String.valueOf(dropLongitude));
-		params.put(KEY_DISTANCE_TRAVELLED, decimalFormat.format(totalDistanceInKm));
-		params.put(KEY_DISTANCE_TRAVELLED_LOG, decimalFormat.format(totalDistanceFromLog));
+		params.put(KEY_DISTANCE_TRAVELLED, String.valueOf(totalDistanceInKm));
+		params.put(KEY_DISTANCE_TRAVELLED_LOG, String.valueOf(totalDistanceFromLog));
 
 		params.put(KEY_WAIT_TIME, waitTime);
 		params.put(KEY_RIDE_TIME, rideTime);
@@ -6462,7 +6462,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
-		params.put("ride_distance_using_haversine", "" + decimalFormat.format(totalHaversineDistanceInKm));
+		params.put("ride_distance_using_haversine", String.valueOf(totalHaversineDistanceInKm));
 		HomeUtil.putDefaultParams(params);
 
 		enteredMeterFare = 0;
@@ -6716,7 +6716,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == couponInfo.benefitType) {        //coupon discount
 			finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100) < couponInfo.maximumDiscountValue ?
-					Math.ceil(((totalFare * couponInfo.discountPrecent) / 100)) : couponInfo.maximumDiscountValue;
+					((totalFare * couponInfo.discountPrecent) / 100) : couponInfo.maximumDiscountValue;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == couponInfo.benefitType) {        // coupon capped fare
 			if (totalFare < couponInfo.cappedFare) {        // fare less than capped fare
 				finalDiscount = 0;
@@ -6739,7 +6739,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == promoInfo.benefitType) {        //promotion discount
 			finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100) < promoInfo.discountMaximum ?
-					Math.ceil(((totalFare * promoInfo.discountPercentage) / 100)) : promoInfo.discountMaximum;
+					((totalFare * promoInfo.discountPercentage) / 100) : promoInfo.discountMaximum;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == promoInfo.benefitType) {        // promotion capped fare
 			if (totalFare < promoInfo.cappedFare) {        // fare less than capped fare
 				finalDiscount = 0;
@@ -6832,7 +6832,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("is_invalid_pool", String.valueOf(invalidPool));
 				if(1 == Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())
 						&& customerInfo.getPoolFare().getDiscountedFareEnabled() ==1 && invalidPool ==1){
-					totalFare = totalFare - Math.round(customerInfo.getPoolFare().getDiscountPercentage() * totalFare);
+					totalFare = totalFare - Utils.currencyPrecision(customerInfo.getPoolFare().getDiscountPercentage() * totalFare);
 				}
 
 			} catch (Exception e) {
@@ -6915,14 +6915,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				paymentMode = PaymentMode.WALLET.getOrdinal();
 
 				params.put("payment_mode", "" + PaymentMode.WALLET.getOrdinal());
-				params.put("paid_using_wallet", "" + Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", "" + Utils.currencyPrecision(finalPaidUsingWallet));
 			} else {                                                                            // no wallet
 				finalPaidUsingWallet = 0;
 
 				paymentMode = PaymentMode.CASH.getOrdinal();
 
 				params.put("payment_mode", "" + PaymentMode.CASH.getOrdinal());
-				params.put("paid_using_wallet", "" + Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", "" + Utils.currencyPrecision(finalPaidUsingWallet));
 			}
 
 
@@ -6956,7 +6956,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			params.put("is_cached", "1");
-			params.put("paid_in_cash", String.valueOf(finalToPay));
+			params.put("paid_in_cash", ""+Utils.currencyPrecision(finalToPay));
 
 			DialogPopup.dismissLoadingDialog();
 			if(!isTourFlag) {

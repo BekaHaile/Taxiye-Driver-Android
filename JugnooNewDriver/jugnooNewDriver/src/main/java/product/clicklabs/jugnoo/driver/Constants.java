@@ -337,5 +337,6 @@ public interface Constants {
 	String KEY_STRIPE_CARDS_ENABLED = "stripe_cards_enabled";
 
 	String NOTIF_CHANNEL_DEFAULT = "Notifications";
+	String KEY_CURRENCY_PRECISION = "currency_precision";
 }
 
