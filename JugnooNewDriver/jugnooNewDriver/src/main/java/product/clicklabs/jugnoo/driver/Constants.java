@@ -338,5 +338,9 @@ public interface Constants {
 
 	String NOTIF_CHANNEL_DEFAULT = "Notifications";
 	String KEY_CURRENCY_PRECISION = "currency_precision";
+
+	String KEY_DEFAULT_COUNTRY_CODE = "default_country_code";
+	String KEY_DEFAULT_SUB_COUNTRY_CODE = "default_sub_country_code";
+	String KEY_DEFAULT_COUNTRY_ISO = "default_country_iso";
 }
 

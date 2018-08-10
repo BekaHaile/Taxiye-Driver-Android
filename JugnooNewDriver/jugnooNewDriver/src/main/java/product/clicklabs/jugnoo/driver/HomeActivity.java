@@ -3852,8 +3852,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else{
 						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
-						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
-								+Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
+						if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
+							takeFareText.setText(getString(R.string.total_fare) + " "
+									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
+						} else {
+							takeFareText.setText(getString(R.string.take_cash) + " "
+									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
+						}
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);

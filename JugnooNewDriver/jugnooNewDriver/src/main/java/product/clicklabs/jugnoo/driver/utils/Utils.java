@@ -1118,6 +1118,10 @@ public class Utils {
     }
 
     public static String getCountryCode(Context context) {
+        String serverCountryCode = Prefs.with(context).getString(Constants.KEY_DEFAULT_COUNTRY_CODE, "");
+        if(!TextUtils.isEmpty(serverCountryCode)){
+            return serverCountryCode;
+        }
         if(context.getResources().getInteger(R.integer.apply_default_country_code) == 1){
             return context.getString(R.string.default_country_code);
         }

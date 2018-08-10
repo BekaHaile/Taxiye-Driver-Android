@@ -9,7 +9,10 @@ import com.google.gson.annotations.SerializedName
 data class DriverLanguageResponse(
 @Expose @SerializedName("locale_preference_enabled") val languagePrefStatus:Int,
 @Expose @SerializedName("default_lang") val defaultLang:String?,
-@Expose @SerializedName("locale_set") val languageList:ArrayList<LocaleModel>
+@Expose @SerializedName("locale_set") val languageList:ArrayList<LocaleModel>,
+@Expose @SerializedName("default_country_code") val defaultCountryCode:String?,
+@Expose @SerializedName("default_sub_country_code") val defaultSubCountryCode:String?,
+@Expose @SerializedName("default_country_iso") val defaultCountryIso:String?
 ):FeedCommonResponseKotlin()
 
 class LocaleModel(@Expose @SerializedName("locale") val locale:String?,
