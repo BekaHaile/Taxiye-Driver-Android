@@ -17,7 +17,7 @@ public class WalletTransactionResponse {
     @SerializedName("banner")
     private String banner;
     @SerializedName("balance")
-    private int balance;
+    private double balance;
     @SerializedName("num_txns")
     private int numTxns;
     @SerializedName("page_size")
@@ -41,11 +41,11 @@ public class WalletTransactionResponse {
         this.banner = banner;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -198,6 +198,9 @@ public class WalletTransactionResponse {
         }
 
         public String getTxnText() {
+            if(txnText == null){
+                txnText = "";
+            }
             return txnText;
         }
 

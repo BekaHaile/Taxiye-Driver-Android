@@ -95,7 +95,7 @@ public class WalletFragment extends DriverBaseFragment implements WalletTypeAdap
         fragmentWalletBinding.relativeLayoutWalletTransactions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFragment(R.id.main_layout, new WalletTransactionFragment(), WalletTransactionFragment.class.getName(), true, true);
+                loadFragment(R.id.main_layout, WalletTransactionFragment.newInstance(false), WalletTransactionFragment.class.getName(), true, true);
             }
         });
 

@@ -1081,6 +1081,7 @@
     <string name="permissions_phone">Phone identity</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="no_payment_methods_available">No payment methods available as yet.</string>
+    <string name="debt">Debt</string>
 
 
 </resources>

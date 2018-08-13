@@ -633,6 +633,11 @@ public interface APIServices {
 					   Callback<DriverCreditResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/driver/credit_history")
+	void creditHistoryWallet(@FieldMap Map<String, String> params,
+					   Callback<WalletTransactionResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/driver/fetch_stripe_login_link")
 	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
 
