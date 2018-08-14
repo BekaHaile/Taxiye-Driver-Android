@@ -51,7 +51,7 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 			rideInfoViewHolder.textViewInfoText.setVisibility(View.GONE);
 		}
 
-		rideInfoViewHolder.textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(context, itr.getValue(),itr.getCurrencyUnit()));
+		rideInfoViewHolder.textViewInfoValue.setText(Utils.formatCurrencyValue(itr.getCurrencyUnit(), itr.getValue()));
 
 
 

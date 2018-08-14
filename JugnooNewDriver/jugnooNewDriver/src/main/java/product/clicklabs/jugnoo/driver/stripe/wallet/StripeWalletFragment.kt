@@ -3,19 +3,21 @@ package product.clicklabs.jugnoo.driver.stripe.wallet
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.TouchDelegate
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
-import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
@@ -23,7 +25,6 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
 import kotlin.math.roundToInt
@@ -158,7 +159,7 @@ class StripeWalletFragment:Fragment(){
             applyTouchDelegateToLayoutAmount()
         } ?: run {
             tvAddCard.text = getString(R.string.label_add_card)
-            tvInfoCard.visibility = View.VISIBLE
+            tvInfoCard.visibility = if(stripeWalletInteractor.isStripeEnabled()) View.VISIBLE else View.GONE
             groupAddCash(View.GONE)
             groupQuickAmounts( View.GONE)
         }

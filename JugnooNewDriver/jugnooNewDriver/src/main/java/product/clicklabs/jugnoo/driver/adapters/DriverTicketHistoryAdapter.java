@@ -111,7 +111,7 @@ public class DriverTicketHistoryAdapter extends RecyclerView.Adapter<RecyclerVie
 
 			if(itr.getManualAdjustment() != 0){
 				holder.textViewManualAdj.setVisibility(View.VISIBLE);
-				holder.textViewManualAdj.setText(Utils.getAbsWithDecimalAmount(activity, itr.getManualAdjustment(),itr.getCurrencyUnit()));
+				holder.textViewManualAdj.setText(Utils.formatCurrencyValue(itr.getCurrencyUnit(), itr.getManualAdjustment()));
 			} else {
 				holder.textViewManualAdj.setVisibility(View.GONE);
 			}

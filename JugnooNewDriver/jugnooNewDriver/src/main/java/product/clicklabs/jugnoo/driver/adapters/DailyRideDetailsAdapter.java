@@ -123,7 +123,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 							:Utils.getKilometers(item.getExtras().getDistance(),activity, item.getExtras().getDistanceUnit()));
 
 				}else{
-					((ViewHolderRide)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, item.getEarning(),item.getCurrencyUnit()));
+					((ViewHolderRide)holder).textViewInfoValue.setText(Utils.formatCurrencyValue(item.getCurrencyUnit(), item.getEarning()));
 
 				}
 
@@ -183,10 +183,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else if(holder instanceof ViewHolderHeader) {
 				int totalRides = 0;
 				if(dailyEarningResponse != null) {
-					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings(),dailyEarningResponse.getCurrencyUnit()));
-					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getPaidByCustomer(),dailyEarningResponse.getCurrencyUnit()));
+					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getEarnings()));
+					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getPaidByCustomer()));
 					((ViewHolderHeader) holder).onlineTimeValue.setText(Utils.getKilometers(dailyEarningResponse.getTimeOnline(),activity, dailyEarningResponse.getDistanceUnit()));
-					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getAccount(),dailyEarningResponse.getCurrencyUnit()));
+					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getAccount()));
 
 					totalRides = dailyEarningResponse.getTotalTrips() - dailyEarningResponse.getTotalDelivery();
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+totalRides+" "+ activity.getResources().getString(R.string.rides));
@@ -198,10 +198,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					}
 
 				} else if(invoiceDetailResponseNew != null) {
-					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings(),invoiceDetailResponseNew.getCurrencyUnit()));
-					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getPaidUsingCash(),invoiceDetailResponseNew.getCurrencyUnit()));
+					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.formatCurrencyValue(invoiceDetailResponseNew.getCurrencyUnit(), invoiceDetailResponseNew.getEarnings()));
+					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.formatCurrencyValue(invoiceDetailResponseNew.getCurrencyUnit(), invoiceDetailResponseNew.getPaidUsingCash()));
 					((ViewHolderHeader) holder).onlineTimeValue.setText(Utils.getKilometers(invoiceDetailResponseNew.getTotalDistanceTravelled(),activity, invoiceDetailResponseNew.getDistanceUnit()));
-					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount(),invoiceDetailResponseNew.getCurrencyUnit()));
+					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.formatCurrencyValue(invoiceDetailResponseNew.getCurrencyUnit(), invoiceDetailResponseNew.getAccount()));
 
 					if(invoiceDetailResponseNew.getTotalDelivery() < 0){
 						((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips()+" "+ activity.getResources().getString(R.string.trips));
@@ -248,7 +248,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					}else{
 						((ViewHolderTotalAmount) holder).textViewRides.setVisibility(View.GONE);
-						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings(),dailyEarningResponse.getCurrencyUnit()));
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getEarnings()));
 						((ViewHolderTotalAmount) holder).textViewEarningsText.setText(activity.getString(R.string.trip_earning));
 
 					}
@@ -263,14 +263,14 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 					}else{
 						((ViewHolderTotalAmount) holder).textViewRides.setVisibility(View.GONE);
-						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings(),invoiceDetailResponseNew.getCurrencyUnit()));
+						((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.formatCurrencyValue(invoiceDetailResponseNew.getCurrencyUnit(), invoiceDetailResponseNew.getEarnings()));
 						((ViewHolderTotalAmount) holder).textViewInvoiceStatus.setText(invoiceDetailResponseNew.getInvoiceStatus());
 
 					}
 
 				}
 				if(farePerKm!=null){
-					((ViewHolderTotalAmount) holder).textViewDailyEarning.setText(Utils.getAbsAmount(activity, farePerKm,invoiceDetailResponseNew.getCurrencyUnit()));
+					((ViewHolderTotalAmount) holder).textViewDailyEarning.setText(Utils.formatCurrencyValue(invoiceDetailResponseNew.getCurrencyUnit(), farePerKm));
 					((ViewHolderTotalAmount) holder).textViewDailyEarning.setVisibility(View.VISIBLE);
 				}else{
 					((ViewHolderTotalAmount) holder).textViewDailyEarning.setVisibility(View.GONE);
@@ -287,7 +287,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getTimeFromMins(activity, (int) param.getValue()));
 
 				}else{
-					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(activity, param.getValue(),param.getCurrencyUnit()));
+					((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.formatCurrencyValue(param.getCurrencyUnit(), param.getValue()));
 
 				}
 

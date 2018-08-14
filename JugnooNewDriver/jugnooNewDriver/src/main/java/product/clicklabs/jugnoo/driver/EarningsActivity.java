@@ -369,7 +369,7 @@ public class EarningsActivity extends BaseActivity implements CustomMarkerView.L
 				tvDistanceCaptive.setText(Utils.getKilometers(driverEarningsResponse.getCoveredDistance(),this, driverEarningsResponse.getDistanceUnit()));
 				tvTargetDistance.setText(Utils.getKilometers(driverEarningsResponse.getTargetDistance(),this, driverEarningsResponse.getDistanceUnit()));
 				tvDaysLeftCaptive.setText(" " + driverEarningsResponse.getDaysLeft());
-				tvAmountCollectedCaptive.setText(" " + Utils.getAbsWithDecimalAmount(this,driverEarningsResponse.getAmountCollected(),driverEarningsResponse.getCurrencyUnit()));
+				tvAmountCollectedCaptive.setText(" " + Utils.formatCurrencyValue(driverEarningsResponse.getCurrencyUnit(), driverEarningsResponse.getAmountCollected()));
 				if(driverEarningsResponse.getPeriod()!=null){
 					dateTimeValue.setText(driverEarningsResponse.getPeriod());
 					dateTimeValue.setVisibility(View.VISIBLE);

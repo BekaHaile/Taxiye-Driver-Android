@@ -236,7 +236,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.rupee_green);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}
-				holder.textViewInvoiceFare.setText(Utils.getAbsAmount(getActivity(), invoiceInfo.fare,invoiceInfo.getCurrencyUnit()));
+				holder.textViewInvoiceFare.setText(Utils.formatCurrencyValue(invoiceInfo.getCurrencyUnit(), invoiceInfo.fare));
 
 
 				if(Prefs.with(getActivity()).getInt(Constants.SHOW_INVOICE_DETAILS,0)==1) {

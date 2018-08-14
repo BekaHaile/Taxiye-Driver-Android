@@ -394,7 +394,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	boolean sortCustomerState = true;
 
 
-	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+	DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -5569,14 +5569,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.llMinus.setVisibility(View.VISIBLE);
 					holder.llPlus.setVisibility(View.VISIBLE);
 					try {
-						holder.etPlaceBid.setText(Utils.getDecimalFormatForMoney2Dec().format(Double.parseDouble(bidValues.get(position))));
+						holder.etPlaceBid.setText(String.valueOf(Utils.currencyPrecision(Double.parseDouble(bidValues.get(position)))));
 					} catch (Exception e) {
 						holder.etPlaceBid.setText("");
 					}
 				}
 				holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
-				holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
-				holder.tvIncrease.setText(getString(R.string.increase_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
+				holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormat().format((double)percent)+"%"));
+				holder.tvIncrease.setText(getString(R.string.increase_by_format, Utils.getDecimalFormat().format((double)percent)+"%"));
 			} else {
 				holder.llPlaceBid.setVisibility(View.GONE);
 				holder.buttonAcceptRide.setText(R.string.accept);
@@ -5586,7 +5586,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getEstimatedTripDistance() > 0.0){
 				holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
 				holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
-						Utils.getDecimalFormatForMoney2Dec().format(customerInfo.getEstimatedTripDistance()
+						Utils.getDecimalFormat().format(customerInfo.getEstimatedTripDistance()
 								*UserData.getDistanceUnitFactor(HomeActivity.this))));
 			} else {
 				holder.textViewEstimatedTripDistance.setVisibility(View.GONE);

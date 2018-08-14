@@ -329,35 +329,16 @@ public class Utils {
     }
 
 
-    private static DecimalFormat decimalFormatMoney;
 
-    public static DecimalFormat getDecimalFormatForMoney() {
-        if (decimalFormatMoney == null) {
-            decimalFormatMoney = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static NumberFormat getDecimalFormatForMoney() {
+        if (numberFormat == null) {
+            initNumberFormat();
         }
-        return decimalFormatMoney;
+        return numberFormat;
     }
 
-    private static DecimalFormat decimalFormatMoney2Dec;
-
-    public static DecimalFormat getDecimalFormatForMoney2Dec() {
-        if (decimalFormatMoney2Dec == null) {
-            decimalFormatMoney2Dec = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormatMoney2Dec;
-    }
-
-    private static DecimalFormat decimalFormat1Dec;
-
-    public static DecimalFormat getDecimalFormat1Dec() {
-        if (decimalFormat1Dec == null) {
-            decimalFormat1Dec = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormat1Dec;
-    }
 
     private static DecimalFormat decimalFormat;
-
     public static DecimalFormat getDecimalFormat() {
         if (decimalFormat == null) {
             decimalFormat = new DecimalFormat("#.##");
@@ -934,49 +915,6 @@ public class Utils {
         return resizedBitmap;
     }
 
-    public static String getAbsAmount(Context context, double amount, String currency) {
-        DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
-        String showAmount;
-
-        try {
-            if (amount >= 0) {
-                showAmount = Utils.formatCurrencyValue(currency, decimalFormatNoDecimal.format(amount));
-            } else {
-                showAmount = "-" + Utils.formatCurrencyValue(currency, Math.abs(amount));
-            }
-            return showAmount;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private static DecimalFormat decimalFormatNoDecimal;
-
-    public static DecimalFormat getDecimalFormatNoDecimal() {
-        if (decimalFormatNoDecimal == null) {
-            decimalFormatNoDecimal = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormatNoDecimal;
-    }
-
-    public static String getAbsWithDecimalAmount(Context context, double amount, String currencyUnit) {
-
-        String showAmount;
-
-        try {
-            if (amount >= 0) {
-                showAmount = formatCurrencyValue(currencyUnit, getDecimalFormatNoDecimal().format(amount));
-            } else {
-                showAmount = "-" + formatCurrencyValue(currencyUnit, getDecimalFormatNoDecimal().format(Math.abs(amount)));
-            }
-            return showAmount;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public static int dpToPx(Context context, float dp) {
         int temp = (int) dp;
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -1031,7 +969,7 @@ public class Utils {
 
     public static String getKilometers(double kilometer, Context context, String distanceUnit) {
 
-        return getDecimalFormatNoDecimal().format(kilometer) + " " + Utils.getDistanceUnit(distanceUnit);
+        return getDecimalFormat().format(kilometer) + " " + Utils.getDistanceUnit(distanceUnit);
     }
 
     public static String getKilometers(String kilometer, Context context, String distanceUnit) {

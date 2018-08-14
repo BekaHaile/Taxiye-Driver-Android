@@ -608,8 +608,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									}
 									String distanceDry = "";
 									try {
-										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
-										DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+										DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this))
 												+" "+ Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 									} catch (Resources.NotFoundException e) {
