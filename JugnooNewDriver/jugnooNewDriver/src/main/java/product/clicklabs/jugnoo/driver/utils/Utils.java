@@ -64,13 +64,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -1018,20 +1016,20 @@ public class Utils {
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency){
         return formatCurrencyValue(currency, value, fallbackCurrency, true);
     }
-    public static String formatCurrencyValue(String currency, double value, boolean setMinimumDigits) {
-        return formatCurrencyValue(currency, value, "INR", setMinimumDigits);
+    public static String formatCurrencyValue(String currency, double value, boolean setPrecision) {
+        return formatCurrencyValue(currency, value, "INR", setPrecision);
     }
 
     private static NumberFormat currencyNumberFormat = null;
-    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setMinimumDigits) {
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setPrecision) {
         if(currencyNumberFormat == null){
             currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
             currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
             currencyNumberFormat.setGroupingUsed(false);
         }
 		int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-		currencyNumberFormat.setMinimumFractionDigits(setMinimumDigits ? precision : 0);
-		currencyNumberFormat.setMaximumFractionDigits(precision);
+		currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+		currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
         if (TextUtils.isEmpty(currency)) {
             currency = fallbackCurrency;
         }
