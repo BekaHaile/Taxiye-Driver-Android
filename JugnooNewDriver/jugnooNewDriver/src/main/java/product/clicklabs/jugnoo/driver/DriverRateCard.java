@@ -161,7 +161,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 		if (rateCardResponse != null) {
 
-			textViewPickupChargesValues.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() , rateCardResponse.getRates().getPickupCharges()));
+			textViewPickupChargesValues.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() , rateCardResponse.getRates().getPickupCharges(), false));
 			textViewPickupChargesperkm.setText(getString(R.string.per_format, Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 			textViewPKm.setText(getString(R.string.per_format, Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 
@@ -175,9 +175,9 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				textViewPickupChargesCondStar.setVisibility(View.GONE);
 			}
 
-			textViewBaseFareValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getBaseFare()));
-			textViewDistancePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerKm()));
-			textViewTimePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerMin()));
+			textViewBaseFareValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getBaseFare(), false));
+			textViewDistancePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerKm(), false));
+			textViewTimePKmValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  rateCardResponse.getRates().getFarePerMin(), false));
 
 			if(rateCardResponse.getRates().getAfterThresholdDistance() > 0){
 				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
@@ -185,7 +185,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance())
 								+" "+Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit()),
 						Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,
-								String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue()))
+								rateCardResponse.getRates().getGetAfterThresholdValue(), false)
 								+"/"+Utils.getDistanceUnit(rateCardResponse.getRates().getDistanceUnit())));
 			}
 
@@ -200,16 +200,16 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 				linearLayoutDriverReferral.setVisibility(View.GONE);
 				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
 				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_customer));
-				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral));
+				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral, false));
 			} else if(dToCReferral == 0 && dToDReferral >0){
 				linearLayoutDriverReferral.setVisibility(View.GONE);
 				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
 				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_driver));
-				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
+				textViewDriverReferralValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral, false));
 			} else if(dToCReferral > 0 && dToDReferral > 0){
 				linearLayoutDriverReferral.setVisibility(View.VISIBLE);
-				textViewDtoCValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral));
-				textViewDtoDValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral));
+				textViewDtoCValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToCReferral, false));
+				textViewDtoDValue.setText(Utils.formatCurrencyValue(rateCardResponse.getRates().getCurrencyUnit() ,  dToDReferral, false));
 			}
 
 			llBeforeRide.setVisibility(rateCardResponse.getRates().getPickupChargesEnabled() == 1

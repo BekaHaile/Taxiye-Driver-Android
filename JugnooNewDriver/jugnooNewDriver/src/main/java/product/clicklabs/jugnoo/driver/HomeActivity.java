@@ -3820,7 +3820,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3841,7 +3840,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3852,17 +3850,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else{
 						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
-						if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
-							takeFareText.setText(getString(R.string.total_fare) + " "
-									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
-						} else {
-							takeFareText.setText(getString(R.string.take_cash) + " "
-									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
-						}
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
+					}
+					if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
+						takeFareText.setText(getString(R.string.total_fare) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
+					} else {
+						takeFareText.setText(getString(R.string.take_cash) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
 					}
 
 					endRideInfoRl.setVisibility(View.VISIBLE);
