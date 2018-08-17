@@ -1015,16 +1015,23 @@ public class Utils {
         return formatCurrencyValue(currency, value, "INR");
     }
 
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency){
+        return formatCurrencyValue(currency, value, fallbackCurrency, true);
+    }
+    public static String formatCurrencyValue(String currency, double value, boolean setMinimumDigits) {
+        return formatCurrencyValue(currency, value, "INR", setMinimumDigits);
+    }
+
     private static NumberFormat currencyNumberFormat = null;
-    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency) {
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setMinimumDigits) {
         if(currencyNumberFormat == null){
-            int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
             currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
-            currencyNumberFormat.setMinimumFractionDigits(precision);
-            currencyNumberFormat.setMaximumFractionDigits(precision);
             currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
             currencyNumberFormat.setGroupingUsed(false);
         }
+		int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+		currencyNumberFormat.setMinimumFractionDigits(setMinimumDigits ? precision : 0);
+		currencyNumberFormat.setMaximumFractionDigits(precision);
         if (TextUtils.isEmpty(currency)) {
             currency = fallbackCurrency;
         }

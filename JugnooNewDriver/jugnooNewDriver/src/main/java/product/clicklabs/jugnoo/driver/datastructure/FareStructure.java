@@ -40,7 +40,8 @@ public class FareStructure {
 		this.fareMinimum = fareMinimum;
 	}
 	
-	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, double tollFare){
+	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin,
+								double tollFare, double tipAmount){
 		totalDistanceInKm = Utils.round(totalDistanceInKm, 2);
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
@@ -97,7 +98,7 @@ public class FareStructure {
 			}
 		}
 
-		return Utils.currencyPrecision(fare + tollFare);
+		return Utils.currencyPrecision(fare + tollFare + tipAmount);
 	}
 
 	public double getEffectiveConvenienceCharge(){

@@ -63,6 +63,7 @@ public class CustomerInfo {
 	private double initialBidValue;
 	private double estimatedTripDistance;
 	private double tollFare;
+	private double tipAmount;
 
 
 	/**
@@ -73,7 +74,7 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -116,6 +117,7 @@ public class CustomerInfo {
 		this.orderId = orderId;
 		this.loadingStatus = loadingStatus;
 		this.currencyUnit = currencyUnit;
+		this.tipAmount = tipAmount;
 	}
 
 
@@ -666,5 +668,13 @@ public class CustomerInfo {
 
 	public void setTollFare(double tollFare) {
 		this.tollFare = Utils.currencyPrecision(tollFare);
+	}
+
+	public double getTipAmount() {
+		return tipAmount;
+	}
+
+	public void setTipAmount(double tipAmount) {
+		this.tipAmount = tipAmount;
 	}
 }

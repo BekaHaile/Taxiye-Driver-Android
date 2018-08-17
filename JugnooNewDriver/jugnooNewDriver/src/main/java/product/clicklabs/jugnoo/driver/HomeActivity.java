@@ -3820,7 +3820,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3841,7 +3840,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3852,17 +3850,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else{
 						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
-						if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
-							takeFareText.setText(getString(R.string.total_fare) + " "
-									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
-						} else {
-							takeFareText.setText(getString(R.string.take_cash) + " "
-									+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
-						}
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
+					}
+					if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
+						takeFareText.setText(getString(R.string.total_fare) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
+					} else {
+						takeFareText.setText(getString(R.string.take_cash) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
 					}
 
 					endRideInfoRl.setVisibility(View.VISIBLE);
@@ -5061,7 +5059,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0);
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0,
+				customerInfo.getTipAmount());
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -5882,6 +5881,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",0));
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 					String currency = jObj.optString(Constants.KEY_CURRENCY);
+					double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -5894,7 +5894,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount);
 
 					JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 
@@ -6464,6 +6464,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)) {
 			params.put(Constants.KEY_TOLL_CHARGE, String.valueOf(customerInfo.getTollFare()));
 		}
+		params.put(Constants.KEY_TIP_AMOUNT, String.valueOf(customerInfo.getTipAmount()));
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
