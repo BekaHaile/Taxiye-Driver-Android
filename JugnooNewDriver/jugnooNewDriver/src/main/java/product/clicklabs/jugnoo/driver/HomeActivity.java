@@ -8238,6 +8238,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}else{

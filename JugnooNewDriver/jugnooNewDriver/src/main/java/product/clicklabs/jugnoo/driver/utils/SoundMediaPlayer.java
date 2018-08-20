@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
+import product.clicklabs.jugnoo.driver.Constants;
+
 public class SoundMediaPlayer {
 	
 	public static MediaPlayer mediaPlayer;
@@ -13,7 +15,7 @@ public class SoundMediaPlayer {
 	public static void startSound(Context context, int soundFileId, int loopCount, boolean maxSound){
 		try {
 			stopSound();
-			if(maxSound){
+			if(maxSound && Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1){
 				AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			}
