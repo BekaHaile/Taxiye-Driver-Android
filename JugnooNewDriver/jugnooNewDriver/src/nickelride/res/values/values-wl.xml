@@ -41,8 +41,8 @@
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
-    <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
-    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
+
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon
     </drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder
@@ -106,6 +106,8 @@
     <color name="dividerColor">#dbdbdb</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
+
+    <integer name="visibility_take_cash_at_ride_end">@integer/view_gone</integer>
 
 
 </resources>
