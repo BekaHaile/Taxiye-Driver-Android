@@ -1099,7 +1099,11 @@
     <string name="invalid_make">Please select a vehicle make to proceed.</string>
     <string name="invalid_model">Please select a vehicle model to proceed.</string>
     <string name="invalid_color">Please select a color.</string>
+    <string name="invalid_doors">Please select number of doors.</string>
+    <string name="invalid_seat_belts">Please select number of seat belts.</string>
     <string name="title_vehicle_details">Vehicle Information</string>
+    <string name="select_doors">Select Doors</string>
+    <string name="select_seatbelts">Select Seat Belts</string>
 
 
 </resources>
