@@ -40,6 +40,10 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -662,6 +666,13 @@ public interface APIServices {
 	void addMoneyViaStripe(@FieldMap Map<String, String> params,
 						   Callback<WalletModelResponse> callback);
 
-
+    @FormUrlEncoded
+    @POST("/get_vehicle_make_details")
+    void getVehicleMakeDetails(@FieldMap Map<String, String> params,
+                               Callback<VehicleDetailsResponse> callback);
+    @FormUrlEncoded
+    @POST("/get_vehicle_make_custom_details")
+    void getVehicleModelDetails(@FieldMap Map<String, String> params,
+                                Callback<VehicleModelCustomisationsResponse> callback);
 
 }
