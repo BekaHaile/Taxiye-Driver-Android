@@ -649,6 +649,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				}
 			});
 
+			if(docInfo.docCount<2){
+				holder.addImageLayout2.setVisibility(View.GONE);
+			}
+
 
 			return convertView;
 		}
