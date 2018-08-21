@@ -376,40 +376,60 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             card_view:cardBackgroundColor="@color/white"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
             android:tag="@string/dont_touch_me"
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switchNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextLarge"
-            android:text="@string/waze_navigation"
-            android:theme="@style/ThemeSwitch"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            />
+
+                <TextView
+                    android:id="@+id/tvAppSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    style="@style/TextLarge"
+                    android:gravity="center"
+                    android:text="@string/settings"
+                    android:background="@color/bgColor"/>
+
                 <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switchMaxSound"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextLarge"
-            android:text="@string/ringtone_full_volume"
-            android:theme="@style/ThemeSwitch"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            />
+                    android:id="@+id/switchNavigation"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/waze_navigation"
+                    android:theme="@style/ThemeSwitch"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchMaxSound"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/ringtone_full_volume"
+                    android:theme="@style/ThemeSwitch"
+                    />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
