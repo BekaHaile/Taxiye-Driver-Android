@@ -343,5 +343,6 @@ public interface Constants {
 	String KEY_DEFAULT_SUB_COUNTRY_CODE = "default_sub_country_code";
 	String KEY_DEFAULT_COUNTRY_ISO = "default_country_iso";
 	String KEY_TIP_AMOUNT = "tip_amount";
+	String KEY_MAX_SOUND = "max_sound";
 }
 

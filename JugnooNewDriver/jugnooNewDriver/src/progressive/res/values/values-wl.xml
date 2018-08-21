@@ -37,7 +37,7 @@
     <string name="customer_app_download_link">https://www.jugnoo.in/</string>
 
     <!--Notifications-->
-    <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
+
     <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->

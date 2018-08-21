@@ -92,7 +92,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
-	public static final int NOTIFICATION_BIG_ICON = R.drawable.ic_notification_big_drawable;
+	public static final int NOTIFICATION_BIG_ICON = R.drawable.app_icon;
 	HippoNotificationConfig fuguNotificationConfig = new HippoNotificationConfig();
 	public GCMIntentService() {
 	}
@@ -1205,7 +1205,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-				if(!BuildConfig.DEBUG)
+				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 				if(ringType == 1){
 					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
@@ -1262,7 +1262,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-			if(!BuildConfig.DEBUG)
+			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			Log.i("Music Path", "" + file);
 			mediaPlayer = MediaPlayer.create(context, Uri.parse(file));
@@ -1308,6 +1308,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			mediaPlayer.setLooping(true);
