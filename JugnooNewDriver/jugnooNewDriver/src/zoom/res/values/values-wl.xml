@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!--Don't Touch -->
+    <integer name="view_visible">0</integer>
+    <integer name="view_invisible">1</integer>
+    <integer name="view_gone">2</integer>
+    <!--Don't Touch -->
+
+
+    <!--Other things to change
+        1. google-services.json
+        2. Doc entity in strings.xml
+        3. application_id in build.gradle
+    -->
+
+
+    <string name="appname">Zoom</string>
+    <string name="app_name">Zoom Driver</string>
+
+
+    <!--White Label Key-->
+    <string name="white_label_key">3545e9c48d73d20a335e5ae17949249f</string>
+
+    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
+    <string name="images_path">Zoom Driver/Zoom Pictures</string>
+    <string name="file_provider">product.clicklabs.zoom.driver.provider</string>
+    <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--IMP-->
+
+
+    <!--App Level Constants-->
+    <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
+    <string name="white_label_name">Zoom</string><!--* IMP-->
+    <string name="support_email">support@zoom.com</string>
+    <string name="support_email_subject">Zoom Driver Support</string>
+    <string name="support_phone_number">+919023121121</string>
+    <string name="customer_app_download_link">https://www.zoom.com/</string>
+    <string name="hippo_support_faq_name_default">Driver</string>
+
+    <!--Notifications-->
+
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
+    <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
+    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
+    <integer name="splash_scene_top_bg_visibility">@integer/view_invisible</integer>
+    <integer name="splash_scene_bottom_bg_visibility">@integer/view_invisible</integer>
+    <integer name="login_scene_top_bg_visibility">@integer/view_invisible</integer>
+    <integer name="login_scene_bottom_bg_visibility">@integer/view_invisible</integer>
+
+    <!--Login sign-up -->
+    <drawable name="buttons_on_boarding_drawable">@drawable/background_translucent_white_rounded_orange_bordered</drawable>
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <dimen name="ic_splash_logo_width">160dp</dimen>
+    <dimen name="ic_splash_logo_height">60dp</dimen>
+    <integer name="show_t_and_c">@integer/view_visible</integer>
+    <bool name="animate_splash_logo">true</bool>
+    <drawable name="windowBackgroundColor">@color/white</drawable>
+
+    <!--Side Menu Properties-->
+    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
+    <integer name="show_invoices">@integer/view_visible</integer>
+    <integer name="show_driver_resources">@integer/view_visible</integer>
+    <integer name="show_refer_earn">@integer/view_visible</integer>
+
+
+    <!--Profile Screen-->
+    <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+
+
+
+    <!--General Features Enable/Disable-->
+    <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
+    <integer name="show_language_control">@integer/view_visible</integer>
+    <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <integer name="splash_scene_bg_visibility">@integer/view_visible</integer>
+
+
+
+</resources>
