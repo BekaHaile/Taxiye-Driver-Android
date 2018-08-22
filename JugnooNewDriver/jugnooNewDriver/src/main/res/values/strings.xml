@@ -1100,6 +1100,7 @@
     <string name="invalid_model">Please select a vehicle model to proceed.</string>
     <string name="invalid_color">Please select a color.</string>
     <string name="title_vehicle_details">Vehicle Information</string>
+    <string name="ride_is_complete">Ride is complete</string>
 
 
 </resources>

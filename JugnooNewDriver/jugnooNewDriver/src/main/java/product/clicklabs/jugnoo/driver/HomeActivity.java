@@ -937,7 +937,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
-			jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
+			jugnooRideOverText.setText(getString(R.string.ride_is_complete));
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Fonts.mavenBold(getApplicationContext()));
 
