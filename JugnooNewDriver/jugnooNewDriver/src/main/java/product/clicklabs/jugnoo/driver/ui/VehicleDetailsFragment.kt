@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -384,6 +385,14 @@ class VehicleDetailsFragment : Fragment() {
             return;
         }
 
+        val vehicleNumber = edtVehicleNumber.text.toString().trim()
+        if(vehicleNumber.isEmpty()){
+
+            Toast.makeText(requireContext(),getString(R.string.invalid_vehicle_number),Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         val customisationData = JSONObject();
         customisationData.put("door_id",currentDoorSelected!!.id)
         customisationData.put("seat_belt_id",currentSeatBeltSelected!!.id)
@@ -410,6 +419,7 @@ class VehicleDetailsFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0",
                 //vehicle model specific details
+                "vehicle_no" to vehicleNumber,
                 "vehicle_details" to customisationData.toString(),
                 "vehicle_type" to vehicleType,
                 "vehicle_year" to ""+year)

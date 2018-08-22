@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            android:hint="@string/year"
+            android:hint="@string/hint_year"
             android:maxLength="4"
             android:imeOptions="actionDone"
             android:inputType="number"
@@ -195,6 +195,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelSeatBelts" />
 
+
+        <TextView
+            android:id="@+id/labelVehicleNumber"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/vehicle_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtSeatBelt" />
+
+        <EditText
+            android:id="@+id/edtVehicleNumber"
+            style="@style/TextNormal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/enter_vehicle_number"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapCharacters"
+            android:textAllCaps="true"
+            android:padding="13dp"
+            android:textDirection="locale"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelVehicleNumber" />
+
+
         <Button
             android:id="@+id/btn_continue"
             style="@style/ButtonTheme"
@@ -208,7 +237,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edtSeatBelt" />
+            app:layout_constraintTop_toBottomOf="@id/edtVehicleNumber" />
+
+
 
 
 
@@ -216,7 +247,7 @@
         <android.support.constraint.Group
             android:id="@+id/vehicleDetailsGroup"
             android:visibility="gone"
-            app:constraint_referenced_ids="labelYear,edtYear,labelDoor,edtDoor,labelColor,edtColor,labelSeatBelts,edtSeatBelt"
+            app:constraint_referenced_ids="labelYear,edtYear,labelDoor,edtDoor,labelColor,edtColor,labelSeatBelts,edtSeatBelt,labelVehicleNumber,edtVehicleNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
