@@ -6770,7 +6770,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
+			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance, tipAmount = 0, tollFare = 0;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 			int invalidPool =0;
 
@@ -6823,6 +6823,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} else {
 					totalFare = getTotalFare(customerInfo, finalDistance,
 							rideTimeInMillis, waitTimeInMillis, invalidPool);
+					//toll fare and tip amount should not be there in totalFare when calculating discount
+					tipAmount = customerInfo.getTipAmount();
+					tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
+					totalFare = totalFare - tipAmount - tollFare;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -6895,6 +6899,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				finalDiscount = 0;
 			}
 			Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
+
+			//adding toll fare and tip amount again in totalFare after discount computation
+			totalFare = totalFare + tipAmount + tollFare;
 
 			if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
 				finalToPay = totalFare - finalDiscount;
