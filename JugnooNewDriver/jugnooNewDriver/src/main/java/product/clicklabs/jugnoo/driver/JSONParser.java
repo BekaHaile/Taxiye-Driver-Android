@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
@@ -791,12 +792,20 @@ public class JSONParser implements Constants {
 
 	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
 		try {
+			JSONArray fareDetails = jObj.optJSONArray(Constants.KEY_FARE_DETAILS);
+			ArrayList<FareDetail> fareDetails1 = new ArrayList<>();
+			if(fareDetails != null) {
+				for (int i = 0; i < fareDetails.length(); i++) {
+					fareDetails1.add(new FareDetail(fareDetails.getJSONObject(i).optString(KEY_NAME),
+							fareDetails.getJSONObject(i).optDouble(KEY_VALUE)));
+				}
+			}
 			return new EndRideData(engagementId,
 					jObj.getDouble("fare"),
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY));
+					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetails1);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -805,7 +814,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"");
+					PaymentMode.CASH.getOrdinal(),"", null);
 		}
 	}
 
