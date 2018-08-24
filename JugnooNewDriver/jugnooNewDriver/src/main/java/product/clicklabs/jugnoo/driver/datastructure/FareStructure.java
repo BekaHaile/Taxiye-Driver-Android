@@ -41,7 +41,7 @@ public class FareStructure {
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin,
-								double tollFare, double tipAmount){
+								double tollFare, double tipAmount, boolean dontPrecise){
 		totalDistanceInKm = Utils.round(totalDistanceInKm, 2);
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
@@ -96,6 +96,9 @@ public class FareStructure {
 			if(fare < fareMinimum){
 				fare = fareMinimum;
 			}
+		}
+		if(dontPrecise){
+			return fare + tollFare + tipAmount;
 		}
 
 		return Utils.currencyPrecision(fare + tollFare + tipAmount);

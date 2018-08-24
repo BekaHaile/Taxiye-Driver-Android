@@ -2114,7 +2114,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
 								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0, false));
 						if (!fare.equalsIgnoreCase(s.toString())) {
 							fareFetchedFromJugnoo = 0;
 						}
@@ -5039,7 +5039,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis, int invalidPool) {
+	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis,
+								int invalidPool, boolean dontPrecise) {
 		if(customerInfo.getReverseBidFare() != null){
 			return customerInfo.getReverseBidFare().getFare();
 		}
@@ -5059,8 +5060,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0,
-				customerInfo.getTipAmount());
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D,
+				customerInfo.getTipAmount(), dontPrecise);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -5072,7 +5073,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			if (Data.fareStructure != null) {
 				driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),getTotalFare(customerInfo, distance,
-						elapsedTime, waitTime, 0)));
+						elapsedTime, waitTime, 0, false)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6506,7 +6507,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double distance = customerInfo
 					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			double totalFare = getTotalFare(customerInfo, distance,
-					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0), false);
 			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 &&  (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
@@ -6680,7 +6681,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double distance = customerInfo
 					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			double totalFare = getTotalFare(customerInfo, distance,
-					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0), false);
 
 			if(customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
@@ -6718,21 +6719,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private double calculateCouponDiscount(double totalFare, CouponInfo couponInfo) {
-		double finalDiscount = 0;
+		double finalDiscount = 0D;
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == couponInfo.benefitType) {        //coupon discount
-			finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100) < couponInfo.maximumDiscountValue ?
-					((totalFare * couponInfo.discountPrecent) / 100) : couponInfo.maximumDiscountValue;
+			finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100D) < couponInfo.maximumDiscountValue ?
+					((totalFare * couponInfo.discountPrecent) / 100D) : couponInfo.maximumDiscountValue;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == couponInfo.benefitType) {        // coupon capped fare
 			if (totalFare < couponInfo.cappedFare) {        // fare less than capped fare
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			} else {                                                                // fare greater than capped fare
 				double maxDiscount = couponInfo.cappedFareMaximum - couponInfo.cappedFare;
 				finalDiscount = totalFare - couponInfo.cappedFare;
 				finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
 			}
 		} else {
-			finalDiscount = 0;
+			finalDiscount = 0D;
 		}
 		couponInfo.couponApplied = true;
 
@@ -6741,21 +6742,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private double calculatePromoDiscount(double totalFare, PromoInfo promoInfo) {
-		double finalDiscount = 0;
+		double finalDiscount = 0D;
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == promoInfo.benefitType) {        //promotion discount
-			finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100) < promoInfo.discountMaximum ?
-					((totalFare * promoInfo.discountPercentage) / 100) : promoInfo.discountMaximum;
+			finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100D) < promoInfo.discountMaximum ?
+					((totalFare * promoInfo.discountPercentage) / 100D) : promoInfo.discountMaximum;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == promoInfo.benefitType) {        // promotion capped fare
 			if (totalFare < promoInfo.cappedFare) {        // fare less than capped fare
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			} else {                                                                // fare greater than capped fare
 				double maxDiscount = promoInfo.cappedFareMaximum - promoInfo.cappedFare;
 				finalDiscount = totalFare - promoInfo.cappedFare;
 				finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
 			}
 		} else {
-			finalDiscount = 0;
+			finalDiscount = 0D;
 		}
 		promoInfo.promoApplied = true;
 
@@ -6822,7 +6823,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalFare = enteredMeterFare;
 				} else {
 					totalFare = getTotalFare(customerInfo, finalDistance,
-							rideTimeInMillis, waitTimeInMillis, invalidPool);
+							rideTimeInMillis, waitTimeInMillis, invalidPool, true);
 					//toll fare and tip amount should not be there in totalFare when calculating discount
 					tipAmount = customerInfo.getTipAmount();
 					tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
@@ -6830,7 +6831,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				totalFare = 0;
+				totalFare = 0D;
 			}
 			params.put("mandatory_fare_applicable", String.valueOf(Data.fareStructure.getMandatoryFareApplicable()));
 
@@ -6879,7 +6880,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (distanceFromDrop <= customerInfo.couponInfo.dropRadius) {                                     // drop condition satisfied
 						finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
 					} else {
-						finalDiscount = 0;
+						finalDiscount = 0D;
 					}
 				} else {
 					finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
@@ -6890,18 +6891,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (distanceFromDrop <= customerInfo.promoInfo.dropRadius) {                                     // drop condition satisfied
 						finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
 					} else {
-						finalDiscount = 0;
+						finalDiscount = 0D;
 					}
 				} else {
 					finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
 				}
 			} else {
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			}
 			Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
 
 			//adding toll fare and tip amount again in totalFare after discount computation
-			totalFare = totalFare + tipAmount + tollFare;
+			totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare);
 
 			if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
 				finalToPay = totalFare - finalDiscount;
