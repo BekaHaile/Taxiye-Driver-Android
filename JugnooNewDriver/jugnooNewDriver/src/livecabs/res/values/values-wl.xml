@@ -106,6 +106,8 @@
     <color name="themeColorAlternateLight">#bb3c3638</color>
 
     <string name="currency_fallback">LKR</string>
-
+    <string name="facebook_page_id">171005023594875</string>
+    <string name="facebook_page_name">livecbs</string>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
 </resources>
