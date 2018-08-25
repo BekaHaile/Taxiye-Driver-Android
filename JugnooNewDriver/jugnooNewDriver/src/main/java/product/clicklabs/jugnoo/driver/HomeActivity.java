@@ -5093,7 +5093,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
 				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D,
-				customerInfo.getTipAmount(), dontPrecise);
+				customerInfo.getTipAmount(),
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0,
+				dontPrecise);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
