@@ -113,7 +113,7 @@ public class CountryPicker implements CountryPickerDialog.CountryPickerDialogInt
       new Country("GT", "Guatemala", "+502", R.drawable.flag_gt, "GTQ"),
       new Country("GU", "Guam", "+1", R.drawable.flag_gu, "USD"),
       new Country("GW", "Guinea-Bissau", "+245", R.drawable.flag_gw, "XOF"),
-      new Country("GY", "Guyana", "+595", R.drawable.flag_gy, "GYD"),
+      new Country("GY", "Guyana", "+592", R.drawable.flag_gy, "GYD"),
       new Country("HK", "Hong Kong", "+852", R.drawable.flag_hk, "HKD"),
       new Country("HM", "Heard Island and McDonald Islands", "+000", R.drawable.flag_hm, "AUD"),
       new Country("HN", "Honduras", "+504", R.drawable.flag_hn, "HNL"),
