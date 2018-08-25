@@ -41,7 +41,7 @@
 
     <!--Notifications-->
 
-    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
 
@@ -116,5 +116,6 @@
 
     <integer name="visibility_payment_type_in_wallet_trans">@integer/view_gone</integer>
     <string name="currency_fallback">SGD</string>
+    <integer name="default_show_details_in_take_cash">1</integer>
 
 </resources>

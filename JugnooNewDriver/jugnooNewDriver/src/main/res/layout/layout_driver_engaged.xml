@@ -265,39 +265,6 @@
             android:splitMotionEvents="false"
             android:visibility="visible">
 
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/driverStartRideBtn"-->
-                <!--android:layout_width="410px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_marginStart="25px"-->
-                <!--android:background="@drawable/new_orange_btn_selector_rounded"-->
-                <!--android:text="@string/start_ride"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="@dimen/button_text_size"/>-->
-
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/buttonMarkArrived"-->
-                <!--android:layout_width="410px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_marginStart="25px"-->
-                <!--android:background="@drawable/new_orange_btn_normal_rounded"-->
-                <!--android:text="@string/arrived"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="@dimen/button_text_size"/>-->
-
-            <!--<product.clicklabs.jugnoo.driver.utils.CustomButtonView-->
-                <!--android:id="@+id/driverCancelRideBtn"-->
-                <!--android:layout_width="240px"-->
-                <!--android:layout_height="99px"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="15px"-->
-                <!--android:background="@drawable/new_menu_black_btn_selector_rounded"-->
-                <!--android:text="@string/cancel"-->
-                <!--android:textColor="@drawable/white_color_selector"-->
-                <!--android:textSize="32px"/>-->
-
-
-
             <LinearLayout
                 android:id="@+id/linearLayoutDeliveryItem"
                 android:layout_width="match_parent"
@@ -307,7 +274,7 @@
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="40px"
+                    android:layout_height="6px"
                     android:layout_below="@+id/inRideCustomerInfoRl"
                     android:background="@drawable/shadow_up_light"/>
                 <LinearLayout

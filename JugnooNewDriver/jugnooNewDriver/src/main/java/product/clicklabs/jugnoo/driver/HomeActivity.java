@@ -113,6 +113,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import product.clicklabs.jugnoo.driver.adapters.FareDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
@@ -135,6 +136,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
@@ -200,6 +202,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
+import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -496,6 +499,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
+
+	private RecyclerView rvFareDetails;
+	private FareDetailsAdapter fareDetailsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -1032,6 +1038,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutItemHeader = (RelativeLayout) findViewById(R.id.relativeLayoutItemHeader);
 			topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
 			reCreateDeliveryMarkers = true;
+
+			rvFareDetails = findViewById(R.id.rvFareDetails);
+			rvFareDetails.setLayoutManager(new LinearLayoutManagerForResizableRecyclerView(this));
+			fareDetailsAdapter = new FareDetailsAdapter();
+			rvFareDetails.setAdapter(fareDetailsAdapter);
 
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			new Handler().postDelayed(new Runnable() {
@@ -3816,6 +3827,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
 					reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
+
+					if(Prefs.with(context).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1){
+						rvFareDetails.setVisibility(endRideData.getFareDetails() == null
+								|| endRideData.getFareDetails().size() == 0 ? View.GONE : View.VISIBLE);
+						fareDetailsAdapter.setList(endRideData.getFareDetails(), endRideData.getCurrency());
+					} else {
+						rvFareDetails.setVisibility(View.GONE);
+					}
 
 
 					if(customerInfo.getIsDelivery() == 1){
@@ -6737,7 +6756,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		couponInfo.couponApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
@@ -6760,7 +6779,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		promoInfo.promoApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
@@ -6901,6 +6920,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
 
+
+			ArrayList<FareDetail> fareDetails = new ArrayList<>();
+			if(finalDiscount > 0D){
+				fareDetails.add(new FareDetail(getString(R.string.discount), -finalDiscount));
+			}
+			if(tipAmount > 0D) {
+				fareDetails.add(new FareDetail(getString(R.string.tip), tipAmount));
+			}
+			if(tollFare > 0) {
+				fareDetails.add(new FareDetail(getString(R.string.toll_charges), tollFare));
+			}
+			if(fareDetails.size() > 0){
+				fareDetails.add(0, new FareDetail(getString(R.string.fare), totalFare));
+			}
+
 			//adding toll fare and tip amount again in totalFare after discount computation
 			totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare);
 
@@ -6941,7 +6975,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
-					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit());
+					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit(),
+					fareDetails);
 
 			try {
 				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);

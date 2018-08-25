@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
@@ -383,6 +384,8 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
 		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
+		Prefs.with(context).save(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, userData.optInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH,
+				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		return new UserData(accessToken, userData.getString("user_name"),
@@ -791,12 +794,20 @@ public class JSONParser implements Constants {
 
 	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
 		try {
+			JSONArray fareDetails = jObj.optJSONArray(Constants.KEY_FARE_BREAKDOWN);
+			ArrayList<FareDetail> fareDetailsArr = new ArrayList<>();
+			if(fareDetails != null) {
+				for (int i = 0; i < fareDetails.length(); i++) {
+					fareDetailsArr.add(new FareDetail(fareDetails.getJSONObject(i).optString(KEY_NAME),
+							fareDetails.getJSONObject(i).optDouble(KEY_VALUE)));
+				}
+			}
 			return new EndRideData(engagementId,
 					jObj.getDouble("fare"),
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY));
+					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -805,7 +816,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"");
+					PaymentMode.CASH.getOrdinal(),"", null);
 		}
 	}
 

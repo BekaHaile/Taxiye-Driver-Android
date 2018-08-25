@@ -1101,6 +1101,9 @@
     <string name="invalid_color">Please select a color.</string>
     <string name="title_vehicle_details">Vehicle Information</string>
     <string name="ride_is_complete">Ride is complete</string>
+    <string name="tip">Tip</string>
+    <string name="toll_charges">Toll Charges</string>
+    <string name="discount">Discount</string>
 
 
 </resources>
