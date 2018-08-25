@@ -113,7 +113,8 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),
 						mandatoryFareDetails.getDouble("mandatory_fare_value"),
-						mandatoryFareDetails.getDouble("mandatory_fare_capping"));
+						mandatoryFareDetails.getDouble("mandatory_fare_capping"),
+						fareDetails.optDouble("fare_per_baggage",0.0));
 			} else {
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
 						fareDetails.getDouble("fare_threshold_distance"),
@@ -125,11 +126,12 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_threshold_distance"),
 						fareDetails.getDouble("fare_per_km_after_threshold"),
 						fareDetails.getDouble("fare_per_km_before_threshold"),
-						fareDetails.getDouble("fare_minimum"),0,0);
+						fareDetails.getDouble("fare_minimum"),0,0,
+						fareDetails.optDouble("fare_per_baggage",0.0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0);
 		}
 	}
 
@@ -569,6 +571,7 @@ public class JSONParser implements Constants {
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 							String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
 							double tipAmount = jObjCustomer.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
+							int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
 
 
 							if(i == 0){
@@ -581,7 +584,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency, tipAmount);
+									orderId, loadingStatus, currency, tipAmount,luggageCount);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -1006,7 +1009,8 @@ public class JSONParser implements Constants {
 				Constants.KEY_LOGOUT,
 				Constants.KEY_SHOW_WAZE_TOGGLE,
 				Constants.KEY_SHOW_TOLL_CHARGE,
-                Constants.WALLET
+                Constants.WALLET,
+				Constants.KEY_SHOW_LUGGAGE_CHARGE
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
@@ -1028,6 +1032,7 @@ public class JSONParser implements Constants {
 		}
 		Data.setSupportOptions(supportOptions);
 		Data.setCreditOptions(creditOptions);
+
 	}
 
 	public static boolean isChatSupportEnabled(Context context){

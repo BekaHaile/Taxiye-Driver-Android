@@ -675,4 +675,10 @@ public interface APIServices {
     void getVehicleModelDetails(@FieldMap Map<String, String> params,
                                 Callback<VehicleModelCustomisationsResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/update_luggage_count")
+	void updateLuggageCount(@FieldMap Map<String, String> params,
+							Callback<FeedCommonResponseKotlin> callback);
+
+
 }

@@ -1101,6 +1101,12 @@
     <string name="invalid_color">Please select a color.</string>
     <string name="title_vehicle_details">Vehicle Information</string>
     <string name="ride_is_complete">Ride is complete</string>
+    <string name="add_luaggage">Add Luggage</string>
+    <string name="luggage_count">Luggage Count</string>
+    <string name="text_luggage_charges">Fare per Baggage: %s</string>
+    <string name="add_luggage">Add Luggage</string>
+    <string name="luggage_info_home_screen">Luggage Charges (%d): %s</string>
+    <string name="change_u"><u>CHANGE</u></string>
     <string name="tip">Tip</string>
     <string name="toll_charges">Toll Charges</string>
     <string name="discount">Discount</string>

@@ -347,5 +347,7 @@ public interface Constants {
 	String KEY_FARE_BREAKDOWN = "fare_breakdown";
 	String KEY_VALUE = "value";
 	String KEY_SHOW_DETAILS_IN_TAKE_CASH = "show_details_in_take_cash";
+    String KEY_SHOW_LUGGAGE_CHARGE = "show_luggage_charges";
+    String KEY_LUGGAGE_COUNT = "luggage_count";
 }
 

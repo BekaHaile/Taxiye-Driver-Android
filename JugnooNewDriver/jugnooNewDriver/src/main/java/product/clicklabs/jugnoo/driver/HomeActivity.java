@@ -188,6 +188,7 @@ import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -494,11 +495,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private boolean isTourFlag, isTourBtnClicked, isJugnooOnTraining = false;
 	private View customView;
 	private GenrateTourPush gcmIntentService;
-	private RelativeLayout relativeLayoutTour, relativeLayoutDocs;
+	private RelativeLayout relativeLayoutTour, relativeLayoutDocs,layoutAddedLuggage;
 	private TextView textViewTour, textViewDoc;
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
+	private Button buttonAddLuggage;
+	private TextView tvLuggageInfo ,tvChangeLuggageCount;
+	private boolean showLuggageCharges;
 
 	private RecyclerView rvFareDetails;
 	private FareDetailsAdapter fareDetailsAdapter;
@@ -1038,7 +1042,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutItemHeader = (RelativeLayout) findViewById(R.id.relativeLayoutItemHeader);
 			topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
 			reCreateDeliveryMarkers = true;
+			buttonAddLuggage = findViewById(R.id.buttonAddLuggage);
+			layoutAddedLuggage = findViewById(R.id.layout_added_luggage);
+			tvLuggageInfo = findViewById(R.id.tvLuggageInfo);
+			tvChangeLuggageCount = findViewById(R.id.tvChangeLuggageCount);
+			View.OnClickListener showLuggagelistener = new View.OnClickListener(){
 
+				@Override
+				public void onClick(View v) {
+					getAddLuggageInteractor().showLuggagePopup();
+				}
+			};
+			buttonAddLuggage.setOnClickListener(showLuggagelistener);
+			tvChangeLuggageCount.setOnClickListener(showLuggagelistener);
+			showLuggageCharges = Prefs.with(this).getInt(Constants.KEY_SHOW_LUGGAGE_CHARGE, 0) == 1;
 			rvFareDetails = findViewById(R.id.rvFareDetails);
 			rvFareDetails.setLayoutManager(new LinearLayoutManagerForResizableRecyclerView(this));
 			fareDetailsAdapter = new FareDetailsAdapter();
@@ -2446,6 +2463,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		int width = displayMetrics.widthPixels;
 		Log.e("device_height",height+"");
 		Log.e("device_width",width+"");
+	}
+
+	private AddLuggageInteractor addLuggageInteractor;
+	private AddLuggageInteractor getAddLuggageInteractor() {
+		if(addLuggageInteractor==null){
+			 addLuggageInteractor = new AddLuggageInteractor(this);
+		}
+		return addLuggageInteractor;
 	}
 
 
@@ -4574,6 +4599,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
+			setLuggageUI();
+
+
 			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
@@ -4628,6 +4656,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setLuggageUI() {
+		if(driverScreenMode==DriverScreenMode.D_IN_RIDE && showLuggageCharges){
+
+			int luggageCount = Data.getCurrentCustomerInfo().getLuggageCount();
+			if(luggageCount>0){
+				buttonAddLuggage.setVisibility(View.GONE);
+				layoutAddedLuggage.setVisibility(View.VISIBLE);
+				String amount = Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),luggageCount * Data.fareStructure.getBaggageCharges());
+				tvLuggageInfo.setText(getString(R.string.luggage_info_home_screen,luggageCount,amount));
+
+			}else{
+				buttonAddLuggage.setVisibility(View.VISIBLE);
+				layoutAddedLuggage.setVisibility(View.GONE);
+			}
+
+
+
+		}else{
+			buttonAddLuggage.setVisibility(View.GONE);
+			layoutAddedLuggage.setVisibility(View.GONE);
+		}
+
 	}
 
 	Handler startRideAlarmHandler = new Handler();
@@ -5080,7 +5132,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
 				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D,
-				customerInfo.getTipAmount(), dontPrecise);
+				customerInfo.getTipAmount(),
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0,
+				dontPrecise);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -5914,7 +5968,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount,0);
 
 					JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 
