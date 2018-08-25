@@ -527,16 +527,24 @@
 
             <Button
                 android:id="@+id/buttonAddLuggage"
-                android:layout_width="100px"
-                android:layout_height="86px"
-                android:layout_marginStart="20px"
-                android:layout_marginEnd="20px"
-                android:layout_marginBottom="-30px"
-                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="39dp"
+                android:layout_marginBottom="-15dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@string/call_driver"
-                android:visibility="gone"
-                android:background="@drawable/ic_luggage"
-                android:tag="mwar" />
+                android:visibility="visible"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:drawablePadding="5dp"
+                android:text="@string/add_luggage"
+                android:gravity="center"
+                style="@style/TextNormal"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:drawableEnd="@drawable/ic_suitcase"
+                android:background="@drawable/orange_btn_selector"
+                android:tag="@string/dont_touch_me" />
 
 
 

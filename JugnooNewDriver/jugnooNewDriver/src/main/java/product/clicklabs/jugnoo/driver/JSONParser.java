@@ -126,7 +126,7 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_after_threshold"),
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),0,0,
-						fareDetails.optDouble("baggage_charges",0.0));
+						fareDetails.optDouble("fare_per_baggage",0.0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1022,8 +1022,6 @@ public class JSONParser implements Constants {
 		Data.setSupportOptions(supportOptions);
 		Data.setCreditOptions(creditOptions);
 
-		// TODO: 25/08/18 revert
-		Prefs.with(context).save(KEY_SHOW_LUGGAGE_CHARGE, 1);
 	}
 
 	public static boolean isChatSupportEnabled(Context context){
