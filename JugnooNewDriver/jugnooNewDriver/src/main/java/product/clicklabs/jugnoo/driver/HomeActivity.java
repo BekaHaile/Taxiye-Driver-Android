@@ -3828,9 +3828,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
 					reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
-					rvFareDetails.setVisibility(endRideData.getFareDetails() == null
-							|| endRideData.getFareDetails().size() == 0 ? View.GONE : View.VISIBLE);
-					fareDetailsAdapter.setList(endRideData.getFareDetails(), endRideData.getCurrency());
+					if(Prefs.with(context).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1){
+						rvFareDetails.setVisibility(endRideData.getFareDetails() == null
+								|| endRideData.getFareDetails().size() == 0 ? View.GONE : View.VISIBLE);
+						fareDetailsAdapter.setList(endRideData.getFareDetails(), endRideData.getCurrency());
+					} else {
+						rvFareDetails.setVisibility(View.GONE);
+					}
 
 
 					if(customerInfo.getIsDelivery() == 1){
@@ -6752,7 +6756,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		couponInfo.couponApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
@@ -6775,7 +6779,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		promoInfo.promoApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
