@@ -73,11 +73,12 @@ class AddLuggageInteractor(val activity: HomeActivity){
 
         }
         btnDone.setOnClickListener {
-            if(it.tag!=null && it.tag== TAG_LUGGAGE_COUNT_SUBMITTED){
+          /*  if(it.tag!=null && it.tag== TAG_LUGGAGE_COUNT_SUBMITTED){
                 setButtonState(null)
             }else{
-                submitLuggageCount(Integer.parseInt(tvLuggageValue.text.toString().trim()))
-            }
+            }*/
+            submitLuggageCount(Integer.parseInt(tvLuggageValue.text.toString().trim()))
+
         }
     }
 
@@ -96,7 +97,7 @@ class AddLuggageInteractor(val activity: HomeActivity){
     }
 
     private fun setButtonState(tag:Int?) {
-        btnDone.tag = tag
+       /* btnDone.tag = tag
         if(tag== TAG_LUGGAGE_COUNT_SUBMITTED){
             btnDone.text = activity.getString(R.string.change)
             tvIncrementLuggage.isEnabled = false
@@ -105,7 +106,7 @@ class AddLuggageInteractor(val activity: HomeActivity){
             btnDone.text = activity.getString(R.string.done)
             tvIncrementLuggage.isEnabled = true
             tvDecrementLuggage.isEnabled = true
-        }
+        }*/
     }
 
     private fun submitLuggageCount(amount: Int) {

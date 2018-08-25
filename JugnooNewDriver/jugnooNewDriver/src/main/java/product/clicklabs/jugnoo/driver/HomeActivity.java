@@ -492,12 +492,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private boolean isTourFlag, isTourBtnClicked, isJugnooOnTraining = false;
 	private View customView;
 	private GenrateTourPush gcmIntentService;
-	private RelativeLayout relativeLayoutTour, relativeLayoutDocs;
+	private RelativeLayout relativeLayoutTour, relativeLayoutDocs,layoutAddedLuggage;
 	private TextView textViewTour, textViewDoc;
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
 	private Button buttonAddLuggage;
+	private TextView tvLuggageInfo ,tvChangeLuggageCount;
 	private boolean showLuggageCharges;
 
 	@Override
@@ -1036,12 +1037,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
 			reCreateDeliveryMarkers = true;
 			buttonAddLuggage = findViewById(R.id.buttonAddLuggage);
-			buttonAddLuggage.setOnClickListener(new OnClickListener() {
+			layoutAddedLuggage = findViewById(R.id.layout_added_luggage);
+			tvLuggageInfo = findViewById(R.id.tvLuggageInfo);
+			tvChangeLuggageCount = findViewById(R.id.tvChangeLuggageCount);
+			View.OnClickListener showLuggagelistener = new View.OnClickListener(){
+
 				@Override
 				public void onClick(View v) {
 					getAddLuggageInteractor().showLuggagePopup();
 				}
-			});
+			};
+			buttonAddLuggage.setOnClickListener(showLuggagelistener);
+			tvChangeLuggageCount.setOnClickListener(showLuggagelistener);
 			showLuggageCharges = Prefs.with(this).getInt(Constants.KEY_SHOW_LUGGAGE_CHARGE, 0) == 1;
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			new Handler().postDelayed(new Runnable() {
@@ -4634,11 +4641,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void setLuggageUI() {
 		if(driverScreenMode==DriverScreenMode.D_IN_RIDE && showLuggageCharges){
-			buttonAddLuggage.setVisibility(View.VISIBLE);
+
+			int luggageCount = Data.getCurrentCustomerInfo().getLuggageCount();
+			if(luggageCount>0){
+				buttonAddLuggage.setVisibility(View.GONE);
+				layoutAddedLuggage.setVisibility(View.VISIBLE);
+				String amount = Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),luggageCount * Data.fareStructure.getBaggageCharges());
+				tvLuggageInfo.setText(getString(R.string.luggage_info_home_screen,luggageCount,amount));
+
+			}else{
+				buttonAddLuggage.setVisibility(View.VISIBLE);
+				layoutAddedLuggage.setVisibility(View.GONE);
+			}
+
 
 
 		}else{
 			buttonAddLuggage.setVisibility(View.GONE);
+			layoutAddedLuggage.setVisibility(View.GONE);
 		}
 
 	}
