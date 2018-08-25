@@ -186,6 +186,7 @@ import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -496,6 +497,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
+	private Button buttonAddLuggage;
+	private boolean showLuggageCharges;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -1032,7 +1035,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutItemHeader = (RelativeLayout) findViewById(R.id.relativeLayoutItemHeader);
 			topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
 			reCreateDeliveryMarkers = true;
-
+			buttonAddLuggage = findViewById(R.id.buttonAddLuggage);
+			buttonAddLuggage.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getAddLuggageInteractor().showLuggagePopup();
+				}
+			});
+			showLuggageCharges = Prefs.with(this).getInt(Constants.KEY_SHOW_LUGGAGE_CHARGE, 0) == 1;
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			new Handler().postDelayed(new Runnable() {
 				@Override
@@ -2435,6 +2445,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		int width = displayMetrics.widthPixels;
 		Log.e("device_height",height+"");
 		Log.e("device_width",width+"");
+	}
+
+	private AddLuggageInteractor addLuggageInteractor;
+	private AddLuggageInteractor getAddLuggageInteractor() {
+		if(addLuggageInteractor==null){
+			 addLuggageInteractor = new AddLuggageInteractor(this);
+		}
+		return addLuggageInteractor;
 	}
 
 
@@ -4555,6 +4573,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
+			setLuggageUI();
+
+
 			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
@@ -4609,6 +4630,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setLuggageUI() {
+		if(driverScreenMode==DriverScreenMode.D_IN_RIDE && showLuggageCharges){
+			buttonAddLuggage.setVisibility(View.VISIBLE);
+
+
+		}else{
+			buttonAddLuggage.setVisibility(View.GONE);
+		}
+
 	}
 
 	Handler startRideAlarmHandler = new Handler();
@@ -5895,7 +5927,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount,0);
 
 					JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 

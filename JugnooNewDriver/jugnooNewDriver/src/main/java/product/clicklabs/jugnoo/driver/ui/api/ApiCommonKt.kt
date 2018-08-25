@@ -155,7 +155,9 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
             ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
             ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetailsResponse> )
-            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as Callback<VehicleModelCustomisationsResponse> )
+            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
+                    Callback<VehicleModelCustomisationsResponse> )
+            ApiName.UPDATE_LUGGAGE_COUNT ->  RestClient.getApiServices().updateLuggageCount(params, callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

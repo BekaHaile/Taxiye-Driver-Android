@@ -17,10 +17,13 @@ public class FareStructure {
 	public double convenienceCharge, convenienceChargeWaiver;
 	public double mandatoryFare, mandatoryFareCapping;
 	public int mandatoryFareApplicable = 0;
-	
+	private double baggageCharges ;
+	private int baggageCount ;
+
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
-						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping){
+						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping,
+						 double baggageCharges,int baggageCount){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -38,6 +41,8 @@ public class FareStructure {
 		this.mandatoryFare = mandatoryFare;
 		this.mandatoryFareCapping = mandatoryFareCapping;
 		this.fareMinimum = fareMinimum;
+		this.baggageCharges = baggageCharges;
+		this.baggageCount = baggageCount;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin,
@@ -111,11 +116,21 @@ public class FareStructure {
 	public int getMandatoryFareApplicable(){
 		return  mandatoryFareApplicable;
 	}
-	
+
+	public double getBaggageCharges() {
+		return baggageCharges;
+
+	}
+
+	public int getBaggageCount() {
+		return baggageCount;
+	}
+
 	@Override
 	public String toString() {
 		return "fixedFare=" + fixedFare + ", thresholdDistance=" + thresholdDistance + ", farePerKm=" + farePerKm + ", farePerMin=" + farePerMin + ", freeMinutes=" + freeMinutes
 				+ ", farePerWaitingMin=" + farePerWaitingMin + ", freeWaitingMinutes=" + freeWaitingMinutes + " fareFactor = " + fareFactor+", luggageFare="+luggageFare
-				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver;
+				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver + "baggageCharges= " + baggageCharges
+				+ "baggageCount= " + baggageCount;
 	}
 }

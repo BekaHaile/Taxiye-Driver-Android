@@ -525,6 +525,19 @@
             <!-- in ride operations rl-->
 
 
+            <Button
+                android:id="@+id/buttonAddLuggage"
+                android:layout_width="100px"
+                android:layout_height="86px"
+                android:layout_marginStart="20px"
+                android:layout_marginEnd="20px"
+                android:layout_marginBottom="-30px"
+                android:layout_gravity="right"
+                android:contentDescription="@string/call_driver"
+                android:visibility="gone"
+                android:background="@drawable/ic_luggage"
+                android:tag="mwar" />
+
 
 
 

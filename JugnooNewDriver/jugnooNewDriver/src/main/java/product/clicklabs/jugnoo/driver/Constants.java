@@ -344,5 +344,7 @@ public interface Constants {
 	String KEY_DEFAULT_COUNTRY_ISO = "default_country_iso";
 	String KEY_TIP_AMOUNT = "tip_amount";
 	String KEY_MAX_SOUND = "max_sound";
+    String KEY_SHOW_LUGGAGE_CHARGE = "show_luggage_charges";
+    String KEY_LUGGAGE_COUNT = "luggage_count";
 }
 
