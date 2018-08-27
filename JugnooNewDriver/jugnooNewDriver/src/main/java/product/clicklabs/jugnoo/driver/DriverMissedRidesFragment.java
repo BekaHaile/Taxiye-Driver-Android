@@ -245,7 +245,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 
 							JSONArray missedRidesData = jObj.getJSONArray("missed_rides");
 							missedRideInfos.clear();
-							DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+							DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 							if (missedRidesData.length() > 0) {
 								for (int i = missedRidesData.length() - 1; i >= 0; i--) {
 									JSONObject rideData = missedRidesData.getJSONObject(i);

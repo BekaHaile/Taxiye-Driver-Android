@@ -46,12 +46,12 @@ public class Log {
 	
 	
 
+
 	
-	
-	
-	
-	
-	
+
+
+
+
 	
 	
 	public static File getPathLogFolder(Context context){

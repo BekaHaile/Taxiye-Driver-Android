@@ -107,7 +107,7 @@ public class HippoConfig extends FuguBaseActivity implements Parcelable {
             if (CommonData.getServerUrl().equals(LIVE_SERVER)) {
                 mClient = new FayeClient(CommonData.getServerUrl() + ":3002/faye", meta);
             } else if (CommonData.getServerUrl().equals(TEST_SERVER) || CommonData.getServerUrl().equals(BETA_LIVE_SERVER)) {
-                mClient = new FayeClient("https://hippo-api-dev.fuguchat.com:3012/faye", meta);
+                mClient = new FayeClient("https://hippo-api-dev.fuguchat.com:3001/faye", meta);
 //              mClient = new FayeClient(CommonData.getServerUrl() + ":3001/faye", meta);
 //                mClient = new FayeClient("https://beta-api.fuguchat.com:3017/faye", meta);
             }

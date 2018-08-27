@@ -255,6 +255,19 @@ class LoginFragment : Fragment() {
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
 
+                        Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_CODE, t?.defaultCountryCode ?: "")
+                        Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, t?.defaultSubCountryCode ?: "")
+                        Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_ISO, t?.defaultCountryIso ?: "")
+
+                        tvCountryCode.text = Utils.getCountryCode(requireActivity())
+                        if (edtPhoneNo.text.isEmpty()) {
+                            edtPhoneNo.setText(Prefs.with(requireActivity()).getString(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, ""))
+                        }
+
+                        if (resources.getInteger(R.integer.show_language_control) != resources.getInteger(R.integer.view_visible)){
+                            return
+                        }
+
                         if (t?.languageList == null || t.languageList.size == 0) {
                             onError(t, getString(R.string.select_language), flag)
                             return
@@ -497,9 +510,9 @@ class LoginFragment : Fragment() {
 
 
         try {
-            if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)){
+//            if (resources.getInteger(R.integer.show_language_control) == resources.getInteger(R.integer.view_visible)){
                 getLanguageList(false)
-            }
+//            }
 
             with(rootView){
                 if(!tvLabel.isGone())tvLabel.visible()

@@ -5,13 +5,10 @@ import android.text.TextUtils
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
-import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
-import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
-import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
-import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
+import product.clicklabs.jugnoo.driver.ui.models.*
 import product.clicklabs.jugnoo.driver.utils.AppStatus
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import retrofit.Callback
@@ -157,6 +154,10 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToDriver(params, callback as Callback<StripeCardResponse> )
             ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
             ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
+            ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetailsResponse> )
+            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
+                    Callback<VehicleModelCustomisationsResponse> )
+            ApiName.UPDATE_LUGGAGE_COUNT ->  RestClient.getApiServices().updateLuggageCount(params, callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

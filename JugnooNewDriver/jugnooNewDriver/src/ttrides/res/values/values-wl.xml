@@ -17,7 +17,7 @@
 
 
     <string name="appname">TT RideShare</string>
-    <string name="app_name">TT RideShare Drivers</string>
+    <string name="app_name">TT RideShare Driver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">83ebe9d9d65fdac16460da388822bc38</string>
@@ -41,7 +41,7 @@
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
-    <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
+
     <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
@@ -78,6 +78,7 @@
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <drawable name="bg_login">@color/colorPrimaryDark</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 

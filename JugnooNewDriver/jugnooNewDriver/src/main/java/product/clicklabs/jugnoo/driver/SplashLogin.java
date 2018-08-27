@@ -241,7 +241,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 
 		try {																						// to get AppVersion, OS version, country code and device name
 			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			Data.appVersion = pInfo.versionCode;
 			Log.i("appVersion", Data.appVersion + "..");
 			Data.osVersion = android.os.Build.VERSION.RELEASE;
 			Log.i("osVersion", Data.osVersion + "..");

@@ -64,7 +64,7 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                 double waitTimeMinutes = Math.ceil(waitTimeSeconds / 60);
                 int lastLogId = Integer.parseInt((Prefs.with(context).getString(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0)));
 
-                DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+                DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
                 DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
                 HashMap<String, String> params = new HashMap<>();

@@ -72,7 +72,8 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCall1"
-            style="@style/ButtonTheme">
+            style="@style/ButtonTheme"
+            android:background="@drawable/green_btn_call_selector">
 
             <ImageView
                 android:id="@+id/driverCallIcon"

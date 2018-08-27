@@ -15,7 +15,7 @@ public interface FuguAppConstant {
     String DEV_SERVER = "https://alpha-api.fuguchat.com";
     //String TEST_SERVER = "https://beta-api.fuguchat.com"; // 13.126.0.203:3001
     String TEST_SERVER = "https://hippo-api-dev.fuguchat.com:3011";
-    String BETA_LIVE_SERVER = "https://api.fuguchat.com";
+    String BETA_LIVE_SERVER = "https://api.fuguchat.com:3011";
     String LIVE_SERVER = "https://api.fuguchat.com";
 
     int SESSION_EXPIRE = 403;

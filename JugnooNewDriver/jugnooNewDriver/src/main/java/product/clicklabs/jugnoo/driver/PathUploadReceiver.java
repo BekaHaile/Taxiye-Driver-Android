@@ -29,7 +29,6 @@ import retrofit.mime.TypedByteArray;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
-    private static final double FILTER_DISTANCE = 35;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -53,7 +52,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
     public static void uploadInRidePath(Context context, boolean fromReceiver){
         try {
-
+            double pathFilterDistance = context.getResources().getInteger(R.integer.path_filter_distance);
             ArrayList<CurrentPathItem> validCurrentPathItems = new ArrayList<CurrentPathItem>();
             validCurrentPathItems.addAll(Database2.getInstance(context).getCurrentPathItemsToUpload());
 
@@ -77,7 +76,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                             boolean addPath = false;
                             if(i < validCurrentPathItems.size()-1){
                                 if(MapUtils.distance(currentPathItem.dLatLng, validCurrentPathItems.get(i+1).sLatLng) < 2){
-                                    if(MapUtils.distance(pathSource, currentPathItem.dLatLng) < FILTER_DISTANCE){
+                                    if(MapUtils.distance(pathSource, currentPathItem.dLatLng) < pathFilterDistance){
                                         //dont add
                                         addPath = false;
                                     }

@@ -29,7 +29,7 @@
     <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
     <string name="facebook_page_id">1110113865716816</string>
-    <string name="facebook_page_name">Pamdrive, Nigeria #1 Taxi Company</string>
+    <string name="facebook_page_name">PamDrive</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
@@ -41,7 +41,7 @@
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
-    <drawable name="ic_notification_big_drawable">@drawable/app_icon</drawable>
+
     <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon
     </drawable><!--App Floating Service Icon, preferably circular-->

@@ -1,5 +1,6 @@
 package com.picker;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,18 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
 
     // endregion
 
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        // request a window without the title
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+
+    }
+
     // region Constructors
     public static CountryPickerDialog newInstance(String string) {
         CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
@@ -51,13 +66,14 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
 							 Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.country_picker,null);
+        String title = null;
         if(getArguments()!=null && getArguments().containsKey(SEARCH_DIALOG_TITLE)){
-            getDialog().setTitle(getArguments().getString(SEARCH_DIALOG_TITLE,null));
-
+            title =  getArguments().getString(SEARCH_DIALOG_TITLE,null);
         }else{
-            getDialog().setTitle(R.string.title_search_dialog_default);
+            title= getString(R.string.select);
 
         }
+        ((TextView)view.findViewById(R.id.tv_title)).setText(title);
         EditText searchEditText = (EditText) view.findViewById(R.id.country_code_picker_search);
         countriesRecyclerView = (RecyclerView) view.findViewById(R.id.countries_recycler_view);
         llNoData = (LinearLayout) view.findViewById(R.id.llNoData);

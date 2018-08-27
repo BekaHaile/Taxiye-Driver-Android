@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import product.clicklabs.jugnoo.driver.utils.Utils;
+
 public class FareStructure {
 	public double fixedFare;
 	public double thresholdDistance, farePerKmThresholdDistance;
@@ -15,10 +17,12 @@ public class FareStructure {
 	public double convenienceCharge, convenienceChargeWaiver;
 	public double mandatoryFare, mandatoryFareCapping;
 	public int mandatoryFareApplicable = 0;
-	
+	private double baggageCharges ;
+
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
-						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping){
+						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping,
+						 double baggageCharges){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -36,9 +40,12 @@ public class FareStructure {
 		this.mandatoryFare = mandatoryFare;
 		this.mandatoryFareCapping = mandatoryFareCapping;
 		this.fareMinimum = fareMinimum;
+		this.baggageCharges = baggageCharges;
 	}
 	
-	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, double tollFare){
+	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin,
+								double tollFare, double tipAmount, int luggageCount, boolean dontPrecise){
+		totalDistanceInKm = Utils.round(totalDistanceInKm, 2);
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
 			totalTimeInMin = 0;
@@ -76,11 +83,11 @@ public class FareStructure {
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
+		fare = fare + (((double)luggageCount) * baggageCharges);
 
-		fare = Math.round(fare);
 		if(mandatoryFare > 0) {
-			double cappedFareUp = Math.round(mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100));
-			double cappedFareDown = Math.round(mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100));
+			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
+			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
 			if(fare < cappedFareUp && fare > cappedFareDown){
 				fare = mandatoryFare;
 				mandatoryFareApplicable = 1;
@@ -94,8 +101,11 @@ public class FareStructure {
 				fare = fareMinimum;
 			}
 		}
+		if(dontPrecise){
+			return fare + tollFare + tipAmount;
+		}
 
-		return fare + tollFare;
+		return Utils.currencyPrecision(fare + tollFare + tipAmount);
 	}
 
 	public double getEffectiveConvenienceCharge(){
@@ -105,11 +115,17 @@ public class FareStructure {
 	public int getMandatoryFareApplicable(){
 		return  mandatoryFareApplicable;
 	}
-	
+
+	public double getBaggageCharges() {
+		return baggageCharges;
+
+	}
+
+
 	@Override
 	public String toString() {
 		return "fixedFare=" + fixedFare + ", thresholdDistance=" + thresholdDistance + ", farePerKm=" + farePerKm + ", farePerMin=" + farePerMin + ", freeMinutes=" + freeMinutes
 				+ ", farePerWaitingMin=" + farePerWaitingMin + ", freeWaitingMinutes=" + freeWaitingMinutes + " fareFactor = " + fareFactor+", luggageFare="+luggageFare
-				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver;
+				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver + "baggageCharges= " + baggageCharges;
 	}
 }

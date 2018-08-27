@@ -63,6 +63,8 @@ public class CustomerInfo {
 	private double initialBidValue;
 	private double estimatedTripDistance;
 	private double tollFare;
+	private double tipAmount;
+	private int luggageCount;
 
 
 	/**
@@ -73,7 +75,7 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount,int luggageCount){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -116,6 +118,8 @@ public class CustomerInfo {
 		this.orderId = orderId;
 		this.loadingStatus = loadingStatus;
 		this.currencyUnit = currencyUnit;
+		this.tipAmount = tipAmount;
+		this.luggageCount = luggageCount;
 	}
 
 
@@ -665,6 +669,22 @@ public class CustomerInfo {
 	}
 
 	public void setTollFare(double tollFare) {
-		this.tollFare = tollFare;
+		this.tollFare = Utils.currencyPrecision(tollFare);
+	}
+
+	public double getTipAmount() {
+		return tipAmount;
+	}
+
+	public void setTipAmount(double tipAmount) {
+		this.tipAmount = tipAmount;
+	}
+
+	public int getLuggageCount() {
+		return luggageCount;
+	}
+
+	public void setLuggageCount(int luggageCount) {
+		this.luggageCount = luggageCount;
 	}
 }

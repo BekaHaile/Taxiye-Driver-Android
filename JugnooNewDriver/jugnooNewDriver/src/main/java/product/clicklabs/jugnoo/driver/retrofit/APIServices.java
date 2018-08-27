@@ -40,6 +40,10 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -633,6 +637,11 @@ public interface APIServices {
 					   Callback<DriverCreditResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/driver/credit_history")
+	void creditHistoryWallet(@FieldMap Map<String, String> params,
+					   Callback<WalletTransactionResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/driver/fetch_stripe_login_link")
 	void fetchStripeLink(@FieldMap Map<String,String> params,Callback<StripeLoginResponse> callback);
 
@@ -657,6 +666,19 @@ public interface APIServices {
 	void addMoneyViaStripe(@FieldMap Map<String, String> params,
 						   Callback<WalletModelResponse> callback);
 
+    @FormUrlEncoded
+    @POST("/get_vehicle_make_details")
+    void getVehicleMakeDetails(@FieldMap Map<String, String> params,
+                               Callback<VehicleDetailsResponse> callback);
+    @FormUrlEncoded
+    @POST("/get_vehicle_make_custom_details")
+    void getVehicleModelDetails(@FieldMap Map<String, String> params,
+                                Callback<VehicleModelCustomisationsResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_luggage_count")
+	void updateLuggageCount(@FieldMap Map<String, String> params,
+							Callback<FeedCommonResponseKotlin> callback);
 
 
 }

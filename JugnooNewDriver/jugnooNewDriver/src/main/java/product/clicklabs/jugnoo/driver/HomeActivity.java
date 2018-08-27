@@ -113,6 +113,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import product.clicklabs.jugnoo.driver.adapters.FareDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
@@ -135,6 +136,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
@@ -186,6 +188,7 @@ import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -200,6 +203,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
+import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -394,7 +398,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	boolean sortCustomerState = true;
 
 
-	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+	DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -491,11 +495,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private boolean isTourFlag, isTourBtnClicked, isJugnooOnTraining = false;
 	private View customView;
 	private GenrateTourPush gcmIntentService;
-	private RelativeLayout relativeLayoutTour, relativeLayoutDocs;
+	private RelativeLayout relativeLayoutTour, relativeLayoutDocs,layoutAddedLuggage;
 	private TextView textViewTour, textViewDoc;
 	private TextView croutonTourTextView;
 	private ImageView crossTourImageView;
 	public boolean deliveryInfolistFragVisibility = false;
+	private Button buttonAddLuggage;
+	private TextView tvLuggageInfo ,tvChangeLuggageCount;
+	private boolean showLuggageCharges;
+
+	private RecyclerView rvFareDetails;
+	private FareDetailsAdapter fareDetailsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -937,7 +947,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
-			jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
+			jugnooRideOverText.setText(getString(R.string.ride_is_complete));
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Fonts.mavenBold(getApplicationContext()));
 
@@ -1032,6 +1042,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutItemHeader = (RelativeLayout) findViewById(R.id.relativeLayoutItemHeader);
 			topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
 			reCreateDeliveryMarkers = true;
+			buttonAddLuggage = findViewById(R.id.buttonAddLuggage);
+			layoutAddedLuggage = findViewById(R.id.layout_added_luggage);
+			tvLuggageInfo = findViewById(R.id.tvLuggageInfo);
+			tvChangeLuggageCount = findViewById(R.id.tvChangeLuggageCount);
+			View.OnClickListener showLuggagelistener = new View.OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					getAddLuggageInteractor().showLuggagePopup();
+				}
+			};
+			buttonAddLuggage.setOnClickListener(showLuggagelistener);
+			tvChangeLuggageCount.setOnClickListener(showLuggagelistener);
+			showLuggageCharges = Prefs.with(this).getInt(Constants.KEY_SHOW_LUGGAGE_CHARGE, 0) == 1;
+			rvFareDetails = findViewById(R.id.rvFareDetails);
+			rvFareDetails.setLayoutManager(new LinearLayoutManagerForResizableRecyclerView(this));
+			fareDetailsAdapter = new FareDetailsAdapter();
+			rvFareDetails.setAdapter(fareDetailsAdapter);
 
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			new Handler().postDelayed(new Runnable() {
@@ -1501,7 +1529,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			earningsRL.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverEarningsNew.class));
+					startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
@@ -2114,7 +2142,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
 								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(HomeActivity.this), HomeActivity.this),0, false));
 						if (!fare.equalsIgnoreCase(s.toString())) {
 							fareFetchedFromJugnoo = 0;
 						}
@@ -2437,6 +2465,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		Log.e("device_width",width+"");
 	}
 
+	private AddLuggageInteractor addLuggageInteractor;
+	private AddLuggageInteractor getAddLuggageInteractor() {
+		if(addLuggageInteractor==null){
+			 addLuggageInteractor = new AddLuggageInteractor(this);
+		}
+		return addLuggageInteractor;
+	}
+
 
 	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 		@Override
@@ -2544,7 +2580,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String formattedDate = df.format(c.getTime());
-			Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
+			Intent intent = new Intent(HomeActivity.this, DailyEarningActivity.class);
 			intent.putExtra("date", formattedDate);
 			startActivity(intent);
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2566,7 +2602,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
 			FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
 		} else if (infoTileResponse.getDeepIndex() == 5) {
-			Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
+			Intent intent = new Intent(HomeActivity.this, EarningsActivity.class);
 			HomeActivity.this.startActivity(intent);
 			HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);
@@ -3817,10 +3853,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
 					reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
+					if(Prefs.with(context).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1){
+						rvFareDetails.setVisibility(endRideData.getFareDetails() == null
+								|| endRideData.getFareDetails().size() == 0 ? View.GONE : View.VISIBLE);
+						fareDetailsAdapter.setList(endRideData.getFareDetails(), endRideData.getCurrency());
+					} else {
+						rvFareDetails.setVisibility(View.GONE);
+					}
+
 
 					if(customerInfo.getIsDelivery() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -3841,7 +3884,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else if(customerInfo.getIsPooled() == 1){
 						jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
-						takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
@@ -3852,12 +3894,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					else{
 						jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
-						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
-								+Utils.formatCurrencyValue(endRideData.getCurrency(),endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
 						textViewEndRideCustomerName.setVisibility(View.GONE);
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
+					}
+					if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
+						takeFareText.setText(getString(R.string.total_fare) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
+					} else {
+						takeFareText.setText(getString(R.string.take_cash) + " "
+								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
 					}
 
 					endRideInfoRl.setVisibility(View.VISIBLE);
@@ -4552,6 +4599,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
+			setLuggageUI();
+
+
 			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
@@ -4606,6 +4656,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setLuggageUI() {
+		if(driverScreenMode==DriverScreenMode.D_IN_RIDE && showLuggageCharges){
+
+			int luggageCount = Data.getCurrentCustomerInfo().getLuggageCount();
+			if(luggageCount>0){
+				buttonAddLuggage.setVisibility(View.GONE);
+				layoutAddedLuggage.setVisibility(View.VISIBLE);
+				String amount = Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(),luggageCount * Data.fareStructure.getBaggageCharges());
+				tvLuggageInfo.setText(getString(R.string.luggage_info_home_screen,luggageCount,amount));
+
+			}else{
+				buttonAddLuggage.setVisibility(View.VISIBLE);
+				layoutAddedLuggage.setVisibility(View.GONE);
+			}
+
+
+
+		}else{
+			buttonAddLuggage.setVisibility(View.GONE);
+			layoutAddedLuggage.setVisibility(View.GONE);
+		}
+
 	}
 
 	Handler startRideAlarmHandler = new Handler();
@@ -5036,7 +5110,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis, int invalidPool) {
+	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis,
+								int invalidPool, boolean dontPrecise) {
 		if(customerInfo.getReverseBidFare() != null){
 			return customerInfo.getReverseBidFare().getFare();
 		}
@@ -5056,7 +5131,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0);
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D,
+				customerInfo.getTipAmount(),
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0,
+				dontPrecise);
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -5068,7 +5146,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			if (Data.fareStructure != null) {
 				driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(),getTotalFare(customerInfo, distance,
-						elapsedTime, waitTime, 0)));
+						elapsedTime, waitTime, 0, false)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5564,14 +5642,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					holder.llMinus.setVisibility(View.VISIBLE);
 					holder.llPlus.setVisibility(View.VISIBLE);
 					try {
-						holder.etPlaceBid.setText(Utils.getDecimalFormatForMoney2Dec().format(Double.parseDouble(bidValues.get(position))));
+						holder.etPlaceBid.setText(String.valueOf(Utils.currencyPrecision(Double.parseDouble(bidValues.get(position)))));
 					} catch (Exception e) {
 						holder.etPlaceBid.setText("");
 					}
 				}
 				holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
-				holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
-				holder.tvIncrease.setText(getString(R.string.increase_by_format, Utils.getDecimalFormatNoDecimal().format((double)percent)+"%"));
+				holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormat().format((double)percent)+"%"));
+				holder.tvIncrease.setText(getString(R.string.increase_by_format, Utils.getDecimalFormat().format((double)percent)+"%"));
 			} else {
 				holder.llPlaceBid.setVisibility(View.GONE);
 				holder.buttonAcceptRide.setText(R.string.accept);
@@ -5581,7 +5659,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getEstimatedTripDistance() > 0.0){
 				holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
 				holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
-						Utils.getDecimalFormatForMoney2Dec().format(customerInfo.getEstimatedTripDistance()
+						Utils.getDecimalFormat().format(customerInfo.getEstimatedTripDistance()
 								*UserData.getDistanceUnitFactor(HomeActivity.this))));
 			} else {
 				holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
@@ -5877,6 +5955,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",0));
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 					String currency = jObj.optString(Constants.KEY_CURRENCY);
+					double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -5889,7 +5968,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
 							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency);
+							currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount,0);
 
 					JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 
@@ -6447,8 +6526,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 		params.put(KEY_LATITUDE, String.valueOf(dropLatitude));
 		params.put(KEY_LONGITUDE, String.valueOf(dropLongitude));
-		params.put(KEY_DISTANCE_TRAVELLED, decimalFormat.format(totalDistanceInKm));
-		params.put(KEY_DISTANCE_TRAVELLED_LOG, decimalFormat.format(totalDistanceFromLog));
+		params.put(KEY_DISTANCE_TRAVELLED, String.valueOf(totalDistanceInKm));
+		params.put(KEY_DISTANCE_TRAVELLED_LOG, String.valueOf(totalDistanceFromLog));
 
 		params.put(KEY_WAIT_TIME, waitTime);
 		params.put(KEY_RIDE_TIME, rideTime);
@@ -6459,10 +6538,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)) {
 			params.put(Constants.KEY_TOLL_CHARGE, String.valueOf(customerInfo.getTollFare()));
 		}
+		params.put(Constants.KEY_TIP_AMOUNT, String.valueOf(customerInfo.getTipAmount()));
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
-		params.put("ride_distance_using_haversine", "" + decimalFormat.format(totalHaversineDistanceInKm));
+		params.put("ride_distance_using_haversine", String.valueOf(totalHaversineDistanceInKm));
 		HomeUtil.putDefaultParams(params);
 
 		enteredMeterFare = 0;
@@ -6500,7 +6580,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double distance = customerInfo
 					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			double totalFare = getTotalFare(customerInfo, distance,
-					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0), false);
 			if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 &&  (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
@@ -6674,7 +6754,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double distance = customerInfo
 					.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			double totalFare = getTotalFare(customerInfo, distance,
-					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0));
+					eoRideTimeInMillis, eoWaitTimeInMillis, getInvalidPool(customerInfo, dropLatitude, dropLongitude, 0), false);
 
 			if(customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1 && (Data.userData.fareCachingLimit==null || totalFare<=Data.userData.fareCachingLimit)) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
@@ -6712,48 +6792,48 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private double calculateCouponDiscount(double totalFare, CouponInfo couponInfo) {
-		double finalDiscount = 0;
+		double finalDiscount = 0D;
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == couponInfo.benefitType) {        //coupon discount
-			finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100) < couponInfo.maximumDiscountValue ?
-					Math.ceil(((totalFare * couponInfo.discountPrecent) / 100)) : couponInfo.maximumDiscountValue;
+			finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100D) < couponInfo.maximumDiscountValue ?
+					((totalFare * couponInfo.discountPrecent) / 100D) : couponInfo.maximumDiscountValue;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == couponInfo.benefitType) {        // coupon capped fare
 			if (totalFare < couponInfo.cappedFare) {        // fare less than capped fare
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			} else {                                                                // fare greater than capped fare
 				double maxDiscount = couponInfo.cappedFareMaximum - couponInfo.cappedFare;
 				finalDiscount = totalFare - couponInfo.cappedFare;
 				finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
 			}
 		} else {
-			finalDiscount = 0;
+			finalDiscount = 0D;
 		}
 		couponInfo.couponApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
 	private double calculatePromoDiscount(double totalFare, PromoInfo promoInfo) {
-		double finalDiscount = 0;
+		double finalDiscount = 0D;
 
 		if (BenefitType.DISCOUNTS.getOrdinal() == promoInfo.benefitType) {        //promotion discount
-			finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100) < promoInfo.discountMaximum ?
-					Math.ceil(((totalFare * promoInfo.discountPercentage) / 100)) : promoInfo.discountMaximum;
+			finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100D) < promoInfo.discountMaximum ?
+					((totalFare * promoInfo.discountPercentage) / 100D) : promoInfo.discountMaximum;
 		} else if (BenefitType.CAPPED_FARE.getOrdinal() == promoInfo.benefitType) {        // promotion capped fare
 			if (totalFare < promoInfo.cappedFare) {        // fare less than capped fare
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			} else {                                                                // fare greater than capped fare
 				double maxDiscount = promoInfo.cappedFareMaximum - promoInfo.cappedFare;
 				finalDiscount = totalFare - promoInfo.cappedFare;
 				finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
 			}
 		} else {
-			finalDiscount = 0;
+			finalDiscount = 0D;
 		}
 		promoInfo.promoApplied = true;
 
-		return finalDiscount;
+		return Utils.currencyPrecision(finalDiscount);
 	}
 
 
@@ -6764,7 +6844,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
+			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance, tipAmount = 0, tollFare = 0;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 			int invalidPool =0;
 
@@ -6816,11 +6896,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalFare = enteredMeterFare;
 				} else {
 					totalFare = getTotalFare(customerInfo, finalDistance,
-							rideTimeInMillis, waitTimeInMillis, invalidPool);
+							rideTimeInMillis, waitTimeInMillis, invalidPool, true);
+					//toll fare and tip amount should not be there in totalFare when calculating discount
+					tipAmount = customerInfo.getTipAmount();
+					tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
+					totalFare = totalFare - tipAmount - tollFare;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				totalFare = 0;
+				totalFare = 0D;
 			}
 			params.put("mandatory_fare_applicable", String.valueOf(Data.fareStructure.getMandatoryFareApplicable()));
 
@@ -6832,7 +6916,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("is_invalid_pool", String.valueOf(invalidPool));
 				if(1 == Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())
 						&& customerInfo.getPoolFare().getDiscountedFareEnabled() ==1 && invalidPool ==1){
-					totalFare = totalFare - Math.round(customerInfo.getPoolFare().getDiscountPercentage() * totalFare);
+					totalFare = totalFare - Utils.currencyPrecision(customerInfo.getPoolFare().getDiscountPercentage() * totalFare);
 				}
 
 			} catch (Exception e) {
@@ -6869,7 +6953,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (distanceFromDrop <= customerInfo.couponInfo.dropRadius) {                                     // drop condition satisfied
 						finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
 					} else {
-						finalDiscount = 0;
+						finalDiscount = 0D;
 					}
 				} else {
 					finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
@@ -6880,15 +6964,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (distanceFromDrop <= customerInfo.promoInfo.dropRadius) {                                     // drop condition satisfied
 						finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
 					} else {
-						finalDiscount = 0;
+						finalDiscount = 0D;
 					}
 				} else {
 					finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
 				}
 			} else {
-				finalDiscount = 0;
+				finalDiscount = 0D;
 			}
 			Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
+
+
+			ArrayList<FareDetail> fareDetails = new ArrayList<>();
+			if(finalDiscount > 0D){
+				fareDetails.add(new FareDetail(getString(R.string.discount), -finalDiscount));
+			}
+			if(tipAmount > 0D) {
+				fareDetails.add(new FareDetail(getString(R.string.tip), tipAmount));
+			}
+			if(tollFare > 0) {
+				fareDetails.add(new FareDetail(getString(R.string.toll_charges), tollFare));
+			}
+			if(fareDetails.size() > 0){
+				fareDetails.add(0, new FareDetail(getString(R.string.fare), totalFare));
+			}
+
+			//adding toll fare and tip amount again in totalFare after discount computation
+			totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare);
 
 			if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
 				finalToPay = totalFare - finalDiscount;
@@ -6915,19 +7017,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				paymentMode = PaymentMode.WALLET.getOrdinal();
 
 				params.put("payment_mode", "" + PaymentMode.WALLET.getOrdinal());
-				params.put("paid_using_wallet", "" + Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", "" + Utils.currencyPrecision(finalPaidUsingWallet));
 			} else {                                                                            // no wallet
 				finalPaidUsingWallet = 0;
 
 				paymentMode = PaymentMode.CASH.getOrdinal();
 
 				params.put("payment_mode", "" + PaymentMode.CASH.getOrdinal());
-				params.put("paid_using_wallet", "" + Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", "" + Utils.currencyPrecision(finalPaidUsingWallet));
 			}
 
 
 			endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
-					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit());
+					finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode,customerInfo.getCurrencyUnit(),
+					fareDetails);
 
 			try {
 				Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
@@ -6956,7 +7059,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			params.put("is_cached", "1");
-			params.put("paid_in_cash", String.valueOf(finalToPay));
+			params.put("paid_in_cash", ""+Utils.currencyPrecision(finalToPay));
 
 			DialogPopup.dismissLoadingDialog();
 			if(!isTourFlag) {
@@ -8232,6 +8335,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}else{

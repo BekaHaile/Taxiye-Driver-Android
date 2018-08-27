@@ -42,7 +42,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DailyRideDetailsActivity extends BaseFragmentActivity {
+public class DailyEarningActivity extends BaseFragmentActivity {
 
 	public static final String EARNING_DATA = "earning_data";
     RelativeLayout linear;
@@ -81,7 +81,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_daily_details_new);
+		setContentView(R.layout.activity_daily_earning);
 
 
 		try {
@@ -102,7 +102,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 
 		linear = (RelativeLayout) findViewById(R.id.linear);
-		assl = new ASSL(DailyRideDetailsActivity.this, linear, 1134, 720, false);
+		assl = new ASSL(DailyEarningActivity.this, linear, 1134, 720, false);
 
 		backBtn = (ImageView) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
@@ -121,9 +121,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(View v) {
 				if(!"".equalsIgnoreCase(date)) {
-					getRidesAsync(date, DailyRideDetailsActivity.this);
+					getRidesAsync(date, DailyEarningActivity.this);
 				} else if(invoice_id != 0){
-					getInvoiceDetails(DailyRideDetailsActivity.this);
+					getInvoiceDetails(DailyEarningActivity.this);
 				}
 			}
 		});
@@ -141,16 +141,16 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			public void onRideClick(int position, Tile.Extras extras, String date) {
 
 				if(extras !=null) {
-					Intent intent = new Intent(DailyRideDetailsActivity.this, RideDetailsNewActivity.class);
+					Intent intent = new Intent(DailyEarningActivity.this, RideDetailsNewActivity.class);
 					Gson gson = new Gson();
 					intent.putExtra("extras", gson.toJson(extras, Tile.Extras.class));
-					DailyRideDetailsActivity.this.startActivity(intent);
-					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					DailyEarningActivity.this.startActivity(intent);
+					DailyEarningActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if(date != null) {
-					Intent intent = new Intent(DailyRideDetailsActivity.this, DailyRideDetailsActivity.class);
+					Intent intent = new Intent(DailyEarningActivity.this, DailyEarningActivity.class);
 					intent.putExtra("date", date);
-					DailyRideDetailsActivity.this.startActivity(intent);
-					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					DailyEarningActivity.this.startActivity(intent);
+					DailyEarningActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			}
 		},invoice_id);
@@ -233,20 +233,21 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 											dailyEarningItems.clear();
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-
-											if(Data.isCaptive() && invoice_id==0){
-												if (dailyEarningResponse.getExtrasData() !=null && dailyEarningResponse.getExtrasData().getCaptiveSlots()!=null) {
-													for (int i=0; i<dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
-                                                        dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
-                                                                ,dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
-                                                                null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
-                                                    }
-												}
-											}else{
-												for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
-													dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
-															, dailyEarningResponse.getDailyParam().get(i).getValue(),
-															null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, dailyEarningResponse.getDailyParam().get(i).getCurrencyUnit()));
+											if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+												if (Data.isCaptive() && invoice_id == 0) {
+													if (dailyEarningResponse.getExtrasData() != null && dailyEarningResponse.getExtrasData().getCaptiveSlots() != null) {
+														for (int i = 0; i < dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
+															dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getSlotName()
+																	, dailyEarningResponse.getExtrasData().getCaptiveSlots().get(i).getOnlineMin(),
+																	null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+														}
+													}
+												} else {
+													for (int i = 0; i < dailyEarningResponse.getDailyParam().size(); i++) {
+														dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
+																, dailyEarningResponse.getDailyParam().get(i).getValue(),
+																null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, dailyEarningResponse.getDailyParam().get(i).getCurrencyUnit()));
+													}
 												}
 											}
 
@@ -296,7 +297,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 						}
 					});
 			} else {
-				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopup(DailyEarningActivity.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -333,10 +334,12 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 								dailyEarningItems.clear();
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-								for (int i=0; i<invoiceDetailResponse.getEarningParams().size(); i++) {
-									dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
-											, invoiceDetailResponse.getEarningParams().get(i).getValue(),
-											null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+								if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+									for (int i = 0; i < invoiceDetailResponse.getEarningParams().size(); i++) {
+										dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
+												, invoiceDetailResponse.getEarningParams().get(i).getValue(),
+												null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM, null));
+									}
 								}
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES, null));
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TRIP_HEADING, null));
@@ -371,7 +374,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				}
 			});
 			} else {
-				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopup(DailyEarningActivity.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

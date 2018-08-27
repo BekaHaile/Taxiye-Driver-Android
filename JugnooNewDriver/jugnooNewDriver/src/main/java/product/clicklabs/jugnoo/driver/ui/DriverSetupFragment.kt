@@ -179,14 +179,16 @@ class DriverSetupFragment : Fragment() {
 
     private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
+        val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
+        val userNameValue = editTextName.text.trim().toString();
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
-                "user_name" to editTextName.text.trim().toString(),
+                "user_name" to userNameValue,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
-                "vehicle_type" to "" + adapter.getCurrentSelectedVehicle()!!.vehicleType,
+                "vehicle_type" to vehicleType,
                 "offering_type" to "" + 1,
                 "vehicle_status" to getString(R.string.owned),
                 "device_type" to Data.DEVICE_TYPE,
@@ -213,7 +215,15 @@ class DriverSetupFragment : Fragment() {
                     Log.d("", t.serverMessage())
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                            openDocumentUploadActivity()
+
+                            if(resources.getBoolean(R.bool.vehicle_model_enabled)){
+                                (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
+                                        vehicleType, userNameValue)
+                            }else{
+                                openDocumentUploadActivity()
+
+                            }
+
                         }
 
                         ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {

@@ -334,7 +334,20 @@ public interface Constants {
 	String KEY_DEVICE_TYPE = "device_type";
 	String WALLET = "wallet";
 	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
+	String KEY_STRIPE_CARDS_ENABLED = "stripe_cards_enabled";
 
 	String NOTIF_CHANNEL_DEFAULT = "Notifications";
+	String KEY_CURRENCY_PRECISION = "currency_precision";
+
+	String KEY_DEFAULT_COUNTRY_CODE = "default_country_code";
+	String KEY_DEFAULT_SUB_COUNTRY_CODE = "default_sub_country_code";
+	String KEY_DEFAULT_COUNTRY_ISO = "default_country_iso";
+	String KEY_TIP_AMOUNT = "tip_amount";
+	String KEY_MAX_SOUND = "max_sound";
+	String KEY_FARE_BREAKDOWN = "fare_breakdown";
+	String KEY_VALUE = "value";
+	String KEY_SHOW_DETAILS_IN_TAKE_CASH = "show_details_in_take_cash";
+    String KEY_SHOW_LUGGAGE_CHARGE = "show_luggage_charges";
+    String KEY_LUGGAGE_COUNT = "luggage_count";
 }
 

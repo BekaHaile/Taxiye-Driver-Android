@@ -3,17 +3,21 @@ package product.clicklabs.jugnoo.driver.stripe.wallet
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.TouchDelegate
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
@@ -35,6 +39,7 @@ class StripeWalletFragment:Fragment(){
         fun openAddCard();
         fun openViewCard(stripeCardData: StripeCardData);
         fun openWalletTransactions();
+        fun isStripeEnabled():Boolean;
 
     }
 
@@ -46,7 +51,7 @@ class StripeWalletFragment:Fragment(){
         }
     }
 
-    private var stripeWalletInteractor:StripeWalletInteractor? = null
+    private lateinit var stripeWalletInteractor:StripeWalletInteractor
     private var stripeCardData:StripeCardData? = null;
     private var currencyUnit:String?=null;
     private var quickAddAmounts:List<Double>?=null;
@@ -57,19 +62,25 @@ class StripeWalletFragment:Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        groupShowStripe(if(stripeWalletInteractor.isStripeEnabled()) View.VISIBLE else View.GONE)
         title.text = getString(R.string.wallet_details)
         backBtn.setOnClickListener{requireActivity().onBackPressed()}
         tvAddCard.setOnClickListener {
 
             stripeCardData?.let {
 
-                stripeWalletInteractor?.openViewCard(it)
+                stripeWalletInteractor.openViewCard(it)
 
-            }?:stripeWalletInteractor?.openAddCard();
+            }?:stripeWalletInteractor.openAddCard();
 
         }
         btnAddCash.setOnClickListener {
+
+            if(!stripeWalletInteractor.isStripeEnabled()){
+                Toast.makeText(requireContext(),getString(R.string.no_payment_methods_available), Toast.LENGTH_LONG).show()
+                return@setOnClickListener;
+            }
+
 
            stripeCardData?.let {
 
@@ -84,7 +95,7 @@ class StripeWalletFragment:Fragment(){
 
         }
         tvWalletTransactions.setOnClickListener {
-            stripeWalletInteractor?.openWalletTransactions()
+            stripeWalletInteractor.openWalletTransactions()
         }
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)
@@ -98,7 +109,7 @@ class StripeWalletFragment:Fragment(){
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
         execute(params = null,apiName = ApiName.FETCH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
-                        tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.walletBalance);
+                        tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance());
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;
                         edtAmount.addTextChangedListener(UpdateCurrencyDrawableWatcher(edtAmount,currencyUnit));
@@ -148,7 +159,7 @@ class StripeWalletFragment:Fragment(){
             applyTouchDelegateToLayoutAmount()
         } ?: run {
             tvAddCard.text = getString(R.string.label_add_card)
-            tvInfoCard.visibility = View.VISIBLE
+            tvInfoCard.visibility = if(stripeWalletInteractor.isStripeEnabled()) View.VISIBLE else View.GONE
             groupAddCash(View.GONE)
             groupQuickAmounts( View.GONE)
         }
@@ -178,7 +189,7 @@ class StripeWalletFragment:Fragment(){
         execute(params,apiName = ApiName.ADD_CASH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
                         DialogPopup.alertPopup(requireActivity(),"",message);
-                        tvCurrentBalance.text = Utils.formatCurrencyValue(currencyUnit,t.walletBalance);
+                        tvCurrentBalance.text = Utils.formatCurrencyValue(currencyUnit,t.getBalance());
                         edtAmount.text = null
                         if(Data.userData!=null){
                             Data.userData.currency = currencyUnit;
@@ -268,5 +279,12 @@ class StripeWalletFragment:Fragment(){
         }
     }
 
+    fun groupShowStripe(visibility: Int){
+
+        labelCardDetails.visibility = visibility;
+        tvAddCard.visibility = visibility;
+        tvInfoCard.visibility = visibility;
+
+    }
 
 }

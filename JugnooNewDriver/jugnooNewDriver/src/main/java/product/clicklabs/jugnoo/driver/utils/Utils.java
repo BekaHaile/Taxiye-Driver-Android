@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -34,7 +33,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
@@ -62,15 +60,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -329,35 +327,16 @@ public class Utils {
     }
 
 
-    private static DecimalFormat decimalFormatMoney;
 
-    public static DecimalFormat getDecimalFormatForMoney() {
-        if (decimalFormatMoney == null) {
-            decimalFormatMoney = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static NumberFormat getDecimalFormatForMoney() {
+        if (numberFormat == null) {
+            initNumberFormat();
         }
-        return decimalFormatMoney;
+        return numberFormat;
     }
 
-    private static DecimalFormat decimalFormatMoney2Dec;
-
-    public static DecimalFormat getDecimalFormatForMoney2Dec() {
-        if (decimalFormatMoney2Dec == null) {
-            decimalFormatMoney2Dec = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormatMoney2Dec;
-    }
-
-    private static DecimalFormat decimalFormat1Dec;
-
-    public static DecimalFormat getDecimalFormat1Dec() {
-        if (decimalFormat1Dec == null) {
-            decimalFormat1Dec = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormat1Dec;
-    }
 
     private static DecimalFormat decimalFormat;
-
     public static DecimalFormat getDecimalFormat() {
         if (decimalFormat == null) {
             decimalFormat = new DecimalFormat("#.##");
@@ -934,49 +913,6 @@ public class Utils {
         return resizedBitmap;
     }
 
-    public static String getAbsAmount(Context context, double amount, String currency) {
-        DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
-        String showAmount;
-
-        try {
-            if (amount >= 0) {
-                showAmount = Utils.formatCurrencyValue(currency, decimalFormatNoDecimal.format(amount));
-            } else {
-                showAmount = "-" + Utils.formatCurrencyValue(currency, Math.abs(amount));
-            }
-            return showAmount;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private static DecimalFormat decimalFormatNoDecimal;
-
-    public static DecimalFormat getDecimalFormatNoDecimal() {
-        if (decimalFormatNoDecimal == null) {
-            decimalFormatNoDecimal = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-        }
-        return decimalFormatNoDecimal;
-    }
-
-    public static String getAbsWithDecimalAmount(Context context, double amount, String currencyUnit) {
-
-        String showAmount;
-
-        try {
-            if (amount >= 0) {
-                showAmount = formatCurrencyValue(currencyUnit, getDecimalFormatNoDecimal().format(amount));
-            } else {
-                showAmount = "-" + formatCurrencyValue(currencyUnit, getDecimalFormatNoDecimal().format(Math.abs(amount)));
-            }
-            return showAmount;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public static int dpToPx(Context context, float dp) {
         int temp = (int) dp;
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -1031,7 +967,7 @@ public class Utils {
 
     public static String getKilometers(double kilometer, Context context, String distanceUnit) {
 
-        return getDecimalFormatNoDecimal().format(kilometer) + " " + Utils.getDistanceUnit(distanceUnit);
+        return getDecimalFormat().format(kilometer) + " " + Utils.getDistanceUnit(distanceUnit);
     }
 
     public static String getKilometers(String kilometer, Context context, String distanceUnit) {
@@ -1066,18 +1002,45 @@ public class Utils {
     public static String getCurrencySymbol(String currencyCode) {
         if (TextUtils.isEmpty(currencyCode)) {
             currencyCode = "INR";
+        } else if(currencyCode.equalsIgnoreCase("BMD") || currencyCode.equalsIgnoreCase("TTD")){
+            return "$";
         }
         Currency currency = Currency.getInstance(currencyCode);
         return currency.getSymbol();
     }
 
     public static String formatCurrencyValue(String currency, double value) {
-        if (TextUtils.isEmpty(currency)) {
-            currency = "INR";
+        return formatCurrencyValue(currency, value, "INR");
+    }
+
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency){
+        return formatCurrencyValue(currency, value, fallbackCurrency, true);
+    }
+    public static String formatCurrencyValue(String currency, double value, boolean setPrecision) {
+        return formatCurrencyValue(currency, value, "INR", setPrecision);
+    }
+
+    private static NumberFormat currencyNumberFormat = null;
+    public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setPrecision) {
+        if(currencyNumberFormat == null){
+            currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+            currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
+            currencyNumberFormat.setGroupingUsed(false);
         }
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
-        format.setCurrency(Currency.getInstance(currency));
-        return format.format(value);
+		int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+		currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+		currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
+        if (TextUtils.isEmpty(currency)) {
+            currency = fallbackCurrency;
+        }
+        currencyNumberFormat.setCurrency(Currency.getInstance(currency));
+        String result = currencyNumberFormat.format(value);
+
+        result = result.replaceFirst("\\s", "");
+        result = result.replace("BMD", "$");
+        result = result.replace("TTD", "$");
+
+        return result;
     }
 
     public static String formatCurrencyValue(String currency, String value) {
@@ -1098,7 +1061,13 @@ public class Utils {
     }
 
     public static String getCountryCode(Context context) {
-
+        String serverCountryCode = Prefs.with(context).getString(Constants.KEY_DEFAULT_COUNTRY_CODE, "");
+        if(!TextUtils.isEmpty(serverCountryCode)){
+            return serverCountryCode;
+        }
+        if(context.getResources().getInteger(R.integer.apply_default_country_code) == 1){
+            return context.getString(R.string.default_country_code);
+        }
         String CountryID = "";
         String CountryZipCode = "";
 
@@ -1156,17 +1125,6 @@ public class Utils {
         return "IN";
     }
 
-    public static String getSimCountryIso(Context context) {
-        String CountryID = "IN";
-        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        // getNetworkCountryIso
-        try {
-            CountryID = manager.getSimCountryIso().toUpperCase();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return CountryID;
-    }
 
     public static String retrievePhoneNumberTenChars(String countryCode, String phoneNo) {
         phoneNo = phoneNo.replace(" ", "");
@@ -1258,4 +1216,37 @@ public class Utils {
 		return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 
+	private static NumberFormat numberFormat = null;
+    private static void initNumberFormat(){
+        int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+        numberFormat = NumberFormat.getInstance();
+        numberFormat.setMinimumFractionDigits(precision);
+        numberFormat.setMaximumFractionDigits(precision);
+        numberFormat.setRoundingMode(RoundingMode.HALF_UP);
+        numberFormat.setGroupingUsed(false);
+    }
+    public static void setCurrencyPrecision(Context context, int precision){
+        Prefs.with(context).save(Constants.KEY_CURRENCY_PRECISION, precision);
+        numberFormat = null;
+        currencyNumberFormat = null;
+    }
+    public static double currencyPrecision(double value) {
+        if(numberFormat == null){
+            initNumberFormat();
+        }
+        String result = numberFormat.format(value);
+        if(numberFormat.getMaximumFractionDigits() > 0){
+            return Double.parseDouble(result);
+        } else {
+            return Integer.parseInt(result);
+        }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

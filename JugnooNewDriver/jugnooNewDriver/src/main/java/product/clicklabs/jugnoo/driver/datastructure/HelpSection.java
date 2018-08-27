@@ -13,7 +13,8 @@ public enum HelpSection {
 	PRIVACY(2, R.string.privacy_policy),
 	TERMS(3, R.string.terms_of_use),
 	FARE_DETAILS(4, R.string.fare_details),
-	SCHEDULES_TNC(5, R.string.terms_of_schedule)
+	SCHEDULES_TNC(5, R.string.terms_of_schedule),
+	DRIVER_AGREEMENT(9, R.string.driver_agreement)
 	;
 
 	private int ordinal;

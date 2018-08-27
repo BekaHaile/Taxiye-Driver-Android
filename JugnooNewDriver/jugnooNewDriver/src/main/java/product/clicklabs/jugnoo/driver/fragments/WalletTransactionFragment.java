@@ -20,7 +20,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.WalletActivity;
 import product.clicklabs.jugnoo.driver.adapters.WalletTransAadapter;
 import product.clicklabs.jugnoo.driver.databinding.FragmentWalletTransactionBinding;
 import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
@@ -45,6 +44,16 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
     private FragmentWalletTransactionBinding transactionFragment;
     private WalletTransAadapter transAadapter;
     private ArrayList<WalletTransactionResponse.Transactions> arrayList = new ArrayList<>();
+    private boolean fromNewWallet;
+    private static final String FROM_NEW_WALLET = "from_new_wallet";
+
+    public static WalletTransactionFragment newInstance(boolean fromNewWallet){
+        WalletTransactionFragment fragment = new WalletTransactionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(FROM_NEW_WALLET, fromNewWallet);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -52,6 +61,9 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
         transactionFragment = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_wallet_transaction, container, false);
         rootView = transactionFragment.getRoot();
+        if(getArguments() != null) {
+            fromNewWallet = getArguments().getBoolean(FROM_NEW_WALLET, false);
+        }
         walletActivity = getActivity();
         initView(transactionFragment);
 
@@ -114,8 +126,7 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
                 map.put("login_type", ""+Data.LOGIN_TYPE);
                 HomeUtil.putDefaultParams(map);
 
-                DialogPopup.showLoadingDialog(walletActivity, walletActivity.getResources().getString(R.string.loading));
-                RestClient.getApiServices().getUserTransaction(map, new Callback<WalletTransactionResponse>() {
+                Callback<WalletTransactionResponse> callback = new Callback<WalletTransactionResponse>() {
                     @Override
                     public void success(WalletTransactionResponse transactionResponse, Response response) {
                         try {
@@ -148,7 +159,14 @@ public class WalletTransactionFragment extends DriverBaseFragment implements Wal
                         Log.i("error", String.valueOf(error));
                         DialogPopup.dismissLoadingDialog();
                     }
-                });
+                };
+
+                DialogPopup.showLoadingDialog(walletActivity, walletActivity.getResources().getString(R.string.loading));
+                if(fromNewWallet){
+                    RestClient.getApiServices().creditHistoryWallet(map, callback);
+                } else {
+                    RestClient.getApiServices().getUserTransaction(map, callback);
+                }
             } else {
                 DialogPopup.alertPopup(walletActivity, "", Data.CHECK_INTERNET_MSG);
             }

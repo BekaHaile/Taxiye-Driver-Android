@@ -2,8 +2,10 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -52,9 +54,9 @@ public class DriverProfileActivity extends BaseActivity {
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
-    ImageView profileImg, imageViewTitleBarDEI;
+    ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
-    SwitchCompat switchNavigation;
+    SwitchCompat switchNavigation, switchMaxSound;
 
 
     public static ProfileInfo openedProfileInfo;
@@ -116,8 +118,11 @@ public class DriverProfileActivity extends BaseActivity {
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this)); title.setText(R.string.profile);
 
+        ivEditIcon = (ImageView) findViewById(R.id.ivEditIcon);
+        ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
+        switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
         textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
         textViewDriverId = (TextView) findViewById(R.id.textViewDriverId);
@@ -191,7 +196,7 @@ public class DriverProfileActivity extends BaseActivity {
             }
         });
 
-		cvSwitchNavigation.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_WAZE_TOGGLE, 0) == 1 ? View.VISIBLE : View.GONE);
+        switchNavigation.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_WAZE_TOGGLE, 0) == 1 ? View.VISIBLE : View.GONE);
         switchNavigation.setChecked(Prefs.with(this).getInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS) == Constants.NAVIGATION_TYPE_WAZE);
         switchNavigation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -200,6 +205,13 @@ public class DriverProfileActivity extends BaseActivity {
             }
         });
 
+        switchMaxSound.setChecked(Prefs.with(this).getInt(Constants.KEY_MAX_SOUND, 1) == 1);
+        switchMaxSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Prefs.with(DriverProfileActivity.this).save(Constants.KEY_MAX_SOUND, isChecked ? 1 : 0);
+            }
+        });
     }
 
 

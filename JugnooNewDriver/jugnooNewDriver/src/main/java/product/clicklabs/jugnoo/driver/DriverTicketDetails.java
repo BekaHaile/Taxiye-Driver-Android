@@ -196,7 +196,7 @@ public class DriverTicketDetails extends BaseActivity {
 
 				if(extras.getManualAdjustment() != 0){
 					linearLayoutManualAdj.setVisibility(View.VISIBLE);
-					textViewManualAdj.setText(Utils.getAbsWithDecimalAmount(DriverTicketDetails.this, extras.getManualAdjustment(),extras.getCurrencyUnit()));
+					textViewManualAdj.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getManualAdjustment()));
 				} else {
 					linearLayoutManualAdj.setVisibility(View.GONE);
 				}

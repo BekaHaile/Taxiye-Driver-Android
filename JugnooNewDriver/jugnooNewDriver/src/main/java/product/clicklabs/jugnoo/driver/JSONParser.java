@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
@@ -112,7 +113,8 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),
 						mandatoryFareDetails.getDouble("mandatory_fare_value"),
-						mandatoryFareDetails.getDouble("mandatory_fare_capping"));
+						mandatoryFareDetails.getDouble("mandatory_fare_capping"),
+						fareDetails.optDouble("fare_per_baggage",0.0));
 			} else {
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
 						fareDetails.getDouble("fare_threshold_distance"),
@@ -124,11 +126,12 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_threshold_distance"),
 						fareDetails.getDouble("fare_per_km_after_threshold"),
 						fareDetails.getDouble("fare_per_km_before_threshold"),
-						fareDetails.getDouble("fare_minimum"),0,0);
+						fareDetails.getDouble("fare_minimum"),0,0,
+						fareDetails.optDouble("fare_per_baggage",0.0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0);
 		}
 	}
 
@@ -382,7 +385,11 @@ public class JSONParser implements Constants {
 		if(Prefs.with(context).getInt(Constants.KEY_NAVIGATION_TYPE, -100) == -100) {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
+		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
+		Prefs.with(context).save(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, userData.optInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH,
+				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
 
+		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -563,6 +570,8 @@ public class JSONParser implements Constants {
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 							String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
+							double tipAmount = jObjCustomer.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
+							int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
 
 
 							if(i == 0){
@@ -575,7 +584,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency);
+									orderId, loadingStatus, currency, tipAmount,luggageCount);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -788,12 +797,20 @@ public class JSONParser implements Constants {
 
 	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
 		try {
+			JSONArray fareDetails = jObj.optJSONArray(Constants.KEY_FARE_BREAKDOWN);
+			ArrayList<FareDetail> fareDetailsArr = new ArrayList<>();
+			if(fareDetails != null) {
+				for (int i = 0; i < fareDetails.length(); i++) {
+					fareDetailsArr.add(new FareDetail(fareDetails.getJSONObject(i).optString(KEY_NAME),
+							fareDetails.getJSONObject(i).optDouble(KEY_VALUE)));
+				}
+			}
 			return new EndRideData(engagementId,
 					jObj.getDouble("fare"),
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY));
+					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -802,7 +819,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"");
+					PaymentMode.CASH.getOrdinal(),"", null);
 		}
 	}
 
@@ -992,7 +1009,8 @@ public class JSONParser implements Constants {
 				Constants.KEY_LOGOUT,
 				Constants.KEY_SHOW_WAZE_TOGGLE,
 				Constants.KEY_SHOW_TOLL_CHARGE,
-                Constants.WALLET
+                Constants.WALLET,
+				Constants.KEY_SHOW_LUGGAGE_CHARGE
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
@@ -1014,6 +1032,7 @@ public class JSONParser implements Constants {
 		}
 		Data.setSupportOptions(supportOptions);
 		Data.setCreditOptions(creditOptions);
+
 	}
 
 	public static boolean isChatSupportEnabled(Context context){

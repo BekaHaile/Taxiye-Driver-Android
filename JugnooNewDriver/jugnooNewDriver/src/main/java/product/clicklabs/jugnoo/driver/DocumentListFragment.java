@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,7 +68,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
-	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
@@ -119,7 +117,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 //		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 //		ASSL.DoMagic(main);
 
-		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+		rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
 		driverDocumentListAdapter = new DriverDocumentListAdapter();
@@ -127,7 +125,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setText(getResources().getString(R.string.no_doc_available));
-		progressBar.setVisibility(View.GONE);
 
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
@@ -514,6 +511,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				holder.docRequirement.setVisibility(View.VISIBLE);
 				holder.imageViewInfo.setVisibility(View.VISIBLE);
 			}
+			if(brandingImagesOnly == 1){
+				holder.docRequirement.setVisibility(View.GONE);
+				holder.imageViewInfo.setVisibility(View.GONE);
+			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.status.equalsIgnoreCase("1")) {
 				holder.addImageLayout.setVisibility(View.GONE);
@@ -648,6 +649,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				}
 			});
 
+			if(docInfo.docCount<2){
+				holder.addImageLayout2.setVisibility(View.GONE);
+			}
+
 
 			return convertView;
 		}
@@ -665,7 +670,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	public void getDocsAsync(final Activity activity) {
 		try {
-			progressBar.setVisibility(View.VISIBLE);
+			DialogPopup.showLoadingDialog(activity, getString(R.string.loading));
 			String isRequired = String.valueOf(requirement);
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token",accessToken);
@@ -678,6 +683,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
+						DialogPopup.dismissLoadingDialog();
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
@@ -708,12 +714,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 						exception.printStackTrace();
 						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
-					progressBar.setVisibility(View.GONE);
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("DocError", error.toString());
+					DialogPopup.dismissLoadingDialog();
 					updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 				}
 			});
