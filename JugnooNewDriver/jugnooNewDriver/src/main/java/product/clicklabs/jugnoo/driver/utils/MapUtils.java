@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -144,7 +145,7 @@ public class MapUtils {
 						ArrayList<String> selectedAddressComponentsArr = new ArrayList<String>();
 						JSONArray addressComponents = zero.getJSONArray("address_components");
 
-						for (int i = 0; i < addressComponents.length(); i++) {
+						for (int i = addressComponents.length()-1; i >= 0; i--) {
 
 							JSONObject iObj = addressComponents.getJSONObject(i);
 							JSONArray jArr = iObj.getJSONArray("types");
@@ -212,6 +213,7 @@ public class MapUtils {
 							}
 						}
 
+						Collections.reverse(selectedAddressComponentsArr);
 						fullAddress = "";
 						if (selectedAddressComponentsArr.size() > 0) {
 							for (int i = 0; i < selectedAddressComponentsArr.size(); i++) {

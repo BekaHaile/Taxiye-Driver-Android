@@ -34,7 +34,7 @@ public class DeviceUniqueID {
                 imei = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             }
 
-            imei += (BuildConfig.DEBUG ? "pam12" : "");
+            imei += (BuildConfig.DEBUG ? "14pjo" : "");
 
             DeviceUniqueID.saveUniqueId(context, imei);
 
