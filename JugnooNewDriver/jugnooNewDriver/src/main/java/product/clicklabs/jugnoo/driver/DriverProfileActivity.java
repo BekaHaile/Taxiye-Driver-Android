@@ -1,9 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -15,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -159,6 +160,7 @@ public class DriverProfileActivity extends BaseActivity {
         terms = (TextView) findViewById(R.id.terms);
         terms.setTypeface(Fonts.mavenRegular(this));
 
+
         textViewRidesCancelledText.setText(getStringText(R.string.rides_cancelled));
 
 
@@ -195,6 +197,7 @@ public class DriverProfileActivity extends BaseActivity {
                 FlurryEventLogger.event(FlurryEventNames.TERMS_OF_USE);
             }
         });
+        terms.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_ABOUT, 1) == 1 ? View.VISIBLE : View.GONE);
 
         switchNavigation.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_WAZE_TOGGLE, 0) == 1 ? View.VISIBLE : View.GONE);
         switchNavigation.setChecked(Prefs.with(this).getInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS) == Constants.NAVIGATION_TYPE_WAZE);
@@ -210,6 +213,10 @@ public class DriverProfileActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Prefs.with(DriverProfileActivity.this).save(Constants.KEY_MAX_SOUND, isChecked ? 1 : 0);
+                if(!isChecked) {
+                    AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                    am.setStreamVolume(AudioManager.STREAM_MUSIC, 5, 0);
+                }
             }
         });
     }

@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -37,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -233,7 +233,7 @@ public class DailyEarningActivity extends BaseFragmentActivity {
 											dailyEarningItems.clear();
 											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-											if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+											if(Prefs.with(DailyEarningActivity.this).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1) {
 												if (Data.isCaptive() && invoice_id == 0) {
 													if (dailyEarningResponse.getExtrasData() != null && dailyEarningResponse.getExtrasData().getCaptiveSlots() != null) {
 														for (int i = 0; i < dailyEarningResponse.getExtrasData().getCaptiveSlots().size(); i++) {
@@ -334,7 +334,7 @@ public class DailyEarningActivity extends BaseFragmentActivity {
 								dailyEarningItems.clear();
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT, null));
 
-								if(activity.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+								if(Prefs.with(DailyEarningActivity.this).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1) {
 									for (int i = 0; i < invoiceDetailResponse.getEarningParams().size(); i++) {
 										dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
 												, invoiceDetailResponse.getEarningParams().get(i).getValue(),

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
@@ -27,7 +28,7 @@ public class AboutActivity extends BaseActivity {
 
 
     String facebookPageId;
-    String facebookPageName;
+    String facebookPageUrl;
     private final String  TAG = "About";
     Bundle bundle;
 
@@ -35,8 +36,8 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        facebookPageId = getString(R.string.facebook_page_id);
-        facebookPageName = getString(R.string.facebook_page_name);
+        facebookPageId = Prefs.with(this).getString(Constants.KEY_FACEBOOK_PAGE_ID, getString(R.string.facebook_page_id));
+        facebookPageUrl = Prefs.with(this).getString(Constants.KEY_FACEBOOK_PAGE_URL, getString(R.string.facebook_page_url));
         relative = (RelativeLayout) findViewById(R.id.relative);
 
         title = (TextView) findViewById(R.id.title);
@@ -78,11 +79,11 @@ public class AboutActivity extends BaseActivity {
                             getPackageManager().getPackageInfo("com.facebook.katana", 0);
                             intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/" + facebookPageId));
                         } catch (Exception e) {
-                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/" + facebookPageName));
+                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookPageUrl));
                         }
                     } else {
                         intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse("https://www.facebook.com/" + facebookPageName));
+                        intent.setData(Uri.parse(facebookPageUrl));
                     }
                     startActivity(intent);
 
@@ -90,11 +91,14 @@ public class AboutActivity extends BaseActivity {
                     e.printStackTrace();
                     Utils.showToast(AboutActivity.this, getString(R.string.facebook_not_installed));
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("https://www.facebook.com/" + facebookPageName));
+                    intent.setData(Uri.parse(facebookPageUrl));
                     startActivity(intent);
                 }
             }
         });
+        relativeLayoutLikeUs.setVisibility(Prefs.with(this).getInt(Constants.KEY_FACEBOOK_LIKE_ENABLED, 1) == 1 ? View.VISIBLE : View.GONE);
+        relativeLayoutFAQ.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_FAQ, 1) == 1 ? View.VISIBLE : View.GONE);
+        relativeLayoutDriverAgreement.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_DRIVER_AGREEMENT, 1) == 1 ? View.VISIBLE : View.GONE);
 
         relativeLayoutTNC.setOnClickListener(new OnClickListener() {
 

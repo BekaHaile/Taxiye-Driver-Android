@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -254,10 +255,13 @@ class LoginFragment : Fragment() {
         ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
                 .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
+                        val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
+                                == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
 
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_CODE, t?.defaultCountryCode ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, t?.defaultSubCountryCode ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_ISO, t?.defaultCountryIso ?: "")
+                        Prefs.with(requireActivity()).save(Constants.KEY_SHOW_TERMS, t?.showTerms ?:showTerms)
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {

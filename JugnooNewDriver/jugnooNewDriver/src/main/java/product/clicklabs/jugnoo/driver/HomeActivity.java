@@ -3899,7 +3899,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						textViewEndRideCustomerName.setVisibility(View.GONE);
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
 					}
-					if(getResources().getInteger(R.integer.show_total_fare_at_ride_end) == 1) {
+					takeFareText.setVisibility(Prefs.with(this).getInt(KEY_SHOW_TAKE_CASH_AT_RIDE_END, 1) == 1 ? View.VISIBLE : View.GONE);
+					if(Prefs.with(this).getInt(KEY_SHOW_TOTAL_FARE_AT_RIDE_END, 1) == 1) {
 						takeFareText.setText(getString(R.string.total_fare) + " "
 								+ Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
 					} else {
@@ -3935,7 +3936,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				} else {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
-					switchDriverScreen(driverScreenMode);
+					mode = DriverScreenMode.D_INITIAL;
+					mapLayout.setVisibility(View.VISIBLE);
+					endRideReviewRl.setVisibility(View.GONE);
 				}
 			} else if (mode == DriverScreenMode.D_BEFORE_END_OPTIONS) {
 				mapLayout.setVisibility(View.GONE);
@@ -4868,7 +4871,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (customerInfo.getIsDelivery() == 0
 					&& customerInfo.getIsPooled() == 0
 					&& Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis() > 0) {
-				if(getResources().getInteger(R.integer.show_driver_timer)==getResources().getInteger(R.integer.view_visible)) {
+				if(Prefs.with(this).getInt(KEY_SHOW_ARRIVAL_TIMER, 1) == 1) {
 					etaTimerRLayout.setVisibility(View.VISIBLE);
 				}
 				if (Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) > 0) {
