@@ -51,7 +51,7 @@
     <!--General Features Enable/Disable-->
     <integer name="show_driver_timer">@integer/view_invisible</integer>
     <string name="facebook_page_id">hitchbm</string>
-    <string name="facebook_page_name">hitchbm</string>
+    <string name="facebook_page_url">https://www.facebook.com/hitchbm</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <!--theme colors-->

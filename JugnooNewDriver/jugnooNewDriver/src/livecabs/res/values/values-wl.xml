@@ -41,7 +41,7 @@
 
     <!--Notifications-->
 
-    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
 
@@ -107,7 +107,7 @@
 
     <string name="currency_fallback">LKR</string>
     <string name="facebook_page_id">171005023594875</string>
-    <string name="facebook_page_name">livecbs</string>
+    <string name="facebook_page_url">https://www.facebook.com/livecbs</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
 </resources>

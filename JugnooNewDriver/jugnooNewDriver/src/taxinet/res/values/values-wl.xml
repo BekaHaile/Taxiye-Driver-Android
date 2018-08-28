@@ -72,7 +72,7 @@
     <integer name="show_language_control">@integer/view_invisible</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
     <string name="facebook_page_id">204825336990225</string>
-    <string name="facebook_page_name">TaxiNet-Kenya</string>
+    <string name="facebook_page_url">https://www.facebook.com/TaxiNet-Kenya</string>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
     <color name="themeColor">#4D4D4D</color>
