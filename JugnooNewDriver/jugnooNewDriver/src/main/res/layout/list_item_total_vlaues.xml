@@ -9,6 +9,7 @@
 
 
         <ImageView
+            android:id="@+id/ivDivBankDeposit"
             android:visibility="@integer/visibility_earning_bank_deposit"
             android:layout_width="640px"
             android:layout_height="2px"
@@ -17,6 +18,7 @@
             android:background="@color/grey_light"/>
 
         <RelativeLayout
+            android:id="@+id/rlBankDeposit"
             android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="2px"
@@ -47,6 +49,7 @@
     </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rlCashCollected"
             android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px"
@@ -74,6 +77,7 @@
     </RelativeLayout>
 
         <ImageView
+            android:id="@+id/ivDivIncome"
             android:visibility="@integer/visibility_earning_bank_deposit"
             android:layout_width="640px"
             android:layout_height="2px"

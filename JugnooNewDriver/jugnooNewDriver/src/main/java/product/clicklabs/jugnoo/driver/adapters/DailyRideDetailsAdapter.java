@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.DailyEarningActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.MyApplication;
@@ -25,6 +26,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -182,6 +184,18 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             } else if(holder instanceof ViewHolderHeader) {
 				int totalRides = 0;
+				ViewHolderHeader mHolder = ((ViewHolderHeader)holder);
+				if(Prefs.with(activity).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1){
+					mHolder.linear.findViewById(R.id.ivDivBankDeposit).setVisibility(View.VISIBLE);
+					mHolder.linear.findViewById(R.id.rlBankDeposit).setVisibility(View.VISIBLE);
+					mHolder.linear.findViewById(R.id.rlCashCollected).setVisibility(View.VISIBLE);
+					mHolder.linear.findViewById(R.id.ivDivIncome).setVisibility(View.VISIBLE);
+				} else {
+					mHolder.linear.findViewById(R.id.ivDivBankDeposit).setVisibility(View.GONE);
+					mHolder.linear.findViewById(R.id.rlBankDeposit).setVisibility(View.GONE);
+					mHolder.linear.findViewById(R.id.rlCashCollected).setVisibility(View.GONE);
+					mHolder.linear.findViewById(R.id.ivDivIncome).setVisibility(View.GONE);
+				}
 				if(dailyEarningResponse != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.formatCurrencyValue(dailyEarningResponse.getCurrencyUnit(), dailyEarningResponse.getPaidByCustomer()));

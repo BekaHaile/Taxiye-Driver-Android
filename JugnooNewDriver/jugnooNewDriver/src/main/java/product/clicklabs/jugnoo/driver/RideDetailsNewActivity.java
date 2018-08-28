@@ -388,7 +388,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 
 
-			if(getResources().getBoolean(R.bool.show_support_ride_detail)){
+			if(Prefs.with(this).getInt(Constants.TICKET_SUPPORT, 1) == 1){
 				if(extras.getTicketStatus() == 0){
 					relativeLayoutCreateTicket.setVisibility(View.GONE);
 				} else if(extras.getTicketStatus() == 1){
@@ -454,10 +454,16 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				textViewActualFareValue.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getEarning()));
 				textViewCustomerPaid.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getPaidUsingCash()));
 				textViewAccountBalance.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getAccount()));
-				if(getResources().getInteger(R.integer.visibility_earning_bank_deposit) == getResources().getInteger(R.integer.view_visible)) {
+				if(Prefs.with(this).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1) {
+					findViewById(R.id.rl_bank_deposit).setVisibility(View.VISIBLE);
+					findViewById(R.id.rlCashCollected).setVisibility(View.VISIBLE);
+					findViewById(R.id.ivDivIncome).setVisibility(View.VISIBLE);
 					fareStructureInfos.addAll(extras.getRideParam());
 					recyclerViewRideInfo.setVisibility(View.VISIBLE);
 				} else {
+					findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
+					findViewById(R.id.rlCashCollected).setVisibility(View.GONE);
+					findViewById(R.id.ivDivIncome).setVisibility(View.GONE);
 					recyclerViewRideInfo.setVisibility(View.GONE);
 				}
 				rideInfoTilesAdapter.notifyDataSetChanged();

@@ -21,7 +21,6 @@ public class UserData {
 	public Integer fareCachingLimit,isCaptiveDriver;
 	private String countryCode;
 	private String userIdentifier;
-	private String driverSupportEmail, driverSupportEmailSubject;
 	private String hippoTicketFAQ;
 	private String currency;
 	public Double creditsEarned,commissionSaved;
@@ -39,7 +38,7 @@ public class UserData {
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
 					int deliveryEnabled, int deliveryAvailable, Integer fareCachingLimit, int isCaptiveDriver, String countryCode, String userIdentifier,
-					String driverSupportEmail, String driverSupportEmailSubject, String hippoTicketFAQ, String currency,
+					String hippoTicketFAQ, String currency,
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled) {
@@ -89,8 +88,6 @@ public class UserData {
 		this.fareCachingLimit = fareCachingLimit;
 		this.isCaptiveDriver = isCaptiveDriver;
 		this.countryCode = countryCode;
-		this.driverSupportEmail = driverSupportEmail;
-		this.driverSupportEmailSubject = driverSupportEmailSubject;
 		this.hippoTicketFAQ = hippoTicketFAQ;
 		this.currency = currency;
 		this.creditsEarned = creditsEarned;
@@ -149,21 +146,6 @@ public class UserData {
 		this.userIdentifier = userIdentifier;
 	}
 
-	public String getDriverSupportEmail() {
-		return driverSupportEmail;
-	}
-
-	public void setDriverSupportEmail(String driverSupportEmail) {
-		this.driverSupportEmail = driverSupportEmail;
-	}
-
-	public String getDriverSupportEmailSubject() {
-		return driverSupportEmailSubject;
-	}
-
-	public void setDriverSupportEmailSubject(String driverSupportEmailSubject) {
-		this.driverSupportEmailSubject = driverSupportEmailSubject;
-	}
 
 	public String getHippoTicketFAQ() {
 		return hippoTicketFAQ;

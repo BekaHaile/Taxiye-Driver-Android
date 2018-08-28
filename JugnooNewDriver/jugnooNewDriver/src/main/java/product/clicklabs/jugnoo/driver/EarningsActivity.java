@@ -306,7 +306,7 @@ public class EarningsActivity extends BaseActivity implements CustomMarkerView.L
 
 		}else{
 			getEarningsDetails(this, 0);
-
+			llGraphWithEarnings.setVisibility(Prefs.with(this).getInt(Constants.INVOICES_IN_MENU, 1) == 1 ? View.VISIBLE : View.GONE);
 
 		}
 
@@ -360,7 +360,8 @@ public class EarningsActivity extends BaseActivity implements CustomMarkerView.L
 			setUpDailyEarningsAdapter(driverEarningsResponse.getEarnings());
 
 
-			if(getResources().getInteger(R.integer.show_invoices)!=getResources().getInteger(R.integer.view_visible)){
+			int defaultVisibility = getResources().getInteger(R.integer.show_invoices) == getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+			if(Prefs.with(this).getInt(Constants.INVOICES_IN_MENU, defaultVisibility) != 1){
 				return;
 			}
 

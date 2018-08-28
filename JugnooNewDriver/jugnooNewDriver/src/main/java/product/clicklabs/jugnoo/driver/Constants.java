@@ -349,5 +349,19 @@ public interface Constants {
 	String KEY_SHOW_DETAILS_IN_TAKE_CASH = "show_details_in_take_cash";
     String KEY_SHOW_LUGGAGE_CHARGE = "show_luggage_charges";
     String KEY_LUGGAGE_COUNT = "luggage_count";
+
+
+	String KEY_FACEBOOK_PAGE_ID = "facebook_page_id";
+	String KEY_FACEBOOK_PAGE_URL = "facebook_page_url";
+	String KEY_SHOW_TERMS = "show_terms";
+	String KEY_SHOW_ABOUT = "show_about";
+	String KEY_FACEBOOK_LIKE_ENABLED = "facebook_like_enabled";
+	String KEY_SHOW_ARRIVAL_TIMER = "show_arrival_timer";
+	String KEY_VEHICLE_MODEL_ENABLED = "vehicle_model_enabled";
+	String KEY_SHOW_FAQ = "show_faq";
+	String KEY_SHOW_DRIVER_AGREEMENT = "show_driver_agreement";
+	String KEY_SHOW_BANK_DEPOSIT = "show_bank_deposit";
+	String KEY_SHOW_TOTAL_FARE_AT_RIDE_END = "show_total_fare_at_ride_end";
+	String KEY_SHOW_TAKE_CASH_AT_RIDE_END = "show_take_cash_at_ride_end";
 }
 

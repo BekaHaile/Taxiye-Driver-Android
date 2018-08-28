@@ -19,13 +19,13 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
+import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
@@ -110,7 +110,9 @@ class DriverSetupFragment : Fragment() {
     }
 
     private fun setupTermsAndConditionsTextView() {
-        if(resources.getInteger(R.integer.show_t_and_c) == resources.getInteger(R.integer.view_visible) ){
+        val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
+                == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1){
             val termsText = getString(R.string.terms_and_conditions);
             val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
             val clickableSpan = object : ClickableSpan() {
@@ -216,7 +218,7 @@ class DriverSetupFragment : Fragment() {
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
 
-                            if(resources.getBoolean(R.bool.vehicle_model_enabled)){
+                            if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
                                 (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
                                         vehicleType, userNameValue)
                             }else{
