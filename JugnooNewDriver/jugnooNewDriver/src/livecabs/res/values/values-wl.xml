@@ -18,7 +18,7 @@
 
 
     <string name="appname">LiveCabs</string>
-    <string name="app_name">LiveCabs Drivers</string>
+    <string name="app_name">LiveCabs Driver</string>
 
     <!--White Label Key-->
     <string name="white_label_key">6e1314631d098db197321244c93fb7c5</string>
