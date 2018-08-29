@@ -363,5 +363,6 @@ public interface Constants {
 	String KEY_SHOW_BANK_DEPOSIT = "show_bank_deposit";
 	String KEY_SHOW_TOTAL_FARE_AT_RIDE_END = "show_total_fare_at_ride_end";
 	String KEY_SHOW_TAKE_CASH_AT_RIDE_END = "show_take_cash_at_ride_end";
+	String KEY_SHOW_GRAPH_IN_EARNINGS = "show_graph_in_earnings";
 }
 

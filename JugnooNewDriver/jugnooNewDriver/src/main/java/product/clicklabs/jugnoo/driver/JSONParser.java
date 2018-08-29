@@ -423,6 +423,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_TAKE_CASH_AT_RIDE_END, userData.optInt(KEY_SHOW_TAKE_CASH_AT_RIDE_END, showTakeCash));
 		Prefs.with(context).save(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, userData.optInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH,
 				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
+		int showGraph = context.getResources().getInteger(R.integer.show_invoices) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_GRAPH_IN_EARNINGS, userData.optInt(KEY_SHOW_GRAPH_IN_EARNINGS, showGraph));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
