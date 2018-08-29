@@ -28,7 +28,7 @@
     <string name="file_provider">production.instantryde.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y</string> <!--IMP-->
 
-    <string name="facebook_page_id">1543492105750451</string>
+    <string name="facebook_page_id">1543492105</string>
     <string name="facebook_page_name">instantryde.ng</string>
 
     <!--App Level Constants-->
