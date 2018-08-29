@@ -43,8 +43,7 @@ public class FareStructure {
 		this.baggageCharges = baggageCharges;
 	}
 	
-	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin,
-								double tollFare, double tipAmount, int luggageCount, boolean dontPrecise){
+	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, int luggageCount){
 		totalDistanceInKm = Utils.round(totalDistanceInKm, 2);
 		totalTimeInMin = totalTimeInMin - freeMinutes;
 		if(totalTimeInMin < 0){
@@ -58,9 +57,6 @@ public class FareStructure {
 		}
 		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
 
-//		Log.i("farePerWaitingMin", String.valueOf(farePerWaitingMin));
-//		Log.i("fareWaitTimeInMin", String.valueOf(totalWaitTimeInMin));
-//		Log.i("fareOfWaitTime", String.valueOf(fareOfWaitTime));
 		double fareOfDistance =0;
 		double fare = 0;
 
@@ -83,7 +79,7 @@ public class FareStructure {
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
-		fare = fare + (((double)luggageCount) * baggageCharges);
+		fare = fare + computeLuggageChargesCharges(luggageCount);
 
 		if(mandatoryFare > 0) {
 			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
@@ -101,11 +97,8 @@ public class FareStructure {
 				fare = fareMinimum;
 			}
 		}
-		if(dontPrecise){
-			return fare + tollFare + tipAmount;
-		}
 
-		return Utils.currencyPrecision(fare + tollFare + tipAmount);
+		return Utils.currencyPrecision(fare);
 	}
 
 	public double getEffectiveConvenienceCharge(){
@@ -116,11 +109,13 @@ public class FareStructure {
 		return  mandatoryFareApplicable;
 	}
 
-	public double getBaggageCharges() {
-		return baggageCharges;
-
+	public double computeLuggageChargesCharges(int luggageCount) {
+		return Utils.currencyPrecision(((double)luggageCount) * baggageCharges);
 	}
 
+	public double getBaggageCharges() {
+		return baggageCharges;
+	}
 
 	@Override
 	public String toString() {

@@ -5114,7 +5114,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis,
-								int invalidPool, boolean dontPrecise) {
+								int invalidPool, boolean ignoreTollChargeTipAmount) {
 		if(customerInfo.getReverseBidFare() != null){
 			return customerInfo.getReverseBidFare().getFare();
 		}
@@ -5133,11 +5133,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			waitTimeInMin = 0d;
 		}
 
-		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D,
-				customerInfo.getTipAmount(),
-				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0,
-				dontPrecise);
+		double fare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
+				JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0);
+
+		if(!ignoreTollChargeTipAmount){
+			fare = fare + (JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D)
+					+ customerInfo.getTipAmount();
+		}
+
+		return fare;
 	}
 
 	public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
@@ -6903,7 +6907,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					//toll fare and tip amount should not be there in totalFare when calculating discount
 					tipAmount = customerInfo.getTipAmount();
 					tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
-					totalFare = totalFare - tipAmount - tollFare;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
