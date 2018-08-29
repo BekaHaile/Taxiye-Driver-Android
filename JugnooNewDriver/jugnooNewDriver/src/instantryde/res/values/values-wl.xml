@@ -20,7 +20,7 @@
     <string name="app_name">Instant Ryde Driver</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">ebf012a07d7faf1513e531422d907abe</string>
+    <string name="white_label_key">ce38d322692b5662dd1b978eaf0680f0</string>
 
     <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
@@ -28,7 +28,7 @@
     <string name="file_provider">production.instantryde.driver.driver.provider</string>
     <string name="google_maps_api_key">AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y</string> <!--IMP-->
 
-    <string name="facebook_page_id">20567918879</string>
+    <string name="facebook_page_id">1543492105750451</string>
     <string name="facebook_page_name">instantryde.ng</string>
 
     <!--App Level Constants-->
