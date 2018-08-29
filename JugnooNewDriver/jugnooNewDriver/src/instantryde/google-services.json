@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "822778815337",
-    "firebase_url": "https://comelyt-23129.firebaseio.com",
-    "project_id": "comelyt-23129",
-    "storage_bucket": "comelyt-23129.appspot.com"
+    "project_number": "826904983990",
+    "firebase_url": "https://instant-ryde-23ecb.firebaseio.com",
+    "project_id": "instant-ryde-23ecb",
+    "storage_bucket": "instant-ryde-23ecb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:822778815337:android:98470427eaf31f49",
+        "mobilesdk_app_id": "1:826904983990:android:0d0c4cd6011b5a7e",
         "android_client_info": {
-          "package_name": "production.comelyt.customer"
+          "package_name": "production.instantryde.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "822778815337-eq1votl7lnlv74nnfb8mk2pasr9cn2cg.apps.googleusercontent.com",
+          "client_id": "826904983990-rhq4klsq9udf1r6c1g9gup9jl4j3r2ju.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrU2XQF8xCohlI_zA-ow-yG83HA8DI3FM"
+          "current_key": "AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y"
         }
       ],
       "services": {
@@ -39,20 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:822778815337:android:b4e267e773503078",
+        "mobilesdk_app_id": "1:826904983990:android:44fed808c8decdc3",
         "android_client_info": {
           "package_name": "production.instantryde.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "822778815337-eq1votl7lnlv74nnfb8mk2pasr9cn2cg.apps.googleusercontent.com",
+          "client_id": "826904983990-rhq4klsq9udf1r6c1g9gup9jl4j3r2ju.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrU2XQF8xCohlI_zA-ow-yG83HA8DI3FM"
+          "current_key": "AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y"
         }
       ],
       "services": {

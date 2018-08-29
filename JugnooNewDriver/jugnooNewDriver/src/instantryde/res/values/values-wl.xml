@@ -26,14 +26,14 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Instant Ryde Driver/Instant Ryde Pictures</string>
     <string name="file_provider">production.instantryde.driver.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyBrU2XQF8xCohlI_zA-ow-yG83HA8DI3FM</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y</string> <!--IMP-->
 
     <string name="facebook_page_id">20567918879</string>
     <string name="facebook_page_name">instantryde.ng</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
-    <string name="white_label_name">Instant Ryde Drivers</string><!--* IMP-->
+    <string name="white_label_name">Instant Ryde Driver</string><!--* IMP-->
     <string name="support_email">support@instantryde.ng</string>
     <string name="support_email_subject">Instant Ryde Driver Support</string>
     <string name="support_phone_number">+243999614774</string>
