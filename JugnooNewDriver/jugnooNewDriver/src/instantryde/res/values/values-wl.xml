@@ -78,23 +78,27 @@
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
-    <drawable name="bg_splash">@drawable/splash_bg</drawable>
+    <drawable name="bg_splash">@color/black</drawable>
+    <drawable name="bg_login">@color/black</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 
     <!--theme colors-->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryDark">#111111</color>
     <color name="textColorTitle">#000000</color>
-    <color name="textColor">#000000</color>
-    <color name="textColorMedium">#333333</color>
+    <color name="textColor">#333333</color>
+    <color name="textColorMedium">#555555</color>
     <color name="textColorLight">#9b9b9b</color>
     <color name="textColorButton">#FFFFFF</color>
     <color name="dividerColor">#dbdbdb</color>
-    <color name="themeColor">#CC3333</color>
-    <color name="themeColorLight">#bbCC3333</color>
+    <color name="themeColor">#000000</color>
+    <color name="themeColorLight">#bb000000</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
+
+    <!--Color for graph-->
+    <color name="driverEarningHighLisghtColor">@color/colorPrimary</color>
 
 
     <!--resValue "color", 'red_v2', "#000000"-->
