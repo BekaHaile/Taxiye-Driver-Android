@@ -9,6 +9,8 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -23,13 +25,19 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleMakeInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -44,7 +52,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverProfileActivity extends BaseActivity {
+public class DriverProfileActivity extends BaseFragmentActivity {
 
     LinearLayout relative;
     RelativeLayout driverDetailsRLL, driverDetailsRL;
@@ -142,7 +150,7 @@ public class DriverProfileActivity extends BaseActivity {
         textViewRidesMissedValue = (TextView) findViewById(R.id.textViewRidesMissedValue);
         textViewRidesMissedValue.setTypeface(Fonts.mavenRegular(this));
         textViewmonthlyScore = (TextView) findViewById(R.id.textViewmonthlyScore);
-        textViewmonthlyScore.setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
+        textViewmonthlyScore.setTypeface(Fonts.mavenMedium(this));
         textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
         textViewMonthlyText.setTypeface(Fonts.mavenRegular(this));
         textViewMonthlyText.setText(getStringText(R.string.earnings));
@@ -219,6 +227,7 @@ public class DriverProfileActivity extends BaseActivity {
                 }
             }
         });
+        setVehicleData();
     }
 
 
@@ -396,6 +405,36 @@ public class DriverProfileActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setVehicleData(){
+
+        if(Data.userData.getVehicleDetailsLogin()!=null){
+            VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
+            ArrayList<VehicleDetail> details = new ArrayList<>(5);
+            details.add(new VehicleDetail(getString(R.string.make),vehicleMakeInfo.getVehicleMake()));
+            details.add(new VehicleDetail(getString(R.string.model),vehicleMakeInfo.getVehicleModel()));
+            details.add(new VehicleDetail(getString(R.string.color),vehicleMakeInfo.getColor()));
+            details.add(new VehicleDetail(getString(R.string.number_of_doors),vehicleMakeInfo.getDoors()));
+            details.add(new VehicleDetail(getString(R.string.no_of_seat_belts),vehicleMakeInfo.getSeatbelts()));
+
+            RecyclerView rvVehicleTypes = findViewById(R.id.rvVehicleDetails);
+            VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter  = new VehicleDetailsProfileAdapter(details);
+            rvVehicleTypes.setLayoutManager(new LinearLayoutManager(this));
+            rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
+
+
+
+
+            findViewById(R.id.cvVehicleDetails).setVisibility(View.VISIBLE);
+
+        }else{
+            findViewById(R.id.cvVehicleDetails).setVisibility(View.GONE);
+
+        }
+
+
+
     }
 
 

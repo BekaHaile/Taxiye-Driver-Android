@@ -11,6 +11,7 @@ import com.fugu.CaptureUserData;
 import com.fugu.HippoNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
@@ -53,6 +55,7 @@ import retrofit.mime.TypedByteArray;
 
 public class JSONParser implements Constants {
 
+	private static Gson gson = new Gson();
 
 	public JSONParser() {
 
@@ -387,6 +390,11 @@ public class JSONParser implements Constants {
 		parseConfigVariables(context, userData);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
+		VehicleDetailsLogin vehicleMake = null;
+		if(userData.has("vehicle_make")){
+
+			 vehicleMake = gson.fromJson(userData.getString("vehicle_make"), VehicleDetailsLogin.class);
+		}
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -397,7 +405,7 @@ public class JSONParser implements Constants {
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled);
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData) {

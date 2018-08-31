@@ -1110,6 +1110,7 @@
     <string name="tip">Tip</string>
     <string name="toll_charges">Toll Charges</string>
     <string name="discount">Discount</string>
+    <string name="vehicle_make">Vehicle Make</string>
 
 
 </resources>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/activity_profile_screen"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              android:layout_width="720px"
-              android:layout_height="1134px"
-              android:animateLayoutChanges="true"
-              android:background="@color/white"
-              android:orientation="vertical"
-              android:splitMotionEvents="false"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:animateLayoutChanges="true"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <RelativeLayout
@@ -152,6 +152,7 @@
                         android:textColor="@color/textColorMedium"
                         android:textSize="36px"/>
 
+
                     <RelativeLayout
                         android:id="@+id/layoutEditProfile"
                         android:layout_width="wrap_content"
@@ -191,15 +192,71 @@
 
         </android.support.v7.widget.CardView>
 
-
         <android.support.v7.widget.CardView
-            android:id="@+id/cvScore"
+            android:id="@+id/cvVehicleDetails"
+            android:tag="@string/dont_touch_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cvDriverInfo"
-            android:layout_marginEnd="20px"
-            android:layout_marginStart="20px"
-            android:layout_marginTop="55px"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            card_view:cardBackgroundColor="@color/white"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="3dp"
+            card_view:cardUseCompatPadding="true"
+            >
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tvLabelVehicleDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center"
+                    style="@style/TextLarge"
+                    android:text="@string/title_vehicle_details"
+                    android:textColor="@color/textColor"
+                    android:background="@color/bgColor" />
+
+                <ImageView
+                   card_view:layout_constraintTop_toTopOf="@id/tvLabelVehicleDetails"
+                   card_view:layout_constraintBottom_toBottomOf="@id/tvLabelVehicleDetails"
+                    card_view:layout_constraintEnd_toEndOf="@id/tvLabelVehicleDetails"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/edit_pencil_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvVehicleDetails"
+                    card_view:layout_constraintTop_toBottomOf="@id/tvLabelVehicleDetails"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvScore"
+            android:tag="@string/dont_touch_me"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvVehicleDetails"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
             android:foreground="?android:attr/selectableItemBackground"
             card_view:cardBackgroundColor="@color/white"
             card_view:cardCornerRadius="8dp"
@@ -216,54 +273,60 @@
                     <TextView
                         android:id="@+id/textViewmonthlyScore"
                         android:layout_width="match_parent"
-                        android:layout_height="120px"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:gravity="center"
+                        style="@style/TextLarge"
                         android:text="@string/monthly"
                         android:textColor="@color/textColor"
-                        android:background="@color/bgColor"
-                        android:textSize="38px"/>
+                        android:background="@color/bgColor" />
 
                 <RelativeLayout
                     android:id="@+id/rlMonthlyEarnings"
                     android:layout_width="match_parent"
-                    android:layout_height="90px"
+                    android:minHeight="45dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:layout_height="wrap_content"
                     android:visibility="visible">
 
                     <TextView
+                        style="@style/TextNormal"
                         android:id="@+id/textViewMonthlyText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
                         android:text="@string/earnings"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="32px"/>
+                        />
 
                     <TextView
                         android:id="@+id/textViewMonthlyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/TextNormal"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
                         android:text="0000"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"/>
+                        android:textColor="@color/textColor" />
 
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal1"
                     android:layout_width="match_parent"
-                    android:layout_height="2px"
-                    android:layout_marginStart="40px"
-                    android:layout_marginEnd="40px"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@color/dividerColor"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="90px">
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
 
                     <TextView
                         android:id="@+id/textViewRidesTakenText"
@@ -271,10 +334,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
                         android:text="@string/rides_taken"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="32px"/>
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColorMedium" />
 
                     <TextView
                         android:id="@+id/textViewRidesTakenValue"
@@ -282,25 +344,27 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
+                        style="@style/TextNormal"
                         android:text="0000"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"/>
+                        android:textColor="@color/textColor" />
 
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal3"
                     android:layout_width="match_parent"
-                    android:layout_height="2px"
+                    android:layout_height="1dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginStart="40px"
-                    android:layout_marginEnd="40px"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@color/dividerColor"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="90px">
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
 
                     <TextView
                         android:id="@+id/textViewRidesMissedText"
@@ -308,10 +372,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
                         android:text="@string/rides_missed"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="32px"/>
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColorMedium" />
 
                     <TextView
                         android:id="@+id/textViewRidesMissedValue"
@@ -319,25 +382,27 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
                         android:text="0000"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"/>
+                        style="@style/TextNormal"
+                        android:textColor="@color/textColor"/>
 
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal2"
                     android:layout_width="match_parent"
-                    android:layout_height="2px"
+                    android:layout_height="1dp"
                     android:layout_centerHorizontal="true"
                     android:background="@color/dividerColor"
-                    android:layout_marginStart="40px"
-                    android:layout_marginEnd="40px"/>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="90px">
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:minHeight="45dp">
 
                     <TextView
                         android:id="@+id/textViewRidesCancelledText"
@@ -345,10 +410,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="42px"
+                        style="@style/TextNormal"
                         android:text="@string/rides_cancelled"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="32px"/>
+                        android:textColor="@color/textColorMedium" />
 
                     <TextView
                         android:id="@+id/textViewRidesCancelledValue"
@@ -356,15 +420,15 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="42px"
+                        style="@style/TextNormal"
                         android:text="0000"
-                        android:textColor="@color/textColor"
-                        android:textSize="36px"/>
+                        android:textColor="@color/textColor" />
 
                 </RelativeLayout>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
 
 
 
@@ -392,7 +456,9 @@
                 <TextView
                     android:id="@+id/tvAppSettings"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     style="@style/TextLarge"
                     android:gravity="center"
                     android:text="@string/settings"
