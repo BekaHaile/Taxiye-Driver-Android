@@ -261,8 +261,6 @@ public class JSONParser implements Constants {
 		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
-		String driverSupportEmail = userData.optString(Constants.DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email));
-		String driverSupportEmailSubject = userData.optString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, context.getString(R.string.support_email_subject));
 		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.hippo_support_faq_name_default));
 		String referralCode = userData.getString("referral_code");
 
@@ -386,8 +384,7 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
 		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
-		Prefs.with(context).save(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, userData.optInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH,
-				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
+		parseConfigVariables(context, userData);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		return new UserData(accessToken, userData.getString("user_name"),
@@ -398,9 +395,36 @@ public class JSONParser implements Constants {
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
-				isCaptiveDriver, countryCode,userIdentifier, driverSupportEmail, driverSupportEmailSubject,
+				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
 				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled);
+	}
+
+	private void parseConfigVariables(Context context, JSONObject userData) {
+		Prefs.with(context).save(KEY_FACEBOOK_PAGE_ID, userData.optString(KEY_FACEBOOK_PAGE_ID, context.getString(R.string.facebook_page_id)));
+		Prefs.with(context).save(KEY_FACEBOOK_PAGE_URL, userData.optString(KEY_FACEBOOK_PAGE_URL, context.getString(R.string.facebook_page_url)));
+		Prefs.with(context).save(DRIVER_SUPPORT_EMAIL, userData.optString(DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email)));
+		Prefs.with(context).save(DRIVER_SUPPORT_EMAIL_SUBJECT, userData.optString(DRIVER_SUPPORT_EMAIL_SUBJECT, context.getString(R.string.support_email_subject)));
+		int showAbout = context.getResources().getInteger(R.integer.show_t_and_c_profile) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_ABOUT, userData.optInt(KEY_SHOW_ABOUT, showAbout));
+		int fbLike = context.getResources().getInteger(R.integer.like_us_on_fb_enabled) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_FACEBOOK_LIKE_ENABLED, userData.optInt(KEY_FACEBOOK_LIKE_ENABLED, fbLike));
+		int arrivalTimer = context.getResources().getInteger(R.integer.show_driver_timer) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_ARRIVAL_TIMER, userData.optInt(KEY_SHOW_ARRIVAL_TIMER, arrivalTimer));
+		int showFaq = context.getResources().getInteger(R.integer.visibility_faq) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_FAQ, userData.optInt(KEY_SHOW_FAQ, showFaq));
+		int showDriverAgreement = context.getResources().getInteger(R.integer.visibility_driver_agreement) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_DRIVER_AGREEMENT, userData.optInt(KEY_SHOW_DRIVER_AGREEMENT, showDriverAgreement));
+		int earning = context.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_BANK_DEPOSIT, userData.optInt(KEY_SHOW_BANK_DEPOSIT, earning));
+		int showTotalFare = context.getResources().getInteger(R.integer.show_total_fare_at_ride_end) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_TOTAL_FARE_AT_RIDE_END, userData.optInt(KEY_SHOW_TOTAL_FARE_AT_RIDE_END, showTotalFare));
+		int showTakeCash = context.getResources().getInteger(R.integer.visibility_take_cash_at_ride_end) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_TAKE_CASH_AT_RIDE_END, userData.optInt(KEY_SHOW_TAKE_CASH_AT_RIDE_END, showTakeCash));
+		Prefs.with(context).save(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, userData.optInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH,
+				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
+		int showGraph = context.getResources().getInteger(R.integer.show_invoices) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		Prefs.with(context).save(KEY_SHOW_GRAPH_IN_EARNINGS, userData.optInt(KEY_SHOW_GRAPH_IN_EARNINGS, showGraph));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

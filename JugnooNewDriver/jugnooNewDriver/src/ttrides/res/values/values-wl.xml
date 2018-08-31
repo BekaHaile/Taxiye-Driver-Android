@@ -29,7 +29,7 @@
     <string name="google_maps_api_key">AIzaSyBCcnNzpyLi5ND2KKi9MShjWkyRh6c-on4</string> <!--IMP-->
 
     <string name="facebook_page_id">2056791887904505</string>
-    <string name="facebook_page_name">ttrideshare</string>
+    <string name="facebook_page_url">https://www.facebook.com/ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
@@ -42,7 +42,7 @@
 
     <!--Notifications-->
 
-    <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
     <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
     <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
 

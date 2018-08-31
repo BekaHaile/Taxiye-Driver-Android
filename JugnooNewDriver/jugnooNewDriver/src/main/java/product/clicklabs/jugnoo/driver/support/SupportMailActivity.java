@@ -9,10 +9,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class SupportMailActivity extends BaseActivity implements View.OnClickListener{
@@ -64,8 +66,8 @@ public class SupportMailActivity extends BaseActivity implements View.OnClickLis
 				}
 				if(Data.userData != null) {
 					Utils.openMailIntent(this,
-							new String[]{Data.userData.getDriverSupportEmail()},
-							Data.userData.getDriverSupportEmailSubject(),
+							new String[]{Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL, getString(R.string.support_email))},
+							Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL_SUBJECT, getString(R.string.support_email_subject)),
 							etMessage.getText().toString().trim());
 					etMessage.setText("");
 				}

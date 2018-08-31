@@ -113,6 +113,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlCashCollected"
                 android:visibility="@integer/visibility_earning_bank_deposit"
                 android:layout_width="620px"
                 android:layout_height="wrap_content"
@@ -140,6 +141,7 @@
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/ivDivIncome"
                 android:layout_width="640px"
                 android:layout_height="2px"
                 android:layout_marginBottom="15px"

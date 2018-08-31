@@ -29,7 +29,7 @@
     <string name="google_maps_api_key">AIzaSyByBfiSz9PmAdJbrGwbpPAugDgjjrxLa9s</string> <!--IMP-->
 
     <string name="facebook_page_id">1494351767251981</string>
-    <string name="facebook_page_name">TheNickelRide</string>
+    <string name="facebook_page_url">https://www.facebook.com/TheNickelRide</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->

@@ -49,9 +49,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (!(this instanceof DriverSplashActivity  || this instanceof DriverDocumentActivity) && Data.userData == null) {
-			restartApp();
-		}
+		checkIfUserDataNull();
 
 		if(savedInstanceState==null){
 			recoverLastSavedLanguage();
@@ -129,7 +127,7 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
 					|| this instanceof HelpActivity)) {
 			// TODO: 25/04/18 IMP
 			startActivity(new Intent(this, DriverSplashActivity.class));
-			finish();
+			finishAffinity();
 			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			return true;
 		} else {

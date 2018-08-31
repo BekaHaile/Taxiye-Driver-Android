@@ -28,7 +28,7 @@
     <string name="google_maps_api_key">AIzaSyCsL-gStbpxPNGO0FiCTpHATfI-AGRKIPw</string> <!--IMP-->
 
     <string name="facebook_page_id">443169969455713</string>
-    <string name="facebook_page_name">kardi.sg</string>
+    <string name="facebook_page_url">https://www.facebook.com/kardi.sg</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->

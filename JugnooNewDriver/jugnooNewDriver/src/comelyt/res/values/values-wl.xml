@@ -29,7 +29,7 @@
     <string name="google_maps_api_key">AIzaSyBrU2XQF8xCohlI_zA-ow-yG83HA8DI3FM</string> <!--IMP-->
 
     <string name="facebook_page_id">2056791887904505</string>
-    <string name="facebook_page_name">ttrideshare</string>
+    <string name="facebook_page_url">https://www.facebook.com/ttrideshare</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->

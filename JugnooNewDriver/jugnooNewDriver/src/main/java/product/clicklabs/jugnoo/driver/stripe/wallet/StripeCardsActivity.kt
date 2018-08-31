@@ -83,8 +83,8 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_stripe_cards)
         isStripeCardsEnabled =  Prefs.with(this).getInt(Constants.KEY_STRIPE_CARDS_ENABLED,0)==1
+        setContentView(R.layout.activity_stripe_cards)
 
 
 

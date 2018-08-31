@@ -30,6 +30,8 @@ import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.Data.userData
+import product.clicklabs.jugnoo.driver.R.id.imageView
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
@@ -321,6 +323,8 @@ class SplashFragment : Fragment() {
 
                                     }
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+                                    Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                            if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(mActivity, accessToken)
                                     parentActivity?.let { (it as DriverSplashActivity).addDriverSetupFragment(accessToken) }

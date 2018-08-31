@@ -17,8 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,6 +34,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -350,7 +349,7 @@ public class HelpActivity extends BaseFragmentActivity implements FlurryEventNam
 	
 	public void openMailIntentToSupport(){
 		Intent email = new Intent(Intent.ACTION_SEND);
-		email.putExtra(Intent.EXTRA_EMAIL, new String[] { getResources().getString(R.string.support_email) });
+		email.putExtra(Intent.EXTRA_EMAIL, new String[] { Prefs.with(this).getString(Constants.DRIVER_SUPPORT_EMAIL, getString(R.string.support_email)) });
 		email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_subject, getString(R.string.appname)));
 		email.putExtra(Intent.EXTRA_TEXT, "");
 		email.setType("message/rfc822");
