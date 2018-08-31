@@ -135,21 +135,14 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         phoneNumberToVerify = null;
         countryCode = Utils.getCountryCode(this);
 
+        btnReGenerateOtp.setVisibility(View.GONE);
         try {
             phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
             countryCode = getIntent().getStringExtra(Constants.KEY_COUNTRY_CODE);
-          //  if (emailRegisterData != null) {
-                if (phoneNumberToVerify != null) {
-                    phoneNoEt.setText(phoneNumberToVerify);
-                    intentFromRegister = true;
-                    generateOTP(phoneNumberToVerify);
-                }
-//            } else
-                if (!"".equalsIgnoreCase(phoneNumberToVerify)) {
+            if (!TextUtils.isEmpty(phoneNumberToVerify)) {
                 phoneNoEt.setText(phoneNumberToVerify);
 
                 layoutResendOtp.setVisibility(View.GONE);
-                btnReGenerateOtp.setVisibility(View.VISIBLE);
                 editTextOTP.setEnabled(true);
                 knowlarityMissedCallNumber = getIntent().getStringExtra(Constants.KNOWLARITY_NO);
                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
@@ -398,7 +391,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                         layoutResendOtp.setVisibility(View.VISIBLE);
                                         if (customCountDownTimer != null)
                                             customCountDownTimer.cancel();
-                                        btnReGenerateOtp.setVisibility(View.VISIBLE);
+                                        btnReGenerateOtp.setVisibility(View.GONE);
                                     } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                         Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
                                         JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
@@ -532,7 +525,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                 DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
                                 btnLogin.setVisibility(View.GONE);
                                 layoutResendOtp.setVisibility(View.GONE);
-                                btnReGenerateOtp.setVisibility(View.VISIBLE);
+                                btnReGenerateOtp.setVisibility(View.GONE);
                                 editTextOTP.setEnabled(true);
                                 knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "999");
                                 Prefs.with(OTPConfirmScreen.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
@@ -704,7 +697,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         } else {
             btnOtpViaCall.setVisibility(View.VISIBLE);
             textViewOr.setVisibility(View.VISIBLE);
-            btnReGenerateOtp.setVisibility(View.VISIBLE);
+            btnReGenerateOtp.setVisibility(View.GONE);
         }
         layoutResendOtp.setVisibility(View.VISIBLE);
         if (dialog != null && dialog.isShown())
