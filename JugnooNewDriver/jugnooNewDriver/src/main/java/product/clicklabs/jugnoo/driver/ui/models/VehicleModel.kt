@@ -50,11 +50,21 @@ class VehicleMakeInfo(val makeName:String): SearchDataModel() {
 }
 
 data class VehicleModelCustomisationsResponse(
-        @Expose @SerializedName("data") val customisationList: List<VehicleModelCustomisationDetails>
+        @Expose @SerializedName("data") val customisationList: CustomisationData
 ):FeedCommonResponseKotlin()
 
+class CustomisationData(
+        @Expose @SerializedName("colors") val colorCustomisationList: List<VehicleModelCustomisationDetails>,
+        @Expose @SerializedName("doors") val doorCustomisationList: List<VehicleModelCustomisationDetails>,
+        @Expose @SerializedName("seat_belts") val seatBeltsCustomisationList: List<VehicleModelCustomisationDetails>
+)
+
+
+
+
+
 data class VehicleModelCustomisationDetails(
-        @Expose @SerializedName("color") val color:String,
+        @Expose @SerializedName("value") val value:String,
         @Expose @SerializedName("id") val id:Int):SearchDataModel() {
     override fun getImage(context: Context?): Int {
         return -1
@@ -66,6 +76,6 @@ data class VehicleModelCustomisationDetails(
     }
 
     override fun getLabel(): String {
-        return color;
+        return value;
     }
 }
