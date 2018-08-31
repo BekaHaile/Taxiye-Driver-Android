@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/activity_profile_screen"
+<RelativeLayout android:id="@+id/activity_profile_screen"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="720px"
@@ -7,11 +7,11 @@
     android:animateLayoutChanges="true"
     android:background="@color/white"
     android:orientation="vertical"
-    android:splitMotionEvents="false"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:splitMotionEvents="false">
 
 
     <RelativeLayout
+        android:id="@+id/topbarProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -40,6 +40,7 @@
 
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_below="@id/topbarProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -227,13 +228,14 @@
                     android:background="@color/bgColor" />
 
                 <ImageView
-                   card_view:layout_constraintTop_toTopOf="@id/tvLabelVehicleDetails"
-                   card_view:layout_constraintBottom_toBottomOf="@id/tvLabelVehicleDetails"
-                    card_view:layout_constraintEnd_toEndOf="@id/tvLabelVehicleDetails"
+                    android:id="@+id/idEditVehicle"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/edit_pencil_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
+                    card_view:layout_constraintBottom_toBottomOf="@id/tvLabelVehicleDetails"
+                    card_view:layout_constraintEnd_toEndOf="@id/tvLabelVehicleDetails"
+                    card_view:layout_constraintTop_toTopOf="@id/tvLabelVehicleDetails" />
 
 
                 <android.support.v7.widget.RecyclerView
@@ -504,4 +506,10 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_below="@id/topbarProfile"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

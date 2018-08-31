@@ -34,7 +34,10 @@ import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleMakeInfo;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationDetails;
+import product.clicklabs.jugnoo.driver.ui.models.VehicleModelDetails;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -54,7 +57,7 @@ import retrofit.mime.TypedByteArray;
 
 public class DriverProfileActivity extends BaseFragmentActivity {
 
-    LinearLayout relative;
+    RelativeLayout relative;
     RelativeLayout driverDetailsRLL, driverDetailsRL;
     View backBtn;
     TextView title;
@@ -117,7 +120,7 @@ public class DriverProfileActivity extends BaseFragmentActivity {
             });
         }
 
-        relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
+        relative = (RelativeLayout) findViewById(R.id.activity_profile_screen);
         driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
         driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);
 
@@ -227,17 +230,44 @@ public class DriverProfileActivity extends BaseFragmentActivity {
                 }
             }
         });
-        setVehicleData();
+
+        final VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
+
+        setVehicleData(vehicleMakeInfo);
+        findViewById(R.id.idEditVehicle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(vehicleMakeInfo!=null){
+                    getSupportFragmentManager().beginTransaction().add(R.id.container,
+                            VehicleDetailsFragment.newInstance(Data.userData.accessToken,"1",String.valueOf(vehicleMakeInfo.getVehicleType()),
+                             Data.userData.userName, new  VehicleModelDetails(vehicleMakeInfo.getVehicleMake(),vehicleMakeInfo.getVehicleModel(),vehicleMakeInfo.getModelId()),
+                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getColor(),vehicleMakeInfo.getColorID()),
+                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getDoors(),vehicleMakeInfo.getDoorId()),
+                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getSeatbelts(),vehicleMakeInfo.getSeatBeltId()),
+                            vehicleMakeInfo.getYear(),vehicleMakeInfo.getVehicleNumber()),VehicleDetailsFragment.class.getSimpleName()).
+                            addToBackStack(VehicleDetailsFragment.class.getSimpleName())
+                            .commitAllowingStateLoss();
+                    title.setText(getString(R.string.edit_vehicle_details));
+
+                }
+
+            }
+        });
     }
 
 
     public void performBackPressed() {
+
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }
 
     @Override
     public void onBackPressed() {
+        if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()==0){
+            title.setText(getString(R.string.profile));
+
+        }
         performBackPressed();
         super.onBackPressed();
     }
@@ -407,24 +437,23 @@ public class DriverProfileActivity extends BaseFragmentActivity {
         }
     }
 
-    public void setVehicleData(){
+    public void setVehicleData(VehicleDetailsLogin vehicleMakeInfo){
 
         if(Data.userData.getVehicleDetailsLogin()!=null){
-            VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
-            ArrayList<VehicleDetail> details = new ArrayList<>(5);
+            ArrayList<VehicleDetail> details = new ArrayList<>(7);
             details.add(new VehicleDetail(getString(R.string.make),vehicleMakeInfo.getVehicleMake()));
             details.add(new VehicleDetail(getString(R.string.model),vehicleMakeInfo.getVehicleModel()));
             details.add(new VehicleDetail(getString(R.string.color),vehicleMakeInfo.getColor()));
             details.add(new VehicleDetail(getString(R.string.number_of_doors),vehicleMakeInfo.getDoors()));
             details.add(new VehicleDetail(getString(R.string.no_of_seat_belts),vehicleMakeInfo.getSeatbelts()));
+            details.add(new VehicleDetail(getString(R.string.vehicle_number),vehicleMakeInfo.getVehicleNumber()));
+            details.add(new VehicleDetail(getString(R.string.year),vehicleMakeInfo.getYear()));
 
             RecyclerView rvVehicleTypes = findViewById(R.id.rvVehicleDetails);
             VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter  = new VehicleDetailsProfileAdapter(details);
             rvVehicleTypes.setLayoutManager(new LinearLayoutManager(this));
+            rvVehicleTypes.setNestedScrollingEnabled(false);
             rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
-
-
-
 
             findViewById(R.id.cvVehicleDetails).setVisibility(View.VISIBLE);
 

@@ -11,13 +11,20 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail
 import product.clicklabs.jugnoo.driver.utils.Utils
 
-class VehicleDetail(var name:String, var value: String)
+class VehicleDetail(var name:String, var value: String?)
 
 public class VehicleDetailsLogin(@Expose @SerializedName("brand") var vehicleMake:String,
                                  @Expose @SerializedName("model_name") var vehicleModel:String,
                                  @Expose @SerializedName("color") var color:String,
                                  @Expose @SerializedName("no_of_doors") var doors:String,
-                                 @Expose @SerializedName("no_of_seat_belts") var seatbelts:String)
+                                 @Expose @SerializedName("no_of_seat_belts") var seatbelts:String,
+                                 @Expose @SerializedName("vehicle_type") var vehicleType:Int,
+                                 @Expose @SerializedName("model_id") var modelId:Int,
+                                 @Expose @SerializedName("door_id") var doorId:Int,
+                                 @Expose @SerializedName("seat_belt_id") var seatBeltId:Int,
+                                 @Expose @SerializedName("color_id") var colorID:Int,
+                                 @Expose @SerializedName("vehicle_number") var vehicleNumber:String,
+                                 @Expose @SerializedName("vehicle_year") var year:String)
 
 class VehicleDetailsProfileAdapter(var details: ArrayList<VehicleDetail>) : RecyclerView.Adapter<VehicleDetailsProfileAdapter.VehicleDetailViewHolder>() {
 
