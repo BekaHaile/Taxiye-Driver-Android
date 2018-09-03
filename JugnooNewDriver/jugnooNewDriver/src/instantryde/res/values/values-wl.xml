@@ -78,10 +78,10 @@
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
-    <drawable name="bg_splash">@color/black</drawable>
-    <drawable name="bg_login">@color/black</drawable>
+    <drawable name="bg_splash">@color/white</drawable>
+    <drawable name="bg_login">@color/white</drawable>
     <color name="colorDark">@color/text_color</color>
-    <color name="colorLight">@color/white</color>
+    <color name="colorLight">@color/text_color</color>
 
     <!--theme colors-->
     <color name="colorPrimary">#FFFFFF</color>
