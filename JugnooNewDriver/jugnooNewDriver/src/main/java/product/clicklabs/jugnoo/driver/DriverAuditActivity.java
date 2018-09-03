@@ -35,7 +35,8 @@ import retrofit.mime.TypedByteArray;
 public class DriverAuditActivity extends BaseActivity {
 
 	LinearLayout relative;
-	RelativeLayout driverDetailsRLL,driverDetailsRL;
+	RelativeLayout driverDetailsRL;
+	LinearLayout driverDetailsRLL;
 	View backBtn;
 	TextView title;
 
@@ -79,7 +80,7 @@ public class DriverAuditActivity extends BaseActivity {
 		setContentView(R.layout.activity_profile_screen);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
-		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
+		driverDetailsRLL = findViewById(R.id.driverDetailsRLL);
 		driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);
 
 		new ASSL(DriverAuditActivity.this, relative, 1134, 720, false);

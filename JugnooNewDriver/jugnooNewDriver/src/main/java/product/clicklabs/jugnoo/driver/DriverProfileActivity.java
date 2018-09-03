@@ -47,7 +47,8 @@ import retrofit.mime.TypedByteArray;
 public class DriverProfileActivity extends BaseActivity {
 
     LinearLayout relative;
-    RelativeLayout driverDetailsRLL, driverDetailsRL;
+    RelativeLayout driverDetailsRL;
+    LinearLayout driverDetailsRLL;
     View backBtn;
     TextView title;
 
@@ -58,6 +59,7 @@ public class DriverProfileActivity extends BaseActivity {
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
     SwitchCompat switchNavigation, switchMaxSound;
+    TextView tvDocuments;
 
 
     public static ProfileInfo openedProfileInfo;
@@ -110,7 +112,7 @@ public class DriverProfileActivity extends BaseActivity {
         }
 
         relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
-        driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
+        driverDetailsRLL = (LinearLayout) findViewById(R.id.driverDetailsRLL);
         driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);
 
         new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
@@ -157,6 +159,8 @@ public class DriverProfileActivity extends BaseActivity {
         textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
         textViewRidesCancelledText.setTypeface(Fonts.mavenRegular(this));
 
+        tvDocuments = findViewById(R.id.tvDocuments);
+
         terms = (TextView) findViewById(R.id.terms);
         terms.setTypeface(Fonts.mavenRegular(this));
 
@@ -200,11 +204,27 @@ public class DriverProfileActivity extends BaseActivity {
         terms.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_ABOUT, 1) == 1 ? View.VISIBLE : View.GONE);
 
         switchNavigation.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_WAZE_TOGGLE, 0) == 1 ? View.VISIBLE : View.GONE);
+        findViewById(R.id.ivDivNavigation).setVisibility(switchNavigation.getVisibility());
         switchNavigation.setChecked(Prefs.with(this).getInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS) == Constants.NAVIGATION_TYPE_WAZE);
         switchNavigation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Prefs.with(DriverProfileActivity.this).save(Constants.KEY_NAVIGATION_TYPE, isChecked ? Constants.NAVIGATION_TYPE_WAZE : Constants.NAVIGATION_TYPE_GOOGLE_MAPS);
+            }
+        });
+
+        tvDocuments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Data.userData == null){
+                    return;
+                }
+                Intent intent = new Intent(DriverProfileActivity.this, DriverDocumentActivity.class);
+                intent.putExtra("access_token",Data.userData.accessToken);
+                intent.putExtra("in_side", true);
+                intent.putExtra("doc_required", 0);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
             }
         });
 
