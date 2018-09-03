@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
@@ -38,6 +39,7 @@ import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleMakeInfo;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationDetails;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelDetails;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -253,6 +255,26 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
             }
         });
+        findViewById(R.id.tvServiceType).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<DriverServiceTypePopup.ServiceDetail> details = new ArrayList<>();
+                details.add(new DriverServiceTypePopup.ServiceDetail(100,"Jugnoo Go",false,false));
+                details.add(new DriverServiceTypePopup.ServiceDetail(101,"Kardi Go",false,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(102,"Space X",false,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(103,"Space Om",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(104,"Pluto",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(105,"Mars",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(106,"Jupiter",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(107,"Neptune",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(108,"Venus",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(109,"Mercury",true,true));
+                details.add(new DriverServiceTypePopup.ServiceDetail(110,"Earth",true,true));
+                DriverServiceTypePopup driverServiceTypePopup = new DriverServiceTypePopup(DriverProfileActivity.this,details);
+                driverServiceTypePopup.show();
+            }
+        });
+
     }
 
 

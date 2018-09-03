@@ -1118,6 +1118,8 @@
     <string name="discount">Discount</string>
     <string name="vehicle_make">Vehicle Make</string>
     <string name="edit_vehicle_details">Edit Vehicle Details</string>
+    <string name="service_type">Service Type</string>
+    <string name="cd_cross_service_type">Closes the service type popup</string>
 
 
 </resources>

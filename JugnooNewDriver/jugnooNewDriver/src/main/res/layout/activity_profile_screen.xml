@@ -7,7 +7,8 @@
     android:animateLayoutChanges="true"
     android:background="@color/white"
     android:orientation="vertical"
-    android:splitMotionEvents="false">
+    android:splitMotionEvents="false"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <RelativeLayout
@@ -455,6 +456,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
+
                 <TextView
                     android:id="@+id/tvAppSettings"
                     android:layout_width="match_parent"
@@ -465,6 +468,46 @@
                     android:gravity="center"
                     android:text="@string/settings"
                     android:background="@color/bgColor"/>
+
+                <LinearLayout
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/labelServiceType"
+                        android:text="@string/service_type"
+                        style="@style/TextNormal"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.4"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:id="@+id/tvServiceType"
+                        style="@style/TextNormal"
+                        android:textStyle="bold"
+                        android:gravity="end"
+                        android:layout_gravity="end"
+                        android:drawablePadding="5dp"
+                        tools:text="Jugnoo Go, Jugnoo"
+                        android:drawableEnd='@drawable/ic_arrow_down_vector'
+                        android:layout_width="0dp"
+                        android:layout_weight="0.6"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
 
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/switchNavigation"
