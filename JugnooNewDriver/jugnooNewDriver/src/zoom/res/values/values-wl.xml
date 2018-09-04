@@ -26,17 +26,17 @@
     <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Zoom Driver/Zoom Pictures</string>
-    <string name="file_provider">product.clicklabs.zoom.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--IMP-->
+    <string name="file_provider">production.zoom.driver.provider</string>
+    <string name="google_maps_api_key">AIzaSyD5IGM__hLgi_QOCKdkkHNTIN9DKy6hOsI</string> <!--IMP-->
 
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">Zoom</string><!--* IMP-->
-    <string name="support_email">support@zoom.com</string>
+    <string name="support_email">support@zoomapp.io</string>
     <string name="support_email_subject">Zoom Driver Support</string>
     <string name="support_phone_number">+919023121121</string>
-    <string name="customer_app_download_link">https://www.zoom.com/</string>
+    <string name="customer_app_download_link">https://zoomapp.io</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->

@@ -1,39 +1,35 @@
 {
   "project_info": {
-    "project_number": "506849624961",
-    "firebase_url": "https://arctic-inkwell-580.firebaseio.com",
-    "project_id": "arctic-inkwell-580",
-    "storage_bucket": "arctic-inkwell-580.appspot.com"
+    "project_number": "927147683110",
+    "firebase_url": "https://zoom-ltd.firebaseio.com",
+    "project_id": "zoom-ltd",
+    "storage_bucket": "zoom-ltd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:6e9a6bc57127f7d5",
+        "mobilesdk_app_id": "1:927147683110:android:b224c7ed4ba48c11",
         "android_client_info": {
-          "package_name": "com.driver.jugnoopros"
+          "package_name": "production.zoom.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "506849624961-vp4q01upn142gibmd1hnqhkhavg3b2ds.apps.googleusercontent.com",
+          "client_id": "927147683110-2bi7pnk9lpl14krpbm2btgi3j4l83lts.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.driver.jugnoopros",
+            "package_name": "production.zoom.customer",
             "certificate_hash": "87914682838fc8e70369b102dd89fd8eea9e4009"
           }
         },
         {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
+          "client_id": "927147683110-jikttueosi1rfofrjutku7ap3kabbug7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
+          "current_key": "AIzaSyAr7BE1PBnxflM9Dem4S3Ja87Qvms5WdRI"
         }
       ],
       "services": {
@@ -44,16 +40,8 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
+              "client_id": "927147683110-jikttueosi1rfofrjutku7ap3kabbug7.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "506849624961-giflemb7tksa8etpghifg542cqpj4ftk.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.clicklabs.jugnoo",
-                "app_store_id": "882391317"
-              }
             }
           ]
         },
@@ -64,284 +52,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:48de014b43489d81",
+        "mobilesdk_app_id": "1:927147683110:android:ac6ec08022fb487f",
         "android_client_info": {
-          "package_name": "izorp.d5m99.og1mr"
+          "package_name": "production.zoom.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:5a3d82fd9622e124",
-        "android_client_info": {
-          "package_name": "product.clicklabs.jugnoo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-lk5h1knuc4cjb7gr99giu487tlnkvuc6.apps.googleusercontent.com",
+          "client_id": "927147683110-bmu422ptv7n3fe2c2o94ie6s6b428g76.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "b2a856d932063d3b36510cfe060596bb63796821"
-          }
-        },
-        {
-          "client_id": "506849624961-b4jg5p5sd1ok0tup1ea9grpvn2a1npg0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "ffbad466473798578ec845329d2d068c2bdea5b6"
-          }
-        },
-        {
-          "client_id": "506849624961-gdv4hl0m09kfa6e29cdo282qqefsfubt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "32031a8c87e112337d565114576a2f56a4587e52"
-          }
-        },
-        {
-          "client_id": "506849624961-45agmu7acf9kh5j6opi8g0ouilqhgckr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "539b2ad5c12f0d9ddabe9a5394c2dc772beac5ec"
-          }
-        },
-        {
-          "client_id": "506849624961-246kgs43esqjrrnjapfnv06shvesi6l2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "d337547cce9785233795d1862ce14218622e714f"
-          }
-        },
-        {
-          "client_id": "506849624961-738egvjks12enhcgnkffc52nst967eha.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
+            "package_name": "production.zoom.driver",
             "certificate_hash": "87914682838fc8e70369b102dd89fd8eea9e4009"
           }
         },
         {
-          "client_id": "506849624961-heh4643rego76q65borvgqfltnmjgtmc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "8e94efc078dbad6b8d2f9529a5ab66d5186492d4"
-          }
-        },
-        {
-          "client_id": "506849624961-cl1lgd85j98juhdfb31ledtslre7r8ml.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "3e65f237f1bdcd6046d60042013ea1607c3686b0"
-          }
-        },
-        {
-          "client_id": "506849624961-fpso773sdi8l77fi88oqi6hfe2ocsud5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "e593f6e29d24ec70b292ba0a63c77a6ae94bad44"
-          }
-        },
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-q7iqqpip5qdd41jq1pju1nvnd1v92dbj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "607207eece8c6fb14a6068909b5fe0082f2e5b7b"
-          }
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-mgqnuam3gm544lo66enlab4it0m6t4qv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "6b89af994589eeb7b8503316150f205b48757209"
-          }
-        },
-        {
-          "client_id": "506849624961-0c2cd90kkgu3h3m4fmevtlvo8hd76a35.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "816d0072adf5c24b11ece80da81015f27fdcb172"
-          }
-        },
-        {
-          "client_id": "506849624961-atop5ant5lq2ug5r6iskjcdv59r4vadp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo",
-            "certificate_hash": "8bd4a99ab767d422d8270da3ee3d623b3230ce3b"
-          }
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:cf09d931973786bf",
-        "android_client_info": {
-          "package_name": "product.clicklabs.jugnoo.driver"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
+          "client_id": "927147683110-jikttueosi1rfofrjutku7ap3kabbug7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:c285dbad470f6ab5",
-        "android_client_info": {
-          "package_name": "product.clicklabs.jugnoo.driver.ads"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:97224ca2624830ad",
-        "android_client_info": {
-          "package_name": "product.clicklabs.jugnoo.white"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-9q11arpf85thv5qc1bsis9ipunh5qbrf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo.white",
-            "certificate_hash": "816d0072adf5c24b11ece80da81015f27fdcb172"
-          }
-        },
-        {
-          "client_id": "506849624961-976tu5tsi2gdh81h8gsg2emvlm809qb0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "product.clicklabs.jugnoo.white",
-            "certificate_hash": "87914682838fc8e70369b102dd89fd8eea9e4009"
-          }
-        },
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
+          "current_key": "AIzaSyAr7BE1PBnxflM9Dem4S3Ja87Qvms5WdRI"
         }
       ],
       "services": {
@@ -352,158 +84,10 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
+              "client_id": "927147683110-jikttueosi1rfofrjutku7ap3kabbug7.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "506849624961-giflemb7tksa8etpghifg542cqpj4ftk.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.clicklabs.jugnoo",
-                "app_store_id": "882391317"
-              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:5f9839fa0f18faa8",
-        "android_client_info": {
-          "package_name": "product.clicklabs.jugnoo.white.driver"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:66ba4cae46d449a0",
-        "android_client_info": {
-          "package_name": "production.jingos.customer"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:0f1243e5d9114d43",
-        "android_client_info": {
-          "package_name": "talov.btlzi.q4yxb"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:506849624961:android:f0f1347d8a97df97",
-        "android_client_info": {
-          "package_name": "ylvzv.ms64.wl1c"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAbpzWmfGnHu8SLjREnCxR2lVk2hxbGmWU"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
