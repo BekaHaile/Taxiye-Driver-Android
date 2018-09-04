@@ -5,13 +5,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="15dp"
-    android:layout_marginStart="15dp"
+    android:layout_margin="20dp"
     app:layout_constraintTop_toBottomOf="@id/ivDismiss">
+
+    <ImageView
+        android:id="@+id/ivDismissRef"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cd_cross_service_type"
+        android:src="@drawable/cross_30_px"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <Space
-        android:id="@+id/crossCenter"
+        android:id="@+id/crossCenterStart"
+        android:layout_width="10dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivDismissRef"
+        app:layout_constraintEnd_toEndOf="@+id/ivDismissRef"
+        app:layout_constraintStart_toStartOf="@+id/ivDismissRef"
+        app:layout_constraintTop_toTopOf="@id/ivDismissRef" />
+
+
+    <Space
+        android:id="@+id/crossCenterEnd"
         android:layout_width="10dp"
         android:layout_height="1dp"
         android:visibility="gone"
@@ -27,9 +46,9 @@
         android:layout_height="0dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/crossCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/crossCenter" />
+        app:layout_constraintEnd_toEndOf="@id/crossCenterEnd"
+        app:layout_constraintStart_toStartOf="@id/crossCenterStart"
+        app:layout_constraintTop_toBottomOf="@id/crossCenterEnd" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -41,6 +60,7 @@
         android:text="@string/service_type"
         android:textAllCaps="true"
         android:textColor="@color/themeColor"
+        app:layout_constraintBottom_toTopOf="@id/rvVehicleTypes"
         app:layout_constraintEnd_toEndOf="@id/bgContent"
         app:layout_constraintStart_toStartOf="@id/bgContent"
         app:layout_constraintTop_toTopOf="@id/bgContent" />
@@ -66,9 +86,13 @@
         android:layout_marginTop="20dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
         app:layout_constraintEnd_toEndOf="@id/bgContent"
         app:layout_constraintStart_toStartOf="@id/bgContent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_weight="1" />
 
     <Button
         android:id="@+id/btnSave"

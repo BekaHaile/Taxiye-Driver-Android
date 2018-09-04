@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.AppCompatCheckBox
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
@@ -37,9 +34,13 @@ public class DriverServiceTypePopup(context: Context,var serviceList  :List<Serv
         window.getAttributes().dimAmount = 0.6f
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         setCancelable(true)
+        setContentView(R.layout.dialog_driver_service_type)
+        window.setBackgroundDrawableResource(android.R.color.transparent)
+        window.setGravity(Gravity.CENTER)
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         setCanceledOnTouchOutside(true)
 
-        setContentView(R.layout.dialog_driver_service_type)
+
         rvVehicleTypes.layoutManager = LinearLayoutManager(context)
         rvVehicleTypes.adapter = ServiceTypeAdapter(serviceList,rvVehicleTypes)
 
