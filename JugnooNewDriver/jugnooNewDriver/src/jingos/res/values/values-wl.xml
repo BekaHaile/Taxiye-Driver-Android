@@ -67,6 +67,7 @@
     <integer name="show_driver_timer">@integer/view_visible</integer>
 
     <!--General Features Enable/Disable-->
+    <string name="currency_fallback">KES</string>
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
