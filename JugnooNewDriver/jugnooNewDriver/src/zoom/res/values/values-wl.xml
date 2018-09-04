@@ -74,7 +74,7 @@
 
     <!--General Features Enable/Disable-->
     <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
-    <integer name="show_language_control">@integer/view_visible</integer>
+    <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
     <integer name="splash_scene_bg_visibility">@integer/view_visible</integer>
 
