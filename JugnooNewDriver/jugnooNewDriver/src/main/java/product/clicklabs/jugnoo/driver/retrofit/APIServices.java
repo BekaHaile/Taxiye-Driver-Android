@@ -42,8 +42,7 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -679,6 +678,10 @@ public interface APIServices {
 	@POST("/update_luggage_count")
 	void updateLuggageCount(@FieldMap Map<String, String> params,
 							Callback<FeedCommonResponseKotlin> callback);
+
+	@POST("/update_driver_regions")
+	void updateDriverVehicleServices(@Body DriverVehicleServiceTypePopup.ServiceDetailModel list,
+									 Callback<FeedCommonResponseKotlin> callback);
 
 
 }

@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="@id/bgContent"
         app:layout_constraintTop_toTopOf="@id/bgContent" />
 
-    <TextView
+  <!--  <TextView
         android:id="@+id/tvReset"
         style="@style/TextNormal"
         android:layout_width="wrap_content"
@@ -74,11 +74,12 @@
         android:drawableStart="@drawable/ic_refresh_black_14dp"
         android:padding="5dp"
         android:text="@string/reset"
+        android:layout_marginEnd="5dp"
         android:textAllCaps="true"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/rvVehicleTypes"
         app:layout_constraintEnd_toEndOf="@id/bgContent" />
-
+-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvVehicleTypes"
         android:layout_width="0dp"
@@ -111,6 +112,7 @@
         android:id="@+id/ivDismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:tint="@color/themeColor"
         android:contentDescription="@string/cd_cross_service_type"
         android:src="@drawable/cross_30_px"
         app:layout_constraintEnd_toEndOf="parent" />

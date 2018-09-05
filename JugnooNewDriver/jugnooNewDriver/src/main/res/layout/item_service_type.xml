@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:text="Jugnoo Go"
-    android:theme="@style/ThemeSwitch"
+    android:theme="@style/CheckBoxTheme"
     android:padding="10dp"
     style="@style/TextNormal"
     xmlns:android="http://schemas.android.com/apk/res/android"

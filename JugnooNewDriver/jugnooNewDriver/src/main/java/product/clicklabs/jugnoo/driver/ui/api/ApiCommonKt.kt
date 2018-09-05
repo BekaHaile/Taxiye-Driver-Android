@@ -9,12 +9,14 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.models.*
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup
 import product.clicklabs.jugnoo.driver.utils.AppStatus
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.MultipartTypedOutput
+import retrofit.mime.TypedString
 import java.lang.ref.WeakReference
 
 
@@ -34,6 +36,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
     private var apiCommonCallback: APICommonCallbackKotlin<T>? = null
     private lateinit var params: HashMap<String, String>
     private lateinit var multipartTypedOutput: MultipartTypedOutput
+    private lateinit var bodyParams: Any
     private lateinit var apiName: ApiName
     private var isInProgress = false
 
@@ -44,7 +47,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
         this.apiName = apiName
 
         this.params = params ?: HashMap()
-        hitApi(false)
+        hitApi()
 
     }
 
@@ -52,12 +55,21 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                 apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
         this.apiCommonCallback = apiCommonCallback
         this.apiName = apiName
-
         this.multipartTypedOutput = multipartTypedOutput ?: MultipartTypedOutput()
-        hitApi(true)
+        hitApi()
     }
 
-    private fun hitApi(isMultiPartRequest: Boolean) {
+
+    fun <S:Any> execute(bodyParams: S , apiName: ApiName,
+                apiCommonCallback: APICommonCallbackKotlin<T>? = null) {
+        this.apiCommonCallback = apiCommonCallback
+        this.apiName = apiName
+        this.bodyParams = bodyParams
+        this.params = HashMap()//for putting default params
+        hitApi()
+    }
+
+    private  fun  hitApi() {
 
         if (!AppStatus.getInstance(activity.get()).isOnline(activity.get())) {
             apiCommonCallback?.onFinish()
@@ -125,15 +137,23 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
         }
 
         if (putDefaultParams) {
-            if (isMultiPartRequest) {
+            if (::multipartTypedOutput.isInitialized) {
                 HomeUtil.putDefaultParams(multipartTypedOutput)
-            } else {
+            }
+            if(::params.isInitialized) {
                 HomeUtil.putDefaultParams(params)
             }
         }
 
         if (putAccessToken && Data.userData!=null && !TextUtils.isEmpty(Data.userData.accessToken)) {
-            params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken
+
+            if (::multipartTypedOutput.isInitialized) {
+             multipartTypedOutput.addPart(Constants.KEY_ACCESS_TOKEN,TypedString(Data.userData.accessToken))
+            }
+            if(::params.isInitialized) {
+                params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken
+            }
+
         }
 
         if (showLoader) {
@@ -158,6 +178,8 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
                     Callback<VehicleModelCustomisationsResponse> )
             ApiName.UPDATE_LUGGAGE_COUNT ->  RestClient.getApiServices().updateLuggageCount(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.UPDATE_DRIVER_SERVICES ->  RestClient.getApiServices().updateDriverVehicleServices(bodyParams as DriverVehicleServiceTypePopup.ServiceDetailModel,
+                    callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

@@ -172,4 +172,10 @@
         </item>
     </style>
 
+
+    <style name="CheckBoxTheme" parent="AppTheme">
+        <item name="colorAccent">@color/themeColor</item>
+        <item name="android:textColorSecondary">@color/bg_grey</item>
+    </style>
+
 </resources>
