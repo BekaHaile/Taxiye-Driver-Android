@@ -61,7 +61,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton = (Button) findViewById(R.id.submitButton);
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
-		title.setText(R.string.upload_Documents);
+		title.setText(R.string.documents);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		documentListFragment = new DocumentListFragment();

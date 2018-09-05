@@ -77,6 +77,7 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
     <integer name="splash_scene_bg_visibility">@integer/view_visible</integer>
+    <bool name="vehicle_model_enabled">true</bool>
 
 
 
