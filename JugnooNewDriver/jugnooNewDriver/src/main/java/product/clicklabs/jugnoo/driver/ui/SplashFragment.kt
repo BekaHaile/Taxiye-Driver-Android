@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.Data.userData
 import product.clicklabs.jugnoo.driver.R.id.imageView
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
@@ -65,7 +64,7 @@ class SplashFragment : Fragment() {
     }
 
     companion object {
-        private const val DEVICE_TOKEN_WAIT_TIME = 10 * 1000L
+        private const val DEVICE_TOKEN_WAIT_TIME = 20 * 1000L
         private const val CACHED_API_RETRY_COUNT:Long = 3
 
     }
