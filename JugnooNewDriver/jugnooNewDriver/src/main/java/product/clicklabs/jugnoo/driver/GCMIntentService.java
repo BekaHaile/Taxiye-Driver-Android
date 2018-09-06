@@ -491,7 +491,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //		super.onMessageReceived(remoteMessage);
 
 		if (fuguNotificationConfig.isHippoNotification(remoteMessage.getData())) {
-			fuguNotificationConfig.setSmallIcon(R.mipmap.ic_launcher);
+			fuguNotificationConfig.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			//your icon drawable
 			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
 			fuguNotificationConfig.setNotificationSoundEnabled(true);
