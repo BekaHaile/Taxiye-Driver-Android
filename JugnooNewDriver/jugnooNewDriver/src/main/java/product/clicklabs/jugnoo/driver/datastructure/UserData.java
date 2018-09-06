@@ -103,7 +103,7 @@ public class UserData {
 		this.referralImageD2C = referralImageD2C;
 		this.sendCreditsEnabled = sendCreditsEnabled;
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
-		this.vehicleServicesModel = vehicleServicesModel;
+		setVehicleServicesModel(vehicleServicesModel);
 	}
 
 	public String getUserId() {
@@ -232,11 +232,24 @@ public class UserData {
 	}
 
 	public  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> getVehicleServicesModel() {
+		if(vehicleServicesModel!=null){
+			for(DriverVehicleServiceTypePopup.VehicleServiceDetail model:vehicleServicesModel){
+				model.setChecked(model.getServerSelected());
+			}
+
+		}
 		return vehicleServicesModel;
 
 	}
 
 	public void setVehicleServicesModel(List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel) {
+		if(vehicleServicesModel!=null){
+			for(DriverVehicleServiceTypePopup.VehicleServiceDetail model:vehicleServicesModel){
+				model.setServerSelected(model.getChecked());
+			}
+
+		}
 		this.vehicleServicesModel = vehicleServicesModel;
+
 	}
 }

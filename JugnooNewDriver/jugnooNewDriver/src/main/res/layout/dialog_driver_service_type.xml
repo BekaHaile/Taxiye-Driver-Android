@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="@id/bgContent" />
 -->
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvVehicleTypes"
+        android:id="@+id/rvVehicleTypesSet"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

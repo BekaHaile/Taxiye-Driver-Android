@@ -12,6 +12,7 @@ import android.view.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.dialog_driver_service_type.*
+import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.DriverProfileActivity
 import product.clicklabs.jugnoo.driver.HomeUtil
@@ -34,9 +35,11 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
     class VehicleServiceDetail(@Expose @SerializedName("id") var id:Long,
                                @Expose @SerializedName("vehicle_name") var serviceName:String,
                                @Expose @SerializedName("is_selected") var checked: Int,
-                               @Expose @SerializedName("is_enabled") var enabled:Int)
+                               @Expose @SerializedName("is_enabled") var enabled:Int,
+                                var serverSelected:Int)
 
 
+    private lateinit var serviceTypeAdapter:ServiceTypeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +53,12 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
         setCanceledOnTouchOutside(true)
 
 
-        rvVehicleTypes.layoutManager = LinearLayoutManager(context)
-        rvVehicleTypes.adapter = ServiceTypeAdapter(context,serviceList,rvVehicleTypes)
+        rvVehicleTypesSet.layoutManager = LinearLayoutManager(context)
+        serviceTypeAdapter = ServiceTypeAdapter(context,serviceList,rvVehicleTypesSet)
+        rvVehicleTypesSet.adapter = serviceTypeAdapter
 
         btnSave.setOnClickListener {
-            updateServiceList(serviceList.toMutableList())
-           /* val serviceListChecked = serviceList.toMutableList()
-            val checked = serviceListChecked.filter { it.checked }.map { it.id }
-            Log.i(TAG,checked.toString())*/
+          updateServiceList(serviceList)
 
         }
         ivDismiss.setOnClickListener {
@@ -66,8 +67,16 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
 
     }
 
+     fun setData(serviceList  :List<VehicleServiceDetail>){
+        this.serviceList = serviceList
+         serviceTypeAdapter.details = this.serviceList
+         serviceTypeAdapter.notifyDataSetChanged()
 
-    class ServiceTypeAdapter(var context: Context, var details: List<VehicleServiceDetail>, var recyclerView: RecyclerView) : RecyclerView.Adapter<ServiceTypeAdapter.ServiceTypeViewHolder>() {
+    }
+
+
+    class ServiceTypeAdapter(var context: Context, var details: List<VehicleServiceDetail>, var recyclerView: RecyclerView) :
+            RecyclerView.Adapter<ServiceTypeAdapter.ServiceTypeViewHolder>() {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceTypeAdapter.ServiceTypeViewHolder {

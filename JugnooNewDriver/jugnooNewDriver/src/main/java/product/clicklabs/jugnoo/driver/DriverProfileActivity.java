@@ -71,6 +71,7 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
 
     public static ProfileInfo openedProfileInfo;
+    private DriverVehicleServiceTypePopup driverVehicleServiceTypePopup;
 
     @Override
     protected void onStart() {
@@ -253,19 +254,40 @@ public class DriverProfileActivity extends BaseFragmentActivity {
             }
         });
 
-        findViewById(R.id.layoutVehicleServiceDetails).setVisibility(Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS,0)==1?View.VISIBLE:View.GONE);
-        tvServiceType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Data.userData.getVehicleServicesModel() != null && Data.userData.getVehicleServicesModel().size() > 0){
+        boolean showVehicleServiceDetails = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS,0)==1;
+        if(showVehicleServiceDetails && Data.userData!=null && Data.userData.getVehicleServicesModel()!=null){
+            setVehicleSetDetails();
+            findViewById(R.id.layoutVehicleServiceDetails).setVisibility(View.VISIBLE);
+            findViewById(R.id.ivDivVehicleServiceDetails).setVisibility(View.VISIBLE);
 
-                    DriverVehicleServiceTypePopup driverVehicleServiceTypePopup =
-                            new DriverVehicleServiceTypePopup(DriverProfileActivity.this,Data.userData.getVehicleServicesModel());
-                    driverVehicleServiceTypePopup.show();
+            tvServiceType.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Data.userData==null){
+                        return;
+                    }
+
+                    List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServiceDetails  = Data.userData.getVehicleServicesModel();
+
+                    if(vehicleServiceDetails.size()==0){
+                        return;
+                    }
+
+                     if(driverVehicleServiceTypePopup==null){
+                            driverVehicleServiceTypePopup = new DriverVehicleServiceTypePopup(DriverProfileActivity.this, vehicleServiceDetails);
+                        }else{
+                            driverVehicleServiceTypePopup.setData(vehicleServiceDetails);
+
+                        }
+                        driverVehicleServiceTypePopup.show();
+
                 }
-            }
-        });
-        setVehicleSetDetails();
+            });
+        }else{
+            findViewById(R.id.layoutVehicleServiceDetails).setVisibility(View.GONE);
+            findViewById(R.id.ivDivVehicleServiceDetails).setVisibility(View.GONE);
+        }
+
 
     }
 
