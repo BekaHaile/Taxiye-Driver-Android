@@ -63,7 +63,7 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
     TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
-            textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
+            textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms,tvServiceType;
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
@@ -166,7 +166,7 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
         textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
         textViewRidesCancelledText.setTypeface(Fonts.mavenRegular(this));
-
+        tvServiceType =  (TextView)findViewById(R.id.tvServiceType);
         terms = (TextView) findViewById(R.id.terms);
         terms.setTypeface(Fonts.mavenRegular(this));
 
@@ -252,26 +252,38 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
             }
         });
-        findViewById(R.id.tvServiceType).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.layoutVehicleServiceDetails).setVisibility(Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS,0)==1?View.VISIBLE:View.GONE);
+        tvServiceType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<DriverVehicleServiceTypePopup.VehicleServiceDetail> details = new ArrayList<>();
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(100,"Jugnoo Go",false,false));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(101,"Kardi Go",false,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(102,"Space X",false,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(103,"Space Om",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(104,"Pluto",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(105,"Mars",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(106,"Jupiter",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(107,"Neptune",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(108,"Venus",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(109,"Mercury",true,true));
-                details.add(new DriverVehicleServiceTypePopup.VehicleServiceDetail(110,"Earth",true,true));
-                DriverVehicleServiceTypePopup driverVehicleServiceTypePopup = new DriverVehicleServiceTypePopup(DriverProfileActivity.this,details);
-                driverVehicleServiceTypePopup.show();
+                if(Data.userData.getVehicleServicesModel() != null && Data.userData.getVehicleServicesModel().size() > 0){
+
+                    DriverVehicleServiceTypePopup driverVehicleServiceTypePopup =
+                            new DriverVehicleServiceTypePopup(DriverProfileActivity.this,Data.userData.getVehicleServicesModel());
+                    driverVehicleServiceTypePopup.show();
+                }
             }
         });
+        setVehicleSetDetails();
 
+    }
+
+    public void setVehicleSetDetails() {
+        StringBuilder builder = new StringBuilder();
+        String sep = ", ";
+        for(DriverVehicleServiceTypePopup.VehicleServiceDetail vehicleSet: Data.userData.getVehicleServicesModel()){
+            if(vehicleSet.getChecked()==1){
+                builder.append(vehicleSet.getServiceName());
+                builder.append(", ");
+            }
+
+        }
+        if(builder.length()>1){
+            builder.delete(builder.length()-sep.length(),builder.length());
+
+        }
+        tvServiceType.setText(builder.toString());
     }
 
 

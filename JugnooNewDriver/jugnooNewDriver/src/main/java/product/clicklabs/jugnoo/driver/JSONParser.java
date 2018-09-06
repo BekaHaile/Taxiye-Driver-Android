@@ -12,11 +12,14 @@ import com.fugu.HippoNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,6 +48,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.support.SupportOption;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.AuthKeySaver;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -391,9 +395,19 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 		VehicleDetailsLogin vehicleMake = null;
+
+
+
+		List<DriverVehicleServiceTypePopup.VehicleServiceDetail> serviceDetailList = null;
+		Type listType = new TypeToken<List<DriverVehicleServiceTypePopup.VehicleServiceDetail>>() {}.getType();
+
 		if(userData.has("vehicle_make")){
 
 			 vehicleMake = gson.fromJson(userData.getString("vehicle_make"), VehicleDetailsLogin.class);
+		}
+		if(userData.has("vehicle_sets")){
+
+			serviceDetailList = gson.fromJson(userData.getString("vehicle_sets"), listType);
 		}
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
@@ -405,7 +419,7 @@ public class JSONParser implements Constants {
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake);
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,serviceDetailList);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData) {
@@ -433,6 +447,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.default_show_details_in_take_cash)));
 		int showGraph = context.getResources().getInteger(R.integer.show_invoices) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
 		Prefs.with(context).save(KEY_SHOW_GRAPH_IN_EARNINGS, userData.optInt(KEY_SHOW_GRAPH_IN_EARNINGS, showGraph));
+		int showVehicleSetSettings = context.getResources().getBoolean(R.bool.show_vehicle_set_settings) ? 1 : 0;
+		Prefs.with(context).save(KEY_ENABLE_VEHICLE_SETS, userData.optInt(KEY_ENABLE_VEHICLE_SETS, showVehicleSetSettings));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

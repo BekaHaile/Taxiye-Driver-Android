@@ -12,6 +12,8 @@ import android.view.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.dialog_driver_service_type.*
+import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.DriverProfileActivity
 import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
@@ -26,12 +28,13 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
 
 
 
+
     private val TAG = DriverVehicleServiceTypePopup::class.qualifiedName
 
-    class VehicleServiceDetail(@Expose @SerializedName("id ") var id:Long,
-                               @Expose @SerializedName("region_name ") var serviceName:String,
-                               @Expose @SerializedName("is_selected ") var checked: Boolean,
-                               @Expose @SerializedName("is_enabled ") var enabled:Boolean)
+    class VehicleServiceDetail(@Expose @SerializedName("id") var id:Long,
+                               @Expose @SerializedName("vehicle_name") var serviceName:String,
+                               @Expose @SerializedName("is_selected") var checked: Int,
+                               @Expose @SerializedName("is_enabled") var enabled:Int)
 
 
 
@@ -79,8 +82,8 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
         override fun onBindViewHolder(holder: ServiceTypeAdapter.ServiceTypeViewHolder, position: Int) {
             details[position].run {
                 holder.checkBox.text = serviceName
-                holder.checkBox.isChecked = checked
-                holder.checkBox.isEnabled = enabled
+                holder.checkBox.isChecked = checked==1
+                holder.checkBox.isEnabled = enabled==1
             }
 
         }
@@ -98,7 +101,7 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
                checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                    val pos = recyclerView.getChildLayoutPosition(parentView)
                    if(pos!=RecyclerView.NO_POSITION){
-                       details[pos].checked = isChecked
+                       details[pos].checked = if(isChecked)1 else 0
                    }
                }
            }
@@ -107,19 +110,25 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
     }
 
 
-    class ServiceDetailModel (@Expose @SerializedName("region_data")  var serviceList: List<VehicleServiceDetail>): HomeUtil.DefaultParams()
+    class ServiceDetailModel (@Expose @SerializedName("vehicle_sets")  var serviceList: List<VehicleServiceDetail>): HomeUtil.DefaultParams()
 
+
+    class UpdateVehicleSetResponse(@Expose @SerializedName("vehicle_sets")  var serviceList: List<VehicleServiceDetail>):FeedCommonResponseKotlin()
     private fun updateServiceList(serviceList: List<VehicleServiceDetail>) {
 
-        ApiCommonKt<FeedCommonResponseKotlin>(context, putAccessToken = true).execute(ServiceDetailModel(serviceList), ApiName.UPDATE_DRIVER_SERVICES,
-                object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
-                    override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+        ApiCommonKt<UpdateVehicleSetResponse>(context, putAccessToken = true).execute(ServiceDetailModel(serviceList), ApiName.UPDATE_DRIVER_SERVICES,
+                object : APICommonCallbackKotlin<UpdateVehicleSetResponse>() {
+                    override fun onSuccess(t: UpdateVehicleSetResponse, message: String?, flag: Int) {
+                          Data.userData.vehicleServicesModel  = t.serviceList
+                           if(context is DriverProfileActivity){
+                               (context as DriverProfileActivity).setVehicleSetDetails();
+                           }
+                        dismiss()
 
 
-                        //TODO refresh local list
                     }
 
-                    override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                    override fun onError(t: UpdateVehicleSetResponse?, message: String?, flag: Int): Boolean {
                         return false
                     }
 

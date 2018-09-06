@@ -130,8 +130,8 @@ public class HomeUtil {
 		private String locale;
 
 		public DefaultParams() {
-			this.accessToken = MyApplication.getInstance().getString(R.string.white_label_key);
-			this.operatorToken = Data.LOGIN_TYPE;
+			this.accessToken = Data.userData!=null?Data.userData.accessToken:"";
+			this.operatorToken =MyApplication.getInstance().getString(R.string.white_label_key);
 			this.deviceType = Data.DEVICE_TYPE;
 			this.locale = Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang));
 		}

@@ -470,6 +470,7 @@
                     android:background="@color/bgColor"/>
 
                 <LinearLayout
+                    android:id="@+id/layoutVehicleServiceDetails"
                     android:paddingBottom="15dp"
                     android:paddingEnd="20dp"
                     android:paddingStart="20dp"
@@ -490,7 +491,6 @@
                     <TextView
                         android:id="@+id/tvServiceType"
                         style="@style/TextNormal"
-                        android:textStyle="bold"
                         android:gravity="end"
                         android:layout_gravity="end"
                         android:drawablePadding="5dp"

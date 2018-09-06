@@ -679,9 +679,9 @@ public interface APIServices {
 	void updateLuggageCount(@FieldMap Map<String, String> params,
 							Callback<FeedCommonResponseKotlin> callback);
 
-	@POST("/update_driver_regions")
+	@POST("/update_driver_vehicle_sets")
 	void updateDriverVehicleServices(@Body DriverVehicleServiceTypePopup.ServiceDetailModel list,
-									 Callback<FeedCommonResponseKotlin> callback);
+									 Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> callback);
 
 
 }
