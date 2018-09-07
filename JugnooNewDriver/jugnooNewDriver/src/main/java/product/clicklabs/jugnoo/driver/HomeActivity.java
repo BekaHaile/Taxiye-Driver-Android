@@ -345,7 +345,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout reviewReachedDistanceRl;
 	LinearLayout linearLayoutMeterFare;
 	TextView textViewRateYourCustomer,
-			reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
+			tvRideEndID, reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
@@ -896,6 +896,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			//Review Layout
 			endRideReviewRl = (RelativeLayout) findViewById(R.id.endRideReviewRl);
 
+			tvRideEndID = (TextView) findViewById(R.id.tvRideEndID);
+			tvRideEndID.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
 			reviewDistanceText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			reviewDistanceText.setText(getStringText(R.string.distance));
@@ -3848,6 +3850,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					kmsStr = Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 
+					tvRideEndID.setText(getString(R.string.Invoice)+" #"+endRideData.engagementId);
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
