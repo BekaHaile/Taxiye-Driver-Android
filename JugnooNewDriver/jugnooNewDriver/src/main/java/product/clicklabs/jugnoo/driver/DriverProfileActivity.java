@@ -147,7 +147,7 @@ public class DriverProfileActivity extends BaseActivity {
         textViewmonthlyScore.setTypeface(Fonts.mavenMedium(this), Typeface.BOLD);
         textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
         textViewMonthlyText.setTypeface(Fonts.mavenRegular(this));
-        textViewMonthlyText.setText(getStringText(R.string.earnings));
+        textViewMonthlyText.setText(getStringText(R.string.profile_monthly_earnings_text));
         textViewRidesTakenText = (TextView) findViewById(R.id.textViewRidesTakenText);
         textViewRidesTakenText.setTypeface(Fonts.mavenRegular(this));
         textViewRidesTakenText.setText(getStringText(R.string.rides_taken));

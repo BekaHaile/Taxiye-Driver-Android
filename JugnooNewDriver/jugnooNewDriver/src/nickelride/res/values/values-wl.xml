@@ -109,5 +109,8 @@
 
     <integer name="visibility_take_cash_at_ride_end">@integer/view_gone</integer>
 
-
+    <!--for nickel ride-->
+    <string name="profile_monthly_earnings_text">@string/monthly_text_tips</string>
+    <string name="currency_fallback">USD</string>
+    <bool name="vehicle_model_enabled">false</bool>
 </resources>
