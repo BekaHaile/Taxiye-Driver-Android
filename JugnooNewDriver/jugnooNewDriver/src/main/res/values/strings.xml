@@ -1116,6 +1116,8 @@
     <string name="tip">Tip</string>
     <string name="toll_charges">Toll Charges</string>
     <string name="discount">Discount</string>
+    <string name="documents">Documents</string>
+    <string name="drop_location_updated">Drop location updated</string>
 
 
 </resources>

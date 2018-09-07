@@ -417,7 +417,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_DRIVER_AGREEMENT, userData.optInt(KEY_SHOW_DRIVER_AGREEMENT, showDriverAgreement));
 		int earning = context.getResources().getInteger(R.integer.visibility_earning_bank_deposit) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
 		Prefs.with(context).save(KEY_SHOW_BANK_DEPOSIT, userData.optInt(KEY_SHOW_BANK_DEPOSIT, earning));
-		int showTotalFare = context.getResources().getInteger(R.integer.show_total_fare_at_ride_end) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
+		int showTotalFare = context.getResources().getInteger(R.integer.show_total_fare_at_ride_end);
 		Prefs.with(context).save(KEY_SHOW_TOTAL_FARE_AT_RIDE_END, userData.optInt(KEY_SHOW_TOTAL_FARE_AT_RIDE_END, showTotalFare));
 		int showTakeCash = context.getResources().getInteger(R.integer.visibility_take_cash_at_ride_end) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
 		Prefs.with(context).save(KEY_SHOW_TAKE_CASH_AT_RIDE_END, userData.optInt(KEY_SHOW_TAKE_CASH_AT_RIDE_END, showTakeCash));

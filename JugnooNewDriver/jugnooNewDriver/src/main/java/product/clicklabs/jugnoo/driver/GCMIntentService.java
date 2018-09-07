@@ -114,12 +114,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 
 			if (ring) {
 				builder.setLights(Color.GREEN, 500, 500);
@@ -166,12 +167,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 
 			if (ring) {
 				builder.setLights(Color.GREEN, 500, 500);
@@ -220,12 +222,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 //			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
 
 			if (ring) {
@@ -329,7 +332,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
@@ -345,6 +348,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
 			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
 			Notification notification = builder.build();
@@ -380,7 +384,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
@@ -397,6 +401,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 
 
 
@@ -433,7 +438,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			if (bitmap == null) {
@@ -449,6 +454,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),NOTIFICATION_BIG_ICON));
 			builder.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			builder.setContentIntent(intent);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
 
 			Notification notification = builder.build();
 			if (notificationManager != null) {
@@ -485,7 +491,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //		super.onMessageReceived(remoteMessage);
 
 		if (fuguNotificationConfig.isHippoNotification(remoteMessage.getData())) {
-			fuguNotificationConfig.setSmallIcon(R.mipmap.ic_launcher);
+			fuguNotificationConfig.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			//your icon drawable
 			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
 			fuguNotificationConfig.setNotificationSoundEnabled(true);
@@ -839,8 +845,12 @@ public class GCMIntentService extends FirebaseMessagingService {
 								double dropLongitude = jObj.getDouble(Constants.KEY_OP_DROP_LONGITUDE);
 								String dropAddress = jObj.getString(Constants.KEY_DROP_ADDRESS);
 								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
+								String message1 = jObj.optString(Constants.KEY_MESSAGE, getString(R.string.drop_location_updated));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
+									SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 1, true);
+								} else {
+									SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 1, true);
 								}
 							} else if (PushFlags.UPDATE_CUSTOMER_CURRENT_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
