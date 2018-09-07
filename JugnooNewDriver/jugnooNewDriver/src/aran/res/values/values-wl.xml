@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!--Don't Touch -->
+    <integer name="view_visible">0</integer>
+    <integer name="view_invisible">1</integer>
+    <integer name="view_gone">2</integer>
+    <!--Don't Touch -->
+
+
+    <!--Other things to change
+        1. google-services.json
+        2. Doc entity in strings.xml
+        3. application_id in build.gradle
+    -->
+
+
+    <string name="appname">Aran Driver</string>
+    <string name="app_name">Aran</string>
+
+    <!--White Label Key-->
+    <string name="white_label_key">ce38d322692b5662dd1b978eaf0680f0</string>
+
+    <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
+    <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
+    <string name="images_path">Aran Driver/Aran Pictures</string>
+    <string name="file_provider">production.aran.driver.driver.provider</string>
+    <string name="google_maps_api_key">AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y</string> <!--IMP-->
+
+    <string name="facebook_page_id">1543492105</string>
+    <string name="facebook_page_name">aran.ng</string>
+
+    <!--App Level Constants-->
+    <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
+    <string name="white_label_name">aran Driver</string><!--* IMP-->
+    <string name="support_email">support@aran.ng</string>
+    <string name="support_email_subject">aran Driver Support</string>
+    <string name="support_phone_number">+243999614774</string>
+    <string name="customer_app_download_link">https://www.jugnoo.in/</string>
+    <string name="hippo_support_faq_name_default">Driver</string>
+
+    <!--Notifications-->
+
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
+    <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
+    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
+
+
+    <!--Login sign-up -->
+    <drawable name="bg_on_boarding_drawable">@color/black</drawable>
+    <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <integer name="show_t_and_c">@integer/view_visible</integer>
+
+
+
+    <!--Side Menu Properties-->
+    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
+    <integer name="show_invoices">@integer/view_visible</integer>
+    <integer name="show_driver_resources">@integer/view_visible</integer>
+    <integer name="show_refer_earn">@integer/view_visible</integer>
+
+
+    <!--Profile Screen-->
+    <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+
+
+
+    <!--General Features Enable/Disable-->
+    <bool name="show_support_ride_detail">true</bool>  <!--For Ticketing-->
+    <bool name="waze_navigation_enabled">true</bool>
+    <integer name="show_language_control">@integer/view_gone</integer>
+    <integer name="show_call_in_otp">@integer/view_visible</integer>
+    <integer name="show_driver_timer">@integer/view_invisible</integer>
+
+    <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
+
+    <drawable name="bg_splash">@color/white</drawable>
+    <drawable name="bg_login">@color/white</drawable>
+    <color name="colorDark">@color/text_color</color>
+    <color name="colorLight">@color/text_color</color>
+
+    <!--theme colors-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#111111</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#333333</color>
+    <color name="textColorMedium">#555555</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColor">#87cefa</color>
+    <color name="themeColorLight">#bb87cefa</color>
+    <color name="themeColorAlternate">#3c3638</color>
+    <color name="themeColorAlternateLight">#bb3c3638</color>
+
+    <!--Color for graph-->
+    <color name="driverEarningHighLisghtColor">@color/colorPrimary</color>
+
+
+    <!--resValue "color", 'red_v2', "#000000"-->
+    <!--resValue "color", 'red_v2_fadded', "#90000000"-->
+    <!--resValue "color", 'theme_color', "#000000"-->
+    <!--resValue "color", 'theme_color_alpha', "#BB000000"-->
+    <!--resValue "color", 'document_text_color', "#99000000"-->
+    <!--resValue "color", 'new_orange', "#CC3333"-->
+    <!--resValue "color", 'orange_btn_pressed', "#90CC3333"-->
+    <!--resValue "color", 'musturd_jugnoo', "#000000"-->
+    <!--resValue "color", 'gradient_yellow_v2', "#CC3333"-->
+    <!--resValue "color", 'gradient_orange_v2', "#CC3333"-->
+    <!--resValue "color", 'app_background_color', "#000000"-->
+    <!--resValue "color", 'orange_dark', "#CC3333"-->
+    <!--resValue "color", 'black_earnings_bg', "#000000"-->
+    <!--resValue "color", 'black_top_bar_bg', "#000000"-->
+
+</resources>
