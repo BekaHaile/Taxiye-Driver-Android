@@ -1,43 +1,27 @@
 {
   "project_info": {
-    "project_number": "826904983990",
-    "firebase_url": "https://instant-ryde-23ecb.firebaseio.com",
-    "project_id": "instant-ryde-23ecb",
-    "storage_bucket": "instant-ryde-23ecb.appspot.com"
+    "project_number": "493731038600",
+    "firebase_url": "https://aran-215708.firebaseio.com",
+    "project_id": "aran-215708",
+    "storage_bucket": "aran-215708.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826904983990:android:0d0c4cd6011b5a7e",
+        "mobilesdk_app_id": "1:493731038600:android:5be622ad512d3072",
         "android_client_info": {
           "package_name": "production.aran.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "826904983990-0pf20gt5qb39g8a15f0jouf990kj53lt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "production.aran.customer",
-            "certificate_hash": "05ef54ec0223bc4d31026420baf8cc86bf0e4b2b"
-          }
-        },
-        {
-          "client_id": "826904983990-imtfh9lhggm1rgbl93e29nqhe7o6t9r9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "production.aran.customer",
-            "certificate_hash": "7de60ef0bac5aacb8662fb95fd3ea82f8e3aa6a4"
-          }
-        },
-        {
-          "client_id": "826904983990-rhq4klsq9udf1r6c1g9gup9jl4j3r2ju.apps.googleusercontent.com",
+          "client_id": "493731038600-e6vu00kf0o8an9784aak59s48gp2bv14.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y"
+          "current_key": "AIzaSyA0Z8ieM6iRzL7eTcnIpCyKkIutVeC9oFY"
         }
       ],
       "services": {
@@ -45,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "826904983990-phdpcf1msfkrd1pnd1te8cmh92fvrdvt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
@@ -60,20 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:826904983990:android:44fed808c8decdc3",
+        "mobilesdk_app_id": "1:493731038600:android:a3b875f623ec6f10",
         "android_client_info": {
           "package_name": "production.aran.driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "826904983990-rhq4klsq9udf1r6c1g9gup9jl4j3r2ju.apps.googleusercontent.com",
+          "client_id": "493731038600-e6vu00kf0o8an9784aak59s48gp2bv14.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y"
+          "current_key": "AIzaSyA0Z8ieM6iRzL7eTcnIpCyKkIutVeC9oFY"
         }
       ],
       "services": {

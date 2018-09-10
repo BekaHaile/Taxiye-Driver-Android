@@ -17,16 +17,16 @@
 
 
     <string name="appname">Aran Driver</string>
-    <string name="app_name">Aran</string>
+    <string name="app_name">Aran Driver</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">ce38d322692b5662dd1b978eaf0680f0</string>
+    <string name="white_label_key">cabbde6be8fbb222f05c9da9d5d26cce</string>
 
     <string name="fugu_app_key">5ce9dacafd76db0c8ff5adf29e20a13a</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Aran Driver/Aran Pictures</string>
     <string name="file_provider">production.aran.driver.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyDhfbfQRTH6VDb_d39vv6xp5Gia9fcgs5Y</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyA0Z8ieM6iRzL7eTcnIpCyKkIutVeC9oFY</string> <!--IMP-->
 
     <string name="facebook_page_id">1543492105</string>
     <string name="facebook_page_name">aran.ng</string>
