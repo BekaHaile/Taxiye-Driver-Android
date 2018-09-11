@@ -112,10 +112,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		main = (RelativeLayout) rootView.findViewById(R.id.main);
-		new ASSL(activity, main, 1134, 720, false);
-
-//		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//		ASSL.DoMagic(main);
 
 		rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
 		listView = (ListView) rootView.findViewById(R.id.listView);
@@ -211,7 +207,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
-		RelativeLayout relative, relativeLayoutImageStatus;
+		RelativeLayout relativeLayoutImageStatus;
 		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
 				imageViewDocStatusImage,imageViewInfo;
@@ -282,9 +278,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 				holder.relativeLayoutImageStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutImageStatus);
-				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
-				holder.relative.setTag(holder);
 				holder.imageViewUploadDoc.setTag(holder);
 				holder.relativeLayoutSelectPicture.setTag(holder);
 				holder.addImageLayout.setTag(holder);
@@ -369,7 +363,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				docInfo.isExpended = true;
 				Picasso.with(getActivity()).load(docInfo.getFile())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
-						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
 
 				if(docInfo.isEditable ==1) {

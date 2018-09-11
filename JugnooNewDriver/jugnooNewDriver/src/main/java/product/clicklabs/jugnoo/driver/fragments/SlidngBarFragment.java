@@ -67,8 +67,6 @@ public class SlidngBarFragment extends Fragment implements FlurryEventNames {
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		main = (RelativeLayout) rootView.findViewById(R.id.main);
-		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		ASSL.DoMagic(main);
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
