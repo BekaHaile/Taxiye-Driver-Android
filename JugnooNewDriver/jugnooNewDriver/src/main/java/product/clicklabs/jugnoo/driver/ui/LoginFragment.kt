@@ -146,8 +146,7 @@ class LoginFragment : Fragment() {
                     }
                 }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true,
                         Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS,
-                        Manifest.permission.READ_CONTACTS)
+                        Manifest.permission.READ_SMS)
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
