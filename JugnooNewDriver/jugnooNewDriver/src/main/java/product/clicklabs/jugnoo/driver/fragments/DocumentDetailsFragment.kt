@@ -16,6 +16,7 @@ import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.datastructure.DocInfo
 import product.clicklabs.jugnoo.driver.utils.inflate
 import product.clicklabs.jugnoo.driver.utils.pxValue
 import java.text.SimpleDateFormat
@@ -24,12 +25,14 @@ import java.util.*
 /**
  * Created by Parminder Saini on 12/09/18.
  */
-val DOB_DATE_FORMAT = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
 class DocumentDetailsFragment:Fragment(){
 
 
     private var TAG = DocumentDetailsFragment::class.qualifiedName
+
+    private lateinit var docInfo: DocInfo
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.document_details)
@@ -39,7 +42,7 @@ class DocumentDetailsFragment:Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var list =  arrayListOf("Name","Age","Gender","Friend1","Friend2","Friend3","Friend 3","Friend 4","Friend 5")
+        var list =  arrayListOf("Name","Age","Gender")/*,"Friend1","Friend2","Friend3","Friend 3","Friend 4","Friend 5")*/
 
 
         var lastEdtId: Int? = null
