@@ -52,6 +52,7 @@
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
     <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <integer name="show_t_and_c">@integer/view_visible</integer>
+    <drawable name="ic_login_logo_drawable">@drawable/ic_login_logo</drawable>
 
 
 
@@ -78,7 +79,7 @@
     <integer name="driver_logout_enabled">1</integer>
     <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
 
-    <drawable name="bg_splash">@color/white</drawable>
+    <drawable name="bg_splash">@color/themeColor</drawable>
     <drawable name="bg_login">@color/white</drawable>
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/text_color</color>
