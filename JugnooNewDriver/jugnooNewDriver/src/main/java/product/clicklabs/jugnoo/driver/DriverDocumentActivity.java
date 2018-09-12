@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -78,8 +79,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		documentListFragment.setArguments(bundle);
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
-				.addToBackStack(DocumentListFragment.class.getName())
+				.add(R.id.fragment, new DocumentDetailsFragment(), DocumentDetailsFragment.class.getName())
+				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
