@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -476,6 +477,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			holder.docType.setTag(holder);
 			holder.imageViewInfo.setTag(holder);
+			holder.rideHistoryItem.setTag(holder);
 			if(docInfo.getDocInstructions()==null){
 				holder.imageViewInfo.setVisibility(View.GONE);
 				holder.docType.setOnClickListener(null);
@@ -530,7 +532,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				docInfo.isExpended = false;
 			}
 
-			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
+			/*holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
@@ -576,11 +578,26 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 					addImageLayotOnClick(holder.id, (DriverDocumentActivity) getActivity(),1);
 				}
+			});*/
+
+
+			holder.rideHistoryItem.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					activity.openDocumentDetails(docs.get(holder.id));
+
+				}
 			});
+
+			holder.deleteImage1.setVisibility(View.GONE);
+			holder.deleteImage2.setVisibility(View.GONE);
+
 
 			if(docInfo.docCount<2){
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
+
 
 
 			return convertView;
@@ -588,10 +605,16 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	}
 
-	public   void deletImageLayoutOnClick(final int holderId,final DriverDocumentActivity context,int colNO) {
+	public void deletImageLayoutOnClick(final int holderId,final DriverDocumentActivity context,int colNO) {
 		DocInfo docInfodeleteImage1 = docs.get(holderId);
-		docInfodeleteImage1.setFile(null);
-		docInfodeleteImage1.url.set(0, null);
+		if(colNO==0){
+			docInfodeleteImage1.setFile(null);
+
+		}else{
+			docInfodeleteImage1.setFile1(null);
+
+		}
+		docInfodeleteImage1.url.set(colNO, null);
 		coloum = colNO;
 		deleteImage(context, docInfodeleteImage1.docTypeNum);
 		driverDocumentListAdapter.notifyDataSetChanged();
@@ -668,7 +691,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
-										data.getInstructions(), data.getGalleryRestricted());
+										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo());
 								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 									continue;
 								}
@@ -679,11 +702,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							checkForDocumentsSubmit();
 
 
-							getActivity().getSupportFragmentManager().beginTransaction()
-									.add(R.id.fragment, new DocumentDetailsFragment(docs.get(0)), DocumentDetailsFragment.class.getName())
-									.hide(getActivity().getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
-									.addToBackStack(DocumentDetailsFragment.class.getName())
-									.commit();
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
@@ -992,6 +1010,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
 										checkForDocumentsSubmit();
+										if(((DriverDocumentActivity)activity).getDocumentDetailsFragment()!=null){
+											((DocumentDetailsFragment)((DriverDocumentActivity)activity).getDocumentDetailsFragment()).setDocData(docs.get(index));
+										}
+
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1014,6 +1036,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							driverDocumentListAdapter.notifyDataSetChanged();
 						}
 						DialogPopup.dismissLoadingDialog();
+
 					}
 
 					@Override
@@ -1063,6 +1086,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										docs.get(index).status = "-1";
 										driverDocumentListAdapter.notifyDataSetChanged();
 
+										if(((DriverDocumentActivity)activity).getDocumentDetailsFragment()!=null){
+											((DocumentDetailsFragment)((DriverDocumentActivity)activity).getDocumentDetailsFragment()).setDocData(docs.get(index));
+										}
+
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1077,6 +1104,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							} else {
 								DialogPopup.dismissLoadingDialog();
 							}
+
+
 						} catch (Exception exception) {
 							exception.printStackTrace();
 							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -1085,6 +1114,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							driverDocumentListAdapter.notifyDataSetChanged();
 						}
 						DialogPopup.dismissLoadingDialog();
+
+
 					}
 
 					@Override
@@ -1173,4 +1204,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			mPermissionCommon.onRequestPermissionsResult(requestCode,permissions,grantResults);
 		}
 	}
+
+
 }

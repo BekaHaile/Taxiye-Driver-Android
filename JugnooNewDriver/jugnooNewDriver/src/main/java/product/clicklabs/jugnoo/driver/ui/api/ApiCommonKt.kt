@@ -158,6 +158,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
                     Callback<VehicleModelCustomisationsResponse> )
             ApiName.UPDATE_LUGGAGE_COUNT ->  RestClient.getApiServices().updateLuggageCount(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.UPDATE_DOC_FIELDS ->  RestClient.getApiServices().uploadFields(params, callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

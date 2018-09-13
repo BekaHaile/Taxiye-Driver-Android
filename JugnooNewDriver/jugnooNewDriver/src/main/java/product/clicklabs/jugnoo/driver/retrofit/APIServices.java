@@ -461,6 +461,12 @@ public interface APIServices {
 							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
 
+	@FormUrlEncoded
+	@POST("/upload_document")
+	void uploadFields(@FieldMap Map<String, String> params,
+					Callback<FeedCommonResponseKotlin> callback);
+
+
 	@Multipart
 	@POST("/upload_signature_document")
 	void uploadSignatureToServer(@Part("image") TypedFile image,

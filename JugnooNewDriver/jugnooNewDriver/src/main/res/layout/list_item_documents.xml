@@ -92,6 +92,15 @@
     </RelativeLayout>
 
 
+    <ImageView
+        android:tag="@string/dont_touch_me"
+        android:layout_gravity="right"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_navigate_next_black_18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
     <RelativeLayout
         android:id="@+id/relativeLayoutImageStatus"
         android:layout_width="match_parent"
