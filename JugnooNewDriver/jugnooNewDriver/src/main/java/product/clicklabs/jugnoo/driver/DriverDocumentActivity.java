@@ -78,10 +78,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		bundle.putInt("doc_required", requirement);
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		documentListFragment.setArguments(bundle);
+
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment, new DocumentDetailsFragment(), DocumentDetailsFragment.class.getName())
-				.addToBackStack(DocumentDetailsFragment.class.getName())
+				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
+				.addToBackStack(DocumentListFragment.class.getName())
 				.commit();
+
+
+
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -118,6 +122,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
+		if(getSupportFragmentManager().getFragments().size()>1){
+			getSupportFragmentManager().popBackStack();
+			return;
+		}
 		performbackPressed();
 	}
 

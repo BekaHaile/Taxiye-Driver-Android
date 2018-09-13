@@ -30,11 +30,12 @@
             app:layout_constraintTop_toBottomOf="@id/parentView" />
 
         <ImageView
-            android:id="@+id/docImage1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/addImageLayout"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:contentDescription="@string/add_image"
             android:src="@drawable/ic_addimage"
+            app:layout_goneMarginStart="20dp"
             app:layout_constraintStart_toStartOf="@id/labelImages"
             app:layout_constraintTop_toBottomOf="@id/labelImages" />
 
@@ -45,17 +46,17 @@
             android:layout_marginTop="10dp"
             android:contentDescription="@string/add_image"
             android:src="@drawable/orange_cross"
-            app:layout_constraintEnd_toEndOf="@id/docImage1"
-            app:layout_constraintTop_toTopOf="@id/docImage1" />
+            app:layout_constraintEnd_toEndOf="@id/addImageLayout"
+            app:layout_constraintTop_toTopOf="@id/addImageLayout" />
 
         <ImageView
-            android:id="@+id/docImage2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/addImageLayout2"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/add_image"
             android:src="@drawable/ic_addimage"
-            app:layout_constraintStart_toEndOf="@id/docImage1"
+            app:layout_constraintStart_toEndOf="@id/addImageLayout"
             app:layout_constraintTop_toBottomOf="@id/labelImages" />
 
         <ImageView
@@ -65,8 +66,8 @@
             android:layout_marginTop="10dp"
             android:contentDescription="@string/add_image"
             android:src="@drawable/orange_cross"
-            app:layout_constraintEnd_toEndOf="@id/docImage2"
-            app:layout_constraintTop_toTopOf="@id/docImage2" />
+            app:layout_constraintEnd_toEndOf="@id/addImageLayout2"
+            app:layout_constraintTop_toTopOf="@id/addImageLayout2" />
 
 
         <android.support.constraint.Group
@@ -74,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:constraint_referenced_ids="labelImages,docImage1,docImage2,deleteImage1,deleteImage2" />
+            app:constraint_referenced_ids="labelImages,addImageLayout2,addImageLayout2,deleteImage1,deleteImage2" />
 
 
     </android.support.constraint.ConstraintLayout>
