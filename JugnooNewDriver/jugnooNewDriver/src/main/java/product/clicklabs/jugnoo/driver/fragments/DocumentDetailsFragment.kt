@@ -8,27 +8,19 @@ import android.support.constraint.ConstraintSet
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.RoundBorderTransform
-import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.document_details.*
-import org.json.JSONArray
 import product.clicklabs.jugnoo.driver.Constants
-import product.clicklabs.jugnoo.driver.DocumentListFragment
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
-import product.clicklabs.jugnoo.driver.ui.DriverSetupFragment
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
@@ -36,7 +28,6 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.inflate
 import product.clicklabs.jugnoo.driver.utils.pxValue
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,6 +36,7 @@ import java.util.*
  */
 
 const val ARGS_DOC_INFO = "args_doc_info"
+const val ARGS_POS = "args_position"
 
 
 class DocumentDetailsFragment:Fragment(){
@@ -52,10 +44,11 @@ class DocumentDetailsFragment:Fragment(){
 
     companion object {
         @JvmStatic
-        fun newInstance(accessToken: String,docInfo: DocInfo) =
+        fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int) =
                 DocumentDetailsFragment().apply {
                     arguments = Bundle().apply {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
+                        putInt(ARGS_POS, pos)
                         putParcelable(ARGS_DOC_INFO, docInfo)
                     }
                 }
@@ -66,6 +59,8 @@ class DocumentDetailsFragment:Fragment(){
     private val  gson = Gson()
     private  lateinit var docInfo:DocInfo
     private  lateinit var accessToken: String
+    private  var pos: Int = 0
+    private  var viewHolder :View?=null
 
     val documentInputFields = arrayListOf<DocumentInputField>()
 
@@ -74,6 +69,7 @@ class DocumentDetailsFragment:Fragment(){
         super.onCreate(savedInstanceState)
         docInfo = arguments!!.getParcelable(ARGS_DOC_INFO)
         accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN)
+        pos = arguments!!.getInt(ARGS_POS)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -112,32 +108,21 @@ class DocumentDetailsFragment:Fragment(){
 
 
             }
-        }else{
-            parentView.visibility  = View.GONE
         }
 
         setDocData(docInfo)
-
+        viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
 
 
 
     }
 
-    public fun setDocData(docInfo:DocInfo){
+    public fun setDocData(docInfo: DocInfo){
         this.docInfo = docInfo
 
-        addImageLayout.run(setImagesDataAsPerDocInfo(deleteImage1,deleteImage2,docInfo.file,docInfo.url[0]))
-        addImageLayout2.run(setImagesDataAsPerDocInfo(deleteImage2,deleteImage2,docInfo.file1,docInfo.url[1]))
-        if(docInfo.docCount<2){
-            addImageLayout2.visibility = View.GONE
-            deleteImage2.visibility = View.GONE
-        }
+        viewHolder = (activity as DriverDocumentActivity).documentListFragment.driverDocumentListAdapter.getDocumentListView(
+                    pos, viewHolder, layoutInflater, activity as DriverDocumentActivity,true)
 
-//        for(i  in 0 until documentInputFields.size){
-//
-//            documentInputFields[i].isEditable = docInfo.isEditable==1
-//
-//        }
 
 
     }
@@ -167,7 +152,6 @@ class DocumentDetailsFragment:Fragment(){
                     docInfo.listDocFieldsInfo[i].value = listInputFields[i].value
                 }
                 DialogPopup.alertPopupWithListener(requireActivity(), "", message) {
-                   //todo close this fragment and refresh if needed
                     requireActivity().onBackPressed()
                 }
             }
@@ -181,109 +165,6 @@ class DocumentDetailsFragment:Fragment(){
 
     }
 
-    private fun setImagesDataAsPerDocInfo(deleteImageLayout:View, deleteImageLayout2:View, file: File?, url:String?): ImageView.() -> Unit {
-        return {
-
-            isEnabled = docInfo.isEditable != 0 && docInfo.status != "3"
-
-
-            if (file!= null) {
-                Picasso.with(requireContext()).load(file)
-                        .transform(RoundBorderTransform()).resize(300, 300).centerCrop()
-                        .into(this)
-
-                if (docInfo.isEditable == 1) {
-                    deleteImageLayout.visibility = View.VISIBLE
-                } else {
-                    deleteImageLayout.visibility = View.GONE
-                }
-
-
-                if (docInfo.status != "2") {
-                    isEnabled = false
-                } else {
-                    isEnabled = true
-
-                    //diff
-                    deleteImageLayout.visibility = View.GONE
-                    deleteImageLayout2.visibility = View.GONE
-
-                }
-            } else {
-
-                setImageResource(R.drawable.ic_addimage)
-                deleteImageLayout.visibility = View.GONE
-
-            }
-
-            if (docInfo.status == "2" || !url.isNullOrEmpty()) {
-
-                try {
-
-
-                    Picasso.with(activity).load(url)
-                            .transform(RoundBorderTransform()).resize(300, 300).centerCrop()
-                            .into(addImageLayout)
-                    if (docInfo.isEditable == 1) {
-                        deleteImageLayout.visibility = View.VISIBLE
-                    } else {
-                        deleteImageLayout.visibility = View.GONE
-                    }
-
-
-
-                    if (docInfo.status != "2") {
-                        isEnabled = false
-                    } else {
-                        isEnabled = true
-
-
-
-
-                        if (id == addImageLayout.id) {
-                            setImageResource(R.drawable.reload_image)
-                            deleteImageLayout.visibility = View.GONE
-                            deleteImageLayout2.visibility = View.GONE
-                            docInfo.file = null
-                            docInfo.file1 = null
-                        }
-
-                    }
-
-                    if (id == addImageLayout.id) {
-                        if (docInfo.status == "4") {
-                            isEnabled = true
-                        }
-                    }
-
-
-                } catch (e: Exception) {
-                    deleteImageLayout.visibility = View.GONE
-                    e.printStackTrace()
-                }
-
-            }
-
-
-            if (docInfo.status == "3" || docInfo.status == "1") {
-                visibility = View.GONE
-                deleteImageLayout.visibility = View.GONE
-            } else {
-                visibility = View.VISIBLE
-            }
-
-            setOnClickListener{
-                ((requireActivity() as DriverDocumentActivity).supportFragmentManager.findFragmentByTag(DocumentListFragment::class.java.name) as DocumentListFragment).
-                        addImageLayotOnClick(0,requireActivity() as DriverDocumentActivity,if(id==R.id.addImageLayout)0 else 1)
-            }
-
-            deleteImageLayout.setOnClickListener{
-                ((requireActivity() as DriverDocumentActivity).supportFragmentManager.findFragmentByTag(DocumentListFragment::class.java.name) as DocumentListFragment).
-                        deletImageLayoutOnClick(0,requireActivity() as DriverDocumentActivity,if(id==R.id.addImageLayout)0 else 1)
-            }
-        }
-
-    }
 
     /**
      * adds view below another view

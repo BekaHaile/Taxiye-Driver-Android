@@ -15,90 +15,101 @@
         android:layout_height="wrap_content"
         >
 
-        <TextView
-            android:id="@+id/docType"
+        <RelativeLayout
+            android:id="@+id/relativeLayoutSelectPictureStatus"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:tag="@string/dont_touch_me"
-            android:text="@string/Document_type"
-            android:textColor="@color/textColor"
-            android:textSize="18sp"
-            />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/docType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:tag="@string/dont_touch_me"
+                android:text="@string/Document_type"
+                android:textColor="@color/textColor"
+                android:textSize="18sp" />
 
 
-        <TextView
-            android:id="@+id/docRejected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="21dp"
-            android:layout_toEndOf="@+id/docType"
-            android:text="@string/upload_again"
-            android:textColor="@color/red_status"
-            android:textSize="9sp"
-            android:visibility="gone"
-            />
+            <TextView
+                android:id="@+id/docRejected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="21dp"
+                android:layout_toEndOf="@+id/docType"
+                android:text="@string/upload_again"
+                android:textColor="@color/red_status"
+                android:textSize="9sp"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/docRejectionReason"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="16dp"
-            android:layout_toEndOf="@+id/docType"
-            android:text="@string/Requirement"
-            android:textColor="@color/red_status"
-            android:textSize="12sp"
-            android:visibility="gone"
-            />
+            <TextView
+                android:id="@+id/docRejectionReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/docType"
+                android:text="@string/Requirement"
+                android:textColor="@color/red_status"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/docRequirement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/docType"
-            android:layout_marginBottom="17dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/Requirement"
-            android:textColor="@color/textColorMedium"
-            android:textSize="12sp"
-            />
+            <TextView
+                android:id="@+id/docRequirement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/docType"
+                android:layout_marginBottom="17dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/Requirement"
+                android:textColor="@color/textColorMedium"
+                android:textSize="12sp" />
 
 
-        <ImageView
-            android:id="@+id/imageViewInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/docType"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/docRequirement"
-            android:src="@drawable/ic_information"/>
+            <ImageView
+                android:id="@+id/imageViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/docType"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/docRequirement"
+                android:src="@drawable/ic_information" />
+        </RelativeLayout>
+
+
 
         <ImageView
             android:id="@+id/imageViewUploadDoc"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/relativeLayoutSelectPictureStatus"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_addimage"
             android:visibility="visible"/>
 
+        <ImageView
+            android:id="@+id/ivArrowForward"
+            android:tag="@string/dont_touch_me"
+            android:layout_gravity="right"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_navigate_next_black_18dp"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_toStartOf="@id/imageViewUploadDoc"
+            android:layout_height="wrap_content" />
+
+
     </RelativeLayout>
 
 
-    <ImageView
-        android:tag="@string/dont_touch_me"
-        android:layout_gravity="right"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_navigate_next_black_18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
     <RelativeLayout

@@ -7,71 +7,8 @@
 
 
     <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parentView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <android.support.constraint.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/parentView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/labelImages"
-            style="@style/TextNormal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/add_images_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/parentView" />
-
-        <ImageView
-            android:id="@+id/addImageLayout"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/add_image"
-            android:src="@drawable/ic_addimage"
-            app:layout_goneMarginStart="20dp"
-            app:layout_constraintStart_toStartOf="@id/labelImages"
-            app:layout_constraintTop_toBottomOf="@id/labelImages" />
-
-        <ImageView
-            android:id="@+id/deleteImage1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/add_image"
-            android:src="@drawable/orange_cross"
-            app:layout_constraintEnd_toEndOf="@id/addImageLayout"
-            app:layout_constraintTop_toTopOf="@id/addImageLayout" />
-
-        <ImageView
-            android:id="@+id/addImageLayout2"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/add_image"
-            android:src="@drawable/ic_addimage"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toEndOf="@id/addImageLayout"
-            app:layout_constraintTop_toBottomOf="@id/labelImages" />
-
-        <ImageView
-            android:id="@+id/deleteImage2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/add_image"
-            android:src="@drawable/orange_cross"
-            app:layout_constraintEnd_toEndOf="@id/addImageLayout2"
-            app:layout_constraintTop_toTopOf="@id/addImageLayout2" />
-
-
-
-    </android.support.constraint.ConstraintLayout>
+        android:layout_height="wrap_content" />
 </ScrollView>

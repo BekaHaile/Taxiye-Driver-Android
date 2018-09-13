@@ -4,6 +4,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -126,11 +127,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		return getSupportFragmentManager().findFragmentByTag(DocumentDetailsFragment.class.getName());
 	}
 
-	public  void  openDocumentDetails(DocInfo docInfo){
+	public  void  openDocumentDetails(DocInfo docInfo,Integer pos){
 
-		title.setText(R.string.document_details);
+		title.setText(docInfo.docType);
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo), DocumentDetailsFragment.class.getName())
+				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
 				.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
 				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
@@ -429,4 +430,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		setIntent(intent);
 	}
 
+
+	public DocumentListFragment getDocumentListFragment(){
+		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));
+	}
 }
