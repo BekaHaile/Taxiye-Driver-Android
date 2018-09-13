@@ -1,6 +1,9 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -113,6 +116,10 @@ public class DocRequirementResponse {
 		public String getInstructions() {
 			return instructions;
 		}
+
+		@SerializedName("doc_info")
+		@Expose
+		private ArrayList<DocFieldsInfo> listDocInfo;
 
 		/**
 		 *
@@ -253,6 +260,10 @@ public class DocRequirementResponse {
 
 		public void setDocType(int docType) {
 			this.docType = docType;
+		}
+
+		public ArrayList<DocFieldsInfo> getListDocInfo() {
+			return listDocInfo;
 		}
 	}
 
