@@ -729,7 +729,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancel_ring3, 1, true);
+								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 3, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
@@ -845,9 +845,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 								double dropLongitude = jObj.getDouble(Constants.KEY_OP_DROP_LONGITUDE);
 								String dropAddress = jObj.getString(Constants.KEY_DROP_ADDRESS);
 								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
-								String message1 = jObj.optString(Constants.KEY_MESSAGE, getString(R.string.drop_location_updated));
+								String message1 = jObj.optString(Constants.KEY_MESSAGE, getString(R.string.drop_location_updated_by_customer));
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
+									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress, message1);
 									SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 1, true);
 								} else {
 									SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.start_ride_accept_beep, 1, true);

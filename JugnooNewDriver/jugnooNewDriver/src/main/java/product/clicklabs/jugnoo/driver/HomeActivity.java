@@ -8751,11 +8751,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     @Override
-    public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng, final String dropAddress) {
+    public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng, final String dropAddress, final String message) {
         runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
+                if(!TextUtils.isEmpty(message)){
+                    DialogPopup.alertPopup(HomeActivity.this, "", message+"\n"+dropAddress);
+                }
                 updateDropLatLngandPath(engagementId, dropLatLng, dropAddress);
             }
         });
@@ -10270,7 +10273,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
                             } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                                 onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
-                                        latLng, address);
+                                        latLng, address, null);
                                 if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                                     if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                                         relativeLayoutContainer.setVisibility(View.GONE);
