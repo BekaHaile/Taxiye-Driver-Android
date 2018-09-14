@@ -135,6 +135,7 @@ class DocumentDetailsFragment:Fragment(){
             if (docInfo.file == null && docInfo.file1 == null &&
                 (docInfo.url==null   ||  (docInfo.url[0].isNullOrEmpty() && docInfo.url[1].isNullOrEmpty()))) {
                 DialogPopup.alertPopup(requireActivity(), "", getString(R.string.upload_images_error))
+                return
 
             }
         }
