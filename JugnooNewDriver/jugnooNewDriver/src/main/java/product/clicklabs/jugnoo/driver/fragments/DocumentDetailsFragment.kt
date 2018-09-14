@@ -128,8 +128,22 @@ class DocumentDetailsFragment:Fragment(){
     }
 
     public fun submitInputData(){
-        if(documentInputFields.size==0)return;
+        //if doc is editable and user has not uploaded image
+        if(docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1 && docInfo.docCount>0) {
 
+            //if no image has been uploaded
+            if (docInfo.file == null && docInfo.file1 == null &&
+                (docInfo.url==null   ||  (docInfo.url[0].isNullOrEmpty() && docInfo.url[1].isNullOrEmpty()))) {
+                DialogPopup.alertPopup(requireActivity(), "", getString(R.string.upload_images_error))
+
+            }
+        }
+
+
+        if(documentInputFields.size==0){
+            requireActivity().onBackPressed()
+            return;
+        }
 
 
         val listInputFields = documentInputFields.map {
