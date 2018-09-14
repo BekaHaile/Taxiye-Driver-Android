@@ -17,7 +17,9 @@ public class SoundMediaPlayer {
 			stopSound();
 			if(maxSound && Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1){
 				AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+				if (am != null) {
+					am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+				}
 			}
 			SoundMediaPlayer.loopCount = loopCount;
 			SoundMediaPlayer.runCount = 0;
