@@ -264,6 +264,7 @@ class LoginFragment : Fragment() {
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {
                             edtPhoneNo.setText(Prefs.with(requireActivity()).getString(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, ""))
+                            edtPhoneNo.setSelection(edtPhoneNo.text.length)
                         }
 
                         if (resources.getInteger(R.integer.show_language_control) != resources.getInteger(R.integer.view_visible)){

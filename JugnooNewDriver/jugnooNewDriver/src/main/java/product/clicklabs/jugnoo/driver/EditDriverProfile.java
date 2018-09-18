@@ -52,8 +52,7 @@ import retrofit.mime.TypedByteArray;
  * Created by aneeshbansal on 14/01/16.
  */
 public class EditDriverProfile extends BaseFragmentActivity {
-	LinearLayout relative, activity_profile_screen;
-	RelativeLayout driverDetailsRLL;
+	RelativeLayout relative;
 	ImageView backBtn;
 	ImageView imageViewEditPhone;
 	TextView title, tvAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
@@ -69,27 +68,8 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	public static final int REQUEST_CODE_STRIPE_CONNECT_EXPRESS = 0x23;
 	public static final int REQUEST_CODE_STRIPE_CONNECT_STANDARD = 0x24;
     private int stripeStatus;
-    //	public static ProfileInfo openProfileInfo;
 
-
-	@Override
-	protected void onStart() {
-
-		super.onStart();
-
-
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
+    private Button bEditRateCard;
 
 
 	@Override
@@ -99,9 +79,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
 		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
-		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
-		activity_profile_screen = (LinearLayout) findViewById(R.id.activity_profile_screen);
-		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
+		relative = (RelativeLayout) findViewById(R.id.activity_profile_screen);
 
 		new ASSL(this, relative, 1134, 720, false);
 
@@ -119,6 +97,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
+		bEditRateCard = (Button) findViewById(R.id.bEditRateCard);
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
@@ -245,7 +224,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			}
 		});
 
-		activity_profile_screen.setOnClickListener(new View.OnClickListener() {
+		relative.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				editTextUserName.setError(null);
@@ -282,6 +261,15 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				}
 
 
+			}
+		});
+
+		bEditRateCard.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_EDIT_RATE_CARD, 0) == 1 ? View.VISIBLE : View.GONE);
+		bEditRateCard.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(EditDriverProfile.this, EditRateCardActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
 
