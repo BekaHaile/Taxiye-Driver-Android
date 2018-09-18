@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText android:id="@+id/edtDocInput"
+    style="@style/TextNormal"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+    android:imeOptions="actionDone"
+    android:inputType="textPersonName"
+    android:padding="13dp"
+    android:maxLines="1"
+    android:textDirection="locale"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

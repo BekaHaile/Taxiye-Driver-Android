@@ -210,6 +210,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
             case REGISTER_DRIVER:
                 RestClient.getApiServices().updateDriverInfo(params, callback);
                 break;
+            case SHOW_RATE_CARD:
+                RestClient.getApiServices().rateCardDetail(params, callback);
+                break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
 

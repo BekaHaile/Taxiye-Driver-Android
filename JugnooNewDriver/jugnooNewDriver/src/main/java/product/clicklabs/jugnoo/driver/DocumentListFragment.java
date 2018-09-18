@@ -46,6 +46,7 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -131,6 +132,9 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		return rootView;
 	}
 
+	public DriverDocumentListAdapter getDriverDocumentListAdapter() {
+		return driverDocumentListAdapter;
+	}
 
 	@Override
 	public void onDetach() {
@@ -206,15 +210,15 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus, docRejected;
-		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
+		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture,relativeLayoutSelectPictureStatus;
 		RelativeLayout relativeLayoutImageStatus;
 		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
-				imageViewDocStatusImage,imageViewInfo;
+				imageViewDocStatusImage,imageViewInfo,ivArrowForward;
 		int id;
 	}
 
-	class DriverDocumentListAdapter extends BaseAdapter {
+	public class DriverDocumentListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverDoc holder;
 		//ViewHolderDriverDoc holder;
@@ -240,19 +244,26 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			return getDocumentListView(position, convertView,mInflater, (DriverDocumentActivity) getActivity(),false);
+		}
+
+		@NonNull
+		public  View getDocumentListView(int position, View convertView, LayoutInflater mInflater, final DriverDocumentActivity activity
+		,boolean isActionable) {
+			ViewHolderDriverDoc	holder = null;
 			if (convertView == null) {
 				holder = new ViewHolderDriverDoc();
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
-				holder.docType.setTypeface(Fonts.mavenMedium(getActivity()));
+				holder.docType.setTypeface(Fonts.mavenMedium(activity));
 				holder.docRejected = (TextView) convertView.findViewById(R.id.docRejected);
-				holder.docRejected.setTypeface(Fonts.mavenRegular(getActivity()));
+				holder.docRejected.setTypeface(Fonts.mavenRegular(activity));
 
 				holder.docRequirement = (TextView) convertView.findViewById(R.id.docRequirement);
-				holder.docRequirement.setTypeface(Fonts.mavenRegular(getActivity()));
+				holder.docRequirement.setTypeface(Fonts.mavenRegular(activity));
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
-				holder.docStatus.setTypeface(Fonts.mavenRegular(getActivity()));
+				holder.docStatus.setTypeface(Fonts.mavenRegular(activity));
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
@@ -278,9 +289,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 				holder.relativeLayoutImageStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutImageStatus);
+				holder.relativeLayoutSelectPictureStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutSelectPictureStatus);
+				holder.ivArrowForward = (ImageView) convertView.findViewById(R.id.ivArrowForward);
 
 				holder.imageViewUploadDoc.setTag(holder);
 				holder.relativeLayoutSelectPicture.setTag(holder);
+				holder.relativeLayoutSelectPictureStatus.setTag(holder);
 				holder.addImageLayout.setTag(holder);
 				holder.addImageLayout2.setTag(holder);
 
@@ -301,16 +315,16 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			//MAIN THODI DER MEIN AAUNGA
 
 			if (docInfo.docRequirement == 1 || docInfo.docRequirement == 3) {
-				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+				holder.docRequirement.setText(activity.getResources().getString(R.string.mandatory));
 				holder.docType.setText(docInfo.docType+"*");
 			} else if (docInfo.docRequirement == 4) {
-				holder.docRequirement.setText(getResources().getString(R.string.required));
+				holder.docRequirement.setText(activity.getResources().getString(R.string.required));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {
-				holder.docRequirement.setText(getResources().getString(R.string.optional));
+				holder.docRequirement.setText(activity.getResources().getString(R.string.optional));
 				holder.docType.setText(docInfo.docType);
 			}
-			holder.docStatus.setText(getResources().getString(R.string.uploading));
+			holder.docStatus.setText(activity.getResources().getString(R.string.uploading));
 
 			holder.docRejected.setVisibility(View.GONE);
 
@@ -319,27 +333,27 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
-				holder.docStatus.setText(getResources().getString(R.string.uploaded));
+				holder.docStatus.setText(activity.getResources().getString(R.string.uploaded));
 				holder.imageViewDocStatusImage.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatusImage.setImageResource(R.drawable.uploaded_doc_status);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.green_doc_status));
+				holder.docStatus.setTextColor(activity.getResources().getColor(R.color.green_doc_status));
 			} else if (docInfo.status.equalsIgnoreCase("2")) {
-				holder.docStatus.setText(getResources().getString(R.string.rejected));
+				holder.docStatus.setText(activity.getResources().getString(R.string.rejected));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_rejected);
 				holder.docRejected.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatusImage.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatusImage.setImageResource(R.drawable.rejected_doc_status);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.red_delivery));
+				holder.docStatus.setTextColor(activity.getResources().getColor(R.color.red_delivery));
 			} else if (docInfo.status.equalsIgnoreCase("3")) {
-				holder.docStatus.setText(getResources().getString(R.string.verified));
+				holder.docStatus.setText(activity.getResources().getString(R.string.verified));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_verified);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.green_doc_status));
+				holder.docStatus.setTextColor(activity.getResources().getColor(R.color.green_doc_status));
 				holder.imageViewDocStatusImage.setVisibility(View.GONE);
 			} else if (docInfo.status.equalsIgnoreCase("1")) {
-				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
+				holder.docStatus.setText(activity.getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_waiting);
 				holder.imageViewDocStatusImage.setVisibility(View.GONE);
-				holder.docStatus.setTextColor(getResources().getColor(R.color.themeColor));
+				holder.docStatus.setTextColor(activity.getResources().getColor(R.color.themeColor));
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
@@ -361,7 +375,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			if (docInfo.getFile() != null) {
 				docInfo.isExpended = true;
-				Picasso.with(getActivity()).load(docInfo.getFile())
+				Picasso.with(activity).load(docInfo.getFile())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						.into(holder.setCapturedImage);
 
@@ -385,7 +399,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			if (docInfo.getFile1() != null) {
 				docInfo.isExpended = true;
-				Picasso.with(getActivity()).load(docInfo.getFile1())
+				Picasso.with(activity).load(docInfo.getFile1())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
@@ -412,7 +426,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					docInfo.isExpended = true;
 
 					if (docInfo.url.get(0) != null && !"".equalsIgnoreCase(docInfo.url.get(0))) {
-						Picasso.with(getActivity()).load(docInfo.url.get(0))
+						Picasso.with(activity).load(docInfo.url.get(0))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage);
@@ -438,7 +452,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					}
 
 					if (docInfo.url.get(1) != null && !"".equalsIgnoreCase(docInfo.url.get(1))) {
-						Picasso.with(getActivity()).load(docInfo.url.get(1))
+						Picasso.with(activity).load(docInfo.url.get(1))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage2);
@@ -461,7 +475,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			}
 
 
-
 			if (docInfo.status.equalsIgnoreCase("3")) {
 				if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0)))){
 					holder.addImageLayout.setVisibility(View.GONE);
@@ -475,6 +488,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			holder.docType.setTag(holder);
 			holder.imageViewInfo.setTag(holder);
+			holder.rideHistoryItem.setTag(holder);
 			if(docInfo.getDocInstructions()==null){
 				holder.imageViewInfo.setVisibility(View.GONE);
 				holder.docType.setOnClickListener(null);
@@ -514,142 +528,148 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				holder.deleteImage1.setVisibility(View.GONE);
 				holder.addImageLayout2.setVisibility(View.GONE);
 				holder.deleteImage2.setVisibility(View.GONE);
-				holder.docType.setTextColor(getResources().getColor(R.color.grey_light_doc_status));
+				holder.docType.setTextColor(activity.getResources().getColor(R.color.grey_light_doc_status));
 				holder.imageViewDocStatus.setVisibility(View.VISIBLE);
 			} else {
 				holder.addImageLayout.setVisibility(View.VISIBLE);
 				holder.addImageLayout2.setVisibility(View.VISIBLE);
 				holder.imageViewDocStatus.setVisibility(View.GONE);
-				holder.docType.setTextColor(getResources().getColor(R.color.themeColor));
+				holder.docType.setTextColor(activity.getResources().getColor(R.color.themeColor));
 			}
-
 
 
 			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
 				docInfo.isExpended = false;
 			}
 
-			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					uploadfile(activity, holder.id);
-					coloum = 0;
-
-				}
-			});
-
-			holder.deleteImage1.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					DocInfo docInfodeleteImage1 = docs.get(holder.id);
-					docInfodeleteImage1.setFile(null);
-					docInfodeleteImage1.url.set(0, null);
-					holder.addImageLayout.setEnabled(true);
-					coloum =0;
-					deleteImage(getActivity(), docInfodeleteImage1.docTypeNum);
-					holder.deleteImage1.setVisibility(View.GONE);
-					driverDocumentListAdapter.notifyDataSetChanged();
-				}
-			});
-
-			holder.deleteImage2.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					DocInfo docInfodeleteImage2 = docs.get(holder.id);
-					docInfodeleteImage2.setFile1(null);
-					docInfodeleteImage2.url.set(1, null);
-					holder.addImageLayout2.setEnabled(true);
-					coloum =1;
-					deleteImage(getActivity(), docInfodeleteImage2.docTypeNum);
-					holder.deleteImage2.setVisibility(View.GONE);
-					driverDocumentListAdapter.notifyDataSetChanged();
-				}
-			});
-
-			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					try {
-						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-						rejectionId = holder.id;
-						DocInfo docInfoImageLayout = docs.get(holder.id);
-						if (docInfoImageLayout.status.equalsIgnoreCase("2")) {
-
-							DialogPopup.alertPopupTwoButtonsWithListeners(getActivity(),
-									getResources().getString(R.string.rejection_reason),
-									docInfoImageLayout.reason,
-									getResources().getString(R.string.upload_again),
-									getResources().getString(R.string.cancel),
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											uploadfile(activity, rejectionId);
-											coloum = 0;
-										}
-									},
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-
-										}
-									}, true, true);
-						} else {
-							uploadfile(activity, holder.id);
-							coloum = 0;
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-
-			holder.addImageLayout2.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					try {
-						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-						rejectionId = holder.id;
-						DocInfo docInfoImageLayout2 = docs.get(holder.id);
-						if (docInfoImageLayout2.status.equalsIgnoreCase("2")) {
-							DialogPopup.alertPopupTwoButtonsWithListeners(getActivity(),
-									getResources().getString(R.string.rejection_reason),
-									docInfoImageLayout2.reason,
-									getResources().getString(R.string.upload_again),
-									getResources().getString(R.string.cancel),
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											uploadfile(activity, rejectionId);
-											coloum = 1;
-										}
-									},
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-
-										}
-									}, true, true);
-						} else {
-							uploadfile(activity, holder.id);
-							coloum = 1;
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-
 			if(docInfo.docCount<2){
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
+
+			if (isActionable) {
+				holder.relativeLayoutSelectPictureStatus.setVisibility(View.GONE);
+				holder.ivArrowForward.setVisibility(View.GONE);
+				holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+                        uploadfile(activity, holder.id);
+                        coloum = 0;
+
+                    }
+                });
+
+				holder.deleteImage1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+                        holder.addImageLayout.setEnabled(true);
+                        holder.deleteImage1.setVisibility(View.GONE);
+                        deletImageLayoutOnClick(holder.id, (DriverDocumentActivity) activity,0);
+                    }
+                });
+
+				holder.deleteImage2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+                        holder.addImageLayout2.setEnabled(true);
+                        holder.deleteImage2.setVisibility(View.GONE);
+                        deletImageLayoutOnClick(holder.id, (DriverDocumentActivity) activity,1);
+                    }
+                });
+
+				holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+                        addImageLayotOnClick(holder.id, (DriverDocumentActivity) activity,0);
+                    }
+                });
+
+				holder.addImageLayout2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+                        addImageLayotOnClick(holder.id, (DriverDocumentActivity) activity,1);
+                    }
+                });
+			}else{
+				holder.deleteImage2.setVisibility(View.GONE);
+				holder.deleteImage1.setVisibility(View.GONE);
+				holder.addImageLayout.setVisibility(View.GONE);
+				holder.addImageLayout2.setVisibility(View.GONE);
+				holder.imageViewUploadDoc.setVisibility(View.GONE);
+
+				holder.rideHistoryItem.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+						activity.openDocumentDetails(docs.get(holder.id),holder.id);
+					}
+				});
+			}
+
+
+
+
+
+
+
+
 
 
 			return convertView;
 		}
 
+	}
+
+	public  void deletImageLayoutOnClick(final int holderId,final DriverDocumentActivity context,int colNO) {
+		DocInfo docInfodeleteImage1 = docs.get(holderId);
+		if(colNO==0){
+			docInfodeleteImage1.setFile(null);
+
+		}else{
+			docInfodeleteImage1.setFile1(null);
+
+		}
+		docInfodeleteImage1.url.set(colNO, null);
+		coloum = colNO;
+		deleteImage(context, docInfodeleteImage1.docTypeNum);
+		driverDocumentListAdapter.notifyDataSetChanged();
+	}
+
+	public   void addImageLayotOnClick(final int holderId, final DriverDocumentActivity context, final int coloumNO) {
+		try {
+            DocInfo docInfoImageLayout2 = docs.get(holderId);
+            if (docInfoImageLayout2.status.equalsIgnoreCase("2")) {
+				DialogPopup.alertPopupTwoButtonsWithListeners(context,
+						context.getResources().getString(R.string.rejection_reason),
+                        docInfoImageLayout2.reason,
+						context.getResources().getString(R.string.upload_again),
+						context.getResources().getString(R.string.cancel),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                uploadfile(context, holderId);
+                                coloum = coloumNO;
+                            }
+                        },
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }, true, true);
+            } else {
+                uploadfile(activity, holderId);
+                coloum = coloumNO;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 
@@ -692,7 +712,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
-										data.getInstructions(), data.getGalleryRestricted());
+										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo());
 								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 									continue;
 								}
@@ -701,6 +721,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
 							checkForDocumentsSubmit();
+
 
 						}
 					} catch (Exception exception) {
@@ -1010,6 +1031,11 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
 										checkForDocumentsSubmit();
+										if(((DriverDocumentActivity)activity).getDocumentDetailsFragment()!=null){
+											((DocumentDetailsFragment)((DriverDocumentActivity)activity).getDocumentDetailsFragment()).
+													setDocData(docs.get(index));
+										}
+
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1032,6 +1058,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							driverDocumentListAdapter.notifyDataSetChanged();
 						}
 						DialogPopup.dismissLoadingDialog();
+
 					}
 
 					@Override
@@ -1081,6 +1108,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										docs.get(index).status = "-1";
 										driverDocumentListAdapter.notifyDataSetChanged();
 
+										if(((DriverDocumentActivity)activity).getDocumentDetailsFragment()!=null){
+											((DocumentDetailsFragment)((DriverDocumentActivity)activity).getDocumentDetailsFragment()).setDocData(docs.get(index));
+										}
+
 									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).isExpended = false;
@@ -1095,6 +1126,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							} else {
 								DialogPopup.dismissLoadingDialog();
 							}
+
+
 						} catch (Exception exception) {
 							exception.printStackTrace();
 							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -1103,6 +1136,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							driverDocumentListAdapter.notifyDataSetChanged();
 						}
 						DialogPopup.dismissLoadingDialog();
+
+
 					}
 
 					@Override
@@ -1191,4 +1226,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			mPermissionCommon.onRequestPermissionsResult(requestCode,permissions,grantResults);
 		}
 	}
+
+
 }

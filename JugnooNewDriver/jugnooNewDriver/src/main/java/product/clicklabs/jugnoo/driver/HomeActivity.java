@@ -301,7 +301,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     //Driver initial layout
     RelativeLayout driverInitialLayout;
     ListView driverRideRequestsList;
-    Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial;
+    Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial, bEditProfile;
     TextView jugnooOffText, temptext, textViewDocText, textViewDocDayText;
 
     DriverRequestListAdapter driverRequestListAdapter;
@@ -780,6 +780,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             jugnooOffText.setVisibility(View.GONE);
 
             buttonUploadOnInitial = (Button) findViewById(R.id.buttonUploadOnInitial);
+            bEditProfile = (Button) findViewById(R.id.bEditProfile);
             linearLayoutJugnooOff = (LinearLayout) findViewById(R.id.linearLayoutJugnooOff);
             textViewDocText = (TextView) findViewById(R.id.textViewDocText);
             textViewDocText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
@@ -1666,6 +1667,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     intent.putExtra("in_side", true);
                     intent.putExtra("doc_required", 0);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+            });
+
+            bEditProfile.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, EditDriverProfile.class));
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
@@ -3493,6 +3502,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     textViewDocText.setVisibility(View.VISIBLE);
                                     buttonUploadOnInitial.setVisibility(View.VISIBLE);
                                     textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE, ""));
+                                    if(getResources().getInteger(R.integer.upload_documents_custom_text) == 1) {
+                                        textViewDocText.setText(getString(R.string.please_complete_your_profile, getString(R.string.appname)));
+                                    }
+                                    bEditProfile.setVisibility(Prefs.with(HomeActivity.this).getInt(KEY_EDIT_PROFILE_IN_HOME_SCREEN, 0) == 1 ? View.VISIBLE : View.GONE);
                                     if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT, ""))) {
                                         textViewDocDayText.setVisibility(View.VISIBLE);
                                         textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT, ""));
@@ -3501,6 +3514,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     textViewDocText.setVisibility(View.GONE);
                                     textViewDocDayText.setVisibility(View.GONE);
                                     buttonUploadOnInitial.setVisibility(View.GONE);
+                                    bEditProfile.setVisibility(View.GONE);
                                 }
 
                                 Prefs.with(HomeActivity.this).save(Constants.IS_OFFLINE, 1);
@@ -4905,7 +4919,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE, ""))) {
                 textViewDocText.setVisibility(View.VISIBLE);
                 buttonUploadOnInitial.setVisibility(View.VISIBLE);
+                bEditProfile.setVisibility(Prefs.with(HomeActivity.this).getInt(KEY_EDIT_PROFILE_IN_HOME_SCREEN, 0) == 1 ? View.VISIBLE : View.GONE);
                 textViewDocText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_MESSAGE, ""));
+                if(getResources().getInteger(R.integer.upload_documents_custom_text) == 1) {
+                    textViewDocText.setText(getString(R.string.please_complete_your_profile, getString(R.string.appname)));
+                }
                 if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT, ""))) {
                     textViewDocDayText.setVisibility(View.VISIBLE);
                     textViewDocDayText.setText(Prefs.with(HomeActivity.this).getString(UPLOAD_DOCUMENT_DAYS_LEFT, ""));
@@ -4914,6 +4932,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 textViewDocText.setVisibility(View.GONE);
                 textViewDocDayText.setVisibility(View.GONE);
                 buttonUploadOnInitial.setVisibility(View.GONE);
+                bEditProfile.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();

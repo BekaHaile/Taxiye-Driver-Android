@@ -398,6 +398,7 @@
                     style="@style/TextLarge"
                     android:gravity="center"
                     android:text="@string/settings"
+                    android:textStyle="bold"
                     android:background="@color/bgColor"/>
 
                 <TextView

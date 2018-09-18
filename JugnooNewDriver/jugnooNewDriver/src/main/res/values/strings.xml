@@ -454,7 +454,7 @@
     <string name="pickup_charges">Pickup Charges </string>
     <string name="base_fare">Base Fare</string>
     <string name="distance_per_km">Distance\n(Per Km)</string>
-    <string name="time_per_min">Time\n(per min)</string>
+    <string name="time_per_min">Time (per min)</string>
     <string name="per_min">(per min)</string>
     <string name="driver_to_customer">Driver to Customer</string>
     <string name="driver_to_driver">Driver to Driver</string>
@@ -1120,5 +1120,15 @@
     <string name="drop_location_updated">Drop location updated</string>
 
     <string name="monthly_text_tips">Tips</string>
+    <string name="document_details">Document Details</string>
+    <string name="add_images_label">Add Images</string>
+    <string name="my_rates">My Rates</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_rate_card">Edit Rate Card</string>
+    <string name="wait_time_per_min">Wait Time (per min)</string>
+    <string name="number_00">00</string>
+    <string name="please_complete_your_profile">Please complete your profile and setup your Rate Card to start driving with %s</string>
+    <string name="upload_documents">Upload Documents</string>
+    <string name="upload_images_error">Please upload images before submitting.</string>
     <string name="drop_location_updated_by_customer">Drop location updated by customer</string>
 </resources>

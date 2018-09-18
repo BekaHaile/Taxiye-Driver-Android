@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -61,7 +64,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		submitButton = (Button) findViewById(R.id.submitButton);
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
-		title.setText(R.string.upload_Documents);
+		title.setText(R.string.documents);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		documentListFragment = new DocumentListFragment();
@@ -77,14 +80,25 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		bundle.putInt("doc_required", requirement);
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		documentListFragment.setArguments(bundle);
+
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
-				.addToBackStack(DocumentListFragment.class.getName())
 				.commit();
+
+
+
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
+				if(getDocumentDetailsFragment() !=null){
+
+					((DocumentDetailsFragment)getDocumentDetailsFragment()).submitInputData();
+
+					return;
+				}
+
 				if(brandingImagesOnly == 1){
 					docSubmission();
 				} else {
@@ -108,6 +122,19 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		});
 	}
 
+	public Fragment getDocumentDetailsFragment() {
+		return getSupportFragmentManager().findFragmentByTag(DocumentDetailsFragment.class.getName());
+	}
+
+	public  void  openDocumentDetails(DocInfo docInfo,Integer pos){
+
+		title.setText(docInfo.docType);
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
+				.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
+				.addToBackStack(DocumentDetailsFragment.class.getName())
+				.commit();
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -121,6 +148,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
+		if(getSupportFragmentManager().getBackStackEntryCount()>0){
+			title.setText(R.string.upload_Documents);
+			super.onBackPressed();
+			return;
+		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
@@ -397,4 +429,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		setIntent(intent);
 	}
 
+
+	public DocumentListFragment getDocumentListFragment(){
+		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));
+	}
 }
