@@ -1131,4 +1131,6 @@
     <string name="upload_documents">Upload Documents</string>
     <string name="upload_images_error">Please upload images before submitting.</string>
     <string name="drop_location_updated_by_customer">Drop location updated by customer</string>
+
+    <string name="btn_text_continue">Continue</string>
 </resources>

@@ -119,11 +119,12 @@ public class DriverProfileActivity extends BaseActivity {
 
         backBtn = findViewById(R.id.backBtn);
         title = (TextView) findViewById(R.id.title);
-        title.setTypeface(Fonts.mavenRegular(this)); title.setText(R.string.profile);
+        title.setTypeface(Fonts.mavenRegular(this));
+        title.setText(R.string.profile);
 
         ivEditIcon = (ImageView) findViewById(R.id.ivEditIcon);
         ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
-		cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
+        cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
         switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
@@ -216,11 +217,11 @@ public class DriverProfileActivity extends BaseActivity {
         tvDocuments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Data.userData == null){
+                if (Data.userData == null) {
                     return;
                 }
                 Intent intent = new Intent(DriverProfileActivity.this, DriverDocumentActivity.class);
-                intent.putExtra("access_token",Data.userData.accessToken);
+                intent.putExtra("access_token", Data.userData.accessToken);
                 intent.putExtra("in_side", true);
                 intent.putExtra("doc_required", 0);
                 startActivity(intent);
@@ -233,7 +234,7 @@ public class DriverProfileActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Prefs.with(DriverProfileActivity.this).save(Constants.KEY_MAX_SOUND, isChecked ? 1 : 0);
-                if(!isChecked) {
+                if (!isChecked) {
                     AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                     am.setStreamVolume(AudioManager.STREAM_MUSIC, 5, 0);
                 }
@@ -269,8 +270,8 @@ public class DriverProfileActivity extends BaseActivity {
         DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
         try {
             driverDetailsRLL.setVisibility(View.GONE);
-            HashMap<String,String> params = new HashMap<>();
-            params.put(Constants.KEY_ACCESS_TOKEN,Data.userData.accessToken);
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
             HomeUtil.putDefaultParams(params);
             RestClient.getApiServices().driverProfileInfo(params,
                     new Callback<BookingHistoryResponse>() {
@@ -399,7 +400,7 @@ public class DriverProfileActivity extends BaseActivity {
                     textViewRankOverall.setText(getStringText(R.string.rank_overall) + " " + openedProfileInfo.textViewRankOverall);
                 }
 
-                if (openedProfileInfo.textViewMonthlyValue != null) {
+                if (openedProfileInfo.textViewMonthlyValue != null && getResources().getBoolean(R.bool.show_earnings_on_profile)) {
                     textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency, openedProfileInfo.textViewMonthlyValue));
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
 

@@ -454,7 +454,7 @@ class LoginFragment : Fragment() {
             with(rootView) {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
-                btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+                btnGenerateOtp.text = getString(R.string.btn_generate_otp_text)
                 TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }
