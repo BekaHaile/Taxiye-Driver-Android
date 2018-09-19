@@ -5126,8 +5126,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0);
 
         if (!ignoreTollChargeTipAmount) {
+            double taxAmount = fare * Data.fareStructure.getTaxPercent()/100D;
             fare = fare + (JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D)
-                    + customerInfo.getTipAmount();
+                    + customerInfo.getTipAmount() + taxAmount;
         }
 
         return fare;
@@ -6834,7 +6835,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         try {
 
 
-            double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance, tipAmount = 0, tollFare = 0;
+            double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance, tipAmount = 0, tollFare = 0, taxAmount = 0;
             int paymentMode = PaymentMode.CASH.getOrdinal();
             int invalidPool = 0;
 
@@ -6886,6 +6887,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     totalFare = getTotalFare(customerInfo, finalDistance,
                             rideTimeInMillis, waitTimeInMillis, invalidPool, true);
                     //toll fare and tip amount should not be there in totalFare when calculating discount
+                    taxAmount = totalFare * Data.fareStructure.getTaxPercent()/100D;
                     tipAmount = customerInfo.getTipAmount();
                     tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
                 }
@@ -6976,8 +6978,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 fareDetails.add(0, new FareDetail(getString(R.string.fare), totalFare));
             }
 
-            //adding toll fare and tip amount again in totalFare after discount computation
-            totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare);
+            //adding toll fare, taxAmount and tip amount again in totalFare after discount computation
+            totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare + taxAmount);
 
             if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
                 finalToPay = totalFare - finalDiscount;

@@ -114,7 +114,8 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_minimum"),
 						mandatoryFareDetails.getDouble("mandatory_fare_value"),
 						mandatoryFareDetails.getDouble("mandatory_fare_capping"),
-						fareDetails.optDouble("fare_per_baggage",0.0));
+						fareDetails.optDouble("fare_per_baggage",0.0),
+						fareDetails.optDouble("tax_percentage",0.0));
 			} else {
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
 						fareDetails.getDouble("fare_threshold_distance"),
@@ -127,11 +128,12 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_after_threshold"),
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),0,0,
-						fareDetails.optDouble("fare_per_baggage",0.0));
+						fareDetails.optDouble("fare_per_baggage",0.0),
+						fareDetails.optDouble("tax_percentage",0.0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0,0);
 		}
 	}
 
