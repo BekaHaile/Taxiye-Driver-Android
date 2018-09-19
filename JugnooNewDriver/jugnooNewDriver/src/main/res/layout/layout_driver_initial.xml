@@ -84,6 +84,14 @@
             style="@style/ButtonTheme"
             />
 
+        <Button
+            android:id="@+id/bEditRateCard"
+            android:layout_width="190dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/edit_rate_card"
+            style="@style/ButtonTheme"
+            />
+
 
 
     </LinearLayout>

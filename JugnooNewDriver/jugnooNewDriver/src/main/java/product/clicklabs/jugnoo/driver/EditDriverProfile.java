@@ -69,7 +69,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	public static final int REQUEST_CODE_STRIPE_CONNECT_STANDARD = 0x24;
     private int stripeStatus;
 
-    private Button bEditRateCard;
+    private Button bEditRateCard, bUploadDocuments;
 
 
 	@Override
@@ -98,6 +98,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
 		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
 		bEditRateCard = (Button) findViewById(R.id.bEditRateCard);
+		bUploadDocuments = (Button) findViewById(R.id.bUploadDocuments);
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
@@ -265,10 +266,22 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		});
 
 		bEditRateCard.setVisibility(Prefs.with(this).getInt(Constants.KEY_SHOW_EDIT_RATE_CARD, 0) == 1 ? View.VISIBLE : View.GONE);
+		bUploadDocuments.setVisibility(getIntent().getBooleanExtra(Constants.SHOW_UPLOAD_DOCUMENTS, false) ? View.VISIBLE : View.GONE);
 		bEditRateCard.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(EditDriverProfile.this, EditRateCardActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+		bUploadDocuments.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(EditDriverProfile.this, DriverDocumentActivity.class);
+				intent.putExtra("access_token", Data.userData.accessToken);
+				intent.putExtra("in_side", true);
+				intent.putExtra("doc_required", 0);
+				startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
