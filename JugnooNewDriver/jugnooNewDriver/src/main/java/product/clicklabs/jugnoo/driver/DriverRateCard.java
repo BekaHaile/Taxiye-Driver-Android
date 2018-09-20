@@ -38,6 +38,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
 	LinearLayout llBeforeRide, llInRide;
+	RelativeLayout rlBeforeRide;
 	
 	NewRateCardActivity activity;
 	private View rootView;
@@ -117,6 +118,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		((TextView) rootView.findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(activity));
 
 		llBeforeRide = (LinearLayout) rootView.findViewById(R.id.llBeforeRide);
+		rlBeforeRide = rootView.findViewById(R.id.rlBeforeRide);
 		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
 		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
 		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
@@ -213,6 +215,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			}
 
 			llBeforeRide.setVisibility(rateCardResponse.getRates().getPickupChargesEnabled() == 1
+					? View.VISIBLE : View.GONE);
+			rlBeforeRide.setVisibility(rateCardResponse.getRates().getPickupChargesEnabled() == 1
 					? View.VISIBLE : View.GONE);
 			llInRide.setVisibility(rateCardResponse.getRates().getInRideChargesEnabled() == 1
 					? View.VISIBLE : View.GONE);

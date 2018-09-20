@@ -1,12 +1,14 @@
 package product.clicklabs.jugnoo.driver.utils
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.support.annotation.IdRes
 import android.support.annotation.RequiresApi
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,4 +83,8 @@ fun Activity.withNetwork(block: () -> Unit, showDialog: Boolean = true, notConne
         if (showDialog) DialogPopup.alertPopup(this, "", Data.CHECK_INTERNET_MSG)
         notConnected.invoke()
     }
+}
+
+ fun Int.pxValue(context : Context,unit: Int = TypedValue.COMPLEX_UNIT_DIP): Int {
+    return TypedValue.applyDimension(unit, this.toFloat(), context.resources.displayMetrics).toInt()
 }

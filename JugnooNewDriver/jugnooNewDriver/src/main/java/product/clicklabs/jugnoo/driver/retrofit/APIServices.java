@@ -8,9 +8,6 @@ import product.clicklabs.jugnoo.driver.datastructure.WalletTransactionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
-import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
-import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
-import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryRateCardResponse;
@@ -35,13 +32,14 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
+import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import retrofit.Callback;
@@ -461,6 +459,12 @@ public interface APIServices {
 							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
 
+	@FormUrlEncoded
+	@POST("/upload_document")
+	void uploadFields(@FieldMap Map<String, String> params,
+					Callback<FeedCommonResponseKotlin> callback);
+
+
 	@Multipart
 	@POST("/upload_signature_document")
 	void uploadSignatureToServer(@Part("image") TypedFile image,
@@ -678,6 +682,11 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_luggage_count")
 	void updateLuggageCount(@FieldMap Map<String, String> params,
+							Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/update_driver_fares")
+	void updateDriverFares(@FieldMap Map<String, String> params,
 							Callback<FeedCommonResponseKotlin> callback);
 
 

@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.dialog_edittext.*
 import kotlinx.android.synthetic.main.frag_login.*
 import kotlinx.android.synthetic.main.frag_login.view.*
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
@@ -146,8 +145,7 @@ class LoginFragment : Fragment() {
                     }
                 }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true,
                         Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS,
-                        Manifest.permission.READ_CONTACTS)
+                        Manifest.permission.READ_SMS)
             })
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
@@ -266,9 +264,13 @@ class LoginFragment : Fragment() {
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {
                             edtPhoneNo.setText(Prefs.with(requireActivity()).getString(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, ""))
+                            edtPhoneNo.setSelection(edtPhoneNo.text.length)
                         }
 
                         if (resources.getInteger(R.integer.show_language_control) != resources.getInteger(R.integer.view_visible)){
+                            progressLanguage.gone()
+                            tvLanguage.gone()
+                            language_spinner.gone()
                             return
                         }
 
@@ -308,6 +310,7 @@ class LoginFragment : Fragment() {
                                 }
                             }
                         }
+                        rootView.language_spinner.visibility = if(t.languageList.size == 0) View.GONE else View.VISIBLE
 
                     }
 
@@ -451,7 +454,7 @@ class LoginFragment : Fragment() {
             with(rootView) {
                 tvLabel.text = getString(R.string.label_edt_phone)
                 edtPhoneNo.hint = getString(R.string.hint_edt_phone)
-                btnGenerateOtp.text = getString(R.string.btn_text_OTP)
+                btnGenerateOtp.text = getString(R.string.btn_generate_otp_text)
                 TransitionManager.beginDelayedTransition(constraint)
 //            if(tvLanguage.tag != null) tvLanguage.text = getString(tvLanguage.tag as Int)
             }

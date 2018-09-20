@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -15,15 +16,14 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.selfAudit.SelfEnrollmentCameraFragment;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -31,7 +31,6 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -42,22 +41,16 @@ import retrofit.mime.TypedByteArray;
 
 public class DriverDocumentActivity extends BaseFragmentActivity {
 
-
-	RelativeLayout relative;
-
 	View backBtn;
 	TextView title;
 	Button submitButton;
 
-	public RelativeLayout relativeLayoutRides, relativeLayoutContainer;
+	public RelativeLayout relativeLayoutRides;
 	String accessToken;
 	Configuration conf;
 	DocumentListFragment documentListFragment;
-	static boolean loginDataFetched = false;
-	Bundle bundleHomePush= new Bundle();
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
-	public static int temp = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +60,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 			return;
 		}
 		setContentView(R.layout.activity_driver_documents);
-		bundleHomePush = getIntent().getExtras();
-		relative = (RelativeLayout) findViewById(R.id.relative);
-		new ASSL(DriverDocumentActivity.this, relative, 1134, 720, false);
 
 		submitButton = (Button) findViewById(R.id.submitButton);
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
-		title.setText(R.string.upload_Documents);
+		title.setText(R.string.documents);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
-		relativeLayoutContainer = (RelativeLayout) findViewById(R.id.relativeLayoutContainer);
 		documentListFragment = new DocumentListFragment();
 
 		Bundle bundle = new Bundle();
@@ -91,15 +80,25 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		bundle.putInt("doc_required", requirement);
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		documentListFragment.setArguments(bundle);
-		loginDataFetched = false;
+
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
-				.addToBackStack(DocumentListFragment.class.getName())
 				.commit();
+
+
+
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
+				if(getDocumentDetailsFragment() !=null){
+
+					((DocumentDetailsFragment)getDocumentDetailsFragment()).submitInputData();
+
+					return;
+				}
+
 				if(brandingImagesOnly == 1){
 					docSubmission();
 				} else {
@@ -123,6 +122,19 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		});
 	}
 
+	public Fragment getDocumentDetailsFragment() {
+		return getSupportFragmentManager().findFragmentByTag(DocumentDetailsFragment.class.getName());
+	}
+
+	public  void  openDocumentDetails(DocInfo docInfo,Integer pos){
+
+		title.setText(docInfo.docType);
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
+				.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
+				.addToBackStack(DocumentDetailsFragment.class.getName())
+				.commit();
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -135,69 +147,17 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		performbackPressed();
 	}
 
-	public RelativeLayout getRelativeLayoutContainer(){
-		return relativeLayoutContainer;
-	}
-
-	private TransactionUtils transactionUtils;
-	public TransactionUtils getTransactionUtils(){
-		if(transactionUtils == null){
-			transactionUtils = new TransactionUtils();
-		}
-		return transactionUtils;
-	}
-
-	@Override
-	protected void onDestroy() {
-		ASSL.closeActivity(relative);
-		System.gc();
-		super.onDestroy();
-	}
-
 	public void performbackPressed() {
-		/*if(!inSideApp) {
-			JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
-			Intent intent = new Intent(DriverDocumentActivity.this, DriverSplashActivity.class);
-			startActivity(intent);
-		}*/
+		if(getSupportFragmentManager().getBackStackEntryCount()>0){
+			title.setText(R.string.upload_Documents);
+			super.onBackPressed();
+			return;
+		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
 
-	private DocumentListFragment getSignatureFragment() {
-		return (DocumentListFragment) getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName());
-	}
-
-	private SelfEnrollmentCameraFragment getSelfEnrollmentCameraFragment(){
-		return  (SelfEnrollmentCameraFragment) getSupportFragmentManager().findFragmentByTag(SelfEnrollmentCameraFragment.class.getName());
-	}
-
-	public void ServerInterface(File f){
-		if(getSignatureFragment() != null) {
-
-			if (getSelfEnrollmentCameraFragment() != null) {
-//				getSupportFragmentManager().beginTransaction().remove(getSelfEnrollmentCameraFragment()).commit();
-//				super.onBackPressed();
-				relativeLayoutContainer.setVisibility(View.GONE);
-				Log.e("fragment count", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
-			}
-			getSignatureFragment().uploadToServer(f);
-		}
-	}
-
-	public void openGalleryFragment(){
-		if(getSignatureFragment() != null) {
-
-			if (getSelfEnrollmentCameraFragment() != null) {
-//				getSupportFragmentManager().beginTransaction().remove(getSelfEnrollmentCameraFragment()).commit();
-//				super.onBackPressed();
-				relativeLayoutContainer.setVisibility(View.GONE);
-				Log.e("fragment count", String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
-			}
-			getSignatureFragment().chooseImageFromGallery();
-		}
-	}
 
 	private void docSubmission() {
 		if (AppStatus.getInstance(DriverDocumentActivity.this).isOnline(DriverDocumentActivity.this)) {
@@ -402,20 +362,23 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 											resp = Constants.SERVER_TIMEOUT;
 										}
 
+										DialogPopup.dismissLoadingDialog();
 										if(resp.contains(Constants.SERVER_TIMEOUT)){
-											loginDataFetched = false;
 											DialogPopup.alertPopup(activity, "", message);
 										}
 										else{
-											loginDataFetched = true;
-											DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+											Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
+											if(getIntent() != null && getIntent().getExtras() != null)
+												intent.putExtras(getIntent().getExtras());
+											startActivity(intent);
+											ActivityCompat.finishAffinity(DriverDocumentActivity.this);
+											overridePendingTransition(R.anim.right_in, R.anim.right_out);
 										}
 
 										Utils.deleteMFile(activity);
 										Utils.clearApplicationData(DriverDocumentActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 
-										DialogPopup.dismissLoadingDialog();
 
 									}
 									else{
@@ -461,43 +424,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-
-//		if (hasFocus && sendToOtpScreen) {
-//			sendIntentToOtpScreen();
-//		}
-//
-//		if(hasFocus && noNetFirstTime){
-//			noNetFirstTime = false;
-//			checkNetHandler.postDelayed(checkNetRunnable, 4000);
-//		}
-//		else if(hasFocus && noNetSecondTime){
-//			noNetSecondTime = false;
-////			finish();
-//		}
-		if(hasFocus && loginDataFetched){
-			loginDataFetched = false;
-			Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
-			if(bundleHomePush != null)
-				intent.putExtras(bundleHomePush);
-			startActivity(intent);
-			ActivityCompat.finishAffinity(this);
-			overridePendingTransition(R.anim.right_in, R.anim.right_out);
-		}
-//		else if(hasFocus && loginFailed){
-//			loginFailed = false;
-//			startActivity(new Intent(DriverDocumentActivity.this, LoginViaOTP.class));
-//			finish();
-//			overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//		}
-	}
-
-	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		bundleHomePush = intent.getExtras();
-
+		setIntent(intent);
 	}
 
+
+	public DocumentListFragment getDocumentListFragment(){
+		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));
+	}
 }

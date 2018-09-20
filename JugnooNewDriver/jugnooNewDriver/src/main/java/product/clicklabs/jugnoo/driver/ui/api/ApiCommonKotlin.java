@@ -217,6 +217,9 @@ public class ApiCommonKotlin<T extends FeedCommonResponseKotlin> {
             case GET_LANGUAGES:
                 RestClient.getApiServices().fetchLanguageListKotlin(params, callback);
                 break;
+            case UPDATE_FARES:
+                RestClient.getApiServices().updateDriverFares(params, callback);
+                break;
 
             default:
                 throw new IllegalArgumentException("API Type not declared");

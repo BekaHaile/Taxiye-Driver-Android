@@ -33,6 +33,7 @@
             android:gravity="center"
             android:text="@string/jugnoo_off"
             android:textColor="@color/white"
+            android:fontFamily ="@font/maven_pro_medium"
             android:textSize="44px"
             android:visibility="visible"
         />
@@ -44,8 +45,11 @@
             android:gravity="center"
             android:text="@string/NA"
             android:textColor="@color/white"
-            android:textSize="44px"
+            android:textSize="34px"
             android:layout_marginTop="48px"
+            android:layout_marginStart="30px"
+            android:layout_marginEnd="30px"
+            android:fontFamily ="@font/maven_pro_medium"
             android:visibility="visible"
         />
 
@@ -56,20 +60,39 @@
             android:gravity="center"
             android:text="@string/NA"
             android:textColor="@color/white"
-            android:textSize="44px"
+            android:textSize="34px"
+            android:layout_marginStart="30px"
+            android:layout_marginEnd="30px"
             android:layout_marginTop="12px"
+            android:fontFamily ="@font/maven_pro_medium"
             android:visibility="visible"
         />
 
         <Button
             android:id="@+id/buttonUploadOnInitial"
-            android:layout_width="380px"
-            android:layout_height="88px"
-            android:layout_marginTop="48px"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/upload"
-            android:textColor="@color/white"
-            android:textSize="36px"/>
+            android:layout_width="190dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/upload_documents"
+            style="@style/ButtonTheme"/>
+
+
+        <Button
+            android:id="@+id/bEditProfile"
+            android:layout_width="190dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/edit_profile"
+            style="@style/ButtonTheme"
+            />
+
+        <Button
+            android:id="@+id/bEditRateCard"
+            android:layout_width="190dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/edit_rate_card"
+            style="@style/ButtonTheme"
+            />
+
+
 
     </LinearLayout>
 </RelativeLayout>
