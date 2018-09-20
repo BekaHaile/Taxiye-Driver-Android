@@ -5140,7 +5140,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0);
 
         if (!ignoreTollChargeTipAmount) {
-            double taxAmount = fare * Data.fareStructure.getTaxPercent()/100D;
+            double taxAmount = Utils.currencyPrecision(fare * Data.fareStructure.getTaxPercent()/100D);
             fare = fare + (JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D)
                     + customerInfo.getTipAmount() + taxAmount;
         }
@@ -6901,7 +6901,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     totalFare = getTotalFare(customerInfo, finalDistance,
                             rideTimeInMillis, waitTimeInMillis, invalidPool, true);
                     //toll fare and tip amount should not be there in totalFare when calculating discount
-                    taxAmount = totalFare * Data.fareStructure.getTaxPercent()/100D;
+                    taxAmount = Utils.currencyPrecision(totalFare * Data.fareStructure.getTaxPercent()/100D);
                     tipAmount = customerInfo.getTipAmount();
                     tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
                 }
