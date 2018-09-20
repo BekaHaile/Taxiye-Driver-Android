@@ -93,7 +93,19 @@
     <color name="themeColor">#3A3A3A</color>
     <color name="themeColorLight">#bb3A3A3A</color>
 
+    <!--Color for graph-->
+    <color name="driverEarningHighLisghtColor">#bbFF6A00</color>
 
+    <color name="colorPrimary">#FF6A00</color>
+    <color name="colorPrimaryDark">#FF6A00</color>
+    <color name="textColorTitle">#000000</color>
+    <color name="textColor">#000000</color>
+    <color name="textColorMedium">#333333</color>
+    <color name="textColorLight">#9b9b9b</color>
+    <color name="textColorButton">#FFFFFF</color>
+    <color name="dividerColor">#dbdbdb</color>
+    <color name="themeColorAlternate">#3c3638</color>
+    <color name="themeColorAlternateLight">#bb3c3638</color>
 
     <integer name="visibility_take_cash_at_ride_end">@integer/view_gone</integer>
 
