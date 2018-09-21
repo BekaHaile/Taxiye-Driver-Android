@@ -95,8 +95,8 @@
     <!--Color for graph-->
     <color name="driverEarningHighLisghtColor">#bbFF6A00</color>
 
-    <color name="colorPrimary">#FF6A00</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#292a3c</color>
     <color name="textColorTitle">#000000</color>
     <color name="textColor">#000000</color>
     <color name="textColorMedium">#333333</color>
