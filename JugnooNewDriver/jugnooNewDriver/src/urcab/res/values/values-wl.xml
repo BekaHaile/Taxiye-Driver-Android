@@ -51,8 +51,7 @@
 
     <drawable name="bg_splash">@color/white</drawable>
     <drawable name="bg_login">@color/white</drawable>
-    <drawable name="ic_login_logo_drawable">@drawable/ic_login_logo
-    </drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
     <dimen name="ic_splash_logo_width">200dp</dimen>
     <dimen name="ic_splash_logo_height">200dp</dimen>
     <bool name="animate_splash_logo">true</bool>
@@ -90,14 +89,14 @@
     <color name="colorDark">@color/text_color</color>
     <color name="colorLight">@color/white</color>
 
-    <color name="themeColor">#3A3A3A</color>
-    <color name="themeColorLight">#bb3A3A3A</color>
+    <color name="themeColor">#FF6A00</color>
+    <color name="themeColorLight">#bbFF6A00</color>
 
     <!--Color for graph-->
     <color name="driverEarningHighLisghtColor">#bbFF6A00</color>
 
     <color name="colorPrimary">#FF6A00</color>
-    <color name="colorPrimaryDark">#FF6A00</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="textColorTitle">#000000</color>
     <color name="textColor">#000000</color>
     <color name="textColorMedium">#333333</color>
@@ -107,11 +106,4 @@
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
 
-    <integer name="visibility_take_cash_at_ride_end">@integer/view_gone</integer>
-
-    <!--for nickel ride-->
-    <string name="profile_monthly_earnings_text">@string/monthly_text_tips</string>
-    <string name="currency_fallback">USD</string>
-    <bool name="vehicle_model_enabled">false</bool>
-    <bool name="show_end_ride_custom_text">false</bool>
 </resources>
