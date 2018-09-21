@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,11 +33,10 @@ import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationDetails;
-import product.clicklabs.jugnoo.driver.ui.models.VehicleModelDetails;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
@@ -54,7 +54,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverProfileActivity extends BaseFragmentActivity {
+public class DriverProfileActivity extends BaseFragmentActivity implements VehicleDetailsFragment.VehicleDetailsInteractor {
 
     RelativeLayout relative;
     RelativeLayout driverDetailsRLL, driverDetailsRL;
@@ -68,10 +68,13 @@ public class DriverProfileActivity extends BaseFragmentActivity {
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
     SwitchCompat switchNavigation, switchMaxSound;
+    private   RecyclerView rvVehicleTypes;
+    private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
 
 
     public static ProfileInfo openedProfileInfo;
     private DriverVehicleServiceTypePopup driverVehicleServiceTypePopup;
+    private VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter;
 
     @Override
     protected void onStart() {
@@ -183,7 +186,7 @@ public class DriverProfileActivity extends BaseFragmentActivity {
             @Override
             public void onClick(View v) {
                 MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE + "_" + FirebaseEvents.BACK, null);
-                performBackPressed();
+               onBackPressed();
             }
         });
 
@@ -231,64 +234,58 @@ public class DriverProfileActivity extends BaseFragmentActivity {
             }
         });
 
-        final VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
 
-        setVehicleData(vehicleMakeInfo);
-        findViewById(R.id.idEditVehicle).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(vehicleMakeInfo!=null){
-                    getSupportFragmentManager().beginTransaction().add(R.id.container,
-                            VehicleDetailsFragment.newInstance(Data.userData.accessToken,"1",String.valueOf(vehicleMakeInfo.getVehicleType()),
-                             Data.userData.userName, new  VehicleModelDetails(vehicleMakeInfo.getVehicleMake(),vehicleMakeInfo.getVehicleModel(),vehicleMakeInfo.getModelId()),
-                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getColor(),vehicleMakeInfo.getColorID()),
-                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getDoors(),vehicleMakeInfo.getDoorId()),
-                            new VehicleModelCustomisationDetails(vehicleMakeInfo.getSeatbelts(),vehicleMakeInfo.getSeatBeltId()),
-                            vehicleMakeInfo.getYear(),vehicleMakeInfo.getVehicleNumber()),VehicleDetailsFragment.class.getSimpleName()).
-                            addToBackStack(VehicleDetailsFragment.class.getSimpleName())
-                            .commitAllowingStateLoss();
-                    title.setText(getString(R.string.edit_vehicle_details));
+        rvVehicleTypes = findViewById(R.id.rvVehicleDetails);
+        vehicleDetails = findViewById(R.id.cvVehicleDetails);
+        ivEditVehicle = findViewById(R.id.idEditVehicle);
+        rvVehicleTypes.setLayoutManager(new LinearLayoutManager(this));
+        rvVehicleTypes.setNestedScrollingEnabled(false);
+        setVehicleModelData();
 
-                }
+        layoutVehicleServiceDetails =    findViewById(R.id.layoutVehicleServiceDetails);
+        dividerVehicleServiceDetails  =    findViewById(R.id.ivDivVehicleServiceDetails);
+        setVehicleSetsData();
 
-            }
-        });
 
-        boolean showVehicleServiceDetails = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS,0)==1;
-        if(showVehicleServiceDetails && Data.userData!=null && Data.userData.getVehicleServicesModel()!=null){
+    }
+
+    private void setVehicleSetsData() {
+        boolean showVehicleServiceDetails = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_SETS, 0) == 1;
+        if (showVehicleServiceDetails && Data.userData != null && Data.userData.getVehicleServicesModel() != null) {
             setVehicleSetDetails();
-            findViewById(R.id.layoutVehicleServiceDetails).setVisibility(View.VISIBLE);
-            findViewById(R.id.ivDivVehicleServiceDetails).setVisibility(View.VISIBLE);
+            layoutVehicleServiceDetails.setVisibility(View.VISIBLE);
+            dividerVehicleServiceDetails.setVisibility(View.VISIBLE);
 
             tvServiceType.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(Data.userData==null){
+                    if (Data.userData == null) {
                         return;
                     }
 
-                    List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServiceDetails  = Data.userData.getVehicleServicesModel();
+                    List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServiceDetails = Data.userData.getVehicleServicesModel();
 
-                    if(vehicleServiceDetails.size()==0){
+                    if (vehicleServiceDetails.size() == 0) {
                         return;
                     }
 
-                     if(driverVehicleServiceTypePopup==null){
-                            driverVehicleServiceTypePopup = new DriverVehicleServiceTypePopup(DriverProfileActivity.this, vehicleServiceDetails);
-                        }else{
-                            driverVehicleServiceTypePopup.setData(vehicleServiceDetails);
+                    if (driverVehicleServiceTypePopup == null) {
+                        driverVehicleServiceTypePopup = new DriverVehicleServiceTypePopup(DriverProfileActivity.this, vehicleServiceDetails);
+                    } else {
+                        driverVehicleServiceTypePopup.setData(vehicleServiceDetails);
 
-                        }
+                    }
+                    if(!driverVehicleServiceTypePopup.isShowing()){
                         driverVehicleServiceTypePopup.show();
+
+                    }
 
                 }
             });
-        }else{
-            findViewById(R.id.layoutVehicleServiceDetails).setVisibility(View.GONE);
-            findViewById(R.id.ivDivVehicleServiceDetails).setVisibility(View.GONE);
+        } else {
+            layoutVehicleServiceDetails.setVisibility(View.GONE);
+            dividerVehicleServiceDetails.setVisibility(View.GONE);
         }
-
-
     }
 
     public void setVehicleSetDetails() {
@@ -317,12 +314,15 @@ public class DriverProfileActivity extends BaseFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()==0){
+        if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0){
             title.setText(getString(R.string.profile));
+            terms.setVisibility(View.VISIBLE);
+            super.onBackPressed();
 
+        }else{
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.left_out);
         }
-        performBackPressed();
-        super.onBackPressed();
     }
 
 
@@ -490,7 +490,18 @@ public class DriverProfileActivity extends BaseFragmentActivity {
         }
     }
 
-    public void setVehicleData(VehicleDetailsLogin vehicleMakeInfo){
+    public void setVehicleModelData(){
+        boolean showVehicleSettings = Prefs.with(this).getInt(Constants.KEY_ENABLE_VEHICLE_EDIT_SETTING,0)==1;
+        VehicleDetailsLogin vehicleMakeInfo = Data.userData.getVehicleDetailsLogin();
+
+
+        if(!showVehicleSettings){
+            vehicleDetails.setVisibility(View.GONE);
+            return;
+        }
+
+        vehicleDetails.setVisibility(View.VISIBLE);
+
 
         if(Data.userData.getVehicleDetailsLogin()!=null){
             ArrayList<VehicleDetail> details = new ArrayList<>(7);
@@ -502,22 +513,58 @@ public class DriverProfileActivity extends BaseFragmentActivity {
             details.add(new VehicleDetail(getString(R.string.vehicle_number),vehicleMakeInfo.getVehicleNumber()));
             details.add(new VehicleDetail(getString(R.string.year),vehicleMakeInfo.getYear()));
 
-            RecyclerView rvVehicleTypes = findViewById(R.id.rvVehicleDetails);
-            VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter  = new VehicleDetailsProfileAdapter(details);
-            rvVehicleTypes.setLayoutManager(new LinearLayoutManager(this));
-            rvVehicleTypes.setNestedScrollingEnabled(false);
-            rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
 
-            findViewById(R.id.cvVehicleDetails).setVisibility(View.VISIBLE);
+            if(rvVehicleTypes.getAdapter()==null){
+                vehicleDetailsProfileAdapter = new VehicleDetailsProfileAdapter(details);
+                rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
+            }else{
+                vehicleDetailsProfileAdapter.setList(details);
+            }
+
+            rvVehicleTypes.setVisibility(View.VISIBLE);
 
         }else{
-            findViewById(R.id.cvVehicleDetails).setVisibility(View.GONE);
+            rvVehicleTypes.setVisibility(View.GONE);
 
         }
 
+        ivEditVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                openVehicleModelFragment();
+
+
+            }
+        });
 
     }
 
+    private void openVehicleModelFragment() {
+        if(getSupportFragmentManager().findFragmentByTag(VehicleDetailsFragment.class.getName())==null){
+            int cityId = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.CITY_ID,1);
+            int vehicleType = Prefs.with(DriverProfileActivity.this).getInt(SPLabels.VEHICLE_TYPE,0);
 
+            VehicleDetailsFragment vehicleDetailsFragment = VehicleDetailsFragment.newInstance(Data.userData.accessToken,
+                    String.valueOf(cityId),
+                    String.valueOf(vehicleType),
+                    Data.userData.userName, Data.userData.getVehicleDetailsLogin(),true);
+
+            getSupportFragmentManager().beginTransaction().add(R.id.container, vehicleDetailsFragment,VehicleDetailsFragment.class.getSimpleName()).
+                    addToBackStack(VehicleDetailsFragment.class.getSimpleName())
+                    .commitAllowingStateLoss();
+            title.setText(getString(R.string.edit_vehicle_details));
+            terms.setVisibility(View.GONE);
+        }
+    }
+
+
+    @Override
+    public void onDetailsUpdated(@NotNull VehicleDetailsLogin vehicleDetails) {
+        if(Data.userData!=null){
+            Data.userData.setVehicleDetailsLogin(vehicleDetails);
+            setVehicleModelData();
+        }
+        onBackPressed();
+    }
 }

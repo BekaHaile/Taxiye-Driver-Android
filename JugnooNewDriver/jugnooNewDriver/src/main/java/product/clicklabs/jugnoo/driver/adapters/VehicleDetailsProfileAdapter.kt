@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,23 +12,21 @@ import com.google.gson.annotations.SerializedName
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail
 import product.clicklabs.jugnoo.driver.utils.Utils
+import kotlin.properties.Delegates
 
 class VehicleDetail(var name:String, var value: String?)
 
-public class VehicleDetailsLogin(@Expose @SerializedName("brand") var vehicleMake:String,
-                                 @Expose @SerializedName("model_name") var vehicleModel:String,
-                                 @Expose @SerializedName("color") var color:String,
-                                 @Expose @SerializedName("no_of_doors") var doors:String,
-                                 @Expose @SerializedName("no_of_seat_belts") var seatbelts:String,
-                                 @Expose @SerializedName("vehicle_type") var vehicleType:Int,
-                                 @Expose @SerializedName("model_id") var modelId:Int,
-                                 @Expose @SerializedName("door_id") var doorId:Int,
-                                 @Expose @SerializedName("seat_belt_id") var seatBeltId:Int,
-                                 @Expose @SerializedName("color_id") var colorID:Int,
-                                 @Expose @SerializedName("vehicle_number") var vehicleNumber:String,
-                                 @Expose @SerializedName("vehicle_year") var year:String)
 
-class VehicleDetailsProfileAdapter(var details: ArrayList<VehicleDetail>) : RecyclerView.Adapter<VehicleDetailsProfileAdapter.VehicleDetailViewHolder>() {
+
+class VehicleDetailsProfileAdapter(var detail: ArrayList<VehicleDetail>) : RecyclerView.Adapter<VehicleDetailsProfileAdapter.VehicleDetailViewHolder>() {
+
+
+    var details: ArrayList<VehicleDetail> = detail
+    set(value){
+        value.filter { !it.value.isNullOrEmpty() }
+        field = value
+    }
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleDetailsProfileAdapter.VehicleDetailViewHolder {
@@ -36,6 +36,11 @@ class VehicleDetailsProfileAdapter(var details: ArrayList<VehicleDetail>) : Recy
 
     override fun getItemCount(): Int {
         return details.size;
+    }
+
+    fun setList( details: ArrayList<VehicleDetail>){
+        this.details = details
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: VehicleDetailsProfileAdapter.VehicleDetailViewHolder, position: Int) {
@@ -56,4 +61,64 @@ class VehicleDetailsProfileAdapter(var details: ArrayList<VehicleDetail>) : Recy
         val tvValue: TextView = view.findViewById(R.id.tvValue) as TextView
         val divider: View = view.findViewById(R.id.sep) as View
     }
+}
+
+class VehicleDetailsLogin @JvmOverloads constructor(@Expose @SerializedName("vehicle_number") var vehicleNumber:String?,
+                                                    @Expose @SerializedName("vehicle_year") var year:String?,
+
+                                                    @Expose @SerializedName("brand") var vehicleMake:String?=null,
+                                                    @Expose @SerializedName("model_name") var vehicleModel:String?=null,
+                                                    @Expose @SerializedName("model_id") var modelId:Int?=null,
+
+                                                    @Expose @SerializedName("color") var color:String?=null,
+                                                    @Expose @SerializedName("color_id") var colorID:Int?=null,
+
+                                                    @Expose @SerializedName("no_of_doors") var doors:String?=null,
+                                                    @Expose @SerializedName("door_id") var doorId:Int?=null,
+
+                                                    @Expose @SerializedName("no_of_seat_belts") var seatbelts:String?=null,
+                                                    @Expose @SerializedName("seat_belt_id") var seatBeltId:Int?=null):Parcelable{
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(vehicleNumber)
+        parcel.writeString(year)
+        parcel.writeString(vehicleMake)
+        parcel.writeString(vehicleModel)
+        parcel.writeValue(modelId)
+        parcel.writeString(color)
+        parcel.writeValue(colorID)
+        parcel.writeString(doors)
+        parcel.writeValue(doorId)
+        parcel.writeString(seatbelts)
+        parcel.writeValue(seatBeltId)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<VehicleDetailsLogin> {
+        override fun createFromParcel(parcel: Parcel): VehicleDetailsLogin {
+            return VehicleDetailsLogin(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VehicleDetailsLogin?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+
 }

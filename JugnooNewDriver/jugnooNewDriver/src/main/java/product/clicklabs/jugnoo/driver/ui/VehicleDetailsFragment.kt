@@ -17,6 +17,7 @@ import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_vehicle_model.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
@@ -35,14 +36,12 @@ class VehicleDetailsFragment : Fragment() {
     private val  ARGS_CITY_ID = "city_id"
     private val  ARGS_VEHICLE_TYPE = "vehicle_type"
     private val  ARGS_USER_NAME = "user_name"
-    private val  ARGS_MODEL = "model"
-    private val  ARGS_COLOR= "color"
-    private val  ARGS_DOOR= "door"
-    private val  ARGS_SEAT_BELT = "seatbelt"
-    private val  ARGS_YEAR = "year"
-    private val  ARGS_VEHICLE_NUMBER = "vehicle_number"
+    private val  ARGS_VEHICLE_DETAIL = "vehicle_detail"
+    private val  ARGS_EDIT_MODE = "edit_mode"
 
+    private var isEditMode = false
     private lateinit var toolbarChangeListener: ToolbarChangeListener
+    private  var vehicleDetailsInteractor: VehicleDetailsInteractor?=null
     private lateinit var cityId:String
     private lateinit var userName:String
     private lateinit var vehicleType:String
@@ -71,28 +70,27 @@ class VehicleDetailsFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private val minYear = 1885
 
+
+    interface VehicleDetailsInteractor{
+
+        fun onDetailsUpdated(vehicleDetails: VehicleDetailsLogin)
+    }
+
     companion object {
-        @JvmStatic
-        fun newInstance(accessToken: String,cityId:String,vehicleType:String,userName:String,
-                          model:VehicleModelDetails? =null,
-                          color: VehicleModelCustomisationDetails?=null,
-                          door: VehicleModelCustomisationDetails?=null,
-                          seatBelt: VehicleModelCustomisationDetails?=null,
-                          year: String?=null,
-                          vehicleNumber: String?=null)=
+        @JvmStatic @JvmOverloads
+        fun newInstance(accessToken: String, cityId:String, vehicleType:String, userName:String,
+                        vehicleDetails: VehicleDetailsLogin?=null,editMode:Boolean = false)=
                 VehicleDetailsFragment().apply {
                     arguments = Bundle().apply {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putString(ARGS_CITY_ID, cityId)
                         putString(ARGS_VEHICLE_TYPE, vehicleType)
                         putString(ARGS_USER_NAME, userName)
+                        putBoolean(ARGS_EDIT_MODE, editMode)
+                        if(vehicleDetails!=null){
+                            putParcelable(ARGS_VEHICLE_DETAIL, vehicleDetails)
+                        }
 
-                        putParcelable(ARGS_MODEL, model)
-                        putParcelable(ARGS_COLOR, color)
-                        putParcelable(ARGS_DOOR, door)
-                        putParcelable(ARGS_SEAT_BELT, seatBelt)
-                        putString(ARGS_YEAR, year)
-                        putString(ARGS_VEHICLE_NUMBER, vehicleNumber)
                     }
                 }
     }
@@ -104,6 +102,9 @@ class VehicleDetailsFragment : Fragment() {
             toolbarChangeListener.setToolbarText(getString(R.string.title_vehicle_details))
             toolbarChangeListener.setToolbarVisibility(true)
         }
+        if(context is VehicleDetailsInteractor){
+            vehicleDetailsInteractor = context
+        }
 
     }
 
@@ -114,12 +115,33 @@ class VehicleDetailsFragment : Fragment() {
             cityId = it.getString(ARGS_CITY_ID)
             vehicleType = it.getString(ARGS_VEHICLE_TYPE)
             userName = it.getString(ARGS_USER_NAME)
-            currentModelSelected = it.getParcelable(ARGS_MODEL)
-            currentColorSelected = it.getParcelable(ARGS_COLOR)
-            currentDoorSelected = it.getParcelable(ARGS_DOOR)
-            currentSeatBeltSelected = it.getParcelable(ARGS_SEAT_BELT)
-            year = it.getString(ARGS_YEAR)
-            vehicleNumber = it.getString(ARGS_VEHICLE_NUMBER)
+            isEditMode = it.getBoolean(ARGS_EDIT_MODE)
+            if(it.containsKey(ARGS_VEHICLE_DETAIL)){
+                val vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+                vehicleDetails.run {
+                    if(modelId!=null && !vehicleMake.isNullOrEmpty()  && !vehicleModel.isNullOrEmpty() ){
+                        currentModelSelected = VehicleModelDetails(vehicleDetails.vehicleMake!!,vehicleDetails.vehicleModel!!,vehicleDetails.modelId!!)
+                    }
+                    if(!color.isNullOrEmpty() && colorID!=null){
+                        currentColorSelected = VehicleModelCustomisationDetails(color!!,colorID!!)
+
+                    }
+                    if(!doors.isNullOrEmpty() && doorId!=null){
+                        currentDoorSelected = VehicleModelCustomisationDetails(doors!!,doorId!!)
+
+                    }
+                    if(!seatbelts.isNullOrEmpty() && seatBeltId!=null){
+                        currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!,seatBeltId!!)
+
+                    }
+
+                }
+
+
+                year = vehicleDetails.year
+                vehicleNumber = vehicleDetails.vehicleNumber
+
+            }
         }
 
     }
@@ -493,17 +515,30 @@ class VehicleDetailsFragment : Fragment() {
                 if(t!=null){
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                            openDocumentUploadActivity()
+                            if(isEditMode){
+                                val  vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber,year,
+                                        currentModelSelected!!.make ,currentModelSelected!!.modelName,currentModelSelected!!.id,
+                                        currentColorSelected!!.value,currentColorSelected!!.id,
+                                        currentDoorSelected!!.value,currentDoorSelected!!.id,
+                                        currentSeatBeltSelected!!.value,currentSeatBeltSelected!!.id)
+
+                                vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
+
+                            }else{
+                                openDocumentUploadActivity()
+                            }
                         }
 
 
-                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
-                            DialogPopup.alertPopupWithListener(activity, "", message, {
+                       ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
+                            DialogPopup.alertPopupWithListener(activity, "", message) {
 
-                                //todo incase of require activity not DriverSplash
-                                (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
-                                (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
-                            })
+                                if(requireActivity() is DriverSplashActivity){
+                                    (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
+                                    (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
+                                }
+
+                            }
 
                         }
                         else -> DialogPopup.alertPopup(requireActivity(), "", message)

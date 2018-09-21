@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -302,6 +303,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
 		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
+		Prefs.with(context).save(SPLabels.CITY_ID, userData.optInt("city", 0));
 
 		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
@@ -394,17 +396,24 @@ public class JSONParser implements Constants {
 		parseConfigVariables(context, userData);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
-		VehicleDetailsLogin vehicleMake = null;
-
+		VehicleDetailsLogin vehicleMake=null;
+		String vehicleYear = userData.optString("vehicle_year",null);
+		String vehicleNumber = userData.optString("vehicle_no",null);
 
 
 		List<DriverVehicleServiceTypePopup.VehicleServiceDetail> serviceDetailList = null;
 		Type listType = new TypeToken<List<DriverVehicleServiceTypePopup.VehicleServiceDetail>>() {}.getType();
 
-		if(userData.has("vehicle_make")){
+		if(userData.has("make_details")){
 
-			 vehicleMake = gson.fromJson(userData.getString("vehicle_make"), VehicleDetailsLogin.class);
+			 vehicleMake = gson.fromJson(userData.getString("make_details"), VehicleDetailsLogin.class);
+			 vehicleMake.setYear(vehicleYear);
+			 vehicleMake.setVehicleNumber(vehicleNumber);
+		}else if(vehicleYear!=null || vehicleNumber!=null){
+			vehicleMake = new VehicleDetailsLogin(vehicleNumber,vehicleYear);
 		}
+
+
 		if(userData.has("vehicle_sets")){
 
 			serviceDetailList = gson.fromJson(userData.getString("vehicle_sets"), listType);
@@ -448,7 +457,9 @@ public class JSONParser implements Constants {
 		int showGraph = context.getResources().getInteger(R.integer.show_invoices) == context.getResources().getInteger(R.integer.view_visible) ? 1 : 0;
 		Prefs.with(context).save(KEY_SHOW_GRAPH_IN_EARNINGS, userData.optInt(KEY_SHOW_GRAPH_IN_EARNINGS, showGraph));
 		int showVehicleSetSettings = context.getResources().getBoolean(R.bool.show_vehicle_set_settings) ? 1 : 0;
+		int showEditVehicleSettings = context.getResources().getBoolean(R.bool.show_edit_vehicle_settings) ? 1 : 0;
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_SETS, userData.optInt(KEY_ENABLE_VEHICLE_SETS, showVehicleSetSettings));
+		Prefs.with(context).save(KEY_ENABLE_VEHICLE_EDIT_SETTING, userData.optInt(KEY_ENABLE_VEHICLE_EDIT_SETTING, showEditVehicleSettings));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

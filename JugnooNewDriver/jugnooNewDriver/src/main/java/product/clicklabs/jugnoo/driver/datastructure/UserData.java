@@ -252,4 +252,8 @@ public class UserData {
 		this.vehicleServicesModel = vehicleServicesModel;
 
 	}
+
+	public void setVehicleDetailsLogin(VehicleDetailsLogin vehicleDetailsLogin) {
+		this.vehicleDetailsLogin = vehicleDetailsLogin;
+	}
 }

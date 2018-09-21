@@ -365,5 +365,6 @@ public interface Constants {
 	String KEY_SHOW_TAKE_CASH_AT_RIDE_END = "show_take_cash_at_ride_end";
 	String KEY_SHOW_GRAPH_IN_EARNINGS = "show_graph_in_earnings";
 	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
+	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 }
 
