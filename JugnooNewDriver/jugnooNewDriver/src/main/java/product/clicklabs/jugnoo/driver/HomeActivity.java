@@ -7517,7 +7517,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             };
 
-            timerPathRerouting.scheduleAtFixedRate(timerTaskPathRerouting, 1000, 30000);
+            timerPathRerouting.scheduleAtFixedRate(timerTaskPathRerouting, 1000,
+                    Prefs.with(this).getInt(KEY_DRIVER_GET_DIRECTIONS_INTERVAL, 30000));
         } catch (Exception e) {
             e.printStackTrace();
         }

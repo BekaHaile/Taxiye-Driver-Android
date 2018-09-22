@@ -112,4 +112,6 @@
     <!--resValue "color", 'black_earnings_bg', "#000000"-->
     <!--resValue "color", 'black_top_bar_bg', "#000000"-->
 
+    <integer name="driver_get_directions_interval">120000</integer>
+
 </resources>

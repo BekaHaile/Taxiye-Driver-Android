@@ -372,5 +372,7 @@ public interface Constants {
 	String KEY_EDIT_PROFILE_IN_HOME_SCREEN = "edit_profile_in_home_screen";
 	String KEY_TAX_PERCENTAGE = "tax_percentage";
 	String SHOW_UPLOAD_DOCUMENTS = "show_upload_documents";
+
+	String KEY_DRIVER_GET_DIRECTIONS_INTERVAL = "driver_get_directions_interval";
 }
 

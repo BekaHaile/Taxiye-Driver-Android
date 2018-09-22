@@ -431,6 +431,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_EDIT_RATE_CARD, userData.optInt(KEY_SHOW_EDIT_RATE_CARD, editRateCard));
 		int editProfile = context.getResources().getInteger(R.integer.edit_profile_in_home_screen);
 		Prefs.with(context).save(KEY_EDIT_PROFILE_IN_HOME_SCREEN, userData.optInt(KEY_EDIT_PROFILE_IN_HOME_SCREEN, editProfile));
+		Prefs.with(context).save(KEY_DRIVER_GET_DIRECTIONS_INTERVAL, userData.optInt(KEY_DRIVER_GET_DIRECTIONS_INTERVAL,
+				context.getResources().getInteger(R.integer.driver_get_directions_interval)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
