@@ -64,12 +64,10 @@ class VehicleDetailsFragment : Fragment() {
     private var currentSeatBeltSelected:VehicleModelCustomisationDetails? = null
     private var currentDoorSelected:VehicleModelCustomisationDetails? = null
 
-    private  var year:String?=null
-    private  var vehicleNumber:String?=null
 
     private val calendar = Calendar.getInstance()
     private val minYear = 1885
-
+    private var vehicleDetails:VehicleDetailsLogin? = null
 
     interface VehicleDetailsInteractor{
 
@@ -117,30 +115,7 @@ class VehicleDetailsFragment : Fragment() {
             userName = it.getString(ARGS_USER_NAME)
             isEditMode = it.getBoolean(ARGS_EDIT_MODE)
             if(it.containsKey(ARGS_VEHICLE_DETAIL)){
-                val vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
-                vehicleDetails.run {
-                    if(modelId!=null && !vehicleMake.isNullOrEmpty()  && !vehicleModel.isNullOrEmpty() ){
-                        currentModelSelected = VehicleModelDetails(vehicleDetails.vehicleMake!!,vehicleDetails.vehicleModel!!,vehicleDetails.modelId!!)
-                    }
-                    if(!color.isNullOrEmpty() && colorID!=null){
-                        currentColorSelected = VehicleModelCustomisationDetails(color!!,colorID!!)
-
-                    }
-                    if(!doors.isNullOrEmpty() && doorId!=null){
-                        currentDoorSelected = VehicleModelCustomisationDetails(doors!!,doorId!!)
-
-                    }
-                    if(!seatbelts.isNullOrEmpty() && seatBeltId!=null){
-                        currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!,seatBeltId!!)
-
-                    }
-
-                }
-
-
-                year = vehicleDetails.year
-                vehicleNumber = vehicleDetails.vehicleNumber
-
+                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
             }
         }
 
@@ -179,9 +154,40 @@ class VehicleDetailsFragment : Fragment() {
             submitVehicleDetails()
         }
 
-        //if prefilled details this will set data
-        edtYear.setText(year)
-        edtVehicleNumber.setText(vehicleNumber)
+       //if prefilled details this will set data
+        vehicleDetails?.run {
+            if(modelId!=null && !vehicleMake.isNullOrEmpty()  && !vehicleModel.isNullOrEmpty() ){
+                currentModelSelected = VehicleModelDetails(this.vehicleMake!!,this.vehicleModel!!,this.modelId!!)
+                edtMake.isEnabled = false //don't allow to redit fills if already prefilled
+                edtModel.isEnabled = false //don't allow to redit fills if already prefilled ..
+            }
+            if(!color.isNullOrEmpty() && colorID!=null){
+                currentColorSelected = VehicleModelCustomisationDetails(color!!,colorID!!)
+                edtColor.isEnabled = false
+            }
+            if(!doors.isNullOrEmpty() && doorId!=null){
+                currentDoorSelected = VehicleModelCustomisationDetails(doors!!,doorId!!)
+                edtDoor.isEnabled = false
+
+            }
+            if(!seatbelts.isNullOrEmpty() && seatBeltId!=null){
+                currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!,seatBeltId!!)
+                edtSeatBelt.isEnabled = false
+
+            }
+
+            if(!year.isNullOrEmpty()){
+                edtYear.setText(year)
+                edtYear.isEnabled = false
+            }
+
+            if(!vehicleNumber.isNullOrEmpty()){
+                edtVehicleNumber.setText(vehicleNumber)
+                edtVehicleNumber.isEnabled = false
+            }
+
+        }
+
 
         getVehicleDetails();
     }
