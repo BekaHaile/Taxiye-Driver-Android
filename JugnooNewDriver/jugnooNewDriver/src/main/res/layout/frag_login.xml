@@ -181,7 +181,7 @@
             android:paddingEnd="15dp"
             android:visibility="invisible"
             android:paddingStart="15dp"
-            android:text="@string/btn_text_OTP"
+            android:text="@string/btn_generate_otp_text"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

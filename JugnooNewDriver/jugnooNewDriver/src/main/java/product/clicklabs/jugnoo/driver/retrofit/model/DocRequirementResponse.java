@@ -114,6 +114,10 @@ public class DocRequirementResponse {
 			return instructions;
 		}
 
+		@SerializedName("doc_info")
+		@Expose
+		private ArrayList<DocFieldsInfo> listDocInfo;
+
 		/**
 		 *
 		 * @return
@@ -253,6 +257,10 @@ public class DocRequirementResponse {
 
 		public void setDocType(int docType) {
 			this.docType = docType;
+		}
+
+		public ArrayList<DocFieldsInfo> getListDocInfo() {
+			return listDocInfo;
 		}
 	}
 

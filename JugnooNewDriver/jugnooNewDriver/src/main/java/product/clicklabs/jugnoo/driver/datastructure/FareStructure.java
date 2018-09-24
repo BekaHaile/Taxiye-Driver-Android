@@ -18,11 +18,12 @@ public class FareStructure {
 	public double mandatoryFare, mandatoryFareCapping;
 	public int mandatoryFareApplicable = 0;
 	private double baggageCharges ;
+	private double taxPercent;
 
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
 						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping,
-						 double baggageCharges){
+						 double baggageCharges, double taxPercent){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -41,6 +42,7 @@ public class FareStructure {
 		this.mandatoryFareCapping = mandatoryFareCapping;
 		this.fareMinimum = fareMinimum;
 		this.baggageCharges = baggageCharges;
+		this.taxPercent = taxPercent;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, int luggageCount){
@@ -122,5 +124,9 @@ public class FareStructure {
 		return "fixedFare=" + fixedFare + ", thresholdDistance=" + thresholdDistance + ", farePerKm=" + farePerKm + ", farePerMin=" + farePerMin + ", freeMinutes=" + freeMinutes
 				+ ", farePerWaitingMin=" + farePerWaitingMin + ", freeWaitingMinutes=" + freeWaitingMinutes + " fareFactor = " + fareFactor+", luggageFare="+luggageFare
 				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver + "baggageCharges= " + baggageCharges;
+	}
+
+	public double getTaxPercent() {
+		return taxPercent;
 	}
 }

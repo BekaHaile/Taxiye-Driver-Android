@@ -364,6 +364,16 @@ public interface Constants {
 	String KEY_SHOW_TOTAL_FARE_AT_RIDE_END = "show_total_fare_at_ride_end";
 	String KEY_SHOW_TAKE_CASH_AT_RIDE_END = "show_take_cash_at_ride_end";
 	String KEY_SHOW_GRAPH_IN_EARNINGS = "show_graph_in_earnings";
+
+	String KEY_FARE_PER_KM = "fare_per_km";
+	String KEY_FARE_PER_MIN = "fare_per_min";
+	String KEY_FARE_FIXED = "fare_fixed";
+	String KEY_SHOW_EDIT_RATE_CARD = "show_edit_rate_card";
+	String KEY_EDIT_PROFILE_IN_HOME_SCREEN = "edit_profile_in_home_screen";
+	String KEY_TAX_PERCENTAGE = "tax_percentage";
+	String SHOW_UPLOAD_DOCUMENTS = "show_upload_documents";
+
+	String KEY_DRIVER_GET_DIRECTIONS_INTERVAL = "driver_get_directions_interval";
 	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
 	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 }

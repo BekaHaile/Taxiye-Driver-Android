@@ -39,6 +39,7 @@
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="driver_logout_enabled">1</integer>
 
+    <drawable name="ic_notification_small_drawable">@drawable/ic_notification_big</drawable>
 
     <drawable name="bg_splash">@drawable/bg_hitch</drawable>
     <drawable name="bg_login">@drawable/bg_hitch</drawable>

@@ -15,7 +15,6 @@ import product.clicklabs.jugnoo.driver.fragments.SwitchCustomerFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.NonJugnooAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
-import product.clicklabs.jugnoo.driver.selfAudit.SelfEnrollmentCameraFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SubmitAuditFragment;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 
@@ -114,10 +113,6 @@ public class TransactionUtils {
 		return (activity.getSupportFragmentManager().findFragmentByTag(tag) != null);
 	}
 
-	private SelfEnrollmentCameraFragment getSelfEnrollmentCameraFragment(FragmentActivity activity){
-		return  (SelfEnrollmentCameraFragment) activity.getSupportFragmentManager().findFragmentByTag(SelfEnrollmentCameraFragment.class.getName());
-	}
-
 	public void openSwitchCustomerFragment(FragmentActivity activity, View container) {
 		activity.getSupportFragmentManager().beginTransaction()
 				.replace(container.getId(), new SwitchCustomerFragment(),
@@ -139,34 +134,6 @@ public class TransactionUtils {
 						AddSignatureFragment.class.getName())
 				.addToBackStack(AddSignatureFragment.class.getName())
 				.commitAllowingStateLoss();
-	}
-
-	public void openSelfEnrollmentCameraFragment1(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
-		if(PermissionCommon.isGranted(Manifest.permission.CAMERA, activity)) {
-			activity.getSupportFragmentManager().beginTransaction()
-//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.replace(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
-							SelfEnrollmentCameraFragment.class.getName())
-					.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
-					.commitAllowingStateLoss();
-		}
-	}
-
-	public void openSelfEnrollmentCameraFragment(FragmentActivity activity, View container, String topMessage, String bottomMessage) {
-		if(PermissionCommon.isGranted(Manifest.permission.CAMERA, activity)) {
-			if (getSelfEnrollmentCameraFragment(activity) == null) {
-				activity.getSupportFragmentManager().beginTransaction()
-//					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-						.add(container.getId(), new SelfEnrollmentCameraFragment(topMessage, bottomMessage),
-								SelfEnrollmentCameraFragment.class.getName())
-						.addToBackStack(SelfEnrollmentCameraFragment.class.getName())
-//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
-						.commit();
-			}
-		}
 	}
 
 }

@@ -152,7 +152,7 @@ public class HippoNotificationConfig implements FuguAppConstant {
                     if (!notificationSoundEnabled)
                         notificationDefaults = Notification.DEFAULT_LIGHTS;
 
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)//, CHANNEL_ONE_ID)
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ONE_ID)
                             //     .setTicker(r.getString(R.string.app_name))
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(messageJson.getString("new_message")))
                             //.setSmallIcon(android.R.color.transparent)
@@ -164,7 +164,7 @@ public class HippoNotificationConfig implements FuguAppConstant {
                             .setDefaults(notificationDefaults)
                             .setPriority(priority)
                             .setAutoCancel(true);
-//                    mBuilder.setChannelId(CHANNEL_ONE_ID);
+                    mBuilder.setChannelId(CHANNEL_ONE_ID);
                     Notification notification = mBuilder.build();
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -246,7 +246,7 @@ public class HippoNotificationConfig implements FuguAppConstant {
                 if (!notificationSoundEnabled)
                     notificationDefaults = Notification.DEFAULT_LIGHTS;
 
-                Notification notification = new NotificationCompat.Builder(context)
+                Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                         //     .setTicker(r.getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageJson.getString("new_message")))
                         //.setSmallIcon(android.R.color.transparent)
@@ -257,7 +257,7 @@ public class HippoNotificationConfig implements FuguAppConstant {
                         .setContentIntent(pi)
                         .setDefaults(notificationDefaults)
                         .setPriority(priority)
-                        .setAutoCancel(true)
+                        .setAutoCancel(true).setChannelId(CHANNEL_ID)
                         .build();
 
 

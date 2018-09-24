@@ -9,55 +9,14 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 
 
-public class RateCardResponse {
+public class RateCardResponse extends FeedCommonResponse{
 
-	@SerializedName("flag")
-	@Expose
-	private Integer flag;
-	@SerializedName("message")
-	@Expose
-	private String message;
 	@SerializedName("rates")
 	@Expose
 	private Rates rates;
-
-	/**
-	 *
-	 * @return
-	 * The flag
-	 */
-	public Integer getFlag() {
-		return flag;
-	}
-
-	/**
-	 *
-	 * @param flag
-	 * The flag
-	 */
-	public void setFlag(Integer flag) {
-		this.flag = flag;
-	}
-
-	/**
-	 *
-	 * @return
-	 * The message
-	 */
-	public String getMessage() {
-		return message;
-	}
-
-	/**
-	 *
-	 * @param message
-	 * The message
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 	/**
 	 *
@@ -95,6 +54,9 @@ public class RateCardResponse {
 		@SerializedName("fare_per_min")
 		@Expose
 		private Double farePerMin;
+		@SerializedName("fare_per_waiting_min")
+		@Expose
+		private double farePerWaitingMin;
 		@SerializedName("driver_to_customer_referral")
 		@Expose
 		private Double driverToCustomerReferral;
@@ -282,6 +244,14 @@ public class RateCardResponse {
 
 		public void setInRideChargesEnabled(int inRideChargesEnabled) {
 			this.inRideChargesEnabled = inRideChargesEnabled;
+		}
+
+		public double getFarePerWaitingMin() {
+			return farePerWaitingMin;
+		}
+
+		public void setFarePerWaitingMin(Double farePerWaitingMin) {
+			this.farePerWaitingMin = farePerWaitingMin;
 		}
 	}
 
