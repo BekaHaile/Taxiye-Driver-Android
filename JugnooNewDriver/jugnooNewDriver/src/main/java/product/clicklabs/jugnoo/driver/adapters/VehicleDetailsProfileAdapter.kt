@@ -18,14 +18,13 @@ class VehicleDetail(var name:String, var value: String?)
 
 
 
-class VehicleDetailsProfileAdapter(var detail: ArrayList<VehicleDetail>) : RecyclerView.Adapter<VehicleDetailsProfileAdapter.VehicleDetailViewHolder>() {
+class VehicleDetailsProfileAdapter() : RecyclerView.Adapter<VehicleDetailsProfileAdapter.VehicleDetailViewHolder>() {
 
 
-    var details: ArrayList<VehicleDetail> = detail
-    set(value){
-        value.filter { !it.value.isNullOrEmpty() }
-        field = value
-    }
+
+    lateinit var details: List<VehicleDetail>
+
+
 
 
 
@@ -35,11 +34,11 @@ class VehicleDetailsProfileAdapter(var detail: ArrayList<VehicleDetail>) : Recyc
     }
 
     override fun getItemCount(): Int {
-        return details.size;
+        return if(::details.isInitialized) details.size else 0
     }
 
-    fun setList( details: ArrayList<VehicleDetail>){
-        this.details = details
+    fun setList( details: List<VehicleDetail>){
+        this.details = details.filter { !it.value.isNullOrEmpty() }
         notifyDataSetChanged()
     }
 

@@ -179,6 +179,10 @@ class VehicleDetailsFragment : Fragment() {
             submitVehicleDetails()
         }
 
+        //if prefilled details this will set data
+        edtYear.setText(year)
+        edtVehicleNumber.setText(vehicleNumber)
+
         getVehicleDetails();
     }
 
@@ -297,8 +301,7 @@ class VehicleDetailsFragment : Fragment() {
                             edtSeatBelt.setText(value)
                         }
 
-                        edtYear.setText(year)
-                        edtVehicleNumber.setText(vehicleNumber)
+
 
                         vehicleDetailsGroup.visible()
                         btn_continue.isEnabled=true

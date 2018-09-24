@@ -15,6 +15,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -526,7 +527,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 
         if(Data.userData.getVehicleDetailsLogin()!=null){
-            ArrayList<VehicleDetail> details = new ArrayList<>(7);
+            List<VehicleDetail> details = new ArrayList<>(7);
             details.add(new VehicleDetail(getString(R.string.make),vehicleMakeInfo.getVehicleMake()));
             details.add(new VehicleDetail(getString(R.string.model),vehicleMakeInfo.getVehicleModel()));
             details.add(new VehicleDetail(getString(R.string.color),vehicleMakeInfo.getColor()));
@@ -537,11 +538,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
 
             if(rvVehicleTypes.getAdapter()==null){
-                vehicleDetailsProfileAdapter = new VehicleDetailsProfileAdapter(details);
+                vehicleDetailsProfileAdapter = new VehicleDetailsProfileAdapter();
                 rvVehicleTypes.setAdapter(vehicleDetailsProfileAdapter);
-            }else{
-                vehicleDetailsProfileAdapter.setList(details);
             }
+            vehicleDetailsProfileAdapter.setList(details);
 
             rvVehicleTypes.setVisibility(View.VISIBLE);
 
