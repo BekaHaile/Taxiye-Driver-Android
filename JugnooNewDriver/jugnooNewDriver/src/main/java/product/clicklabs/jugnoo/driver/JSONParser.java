@@ -114,7 +114,8 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_minimum"),
 						mandatoryFareDetails.getDouble("mandatory_fare_value"),
 						mandatoryFareDetails.getDouble("mandatory_fare_capping"),
-						fareDetails.optDouble("fare_per_baggage",0.0));
+						fareDetails.optDouble("fare_per_baggage",0.0),
+						fareDetails.optDouble("tax_percentage",0.0));
 			} else {
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
 						fareDetails.getDouble("fare_threshold_distance"),
@@ -127,11 +128,12 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_after_threshold"),
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),0,0,
-						fareDetails.optDouble("fare_per_baggage",0.0));
+						fareDetails.optDouble("fare_per_baggage",0.0),
+						fareDetails.optDouble("tax_percentage",0.0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0,0);
 		}
 	}
 
@@ -429,6 +431,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_EDIT_RATE_CARD, userData.optInt(KEY_SHOW_EDIT_RATE_CARD, editRateCard));
 		int editProfile = context.getResources().getInteger(R.integer.edit_profile_in_home_screen);
 		Prefs.with(context).save(KEY_EDIT_PROFILE_IN_HOME_SCREEN, userData.optInt(KEY_EDIT_PROFILE_IN_HOME_SCREEN, editProfile));
+		Prefs.with(context).save(KEY_DRIVER_GET_DIRECTIONS_INTERVAL, userData.optInt(KEY_DRIVER_GET_DIRECTIONS_INTERVAL,
+				context.getResources().getInteger(R.integer.driver_get_directions_interval)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

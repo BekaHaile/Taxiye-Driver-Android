@@ -114,4 +114,6 @@
     <string name="currency_fallback">USD</string>
     <bool name="vehicle_model_enabled">false</bool>
     <bool name="show_end_ride_custom_text">false</bool>
+    <string name="btn_generate_otp_text">@string/btn_text_continue</string>
+    <bool name="show_earnings_on_profile">false</bool>
 </resources>
