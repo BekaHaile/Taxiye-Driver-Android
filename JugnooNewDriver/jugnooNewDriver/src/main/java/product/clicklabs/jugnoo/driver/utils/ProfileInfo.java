@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
-
 /**
  * Created by aneeshbansal on 09/11/15.
  */
@@ -11,7 +9,7 @@ public class ProfileInfo{
 	public int textViewDriverId;
 	public int textViewRankCity;
 	public int textViewRankOverall;
-	public Integer textViewMonthlyValue;
+	public double textViewMonthlyValue;
 	public int textViewRidesTakenValue;
 	public int textViewRidesCancelledValue;
 	public int textViewRidesMissedValue;
@@ -19,7 +17,7 @@ public class ProfileInfo{
 	public String textViewTitleBarDEI, accNo, ifscCode, bankName, bankLoc,currency;
 
 	public ProfileInfo(String textViewDriverName, int textViewDriverId, int textViewRankCity, int textViewRankOverall,
-					   Integer textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesMissedValue,
+					   double textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesMissedValue,
 					   int textViewRidesCancelledValue, int textViewOnlineHoursValue, String textViewTitleBarDEI,
 					   String accNo, String ifscCode, String bankName, String bankLoc,String currency) {
 

@@ -309,7 +309,7 @@ public class DriverAuditActivity extends BaseActivity {
 
 
 
-				if(openedProfileInfo.textViewMonthlyValue!=null){
+				if(openedProfileInfo.textViewMonthlyValue > 0){
 //					textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);
 					textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency,openedProfileInfo.textViewMonthlyValue));
 					findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);

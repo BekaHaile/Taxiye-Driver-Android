@@ -294,7 +294,7 @@ public class DriverProfileActivity extends BaseActivity {
                                             int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0,
                                                     textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
                                                     textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
-                                            Integer textViewMonthlyValue = null;
+                                            double textViewMonthlyValue = 0;
                                             if (jObj.has("driver_name")) {
                                                 textViewDriverName = jObj.getString("driver_name");
                                             }
@@ -308,7 +308,7 @@ public class DriverProfileActivity extends BaseActivity {
                                                 textViewRankOverall = jObj.getInt("driver_overall_rank");
                                             }
                                             if (jObj.has("driver_earning")) {
-                                                textViewMonthlyValue = jObj.getInt("driver_earning");
+                                                textViewMonthlyValue = jObj.getDouble("driver_earning");
                                             }
                                             if (jObj.has("rides_taken")) {
                                                 textViewRidesTakenValue = jObj.getInt("rides_taken");
@@ -400,7 +400,7 @@ public class DriverProfileActivity extends BaseActivity {
                     textViewRankOverall.setText(getStringText(R.string.rank_overall) + " " + openedProfileInfo.textViewRankOverall);
                 }
 
-                if (openedProfileInfo.textViewMonthlyValue != null && getResources().getBoolean(R.bool.show_earnings_on_profile)) {
+                if (openedProfileInfo.textViewMonthlyValue > 0 && getResources().getBoolean(R.bool.show_earnings_on_profile)) {
                     textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency, openedProfileInfo.textViewMonthlyValue));
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
 
