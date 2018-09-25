@@ -216,6 +216,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
 				imageViewDocStatusImage,imageViewInfo,ivArrowForward;
 		int id;
+		View bottomLine;
 	}
 
 	public class DriverDocumentListAdapter extends BaseAdapter {
@@ -297,7 +298,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				holder.relativeLayoutSelectPictureStatus.setTag(holder);
 				holder.addImageLayout.setTag(holder);
 				holder.addImageLayout2.setTag(holder);
-
+				holder.bottomLine = convertView.findViewById(R.id.bottomLine);
 
 				convertView.setTag(holder);
 			} else {
@@ -524,9 +525,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			}
 
 			if (docInfo.status.equalsIgnoreCase("3") || docInfo.status.equalsIgnoreCase("1")) {
-				holder.addImageLayout.setVisibility(View.GONE);
 				holder.deleteImage1.setVisibility(View.GONE);
-				holder.addImageLayout2.setVisibility(View.GONE);
 				holder.deleteImage2.setVisibility(View.GONE);
 				holder.docType.setTextColor(activity.getResources().getColor(R.color.grey_light_doc_status));
 				holder.imageViewDocStatus.setVisibility(View.VISIBLE);
@@ -549,6 +548,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			if (isActionable) {
 				holder.relativeLayoutSelectPictureStatus.setVisibility(View.GONE);
 				holder.ivArrowForward.setVisibility(View.GONE);
+				holder.bottomLine.setVisibility(View.GONE);
 				holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -712,7 +712,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
-										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo());
+										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),data.getIsDocInfoEditable());
 								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 									continue;
 								}

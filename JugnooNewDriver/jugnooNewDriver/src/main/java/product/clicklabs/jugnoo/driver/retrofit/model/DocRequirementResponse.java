@@ -118,6 +118,10 @@ public class DocRequirementResponse {
 		@Expose
 		private ArrayList<DocFieldsInfo> listDocInfo;
 
+
+		@SerializedName("is_doc_info_editable")
+		@Expose
+		private int isDocInfoEditable;
 		/**
 		 *
 		 * @return
@@ -261,6 +265,10 @@ public class DocRequirementResponse {
 
 		public ArrayList<DocFieldsInfo> getListDocInfo() {
 			return listDocInfo;
+		}
+
+		public boolean getIsDocInfoEditable() {
+			return isDocInfoEditable==1;
 		}
 	}
 
