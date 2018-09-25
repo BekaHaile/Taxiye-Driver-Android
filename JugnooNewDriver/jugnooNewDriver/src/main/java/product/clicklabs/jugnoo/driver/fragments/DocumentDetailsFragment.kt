@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.R.id.parentView
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt

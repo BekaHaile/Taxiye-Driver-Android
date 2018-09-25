@@ -241,14 +241,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private PermissionCommon mPermissionCommon;
 
 
-    ImageView profileImg, seprator;
+    ImageView profileImg;
     TextView userName, ratingValue, textViewAutosOn, tvCredits;
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
     ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-    RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl;
+    LinearLayout driverRatingRl;
     TextView inviteFriendText, notificationCenterText;
 
     RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
@@ -558,7 +559,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             ratingValue = (TextView) findViewById(R.id.ratingValue);
             userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             tvCredits.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-            ratingValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
             linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
@@ -592,7 +592,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
             driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
             manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
-            driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
+            driverRatingRl = findViewById(R.id.driverRatingRl);
             walletRl = (RelativeLayout) findViewById(R.id.walletRl);
             inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
@@ -2427,6 +2427,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 walletRl.setVisibility(View.GONE);
             }
 
+            if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
+                textViewSuperDrivers.setText(R.string.leaderboard);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

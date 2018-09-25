@@ -79,17 +79,18 @@
                             android:textColor="@color/white"
                             android:textSize="34px"/>
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:id="@+id/driverRatingRl"
                             android:layout_width="wrap_content"
-                            android:layout_height="50px"
-                            android:visibility="visible">
+                            android:layout_height="25dp"
+                            android:tag="@string/dont_touch_me"
+                            android:visibility="visible"
+                            android:orientation="horizontal">
 
                             <RatingBar
                                 android:id="@+id/ratingBarFeedbackSide"
                                 android:layout_width="wrap_content"
-                                android:layout_height="50px"
-                                android:layout_marginTop="10px"
+                                android:layout_height="25dp"
                                 android:isIndicator="true"
                                 android:progressDrawable="@drawable/rating_star_white_selector"
                                 android:stepSize="0.5"
@@ -98,31 +99,27 @@
 
                             <ImageView
                                 android:id="@+id/seprator"
-                                android:layout_width="4px"
-                                android:layout_height="40px"
-                                android:visibility="gone"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginStart="15px"
-                                android:layout_marginEnd="15px"
-                                android:layout_marginTop="17px"
-                                android:layout_toEndOf="@+id/ratingBarFeedbackSide"
+                                android:layout_width="2dp"
+                                android:layout_height="17dp"
+                                android:visibility="visible"
                                 android:background="@drawable/driver_rating_seperation_line"
-                                android:tag="mwar"/>
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                />
 
                             <TextView
                                 android:id="@+id/ratingValue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="17px"
-                                android:layout_toEndOf="@+id/seprator"
+                                android:visibility="visible"
                                 android:text="4.5"
                                 android:textColor="@color/white"
-                                android:textSize="40px"/>
+                                android:textSize="16sp"
+                                android:tag="@string/dont_touch_me"
+                                android:fontFamily="@font/maven_pro_medium"/>
 
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
 
                         <TextView
