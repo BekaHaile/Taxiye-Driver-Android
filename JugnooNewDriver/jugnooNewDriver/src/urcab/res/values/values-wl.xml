@@ -106,4 +106,6 @@
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
 
+    <color name="menu_top_background">@color/themeColor</color>
+
 </resources>

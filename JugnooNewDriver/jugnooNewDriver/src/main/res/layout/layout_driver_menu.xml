@@ -27,7 +27,8 @@
                 android:id="@+id/driverImageRL"
                 android:layout_width="match_parent"
                 android:layout_height="200px"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/menu_top_background">
 
                 <RelativeLayout
                     android:id="@+id/profileRl"
