@@ -311,7 +311,7 @@
 
     <string name="battery_level_start_text">Le niveau de la batterie doit être supérieur à 10% pour commencer le trajet. Branchez votre téléphone  pour continuer.</string>
 
-    <string name="battery_level_arrived_text">Le niveau de la batterie doit être supérieur à 10% pour marquer le trajet arrivé. Branchez à une source d'alimentation pour continuer.</string>
+    <string name="battery_level_arrived_text">Le niveau de la batterie doit être supérieur à 10% pour marquer le trajet arrivé. Branchez à une source d\'alimentation pour continuer.</string>
 
     <string name="back">Retour </string>
 
@@ -713,7 +713,7 @@
 
     <string name="nl_otp_waiting_to_detect_otp">En attente de détecter automatiquement le code OTP</string>
 
-    <string name="battery_low_message">Le niveau de la batterie doit être supérieur à 20% pour accepter le trajet. Plugin à une source d'alimentation pour continuer.</string>
+    <string name="battery_low_message">Le niveau de la batterie doit être supérieur à 20% pour accepter le trajet. Plugin à une source d\'alimentation pour continuer.</string>
 
     <string name="destination">DESTINATIONS</string>
 
@@ -1316,7 +1316,7 @@ Vous n\'avez pas de compte chauffeur?"
 
     <string name="pool_stop">Arrêt pool</string>
 
-    <string name="battery_low">Le niveau de la batterie est faible. Veuillez vous connecter à une source d'alimentation.</string>
+    <string name="battery_low">Le niveau de la batterie est faible. Veuillez vous connecter à une source d\'alimentation.</string>
 
     <string name="alter_phone_number">Autre numéro de téléphone</string>
 
@@ -1695,7 +1695,7 @@ Vous n\'avez pas de compte chauffeur?"
 
     <string name="increase_by_format">Augmenté \nde %s</string>
 
-    <string name="documents_authentication">J\'accepte que les documents que j\'ai importé sont vrais et corrects. Je comprends que toute tentative de fournir des informations incorrectes ou trompeuses ou de faux documents mènera au blacklist immédiat de la plate-forme %1$s. La plate-forme %2$s se réserve le droit de porter l'affaire devant les autorités répressives en cas de falsification de documents.</string>
+    <string name="documents_authentication">J\'accepte que les documents que j\'ai importé sont vrais et corrects. Je comprends que toute tentative de fournir des informations incorrectes ou trompeuses ou de faux documents mènera au blacklist immédiat de la plate-forme %1$s. La plate-forme %2$s se réserve le droit de porter l\'affaire devant les autorités répressives en cas de falsification de documents.</string>
 
     <string name="i_agree">Je suis d\'accord</string>
 
@@ -1737,16 +1737,16 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="rate_us_on_play_store">Evaluez-nous sur Play Store</string>
     <string name="like_us_on_facebook">Aimez-nous sur facebook</string>
     <string name="terms_and_conditions">Termes et conditions</string>
-    <string name="terms_of_use">Conditions d'utilisation</string>
+    <string name="terms_of_use">Conditions d\'utilisation</string>
     <string name="privacy_policy">Politique de confidentialité</string>
     <string name="who_are_we">Qui sommes nous?</string>
-    <string name="facebook_not_installed">L'application Facebook n'est pas activée</string>
-    <string name="please_enter_your_name">S'il vous plaît entrez votre nom</string>
+    <string name="facebook_not_installed">L\'application Facebook n\'est pas activée</string>
+    <string name="please_enter_your_name">S\'il vous plaît entrez votre nom</string>
     <string name="select_vehicle_type">Sélectionnez le type de véhicule</string>
     <string name="by_signing_you_agree">En vous inscrivant, vous acceptez notre</string>
     <string name="continue_text">Continuer</string>
     <string name="neft_pending">Neft en attente</string>
-    <string name="terms_of_schedule">Conditions d'horaire</string>
+    <string name="terms_of_schedule">Conditions d\'horaire</string>
     <string name="faqs">FAQ</string>
     <string name="label_edt_phone">S\'il vous plait, entrez votre numéro de téléphone</string>
     <string name="btn_text_OTP">GÉNÉRER OTP</string>
