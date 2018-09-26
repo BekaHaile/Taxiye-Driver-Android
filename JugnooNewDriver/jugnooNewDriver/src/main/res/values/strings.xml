@@ -1134,4 +1134,5 @@
 
     <string name="btn_text_continue">Continue</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="call_driver">Call Driver</string>
 </resources>

@@ -102,10 +102,8 @@ class DocumentDetailsFragment:Fragment(){
                 lastEdtId = editText.id
 
                 documentInputFields.add(DocumentInputField(item.key,item.label,item.value,
-                        editText,
-                         if(inputTypeMap.containsKey(item.type))inputTypeMap[item.type]!!else InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
-                        docInfo.isEditable==1,
-                        requireContext()))
+                        editText, if(inputTypeMap.containsKey(item.type))inputTypeMap[item.type]!!else InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
+                        docInfo.isDocInfoEditable, requireContext()))
 
 
             }

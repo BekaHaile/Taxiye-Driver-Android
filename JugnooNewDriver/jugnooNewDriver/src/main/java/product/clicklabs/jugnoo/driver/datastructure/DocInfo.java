@@ -20,12 +20,13 @@ public class DocInfo implements Parcelable {
 	private String docInstructions;
 	private Integer galleryRestricted;
 	private ArrayList<DocFieldsInfo> listDocFieldsInfo;
+	private boolean docInfoEditable;
 
 
 
 	public DocInfo(String docType, Integer docTypeNum, Integer docRequirement,
 				   String status, ArrayList<String> url, String reason, Integer docCount, Integer isEditable,
-				   String docInstructions, Integer galleryRestricted, ArrayList<DocFieldsInfo> listDocFieldsInfo) {
+				   String docInstructions, Integer galleryRestricted, ArrayList<DocFieldsInfo> listDocFieldsInfo,boolean docInfoEditable) {
 		this.docType = docType;
 		this.docTypeNum = docTypeNum;
 		this.docRequirement = docRequirement;
@@ -48,6 +49,7 @@ public class DocInfo implements Parcelable {
 		}
 		this.galleryRestricted = galleryRestricted;
 		this.listDocFieldsInfo = listDocFieldsInfo;
+		this.docInfoEditable = docInfoEditable;
 	}
 
 	protected DocInfo(Parcel in) {
@@ -83,6 +85,7 @@ public class DocInfo implements Parcelable {
 			galleryRestricted = in.readInt();
 		}
 		listDocFieldsInfo = in.createTypedArrayList(DocFieldsInfo.CREATOR);
+		docInfoEditable = in.readByte() != 0;
 	}
 
 	public static final Creator<DocInfo> CREATOR = new Creator<DocInfo>() {
@@ -123,6 +126,10 @@ public class DocInfo implements Parcelable {
 
 	public void setGalleryRestricted(Integer galleryRestricted) {
 		this.galleryRestricted = galleryRestricted;
+	}
+
+	public boolean isDocInfoEditable() {
+		return docInfoEditable;
 	}
 
 	public ArrayList<DocFieldsInfo> getListDocFieldsInfo() {
@@ -173,5 +180,6 @@ public class DocInfo implements Parcelable {
 			dest.writeInt(galleryRestricted);
 		}
 		dest.writeTypedList(listDocFieldsInfo);
+		dest.writeByte((byte) (docInfoEditable ? 1 : 0));
 	}
 }
