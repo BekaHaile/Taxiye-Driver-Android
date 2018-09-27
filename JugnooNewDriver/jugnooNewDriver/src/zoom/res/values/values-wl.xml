@@ -81,6 +81,8 @@
     <integer name="show_edit_rate_card">1</integer>
     <integer name="edit_profile_in_home_screen">1</integer>
     <integer name="upload_documents_custom_text">1</integer>
+    <integer name="email_input_at_signup">1</integer>
+    <integer name="email_editable_in_profile">1</integer>
 
 
 

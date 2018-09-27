@@ -418,7 +418,7 @@ public class GeanieView extends Service {
 	public void onDestroy() {
 
 		try {
-
+			if(windowManager != null)
 			windowManager.removeViewImmediate(convertView);
 		} catch (Exception e) {
 			e.printStackTrace();

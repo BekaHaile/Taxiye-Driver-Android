@@ -69,4 +69,6 @@
     <integer name="apply_default_country_code">1</integer>
     <string name="default_country_code">+1</string>
     <integer name="show_total_fare_at_ride_end">1</integer>
+    <integer name="email_input_at_signup">1</integer>
+    <integer name="email_editable_in_profile">1</integer>
 </resources>

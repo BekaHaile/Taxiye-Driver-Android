@@ -374,5 +374,9 @@ public interface Constants {
 	String SHOW_UPLOAD_DOCUMENTS = "show_upload_documents";
 
 	String KEY_DRIVER_GET_DIRECTIONS_INTERVAL = "driver_get_directions_interval";
+	String KEY_UPDATED_USER_EMAIL = "updated_user_email";
+
+	String KEY_EMAIL_INPUT_AT_SIGNUP = "email_input_at_signup";
+	String KEY_EMAIL_EDITABLE_IN_PROFILE = "email_editable_in_profile";
 }
 

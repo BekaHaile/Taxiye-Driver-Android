@@ -178,7 +178,7 @@
     <string name="luggage_charge">Luggage Charge</string>
     <string name="login">Login</string>
 
-    <string name="restart_phone">Please Restart Your Phone</string>
+    <string name="restart_phone">Your device location is not updating, Please Restart Your Phone</string>
     <string name="min_fare">Min Fare</string>
     <string name="meals_on">Meals ON</string>
     <string name="mail_us">MAIL US</string>
@@ -1135,4 +1135,7 @@
     <string name="btn_text_continue">Continue</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="call_driver">Call Driver</string>
+    <string name="email_optional">Email (optional)</string>
+    <string name="please_enter_valid_email">Please enter valid email id</string>
+    <string name="nothing_changed">Nothing changed</string>
 </resources>

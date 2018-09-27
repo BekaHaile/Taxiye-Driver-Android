@@ -25,7 +25,6 @@ import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
-import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
@@ -36,7 +35,6 @@ import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
-import java.lang.Exception
 
 
 class DriverSetupFragment : Fragment() {
@@ -94,6 +92,10 @@ class DriverSetupFragment : Fragment() {
 
         bContinue.typeface = Fonts.mavenMedium(requireActivity())
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
+        editTextName.setOnEditorActionListener { _, _, _ ->
+            editTextEmail.requestFocus()
+            editTextEmail.setSelection(editTextEmail.text.length)
+            true }
 
         bCancel.typeface = Fonts.mavenMedium(requireActivity())
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
@@ -154,6 +156,10 @@ class DriverSetupFragment : Fragment() {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_your_name))
             return false
         }
+        if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_valid_email))
+            return false
+        }
 
         if (adapter.getCurrentSelectedVehicle() == null) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
@@ -183,9 +189,11 @@ class DriverSetupFragment : Fragment() {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
         val userNameValue = editTextName.text.trim().toString();
+        val userEmail = editTextEmail.text.trim().toString();
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
                 "user_name" to userNameValue,
+                "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
                 "latitude" to "" + Data.latitude,
@@ -300,6 +308,13 @@ class DriverSetupFragment : Fragment() {
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
                 setupTermsAndConditionsTextView()
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1){
+                    tvEnterEmail.visible()
+                    editTextEmail.visible()
+                } else {
+                    tvEnterEmail.gone()
+                    editTextEmail.gone()
+                }
             }
 
             override fun onError(t: CityResponse?, message: String?, flag: Int): Boolean {
