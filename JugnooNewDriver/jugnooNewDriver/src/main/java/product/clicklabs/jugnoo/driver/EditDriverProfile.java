@@ -223,6 +223,10 @@ public class EditDriverProfile extends BaseFragmentActivity {
 						return;
 					}
 					phoneChanged = tvCountryCode.getText().toString() + phoneChanged;
+					if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged) && emailChanged.equalsIgnoreCase(Data.userData.userEmail)) {
+						Toast.makeText(EditDriverProfile.this, getString(R.string.nothing_changed), Toast.LENGTH_LONG).show();
+						return;
+					}
 					updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, emailChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
 
 				} else {
