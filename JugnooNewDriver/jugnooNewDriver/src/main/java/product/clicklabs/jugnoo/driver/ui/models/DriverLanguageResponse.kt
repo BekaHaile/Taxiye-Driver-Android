@@ -13,7 +13,8 @@ data class DriverLanguageResponse(
 @Expose @SerializedName("default_country_code") val defaultCountryCode:String?,
 @Expose @SerializedName("default_sub_country_code") val defaultSubCountryCode:String?,
 @Expose @SerializedName("default_country_iso") val defaultCountryIso:String?,
-@Expose @SerializedName("show_terms") val showTerms:Int?
+@Expose @SerializedName("show_terms") val showTerms:Int?,
+@Expose @SerializedName("email_input_at_signup") val emailInputAtSignup:Int?
 ):FeedCommonResponseKotlin()
 
 class LocaleModel(@Expose @SerializedName("locale") val locale:String?,

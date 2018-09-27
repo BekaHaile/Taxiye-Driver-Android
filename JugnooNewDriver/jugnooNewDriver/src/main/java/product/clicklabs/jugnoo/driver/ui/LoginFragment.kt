@@ -45,7 +45,6 @@ import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_SMS
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.SKIP_RATIONAL_REQUEST
-import java.lang.Exception
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -260,6 +259,8 @@ class LoginFragment : Fragment() {
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, t?.defaultSubCountryCode ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_DEFAULT_COUNTRY_ISO, t?.defaultCountryIso ?: "")
                         Prefs.with(requireActivity()).save(Constants.KEY_SHOW_TERMS, t?.showTerms ?:showTerms)
+                        Prefs.with(requireActivity()).save(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, t?.emailInputAtSignup ?:
+                            requireActivity().resources.getInteger(R.integer.email_input_at_signup))
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {

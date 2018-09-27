@@ -1135,4 +1135,6 @@
     <string name="btn_text_continue">Continue</string>
     <string name="leaderboard">Leaderboard</string>
     <string name="call_driver">Call Driver</string>
+    <string name="email_optional">Email (optional)</string>
+    <string name="please_enter_valid_email">Please enter valid email id</string>
 </resources>

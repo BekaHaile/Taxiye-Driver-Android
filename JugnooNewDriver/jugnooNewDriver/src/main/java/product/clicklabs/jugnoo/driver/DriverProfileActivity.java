@@ -52,7 +52,7 @@ public class DriverProfileActivity extends BaseActivity {
     View backBtn;
     TextView title;
 
-    TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
+    TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
@@ -130,6 +130,7 @@ public class DriverProfileActivity extends BaseActivity {
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
         textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
         textViewDriverId = (TextView) findViewById(R.id.textViewDriverId);
+        textViewPhoneNumber = (TextView) findViewById(R.id.textViewPhoneNumber);
         textViewDriverId.setTypeface(Fonts.mavenRegular(this));
         textViewRankCity = (TextView) findViewById(R.id.textViewRankCity);
         textViewRankCity.setTypeface(Fonts.mavenRegular(this));
@@ -383,9 +384,10 @@ public class DriverProfileActivity extends BaseActivity {
                 e.printStackTrace();
             }
 
-            if (openedProfileInfo != null) {
+            if (openedProfileInfo != null && Data.userData != null) {
                 textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
                 textViewDriverId.setText(getStringText(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);
+				textViewPhoneNumber.setText(getStringText(R.string.phone_no) + " " + Data.userData.phoneNo);
                 if (openedProfileInfo.textViewRankCity == 0) {
                     textViewRankCity.setVisibility(View.GONE);
                 } else {

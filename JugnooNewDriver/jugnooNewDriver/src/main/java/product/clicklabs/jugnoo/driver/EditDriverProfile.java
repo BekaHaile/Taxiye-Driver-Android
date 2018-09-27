@@ -54,11 +54,11 @@ import retrofit.mime.TypedByteArray;
 public class EditDriverProfile extends BaseFragmentActivity {
 	RelativeLayout relative;
 	ImageView backBtn;
-	ImageView imageViewEditPhone;
+	ImageView imageViewEditPhone, imageViewEdit;
 	TextView title, tvAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
 	ScrollView scrollView;
 
-	EditText editTextUserName, editTextPhone;
+	EditText editTextUserName, editTextPhone, editTextUserEmail;
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
@@ -87,10 +87,13 @@ public class EditDriverProfile extends BaseFragmentActivity {
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		imageViewEditPhone.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
+		imageViewEdit = (ImageView) findViewById(R.id.imageViewEdit);
+		imageViewEdit.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.profile);
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
+		editTextUserEmail = (EditText) findViewById(R.id.editTextUserEmail);
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
 		tvAccNo = (TextView) findViewById(R.id.tvAccNo);
@@ -178,7 +181,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 								editTextPhone.requestFocus();
 								editTextPhone.setError(getResources().getString(R.string.changed_no_same_as_previous));
 							} else {
-								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
+								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, "", ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
 							}
 						} else {
 							editTextPhone.requestFocus();
@@ -196,11 +199,61 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			}
 		});
 
+		imageViewEdit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (editTextPhone.isEnabled()) {
+					String phoneChanged = editTextPhone.getText().toString().trim();
+					String emailChanged = editTextUserEmail.getText().toString().trim();
+					if(!TextUtils.isEmpty(emailChanged) && !Utils.isEmailValid(emailChanged)){
+						Toast.makeText(EditDriverProfile.this, getString(R.string.valid_email), Toast.LENGTH_LONG).show();
+						return;
+					}
+					if(TextUtils.isEmpty(tvCountryCode.getText().toString())){
+						Toast.makeText(EditDriverProfile.this, getString(R.string.please_select_country_code), Toast.LENGTH_LONG).show();
+						return;
+					}
+					if(TextUtils.isEmpty(phoneChanged)){
+						Toast.makeText(EditDriverProfile.this, getString(R.string.phone_no_cnt_be_empty), Toast.LENGTH_LONG).show();
+						return;
+					}
+					phoneChanged = Utils.retrievePhoneNumberTenChars(tvCountryCode.getText().toString(), phoneChanged);
+					if (!Utils.validPhoneNumber(phoneChanged)) {
+						Toast.makeText(EditDriverProfile.this, getString(R.string.enter_valid_phone_number), Toast.LENGTH_LONG).show();
+						return;
+					}
+					phoneChanged = tvCountryCode.getText().toString() + phoneChanged;
+					updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, emailChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
+
+				} else {
+					editTextUserEmail.setEnabled(true);
+					editTextUserEmail.requestFocus();
+					editTextPhone.setEnabled(true);
+					editTextUserEmail.setSelection(editTextUserEmail.getText().length());
+					tvCountryCode.setEnabled(true);
+					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
+					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserEmail);
+				}
+			}
+		});
+
+		editTextUserEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				editTextPhone.requestFocus();
+				return true;
+			}
+		});
+
 		editTextPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 			@Override
 			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				imageViewEditPhone.performClick();
+				if(imageViewEditPhone.getVisibility() == View.VISIBLE){
+					imageViewEditPhone.performClick();
+				} else if(imageViewEdit.getVisibility() == View.VISIBLE){
+					imageViewEdit.performClick();
+				}
 				return true;
 			}
 		});
@@ -230,6 +283,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			public void onClick(View v) {
 				editTextUserName.setError(null);
 				editTextPhone.setError(null);
+				editTextUserEmail.setError(null);
 
 			}
 		});
@@ -345,6 +399,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		try {
 			editTextUserName.setEnabled(false);
 			editTextPhone.setEnabled(false);
+			editTextUserEmail.setEnabled(false);
 			tvCountryCode.setEnabled(false); tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
 			try {
 				Picasso.with(this).load(Data.userData.userImage)
@@ -356,7 +411,25 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			if (Data.userData != null) {
 				editTextUserName.setText(Data.userData.userName);
 				editTextPhone.setText(Utils.retrievePhoneNumberTenChars(Data.userData.getCountryCode(), Data.userData.phoneNo));
+				if(Data.userData.userEmail.equalsIgnoreCase("temp_"+Data.userData.phoneNo.replace("+", "")+"@email.com")
+						|| Data.userData.userEmail.equalsIgnoreCase("jugnoo_"+Data.userData.phoneNo.replace("+", "")+"@jugnoo.in")){
+					editTextUserEmail.setText("");
+				} else {
+					editTextUserEmail.setText(Data.userData.userEmail);
+				}
 				tvCountryCode.setText(Data.userData.getCountryCode());
+			}
+
+			if(Prefs.with(this).getInt(Constants.KEY_EMAIL_EDITABLE_IN_PROFILE, 0) == 1){
+				editTextUserEmail.setVisibility(View.VISIBLE);
+				findViewById(R.id.ivDivEmail).setVisibility(View.VISIBLE);
+				imageViewEditPhone.setVisibility(View.GONE);
+				imageViewEdit.setVisibility(View.VISIBLE);
+			} else {
+				editTextUserEmail.setVisibility(View.GONE);
+				findViewById(R.id.ivDivEmail).setVisibility(View.GONE);
+				imageViewEditPhone.setVisibility(View.VISIBLE);
+				imageViewEdit.setVisibility(View.GONE);
 			}
 
 
@@ -366,7 +439,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	}
 
 
-	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode, final String countryCode) {
+	private void updateUserProfileAPIRetroo(final Activity activity, final String changedPhoneNo, final String changedEmailId, final ProfileUpdateMode profileUpdateMode, final String countryCode) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.updating));
@@ -379,10 +452,15 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			params.put("client_id", Data.CLIENT_ID);
 
 			if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
-				params.put("updated_phone_no", updatedField);
-				params.put(Constants.KEY_UPDATED_COUNTRY_CODE, countryCode);
+				if (!Data.userData.phoneNo.equalsIgnoreCase(changedPhoneNo)) {
+					params.put("updated_phone_no", changedPhoneNo);
+					params.put(Constants.KEY_UPDATED_COUNTRY_CODE, countryCode);
+				}
 			} else {
-				params.put("updated_user_name", updatedField);
+				params.put("updated_user_name", changedPhoneNo);
+			}
+			if(!TextUtils.isEmpty(changedEmailId) && !changedEmailId.equalsIgnoreCase(Data.userData.userEmail)){
+				params.put(Constants.KEY_UPDATED_USER_EMAIL, changedEmailId);
 			}
 
 			RestClient.getApiServices().updateUserProfileAPIRetroo(params, new Callback<RegisterScreenResponse>() {
@@ -399,17 +477,23 @@ public class EditDriverProfile extends BaseFragmentActivity {
 							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(activity, message);
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								Data.userData.userEmail = changedEmailId;
 								if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
-									Intent intent = new Intent(activity, OTPConfirmScreen.class);
-									intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
-									intent.putExtra(Constants.KEY_COUNTRY_CODE, countryCode);
-									intent.putExtra(Constants.KNOWLARITY_NO, jObj.optString("knowlarity_missed_call_number",""));
-									activity.startActivity(intent);
-									activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-									finish();
+									if (!Data.userData.phoneNo.equalsIgnoreCase(changedPhoneNo)) {
+										Intent intent = new Intent(activity, OTPConfirmScreen.class);
+										intent.putExtra(Constants.PHONE_NO_VERIFY, changedPhoneNo);
+										intent.putExtra(Constants.KEY_COUNTRY_CODE, countryCode);
+										intent.putExtra(Constants.KNOWLARITY_NO, jObj.optString("knowlarity_missed_call_number", ""));
+										activity.startActivity(intent);
+										activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+										finish();
+									} else {
+										setUserData();
+									}
+									Utils.hideSoftKeyboard(activity, editTextPhone);
 								} else {
 									DialogPopup.dialogBanner(activity, message);
-									Data.userData.userName = updatedField;
+									Data.userData.userName = changedPhoneNo;
 									editTextUserName.setEnabled(false);
 									editTextUserName.setText(Data.userData.userName);
 								}

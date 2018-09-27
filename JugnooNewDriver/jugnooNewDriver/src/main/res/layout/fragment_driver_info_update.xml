@@ -44,6 +44,46 @@
             android:textColorHint="@color/textColorLight"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
+            android:nextFocusForward="@+id/editTextEmail"
+            />
+
+        <TextView
+            android:id="@+id/tvEnterEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/email_optional"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            android:fontFamily="@font/maven_pro_medium"
+            android:visibility="gone"
+            />
+
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/ic_edit_text_start_drawable"
+            android:hint="@string/email_id"
+            android:textDirection="locale"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:padding="13dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            android:fontFamily="@font/maven_pro_regular"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterEmail"
+            android:visibility="gone"
             />
 
         <TextView
@@ -55,7 +95,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
             android:textColor="@color/textColorMedium"
-            app:layout_constraintTop_toBottomOf="@+id/editTextName"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
             android:textSize="18sp"
             />
 
@@ -177,7 +217,7 @@
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="tvEnterName,editTextName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
 
         <android.support.constraint.Group
