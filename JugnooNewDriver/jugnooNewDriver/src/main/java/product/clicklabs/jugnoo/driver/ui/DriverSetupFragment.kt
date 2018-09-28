@@ -80,6 +80,7 @@ class DriverSetupFragment : Fragment() {
 
             tvEnterName.typeface = Fonts.mavenMedium(parentActivity!!)
             editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
+            edtLastName.typeface = Fonts.mavenRegular(parentActivity!!)
             tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
             bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
             bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
@@ -188,11 +189,16 @@ class DriverSetupFragment : Fragment() {
     private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
-        val userNameValue = editTextName.text.trim().toString();
+        var userName = editTextName.text.trim().toString()
+        val lastName = edtLastName.text.trim().toString()
+        if(lastName.isNotEmpty()){
+            userName += " $lastName"
+        }
+
         val userEmail = editTextEmail.text.trim().toString();
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
-                "user_name" to userNameValue,
+                "user_name" to userName ,
                 "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
@@ -228,7 +234,7 @@ class DriverSetupFragment : Fragment() {
 
                             if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
                                 (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
-                                        vehicleType, userNameValue)
+                                        vehicleType, userName)
                             }else{
                                 openDocumentUploadActivity()
 

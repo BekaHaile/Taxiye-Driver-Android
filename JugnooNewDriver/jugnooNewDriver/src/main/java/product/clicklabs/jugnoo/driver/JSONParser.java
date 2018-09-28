@@ -435,6 +435,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.driver_get_directions_interval)));
 		Prefs.with(context).save(KEY_EMAIL_EDITABLE_IN_PROFILE, userData.optInt(KEY_EMAIL_EDITABLE_IN_PROFILE,
 				context.getResources().getInteger(R.integer.email_editable_in_profile)));
+		Prefs.with(context).save(KEY_USERNAME_EDITABLE_IN_PROFILE, userData.optInt(KEY_USERNAME_EDITABLE_IN_PROFILE,
+				context.getResources().getInteger(R.integer.username_editable_in_profile)));
 
 	}
 

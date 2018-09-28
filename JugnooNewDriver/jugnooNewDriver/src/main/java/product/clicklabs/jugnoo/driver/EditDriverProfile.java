@@ -3,10 +3,13 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -58,7 +61,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	TextView title, tvAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
 	ScrollView scrollView;
 
-	EditText editTextUserName, editTextPhone, editTextUserEmail;
+	EditText editTextUserName, editTextLastName, editTextPhone, editTextUserEmail;
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
@@ -70,6 +73,9 @@ public class EditDriverProfile extends BaseFragmentActivity {
     private int stripeStatus;
 
     private Button bEditRateCard, bUploadDocuments;
+    private boolean canEditName ,canEditEmail;
+    private Drawable saveDrawable;
+    private Drawable editDrawable;
 
 
 	@Override
@@ -77,6 +83,8 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activty_edit_driver_profile);
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
+		canEditName = Prefs.with(EditDriverProfile.this).getInt(Constants.KEY_USERNAME_EDITABLE_IN_PROFILE, 0)==1;
+		canEditEmail = Prefs.with(this).getInt(Constants.KEY_EMAIL_EDITABLE_IN_PROFILE, 0) == 1;
 		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
 		relative = (RelativeLayout) findViewById(R.id.activity_profile_screen);
@@ -86,13 +94,18 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		backBtn = findViewById(R.id.backBtn);
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
-		imageViewEditPhone.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
+		saveDrawable = ContextCompat.getDrawable(this,R.drawable.ic_save_black);
+		editDrawable = ContextCompat.getDrawable(this,R.drawable.edit_pencil_icon);
+		saveDrawable.mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
+		editDrawable.mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		imageViewEdit = (ImageView) findViewById(R.id.imageViewEdit);
-		imageViewEdit.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
+		imageViewEditPhone.setImageDrawable(editDrawable);
+		imageViewEdit.setImageDrawable(editDrawable);
 		title = (TextView) findViewById(R.id.title);
 		title.setText(R.string.profile);
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
+		editTextLastName = (EditText) findViewById(R.id.editTextLastName);
 		editTextUserEmail = (EditText) findViewById(R.id.editTextUserEmail);
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		tvCountryCode = (TextView) findViewById(R.id.tvCountryCode);
@@ -181,7 +194,8 @@ public class EditDriverProfile extends BaseFragmentActivity {
 								editTextPhone.requestFocus();
 								editTextPhone.setError(getResources().getString(R.string.changed_no_same_as_previous));
 							} else {
-								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, "", ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
+								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, "", ProfileUpdateMode.PHONE,
+										tvCountryCode.getText().toString(),null);
 							}
 						} else {
 							editTextPhone.requestFocus();
@@ -193,6 +207,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 					editTextPhone.setEnabled(true);
 					editTextPhone.setSelection(editTextPhone.getText().length());
 					tvCountryCode.setEnabled(true);
+					imageViewEditPhone.setImageDrawable(saveDrawable);
 					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
 					Utils.showSoftKeyboard(EditDriverProfile.this, editTextPhone);
 				}
@@ -223,19 +238,40 @@ public class EditDriverProfile extends BaseFragmentActivity {
 						return;
 					}
 					phoneChanged = tvCountryCode.getText().toString() + phoneChanged;
-					if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged) && emailChanged.equalsIgnoreCase(Data.userData.userEmail)) {
+
+					String firstName = editTextUserName.getText().toString().trim();
+					if(firstName.length()==0){
+						Toast.makeText(EditDriverProfile.this, getString(R.string.please_enter_your_name), Toast.LENGTH_LONG).show();
+						return;
+					}
+					String userName = firstName;
+					String lastName = editTextLastName.getText().toString().trim();
+					if(lastName.length()>0){
+						userName += " " + lastName;
+					}
+
+					if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged) && emailChanged.equalsIgnoreCase(Data.userData.userEmail) &&
+						Data.userData.userName.equals(userName)) {
 						Toast.makeText(EditDriverProfile.this, getString(R.string.nothing_changed), Toast.LENGTH_LONG).show();
 						return;
 					}
-					updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, emailChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString());
+					updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, emailChanged, ProfileUpdateMode.PHONE, tvCountryCode.getText().toString(),userName);
 
 				} else {
-					editTextUserEmail.setEnabled(true);
-					editTextUserEmail.requestFocus();
+
+					editTextUserEmail.setEnabled(canEditEmail);
+					editTextUserName.setEnabled(canEditName);
+					editTextLastName.setEnabled(canEditName);
+					if(canEditName){
+						editTextUserName.requestFocus();
+					}else if(canEditEmail){
+						editTextUserEmail.requestFocus();
+					}
 					editTextPhone.setEnabled(true);
 					editTextUserEmail.setSelection(editTextUserEmail.getText().length());
 					tvCountryCode.setEnabled(true);
 					tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down_vector, 0);
+					imageViewEdit.setImageDrawable(saveDrawable);
 					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserEmail);
 				}
 			}
@@ -402,9 +438,12 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	public void setUserData() {
 		try {
 			editTextUserName.setEnabled(false);
+			editTextLastName.setEnabled(false);
 			editTextPhone.setEnabled(false);
 			editTextUserEmail.setEnabled(false);
 			tvCountryCode.setEnabled(false); tvCountryCode.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+			imageViewEditPhone.setImageDrawable(editDrawable);
+			imageViewEdit.setImageDrawable(editDrawable);
 			try {
 				Picasso.with(this).load(Data.userData.userImage)
 						.transform(new CircleTransform())
@@ -413,7 +452,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			}
 
 			if (Data.userData != null) {
-				editTextUserName.setText(Data.userData.userName);
+				setUserName();
 				editTextPhone.setText(Utils.retrievePhoneNumberTenChars(Data.userData.getCountryCode(), Data.userData.phoneNo));
 				if(Data.userData.userEmail.equalsIgnoreCase("temp_"+Data.userData.phoneNo.replace("+", "")+"@email.com")
 						|| Data.userData.userEmail.equalsIgnoreCase("jugnoo_"+Data.userData.phoneNo.replace("+", "")+"@jugnoo.in")){
@@ -424,17 +463,15 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				tvCountryCode.setText(Data.userData.getCountryCode());
 			}
 
-			if(Prefs.with(this).getInt(Constants.KEY_EMAIL_EDITABLE_IN_PROFILE, 0) == 1){
-				editTextUserEmail.setVisibility(View.VISIBLE);
-				findViewById(R.id.ivDivEmail).setVisibility(View.VISIBLE);
-				imageViewEditPhone.setVisibility(View.GONE);
-				imageViewEdit.setVisibility(View.VISIBLE);
-			} else {
-				editTextUserEmail.setVisibility(View.GONE);
-				findViewById(R.id.ivDivEmail).setVisibility(View.GONE);
-				imageViewEditPhone.setVisibility(View.VISIBLE);
-				imageViewEdit.setVisibility(View.GONE);
-			}
+			if(canEditEmail || canEditName){
+                imageViewEdit.setVisibility(View.VISIBLE);
+                imageViewEditPhone.setVisibility(View.GONE);
+            }else{
+                imageViewEdit.setVisibility(View.GONE);
+                imageViewEditPhone.setVisibility(View.VISIBLE);
+            }
+
+
 
 
 		} catch (Exception e) {
@@ -442,8 +479,28 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		}
 	}
 
+	private void setUserName() {
+		if (Data.userData!=null) {
+			String firstName = Data.userData.userName,lastName = null;
+			String[] names = firstName.split("\\s+");
+			if(names.length>1){
+                lastName = names[names.length-1];
+                firstName = firstName.substring(0,firstName.length()-(1+ lastName.length()));
+                //additional 1 is added for space
+            }
+			editTextUserName.setText(firstName);
+            if(!TextUtils.isEmpty(firstName)) {
+                editTextUserName.setSelection(firstName.length());
+            }
+			editTextLastName.setText(lastName);
+			if(!TextUtils.isEmpty(lastName)) {
+                editTextLastName.setSelection(lastName.length());
+            }
+		}
+	}
 
-	private void updateUserProfileAPIRetroo(final Activity activity, final String changedPhoneNo, final String changedEmailId, final ProfileUpdateMode profileUpdateMode, final String countryCode) {
+
+	private void updateUserProfileAPIRetroo(final Activity activity, final String changedPhoneNo, final String changedEmailId, final ProfileUpdateMode profileUpdateMode, final String countryCode,@Nullable final String userName) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.updating));
@@ -460,8 +517,9 @@ public class EditDriverProfile extends BaseFragmentActivity {
 					params.put("updated_phone_no", changedPhoneNo);
 					params.put(Constants.KEY_UPDATED_COUNTRY_CODE, countryCode);
 				}
-			} else {
-				params.put("updated_user_name", changedPhoneNo);
+			}
+			if(!TextUtils.isEmpty(userName) && !userName.equals(Data.userData.userName)) {
+				params.put("updated_user_name", userName);
 			}
 			if(!TextUtils.isEmpty(changedEmailId) && !changedEmailId.equalsIgnoreCase(Data.userData.userEmail)){
 				params.put(Constants.KEY_UPDATED_USER_EMAIL, changedEmailId);
@@ -481,7 +539,14 @@ public class EditDriverProfile extends BaseFragmentActivity {
 							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(activity, message);
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								Data.userData.userEmail = changedEmailId;
+								if(!TextUtils.isEmpty(changedEmailId)){
+									Data.userData.userEmail = changedEmailId;
+
+								}
+
+								if(!TextUtils.isEmpty(userName)){
+									Data.userData.userName = userName;
+								}
 								if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
 									if (!Data.userData.phoneNo.equalsIgnoreCase(changedPhoneNo)) {
 										Intent intent = new Intent(activity, OTPConfirmScreen.class);
@@ -497,9 +562,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 									Utils.hideSoftKeyboard(activity, editTextPhone);
 								} else {
 									DialogPopup.dialogBanner(activity, message);
-									Data.userData.userName = changedPhoneNo;
-									editTextUserName.setEnabled(false);
-									editTextUserName.setText(Data.userData.userName);
+									setUserData();
 								}
 							} else {
 								DialogPopup.alertPopup(activity, "", message);

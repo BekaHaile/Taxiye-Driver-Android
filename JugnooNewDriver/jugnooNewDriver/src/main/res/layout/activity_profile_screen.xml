@@ -116,6 +116,7 @@
                     <TextView
                         android:id="@+id/textViewDriverName"
                         android:layout_width="wrap_content"
+                        android:layout_marginEnd="40px"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:text="@string/name"

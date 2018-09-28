@@ -1138,4 +1138,6 @@
     <string name="email_optional">Email (optional)</string>
     <string name="please_enter_valid_email">Please enter valid email id</string>
     <string name="nothing_changed">Nothing changed</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>

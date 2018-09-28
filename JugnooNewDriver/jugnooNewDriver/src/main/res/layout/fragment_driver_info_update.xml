@@ -10,7 +10,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp">
+        android:padding="16dp">
 
 
         <TextView
@@ -30,14 +30,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/edtLastName"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
-            android:drawablePadding="5dp"
-            android:drawableStart="@drawable/ic_edit_text_start_drawable"
-            android:hint="@string/name"
+            android:hint="@string/first_name"
             android:textDirection="locale"
             android:imeOptions="actionDone"
+            android:layout_marginEnd="4dp"
             android:inputType="textPersonName|textCapWords"
             android:padding="13dp"
             android:textColor="@color/textColor"
@@ -46,6 +46,28 @@
             app:layout_constraintTop_toBottomOf="@+id/tvEnterName"
             android:nextFocusForward="@+id/editTextEmail"
             />
+
+
+
+        <EditText
+            android:id="@+id/edtLastName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/editTextName"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/last_name"
+            android:textDirection="locale"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:padding="13dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            android:fontFamily="@font/maven_pro_regular"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterName" />
 
         <TextView
             android:id="@+id/tvEnterEmail"
@@ -217,8 +239,8 @@
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            app:constraint_referenced_ids="tvEnterName,editTextName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
 
         <android.support.constraint.Group
             android:id="@+id/promoGroupView"
