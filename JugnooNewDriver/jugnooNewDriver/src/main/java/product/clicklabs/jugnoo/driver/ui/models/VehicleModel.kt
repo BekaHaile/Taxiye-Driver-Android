@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver.ui.models
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -17,9 +19,13 @@ data class VehicleDetailsResponse(
 data class VehicleModelDetails(
         @Expose @SerializedName("brand") val make:String,
         @Expose @SerializedName("name") val modelName:String,
-        @Expose @SerializedName("model_id") val id:Int,
-        @Expose @SerializedName("no_of_seat_belts") val noOfSeatBelts:Int,
-        @Expose @SerializedName("no_of_doors") val noOfDoors:Int) :SearchDataModel() {
+        @Expose @SerializedName("model_id") val id:Int) :Parcelable,SearchDataModel() {
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readInt()) {
+    }
+
     override fun getLabel(): String {
        return modelName;
     }
@@ -30,6 +36,26 @@ data class VehicleModelDetails(
 
     override fun showImage(): Boolean {
         return false;
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(make)
+        parcel.writeString(modelName)
+        parcel.writeInt(id)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<VehicleModelDetails> {
+        override fun createFromParcel(parcel: Parcel): VehicleModelDetails {
+            return VehicleModelDetails(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VehicleModelDetails?> {
+            return arrayOfNulls(size)
+        }
     }
 }
 
@@ -63,9 +89,15 @@ class CustomisationData(
 
 
 
-data class VehicleModelCustomisationDetails(
+data class  VehicleModelCustomisationDetails (
+
         @Expose @SerializedName("value") val value:String,
-        @Expose @SerializedName("id") val id:Int):SearchDataModel() {
+        @Expose @SerializedName("id") val id:Int):Parcelable,SearchDataModel() {
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readInt()) {
+    }
+
     override fun getImage(context: Context?): Int {
         return -1
 
@@ -77,5 +109,24 @@ data class VehicleModelCustomisationDetails(
 
     override fun getLabel(): String {
         return value;
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(value)
+        parcel.writeInt(id)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<VehicleModelCustomisationDetails> {
+        override fun createFromParcel(parcel: Parcel): VehicleModelCustomisationDetails {
+            return VehicleModelCustomisationDetails(parcel)
+        }
+
+        override fun newArray(size: Int): Array<VehicleModelCustomisationDetails?> {
+            return arrayOfNulls(size)
+        }
     }
 }

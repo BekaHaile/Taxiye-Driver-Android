@@ -381,5 +381,7 @@ public interface Constants {
 	String KEY_USERNAME_EDITABLE_IN_PROFILE = "username_editable_in_profile";
 	String SP_LAST_PHONE_NUMBER_SAVED = "last_phone_number_saved";
 	String SP_LAST_COUNTRY_CODE_SAVED = "last_country_code_saved";
+	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
+	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 }
 

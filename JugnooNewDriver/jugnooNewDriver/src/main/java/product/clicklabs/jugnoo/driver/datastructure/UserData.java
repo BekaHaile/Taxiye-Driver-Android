@@ -2,8 +2,12 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
 
+import java.util.List;
+
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class UserData {
@@ -28,6 +32,8 @@ public class UserData {
 	private String referralImageD2D, referralImageD2C;
 	private String getCreditsInfo, getCreditsImage;
 	private int sendCreditsEnabled;
+	private VehicleDetailsLogin vehicleDetailsLogin;
+	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -41,7 +47,7 @@ public class UserData {
 					String hippoTicketFAQ, String currency,
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
-					int sendCreditsEnabled) {
+					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -96,6 +102,8 @@ public class UserData {
 		this.referralImageD2D = referralImageD2D;
 		this.referralImageD2C = referralImageD2C;
 		this.sendCreditsEnabled = sendCreditsEnabled;
+		this.vehicleDetailsLogin = vehicleDetailsLogin;
+		setVehicleServicesModel(vehicleServicesModel);
 	}
 
 	public String getUserId() {
@@ -217,5 +225,35 @@ public class UserData {
 
 	public void setSendCreditsEnabled(int sendCreditsEnabled) {
 		this.sendCreditsEnabled = sendCreditsEnabled;
+	}
+
+	public VehicleDetailsLogin getVehicleDetailsLogin() {
+		return vehicleDetailsLogin;
+	}
+
+	public  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> getVehicleServicesModel() {
+		if(vehicleServicesModel!=null){
+			for(DriverVehicleServiceTypePopup.VehicleServiceDetail model:vehicleServicesModel){
+				model.setChecked(model.getServerSelected());
+			}
+
+		}
+		return vehicleServicesModel;
+
+	}
+
+	public void setVehicleServicesModel(List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel) {
+		if(vehicleServicesModel!=null){
+			for(DriverVehicleServiceTypePopup.VehicleServiceDetail model:vehicleServicesModel){
+				model.setServerSelected(model.getChecked());
+			}
+
+		}
+		this.vehicleServicesModel = vehicleServicesModel;
+
+	}
+
+	public void setVehicleDetailsLogin(VehicleDetailsLogin vehicleDetailsLogin) {
+		this.vehicleDetailsLogin = vehicleDetailsLogin;
 	}
 }

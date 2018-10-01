@@ -3,6 +3,8 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.view.View;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -113,5 +115,27 @@ public class HomeUtil {
 		params.addPart(Constants.KEY_DEVICE_TYPE, new TypedString(Data.DEVICE_TYPE));
 		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
 	}
+
+	public static class DefaultParams{
+		@SerializedName(Constants.KEY_ACCESS_TOKEN)
+		private String accessToken;
+
+		@SerializedName(Constants.KEY_OPERATOR_TOKEN)
+		private String operatorToken;
+
+		@SerializedName(Constants.KEY_DEVICE_TYPE)
+		private String deviceType;
+
+		@SerializedName(Constants.KEY_LOCALE)
+		private String locale;
+
+		public DefaultParams() {
+			this.accessToken = Data.userData!=null?Data.userData.accessToken:"";
+			this.operatorToken =MyApplication.getInstance().getString(R.string.white_label_key);
+			this.deviceType = Data.DEVICE_TYPE;
+			this.locale = Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang));
+		}
+	}
+
 
 }

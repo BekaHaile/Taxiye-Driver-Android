@@ -120,6 +120,7 @@ public class SPLabels {
 	public static final String SHOW_SUPPORT_IN_RESOURCES = "show_support_in_resources";
 	public static final String MENU_OPTION_VISIBILITY = "menu_option_visibility";
 	public static final String VEHICLE_TYPE = "vehicle_type";
+	public static final String CITY_ID = "city_id";
 
 	public static final String FIRST_TIME = "first_time";
 }

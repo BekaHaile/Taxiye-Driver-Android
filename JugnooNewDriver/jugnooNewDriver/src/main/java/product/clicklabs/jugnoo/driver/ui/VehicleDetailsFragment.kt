@@ -17,6 +17,7 @@ import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_vehicle_model.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
@@ -35,8 +36,12 @@ class VehicleDetailsFragment : Fragment() {
     private val  ARGS_CITY_ID = "city_id"
     private val  ARGS_VEHICLE_TYPE = "vehicle_type"
     private val  ARGS_USER_NAME = "user_name"
+    private val  ARGS_VEHICLE_DETAIL = "vehicle_detail"
+    private val  ARGS_EDIT_MODE = "edit_mode"
 
+    private var isEditMode = false
     private lateinit var toolbarChangeListener: ToolbarChangeListener
+    private  var vehicleDetailsInteractor: VehicleDetailsInteractor?=null
     private lateinit var cityId:String
     private lateinit var userName:String
     private lateinit var vehicleType:String
@@ -59,27 +64,46 @@ class VehicleDetailsFragment : Fragment() {
     private var currentSeatBeltSelected:VehicleModelCustomisationDetails? = null
     private var currentDoorSelected:VehicleModelCustomisationDetails? = null
 
+
     private val calendar = Calendar.getInstance()
     private val minYear = 1885
+    private var vehicleDetails:VehicleDetailsLogin? = null
+
+    interface VehicleDetailsInteractor{
+
+        fun onDetailsUpdated(vehicleDetails: VehicleDetailsLogin)
+    }
 
     companion object {
-        @JvmStatic
-        fun newInstance(accessToken: String,cityId:String,vehicleType:String,userName:String) =
+        @JvmStatic @JvmOverloads
+        fun newInstance(accessToken: String, cityId:String, vehicleType:String, userName:String,
+                        vehicleDetails: VehicleDetailsLogin?=null,editMode:Boolean = false)=
                 VehicleDetailsFragment().apply {
                     arguments = Bundle().apply {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putString(ARGS_CITY_ID, cityId)
                         putString(ARGS_VEHICLE_TYPE, vehicleType)
                         putString(ARGS_USER_NAME, userName)
+                        putBoolean(ARGS_EDIT_MODE, editMode)
+                        if(vehicleDetails!=null){
+                            putParcelable(ARGS_VEHICLE_DETAIL, vehicleDetails)
+                        }
+
                     }
                 }
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        toolbarChangeListener  = context as ToolbarChangeListener
-        toolbarChangeListener.setToolbarText(getString(R.string.title_vehicle_details))
-        toolbarChangeListener.setToolbarVisibility(true)
+        if(context is ToolbarChangeListener){
+            toolbarChangeListener  = context
+            toolbarChangeListener.setToolbarText(getString(R.string.title_vehicle_details))
+            toolbarChangeListener.setToolbarVisibility(true)
+        }
+        if(context is VehicleDetailsInteractor){
+            vehicleDetailsInteractor = context
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +113,10 @@ class VehicleDetailsFragment : Fragment() {
             cityId = it.getString(ARGS_CITY_ID)
             vehicleType = it.getString(ARGS_VEHICLE_TYPE)
             userName = it.getString(ARGS_USER_NAME)
+            isEditMode = it.getBoolean(ARGS_EDIT_MODE)
+            if(it.containsKey(ARGS_VEHICLE_DETAIL)){
+                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+            }
         }
 
     }
@@ -126,6 +154,41 @@ class VehicleDetailsFragment : Fragment() {
             submitVehicleDetails()
         }
 
+       //if prefilled details this will set data
+        vehicleDetails?.run {
+            if(modelId!=null && !vehicleMake.isNullOrEmpty()  && !vehicleModel.isNullOrEmpty() ){
+                currentModelSelected = VehicleModelDetails(this.vehicleMake!!,this.vehicleModel!!,this.modelId!!)
+                edtMake.isEnabled = false //don't allow to redit fills if already prefilled
+                edtModel.isEnabled = false //don't allow to redit fills if already prefilled ..
+            }
+            if(!color.isNullOrEmpty() && colorID!=null){
+                currentColorSelected = VehicleModelCustomisationDetails(color!!,colorID!!)
+                edtColor.isEnabled = false
+            }
+            if(!doors.isNullOrEmpty() && doorId!=null){
+                currentDoorSelected = VehicleModelCustomisationDetails(doors!!,doorId!!)
+                edtDoor.isEnabled = false
+
+            }
+            if(!seatbelts.isNullOrEmpty() && seatBeltId!=null){
+                currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!,seatBeltId!!)
+                edtSeatBelt.isEnabled = false
+
+            }
+
+            if(!year.isNullOrEmpty()){
+                edtYear.setText(year)
+                edtYear.isEnabled = false
+            }
+
+            if(!vehicleNumber.isNullOrEmpty()){
+                edtVehicleNumber.setText(vehicleNumber)
+                edtVehicleNumber.isEnabled = false
+            }
+
+        }
+
+
         getVehicleDetails();
     }
 
@@ -149,6 +212,11 @@ class VehicleDetailsFragment : Fragment() {
                     override fun onSuccess(t: VehicleDetailsResponse?, message: String?, flag: Int) {
                         vehiceMakeModelData = t?.models!!;
                         prepareMakeList()
+                        currentModelSelected?.run {
+                            currentMakeSelected = VehicleMakeInfo(make)
+                            edtMake.setText(make)
+                            getModelDetails(this)
+                        }
                     }
 
                     override fun onError(t: VehicleDetailsResponse?, message: String?, flag: Int): Boolean {
@@ -191,10 +259,6 @@ class VehicleDetailsFragment : Fragment() {
                     override fun onSuccess(t: VehicleModelCustomisationsResponse?, message: String?, flag: Int) {
 
 
-                        if(currentModelSelected==null){
-                            vehicleDetailsGroup.visible()
-                            btn_continue.isEnabled=true
-                        }
                         currentModelSelected = modelRequested
                         edtModel.setText(modelRequested.modelName)
 
@@ -207,18 +271,46 @@ class VehicleDetailsFragment : Fragment() {
                         seatBeltInteractionListener.list = seatBeltCustomisationList
 
 
-                        if(colorCustomisationList!=null  && colorCustomisationList!!.size>0){
-                            currentColorSelected = colorCustomisationList!![0]
-                            edtColor.setText(colorCustomisationList!![0].value)
+                        if(currentColorSelected==null){
+                            colorCustomisationList?.run {
+                                if(size>0){
+                                    currentColorSelected = colorCustomisationList!![0]
+                                }
+                            }
                         }
-                        if(doorsCustomisationList!=null  && doorsCustomisationList!!.size>0){
-                            currentDoorSelected = doorsCustomisationList!![0]
-                            edtDoor.setText(doorsCustomisationList!![0].value)
+
+                        currentColorSelected?.run {
+                            edtColor.setText(value)
                         }
-                        if(seatBeltCustomisationList!=null  && seatBeltCustomisationList!!.size>0){
-                            currentSeatBeltSelected = seatBeltCustomisationList!![0]
-                            edtSeatBelt.setText(seatBeltCustomisationList!![0].value)
+
+
+                        if(currentDoorSelected==null){
+                            doorsCustomisationList?.run {
+                                if(size>0){
+                                    currentDoorSelected = doorsCustomisationList!![0]
+                                }
+                            }
+
                         }
+                        currentDoorSelected?.run {
+                            edtDoor.setText(value)
+                        }
+
+                        if(currentSeatBeltSelected==null){
+                            seatBeltCustomisationList?.run {
+                                if(size>0){
+                                    currentSeatBeltSelected = seatBeltCustomisationList!![0]
+                                }
+                            }
+                        }
+                        currentSeatBeltSelected?.run {
+                            edtSeatBelt.setText(value)
+                        }
+
+
+
+                        vehicleDetailsGroup.visible()
+                        btn_continue.isEnabled=true
 
                         edtYear.requestFocus();
 
@@ -432,15 +524,30 @@ class VehicleDetailsFragment : Fragment() {
                 if(t!=null){
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                            openDocumentUploadActivity()
+                            if(isEditMode){
+                                val  vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber,year,
+                                        currentModelSelected!!.make ,currentModelSelected!!.modelName,currentModelSelected!!.id,
+                                        currentColorSelected!!.value,currentColorSelected!!.id,
+                                        currentDoorSelected!!.value,currentDoorSelected!!.id,
+                                        currentSeatBeltSelected!!.value,currentSeatBeltSelected!!.id)
+
+                                vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
+
+                            }else{
+                                openDocumentUploadActivity()
+                            }
                         }
 
 
-                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
-                            DialogPopup.alertPopupWithListener(activity, "", message, {
-                                (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
-                                (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
-                            })
+                       ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
+                            DialogPopup.alertPopupWithListener(activity, "", message) {
+
+                                if(requireActivity() is DriverSplashActivity){
+                                    (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
+                                    (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
+                                }
+
+                            }
 
                         }
                         else -> DialogPopup.alertPopup(requireActivity(), "", message)
