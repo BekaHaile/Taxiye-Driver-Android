@@ -12,7 +12,6 @@ import com.fugu.HippoNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -25,7 +24,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -477,6 +475,8 @@ public class JSONParser implements Constants {
 		int showEditVehicleSettings = context.getResources().getBoolean(R.bool.show_edit_vehicle_settings) ? 1 : 0;
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_SETS, userData.optInt(KEY_ENABLE_VEHICLE_SETS, showVehicleSetSettings));
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_EDIT_SETTING, userData.optInt(KEY_ENABLE_VEHICLE_EDIT_SETTING, showEditVehicleSettings));
+		Prefs.with(context).save(KEY_MAX_SPEED_THRESHOLD, (float) userData.optDouble(KEY_MAX_SPEED_THRESHOLD,
+				context.getResources().getInteger(R.integer.max_speed_threshold)));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

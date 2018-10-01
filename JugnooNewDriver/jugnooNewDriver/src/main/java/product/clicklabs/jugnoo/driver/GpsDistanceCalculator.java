@@ -373,7 +373,7 @@ public class GpsDistanceCalculator {
 				speedMPS = displacement / secondsDiff;
 			}
 
-			if (speedMPS <= MAX_SPEED_THRESHOLD) {
+			if (speedMPS <= (double)(Prefs.with(context).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, (float) MAX_SPEED_THRESHOLD))) {
 				if ((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)) {
 					calculateWaitTime(speedMPS);
 					boolean locationAccepted = addLatLngPathToDistance(lastLatLng, currentLatLng, location);

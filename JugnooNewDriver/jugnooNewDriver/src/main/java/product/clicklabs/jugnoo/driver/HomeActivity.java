@@ -8523,7 +8523,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     HomeActivity.myLocation = location;
                     zoomToCurrentLocationAtFirstLocationFix(location);
                 } else {
-                    if (MapUtils.speed(HomeActivity.myLocation, location) <= GpsDistanceCalculator.MAX_SPEED_THRESHOLD) {
+                    if (MapUtils.speed(HomeActivity.myLocation, location) <= (double)(Prefs.with(this)
+                            .getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, (float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD))) {
                         HomeActivity.myLocation = location;
                         zoomToCurrentLocationAtFirstLocationFix(location);
                     }

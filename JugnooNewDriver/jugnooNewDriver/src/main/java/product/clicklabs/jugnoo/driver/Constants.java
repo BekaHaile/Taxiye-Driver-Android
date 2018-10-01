@@ -383,5 +383,6 @@ public interface Constants {
 	String SP_LAST_COUNTRY_CODE_SAVED = "last_country_code_saved";
 	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
 	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
+	String KEY_MAX_SPEED_THRESHOLD = "max_speed_threshold";
 }
 
