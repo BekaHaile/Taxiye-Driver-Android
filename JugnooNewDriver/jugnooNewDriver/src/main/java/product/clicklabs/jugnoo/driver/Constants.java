@@ -379,5 +379,7 @@ public interface Constants {
 	String KEY_EMAIL_INPUT_AT_SIGNUP = "email_input_at_signup";
 	String KEY_EMAIL_EDITABLE_IN_PROFILE = "email_editable_in_profile";
 	String KEY_USERNAME_EDITABLE_IN_PROFILE = "username_editable_in_profile";
+	String SP_LAST_PHONE_NUMBER_SAVED = "last_phone_number_saved";
+	String SP_LAST_COUNTRY_CODE_SAVED = "last_country_code_saved";
 }
 

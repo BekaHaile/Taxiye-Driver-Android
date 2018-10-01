@@ -264,8 +264,14 @@ class LoginFragment : Fragment() {
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {
-                            edtPhoneNo.setText(Prefs.with(requireActivity()).getString(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, ""))
+                            val phoneNumberSaved = Prefs.with(requireActivity()).getString(Constants.SP_LAST_PHONE_NUMBER_SAVED, "")
+                            val countryCodeSaved = Prefs.with(requireActivity()).getString(Constants.SP_LAST_COUNTRY_CODE_SAVED, "")
+                            edtPhoneNo.setText(if(phoneNumberSaved.isNotEmpty()) Utils.retrievePhoneNumberTenChars(countryCodeSaved, phoneNumberSaved)
+                                else Prefs.with(requireActivity()).getString(Constants.KEY_DEFAULT_SUB_COUNTRY_CODE, ""))
                             edtPhoneNo.setSelection(edtPhoneNo.text.length)
+                            if (countryCodeSaved.length > 0) {
+                                tvCountryCode.text = countryCodeSaved
+                            }
                         }
 
                         if (resources.getInteger(R.integer.show_language_control) != resources.getInteger(R.integer.view_visible)){

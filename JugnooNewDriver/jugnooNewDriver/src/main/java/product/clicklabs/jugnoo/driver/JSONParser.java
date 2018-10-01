@@ -389,6 +389,10 @@ public class JSONParser implements Constants {
 		parseConfigVariables(context, userData);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
+
+		Prefs.with(context).save(Constants.SP_LAST_PHONE_NUMBER_SAVED, phoneNo);
+		Prefs.with(context).save(Constants.SP_LAST_COUNTRY_CODE_SAVED, countryCode);
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
