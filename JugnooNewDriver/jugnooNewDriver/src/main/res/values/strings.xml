@@ -1140,4 +1140,6 @@
     <string name="nothing_changed">Nothing changed</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="first_name_required">First name is mandatory</string>
+
 </resources>

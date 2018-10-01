@@ -154,7 +154,7 @@ class DriverSetupFragment : Fragment() {
 
     private fun validateData(): Boolean {
         if (editTextName.text.trim().toString().isBlank()) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_your_name))
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.first_name_required))
             return false
         }
         if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {

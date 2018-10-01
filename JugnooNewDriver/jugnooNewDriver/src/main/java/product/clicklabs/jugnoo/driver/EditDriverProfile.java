@@ -241,7 +241,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 
 					String firstName = editTextUserName.getText().toString().trim();
 					if(firstName.length()==0){
-						Toast.makeText(EditDriverProfile.this, getString(R.string.please_enter_your_name), Toast.LENGTH_LONG).show();
+						Toast.makeText(EditDriverProfile.this, getString(R.string.first_name_required), Toast.LENGTH_LONG).show();
 						return;
 					}
 					String userName = firstName;
@@ -454,11 +454,12 @@ public class EditDriverProfile extends BaseFragmentActivity {
 			if (Data.userData != null) {
 				setUserName();
 				editTextPhone.setText(Utils.retrievePhoneNumberTenChars(Data.userData.getCountryCode(), Data.userData.phoneNo));
-				if(Data.userData.userEmail.equalsIgnoreCase("temp_"+Data.userData.phoneNo.replace("+", "")+"@email.com")
-						|| Data.userData.userEmail.equalsIgnoreCase("jugnoo_"+Data.userData.phoneNo.replace("+", "")+"@jugnoo.in")){
+				String email = Data.userData.userEmail;
+				if((email.startsWith("temp_") && email.endsWith("@email.com"))||
+				   (email.startsWith("jugnoo_") && email.endsWith("@jugnoo.in"))){
 					editTextUserEmail.setText("");
 				} else {
-					editTextUserEmail.setText(Data.userData.userEmail);
+					editTextUserEmail.setText(email);
 				}
 				tvCountryCode.setText(Data.userData.getCountryCode());
 			}
