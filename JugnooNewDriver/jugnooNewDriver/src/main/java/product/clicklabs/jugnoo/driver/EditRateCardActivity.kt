@@ -109,11 +109,9 @@ class EditRateCardActivity : BaseFragmentActivity(){
         params[Constants.KEY_FARE_FIXED] = fareFixed.toString()
         params[Constants.KEY_FARE_PER_KM] = farePerKm.toString()
         params[Constants.KEY_FARE_PER_MIN] = farePerMin.toString()
-        ApiCommonKotlin<FeedCommonResponseKotlin>(this).execute(params, ApiName.UPDATE_FARES, object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
-            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
-                if(t == null){
-                    return
-                }
+        ApiCommonKt<FeedCommonResponseKotlin>(this).execute(params, ApiName.UPDATE_FARES, object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
+            override fun onSuccess(t: FeedCommonResponseKotlin, message: String?, flag: Int) {
+
                 Utils.showToast(this@EditRateCardActivity, t.message)
                 onBackPressed()
             }
