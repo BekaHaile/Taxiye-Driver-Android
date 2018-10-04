@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +133,9 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		@SerializedName("vehicle_type")
 		@Expose
 		private Integer vehicleType;
+		@SerializedName("region_id")
+		@Expose
+		private int regionId;
 		@SerializedName("driver_icon")
 		@Expose
 		private String driverIcon;
@@ -199,6 +201,13 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		}
 
 
+		public int getRegionId() {
+			return regionId;
+		}
+
+		public void setRegionId(int regionId) {
+			this.regionId = regionId;
+		}
 	}
 
 }

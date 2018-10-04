@@ -189,6 +189,7 @@ class DriverSetupFragment : Fragment() {
     private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
         val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
+        val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
         var userName = editTextName.text.trim().toString()
         val lastName = edtLastName.text.trim().toString()
         if(lastName.isNotEmpty()){
@@ -205,6 +206,7 @@ class DriverSetupFragment : Fragment() {
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
                 "vehicle_type" to vehicleType,
+                Constants.KEY_REGION_ID to regionId,
                 "offering_type" to "" + 1,
                 "vehicle_status" to getString(R.string.owned),
                 "device_type" to Data.DEVICE_TYPE,
