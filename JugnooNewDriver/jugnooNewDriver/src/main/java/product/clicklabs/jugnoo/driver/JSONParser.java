@@ -477,6 +477,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_EDIT_SETTING, userData.optInt(KEY_ENABLE_VEHICLE_EDIT_SETTING, showEditVehicleSettings));
 		Prefs.with(context).save(KEY_MAX_SPEED_THRESHOLD, (float) userData.optDouble(KEY_MAX_SPEED_THRESHOLD,
 				context.getResources().getInteger(R.integer.max_speed_threshold)));
+		int dist = (int) HomeActivity.DRIVER_START_RIDE_CHECK_METERS;
+		Prefs.with(context).save(Constants.KEY_DRIVER_START_DISTANCE, userData.optInt(KEY_DRIVER_START_DISTANCE, dist));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

@@ -1778,7 +1778,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                                     CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
                                                     double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
                                                     double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
-                                                    double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
+                                                    double arrivingDistance = Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
 
                                                     if (displacement <= arrivingDistance || actualDispalcement <= arrivingDistance) {
                                                         buildAlertMessageNoGps();
@@ -3859,7 +3859,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     reviewRideTimeValue.setText(rideTime + " " + getResources().getString(R.string.min));
                     reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
-                    if (Prefs.with(context).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1) {
+                    if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1) {
                         rvFareDetails.setVisibility(endRideData.getFareDetails() == null
                                 || endRideData.getFareDetails().size() == 0 ? View.GONE : View.VISIBLE);
                         fareDetailsAdapter.setList(endRideData.getFareDetails(), endRideData.getCurrency());
@@ -7606,10 +7606,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                         double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
                         double actualDisplacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
-
+						int startRideDistanceCheck = Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_START_DISTANCE, (int) DRIVER_START_RIDE_CHECK_METERS);
                         if (customerInfo.getIsDelivery() == 1
-                                || displacement <= DRIVER_START_RIDE_CHECK_METERS
-                                || actualDisplacement <= DRIVER_START_RIDE_CHECK_METERS) {
+                                || displacement <= startRideDistanceCheck
+                                || actualDisplacement <= startRideDistanceCheck) {
                             buildAlertMessageNoGps();
                             if (isTourFlag) {
                                 setTourOperation(3);
@@ -8963,7 +8963,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                         CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
                         double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
-                        double arrivingDistance = Prefs.with(context).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
+                        double arrivingDistance = Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, 600);
                         if (arrived || actualDispalcement < arrivingDistance) {
                             buttonMarkArrived.setText(getResources().getString(R.string.arrived));
                             buttonMarkArrived.setEnabled(true);
