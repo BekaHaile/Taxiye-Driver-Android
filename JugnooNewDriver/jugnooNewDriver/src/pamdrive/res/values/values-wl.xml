@@ -16,44 +16,52 @@
     -->
 
 
-    <string name="appname">PamDrive</string>
-    <string name="app_name">PamDrive Drivers</string>
+    <string name="appname">Pamdriver</string>
+    <string name="app_name">Pamdriver</string>
 
     <!--White Label Key-->
-    <string name="white_label_key">99f30666b06f54717b21328fcd5a0c7c</string>
+    <string name="white_label_key">0af5e0e5e6ab898cc714f9a5b5545451</string>
 
-    <string name="fugu_app_key">vdfvvbdfgb786347823vhjdvwfjcvj</string>
+    <string name="fugu_app_key">59f842a6fc56fabf00f0bd99fbba3440</string>
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
-    <string name="images_path">PamDrive Driver/PamDrive Pictures</string>
-    <string name="file_provider">production.pamdrive.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyD1NROD8yHHbHyOJ1vPg0D7iZIqP0s9tiE</string> <!--IMP-->
+    <string name="images_path">Pamdriver/Pamdriver Pictures</string>
+    <string name="file_provider">com.tryapptivities.pamdriver.provider</string>
+    <string name="google_maps_api_key">AIzaSyCT07NoO3oS97dU5Ke_S4EjeGIqQPkl_-g</string> <!--IMP-->
 
+    <string name="facebook_page_id">1110113865716816</string>
+    <string name="facebook_page_name">PamDrive</string>
 
     <!--App Level Constants-->
     <drawable name="app_icon">@mipmap/ic_launcher</drawable><!--* IMP-->
     <string name="white_label_name">PAMDRIVE</string><!--* IMP-->
     <string name="support_email">support@pamdrive.in</string>
-    <string name="support_email_subject">PamDrive Driver Support</string>
-    <string name="support_phone_number">+919023121121</string>
+    <string name="support_email_subject">Pamdriver Support</string>
+    <string name="support_phone_number">+2348099904442</string>
     <string name="customer_app_download_link">https://www.pamdrive.in/</string>
     <string name="hippo_support_faq_name_default">Driver</string>
 
     <!--Notifications-->
 
     <drawable name="ic_notification_small_drawable">@drawable/app_icon</drawable>
-    <drawable name="floating_icon_drawable">@drawable/app_icon</drawable><!--App Floating Service Icon, preferably circular-->
-    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder</drawable><!--680 * 340 px-->
+    <drawable name="floating_icon_drawable">@drawable/app_icon
+    </drawable><!--App Floating Service Icon, preferably circular-->
+    <drawable name="ic_notification_placeholder_drawable">@drawable/ic_notification_placeholder
+    </drawable><!--680 * 340 px-->
 
 
     <!--Login sign-up -->
+    <drawable name="generate_otp">@drawable/orange_generate_otp_selector</drawable>
+    <drawable name="generate_otp_text_color">@drawable/selector_generate_otp_text</drawable>
+
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
-    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo
+    </drawable> <!--400 * 400 px MAX--> <!--* IMP-->
 
 
     <!--Side Menu Properties-->
-    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon</drawable><!--* IMP-->
+    <drawable name="jugnoo_side_menu_icon_drawable">@drawable/jugnoo_side_menu_icon
+    </drawable><!--* IMP-->
     <integer name="show_invoices">@integer/view_visible</integer>
     <integer name="show_driver_resources">@integer/view_visible</integer>
     <integer name="show_refer_earn">@integer/view_visible</integer>
@@ -62,7 +70,8 @@
 
     <!--Profile Screen-->
     <integer name="show_bank_details_in_profile">@integer/view_visible</integer>
-
+    <integer name="show_t_and_c_profile">@integer/view_visible</integer>
+    <bool name="specified_country_search_result_enabled">false</bool>
 
 
     <!--General Features Enable/Disable-->
@@ -70,6 +79,23 @@
     <bool name="waze_navigation_enabled">true</bool>
     <integer name="show_language_control">@integer/view_gone</integer>
     <integer name="show_call_in_otp">@integer/view_visible</integer>
+
+    <integer name="driver_logout_enabled">1</integer>
+    <integer name="like_us_on_fb_enabled">@integer/view_visible</integer>
+
+    <drawable name="bg_splash">@color/colorPrimaryDark</drawable>
+    <color name="colorDark">@color/text_color</color>
+    <color name="colorLight">@color/white</color>
+
+
+    <drawable name="bg_login">@color/colorPrimaryDark</drawable>
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <dimen name="ic_splash_logo_width">147dp</dimen>
+    <dimen name="ic_splash_logo_height">157dp</dimen>
+    <bool name="animate_splash_logo">true</bool>
+
+    <color name="themeColor">#001743</color>
+    <color name="themeColorLight">#bb001743</color>
 
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#001734</color>
@@ -79,11 +105,8 @@
     <color name="textColorLight">#9b9b9b</color>
     <color name="textColorButton">#FFFFFF</color>
     <color name="dividerColor">#dbdbdb</color>
-    <color name="themeColor">#CC3333</color>
-    <color name="themeColorLight">#bbCC3333</color>
     <color name="themeColorAlternate">#3c3638</color>
     <color name="themeColorAlternateLight">#bb3c3638</color>
-
 
 
 </resources>
