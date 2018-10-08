@@ -47,7 +47,7 @@ public class ApiAcceptRide {
 						   final String referenceId, final double latitude, final double longitude, final int perfectRide){
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if (Utils.getBatteryPercentage(activity) >= 20) {
+				if (Utils.getBatteryPercentage(activity) >= Prefs.with(activity).getInt(Constants.KEY_BATTERY_CHECK_ACCEPT, 20)) {
 					GCMIntentService.clearNotifications(activity);
 					GCMIntentService.stopRing(true, activity);
 

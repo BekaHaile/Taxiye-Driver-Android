@@ -3,16 +3,16 @@ package product.clicklabs.jugnoo.driver.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
+
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.BlankActivityForDialog;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.SharingRidesActivity;
-import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -63,7 +63,7 @@ public class ApiAcceptRideServices extends IntentService {
 						   final int isPooled, final int isDelivery, final int isDeliveryPool) {
 		try {
 			if (AppStatus.getInstance(ApiAcceptRideServices.this).isOnline(ApiAcceptRideServices.this)) {
-				if (Utils.getBatteryPercentage(ApiAcceptRideServices.this) >= 20) {
+				if (Utils.getBatteryPercentage(ApiAcceptRideServices.this) >= Prefs.with(ApiAcceptRideServices.this).getInt(Constants.KEY_BATTERY_CHECK_ACCEPT, 20)) {
 					GCMIntentService.clearNotifications(ApiAcceptRideServices.this);
 					GCMIntentService.stopRing(true, ApiAcceptRideServices.this);
 

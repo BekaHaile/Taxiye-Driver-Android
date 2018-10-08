@@ -479,6 +479,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.max_speed_threshold)));
 		int dist = (int) HomeActivity.DRIVER_START_RIDE_CHECK_METERS;
 		Prefs.with(context).save(Constants.KEY_DRIVER_START_DISTANCE, userData.optInt(KEY_DRIVER_START_DISTANCE, dist));
+		Prefs.with(context).save(Constants.KEY_BATTERY_CHECK_ACCEPT, userData.optInt(KEY_BATTERY_CHECK_ACCEPT, context.getResources().getInteger(R.integer.battery_check_accept)));
+		Prefs.with(context).save(Constants.KEY_BATTERY_CHECK_START, userData.optInt(KEY_BATTERY_CHECK_START, context.getResources().getInteger(R.integer.battery_check_start)));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

@@ -1750,7 +1750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.YES, null);
-                    if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
+                    if (Utils.getBatteryPercentage(HomeActivity.this) >= Prefs.with(HomeActivity.this).getInt(Constants.KEY_BATTERY_CHECK_START, 10)) {
                         startRidePopup(HomeActivity.this, Data.getCurrentCustomerInfo());
                         FlurryEventLogger.event(RIDE_STARTED);
                     } else {
@@ -1766,7 +1766,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 public void onClick(View v) {
                     try {
                         firebaseScreenEvent(FirebaseEvents.YES);
-                        if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
+                        if (Utils.getBatteryPercentage(HomeActivity.this) >= Prefs.with(HomeActivity.this).getInt(Constants.KEY_BATTERY_CHECK_START, 10)) {
                             DialogPopup.alertPopupTrainingTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
                                     new OnClickListener() {
                                         @Override
@@ -3014,7 +3014,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         myLocation.getLatitude(),
                         myLocation.getLongitude(), 1);
             } else {
-                if (Utils.getBatteryPercentage(this) >= 20) {
+                if (Utils.getBatteryPercentage(this) >= Prefs.with(HomeActivity.this).getInt(Constants.KEY_BATTERY_CHECK_ACCEPT, 20)) {
                     GCMIntentService.clearNotifications(HomeActivity.this);
                     GCMIntentService.stopRing(true, activity);
                     driverAcceptRideAsync(HomeActivity.this, customerInfo);
@@ -4909,6 +4909,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         super.onResume();
         if (Utils.isBatteryChargingNew(this) == 1 || Utils.getBatteryPercentage(this) > 20) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
 

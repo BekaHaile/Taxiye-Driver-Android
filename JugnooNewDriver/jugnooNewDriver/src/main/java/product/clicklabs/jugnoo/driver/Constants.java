@@ -386,5 +386,7 @@ public interface Constants {
 	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 	String KEY_MAX_SPEED_THRESHOLD = "max_speed_threshold";
 	String KEY_REGION_ID = "region_id";
+	String KEY_BATTERY_CHECK_ACCEPT = "driver_battery_check_accept";
+	String KEY_BATTERY_CHECK_START = "driver_battery_check_start";
 }
 
