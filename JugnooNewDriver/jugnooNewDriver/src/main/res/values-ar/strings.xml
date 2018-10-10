@@ -379,7 +379,7 @@
     <string name="register_via_agent">تسجيل عن طريق وسيط</string>
     <string name="upload_Documents">وثائق للتحميل</string>
     <string name="last_trip_earning">الأرباح الماضي سائق رحلة ل</string>
-    <string name="diffrential_pricing_rate">After %1$s, distance charge will be \u20B9 %2$s</string>
+    <string name="diffrential_pricing_rate">بعد %1$s  سوف تكون تهمة المسافة  %2$s</string>
     <string name="payment_sent">ارسلت الدفعه</string>
     <string name="this_week_cap">هذا الاسبوع</string>
     <string name="ride_history_cap">ركوب التاريخ</string>
