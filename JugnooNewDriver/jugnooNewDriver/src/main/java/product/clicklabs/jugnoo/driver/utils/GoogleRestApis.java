@@ -23,7 +23,8 @@ public class GoogleRestApis {
 					+ "&sensor=" + sensor
 					+ "&mode=" + mode
 					+ "&alternatives=" + alternatives
-					+ "&client=" + BuildConfig.MAPS_CLIENT;
+					+ "&client=" + BuildConfig.MAPS_CLIENT
+					+ "&channel=" + BuildConfig.FLAVOR + "-android-driver";
 			String googleSignature = null;
 			try {
 				googleSignature = generateGoogleSignature(urlToSign);
@@ -31,7 +32,7 @@ public class GoogleRestApis {
 			}
 
 			return RestClient.getGoogleApiServices().getDirections(originLatLng, destLatLng,
-					sensor, mode, alternatives, BuildConfig.MAPS_CLIENT, googleSignature);
+					sensor, mode, alternatives, BuildConfig.MAPS_CLIENT, BuildConfig.FLAVOR + "-android-driver",googleSignature);
 		} else {
 			return RestClient.getGoogleApiServices().getDirections(originLatLng, destLatLng,
 					sensor, mode, alternatives, BuildConfig.MAPS_BROWSER_KEY);
@@ -88,7 +89,8 @@ public class GoogleRestApis {
 					"origin=" + strOrigin
 					+ "&destination=" + strDestination
 					+ "&waypoints=" + strWaypoints
-					+ "&client=" + BuildConfig.MAPS_CLIENT;
+					+ "&client=" + BuildConfig.MAPS_CLIENT
+					+ "&channel=" + BuildConfig.FLAVOR + "-android-driver";
 			String googleSignature = null;
 			try {
 				googleSignature = generateGoogleSignature(urlToSign);
@@ -97,7 +99,7 @@ public class GoogleRestApis {
 
 
 			return RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination,
-					strWaypoints, BuildConfig.MAPS_CLIENT, googleSignature);
+					strWaypoints, BuildConfig.MAPS_CLIENT, BuildConfig.FLAVOR + "-android-driver",googleSignature);
 		} else {
 			return RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination,
 					strWaypoints, BuildConfig.MAPS_BROWSER_KEY);

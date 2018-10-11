@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
+import android.os.Build;
+
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -16,7 +18,9 @@ public interface GoogleAPIServices {
 						   @Query("mode") String mode,
 						   @Query("alternatives") Boolean alternatives,
 						   @Query("client") String client,
+						   @Query("channel") String  channel,
 						   @Query(value = "signature", encodeValue = false) String signature);
+
 	@GET("/maps/api/directions/json")
 	Response getDirections(@Query(value = "origin", encodeValue = false) String originLatLng,
 						   @Query(value = "destination", encodeValue = false) String destLatLng,
@@ -59,7 +63,9 @@ public interface GoogleAPIServices {
 									@Query(value = "destination", encodeValue = false) String destLatLng,
 									@Query(value = "waypoints", encodeValue = false) String waypoints,
 									@Query("client") String client,
+									@Query("channel") String  channel,
 									@Query(value = "signature", encodeValue = false) String signature);
+
 	@GET("/maps/api/directions/json")
 	Response getDirectionsWaypoints(@Query(value = "origin", encodeValue = false) String originLatLng,
 									@Query(value = "destination", encodeValue = false) String destLatLng,
