@@ -220,7 +220,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-import static product.clicklabs.jugnoo.driver.Data.context;
 import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
@@ -2879,8 +2878,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     @Override
                     public boolean onMarkerClick(Marker arg0) {
-                        if(arg0.getTitle() == null || TextUtils.isDigitsOnly(arg0.getTitle())){
+                        if(arg0.getTitle() == null){
                             map.setInfoWindowAdapter(null);
+                            return false;
+                        }
+                        if(arg0.getTitle().contains("distance=")){
+                            CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getTitle(), "");
+                            map.setInfoWindowAdapter(customIW);
                             return false;
                         }
                         if (arg0.getTitle().equalsIgnoreCase((getResources().getString(R.string.pickup_location)))) {
@@ -3670,26 +3674,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
                 reconnectLocationFetchers();
             }
-            // TODO: 12/10/18 revert
-            for(Marker marker : markersWaypoints){
-                marker.remove();
-            }
-            if(polylineWaypoints != null){
-                polylineWaypoints.remove();
-            }
-            if(!TextUtils.isEmpty(Data.getCurrentEngagementId())) {
-                ArrayList<RideData> rideDataArrayList = Database2.getInstance(HomeActivity.this).getRideDataWaypoints(Integer.parseInt(Data.getCurrentEngagementId()));
-                for (RideData rideData : rideDataArrayList) {
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(new LatLng(rideData.lat, rideData.lng));
+
+            if(BuildConfig.DEBUG) {
+                for (Marker marker : markersWaypoints) {
+                    marker.remove();
+                }
+                if (polylineWaypoints != null) {
+                    polylineWaypoints.remove();
+                }
+
+                for (MarkerOptions markerOptions : markerOptionsWaypoints) {
                     markersWaypoints.add(map.addMarker(markerOptions));
                 }
-            } else {
-                for(MarkerOptions markerOptions : markerOptionsWaypoints){
-                    markersWaypoints.add(map.addMarker(markerOptions));
-                }
-                if(polylineOptionsWaypoints != null) {
+                if (polylineOptionsWaypoints != null) {
                     polylineWaypoints = map.addPolyline(polylineOptionsWaypoints);
+                }
+
+                if (!TextUtils.isEmpty(Data.getCurrentEngagementId())) {
+                    ArrayList<RideData> rideDataArrayList = Database2.getInstance(HomeActivity.this).getRideDataWaypoints(Integer.parseInt(Data.getCurrentEngagementId()));
+                    for (RideData rideData : rideDataArrayList) {
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(new LatLng(rideData.lat, rideData.lng));
+                        markersWaypoints.add(map.addMarker(markerOptions));
+                    }
                 }
             }
         }
@@ -6472,8 +6479,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                 }
 
-                // TODO: 13/10/18 hit of waypoints here
-                if(Prefs.with(context).getInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+                if(Prefs.with(activity).getInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
                     ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
                     waypointsRetryCount = 0;
                     hitWaypoints(activity, customerInfo, dropLatitude, dropLongitude, rideDatas);
@@ -6525,7 +6531,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     JSONObject leg = legs.getJSONObject(i);
                     distanceOfPath = distanceOfPath + leg.getJSONObject("distance").getDouble("value");
                 }
-                // TODO: 15/10/18 extra
+                if(BuildConfig.DEBUG) {
                     List<LatLng> list = MapUtils.getLatLngListFromPath(responseStr);
                     if (list.size() > 0) {
                         polylineOptionsWaypoints = new PolylineOptions();
@@ -6533,13 +6539,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         for (int z = 0; z < list.size(); z++) {
                             polylineOptionsWaypoints.add(list.get(z));
                         }
+                        markerOptionsWaypoints.clear();
                         for (RideData rideData : rideDatas) {
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(new LatLng(rideData.lat, rideData.lng));
-                            markerOptions.title(""+distanceOfPath);
+                            markerOptions.title("distance=" + (distanceOfPath / 1000D));
                             markerOptionsWaypoints.add(markerOptions);
                         }
                     }
+                }
             }
             customerInfo.setWaypointDistance(distanceOfPath);
         } catch (Exception e) {
@@ -6812,7 +6820,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     rideTimeChronometer.stop();
 
-                    driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(), totalHaversineDistanceInKm);
+                    driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(), totalHaversineDistanceInKm, customerInfo.getRequestlLatLng(),
+                            new LatLng(dropLatitude, dropLongitude));
 
                     driverScreenMode = DriverScreenMode.D_RIDE_END;
 
@@ -7152,7 +7161,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
             driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(),
-                    customerInfo.getTotalHaversineDistance(customerRideDataGlobal.getHaversineDistance(), HomeActivity.this));
+                    customerInfo.getTotalHaversineDistance(customerRideDataGlobal.getHaversineDistance(), HomeActivity.this),customerInfo.getRequestlLatLng(),
+                    new LatLng(dropLatitude, dropLongitude));
 
             driverScreenMode = DriverScreenMode.D_RIDE_END;
             Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
@@ -7214,7 +7224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 //Retrofit
-    public void driverUploadPathDataFileAsync(final Activity activity, int engagementId, double totalHaversineDistance) {
+    public void driverUploadPathDataFileAsync(final Activity activity, int engagementId, double totalHaversineDistance, LatLng requestlatLng, LatLng dropLatLng) {
         try {
             String rideDataStr = Database2.getInstance(activity).getRideData(engagementId);
             if (!"".equalsIgnoreCase(rideDataStr)) {
@@ -7229,6 +7239,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
                 params.put(KEY_ENGAGEMENT_ID, String.valueOf(engagementId));
                 params.put(KEY_RIDE_PATH_DATA, rideDataStr);
+
+                if(Prefs.with(activity).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(engagementId);
+                    if(rideDatas.size() > 0) {
+                        StringBuilder rideDataWaypointSB = new StringBuilder();
+                        String newLine = "\n";
+                        rideDataWaypointSB.append(0 + "," + requestlatLng.latitude + "," + requestlatLng.longitude + "," + System.currentTimeMillis()).append(newLine);
+                        for (RideData rd : rideDatas) {
+                            rideDataWaypointSB.append(rd.i + "," + rd.lat + "," + rd.lng + "," + rd.t).append(newLine);
+                        }
+                        rideDataWaypointSB.append(0 + "," + dropLatLng.latitude + "," + dropLatLng.longitude + "," + System.currentTimeMillis());
+                        String rideDataWaypointStr = "";
+                        if (rideDataWaypointSB.length() > 0) {
+                            rideDataWaypointStr = "i,lat,long,t" + newLine + rideDataWaypointSB.toString();
+                        }
+                        params.put(Constants.KEY_WAYPOINTS, rideDataWaypointStr);
+                    }
+                }
+
                 HomeUtil.putDefaultParams(params);
 
                 Log.i(TAG, "driverUploadPathDataFileAsync params=" + params);

@@ -146,7 +146,7 @@ public class Data {
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
 	public static int appVersion = BuildConfig.VERSION_CODE;
 
-	public static Activity context = null;
+	public static Activity contextiii = null;
 
 	public static ArrayList<CancelOption> cancelOptionsList;
 	public static ArrayList<DeliveryReturnOption> deliveryReturnOptionList;

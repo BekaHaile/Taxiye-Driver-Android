@@ -927,7 +927,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
-								if(Data.context == null || !(Data.context instanceof ChatActivity)){
+								if(Data.contextiii == null || !(Data.contextiii instanceof ChatActivity)){
 									String chatMessage = jObj.getJSONObject("message").optString("chat_message", "");
 									Prefs.with(this).save(Constants.KEY_CHAT_COUNT , Prefs.with(this).getInt(Constants.KEY_CHAT_COUNT, 0) + 1);
 									if(ChatActivity.CHAT_SCREEN_OPEN == null) {

@@ -400,5 +400,6 @@ public interface Constants {
 	String KEY_WAYPOINT_DISTANCE = "waypoint_distance";
 	String KEY_METERING_DISTANCE = "metering_distance";
 
+	String KEY_WAYPOINTS = "waypoints";
 }
 

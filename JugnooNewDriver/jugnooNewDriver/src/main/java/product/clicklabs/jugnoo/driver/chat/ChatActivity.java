@@ -196,7 +196,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	public void onResume(){
 		super.onResume();
 		CHAT_SCREEN_OPEN = "yes";
-		Data.context = ChatActivity.this;
+		Data.contextiii = ChatActivity.this;
 	}
 
 	@Override
@@ -214,7 +214,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	protected void onDestroy() {
 		super.onDestroy();
 		CHAT_SCREEN_OPEN = null;
-		Data.context = null;
+		Data.contextiii = null;
 		unregisterReceiver(broadcastReceiver);
 		if(handler != null && loadDiscussion != null){
 			handler.removeCallbacks(loadDiscussion);
