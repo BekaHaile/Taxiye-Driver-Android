@@ -95,13 +95,14 @@ public class Database2 {                                                        
 	private static final String API_REQUEST_PARAMS = "api_request_params";
 
 
-	private static final String TABLE_RIDE_DATA = "table_ride_data2";
+	private static final String TABLE_RIDE_DATA = "table_ride_data3";
 	private static final String RIDE_DATA_I = "i";
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
 	private static final String RIDE_DATA_ENGAGEMENT_ID = "engagementId";
 	private static final String RIDE_DATA_ACC_DISTANCE = "accDistance";
+	private static final String RIDE_DATA_IS_WAY_POINT = "isWayPoint";
 
 
 	private static final String TABLE_RING_DATA = "table_ring_data";
@@ -269,7 +270,8 @@ public class Database2 {                                                        
 				+ RIDE_DATA_LNG + " TEXT, "
 				+ RIDE_DATA_T + " TEXT, "
 				+ RIDE_DATA_ENGAGEMENT_ID + " INTEGER, "
-				+ RIDE_DATA_ACC_DISTANCE + " REAL"
+				+ RIDE_DATA_ACC_DISTANCE + " REAL, "
+				+ RIDE_DATA_IS_WAY_POINT + " INTEGER"
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
@@ -934,7 +936,7 @@ public class Database2 {                                                        
 							Double.parseDouble(cursor.getString(i1)),
 							Double.parseDouble(cursor.getString(i2)),
 							cursor.getLong(i3),
-							cursor.getDouble(i4));
+							cursor.getDouble(i4), 0);
 
 					rideDataStr = rideDataStr + rideData.toString() + newLine;
 					hasValues = true;
@@ -951,13 +953,54 @@ public class Database2 {                                                        
 
 		return rideDataStr;
 	}
+	public ArrayList<RideData> getRideDataWaypoints(int engagementId) {
+		ArrayList<RideData> rideDatas = new ArrayList<>();
+		try {
+			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T,
+					Database2.RIDE_DATA_ACC_DISTANCE, Database2.RIDE_DATA_IS_WAY_POINT};
+			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
+					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1", null, null, null, null);
 
-	public void insertRideData(String lat, String lng, String t, int engagementId) {
+			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
+			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
+			int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
+			int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+			int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
+			int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					double lat = Double.parseDouble(cursor.getString(i1));
+					double lng = Double.parseDouble(cursor.getString(i2));
+					if(Utils.compareDouble(lat, 0) != 0 && Utils.compareDouble(lng, 0) != 0) {
+						RideData rideData = new RideData(cursor.getInt(i0),
+								lat,
+								lng,
+								cursor.getLong(i3),
+								cursor.getDouble(i4),
+								cursor.getInt(i5));
+						rideDatas.add(rideData);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rideDatas;
+	}
+
+	public void insertRideData(Context context, String lat, String lng, String t, int engagementId) {
 		try {
 			double accDistance = 0;
 			try {
 				double latitude = Double.parseDouble(lat);
 				double longitude = Double.parseDouble(lng);
+				if(Utils.compareDouble(latitude, 0) == 0 && Utils.compareDouble(longitude, 0) == 0) {
+					return;
+				}
 				if(Utils.compareDouble(latitude, 0) != 0
 						&& Utils.compareDouble(longitude, 0) != 0) {
 					RideData rideDataLast = getLastRideData(engagementId, 1);
@@ -968,7 +1011,8 @@ public class Database2 {                                                        
 									new LatLng(latitude, longitude));
 							double timeDiff = (Double.parseDouble(t) - (double)rideDataLast.t)/1000d;
 							double speed = currentDistance/timeDiff;
-							if(speed < 15){
+							if(speed < (double)(Prefs.with(context).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD,
+									(float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD))){
 								accDistance = rideDataLast.accDistance + currentDistance;
 							} else{
 								return;
@@ -989,6 +1033,13 @@ public class Database2 {                                                        
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			int isWayPoint = 0;
+			if(Prefs.with(context).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+				RideData rideDataLastWP = getLastRideDataWaypoint(engagementId);
+				if (rideDataLastWP == null || (Long.parseLong(t) - rideDataLastWP.t) >= Prefs.with(context).getInt(Constants.KEY_WAYPOINTS_COLLECTION_INTERVAL, 120000)) {
+					isWayPoint = 1;
+				}
+			}
 
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RIDE_DATA_LAT, lat);
@@ -996,6 +1047,7 @@ public class Database2 {                                                        
 			contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
 			contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
 			contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
+			contentValues.put(Database2.RIDE_DATA_IS_WAY_POINT, isWayPoint);
 			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1022,6 +1074,7 @@ public class Database2 {                                                        
 		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
 		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
+		int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
 		if(cursor.moveToFirst()){
 			if(limit == 2){
 				cursor.moveToLast();
@@ -1030,8 +1083,30 @@ public class Database2 {                                                        
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
 					cursor.getLong(i3),
-					cursor.getDouble(i4));
+					cursor.getDouble(i4),
+					cursor.getInt(i5));
 			return rideData;
+		}
+		return null;
+	}
+
+	public RideData getLastRideDataWaypoint(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
+				+" WHERE "+RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1"
+				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT "+1, null);
+		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
+		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
+		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
+		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
+		int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
+		if(cursor.moveToFirst()){
+			return new RideData(cursor.getInt(i0),
+					Double.parseDouble(cursor.getString(i1)),
+					Double.parseDouble(cursor.getString(i2)),
+					cursor.getLong(i3),
+					cursor.getDouble(i4),
+					cursor.getInt(i5));
 		}
 		return null;
 	}

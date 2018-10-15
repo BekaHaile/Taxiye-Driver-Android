@@ -104,7 +104,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint("https://maps.googleapis.com")
 				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
+//TODO				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 

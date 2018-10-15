@@ -65,6 +65,7 @@ public class CustomerInfo {
 	private double tollFare;
 	private double tipAmount;
 	private int luggageCount;
+	private double waypointDistance;
 
 
 	/**
@@ -467,22 +468,36 @@ public class CustomerInfo {
 //		if(getIsPooled() == 1 && getPoolFare() != null){
 //			return getPoolFare().getDistance();
 //		} else {
-			try {
-				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-				if (jObj.has(String.valueOf(getEngagementId()))) {
-					JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-					double startDistance = Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
-					if(distance < startDistance){
-						return 0;
-					} else{
-						return distance - startDistance;
-					}
+		if(waypointDistance > 0 && Prefs.with(context).getInt(Constants.KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, 0) == 1){
+			return waypointDistance;
+		}
+		return getSPSavedDistance(distance, context);
+	}
+
+	public double getSPSavedDistance(double distance, Context context) {
+		try {
+			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+			if (jObj.has(String.valueOf(getEngagementId()))) {
+				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+				double startDistance = Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
+				if(distance < startDistance){
+					return 0;
+				} else{
+					return distance - startDistance;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return distance;
+	}
+
+	public double getWaypointDistance(){
+		return waypointDistance;
+	}
+
+	public void setWaypointDistance(double waypointDistance){
+		this.waypointDistance = waypointDistance;
 	}
 
 	public double getTotalHaversineDistance(double haversineDistance, Context context){

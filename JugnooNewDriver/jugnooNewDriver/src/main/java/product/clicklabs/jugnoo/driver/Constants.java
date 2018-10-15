@@ -388,5 +388,17 @@ public interface Constants {
 	String KEY_REGION_ID = "region_id";
 	String KEY_BATTERY_CHECK_ACCEPT = "driver_battery_check_accept";
 	String KEY_BATTERY_CHECK_START = "driver_battery_check_start";
+
+	String KEY_USE_DIRECTIONS_API_FOR_METERING = "driver_use_directions_api_for_metering";
+	String KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION = "driver_enable_waypoints_distance_calculation";
+	String KEY_WAYPOINTS_COLLECTION_INTERVAL = "driver_waypoints_collection_interval";
+	String KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE = "driver_waypoints_retry_count_at_endride";
+	String KEY_USE_WAYPOINT_DISTANCE_FOR_FARE = "driver_use_waypoint_distance_for_fare";
+
+	String KEY_TOTAL_DISTANCE_MAX = "driver_total_distance_max";
+	String KEY_DELTA_DISTANCE_MAX = "driver_delta_distance_max";
+	String KEY_WAYPOINT_DISTANCE = "waypoint_distance";
+	String KEY_METERING_DISTANCE = "metering_distance";
+
 }
 

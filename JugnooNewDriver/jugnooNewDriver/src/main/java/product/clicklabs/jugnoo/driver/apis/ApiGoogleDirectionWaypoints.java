@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.apis;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -71,7 +72,12 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 	@Override
 	protected String doInBackground(String... params) {
 		try {
-			Response response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+			Response response;
+			if(!TextUtils.isEmpty(strWaypoints)) {
+				response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+			} else {
+				response = GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false);
+			}
 			return new String(((TypedByteArray)response.getBody()).getBytes());
 		} catch (Exception e) {
 			e.printStackTrace();

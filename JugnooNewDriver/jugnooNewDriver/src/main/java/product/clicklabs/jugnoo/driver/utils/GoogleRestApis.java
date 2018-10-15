@@ -16,6 +16,7 @@ public class GoogleRestApis {
 
 	public static Response getDirections(String originLatLng, String destLatLng, Boolean sensor,
 										 String mode, Boolean alternatives){
+		Log.e(GoogleRestApis.class.getSimpleName(), "getDirections hit");
 		if(BuildConfig.MAPS_APIS_SIGN) {
 			String urlToSign = "/maps/api/directions/json?" +
 					"origin=" + originLatLng
@@ -41,6 +42,7 @@ public class GoogleRestApis {
 
 	public static Response getDistanceMatrix(String originLatLng, String destLatLng, String language,
 											 Boolean sensor, Boolean alternatives){
+		Log.e(GoogleRestApis.class.getSimpleName(), "getDistanceMatrix hit");
 		if(BuildConfig.MAPS_APIS_SIGN) {
 			String urlToSign = "/maps/api/distancematrix/json?" +
 					"origins=" + originLatLng
@@ -64,6 +66,7 @@ public class GoogleRestApis {
 	}
 
 	public static Response geocode(String latLng, String language){
+		Log.e(GoogleRestApis.class.getSimpleName(), "geocode hit");
 		if(BuildConfig.MAPS_APIS_SIGN) {
 			String urlToSign = "/maps/api/geocode/json?" +
 					"latlng=" + latLng
@@ -84,6 +87,7 @@ public class GoogleRestApis {
 
 
 	public static Response getDirectionsWaypoints(String strOrigin, String strDestination, String strWaypoints){
+		Log.e(GoogleRestApis.class.getSimpleName(), "getDirectionsWaypoints hit");
 		if(BuildConfig.MAPS_APIS_SIGN) {
 			String urlToSign = "/maps/api/directions/json?" +
 					"origin=" + strOrigin

@@ -145,6 +145,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
+import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
@@ -459,7 +460,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
     private final int MAP_ANIMATION_TIME = 300;
-    private final double DISTANCE_UPPERBOUND = 300000;
     public long refreshPolyLineDelay = 0;
 
     public ASSL assl;
@@ -2879,6 +2879,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     @Override
                     public boolean onMarkerClick(Marker arg0) {
+                        if(arg0.getTitle() == null || TextUtils.isDigitsOnly(arg0.getTitle())){
+                            map.setInfoWindowAdapter(null);
+                            return false;
+                        }
                         if (arg0.getTitle().equalsIgnoreCase((getResources().getString(R.string.pickup_location)))) {
                             CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.pickup_location), "");
                             map.setInfoWindowAdapter(customIW);
@@ -3666,8 +3670,34 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
                 reconnectLocationFetchers();
             }
+            // TODO: 12/10/18 revert
+            for(Marker marker : markersWaypoints){
+                marker.remove();
+            }
+            if(polylineWaypoints != null){
+                polylineWaypoints.remove();
+            }
+            if(!TextUtils.isEmpty(Data.getCurrentEngagementId())) {
+                ArrayList<RideData> rideDataArrayList = Database2.getInstance(HomeActivity.this).getRideDataWaypoints(Integer.parseInt(Data.getCurrentEngagementId()));
+                for (RideData rideData : rideDataArrayList) {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(new LatLng(rideData.lat, rideData.lng));
+                    markersWaypoints.add(map.addMarker(markerOptions));
+                }
+            } else {
+                for(MarkerOptions markerOptions : markerOptionsWaypoints){
+                    markersWaypoints.add(map.addMarker(markerOptions));
+                }
+                if(polylineOptionsWaypoints != null) {
+                    polylineWaypoints = map.addPolyline(polylineOptionsWaypoints);
+                }
+            }
         }
     };
+    ArrayList<Marker> markersWaypoints = new ArrayList<>();
+    ArrayList<MarkerOptions> markerOptionsWaypoints = new ArrayList<>();
+    Polyline polylineWaypoints;
+    PolylineOptions polylineOptionsWaypoints;
 
     OnClickListener startNavigation = new OnClickListener() {
 
@@ -6144,7 +6174,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                 if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
-                                    Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
+                                    Database2.getInstance(activity).insertRideData(activity, "0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
                                     Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "arrived sucessful");
                                     if (jObj.has("pickup_data")) {
                                         Gson gson = new Gson();
@@ -6441,6 +6471,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     }
                 }
+
+                // TODO: 13/10/18 hit of waypoints here
+                if(Prefs.with(context).getInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
+                    waypointsRetryCount = 0;
+                    hitWaypoints(activity, customerInfo, dropLatitude, dropLongitude, rideDatas);
+                }
+
+
                 runOnUiThread(new Runnable() {
 
                     @Override
@@ -6451,6 +6490,63 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 });
             }
         }).start();
+    }
+
+    private int waypointsRetryCount = 0;
+    private void hitWaypoints(Context context, CustomerInfo customerInfo, double dropLatitude, double dropLongitude, ArrayList<RideData> rideDatas) {
+        try {
+            waypointsRetryCount++;
+            if(waypointsRetryCount > Prefs.with(context).getInt(KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE, 3)){
+                return;
+            }
+            Response response;
+            String strOrigin = customerInfo.requestlLatLng.latitude+","+customerInfo.requestlLatLng.longitude;
+            String strDestination = dropLatitude+","+dropLongitude;
+            if(rideDatas.size() > 0){
+                StringBuilder sb = new StringBuilder();
+                for(RideData rideData : rideDatas){
+                    sb.append("via:")
+                            .append(rideData.lat)
+                            .append("%2C")
+                            .append(rideData.lng)
+                            .append("%7C");
+                }
+                response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, sb.toString());
+            } else {
+                response = GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false);
+            }
+            String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
+            JSONObject jsonObject = new JSONObject(responseStr);
+            String status = jsonObject.getString("status");
+            double distanceOfPath = 0;
+            if ("OK".equalsIgnoreCase(status)) {
+                JSONArray legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+                for(int i=0; i<legs.length(); i++){
+                    JSONObject leg = legs.getJSONObject(i);
+                    distanceOfPath = distanceOfPath + leg.getJSONObject("distance").getDouble("value");
+                }
+                // TODO: 15/10/18 extra
+                    List<LatLng> list = MapUtils.getLatLngListFromPath(responseStr);
+                    if (list.size() > 0) {
+                        polylineOptionsWaypoints = new PolylineOptions();
+                        polylineOptionsWaypoints.width(ASSL.Xscale() * 8).color(Color.BLUE).geodesic(true);
+                        for (int z = 0; z < list.size(); z++) {
+                            polylineOptionsWaypoints.add(list.get(z));
+                        }
+                        for (RideData rideData : rideDatas) {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(new LatLng(rideData.lat, rideData.lng));
+                            markerOptions.title(""+distanceOfPath);
+                            markerOptionsWaypoints.add(markerOptions);
+                        }
+                    }
+            }
+            customerInfo.setWaypointDistance(distanceOfPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            customerInfo.setWaypointDistance(0);
+            hitWaypoints(context, customerInfo, dropLatitude, dropLongitude, rideDatas);
+        }
     }
 
     /**
@@ -6555,6 +6651,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
         params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
         params.put("ride_distance_using_haversine", String.valueOf(totalHaversineDistanceInKm));
+        params.put(KEY_METERING_DISTANCE, String.valueOf(customerInfo.getSPSavedDistance(customerRideDataGlobal.getDistance(HomeActivity.this),
+                HomeActivity.this)/1000D));
+        params.put(KEY_WAYPOINT_DISTANCE, String.valueOf(customerInfo.getWaypointDistance()/1000D));
+
+
         HomeUtil.putDefaultParams(params);
 
         enteredMeterFare = 0;
@@ -8826,10 +8927,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (UserMode.DRIVER == userMode
                 && (DriverScreenMode.D_IN_RIDE == driverScreenMode
                 || DriverScreenMode.D_ARRIVED == driverScreenMode)) {
-            if (distance < DISTANCE_UPPERBOUND) {
+            if (distance < Prefs.with(this).getInt(KEY_TOTAL_DISTANCE_MAX, GpsDistanceCalculator.TOTAL_DISTANCE_MAX)) {
                 customerRideDataGlobal.setDistance(distance);
             } else {
-                customerRideDataGlobal.setDistance(DISTANCE_UPPERBOUND);
+                customerRideDataGlobal.setDistance(Prefs.with(this).getInt(KEY_TOTAL_DISTANCE_MAX, GpsDistanceCalculator.TOTAL_DISTANCE_MAX));
             }
             customerRideDataGlobal.setHaversineDistance(totalHaversineDistance);
             customerRideDataGlobal.setWaitTime(waitTime);

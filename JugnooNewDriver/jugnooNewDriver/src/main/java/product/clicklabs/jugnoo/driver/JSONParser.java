@@ -481,6 +481,14 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DRIVER_START_DISTANCE, userData.optInt(KEY_DRIVER_START_DISTANCE, dist));
 		Prefs.with(context).save(Constants.KEY_BATTERY_CHECK_ACCEPT, userData.optInt(KEY_BATTERY_CHECK_ACCEPT, context.getResources().getInteger(R.integer.battery_check_accept)));
 		Prefs.with(context).save(Constants.KEY_BATTERY_CHECK_START, userData.optInt(KEY_BATTERY_CHECK_START, context.getResources().getInteger(R.integer.battery_check_start)));
+
+		Prefs.with(context).save(KEY_USE_DIRECTIONS_API_FOR_METERING, userData.optInt(KEY_USE_DIRECTIONS_API_FOR_METERING, context.getResources().getInteger(R.integer.use_directions_api_for_metering)));
+		Prefs.with(context).save(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, userData.optInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, context.getResources().getInteger(R.integer.enable_waypoints_distance_calculation)));
+		Prefs.with(context).save(KEY_WAYPOINTS_COLLECTION_INTERVAL, userData.optInt(KEY_WAYPOINTS_COLLECTION_INTERVAL, context.getResources().getInteger(R.integer.waypoints_collection_interval)));
+		Prefs.with(context).save(KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE, userData.optInt(KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE, context.getResources().getInteger(R.integer.waypoints_retry_count_at_endride)));
+		Prefs.with(context).save(KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, userData.optInt(KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, context.getResources().getInteger(R.integer.use_waypoint_distance_for_fare)));
+		Prefs.with(context).save(KEY_TOTAL_DISTANCE_MAX, userData.optInt(KEY_TOTAL_DISTANCE_MAX, context.getResources().getInteger(R.integer.total_distance_max)));
+		Prefs.with(context).save(KEY_DELTA_DISTANCE_MAX, userData.optInt(KEY_DELTA_DISTANCE_MAX, context.getResources().getInteger(R.integer.delta_distance_max)));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

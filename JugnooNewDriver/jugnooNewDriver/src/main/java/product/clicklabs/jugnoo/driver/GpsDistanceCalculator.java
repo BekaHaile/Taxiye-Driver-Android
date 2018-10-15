@@ -51,6 +51,8 @@ public class GpsDistanceCalculator {
 	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
 	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
 	public final double WAIT_TIME_RESET_TOLERANCE = 10000; // in milliseconds
+	public static final int TOTAL_DISTANCE_MAX = 200000;
+	public static final int DELTA_DISTANCE_MAX = 20000;
 
 
 	public double totalDistance;
@@ -432,8 +434,8 @@ public class GpsDistanceCalculator {
 	private synchronized boolean addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation) {
 		try {
 			final double displacement = MapUtils.distance(lastLatLng, currentLatLng);
-			if (Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)))) == 1
-					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1) {
+			if (!useDirectionsApi() || (Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)))) == 1
+					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1)) {
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if (validDistance) {
 					if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
@@ -452,6 +454,7 @@ public class GpsDistanceCalculator {
 					rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
 							currentLatLng.latitude, currentLatLng.longitude, 1, 1);
 				}
+				Log.e(TAG, "callGoogleDirectionsAPI");
 				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
 				return true;
 			} else {
@@ -466,13 +469,13 @@ public class GpsDistanceCalculator {
 	private synchronized boolean updateTotalDistance(LatLng lastLatLng, LatLng currentLatLng, double deltaDistance, Location currentLocation) {
 		boolean validDistance = false;
 		try {
-			if (deltaDistance > 0.0 && deltaDistance < 20001) {
+			if (deltaDistance > 0.0 && deltaDistance < Prefs.with(context).getInt(Constants.KEY_DELTA_DISTANCE_MAX, DELTA_DISTANCE_MAX)) {
 				LatLngPair latLngPair = new LatLngPair(lastLatLng, currentLatLng, deltaDistance);
 				if (deltaLatLngPairs == null) {
 					deltaLatLngPairs = new ArrayList<LatLngPair>();
 				}
 
-				if (!deltaLatLngPairs.contains(latLngPair) && totalDistance < 200001) {
+				if (!deltaLatLngPairs.contains(latLngPair) && totalDistance < Prefs.with(context).getInt(Constants.KEY_TOTAL_DISTANCE_MAX, TOTAL_DISTANCE_MAX)) {
 					totalDistance = totalDistance + deltaDistance;
 					deltaLatLngPairs.add(latLngPair);
 					validDistance = true;
@@ -842,6 +845,10 @@ public class GpsDistanceCalculator {
 			gsmLocation = location;
 		}
 	};
-	
+
+
+	private boolean useDirectionsApi(){
+		return Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
+	}
 
 }
