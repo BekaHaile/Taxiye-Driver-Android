@@ -480,7 +480,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PlaceSearchListFragment placeSearchListFragment;
 
-    public RelativeLayout relativeLayoutContainer;
+    public RelativeLayout relativeLayoutContainer, relativeLayoutContainerEarnings;
     private ArrayList<Marker> requestMarkers = new ArrayList<>();
     ArrayList<Tile> infoTileResponses = new ArrayList<>();
     private final double FIX_ZOOM_DIAGONAL = 200;
@@ -563,7 +563,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 
             relativeLayoutContainer = (RelativeLayout) findViewById(R.id.relativeLayoutContainer);
+            relativeLayoutContainerEarnings = (RelativeLayout) findViewById(R.id.relativeLayoutContainerEarnings);
             relativeLayoutContainer.setVisibility(View.GONE);
+            relativeLayoutContainerEarnings.setVisibility(View.GONE);
 
             relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
             textViewAutosOn = (TextView) findViewById(R.id.textViewAutosOn);
