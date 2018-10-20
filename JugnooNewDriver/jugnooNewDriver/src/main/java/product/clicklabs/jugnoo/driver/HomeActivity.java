@@ -6181,7 +6181,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                                 if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
-                                    Database2.getInstance(activity).insertRideData(activity, "0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId());
+                                    Database2.getInstance(activity).insertRideData(activity, "0.0", "0.0", "" + System.currentTimeMillis(), customerInfo.getEngagementId(), false);
                                     Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "arrived sucessful");
                                     if (jObj.has("pickup_data")) {
                                         Gson gson = new Gson();

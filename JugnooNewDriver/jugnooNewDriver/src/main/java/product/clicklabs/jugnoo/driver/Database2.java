@@ -992,7 +992,7 @@ public class Database2 {                                                        
 		return rideDatas;
 	}
 
-	public void insertRideData(Context context, String lat, String lng, String t, int engagementId) {
+	public void insertRideData(Context context, String lat, String lng, String t, int engagementId, boolean isInRideState) {
 		try {
 			double accDistance = 0;
 			try {
@@ -1034,7 +1034,7 @@ public class Database2 {                                                        
 				e.printStackTrace();
 			}
 			int isWayPoint = 0;
-			if(Prefs.with(context).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+			if(isInRideState && Prefs.with(context).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
 				RideData rideDataLastWP = getLastRideDataWaypoint(engagementId);
 				if (rideDataLastWP == null || (Long.parseLong(t) - rideDataLastWP.t) >= Prefs.with(context).getInt(Constants.KEY_WAYPOINTS_COLLECTION_INTERVAL, 120000)) {
 					isWayPoint = 1;

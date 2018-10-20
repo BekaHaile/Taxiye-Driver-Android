@@ -380,7 +380,8 @@ public class GpsDistanceCalculator {
 					calculateWaitTime(speedMPS);
 					boolean locationAccepted = addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
-						MyApplication.getInstance().insertRideDataToEngagements("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+						MyApplication.getInstance().insertRideDataToEngagements("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis(),
+								isInRideState());
 						MyApplication.getInstance().writePathLogToFile("m", "first time lastLatLng =" + lastLatLng);
 					}
 					if(locationAccepted){
@@ -438,7 +439,7 @@ public class GpsDistanceCalculator {
 					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1)) {
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if (validDistance) {
-					if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
+					if(isInRideState()) {
 						Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
 								currentLatLng.latitude, currentLatLng.longitude, 0, 0);
 					}
@@ -450,7 +451,7 @@ public class GpsDistanceCalculator {
 				return true;
 			} else if(Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) >= 0){
 				long rowId = -1;
-				if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
+				if(isInRideState()) {
 					rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
 							currentLatLng.latitude, currentLatLng.longitude, 1, 1);
 				}
@@ -464,6 +465,10 @@ public class GpsDistanceCalculator {
 			e.printStackTrace();
 			return true;
 		}
+	}
+
+	private boolean isInRideState() {
+		return getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal();
 	}
 
 	private synchronized boolean updateTotalDistance(LatLng lastLatLng, LatLng currentLatLng, double deltaDistance, Location currentLocation) {
@@ -482,7 +487,8 @@ public class GpsDistanceCalculator {
 
 					lastLocationTime = System.currentTimeMillis();
 
-					MyApplication.getInstance().insertRideDataToEngagements("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+					MyApplication.getInstance().insertRideDataToEngagements("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis(),
+							isInRideState());
 
 					MyApplication.getInstance().writePathLogToFile("m",
 							DateOperations.getTimeStampFromMillis(currentLocation.getTime()) + ","

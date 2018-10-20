@@ -199,10 +199,10 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         }).start();
     }
 
-    public void insertRideDataToEngagements(String lat, String lng, String t) {
+    public void insertRideDataToEngagements(String lat, String lng, String t, boolean isInRideState) {
         try {
             for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
-                Database2.getInstance(this).insertRideData(this, lat, lng, t, engagementSPData.getEngagementId());
+                Database2.getInstance(this).insertRideData(this, lat, lng, t, engagementSPData.getEngagementId(), isInRideState);
             }
         } catch (Exception e) {
             e.printStackTrace();

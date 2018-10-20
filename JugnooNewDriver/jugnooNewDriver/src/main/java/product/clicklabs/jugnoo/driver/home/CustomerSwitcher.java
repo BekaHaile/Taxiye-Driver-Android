@@ -194,7 +194,7 @@ public class CustomerSwitcher {
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-											textViewCustomerPickupAddress, textViewCustomerAddressInRide)).execute();
+											textViewCustomerPickupAddress, textViewCustomerAddressInRide, true)).execute();
 							dropAddress = (String) textViewCustomerPickupAddress.getText();
 //							textViewCustomerAddressInRide.setText(dropAddress);
 						}else {
@@ -227,7 +227,7 @@ public class CustomerSwitcher {
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-										textViewCustomerPickupAddress, null)).execute();
+										textViewCustomerPickupAddress, null, false)).execute();
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
@@ -252,7 +252,7 @@ public class CustomerSwitcher {
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-											activity.tvDropAddressToggleView, null)).execute();
+											activity.tvDropAddressToggleView, null, true)).execute();
 						} else {
 							activity.tvDropAddressToggleView.setText(customerInfo.getDropAddress());
 						}
@@ -372,10 +372,12 @@ public class CustomerSwitcher {
 
 		private int engagementId;
 		private TextView textView, textView1;
+		private boolean isDrop;
 
-		public CustomGoogleGeocodeCallback(int engagementId, TextView textView, TextView textView1) {
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView, TextView textView1, boolean isDrop) {
 			this.engagementId = engagementId;
 			this.textView = textView;
+			this.isDrop = isDrop;
 			if(textView1 !=null) {
 				this.textView1 = textView1;
 			}
@@ -392,7 +394,11 @@ public class CustomerSwitcher {
 		@Override
 		public void onPost(String address) {
 			try {
-				Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
+				if(isDrop){
+					Data.getCustomerInfo(String.valueOf(engagementId)).setDropAddress(address);
+				} else {
+					Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
+				}
 				textView.setText(address);
 				if(textView1 !=null) {
 					textView1.setText(address);
