@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:background="@color/red_status"
             android:layout_below="@+id/topBar"
-            android:visibility="visible"
+            android:visibility="gone"
             >
             <TextView
                 android:id="@+id/tour_textView"
@@ -203,6 +203,12 @@
                 android:focusable="false"
                 android:descendantFocusability="afterDescendants"
                 />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutContainerEarnings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"/>
 
         </RelativeLayout>
 

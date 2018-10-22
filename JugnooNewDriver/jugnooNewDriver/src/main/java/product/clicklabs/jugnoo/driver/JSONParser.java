@@ -489,6 +489,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, userData.optInt(KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, context.getResources().getInteger(R.integer.use_waypoint_distance_for_fare)));
 		Prefs.with(context).save(KEY_TOTAL_DISTANCE_MAX, userData.optInt(KEY_TOTAL_DISTANCE_MAX, context.getResources().getInteger(R.integer.total_distance_max)));
 		Prefs.with(context).save(KEY_DELTA_DISTANCE_MAX, userData.optInt(KEY_DELTA_DISTANCE_MAX, context.getResources().getInteger(R.integer.delta_distance_max)));
+
+		Prefs.with(context).save(KEY_EARNINGS_AS_HOME, userData.optInt(KEY_EARNINGS_AS_HOME, context.getResources().getInteger(R.integer.earnings_as_home)));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
