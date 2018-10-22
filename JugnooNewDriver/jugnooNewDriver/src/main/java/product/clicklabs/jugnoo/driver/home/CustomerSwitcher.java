@@ -246,7 +246,8 @@ public class CustomerSwitcher {
 						textViewCustomerCashRequired.setVisibility(View.GONE);
 					}
 					if(customerInfo.getDropLatLng() != null) {
-						activity.bDropAddressToggle.setVisibility(View.VISIBLE);
+						activity.bDropAddressToggle.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0)
+								? View.GONE : View.VISIBLE);
 						activity.bDropAddressToggle.setText(R.string.drop_location);
 						activity.tvDropAddressToggleView.setText(R.string.loading);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){

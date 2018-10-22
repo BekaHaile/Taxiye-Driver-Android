@@ -491,6 +491,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DELTA_DISTANCE_MAX, userData.optInt(KEY_DELTA_DISTANCE_MAX, context.getResources().getInteger(R.integer.delta_distance_max)));
 
 		Prefs.with(context).save(KEY_EARNINGS_AS_HOME, userData.optInt(KEY_EARNINGS_AS_HOME, context.getResources().getInteger(R.integer.earnings_as_home)));
+		Prefs.with(context).save(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, userData.optInt(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, context.getResources().getInteger(R.integer.show_drop_address_before_inride)));
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -790,6 +791,9 @@ public class JSONParser implements Constants {
 				Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
+				if(Prefs.with(context).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0){
+					requestAddress = jActiveRequest.optString(Constants.KEY_PICKUP_ADDRESS, requestAddress);
+				}
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 
 				String startTime = jActiveRequest.getString("start_time");

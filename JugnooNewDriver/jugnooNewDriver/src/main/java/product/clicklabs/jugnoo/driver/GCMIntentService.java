@@ -568,6 +568,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 									String startTime = jObj.getString("start_time");
 									String address = jObj.getString("address");
+									if(Prefs.with(this).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0){
+										address = jObj.optString(Constants.KEY_PICKUP_ADDRESS, address);
+									}
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
