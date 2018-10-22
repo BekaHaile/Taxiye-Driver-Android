@@ -330,7 +330,9 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 
 	public void updateData(DriverEarningsResponse driverEarningsResponse, boolean walletClick) {
-
+		if(getView() == null){
+			return;
+		}
 		if (driverEarningsResponse != null) {
 
 			nsvRoot.findViewById(R.id.layout_recycler).setVisibility(View.VISIBLE);

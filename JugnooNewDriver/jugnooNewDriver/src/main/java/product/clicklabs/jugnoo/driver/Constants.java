@@ -401,5 +401,6 @@ public interface Constants {
 	String KEY_METERING_DISTANCE = "metering_distance";
 
 	String KEY_WAYPOINTS = "waypoints";
+	String KEY_EARNINGS_AS_HOME = "driver_earnings_as_home";
 }
 

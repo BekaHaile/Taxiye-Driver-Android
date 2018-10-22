@@ -69,7 +69,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-
 import com.fugu.HippoConfig;
 import com.fugu.HippoNotificationConfig;
 import com.fugu.HippoTicketAttributes;
@@ -159,6 +158,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
+import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
@@ -252,7 +252,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     LinearLayout driverRatingRl;
     TextView inviteFriendText, notificationCenterText;
 
-    RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
+    RelativeLayout bookingsRl, rlNotificationCenter, etaTimerRLayout;
     TextView bookingsText, etaTimerText;
 
     RelativeLayout relativeLayoutSharingRides;
@@ -303,7 +303,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout driverInitialLayout;
     ListView driverRideRequestsList;
     Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial, bEditProfile, bEditRateCard;
-    TextView jugnooOffText, temptext, textViewDocText, textViewDocDayText;
+    TextView jugnooOffText, tvTitle, textViewDocText, textViewDocDayText;
 
     DriverRequestListAdapter driverRequestListAdapter;
 
@@ -577,12 +577,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             ((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Fonts.mavenRegular(getApplicationContext()));
             imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
-            temptext = (TextView) findViewById(R.id.temptext);
-            temptext.setTypeface(Fonts.mavenMedium(getApplicationContext()));
-//			textShader=new LinearGradient(0, 0, 0, 20,
-//					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-//					new float[]{0, 1}, Shader.TileMode.CLAMP);
-//			temptext.getPaint().setShader(textShader);
+            tvTitle = (TextView) findViewById(R.id.tvTitle);
+            tvTitle.setTypeface(Fonts.mavenMedium(getApplicationContext()));
 
             relativeLayoutDeliveryOn = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOn);
             textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
@@ -605,7 +601,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             notificationCenterText.setText(getResources().getString(R.string.Notifications));
 
             bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
-            RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
+            rlNotificationCenter = (RelativeLayout) findViewById(R.id.rlNotificationCenter);
             bookingsText = (TextView) findViewById(R.id.bookingsText);
             bookingsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
@@ -1338,7 +1334,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-            RelativeLayoutNotificationCenter.setOnClickListener(new OnClickListener() {
+            rlNotificationCenter.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
@@ -1396,6 +1392,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     drawerLayout.closeDrawer(GravityCompat.START);
+                    if(relativeLayoutContainerEarnings.getVisibility() == View.VISIBLE){
+                        earningsVisibility(View.GONE);
+                    }
                 }
             });
 
@@ -1532,8 +1531,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             earningsRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                    if((Data.getAssignedCustomerInfos() == null || Data.getAssignedCustomerInfos().size() == 0)
+                            && driverScreenMode == DriverScreenMode.D_INITIAL && Prefs.with(HomeActivity.this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1){
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        earningsVisibility(View.VISIBLE);
+                    } else {
+                        startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
+                        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                    }
                 }
             });
 
@@ -4072,6 +4077,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 e.printStackTrace();
             }
 
+            earningsVisibility((mode == DriverScreenMode.D_INITIAL && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1) ? View.VISIBLE : View.GONE);
+
             switch (mode) {
 
                 case D_INITIAL:
@@ -5090,6 +5097,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     !visible) {
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                     relativeLayoutContainer.setVisibility(View.GONE);
+                }
+                if(getSupportFragmentManager().getBackStackEntryCount() == 1
+                        && getSupportFragmentManager().findFragmentByTag(DriverEarningsFragment.class.getName()) != null){
+                    ActivityCompat.finishAffinity(this);
+                    return;
                 }
                 super.onBackPressed();
                 setMakeDeliveryButtonVisibility();
@@ -8249,11 +8261,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     map.setPadding(0, 0, 0, 0);
                 }
 
+                if(customerInfos.size() > 0){
+                    earningsVisibility(View.GONE);
+                } else {
+                    earningsVisibility((driverScreenMode == DriverScreenMode.D_INITIAL && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1) ? View.VISIBLE : View.GONE);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void earningsVisibility(int visibility){
+
+        if (visibility == View.VISIBLE){
+            if(relativeLayoutContainerEarnings.getVisibility() != View.VISIBLE) {
+                relativeLayoutContainerEarnings.setVisibility(View.VISIBLE);
+                if(getSupportFragmentManager().findFragmentByTag(DriverEarningsFragment.class.getName()) == null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(relativeLayoutContainerEarnings.getId(), new DriverEarningsFragment(), DriverEarningsFragment.class.getName())
+                            .addToBackStack(DriverEarningsFragment.class.getName())
+                            .commitAllowingStateLoss();
+                }
+                rlNotificationCenter.setVisibility(View.GONE);
+                tvTitle.setText(R.string.earnings);
+            }
+        } else {
+            relativeLayoutContainerEarnings.setVisibility(View.GONE);
+            if(getSupportFragmentManager().findFragmentByTag(DriverEarningsFragment.class.getName()) != null) {
+                getSupportFragmentManager().popBackStack();
+            }
+            rlNotificationCenter.setVisibility(View.VISIBLE);
+            tvTitle.setText(R.string.appname);
+        }
     }
 
     @Override
