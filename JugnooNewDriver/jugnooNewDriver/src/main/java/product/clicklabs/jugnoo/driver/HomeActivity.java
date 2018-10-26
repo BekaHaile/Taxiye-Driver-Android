@@ -96,6 +96,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -6523,15 +6524,48 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             String strOrigin = customerInfo.requestlLatLng.latitude+","+customerInfo.requestlLatLng.longitude;
             String strDestination = dropLatitude+","+dropLongitude;
             if(rideDatas.size() > 0){
-                StringBuilder sb = new StringBuilder();
-                for(RideData rideData : rideDatas){
-                    sb.append("via:")
-                            .append(rideData.lat)
-                            .append("%2C")
-                            .append(rideData.lng)
-                            .append("%7C");
+                StringBuilder sbWaypoints = new StringBuilder();
+
+                //first passing logged latlngs to Snap to road api to smoothen route
+                StringBuilder sbRoads = new StringBuilder();
+                for(int i=0; i<rideDatas.size(); i++){
+                    RideData rideData = rideDatas.get(i);
+                    sbRoads.append(rideData.lat).append(',').append(rideData.lng);
+                    if(i < rideDatas.size()-1){
+                        sbRoads.append('|');
+                    }
                 }
-                response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, sb.toString());
+                try {
+                    Response responseRoads = GoogleRestApis.snapToRoads(sbRoads.toString());
+                    String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
+                    JSONObject jsonObject = new JSONObject(responseStr);
+                    JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
+
+                    //if response has snappedPoints, then adding latLngs
+                    if(snappedPoints != null && snappedPoints.length() > 0){
+                        for(int i=0; i<snappedPoints.length(); i++){
+                            JSONObject location = snappedPoints.getJSONObject(i).optJSONObject("location");
+                            if(location != null) {
+                                sbWaypoints.append(location.getDouble("latitude"))
+                                        .append("%2C")
+                                        .append(location.getDouble("longitude"))
+                                        .append("%7C");
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //if no points in snap to roads api use logged points directly
+                if(sbWaypoints.length() == 0) {
+                    for (RideData rideData : rideDatas) {
+                        sbWaypoints.append(rideData.lat)
+                                .append("%2C")
+                                .append(rideData.lng)
+                                .append("%7C");
+                    }
+                }
+                response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString());
             } else {
                 response = GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false);
             }

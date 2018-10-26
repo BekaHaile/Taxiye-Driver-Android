@@ -23,12 +23,14 @@ public class RestClient {
 	private static APIServices API_SERVICES;
 	private static DirectionAPIService DISTANCE_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
+	private static RoadApiService ROADS_API_SERVICE;
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
 	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
 
 	static {
 		setupRestClient();
 		setupGoogleAPIRestClient();
+		setupRoadsApiRestClient();
 		setupDistanceAPIRestClient();
 		setupPushAckAPIRestClient();
 		setupChatAPIRestClient();
@@ -114,6 +116,30 @@ public class RestClient {
 
 	public static GoogleAPIServices getGoogleApiServices() {
 		return GOOGLE_API_SERVICES;
+	}
+
+
+
+	public static void setupRoadsApiRestClient() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint("https://roads.googleapis.com")
+				.setClient(new Ok3Client(getOkHttpClient()))
+				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+
+		RestAdapter restAdapter = builder.build();
+		ROADS_API_SERVICE = restAdapter.create(RoadApiService.class);
+	}
+
+	public static RoadApiService getRoadsApiService() {
+		return ROADS_API_SERVICE;
 	}
 
 

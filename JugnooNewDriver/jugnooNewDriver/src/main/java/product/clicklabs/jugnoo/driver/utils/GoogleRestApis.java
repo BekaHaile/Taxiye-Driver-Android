@@ -110,6 +110,27 @@ public class GoogleRestApis {
 		}
 	}
 
+	public static Response snapToRoads(String path){
+		Log.e(GoogleRestApis.class.getSimpleName(), "snapToRoads hit");
+		if(BuildConfig.MAPS_APIS_SIGN) {
+			String urlToSign = "/v1/snapToRoads?" +
+					"path=" + path
+					+ "&client=" + BuildConfig.MAPS_CLIENT
+					+ "&channel=" + BuildConfig.FLAVOR + "-android-driver";
+			String googleSignature = null;
+			try {
+				googleSignature = generateGoogleSignature(urlToSign);
+			} catch (Exception ignored) {
+			}
+
+
+			return RestClient.getRoadsApiService().snapToRoads(path, BuildConfig.MAPS_CLIENT,
+					BuildConfig.FLAVOR + "-android-driver", googleSignature);
+		} else {
+			return RestClient.getRoadsApiService().snapToRoads(path, BuildConfig.MAPS_BROWSER_KEY);
+		}
+	}
+
 	private static String generateGoogleSignature(String urlToSign) throws NoSuchAlgorithmException,
 			InvalidKeyException {
 
