@@ -1,14 +1,17 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.content.Context;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel;
 
 /**
  * Created by Parminder Saini on 13/09/18.
  */
-public class DocFieldsInfo implements Parcelable {
+public class DocFieldsInfo extends SearchDataModel {
 
     @SerializedName("key")
     private String key;
@@ -23,33 +26,41 @@ public class DocFieldsInfo implements Parcelable {
 
     @SerializedName("value")
     private String value;
+    @SerializedName("set_value")
+    private List<String> setValue;
+    @SerializedName("set")
+    private List<DocFieldsInfo> set;
 
-    protected DocFieldsInfo(Parcel in) {
-        key = in.readString();
-        label = in.readString();
-        type = in.readString();
-        value = in.readString();
-    }
-
-    public static final Creator<DocFieldsInfo> CREATOR = new Creator<DocFieldsInfo>() {
-        @Override
-        public DocFieldsInfo createFromParcel(Parcel in) {
-            return new DocFieldsInfo(in);
-        }
-
-        @Override
-        public DocFieldsInfo[] newArray(int size) {
-            return new DocFieldsInfo[size];
-        }
-    };
+    @SerializedName("is_selected")
+    private boolean isSelected;
 
     public String getKey() {
         return key;
     }
 
     public String getLabel() {
+        if(type.equalsIgnoreCase("element")){
+            return value;
+        }
         return label;
     }
+
+    @Override
+    public int getImage(Context context) {
+        return 0;
+    }
+
+    @Override
+    public boolean showImage() {
+        return false;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+
 
     public String getType() {
         return type;
@@ -63,16 +74,23 @@ public class DocFieldsInfo implements Parcelable {
         this.value = value;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public List<String> getSetValue() {
+        return setValue;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(key);
-        dest.writeString(label);
-        dest.writeString(type);
-        dest.writeString(value);
+    public void setSetValue(List<String> setValue) {
+        this.setValue = setValue;
+    }
+
+    public List<DocFieldsInfo> getSet() {
+        return set;
+    }
+
+    public void setSet(List<DocFieldsInfo> set) {
+        this.set = set;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

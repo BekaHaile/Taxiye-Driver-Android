@@ -7,25 +7,31 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
+import android.support.v7.app.AppCompatActivity
+import android.text.InputFilter
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.picker.CountryPickerDialog
+import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
-import product.clicklabs.jugnoo.driver.R.id.parentView
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
+import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
+import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.inflate
 import product.clicklabs.jugnoo.driver.utils.pxValue
@@ -48,9 +54,10 @@ class DocumentDetailsFragment:Fragment(){
         fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int) =
                 DocumentDetailsFragment().apply {
                     arguments = Bundle().apply {
+                        val gson = Gson()
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putInt(ARGS_POS, pos)
-                        putParcelable(ARGS_DOC_INFO, docInfo)
+                        putString(ARGS_DOC_INFO, gson.toJson(docInfo))
                     }
                 }
     }
@@ -65,10 +72,22 @@ class DocumentDetailsFragment:Fragment(){
 
     val documentInputFields = arrayListOf<DocumentInputField>()
 
+    enum class FieldTypes(val type: String){
+        DATE("date"),
+        TEXT("text"),
+        SET_SS("set-ss"),
+        SET_MS("set-ms"),
+        TEXT_NS("text-ns"),
+        DATE_PAST("date-past"),
+        DATE_FUTURE("date-future"),
+        INT("int")
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        docInfo = arguments!!.getParcelable(ARGS_DOC_INFO)
+        val gson = Gson()
+        docInfo = gson.fromJson(arguments!!.getString(ARGS_DOC_INFO), DocInfo::class.java)
         accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN)
         pos = arguments!!.getInt(ARGS_POS)
     }
@@ -102,8 +121,8 @@ class DocumentDetailsFragment:Fragment(){
                 lastEdtId = editText.id
 
                 documentInputFields.add(DocumentInputField(item.key,item.label,item.value,
-                        editText, if(inputTypeMap.containsKey(item.type))inputTypeMap[item.type]!!else InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
-                        docInfo.isDocInfoEditable, requireContext()))
+                        editText, item.type,
+                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext()))
 
 
             }
@@ -147,7 +166,11 @@ class DocumentDetailsFragment:Fragment(){
 
 
         val listInputFields = documentInputFields.map {
-           ServerRequestInputFields(it.key, it.getValue())
+            if(it.inputType == FieldTypes.SET_SS.type || it.inputType == FieldTypes.SET_MS.type){
+                ServerRequestInputFields(it.key, it.getValue(), it.setValue)
+            } else {
+                ServerRequestInputFields(it.key, it.getValue(), null)
+            }
         }
 
         val element = gson.toJsonTree(listInputFields, object : TypeToken<List<ServerRequestInputFields>>() {}.type)
@@ -209,13 +232,15 @@ class DocumentInputField(
         var label: String,
         value:String?,
         var inputField: EditText,
-        var inputType: Int,
+        var inputType: String,
         isEditable:Boolean,
+        var set: List<DocFieldsInfo>?,
+        var setValue: ArrayList<String>?,
         var context: Context) {
 
     val FORMAT_UTC = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
+    val blockCharacterSet = "@#₹_&-+()/*\"':;!?~`|•√``™£¢∞§¶•ªº–≠œ∑´´†¥¨ˆˆπ“‘«åß∂ƒ©˙∆˚¬…æΩ≈ç√∫˜˜≤≥ç÷×€°®✓ !\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
 
 
@@ -246,8 +271,23 @@ class DocumentInputField(
 
     init {
         FORMAT_UTC.timeZone = TimeZone.getTimeZone("UTC")
-        inputField.inputType = inputType
         inputField.hint = label
+
+        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type || inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type) {
+            if (setValue == null) {
+                setValue = ArrayList<String>()
+            }
+
+            if (setValue!!.size == 0 && value != null && !value.isEmpty()) {
+                val arr = value.split(",");
+                for(str in arr){
+                    setValue!!.add(str.trim())
+                }
+                for (df in set!!.iterator()) {
+                    df.isSelected = setValue!!.contains(df.value)
+                }
+            }
+        }
         setText(value)
         inputField.isEnabled = isEditable
 
@@ -255,44 +295,141 @@ class DocumentInputField(
     }
 
     private fun setText(value: String?) {
-        if (inputType == InputType.TYPE_CLASS_DATETIME) {
-            try {
-                if (!value.isNullOrBlank()) {
-                    val date = FORMAT_UTC.parse(value)
-                    calendar.timeInMillis = date.time
-                    inputField.setText(DOB_DATE_FORMAT.format(calendar.timeInMillis))
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+
+        when (inputType){
+            DocumentDetailsFragment.FieldTypes.INT.type ->{
+                inputField.inputType = InputType.TYPE_CLASS_NUMBER
                 inputField.setText(value)
+                inputField.setSelection(value!!.length)
+            }
+            DocumentDetailsFragment.FieldTypes.TEXT.type ->{
+                inputField.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+                inputField.setText(value)
+                inputField.setSelection(value!!.length)
+            }
+            DocumentDetailsFragment.FieldTypes.TEXT_NS.type ->{
+                val filter = InputFilter(){ source, start, end, dest, dstart, dend->
+                    if (source != null && blockCharacterSet.contains(("" + source))) {
+                        ""
+                    } else {
+                        null
+                    }
+                }
+                inputField.filters = arrayOf(filter);
+                inputField.setText(value)
+                inputField.setSelection(value!!.length)
+            }
+            DocumentDetailsFragment.FieldTypes.DATE.type,
+            DocumentDetailsFragment.FieldTypes.DATE_PAST.type,
+            DocumentDetailsFragment.FieldTypes.DATE_FUTURE.type->{
+                try {
+                    if (!value.isNullOrBlank()) {
+                        val date = FORMAT_UTC.parse(value)
+                        calendar.timeInMillis = date.time
+                        inputField.setText(DOB_DATE_FORMAT.format(calendar.timeInMillis))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    inputField.setText(value)
+                }
+
+                inputField.isFocusableInTouchMode = false
+                if(inputType == DocumentDetailsFragment.FieldTypes.DATE_PAST.type){
+                    datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+                } else if(inputType == DocumentDetailsFragment.FieldTypes.DATE_FUTURE.type){
+                    datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+                }
+                inputField.setOnClickListener {
+                    datePickerDialog.show()
+                }
+
+            }
+            DocumentDetailsFragment.FieldTypes.SET_SS.type,
+            DocumentDetailsFragment.FieldTypes.SET_MS.type ->{
+                inputField.isFocusableInTouchMode = false
+                inputField.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_arrow_down_vector,0)
+
+                val listener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<DocFieldsInfo>{
+                    override fun getAllCountries(): MutableList<DocFieldsInfo> {
+                        return (set as MutableList)
+                    }
+
+                    override fun sortCountries(searchResults: MutableList<DocFieldsInfo>?) {
+                    }
+
+                    override fun canSearch(): Boolean {
+                        return false
+                    }
+                }
+                val pickListener = OnCountryPickerListener<DocFieldsInfo> { country ->
+                    if(country != null) {
+                        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type) {
+                            setValue!!.clear()
+                            for (df in set!!.iterator()) {
+                                df.isSelected = false
+                            }
+                        }
+                        if(!setValue!!.contains(country.value)) {
+                            setValue!!.add(country.value)
+                            country.isSelected = true
+                        } else {
+                            setValue!!.remove(country.value)
+                            country.isSelected = false
+                        }
+                        val str = setValue!!.toString()
+                        inputField.setText(str.substring(1, str.length-1))
+                    }
+                }
+
+                inputField.setOnClickListener{
+                    showSelectionDialog(listener,pickListener,label+"-dialog",label, (inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type))
+                }
+                if(setValue != null) {
+                    val str = setValue.toString()
+                    inputField.setText(str.substring(1, str.length-1))
+                }
             }
 
-            inputField.isFocusableInTouchMode = false
-            inputField.setOnClickListener {
-                datePickerDialog.show()
-            }
-
-        } else if (!value.isNullOrEmpty()) {
-            inputField.setText(value)
-            inputField.setSelection(value!!.length)
         }
     }
 
     val getValue = {
-        if(inputType==InputType.TYPE_CLASS_DATETIME){
-            FORMAT_UTC.format(calendar.timeInMillis)
-        }else{
-            inputField.text.toString()
+        when (inputType){
+            DocumentDetailsFragment.FieldTypes.DATE.type,
+            DocumentDetailsFragment.FieldTypes.DATE_PAST.type,
+            DocumentDetailsFragment.FieldTypes.DATE_FUTURE.type -> {
+                FORMAT_UTC.format(calendar.timeInMillis)
+            }
+            DocumentDetailsFragment.FieldTypes.SET_SS.type, DocumentDetailsFragment.FieldTypes.SET_MS.type-> {
+                setValue.toString().substring(1, setValue.toString().length-1)
+            }
+            else -> {
+                inputField.text.toString()
+            }
         }
     }
 
+    fun <T: SearchDataModel> showSelectionDialog(
+            interactionListener: CountryPickerDialog.CountryPickerDialogInteractionListener<T>
+            ,pickerListener: OnCountryPickerListener<T>
+            ,tag:String,title:String, showCheckbox: Boolean) {
+        if (interactionListener.allCountries == null || interactionListener.allCountries!!.isEmpty()) {
+            Toast.makeText(context,context.getString(R.string.no_results_found), Toast.LENGTH_SHORT).show()
+        } else {
+            val countryPickerDialog = CountryPickerDialog.newInstance(title, showCheckbox)
+            countryPickerDialog.setCountryPickerListener(pickerListener)
+            countryPickerDialog.setDialogInteractionListener(interactionListener)
+            countryPickerDialog.show((context as AppCompatActivity).supportFragmentManager, tag)
+        }
+    }
 
 
 
 }
 
 class ServerRequestInputFields( @SerializedName("key") var key:String,
-                                @SerializedName("value") var value:String)
+                                @SerializedName("value") var value:String?,
+                                @SerializedName("set_value") var setValue:List<String>?)
 
 
 

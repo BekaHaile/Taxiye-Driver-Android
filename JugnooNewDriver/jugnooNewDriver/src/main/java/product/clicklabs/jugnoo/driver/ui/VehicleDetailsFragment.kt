@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.*
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -339,7 +337,7 @@ class VehicleDetailsFragment : Fragment() {
         if (interactionListener.allCountries == null || interactionListener.allCountries!!.isEmpty()) {
             Toast.makeText(requireActivity(),getString(R.string.no_results_found),Toast.LENGTH_SHORT).show()
         } else {
-            val countryPickerDialog = CountryPickerDialog.newInstance(title)
+            val countryPickerDialog = CountryPickerDialog.newInstance(title, false)
             countryPickerDialog.setCountryPickerListener(pickerListener)
             countryPickerDialog.setDialogInteractionListener(interactionListener)
             countryPickerDialog.show(requireActivity().supportFragmentManager, tag)

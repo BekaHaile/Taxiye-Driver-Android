@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,12 +25,14 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
     private OnItemClickListener<T> listener;
     private List<T> countries;
     private Context context;
+    private boolean showCheckBox;
     // endregion
 
     //region Constructor
-      CountriesAdapter (Context context, List<T> countries, OnItemClickListener<T> listener) {
+      CountriesAdapter (Context context, boolean showCheckBox, List<T> countries, OnItemClickListener<T> listener) {
         this.context = context;
         this.countries = countries;
+        this.showCheckBox = showCheckBox;
         this.listener = listener;
 
     }
@@ -46,7 +50,11 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final T country = countries.get(position);
         holder.countryNameText.setText(country.getLabel());
+        holder.checkbox.setText(country.getLabel());
         int image = country.getImage(context);
+        holder.checkbox.setVisibility(showCheckBox ? View.VISIBLE : View.GONE);
+        holder.countryNameText.setVisibility(showCheckBox ? View.GONE : View.VISIBLE);
+        holder.checkbox.setChecked(country.isSelected());
 
         if(country.showImage()){
             holder.countryFlagImageView.setVisibility(View.VISIBLE);
@@ -65,6 +73,12 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
                 listener.onItemClicked(country);
             }
         });
+        holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                listener.onItemClicked(country);
+            }
+        });
     }
 
     @Override
@@ -78,6 +92,7 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
         private ImageView countryFlagImageView;
         private TextView countryNameText;
         private RelativeLayout rootView;
+        private CheckBox checkbox;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +100,8 @@ public  class CountriesAdapter<T extends SearchDataModel> extends RecyclerView.A
             countryNameText = (TextView) itemView.findViewById(R.id.country_title);
             countryNameText.setTypeface(Fonts.mavenRegular(context));
             rootView = (RelativeLayout) itemView.findViewById(R.id.rootView);
+            checkbox = (CheckBox) itemView.findViewById(R.id.checkbox);
+            checkbox.setTypeface(Fonts.mavenRegular(context));
         }
     }
     // endregion

@@ -104,4 +104,9 @@ public class Country extends SearchDataModel{
   public boolean showImage() {
     return true;
   }
+
+  @Override
+  public boolean isSelected() {
+    return false;
+  }
 }

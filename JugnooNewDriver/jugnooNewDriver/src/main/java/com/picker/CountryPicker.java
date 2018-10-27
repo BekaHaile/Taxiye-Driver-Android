@@ -363,7 +363,7 @@ public class CountryPicker implements CountryPickerDialog.CountryPickerDialogInt
     if (countries == null || countries.isEmpty()) {
       throw new IllegalArgumentException(context.getString(R.string.error_no_countries_found));
     } else {
-      CountryPickerDialog countryPickerDialog = CountryPickerDialog.newInstance(context.getString(R.string.country_picker_header));
+      CountryPickerDialog countryPickerDialog = CountryPickerDialog.newInstance(context.getString(R.string.country_picker_header), false);
       countryPickerDialog.setCountryPickerListener(onCountryPickerListener);
       countryPickerDialog.setDialogInteractionListener(this);
       countryPickerDialog.show(supportFragmentManager, COUNTRY_TAG);
