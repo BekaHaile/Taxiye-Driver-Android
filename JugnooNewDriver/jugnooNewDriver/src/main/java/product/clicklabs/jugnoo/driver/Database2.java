@@ -1957,10 +1957,10 @@ public class Database2 {                                                        
 				String token = cursor.getString(cursor.getColumnIndex(Database2.WAIT_TIME));
 				return token;
 			} else {
-				return "";
+				return "0";
 			}
 		} catch (Exception e) {
-			return "";
+			return "0";
 		}
 	}
 
