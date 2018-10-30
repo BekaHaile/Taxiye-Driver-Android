@@ -4713,7 +4713,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     private boolean showEarningsAsHome(DriverScreenMode mode) {
-        return mode == DriverScreenMode.D_INITIAL && checkIfDriverOnline() && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1;
+        return mode == DriverScreenMode.D_INITIAL && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1;
     }
 
     public void setLuggageUI() {
