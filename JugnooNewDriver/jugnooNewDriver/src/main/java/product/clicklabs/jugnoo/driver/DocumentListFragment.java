@@ -35,6 +35,7 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RoundBorderTransform;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -1227,5 +1228,11 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		}
 	}
 
+
+	public void updateDocInfo(int pos, @NotNull DocInfo docInfo){
+		if(docs != null && pos > -1 && pos < docs.size() && docInfo != null) {
+			docs.set(pos, docInfo);
+		}
+	}
 
 }

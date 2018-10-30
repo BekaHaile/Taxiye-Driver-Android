@@ -30,6 +30,8 @@ public class DocFieldsInfo extends SearchDataModel {
     private List<String> setValue;
     @SerializedName("set")
     private List<DocFieldsInfo> set;
+    @SerializedName("ref_key")
+    private String refKey;
 
     @SerializedName("is_selected")
     private boolean isSelected;
@@ -92,5 +94,13 @@ public class DocFieldsInfo extends SearchDataModel {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getRefKey() {
+        return refKey;
+    }
+
+    public void setRefKey(String refKey) {
+        this.refKey = refKey;
     }
 }

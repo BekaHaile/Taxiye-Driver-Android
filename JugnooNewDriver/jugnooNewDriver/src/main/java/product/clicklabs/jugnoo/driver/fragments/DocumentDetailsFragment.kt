@@ -69,14 +69,16 @@ class DocumentDetailsFragment:Fragment(){
     private  lateinit var accessToken: String
     private  var pos: Int = 0
     private  var viewHolder :View?=null
+    private var listener:InteractionListener? = null
 
-    val documentInputFields = arrayListOf<DocumentInputField>()
+    val documentInputFields = hashMapOf<String,DocumentInputField>()
 
     enum class FieldTypes(val type: String){
         DATE("date"),
         TEXT("text"),
         SET_SS("set-ss"),
         SET_MS("set-ms"),
+        SET_SS_REF("set-ss-ref"),
         TEXT_NS("text-ns"),
         DATE_PAST("date-past"),
         DATE_FUTURE("date-future"),
@@ -119,11 +121,22 @@ class DocumentDetailsFragment:Fragment(){
                 editText.run(addViewToParentConstraint(label.id, inputTopMargin, sideMargin))
 
                 lastEdtId = editText.id
-
-                documentInputFields.add(DocumentInputField(item.key,item.label,item.value,
+                var docField = DocumentInputField(item.key,item.label,item.value,
                         editText, item.type,
-                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext()))
+                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext())
 
+                documentInputFields[item.key] = docField
+
+            }
+
+
+            for (item in docInfo.listDocFieldsInfo) {
+
+                item.run {
+                    if(!refKey.isNullOrEmpty() && documentInputFields.containsKey(refKey)){
+                       documentInputFields[key]?.child = documentInputFields[refKey]
+                    }
+                }
 
             }
         }
@@ -164,13 +177,16 @@ class DocumentDetailsFragment:Fragment(){
             return;
         }
 
-
-        val listInputFields = documentInputFields.map {
-            if(it.inputType == FieldTypes.SET_SS.type || it.inputType == FieldTypes.SET_MS.type){
-                ServerRequestInputFields(it.key, it.getValue(), it.setValue)
+        val keyValueMap = hashMapOf<String, ServerRequestInputFields>()
+        val listInputFields = documentInputFields.values.map {
+            if(it.inputType == FieldTypes.SET_SS.type
+                    || it.inputType == FieldTypes.SET_MS.type
+                    || it.inputType == FieldTypes.SET_SS_REF.type){
+                keyValueMap[it.key] = ServerRequestInputFields(it.key, it.getValue(), it.setValue)
             } else {
-                ServerRequestInputFields(it.key, it.getValue(), null)
+                keyValueMap[it.key] = ServerRequestInputFields(it.key, it.getValue(), null)
             }
+            keyValueMap[it.key]
         }
 
         val element = gson.toJsonTree(listInputFields, object : TypeToken<List<ServerRequestInputFields>>() {}.type)
@@ -186,9 +202,12 @@ class DocumentDetailsFragment:Fragment(){
                 ,object: APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
             override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
                 for (i in 0 until  docInfo.listDocFieldsInfo.size){
-                    docInfo.listDocFieldsInfo[i].value = listInputFields[i].value
+                    if(keyValueMap.containsKey(docInfo.listDocFieldsInfo[i].key)) {
+                        docInfo.listDocFieldsInfo[i].value = keyValueMap[docInfo.listDocFieldsInfo[i].key]!!.value
+                    }
                 }
                 DialogPopup.alertPopupWithListener(requireActivity(), "", message) {
+                    listener?.updateDocInfo(pos, docInfo);
                     requireActivity().onBackPressed()
                 }
             }
@@ -225,6 +244,17 @@ class DocumentDetailsFragment:Fragment(){
             }.applyTo(parentView)
         }
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is InteractionListener){
+            listener = context
+        }
+    }
+
+    interface InteractionListener{
+        fun updateDocInfo(pos: Int, docInfo: DocInfo)
+    }
 }
 
 class DocumentInputField(
@@ -236,7 +266,8 @@ class DocumentInputField(
         isEditable:Boolean,
         var set: List<DocFieldsInfo>?,
         var setValue: ArrayList<String>?,
-        var context: Context) {
+        var context: Context,
+        child:DocumentInputField? = null) {
 
     val FORMAT_UTC = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -259,6 +290,20 @@ class DocumentInputField(
         Calendar.getInstance()
     }
 
+    var child = child
+        set(child) {
+            field = child
+            if(set != null) {
+                for (df in set!!.iterator()) {
+                    if (df.isSelected) {
+                        child?.run {
+                            set = df.set
+                        }
+                    }
+                }
+            }
+        }
+
 
     private val datePickerDialog: DatePickerDialog by lazy {
         DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -273,7 +318,15 @@ class DocumentInputField(
         FORMAT_UTC.timeZone = TimeZone.getTimeZone("UTC")
         inputField.hint = label
 
-        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type || inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type) {
+        if((inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type
+                        || inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type)
+                && (set == null || set!!.isEmpty())){
+            inputType = DocumentDetailsFragment.FieldTypes.TEXT.type
+        }
+
+        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type
+                || inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type
+                || inputType == DocumentDetailsFragment.FieldTypes.SET_SS_REF.type) {
             if (setValue == null) {
                 setValue = ArrayList<String>()
             }
@@ -345,7 +398,8 @@ class DocumentInputField(
 
             }
             DocumentDetailsFragment.FieldTypes.SET_SS.type,
-            DocumentDetailsFragment.FieldTypes.SET_MS.type ->{
+            DocumentDetailsFragment.FieldTypes.SET_MS.type,
+            DocumentDetailsFragment.FieldTypes.SET_SS_REF.type->{
                 inputField.isFocusableInTouchMode = false
                 inputField.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_arrow_down_vector,0)
 
@@ -363,7 +417,8 @@ class DocumentInputField(
                 }
                 val pickListener = OnCountryPickerListener<DocFieldsInfo> { country ->
                     if(country != null) {
-                        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type) {
+                        if(inputType == DocumentDetailsFragment.FieldTypes.SET_SS.type
+                            ||inputType == DocumentDetailsFragment.FieldTypes.SET_SS_REF.type) {
                             setValue!!.clear()
                             for (df in set!!.iterator()) {
                                 df.isSelected = false
@@ -372,6 +427,11 @@ class DocumentInputField(
                         if(!setValue!!.contains(country.value)) {
                             setValue!!.add(country.value)
                             country.isSelected = true
+                            child?.run {
+                                set = country.set
+                                setValue?.clear()
+                                setText("")
+                            }
                         } else {
                             setValue!!.remove(country.value)
                             country.isSelected = false
@@ -400,7 +460,9 @@ class DocumentInputField(
             DocumentDetailsFragment.FieldTypes.DATE_FUTURE.type -> {
                 FORMAT_UTC.format(calendar.timeInMillis)
             }
-            DocumentDetailsFragment.FieldTypes.SET_SS.type, DocumentDetailsFragment.FieldTypes.SET_MS.type-> {
+            DocumentDetailsFragment.FieldTypes.SET_SS.type,
+            DocumentDetailsFragment.FieldTypes.SET_MS.type,
+            DocumentDetailsFragment.FieldTypes.SET_SS_REF.type-> {
                 setValue.toString().substring(1, setValue.toString().length-1)
             }
             else -> {
@@ -422,7 +484,6 @@ class DocumentInputField(
             countryPickerDialog.show((context as AppCompatActivity).supportFragmentManager, tag)
         }
     }
-
 
 
 }
