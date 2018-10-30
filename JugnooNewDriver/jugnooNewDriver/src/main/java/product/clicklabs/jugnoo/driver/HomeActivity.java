@@ -469,6 +469,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private boolean rideCancelledByCustomer = false;
     private String cancelationMessage = "";
     private static final int REQUEST_CODE_TERMS_ACCEPT = 0x234;
+    private boolean homeClicked;
 
 
     private CustomerInfo getOpenedCustomerInfo() {
@@ -1389,10 +1390,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
+            homeClicked = false;
             homeRl.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     drawerLayout.closeDrawer(GravityCompat.START);
+                    homeClicked = true;
                     if(relativeLayoutContainerEarnings.getVisibility() == View.VISIBLE){
                         earningsVisibility(View.GONE);
                     }
@@ -4078,7 +4081,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 e.printStackTrace();
             }
 
-            earningsVisibility((mode == DriverScreenMode.D_INITIAL && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1) ? View.VISIBLE : View.GONE);
+            earningsVisibility(showEarningsAsHome(mode) ? View.VISIBLE : View.GONE);
 
             switch (mode) {
 
@@ -4707,6 +4710,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean showEarningsAsHome(DriverScreenMode mode) {
+        return mode == DriverScreenMode.D_INITIAL && checkIfDriverOnline() && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1;
     }
 
     public void setLuggageUI() {
@@ -8298,7 +8305,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 if(customerInfos.size() > 0){
                     earningsVisibility(View.GONE);
                 } else {
-                    earningsVisibility((driverScreenMode == DriverScreenMode.D_INITIAL && Prefs.with(this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1) ? View.VISIBLE : View.GONE);
+                    earningsVisibility((showEarningsAsHome(driverScreenMode)) ? View.VISIBLE : View.GONE);
                 }
 
             }
@@ -8311,7 +8318,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private void earningsVisibility(int visibility){
 
         if (visibility == View.VISIBLE){
-            if(relativeLayoutContainerEarnings.getVisibility() != View.VISIBLE) {
+            if(relativeLayoutContainerEarnings.getVisibility() != View.VISIBLE && !homeClicked) {
                 relativeLayoutContainerEarnings.setVisibility(View.VISIBLE);
                 if(getSupportFragmentManager().findFragmentByTag(DriverEarningsFragment.class.getName()) == null) {
                     getSupportFragmentManager().beginTransaction()
