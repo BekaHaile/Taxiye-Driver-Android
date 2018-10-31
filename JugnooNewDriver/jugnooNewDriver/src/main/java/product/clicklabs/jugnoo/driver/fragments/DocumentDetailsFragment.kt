@@ -80,6 +80,8 @@ class DocumentDetailsFragment:Fragment(){
         SET_MS("set-ms"),
         SET_SS_REF("set-ss-ref"),
         TEXT_NS("text-ns"),
+        TEXT_NS_SPACE("text-ns-allow-space"),
+        TEXT_NS_HYPHEN("text-ns-allow-hyphen"),
         DATE_PAST("date-past"),
         DATE_FUTURE("date-future"),
         INT("int")
@@ -360,10 +362,18 @@ class DocumentInputField(
                 inputField.setText(value)
                 inputField.setSelection(value!!.length)
             }
-            DocumentDetailsFragment.FieldTypes.TEXT_NS.type ->{
+            DocumentDetailsFragment.FieldTypes.TEXT_NS.type,
+            DocumentDetailsFragment.FieldTypes.TEXT_NS_SPACE.type,
+            DocumentDetailsFragment.FieldTypes.TEXT_NS_HYPHEN.type->{
                 val filter = InputFilter(){ source, start, end, dest, dstart, dend->
                     if (source != null && blockCharacterSet.contains(("" + source))) {
-                        ""
+                        if(inputType == DocumentDetailsFragment.FieldTypes.TEXT_NS_SPACE.type && source.contains(" ")){
+                            null
+                        } else if(inputType == DocumentDetailsFragment.FieldTypes.TEXT_NS_HYPHEN.type && source.contains("-")){
+                            null
+                        } else {
+                            ""
+                        }
                     } else {
                         null
                     }
