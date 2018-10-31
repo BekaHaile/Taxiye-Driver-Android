@@ -1230,6 +1230,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 	public void updateDocInfo(int pos, @NotNull DocInfo docInfo){
+		getDocsAsync(getActivity());
 		if(docs != null && pos > -1 && pos < docs.size() && docInfo != null) {
 			docs.set(pos, docInfo);
 		}
