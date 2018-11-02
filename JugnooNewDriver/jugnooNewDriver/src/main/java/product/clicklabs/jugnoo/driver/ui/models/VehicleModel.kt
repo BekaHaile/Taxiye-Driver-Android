@@ -20,6 +20,10 @@ data class VehicleModelDetails(
         @Expose @SerializedName("brand") val make:String,
         @Expose @SerializedName("name") val modelName:String,
         @Expose @SerializedName("model_id") val id:Int) :Parcelable,SearchDataModel() {
+    override fun isSelected(): Boolean {
+        return false
+    }
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
@@ -72,7 +76,9 @@ class VehicleMakeInfo(val makeName:String): SearchDataModel() {
         return false
     }
 
-
+    override fun isSelected(): Boolean {
+        return false
+    }
 }
 
 data class VehicleModelCustomisationsResponse(
@@ -93,6 +99,10 @@ data class  VehicleModelCustomisationDetails (
 
         @Expose @SerializedName("value") val value:String,
         @Expose @SerializedName("id") val id:Int):Parcelable,SearchDataModel() {
+    override fun isSelected(): Boolean {
+        return false
+    }
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt()) {

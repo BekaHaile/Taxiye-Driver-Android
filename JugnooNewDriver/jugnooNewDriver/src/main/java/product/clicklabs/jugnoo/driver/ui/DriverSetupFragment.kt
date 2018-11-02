@@ -416,7 +416,7 @@ class DriverSetupFragment : Fragment() {
         if (citiesList == null || citiesList!!.isEmpty()) {
             throw IllegalArgumentException(requireActivity().getString(R.string.error_no_cities_found))
         } else {
-            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city))
+            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.title_dialog_select_city), false)
             countryPickerDialog.setCountryPickerListener(onCountryPickerListener)
             countryPickerDialog.setDialogInteractionListener(countryPickerDialogInteractionListener)
             countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)

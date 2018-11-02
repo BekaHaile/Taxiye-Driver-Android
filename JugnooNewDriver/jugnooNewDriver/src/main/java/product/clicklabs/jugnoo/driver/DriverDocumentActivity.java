@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class DriverDocumentActivity extends BaseFragmentActivity {
+public class DriverDocumentActivity extends BaseFragmentActivity implements DocumentDetailsFragment.InteractionListener {
 
 	View backBtn;
 	TextView title;
@@ -432,5 +433,12 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	public DocumentListFragment getDocumentListFragment(){
 		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));
+	}
+
+	@Override
+	public void updateDocInfo(int pos, @NotNull DocInfo docInfo) {
+		if(getDocumentListFragment() != null) {
+			getDocumentListFragment().updateDocInfo(pos, docInfo);
+		}
 	}
 }

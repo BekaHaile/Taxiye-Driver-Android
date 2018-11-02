@@ -35,6 +35,7 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     private OnCountryPickerListener<T> listener;
     private LinearLayout llNoData;
     public  static final String SEARCH_DIALOG_TITLE = "search_dialog_title";
+    public  static final String SEARCH_DIALOG_SHOW_CHECKBOX = "search_dialog_show_checkbox";
 
     // endregion
 
@@ -51,10 +52,11 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
     }
 
     // region Constructors
-    public static CountryPickerDialog newInstance(String string) {
+    public static CountryPickerDialog newInstance(String string, boolean showCheckbox) {
         CountryPickerDialog countryPickerDialog = new CountryPickerDialog();
         Bundle bundle = new Bundle();
         bundle.putString(SEARCH_DIALOG_TITLE,string);
+        bundle.putBoolean(SEARCH_DIALOG_SHOW_CHECKBOX,showCheckbox);
         countryPickerDialog.setArguments(bundle);
         return countryPickerDialog;
     }
@@ -77,7 +79,7 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
         EditText searchEditText = (EditText) view.findViewById(R.id.country_code_picker_search);
         countriesRecyclerView = (RecyclerView) view.findViewById(R.id.countries_recycler_view);
         llNoData = (LinearLayout) view.findViewById(R.id.llNoData);
-        setupRecyclerView();
+        setupRecyclerView(getArguments().getBoolean(SEARCH_DIALOG_SHOW_CHECKBOX,false));
         if (!dialogInteractionListener.canSearch()) {
             searchEditText.setVisibility(View.GONE);
         }
@@ -138,10 +140,10 @@ public class CountryPickerDialog<T extends SearchDataModel> extends DialogFragme
         adapter.notifyDataSetChanged();
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerView(boolean showCheckbox) {
         searchResults = new ArrayList<>();
         searchResults.addAll(dialogInteractionListener.getAllCountries());
-        adapter = new CountriesAdapter<>(getActivity(), searchResults, this);
+        adapter = new CountriesAdapter<>(getActivity(), showCheckbox, searchResults, this);
         countriesRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

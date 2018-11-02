@@ -29,4 +29,15 @@
       android:layout_toEndOf="@+id/country_flag"
       />
 
+  <CheckBox
+      android:id="@+id/checkbox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:gravity="center_vertical"
+      android:textSize="15sp"
+      android:padding="16dp"
+      android:layout_toEndOf="@+id/country_flag"
+      />
+
 </RelativeLayout>

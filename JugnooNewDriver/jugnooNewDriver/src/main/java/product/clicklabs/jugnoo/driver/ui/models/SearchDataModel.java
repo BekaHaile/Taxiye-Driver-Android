@@ -14,4 +14,6 @@ public  abstract class SearchDataModel {
 
     public abstract boolean showImage();
 
+    public abstract boolean isSelected();
+
 }

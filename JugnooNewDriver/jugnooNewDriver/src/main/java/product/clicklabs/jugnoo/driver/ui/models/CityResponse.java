@@ -123,6 +123,11 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		public boolean showImage() {
 			return false;
 		}
+
+		@Override
+		public boolean isSelected() {
+			return false;
+		}
 	}
 
 	public class VehicleType{
