@@ -240,7 +240,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities,tvTermsOfUse"/>
 
         <android.support.constraint.Group
             android:id="@+id/promoGroupView"
