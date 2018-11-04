@@ -492,6 +492,9 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(KEY_EARNINGS_AS_HOME, userData.optInt(KEY_EARNINGS_AS_HOME, context.getResources().getInteger(R.integer.earnings_as_home)));
 		Prefs.with(context).save(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, userData.optInt(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, context.getResources().getInteger(R.integer.show_drop_address_before_inride)));
+		Prefs.with(context).save(KEY_DRIVER_GOOGLE_APIS_LOGGING, userData.optInt(KEY_DRIVER_GOOGLE_APIS_LOGGING,
+				context.getResources().getInteger(R.integer.google_apis_logging)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

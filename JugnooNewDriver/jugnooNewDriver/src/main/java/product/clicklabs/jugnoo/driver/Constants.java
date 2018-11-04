@@ -404,5 +404,7 @@ public interface Constants {
 	String KEY_EARNINGS_AS_HOME = "driver_show_earnings_as_home";
 	String KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE = "driver_show_drop_address_before_inride";
 	String KEY_PICKUP_ADDRESS = "pickup_address";
+	String KEY_API_NAME = "api_name";
+	String KEY_DRIVER_GOOGLE_APIS_LOGGING = "driver_google_apis_logging";
 }
 

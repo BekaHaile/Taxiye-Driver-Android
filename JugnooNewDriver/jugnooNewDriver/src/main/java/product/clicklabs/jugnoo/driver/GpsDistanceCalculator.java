@@ -545,7 +545,7 @@ public class GpsDistanceCalculator {
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
-				Response response = GoogleRestApis.getDirections(source.latitude + "," + source.longitude,
+				Response response = GoogleRestApis.INSTANCE.getDirections(source.latitude + "," + source.longitude,
 						destination.latitude + "," + destination.longitude, false, "driving", false);
 				return new String(((TypedByteArray) response.getBody()).getBytes());
 			} catch (Exception e) {

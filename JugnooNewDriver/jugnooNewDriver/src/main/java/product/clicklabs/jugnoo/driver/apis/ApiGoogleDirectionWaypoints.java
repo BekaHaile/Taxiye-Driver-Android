@@ -74,9 +74,9 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 		try {
 			Response response;
 			if(!TextUtils.isEmpty(strWaypoints)) {
-				response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+				response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
 			} else {
-				response = GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false);
+				response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false);
 			}
 			return new String(((TypedByteArray)response.getBody()).getBytes());
 		} catch (Exception e) {

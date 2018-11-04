@@ -128,7 +128,7 @@ public class MapUtils {
 				language = "en";
 			}
 
-			Response response = GoogleRestApis.geocode(latLng.latitude + "," + latLng.longitude, language);
+			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
 

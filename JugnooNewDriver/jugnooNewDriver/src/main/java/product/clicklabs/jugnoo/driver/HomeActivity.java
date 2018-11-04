@@ -6455,7 +6455,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
                     try {
-                        Response responseR = GoogleRestApis.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
+                        Response responseR = GoogleRestApis.INSTANCE.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
                                 dropLatitude + "," + dropLongitude, false, "driving", false);
                         String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         JSONObject jsonObject = new JSONObject(response);
@@ -6543,7 +6543,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                 }
                 try {
-                    Response responseRoads = GoogleRestApis.snapToRoads(sbRoads.toString());
+                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString());
                     String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
                     JSONObject jsonObject = new JSONObject(responseStr);
                     JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
@@ -6572,9 +6572,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 .append("%7C");
                     }
                 }
-                response = GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString());
+                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString());
             } else {
-                response = GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false);
+                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false);
             }
             String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
             JSONObject jsonObject = new JSONObject(responseStr);
@@ -8098,7 +8098,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.v("displacement", "" + displacement);
                     Log.v("displacement speed", "" + endDisplacementSpeed);
 
-                    Response responseR = GoogleRestApis.getDistanceMatrix(source.latitude + "," + source.longitude,
+                    Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
                             destination.latitude + "," + destination.longitude, "EN", false, false);
                     String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 
