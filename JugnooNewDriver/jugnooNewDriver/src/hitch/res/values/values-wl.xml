@@ -26,7 +26,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Hitch Driver/Hitch Pictures</string>
     <string name="file_provider">com.hitch.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyA9cnlLOey1b9UPXXzReBp6MYhZg1O5sqU</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyCMQS5tBS1n4i_SMCazkSRYKjoJEhCW2FY</string> <!--IMP-->
 
 
     <!--App Level Constants-->
