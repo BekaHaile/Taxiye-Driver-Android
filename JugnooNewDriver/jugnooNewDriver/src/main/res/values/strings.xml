@@ -53,6 +53,7 @@
     <string name="from">From: </string>
     <string name="to">To: </string>
     <string name="rides">Rides</string>
+    <string name="ride">Ride</string>
     <string name="no_rides_currently">No rides currently</string>
 
     <string name="missed">Missed</string>
@@ -1145,5 +1146,6 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="first_name_required">First name is mandatory</string>
+    <string name="pickup_time_format">Pickup time: %s</string>
 
 </resources>

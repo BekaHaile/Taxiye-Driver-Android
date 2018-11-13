@@ -56,6 +56,7 @@
     <string name="from">आरंभ: </string>
 	<string name="to">अंत: </string>
 	<string name="rides"> राइड </string>
+	<string name="ride"> राइड </string>
 	<string name="no_rides_currently">इस वक़्त कोई  राइड  उपलब्ध नहीं </string>
 
     <string name="missed">मिस्ड </string>
@@ -718,7 +719,7 @@
 	<string name="btn_text_OTP">ओटीपी उत्पन्न करें</string>
 	<string name="languages">भाषा</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
-
+    <string name="pickup_time_format">Pickup time: %s</string>
 
 
 </resources>

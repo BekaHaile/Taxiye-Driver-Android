@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical"
-    android:padding="30px" android:splitMotionEvents="false">
+    android:padding="30px"
+    android:splitMotionEvents="false"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,6 +60,19 @@
                     android:textColor="@color/textColorLight"
                     android:textSize="28px"
                     android:layout_marginBottom="6px"
+                    android:layout_marginStart="20px"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:id="@+id/tvPickupTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    tools:text="Pickup time"
+                    android:textColor="@color/textColorLight"
+                    android:textSize="28px"
+                    android:layout_marginBottom="6px"
+                    android:layout_marginStart="20px"
                     android:visibility="gone"
                     />
 
@@ -127,24 +142,15 @@
             android:splitMotionEvents="false"
             android:visibility="visible">
 
-            <RelativeLayout
-                android:id="@+id/driverRideType"
+            <TextView
+                android:id="@+id/tvRequestType"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:splitMotionEvents="false">
-
-                <ImageView
-                    android:id="@+id/imageViewRequestType"
-                    android:layout_width="80px"
-                    android:layout_height="80px"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_delivery_request"
-                    android:tag="mwar"
-                    android:visibility="visible"/>
-
-            </RelativeLayout>
+                android:gravity="center"
+                android:text="Ride"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="@dimen/text_size_36"/>
 
 
 

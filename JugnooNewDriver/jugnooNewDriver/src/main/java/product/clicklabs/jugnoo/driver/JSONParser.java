@@ -666,6 +666,7 @@ public class JSONParser implements Constants {
 							String currency = jObjCustomer.optString(Constants.KEY_CURRENCY);
 							double tipAmount = jObjCustomer.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
 							int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
+							String pickupTime = jObjCustomer.optString(Constants.KEY_PICKUP_TIME);
 
 
 							if(i == 0){
@@ -678,7 +679,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency, tipAmount,luggageCount);
+									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -844,6 +845,7 @@ public class JSONParser implements Constants {
 				double bidValue = jActiveRequest.optInt(Constants.KEY_BID_VALUE, 0);
 				double initialBidValue = jActiveRequest.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10);
 				double estimatedTripDistance = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
+				String pickupTime = jActiveRequest.optString(Constants.KEY_PICKUP_TIME);
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
@@ -859,7 +861,7 @@ public class JSONParser implements Constants {
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance, pickupTime);
 
 				Data.addCustomerInfo(customerInfo);
 

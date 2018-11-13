@@ -82,6 +82,23 @@ public class DateOperations {
 		}
 	}
 
+	public static String utcToLocalWithTZFallback(String utcTime) {
+		if(utcTime.contains("T")){
+			return utcToLocalTZ(utcTime);
+		} else{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			try {
+				Date myDate = simpleDateFormat.parse(utcTime);
+				String localDate = sdf.format(myDate);
+				return localDate;
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				return utcToLocalTZ(utcTime);
+			}
+		}
+	}
 	
 	public static Calendar getCalendarFromTimeStamp(String timeStamp){
 		try {
@@ -407,6 +424,17 @@ public class DateOperations {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			return convertDate(dateTime);
+		}
+	}
+	public static String convertTimeViaFormat(String dateTime) {
+		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("hh:mm a");
+		try {
+			Date myDate = sdfFrom.parse(dateTime);
+			return sdfTo.format(myDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return getTimeAMPM(dateTime);
 		}
 	}
 

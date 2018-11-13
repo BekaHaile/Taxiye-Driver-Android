@@ -21,6 +21,7 @@
     <string name="from">من عند</string>
     <string name="to">إلى</string>
     <string name="rides">رحلات</string>
+    <string name="ride">رحلات</string>
     <string name="no_rides_currently">لا ركوب حاليا</string>
     <string name="missed">افتقد</string>
     <string name="no_missed_rides_currently">لا رحلات غاب حاليا</string>
@@ -683,6 +684,7 @@
     <string name="neft_pending">Neft معلق</string>
     <string name="terms_of_schedule">شروط الجدول</string>
     <string name="faqs">أسئلة وأجوبة</string>
+    <string name="pickup_time_format">Pickup time: %s</string>
     <!--login with phone-->
 
 </resources>

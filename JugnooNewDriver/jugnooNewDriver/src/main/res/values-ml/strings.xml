@@ -51,6 +51,7 @@
     <string name="from"> എവിടെ നിന്ന് :</string>
     <string name="to"> എവിടെ വരെ </string>
     <string name="rides">സവാരികൾ </string>
+    <string name="ride">സവാരികൾ </string>
     <string name="no_rides_currently">ഇപ്പോൾ സവാരികൾ ഒന്നും ഇല്ല. </string>
     <string name="missed">നഷ്ടപെട്ടത് </string>
     <string name="no_missed_rides_currently">സവാരികൾ ഒന്നും നഷ്ടപെട്ടിട്ടില്ല </string>
@@ -637,8 +638,7 @@
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
-
-
+    <string name="pickup_time_format">Pickup time: %s</string>
 
 
 </resources>

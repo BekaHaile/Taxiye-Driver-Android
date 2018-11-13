@@ -96,7 +96,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -327,7 +326,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout driverStartRideMainRl;
     public Button driverStartRideBtn, buttonMarkArrived;
     public Button driverCancelRideBtn;
-    public TextView tvDropAddressToggleView;
+    public TextView tvDropAddressToggleView, tvPickupTime;
     public Button bDropAddressToggle;
 
 
@@ -842,6 +841,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             driverCancelRideBtn.setText(getStringText(R.string.cancel));
             tvDropAddressToggleView = (TextView) findViewById(R.id.tvDropAddressToggleView);
             tvDropAddressToggleView.setTypeface(Fonts.mavenRegular(this));
+            tvPickupTime = (TextView) findViewById(R.id.tvPickupTime);
+            tvPickupTime.setTypeface(Fonts.mavenRegular(this));
             bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
             bDropAddressToggle.setTypeface(Fonts.mavenRegular(this));
 
@@ -4219,6 +4220,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     tvDropAddressToggleView.setVisibility(View.GONE);
                     bDropAddressToggle.setVisibility(View.GONE);
+
+                    setPickupTime(customerInfo, tvPickupTime);
+
                     updateDriverServiceFast("yes");
                     setDriverServiceRunOnOnlineBasis();
                     stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
@@ -4304,6 +4308,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 case D_START_RIDE:
 
                     tvDropAddressToggleView.setVisibility(View.GONE);
+                    tvPickupTime.setVisibility(View.GONE);
                     bDropAddressToggle.setVisibility(View.GONE);
                     updateDriverServiceFast("yes");
                     inRideZoom();
@@ -4438,6 +4443,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 case D_IN_RIDE:
 
                     tvDropAddressToggleView.setVisibility(View.GONE);
+                    tvPickupTime.setVisibility(View.GONE);
                     bDropAddressToggle.setVisibility(View.GONE);
                     updateDriverServiceFast("no");
                     SoundMediaPlayer.stopSound();
@@ -4709,6 +4715,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void setPickupTime(CustomerInfo customerInfo, TextView tvPickupTime) {
+        if (!TextUtils.isEmpty(customerInfo.getPickupTime())) {
+            tvPickupTime.setVisibility(View.VISIBLE);
+            tvPickupTime.setText(getString(R.string.pickup_time_format,
+                    DateOperations.convertTimeViaFormat(DateOperations.utcToLocalWithTZFallback(customerInfo.getPickupTime()))));
+        } else {
+            tvPickupTime.setVisibility(View.GONE);
         }
     }
 
@@ -5328,7 +5344,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare, textViewEstimatedDist, textViewDropPoint,
                 textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount;
         Button buttonAcceptRide, buttonCancelRide;
-        ImageView imageViewRequestType, imageViewDeliveryList;
+        ImageView imageViewDeliveryList;
         LinearLayout relative, linearLayoutDeliveryParams;
         RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD, rlAcceptCancel;
         ProgressBar progressBarRequest;
@@ -5339,7 +5355,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         DriverRequestListAdapter.MyCustomEditTextListener myCustomEditTextListener;
         LinearLayout llMinus, llPlus;
         TextView tvDecrease, tvIncrease;
-        TextView textViewEstimatedTripDistance;
+        TextView textViewEstimatedTripDistance, tvRequestType, tvPickupTime;
     }
 
     public void firebaseScreenEvent(String event) {
@@ -5452,6 +5468,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewRequestAddress.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.textViewEstimatedTripDistance = (TextView) convertView.findViewById(R.id.textViewEstimatedTripDistance);
                 holder.textViewEstimatedTripDistance.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+                holder.tvPickupTime = (TextView) convertView.findViewById(R.id.tvPickupTime);
+                holder.tvPickupTime.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+                holder.tvRequestType = (TextView) convertView.findViewById(R.id.tvRequestType);
+                holder.tvRequestType.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
                 holder.textViewRequestDetails.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.textViewEstimatedDist = (TextView) convertView.findViewById(R.id.textViewEstimatedDist);
@@ -5474,7 +5494,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.buttonAcceptRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
                 holder.buttonCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-                holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
                 holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
                 holder.rlAcceptCancel = (RelativeLayout) convertView.findViewById(R.id.rlAcceptCancel);
 
@@ -5670,28 +5689,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (customerInfo.getIsPooled() == 1) {
-                holder.imageViewRequestType.setImageResource(R.drawable.ic_pool_request);
+                holder.tvRequestType.setText(R.string.pool);
             } else if (customerInfo.getIsDelivery() == 1) {
-                holder.imageViewRequestType.setImageResource(R.drawable.ic_delivery_request);
+                holder.tvRequestType.setText(R.string.delivery);
             } else {
-                int vehicleType = Prefs.with(HomeActivity.this).getInt(SPLabels.VEHICLE_TYPE, 0);
-                int vehicleTypeImage;
-                switch (vehicleType) {
-                    case 2:
-                        vehicleTypeImage = R.drawable.ic_ride_accept_bike;
-                        break;
-                    case 3:
-                        vehicleTypeImage = R.drawable.ic_ride_accept_taxi;
-                        break;
-                    case 6:
-                        vehicleTypeImage = R.drawable.ic_ride_accept_transport;
-                        break;
-                    default:
-                        vehicleTypeImage = R.drawable.ic_auto_request;
-                        break;
-
-                }
-                holder.imageViewRequestType.setImageResource(vehicleTypeImage);
+                holder.tvRequestType.setText(R.string.ride);
             }
 
 
@@ -5737,6 +5739,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
             }
+            setPickupTime(customerInfo, holder.tvPickupTime);
 
 
             holder.relative.setOnClickListener(new OnClickListener() {
@@ -6028,6 +6031,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
                     String currency = jObj.optString(Constants.KEY_CURRENCY);
                     double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
+                    String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
 
                     Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -6040,7 +6044,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-                            currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0);
+                            currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
+                            pickupTime);
 
                     JSONParser.updateDropAddressLatlng(jObj, customerInfo);
 

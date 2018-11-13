@@ -46,6 +46,7 @@
     <string name="from">কৰ পৰা</string>
     <string name="to">কৰ লৈকে</string>
     <string name="rides">ভাড়া</string>
+    <string name="ride">ভাড়া</string>
     <string name="no_rides_currently">কোনো ভ্ৰমন লোৱা হোৱা নাই</string>
     <string name="missed">ভাৰা গ্ৰহন কৰা হোৱা নাই</string>
     <string name="no_missed_rides_currently">কোনো ভাড়া হেৰোৱা নাই</string>
@@ -638,7 +639,7 @@
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
-
+    <string name="pickup_time_format">Pickup time: %s</string>
 
 
 </resources>

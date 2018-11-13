@@ -44,6 +44,7 @@
     <string name="select_language">ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="enter_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ</string>
     <string name="rides">ಸವಾರಿಗಳು</string>
+    <string name="ride">ಸವಾರಿಗಳು</string>
     <string name="no_rides_currently">ಪ್ರಸ್ತುತ ಯಾವುದೇ ಸವಾರಿ ಇಲ್ಲ.</string>
     <string name="missed">ತಪ್ಪಿದ</string>
     <string name="no_missed_rides_currently">ಪ್ರಸ್ತುತ ಯಾವುದೇ ತಪ್ಪಿಸಿಕೊಂಡ ಸವಾರಿ.</string>
@@ -677,6 +678,7 @@
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
+    <string name="pickup_time_format">Pickup time: %s</string>
     <!--Strings for Subscription plans-->
 
 

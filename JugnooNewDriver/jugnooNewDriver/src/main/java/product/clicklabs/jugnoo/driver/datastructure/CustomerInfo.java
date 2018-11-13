@@ -66,6 +66,7 @@ public class CustomerInfo {
 	private double tipAmount;
 	private int luggageCount;
 	private double waypointDistance;
+	private String pickupTime;
 
 
 	/**
@@ -76,7 +77,7 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount,int luggageCount){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount,int luggageCount, String pickupTime){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -121,6 +122,7 @@ public class CustomerInfo {
 		this.currencyUnit = currencyUnit;
 		this.tipAmount = tipAmount;
 		this.luggageCount = luggageCount;
+		this.pickupTime = pickupTime;
 	}
 
 
@@ -138,7 +140,8 @@ public class CustomerInfo {
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
-						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance){
+						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
+						String pickupTime){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -165,6 +168,7 @@ public class CustomerInfo {
 		this.bidValue = bidValue;
 		this.initialBidValue = initialBidValue;
 		this.estimatedTripDistance = estimatedTripDistance;
+		this.pickupTime = pickupTime;
 	}
 
 	public double getDryDistance() {
@@ -701,5 +705,13 @@ public class CustomerInfo {
 
 	public void setLuggageCount(int luggageCount) {
 		this.luggageCount = luggageCount;
+	}
+
+	public String getPickupTime() {
+		return pickupTime;
+	}
+
+	public void setPickupTime(String pickupTime) {
+		this.pickupTime = pickupTime;
 	}
 }

@@ -114,6 +114,7 @@
     <string name="to">à </string>
 
     <string name="rides">Courses</string>
+    <string name="ride">Course</string>
 
     <string name="no_rides_currently">Pas de courses pour l\'instant </string>
 
@@ -1752,5 +1753,6 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="btn_text_OTP">GÉNÉRER OTP</string>
     <string name="hint_edt_phone">Numéro de téléphone</string>
     <string name="enter_one_time_pwd">Entrez un mot de passe unique</string>
+    <string name="pickup_time_format">Pickup time: %s</string>
 
 </resources>																									

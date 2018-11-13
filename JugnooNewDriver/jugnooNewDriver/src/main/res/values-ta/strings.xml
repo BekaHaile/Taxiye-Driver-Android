@@ -51,6 +51,7 @@
     <string name="from">இருந்து</string>
     <string name="to">வரை</string>
     <string name="rides">சவாரிகள்</string>
+    <string name="ride">சவாரிகள்</string>
     <string name="no_rides_currently">தற்போது எந்த சவாரிகளும் இல்லை</string>
     <string name="missed">தவறவிட்ட சவாரிகள்</string>
     <string name="no_missed_rides_currently">தற்பொழுது எந்த தவறவிட்ட சவாரிகளும் இல்லை</string>
@@ -708,6 +709,7 @@
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
+    <string name="pickup_time_format">Pickup time: %s</string>
     <!--Strings for Subscription plans-->
 
 
