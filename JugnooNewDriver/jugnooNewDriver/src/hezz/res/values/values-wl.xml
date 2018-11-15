@@ -76,4 +76,5 @@
     <color name="themeColor">#CF312F</color>
     <color name="themeColorLight">#bbCF312F</color>
     <string name="default_lang">fr</string>
+    <integer name="default_show_details_in_take_cash">1</integer>
 </resources>

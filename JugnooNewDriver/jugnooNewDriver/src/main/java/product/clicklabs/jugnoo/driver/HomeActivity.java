@@ -7163,9 +7163,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (tollFare > 0) {
                 fareDetails.add(new FareDetail(getString(R.string.toll_charges), tollFare));
             }
-            if (fareDetails.size() > 0) {
-                fareDetails.add(0, new FareDetail(getString(R.string.fare), totalFare));
-            }
+            double fareOfRide = totalFare;
 
             //adding toll fare, taxAmount and tip amount again in totalFare after discount computation
             totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare + taxAmount);
@@ -7203,6 +7201,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 params.put("payment_mode", "" + PaymentMode.CASH.getOrdinal());
                 params.put("paid_using_wallet", "" + Utils.currencyPrecision(finalPaidUsingWallet));
+            }
+
+            if (finalPaidUsingWallet > 0) {
+                fareDetails.add(new FareDetail(getString(R.string.paid_using_wallet), finalPaidUsingWallet));
+            }
+//            fareDetails.add(new FareDetail(getString(R.string.take_cash), finalToPay));
+            if (fareDetails.size() > 0) {
+                fareDetails.add(0, new FareDetail(getString(R.string.fare), fareOfRide));
             }
 
 

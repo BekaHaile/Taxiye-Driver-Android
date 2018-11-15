@@ -81,7 +81,7 @@
 
     <string name="enter_code">Enter le Code</string>
 
-    <string name="done">Réussi</string>
+    <string name="done">Envoyer</string>
 
     <string name="amount">Montant</string>
 
@@ -556,7 +556,7 @@
 
     <string name="time_new">Temps/n</string>
 
-    <string name="jugnoo_ride_over">%s chevaucher</string>
+    <string name="jugnoo_ride_over">%s chauffeur</string>
 
     <string name="today">Aujourd\'hui</string>
 
