@@ -69,6 +69,7 @@ import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -1219,7 +1220,7 @@ public class Utils {
 	private static NumberFormat numberFormat = null;
     private static void initNumberFormat(){
         int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-        numberFormat = NumberFormat.getInstance();
+        numberFormat = NumberFormat.getInstance(Locale.ENGLISH);
         numberFormat.setMinimumFractionDigits(precision);
         numberFormat.setMaximumFractionDigits(precision);
         numberFormat.setRoundingMode(RoundingMode.HALF_UP);
