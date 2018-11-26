@@ -113,7 +113,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                     apiCommonCallback?.onFinish()
 
                     if (apiCommonCallback?.onException(e) != true) {
-                        retryDialog(Data.CHECK_INTERNET_MSG)
+                        retryDialog(Data.SERVER_ERROR_MSG)
                     }
                 }
             }
@@ -131,7 +131,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                 error?.printStackTrace()
                 apiCommonCallback?.onFinish()
                 if (apiCommonCallback?.onFailure(error) != true) {
-                    retryDialog(Data.CHECK_INTERNET_MSG)
+                    retryDialog(Data.SERVER_NOT_RESOPNDING_MSG)
                 }
             }
         }
@@ -182,6 +182,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                     callback as Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> )
             ApiName.UPDATE_DOC_FIELDS ->  RestClient.getApiServices().uploadFields(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.UPDATE_FARES ->  RestClient.getApiServices().updateDriverFares(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.FETCH_PROGRAMS ->  RestClient.getApiServices().fetchPrograms(params, callback as Callback<ProgramModel> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

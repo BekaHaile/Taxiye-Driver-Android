@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <TextView
+        android:id="@+id/tvProgramName"
+        style="@style/TextLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Name Of Program"/>
+
+    <TextView
+        android:id="@+id/tvDates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        tools:text="09/09 - 18/09"
+        style="@style/TextSmall"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProgramName"/>
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        style="@style/TextSmall"
+        tools:text="09/09 - 18/09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDates"/>
+
+    <View
+        android:id="@+id/vwDivider"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="21dp"
+        android:background="@color/dividerColor"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescription"/>
+
+    <TextView
+        android:id="@+id/tvTodayDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        style="@style/TextSmall"
+        tools:text="09/09 - 18/09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vwDivider"/>
+
+    <TextView
+        android:id="@+id/tvCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:text="Completed"
+        style="@style/TextMedium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTodayDate"/>
+
+    <TextView
+        android:id="@+id/tvCompletedRides"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="16dp"
+        tools:text="45 Rides"
+        style="@style/TextMedium"
+        app:layout_constraintStart_toEndOf="@+id/tvCompleted"
+        app:layout_constraintTop_toBottomOf="@+id/tvTodayDate"/>
+
+    <params.com.stepprogressview.StepProgressView
+        android:id="@+id/pbRides"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        app:currentProgress="100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompletedRides"
+        app:markerColor="@android:color/white"
+        app:markerWidth="2dp"
+        app:markers="10,60"
+        app:progressBackgroundColor="#E9EAED"
+        app:progressColor="#FFBB00"
+        app:textColor="#798391"
+        app:textMargin="5dp"
+        app:textSize="15sp"
+        app:totalProgress="100"/>
+
+    <View
+        android:id="@+id/vwBottom"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="16dp"
+        android:background="#E9EAED"
+        app:layout_constraintTop_toBottomOf="@+id/pbRides"/>
+
+    <View
+        android:id="@+id/vwThresholdHeader"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/vwBottom"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        style="@style/TextSmall"
+        android:text="@string/threshold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vwBottom"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        style="@style/TextSmall"
+        android:text="@string/price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vwBottom"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvThresholds"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vwThresholdHeader"/>
+</android.support.constraint.ConstraintLayout>

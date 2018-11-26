@@ -683,8 +683,8 @@
     <string name="deducted">Deducted</string>
     <string name="view_wallet_transactions">लेन-देन प्रकिर्या ब्यौरा</string>
     <string name="schedule_call_message">Press the below button to get support from %s. Our executive will call you shortly.</string>
-	<string name="get_call">Get call</string>
-    <string name="get_support_call">Get Support Call</string>
+	<string name="get_call">कॉल प्राप्त करें</string>
+    <string name="get_support_call">समर्थन कॉल प्राप्त करें</string>
 
 
 	<!--Strings for Subscription plans-->
@@ -702,14 +702,14 @@
 	<string name="label_active_plan">सक्रिय प्लान</string>
     <string name="label_available_plans">उपलब्ध योजनाएं</string>
 	<string name="title_plans_screen">बिना कमीशन की सवारी</string>
-    <string name="no_country_found">No country found</string>
-    <string name="error_no_countries_found">No Countries Found!</string>
-	<string name="country_picker_header">Select country</string>
+    <string name="no_country_found">कोई देश नहीं मिला!</string>
+    <string name="error_no_countries_found">कोई देश नहीं मिला!</string>
+	<string name="country_picker_header">देश चुनिए</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
-    <string name="place_bid">Place Bid</string>
-    <string name="please_enter_some_value">Please enter some value</string>
-    <string name="bid">Bid</string>
-    <string name="bid_placed">Bid Placed</string>
+    <string name="place_bid">बोली लगा</string>
+    <string name="please_enter_some_value">कृपया कुछ दर्ज करें</string>
+    <string name="bid">बोली लगा</string>
+    <string name="bid_placed">बोली लगाई गई</string>
     <!--Strings for Subscription plans-->
 
 	<!--login with phone-->
@@ -718,8 +718,9 @@
 	<string name="code">कोड</string>
 	<string name="btn_text_OTP">ओटीपी उत्पन्न करें</string>
 	<string name="languages">भाषा</string>
-    <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
-    <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="number_should_not_start_with_zero">फोन नंबर 0 से शुरू नहीं होना चाहिए</string>
+    <string name="pickup_time_format">पिक अप: %s</string>
+    <string name="incentive">प्रोत्साहन राशि</string>
 
 
 </resources>

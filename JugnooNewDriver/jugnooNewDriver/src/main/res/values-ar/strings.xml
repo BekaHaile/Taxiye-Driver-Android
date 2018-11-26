@@ -685,6 +685,7 @@
     <string name="terms_of_schedule">شروط الجدول</string>
     <string name="faqs">أسئلة وأجوبة</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="incentive">Incentives</string>
     <!--login with phone-->
 
 </resources>

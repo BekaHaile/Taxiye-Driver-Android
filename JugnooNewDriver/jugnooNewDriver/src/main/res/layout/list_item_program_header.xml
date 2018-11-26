@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/tvProgramType"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:background="#E9EAED"
+    style="@style/TextNormal"
+    android:text="@string/expired"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:gravity="start|center"
+    />
+</android.support.constraint.ConstraintLayout>

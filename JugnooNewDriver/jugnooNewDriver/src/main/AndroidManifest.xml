@@ -526,6 +526,12 @@
             android:screenOrientation="portrait"/>
 
 
+        <activity
+            android:name=".IncentiveActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>

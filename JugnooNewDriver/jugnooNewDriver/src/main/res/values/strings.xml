@@ -1147,5 +1147,12 @@
     <string name="last_name">Last Name</string>
     <string name="first_name_required">First name is mandatory</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="expired">Expired</string>
+    <string name="threshold">Threshold</string>
+    <string name="price">Price</string>
+    <string name="program_dur">PROGRAM DURATION: </string>
+    <string name="current_program">Current Programs</string>
+    <string name="expired_programs">Expired Programs</string>
+    <string name="incentive">Incentives</string>
 
 </resources>
