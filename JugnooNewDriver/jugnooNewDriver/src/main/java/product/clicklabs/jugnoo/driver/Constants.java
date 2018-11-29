@@ -406,5 +406,6 @@ public interface Constants {
 	String KEY_PICKUP_ADDRESS = "pickup_address";
 	String KEY_API_NAME = "api_name";
 	String KEY_DRIVER_GOOGLE_APIS_LOGGING = "driver_google_apis_logging";
+	String SP_RECEIVER_LAST_LOCATION_TIME = "sp_receiver_last_location_time";
 }
 

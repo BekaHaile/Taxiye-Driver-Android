@@ -6455,7 +6455,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (currentPathItemPair != null
+                if (flagDistanceTravelled == -1 && currentPathItemPair != null
                         && (Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
@@ -8071,7 +8071,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 lastloctime, customerInfo);
                     } else {
                         driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
-                                0, customerInfo);
+                                -1, customerInfo);
                     }
                     return true;
                 } else {
@@ -8099,6 +8099,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             @Override
             public void run() {
+                flagDistanceTravelled = -1;
                 try {
                     double lastTimeDiff = (System.currentTimeMillis() - lastloctime) / 1000; // in seconds
                     double displacement = MapUtils.distance(source, destination);
@@ -8112,8 +8113,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
                             destination.latitude + "," + destination.longitude, "EN", false, false);
                     String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-
-                    if (endDisplacementSpeed < 19) {
+                    double maxSpeedThreshold = (double)(Prefs.with(activity).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, (float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD));
+                    if (endDisplacementSpeed < maxSpeedThreshold) {
                         try {
                             double distanceOfPath = -1;
                             JSONObject jsonObject = new JSONObject(response);
@@ -8126,12 +8127,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 Log.v("displacement speed", "" + endDistanceSpeed);
                             }
                             Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
-                            if (distanceOfPath > 0.0001 && endDistanceSpeed < 14) {
+                            if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
                                 customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                 flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
                                 Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
                             } else {
-
                                 throw new Exception();
                             }
                         } catch (Exception e) {
@@ -8150,21 +8150,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     Log.e("calculateFusedLocationDistance totalDistance ", "=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
-                    activity.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            DialogPopup.dismissLoadingDialog();
-                            driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
-                                    flagDistanceTravelled, customerInfo);
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
-                    DialogPopup.dismissLoadingDialog();
-                    driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
-                            flagDistanceTravelled, customerInfo);
                 }
+                activity.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        DialogPopup.dismissLoadingDialog();
+                        driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
+                                flagDistanceTravelled, customerInfo);
+                    }
+                });
 
             }
         }).start();

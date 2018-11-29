@@ -125,6 +125,7 @@ public class GpsDistanceCalculator {
 			saveTotalDistanceToSP(context, -1);
 			saveLastLocationTimeToSP(context, System.currentTimeMillis());
 			Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, 0);
+			Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, System.currentTimeMillis());
 		}
 		connectGPSListener(context);
 		setupMeteringAlarm(context);
@@ -176,7 +177,7 @@ public class GpsDistanceCalculator {
 	private static final long ALARM_REPEAT_INTERVAL = 30000;
 
 
-	public void setupMeteringAlarm(Context context) {
+	private void setupMeteringAlarm(Context context) {
 		// check task is scheduled or not
 		boolean alarmUp = (PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
 				new Intent(context, MeteringAlarmReceiver.class).setAction(CHECK_LOCATION),
@@ -191,17 +192,21 @@ public class GpsDistanceCalculator {
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 20000,
-				ALARM_REPEAT_INTERVAL, pendingIntent);
+		if (alarmManager != null) {
+			alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 20000,
+					ALARM_REPEAT_INTERVAL, pendingIntent);
+		}
 	}
 
-	public void cancelMeteringAlarm(Context context) {
+	private void cancelMeteringAlarm(Context context) {
 		Intent intent = new Intent(context, MeteringAlarmReceiver.class);
 		intent.setAction(CHECK_LOCATION);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
+		if (alarmManager != null) {
+			alarmManager.cancel(pendingIntent);
+		}
 		pendingIntent.cancel();
 	}
 
