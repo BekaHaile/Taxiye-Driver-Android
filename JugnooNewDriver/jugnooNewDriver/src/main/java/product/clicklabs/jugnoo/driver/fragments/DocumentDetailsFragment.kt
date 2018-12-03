@@ -10,6 +10,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.InputFilter
 import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -446,18 +447,14 @@ class DocumentInputField(
                             setValue!!.remove(country.value)
                             country.isSelected = false
                         }
-                        val str = setValue!!.toString()
-                        inputField.setText(str.substring(1, str.length-1))
+                        setTextForSetValues()
                     }
                 }
 
                 inputField.setOnClickListener{
                     showSelectionDialog(listener,pickListener,label+"-dialog",label, (inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type))
                 }
-                if(setValue != null) {
-                    val str = setValue.toString()
-                    inputField.setText(str.substring(1, str.length-1))
-                }
+                setTextForSetValues()
             }
 
         }
@@ -492,6 +489,22 @@ class DocumentInputField(
             countryPickerDialog.setCountryPickerListener(pickerListener)
             countryPickerDialog.setDialogInteractionListener(interactionListener)
             countryPickerDialog.show((context as AppCompatActivity).supportFragmentManager, tag)
+        }
+    }
+
+    private fun setTextForSetValues(){
+        if(setValue != null) {
+            val str = StringBuilder()
+            for (df in set!!.iterator()) {
+                if(df.isSelected){
+                    str.append(df.label).append(", ")
+                }
+            }
+            var string = str.toString()
+            if(!TextUtils.isEmpty(string)) {
+                string = string.substring(0, string.length - 2)
+            }
+            inputField.setText(string)
         }
     }
 

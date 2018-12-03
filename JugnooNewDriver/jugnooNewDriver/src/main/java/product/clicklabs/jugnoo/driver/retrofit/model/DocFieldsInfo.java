@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -41,7 +42,7 @@ public class DocFieldsInfo extends SearchDataModel {
     }
 
     public String getLabel() {
-        if(type.equalsIgnoreCase("element")){
+        if(type.equalsIgnoreCase("element") && TextUtils.isEmpty(label)){
             return value;
         }
         return label;
