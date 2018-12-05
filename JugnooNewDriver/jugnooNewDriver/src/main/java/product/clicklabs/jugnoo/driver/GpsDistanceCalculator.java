@@ -98,6 +98,7 @@ public class GpsDistanceCalculator {
 		this.gpsForegroundLocationFetcher = null;
 		this.fusedLocationFetcherBackgroundBalanced = null;
 		initializeGPSForegroundLocationFetcher(context);
+		this.handler = new Handler();
 
 	}
 
@@ -129,6 +130,7 @@ public class GpsDistanceCalculator {
 		}
 		connectGPSListener(context);
 		setupMeteringAlarm(context);
+		startUploadRunnables();
 
 		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 				getWaitTimeFromSP(context), lastGPSLocation,
@@ -144,6 +146,7 @@ public class GpsDistanceCalculator {
 	public void stop() {
 		disconnectGPSListener();
 		cancelMeteringAlarm(context);
+		stopUploadRunnables();
 
 		saveStartTimeToSP(context, System.currentTimeMillis());
 		saveWaitTimeToSP(context, 0);
@@ -174,7 +177,7 @@ public class GpsDistanceCalculator {
 
 	private static int METERING_PI_REQUEST_CODE = 112;
 	private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
-	private static final long ALARM_REPEAT_INTERVAL = 30000;
+	private static final long ALARM_REPEAT_INTERVAL = 60000;
 
 
 	private void setupMeteringAlarm(Context context) {
@@ -860,6 +863,50 @@ public class GpsDistanceCalculator {
 
 	private boolean useDirectionsApi(){
 		return Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
+	}
+
+	private Handler handler;
+	private boolean uploadRunnablesRunning;
+	private static final long PATH_UPLOAD_INTERVAL = 15000;
+	private static final long UPLOAD_IN_RIDE_DATA_INTERVAL = 30000;
+
+	private Runnable pathUploadRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(uploadRunnablesRunning) {
+				Intent intent = new Intent(context, PathUploadReceiver.class);
+				intent.setAction(MeteringService.UPOLOAD_PATH);
+				context.sendBroadcast(intent);
+
+				handler.postDelayed(this, PATH_UPLOAD_INTERVAL);
+			}
+		}
+	};
+	private Runnable inRideDataUploadRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(uploadRunnablesRunning){
+				Intent intent = new Intent(context, UploadInRideDataReceiver.class);
+				intent.setAction(MeteringService.UPLOAD_IN_RIDE_DATA);
+				context.sendBroadcast(intent);
+
+				handler.postDelayed(this, UPLOAD_IN_RIDE_DATA_INTERVAL);
+			}
+		}
+	};
+
+	private void startUploadRunnables(){
+		handler.removeCallbacks(pathUploadRunnable);
+		handler.removeCallbacks(inRideDataUploadRunnable);
+		uploadRunnablesRunning = true;
+		handler.postDelayed(pathUploadRunnable, PATH_UPLOAD_INTERVAL);
+		handler.postDelayed(inRideDataUploadRunnable, UPLOAD_IN_RIDE_DATA_INTERVAL);
+	}
+
+	private void stopUploadRunnables(){
+		uploadRunnablesRunning = false;
+		handler.removeCallbacks(pathUploadRunnable);
+		handler.removeCallbacks(inRideDataUploadRunnable);
 	}
 
 }

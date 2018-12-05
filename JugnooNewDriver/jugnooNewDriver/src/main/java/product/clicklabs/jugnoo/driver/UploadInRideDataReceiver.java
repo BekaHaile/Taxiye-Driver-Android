@@ -1,8 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -99,10 +96,9 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                     }
                 }
             }
-            String meteringState = Database2.getInstance(context).getMetringState();
-            if(!Database2.ON.equalsIgnoreCase(meteringState)){
-                cancelUploadInRideDataAlarm(context);
-            }
+//            String meteringState = Database2.getInstance(context).getMetringState();
+//            if(!Database2.ON.equalsIgnoreCase(meteringState)){
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,15 +106,6 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
 
 
 
-    public void cancelUploadInRideDataAlarm(Context context) {
-        Intent intent = new Intent(context, UploadInRideDataReceiver.class);
-        intent.setAction(MeteringService.UPLOAD_IN_RIDE_DATA);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MeteringService.UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
 
     public void updateWalletBalance(JSONObject jsonObject) {
 		try {

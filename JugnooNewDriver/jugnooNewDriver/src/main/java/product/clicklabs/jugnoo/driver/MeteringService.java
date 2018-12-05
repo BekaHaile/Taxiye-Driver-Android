@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -39,25 +38,12 @@ public class MeteringService extends Service {
 	public IBinder onBind(Intent intent) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
-	
-	
-	@Override
-    public void onCreate() {
-    }
 
-	
-    @Override
-    public void onStart(Intent intent, int startId) {
-    	cancelAlarm();
-        gpsInstance(this).start();
-        startUploadPathAlarm();
-		startUploadInRideDataAlarm();
-    }
-    
-    
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
+		cancelAlarm();
+		gpsInstance(this).start();
 		try {
 			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,getString(R.string.metering_service_notif_label),METER_NOTIF_ID));
 		} catch (Exception e) {
@@ -81,77 +67,8 @@ public class MeteringService extends Service {
 
 
 
-    public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
     public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
-    public static final long ALARM_REPEAT_INTERVAL = 15000;
-    public void startUploadPathAlarm() {
-        // check task is scheduled or not
-        boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH),
-            PendingIntent.FLAG_NO_CREATE) != null);
-
-        if (alarmUp) {
-            cancelUploadPathAlarm();
-        }
-
-        Intent intent = new Intent(this, PathUploadReceiver.class);
-        intent.setAction(UPOLOAD_PATH);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
-				ALARM_REPEAT_INTERVAL, pendingIntent);
-
-    }
-
-    public void cancelUploadPathAlarm() {
-        Intent intent = new Intent(this, PathUploadReceiver.class);
-        intent.setAction(UPOLOAD_PATH);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
-
-
-
-
-
-
-
-
-	public static final int UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE = 114;
 	public static final String UPLOAD_IN_RIDE_DATA = "product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA";
-	public static final long UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL = 30000;
-	public void startUploadInRideDataAlarm() {
-		boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				new Intent(this, UploadInRideDataReceiver.class).setAction(UPLOAD_IN_RIDE_DATA),
-				PendingIntent.FLAG_NO_CREATE) != null);
-		if (alarmUp) {
-			cancelUploadInRideDataAlarm();
-		}
-
-		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
-		intent.setAction(UPLOAD_IN_RIDE_DATA);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
-				UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL, pendingIntent);
-	}
-
-	public void cancelUploadInRideDataAlarm() {
-		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
-		intent.setAction(UPLOAD_IN_RIDE_DATA);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
-		pendingIntent.cancel();
-	}
 
 
 
@@ -176,8 +93,6 @@ public class MeteringService extends Service {
     		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
-				cancelUploadPathAlarm();
-				cancelUploadInRideDataAlarm();
     		}
     		else{
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
