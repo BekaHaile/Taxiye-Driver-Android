@@ -1,8 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -188,22 +185,11 @@ public class PathUploadReceiver extends BroadcastReceiver {
             String meteringState = Database2.getInstance(context).getMetringState();
             if(!Database2.ON.equalsIgnoreCase(meteringState)){
 				Database2.getInstance(context).deleteAllCurrentPathItems();
-				cancelUploadPathAlarm(context);
 			}
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    public static void cancelUploadPathAlarm(Context context) {
-        Intent intent = new Intent(context, PathUploadReceiver.class);
-        intent.setAction(MeteringService.UPOLOAD_PATH);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MeteringService.UPLOAD_PATH_PI_REQUEST_CODE,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
 
 }
