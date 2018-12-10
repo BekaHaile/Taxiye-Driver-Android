@@ -172,6 +172,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -187,6 +189,10 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
+import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
@@ -7912,9 +7918,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
                 btnCancel.setTypeface(Fonts.mavenRegular(activity));
                 final Button btnEnterToll = (Button) dialogEndRidePopup.findViewById(R.id.btnEnterToll);
-                btnEnterToll.setVisibility(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? View.VISIBLE : View.GONE);
                 final TextView tvTollValue = (TextView) dialogEndRidePopup.findViewById(R.id.tvTollValue);
+                tvTollValue.setText(getString(R.string.toll_value, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getTollFare())));
+                btnEnterToll.setVisibility(View.GONE);
                 tvTollValue.setVisibility(View.GONE);
+                if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)){
+                    if(customerInfo.getTollFare() > 0){
+                        tvTollValue.setVisibility(View.VISIBLE);
+                    } else {
+                        btnEnterToll.setVisibility(View.VISIBLE);
+                    }
+                }
 
                 btnOk.setOnClickListener(new View.OnClickListener() {
                     @SuppressWarnings("unused")
@@ -7946,7 +7960,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 btnCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        customerInfo.setTollFare(0.0);
                         MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE + "_" + FirebaseEvents.CONFIRM_NO, null);
                         dialogEndRidePopup.dismiss();
                         FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
@@ -7960,12 +7973,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 View.OnClickListener clickListener = new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new EnterTollDialog(HomeActivity.this).show(customerInfo.getTollFare(), new EnterTollDialog.Callback() {
+                        new EnterTollDialog(HomeActivity.this, customerInfo).shows(new EnterTollDialog.Callback() {
                             @Override
                             public void tollEntered(double tollValue) {
                                 tvTollValue.setVisibility(View.VISIBLE);
                                 btnEnterToll.setVisibility(View.GONE);
-                                customerInfo.setTollFare(tollValue);
                                 tvTollValue.setText(getString(R.string.toll_value, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), tollValue)));
                             }
                         });
@@ -9602,7 +9614,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     customerInfo.setJugnooBalance(newBalance);
                                 }
                             }
-                            endRidePopup(HomeActivity.this, customerInfo);
+							getTollData(customerInfo);
                             FlurryEventLogger.event(RIDE_ENDED);
                         }
                         DialogPopup.dismissLoadingDialog();
@@ -9617,7 +9629,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         public void failure(RetrofitError error) {
             if (customerInfo != null && walletBalanceUpdatePopup) {
                 stopWalletUpdateTimeout();
-                endRidePopup(HomeActivity.this, customerInfo);
+				getTollData(customerInfo);
                 DialogPopup.dismissLoadingDialog();
                 FlurryEventLogger.event(RIDE_ENDED);
             }
@@ -11200,4 +11212,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+
+    private void getTollData(final CustomerInfo customerInfo){
+    	HashMap<String, String> params = new HashMap<>();
+    	params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+    	new ApiCommonKt<TollDataResponse>(this, true, true, true).execute(params, ApiName.GET_TOLL_DATA,
+				new APICommonCallbackKotlin<TollDataResponse>() {
+			@Override
+			public void onSuccess(TollDataResponse tollDataResponse, String message, int flag) {
+                customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
+				endRidePopup(HomeActivity.this, customerInfo);
+			}
+
+			@Override
+			public boolean onError(TollDataResponse tollDataResponse, String message, int flag) {
+                customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
+                endRidePopup(HomeActivity.this, customerInfo);
+				return true;
+			}
+		});
+	}
 }

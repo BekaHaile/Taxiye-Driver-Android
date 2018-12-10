@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/rv"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+             android:splitMotionEvents="false"
+                android:tag="@string/dont_touch_me"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_margin="25dp"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
+        >
+
+        <TextView
+            android:id="@+id/textHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/toll_charges"
+            android:textColor="@color/themeColor"
+            style="@style/TextTitle"/>
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/tolls_incurred_during_ride"
+            style="@style/TextNormal"
+
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTolls"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scrollbars="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
+            >
+        <Button
+            android:id="@+id/btnAddToll"
+            style="@style/DialogButtonAlternate"
+            android:gravity="center"
+            android:text="@string/add_toll"
+            android:layout_marginEnd="30dp"
+            />
+        <Button
+            android:id="@+id/btnConfirm"
+            style="@style/DialogButton"
+            android:gravity="center"
+            android:text="@string/done"
+            />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

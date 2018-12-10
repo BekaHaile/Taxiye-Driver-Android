@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.imageView
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
 import product.clicklabs.jugnoo.driver.retrofit.RestClient

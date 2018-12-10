@@ -6,6 +6,7 @@ import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
+import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.models.*
@@ -113,7 +114,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                     apiCommonCallback?.onFinish()
 
                     if (apiCommonCallback?.onException(e) != true) {
-                        retryDialog(Data.CHECK_INTERNET_MSG)
+                        retryDialog(Data.SERVER_ERROR_MSG)
                     }
                 }
             }
@@ -131,7 +132,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                 error?.printStackTrace()
                 apiCommonCallback?.onFinish()
                 if (apiCommonCallback?.onFailure(error) != true) {
-                    retryDialog(Data.CHECK_INTERNET_MSG)
+                    retryDialog(Data.SERVER_NOT_RESOPNDING_MSG)
                 }
             }
         }
@@ -182,6 +183,8 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                     callback as Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> )
             ApiName.UPDATE_DOC_FIELDS ->  RestClient.getApiServices().uploadFields(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.UPDATE_FARES ->  RestClient.getApiServices().updateDriverFares(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.GET_TOLL_DATA ->  RestClient.getApiServices().getTollData(params, callback as Callback<TollDataResponse> )
+            ApiName.UPDATE_TOLL_DATA ->  RestClient.getApiServices().updateTollData(params, callback as Callback<FeedCommonResponseKotlin> )
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

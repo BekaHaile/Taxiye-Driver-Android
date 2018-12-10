@@ -32,6 +32,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
@@ -50,10 +51,12 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
+import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
 
 /**
@@ -701,6 +704,13 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/log_google_api_hits")
 	void logGoogleApiHitsC(@FieldMap Map<String, String> params, Callback<SettleUserDebt> callback);
+
+	@GET("/get_toll_data")
+	void getTollData(@QueryMap Map<String, String> params, Callback<TollDataResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_toll_data")
+	void updateTollData(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 
 
 }
