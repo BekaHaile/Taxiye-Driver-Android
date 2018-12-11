@@ -687,7 +687,7 @@ public class CustomerInfo {
 	public double getTollFare() {
 		double tollFare = 0;
 		for(TollData td : getTollData()){
-			if(!td.getDeleted()) {
+			if(!td.getEdited() || td.getToll() > 0) {
 				tollFare += td.getToll();
 			}
 		}

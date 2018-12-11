@@ -3,10 +3,12 @@ package product.clicklabs.jugnoo.driver.home
 import android.app.Activity
 import android.app.Dialog
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import kotlinx.android.synthetic.main.dialog_toll.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -24,7 +26,7 @@ import java.util.*
 
 class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
 
-    fun showAddToll(tollDatas: ArrayList<TollData>, callback:CallbackInt){
+    fun showAddToll(tollToEdit:TollData?, manualTollValue:Double, tollDatas:ArrayList<TollData>, callback:CallbackInt){
         val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
         with(dialog){
             window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
@@ -37,23 +39,36 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
 
             val btnCancel = findViewById<Button>(R.id.btnCancel)
             val btnAdd = findViewById<Button>(R.id.btnAdd)
-            val etTollName = findViewById<EditText>(R.id.etTollName)
+            val textHead = findViewById<TextView>(R.id.textHead)
+            val tvTollName = findViewById<TextView>(R.id.tvTollName)
             val etTollValue = findViewById<EditText>(R.id.etTollValue)
+            if(tollToEdit == null){
+                textHead.setText(R.string.add_toll)
+                tvTollName.visibility = View.GONE
+                if(manualTollValue > 0) {
+                    etTollValue.setText(manualTollValue.toString())
+                }
+            } else {
+                textHead.setText(R.string.edit_toll)
+                tvTollName.visibility = View.VISIBLE
+                tvTollName.text = activity.getString(R.string.toll_name) + ": " + tollToEdit.tollName
+                etTollValue.setText(tollToEdit.toll.toString())
+            }
+            etTollValue.setSelection(etTollValue.text.length)
 
 
             btnAdd.setOnClickListener {
                 val fare = etTollValue.text.toString().trim()
-                val name = etTollName.text.toString().trim()
-                if(name.isEmpty()){
-                    Utils.showToast(activity, activity.getString(R.string.please_enter_something))
-                    return@setOnClickListener
-                }
                 if (fare.isEmpty() || !Utils.checkIfOnlyDigitsDecimal(fare)) {
                     Utils.showToast(activity, activity.getString(R.string.invalid_fare))
                     return@setOnClickListener
                 }
-
-                tollDatas.add(TollData(-1, fare.toDouble(), name))
+                if(tollToEdit == null){
+                    tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
+                } else {
+                    tollToEdit.edited = true
+                    tollToEdit.toll = fare.toDouble()
+                }
                 callback.tollAdded()
                 dismiss()
             }
@@ -69,6 +84,16 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
     }
 
     fun shows(callback: Callback){
+        if(customerInfo.tollData.size == 0
+                || (customerInfo.tollData.size == 1 && customerInfo.tollData[0].tollVisitId == -1)){
+            val tollVal = if(customerInfo.tollData.size == 1) customerInfo.tollData[0].toll else 0.0
+            showAddToll(null, tollVal, customerInfo.tollData, object:CallbackInt{
+                override fun tollAdded() {
+                    callback.tollEntered(customerInfo.tollFare)
+                }
+            })
+            return
+        }
         val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
         with(dialog){
             window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
@@ -81,10 +106,19 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
 
             rvTolls.layoutManager = LinearLayoutManager(activity)
             rvTolls.setHasFixedSize(false)
-            val adapter = TollDataAdapter(rvTolls, object:TollDataAdapter.Callback{
+            val adapter = TollDataAdapter(activity, rvTolls, object:TollDataAdapter.Callback{
                 override fun onDeleteClick(pos: Int, tollData: TollData) : ArrayList<TollData> {
-                    tollData.deleted = true
+                    tollData.edited = true
+                    tollData.toll = 0.0
                     return customerInfo.tollData
+                }
+
+                override fun onEditClick(pos: Int, tollData: TollData, f: (tollData: ArrayList<TollData>?, currency:String)->Unit){
+                    showAddToll(tollData, 0.0, customerInfo.tollData, object:CallbackInt{
+                        override fun tollAdded() {
+                            f(customerInfo.tollData, customerInfo.currencyUnit)
+                        }
+                    })
                 }
             })
             rvTolls.adapter = adapter
@@ -99,14 +133,10 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             rvTolls.layoutParams = params
 
             btnConfirm.setOnClickListener {
-                updateTollData(this)
+                updateTollData(this, callback)
             }
-            btnAddToll.setOnClickListener {
-                showAddToll(customerInfo.tollData, object:CallbackInt{
-                    override fun tollAdded() {
-                        adapter.setList(customerInfo.tollData, customerInfo.currencyUnit)
-                    }
-                })
+            btnCancel.setOnClickListener {
+                dismiss()
             }
 
 
@@ -115,18 +145,18 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
 
     }
 
-    private fun updateTollData(dialog: Dialog) {
+    private fun updateTollData(dialog: Dialog, callback: Callback) {
         val params = HashMap<String, String>()
         params[Constants.KEY_ENGAGEMENT_ID] = customerInfo.getEngagementId().toString()
         val jsonArray = JSONArray()
         for(toll in customerInfo.tollData){
             val jsonObject = JSONObject()
-            if(toll.tollVisitId == -1 && !toll.deleted){
+            if(toll.tollVisitId == -1 && !toll.edited){
                 jsonObject.put(Constants.KEY_TOLL_NAME, toll.tollName)
                 jsonObject.put(Constants.KEY_TOLL, toll.toll)
-            } else if(toll.tollVisitId > 0 && toll.deleted){
-                jsonObject.put(Constants.KEY_TOLL_VISIT_ID, toll.toll)
-                jsonObject.put(Constants.KEY_TOLL, 0)
+            } else if(toll.tollVisitId > 0 && toll.edited){
+                jsonObject.put(Constants.KEY_TOLL_VISIT_ID, toll.tollVisitId)
+                jsonObject.put(Constants.KEY_TOLL, toll.toll)
             }
             if(jsonObject.has(Constants.KEY_TOLL)){
                 jsonArray.put(jsonObject)
@@ -142,6 +172,7 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
                 object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
                     override fun onSuccess(feedCommonResponseKotlin: FeedCommonResponseKotlin, message: String, flag: Int) {
                         dialog.dismiss()
+                        callback.tollEntered(customerInfo.tollFare)
                     }
 
                     override fun onError(feedCommonResponseKotlin: FeedCommonResponseKotlin, message: String, flag: Int): Boolean {

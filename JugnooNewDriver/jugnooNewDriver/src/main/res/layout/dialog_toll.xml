@@ -60,10 +60,10 @@
             android:layout_marginBottom="20dp"
             >
         <Button
-            android:id="@+id/btnAddToll"
+            android:id="@+id/btnCancel"
             style="@style/DialogButtonAlternate"
             android:gravity="center"
-            android:text="@string/add_toll"
+            android:text="@string/cancel"
             android:layout_marginEnd="30dp"
             />
         <Button

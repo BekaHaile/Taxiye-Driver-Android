@@ -12,5 +12,5 @@ class TollData(
         @SerializedName("toll_visit_id") @Expose var tollVisitId : Int,
         @SerializedName("toll") @Expose var toll : Double,
         @SerializedName("toll_name") @Expose var tollName : String,
-        var deleted:Boolean = false
+        var edited:Boolean = false
 )
