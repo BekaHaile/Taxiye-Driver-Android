@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:splitMotionEvents="false">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutInner"
+        android:layout_width="640px"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20px"
+        android:background="@drawable/white_bg_rounded"
+        android:orientation="vertical"
+        android:splitMotionEvents="false">
+
+        <TextView
+            android:id="@+id/textHead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/everything_is_alright_caps"
+            android:textColor="@color/green_status"
+            android:textSize="@dimen/text_size_36"
+            android:visibility="visible"
+            android:layout_marginTop="35px"
+            />
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="35px"
+            android:layout_marginTop="20px"
+            android:gravity="center"
+            android:paddingStart="40px"
+            android:paddingEnd="40px"
+            android:text="@string/you_have_disabled_jugnoo_emergency"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_30" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/dividerColor" />
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="83px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0px"
+            android:background="@drawable/button_white_grey_br_selector"
+            android:text="@string/ok"
+            android:textColor="@color/text_color"
+            android:textSize="30px"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

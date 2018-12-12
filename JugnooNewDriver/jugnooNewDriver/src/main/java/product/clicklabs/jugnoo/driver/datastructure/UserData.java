@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -34,6 +35,7 @@ public class UserData {
 	private int sendCreditsEnabled;
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
+	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -255,5 +257,14 @@ public class UserData {
 
 	public void setVehicleDetailsLogin(VehicleDetailsLogin vehicleDetailsLogin) {
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
+	}
+
+
+	public ArrayList<EmergencyContact> getEmergencyContactsList() {
+		return emergencyContactsList;
+	}
+
+	public void setEmergencyContactsList(ArrayList<EmergencyContact> emergencyContactsList) {
+		this.emergencyContactsList = emergencyContactsList;
 	}
 }

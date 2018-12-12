@@ -96,6 +96,7 @@ import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -118,6 +119,7 @@ import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
+import product.clicklabs.jugnoo.driver.apis.ApiEmergencyDisable;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
@@ -158,6 +160,9 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListInRideFragment;
+import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
+import product.clicklabs.jugnoo.driver.emergency.EmergencyDialog;
+import product.clicklabs.jugnoo.driver.emergency.EmergencyDisableDialog;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
@@ -1506,9 +1511,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             btnHelp.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-                    FlurryEventLogger.event(CALL_US);
-                    Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
+                    if(Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_EMERGENCY_MODE_ENABLED, 0) == 1) {
+                        sosDialog(HomeActivity.this, Data.getCurrentCustomerInfo());
+                    } else {
+                        Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                        FlurryEventLogger.event(CALL_US);
+                    }
                 }
             });
 
@@ -4118,6 +4126,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             switch (mode) {
 
                 case D_INITIAL:
+                    dismissSOSDialog();
                     updateDriverServiceFast("no");
                     setPannelVisibility(true);
                     getInfoTilesAsync(HomeActivity.this);
@@ -4200,6 +4209,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     .commitAllowingStateLoss();
                         }
                     }
+                    disableEmergencyModeIfNeeded(Data.getCurrentEngagementId());
+
                     break;
 
 
@@ -4682,6 +4693,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
             setLuggageUI();
+            updateTopBar();
 
 
             map.setPadding(0, 0, 0, 0);
@@ -5010,6 +5022,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         if (!checkIfUserDataNull()) {
             setUserData();
+
+            updateTopBar();
 
             initializeFusedLocationFetchers();
 
@@ -11318,4 +11332,129 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             endRidePopup(HomeActivity.this, customerInfo);
         }
 	}
+
+    private Dialog sosDialog;
+
+    public void sosDialog(final Activity activity, final CustomerInfo customerInfo) {
+        if (Data.userData.getEmergencyContactsList() != null) {
+            sosDialog = new EmergencyDialog(activity, String.valueOf(customerInfo.getEngagementId()), new EmergencyDialog.CallBack() {
+                @Override
+                public void onEnableEmergencyModeClick(View view) {
+                    Intent intent = new Intent(HomeActivity.this, EmergencyActivity.class);
+                    intent.putExtra(Constants.KEY_EMERGENCY_ACTIVITY_MODE,
+                            EmergencyActivity.EmergencyActivityMode.EMERGENCY_ACTIVATE.getOrdinal1());
+                    intent.putExtra(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+                    intent.putExtra(Constants.KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+
+                @Override
+                public void onEmergencyModeDisabled(String engagementId) {
+                    disableEmergencyMode(engagementId);
+                }
+
+                @Override
+                public void onSendRideStatusClick(View view) {
+                    Intent intent = new Intent(HomeActivity.this, EmergencyActivity.class);
+                    intent.putExtra(Constants.KEY_EMERGENCY_ACTIVITY_MODE,
+                            EmergencyActivity.EmergencyActivityMode.SEND_RIDE_STATUS.getOrdinal1());
+                    intent.putExtra(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+
+                @Override
+                public void onInAppCustomerSupportClick(View view) {
+                    if (JSONParser.isTagEnabled(HomeActivity.this, Constants.CHAT_SUPPORT)) {
+                        FuguConfig.getInstance().showConversations(HomeActivity.this, getStringText(R.string.support));
+                    } else if (JSONParser.isTagEnabled(HomeActivity.this, Constants.MAIL_SUPPORT)) {
+                        activity.startActivity(new Intent(activity, SupportMailActivity.class));
+                    }
+                }
+
+                @Override
+                public void onDialogClosed(View view) {
+                }
+
+                @Override
+                public void onDialogDismissed() {
+
+                }
+
+                @Override
+                public void onCallSupportClick(@NotNull View view) {
+                    if(Data.userData != null) {
+                        Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                        FlurryEventLogger.event(CALL_US);
+                    }
+                }
+            }).show(Prefs.with(this).getInt(Constants.SP_EMERGENCY_MODE_ENABLED, 0));
+        }
+    }
+
+
+    private void dismissSOSDialog() {
+        if (sosDialog != null && sosDialog.isShowing()) {
+            sosDialog.dismiss();
+        }
+    }
+
+    private void disableEmergencyModeIfNeeded(final String engagementId) {
+        int modeEnabled = Prefs.with(this).getInt(Constants.SP_EMERGENCY_MODE_ENABLED, 0);
+        if (modeEnabled == 1 && !TextUtils.isEmpty(engagementId)) {
+            disableEmergencyMode(engagementId);
+        }
+    }
+
+    public void disableEmergencyMode(final String engagementId) {
+        new ApiEmergencyDisable(this, new ApiEmergencyDisable.Callback() {
+            @Override
+            public void onSuccess() {
+                updateTopBar();
+            }
+
+            @Override
+            public void onFailure() {
+            }
+
+            @Override
+            public void onRetry(View view) {
+                disableEmergencyMode(engagementId);
+            }
+
+            @Override
+            public void onNoRetry(View view) {
+
+            }
+        }).emergencyDisable(engagementId);
+    }
+
+    public static int localModeEnabled = -1;
+
+    private void updateTopBar() {
+        try {
+            if (DriverScreenMode.D_INITIAL != driverScreenMode) {
+                int modeEnabled = Prefs.with(this).getInt(Constants.SP_EMERGENCY_MODE_ENABLED, 0);
+                if (modeEnabled == 1) {
+                    textViewRideInstructions.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_warning_red, 0, 0, 0);
+                    localModeEnabled = modeEnabled;
+                    return;
+                } else {
+                    if (localModeEnabled == 1) {
+                        EmergencyDisableDialog emergencyDisableDialog = new EmergencyDisableDialog(HomeActivity.this);
+                        emergencyDisableDialog.show();
+                    }
+                    textViewRideInstructions.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                }
+                localModeEnabled = modeEnabled;
+            } else {
+                Prefs.with(this).save(Constants.SP_EMERGENCY_MODE_ENABLED, 0);
+                localModeEnabled = 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

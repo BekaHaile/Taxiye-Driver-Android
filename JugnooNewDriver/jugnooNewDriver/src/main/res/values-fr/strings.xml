@@ -1753,5 +1753,12 @@ de Hezz. S\'il vous plaît n\'allez pas plus loin, si cela ne va pas avec vous.
     <string name="hint_edt_phone">Numéro de téléphone</string>
     <string name="enter_one_time_pwd">Entrez un mot de passe unique</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="you_can_add_only_three_contacts">Vous pouvez ajouter seulement trois contacts.</string>
+    <string name="emergency_contacts">Contacts d\'urgence</string>
+    <string name="add_contacts">Ajouter des contacts</string>
+    <string name="please_select_some_contacts_first">Veuillez d\'abord sélectionner des contacts</string>
+    <string name="edit">Modifier</string>
+    <string name="configure_your_emergency_contacts">Configurez vos contacts d\'urgence</string>
+    <string name="inform_your_friends">Informez vos amis et votre, famille de votre position actuelle chaque fois que vous utilisez %s</string>
 
 </resources>																									

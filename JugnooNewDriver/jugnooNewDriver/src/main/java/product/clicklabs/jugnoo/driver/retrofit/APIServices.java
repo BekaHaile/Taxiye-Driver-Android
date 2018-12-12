@@ -713,4 +713,41 @@ public interface APIServices {
 	void updateTollData(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 
 
+	@FormUrlEncoded
+	@POST("/emergency/contacts/add_multiple")
+	void emergencyContactsAddMultiple(@FieldMap Map<String, String> params,
+									  Callback<SettleUserDebt> callback);
+
+
+	@FormUrlEncoded
+	@POST("/emergency/contacts/delete")
+	void emergencyContactsDelete(@FieldMap Map<String, String> params,
+								 Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/emergency/send_ride_status_message")
+	void emergencySendRideStatusMessage(@FieldMap Map<String, String> params,
+										Callback<SettleUserDebt> callback);
+
+
+	@GET("/emergency/contacts/list")
+	void emergencyContactsList(@QueryMap Map<String, String> params,
+							   Callback<SettleUserDebt> callback);
+
+
+	@FormUrlEncoded
+	@POST("/emergency/alert")
+	void emergencyAlert(@FieldMap Map<String, String> params,
+						Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/emergency/disable")
+	void emergencyDisable(@FieldMap Map<String, String> params,
+						  Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/emergency/alert")
+	Response emergencyAlertSync(@FieldMap Map<String, String> params);
+
+
 }

@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -507,6 +508,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_SHOW_POOL_REQUEST_DEST, userData.optInt(KEY_DRIVER_SHOW_POOL_REQUEST_DEST,
 				context.getResources().getInteger(R.integer.driver_show_pool_request_dest)));
 		Prefs.with(context).save(KEY_DRIVER_FARE_MANDATORY, userData.optInt(KEY_DRIVER_FARE_MANDATORY, 0));
+		Prefs.with(context).save(KEY_DRIVER_EMERGENCY_MODE_ENABLED, userData.optInt(KEY_DRIVER_EMERGENCY_MODE_ENABLED,
+				context.getResources().getInteger(R.integer.driver_emergency_mode_enabled)));
 
 	}
 
@@ -1237,4 +1240,20 @@ public class JSONParser implements Constants {
 		return enabled;
 	}
 
+	public static ArrayList<EmergencyContact> parseEmergencyContacts(JSONObject jObj){
+		ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
+		try{
+			JSONArray jEmergencyContactsArr = jObj.getJSONArray(KEY_EMERGENCY_CONTACTS);
+
+			for(int i=0; i<jEmergencyContactsArr.length(); i++){
+				JSONObject jECont = jEmergencyContactsArr.getJSONObject(i);
+				emergencyContactsList.add(new EmergencyContact(jECont.getInt(KEY_ID),
+						jECont.getString(KEY_NAME),
+						jECont.getString(KEY_PHONE_NO),jECont.getString(KEY_COUNTRY_CODE)));
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return emergencyContactsList;
+	}
 }

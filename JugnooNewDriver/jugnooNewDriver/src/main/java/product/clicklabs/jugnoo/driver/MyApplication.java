@@ -9,6 +9,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.widget.Toast;
@@ -291,5 +293,25 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     @Override
     public void onActivityDestroyed(Activity activity) {
 
+    }
+
+    public boolean isOnline() {
+        try {
+            ConnectivityManager connectManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = connectManager.getActiveNetworkInfo();
+            if (activeNetwork != null) { // connected to the internet
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                    return true;
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
+        }
+        return false;
     }
 }

@@ -71,7 +71,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun permissionDenied(requestCode: Int, neverAsk: Boolean) : Boolean {
         if(requestCode == REQUEST_CODE_FINE_LOCATION_FOR_BUTTON && neverAsk){
-            permissionCommon.openSettingsScreen(this)
+            PermissionCommon.openSettingsScreen(this)
             return false
         }
         return true
