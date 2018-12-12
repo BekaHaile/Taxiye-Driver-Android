@@ -416,7 +416,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			try {
 				if (!TextUtils.isEmpty(docInfo.url.get(0)) || !TextUtils.isEmpty(docInfo.url.get(1))
-						|| docInfo.getFile() != null || docInfo.getFile1() != null){
+						|| docInfo.getFile() != null || docInfo.getFile1() != null
+						|| docInfo.status.equalsIgnoreCase(DocStatus.REJECTED.getI())){
 					docInfo.isExpended = true;
 				}
 
@@ -426,7 +427,11 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							.into(holder.setCapturedImage);
 					docInfo.setFile(null);
 				}
-				if (!TextUtils.isEmpty(docInfo.url.get(1))) {
+				if(docInfo.status.equalsIgnoreCase(DocStatus.REJECTED.getI())){
+					holder.setCapturedImage.setImageResource(R.drawable.reload_image);
+					holder.addImageLayout2.setVisibility(View.GONE);
+				}
+				else if (!TextUtils.isEmpty(docInfo.url.get(1))) {
 					Picasso.with(activity).load(docInfo.url.get(1))
 							.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 							.into(holder.setCapturedImage2);
