@@ -176,7 +176,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				try {
 					final int position = (int) v.getTag();
 					DialogPopup.alertPopupTwoButtonsWithListeners(activity, "",
-							activity.getResources().getString(R.string.switch_confiramtion),
+							activity.getResources().getString(R.string.switch_confiramtion, getItem(position).getName()),
 							activity.getResources().getString(R.string.ok),
 							activity.getResources().getString(R.string.cancel),
 							new View.OnClickListener() {

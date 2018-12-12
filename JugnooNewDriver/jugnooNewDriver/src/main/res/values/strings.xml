@@ -617,7 +617,7 @@
     <string name="away_cap">away</string>
     <string name="pool_only">Pool</string>
     <string name="pickup_from">Pickup From:</string>
-    <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+    <string name="switch_confiramtion">Are you sure you want to switch to %s?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>

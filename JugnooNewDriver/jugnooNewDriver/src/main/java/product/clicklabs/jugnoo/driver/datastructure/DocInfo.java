@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.text.TextUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -83,5 +85,14 @@ public class DocInfo {
 
 	public ArrayList<DocFieldsInfo> getListDocFieldsInfo() {
 		return listDocFieldsInfo;
+	}
+
+	public boolean checkIfURLEmpty(){
+		for(String urli : url){
+			if(!TextUtils.isEmpty(urli)){
+				return false;
+			}
+		}
+		return true;
 	}
 }

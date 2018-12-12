@@ -149,6 +149,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	}
 
 	public void performbackPressed() {
+		Utils.hideSoftKeyboard(this, getWindow().getDecorView().getRootView());
 		if(getSupportFragmentManager().getBackStackEntryCount()>0){
 			title.setText(R.string.upload_Documents);
 			super.onBackPressed();
