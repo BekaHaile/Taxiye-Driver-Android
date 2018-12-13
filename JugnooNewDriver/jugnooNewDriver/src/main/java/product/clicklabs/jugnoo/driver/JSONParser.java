@@ -494,6 +494,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, userData.optInt(KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, context.getResources().getInteger(R.integer.show_drop_address_before_inride)));
 		Prefs.with(context).save(KEY_DRIVER_GOOGLE_APIS_LOGGING, userData.optInt(KEY_DRIVER_GOOGLE_APIS_LOGGING,
 				context.getResources().getInteger(R.integer.google_apis_logging)));
+		Prefs.with(context).save(KEY_DRIVER_AUTO_ZOOM_ENABLED, userData.optInt(KEY_DRIVER_AUTO_ZOOM_ENABLED,
+				context.getResources().getInteger(R.integer.driver_auto_zoom_enabled)));
 
 	}
 

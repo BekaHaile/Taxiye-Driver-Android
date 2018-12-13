@@ -5050,6 +5050,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (DriverScreenMode.D_INITIAL == driverScreenMode) {
             getInfoTilesAsync(HomeActivity.this);
         }
+        inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
+        if (DriverScreenMode.D_IN_RIDE == driverScreenMode
+                || DriverScreenMode.D_ARRIVED == driverScreenMode
+                || DriverScreenMode.D_START_RIDE == driverScreenMode) {
+            setInRideZoom();
+        }
     }
 
 
@@ -5064,9 +5070,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (userMode == UserMode.DRIVER) {
                 if (driverScreenMode != DriverScreenMode.D_IN_RIDE) {
                     destroyFusedLocationFetchers();
-                } else {
-
                 }
+                inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -9386,7 +9391,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 } else if (driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE) {
                     arrivedOrStartStateZoom();
                 }
-                inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
+                if(Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_AUTO_ZOOM_ENABLED, 0) == 1) {
+                    inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
+                }
             }
         }
     };

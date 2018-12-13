@@ -407,5 +407,7 @@ public interface Constants {
 	String KEY_API_NAME = "api_name";
 	String KEY_DRIVER_GOOGLE_APIS_LOGGING = "driver_google_apis_logging";
 	String SP_RECEIVER_LAST_LOCATION_TIME = "sp_receiver_last_location_time";
+
+	String KEY_DRIVER_AUTO_ZOOM_ENABLED = "driver_auto_zoom_enabled";
 }
 
