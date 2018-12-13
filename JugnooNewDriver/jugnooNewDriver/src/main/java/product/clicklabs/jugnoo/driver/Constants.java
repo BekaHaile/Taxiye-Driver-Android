@@ -409,5 +409,12 @@ public interface Constants {
 	String SP_RECEIVER_LAST_LOCATION_TIME = "sp_receiver_last_location_time";
 
 	String KEY_DRIVER_AUTO_ZOOM_ENABLED = "driver_auto_zoom_enabled";
+
+	String KEY_TOLL_NAME = "toll_name";
+	String KEY_TOLL = "toll";
+	String KEY_MODIFIED_TOLL = "modified_toll";
+	String KEY_TOLL_VISIT_ID = "toll_visit_id";
+	String KEY_UPDATED_TOLL = "updated_toll";
+	String SP_BATTERY_OPTIMIZATIONS_ASKED = "sp_battery_optimizations_asked";
 }
 

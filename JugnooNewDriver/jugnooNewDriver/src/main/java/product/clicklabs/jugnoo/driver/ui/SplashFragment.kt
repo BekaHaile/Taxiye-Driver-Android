@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.frag_splash.*
 import kotlinx.android.synthetic.main.frag_splash.view.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
-import product.clicklabs.jugnoo.driver.R.id.imageView
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
@@ -159,15 +158,18 @@ class SplashFragment : Fragment() {
 
     private fun checkForBatteryOptimisation() {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val packageName = (this.requireActivity().packageName)
-                val pm = this.requireActivity().getSystemService(Context.POWER_SERVICE) as PowerManager
-                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                    intent.data = Uri.parse("package:$packageName")
-                    startActivity(intent)
+            if(!Prefs.with(requireActivity()).getBoolean(Constants.SP_BATTERY_OPTIMIZATIONS_ASKED, false)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val packageName = (this.requireActivity().packageName)
+                    val pm = this.requireActivity().getSystemService(Context.POWER_SERVICE) as PowerManager
+                    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                        intent.data = Uri.parse("package:$packageName")
+                        startActivity(intent)
+                    }
                 }
+                Prefs.with(requireActivity()).save(Constants.SP_BATTERY_OPTIMIZATIONS_ASKED, true)
             }
 
         } catch (e: Exception) {

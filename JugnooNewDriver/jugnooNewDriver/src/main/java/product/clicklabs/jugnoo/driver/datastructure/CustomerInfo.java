@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -62,7 +63,7 @@ public class CustomerInfo {
 	private double bidValue;
 	private double initialBidValue;
 	private double estimatedTripDistance;
-	private double tollFare;
+	private ArrayList<TollData> tollData;
 	private double tipAmount;
 	private int luggageCount;
 	private double waypointDistance;
@@ -684,12 +685,15 @@ public class CustomerInfo {
 	}
 
 	public double getTollFare() {
+		double tollFare = 0;
+		for(TollData td : getTollData()){
+			if(!td.getEdited() || td.getToll() > 0) {
+				tollFare += td.getToll();
+			}
+		}
 		return tollFare;
 	}
 
-	public void setTollFare(double tollFare) {
-		this.tollFare = Utils.currencyPrecision(tollFare);
-	}
 
 	public double getTipAmount() {
 		return tipAmount;
@@ -713,5 +717,16 @@ public class CustomerInfo {
 
 	public void setPickupTime(String pickupTime) {
 		this.pickupTime = pickupTime;
+	}
+
+	public ArrayList<TollData> getTollData() {
+		if(tollData == null){
+			tollData = new ArrayList<>();
+		}
+		return tollData;
+	}
+
+	public void setTollData(ArrayList<TollData> tollData) {
+		this.tollData = tollData;
 	}
 }
