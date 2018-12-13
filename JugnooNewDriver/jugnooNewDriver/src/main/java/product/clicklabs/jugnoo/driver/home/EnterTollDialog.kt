@@ -5,10 +5,7 @@ import android.app.Dialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import kotlinx.android.synthetic.main.dialog_toll.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -37,6 +34,10 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
 
+            val rv = findViewById<RelativeLayout>(R.id.rv)
+            rv.setOnClickListener{
+                dismiss()
+            }
             val btnCancel = findViewById<Button>(R.id.btnCancel)
             val btnAdd = findViewById<Button>(R.id.btnAdd)
             val textHead = findViewById<TextView>(R.id.textHead)
@@ -104,6 +105,11 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             setCancelable(true)
             setCanceledOnTouchOutside(true)
 
+            val rv = findViewById<RelativeLayout>(R.id.rv)
+            rv.setOnClickListener{
+                dismiss()
+            }
+
             rvTolls.layoutManager = LinearLayoutManager(activity)
             rvTolls.setHasFixedSize(false)
             val adapter = TollDataAdapter(activity, rvTolls, object:TollDataAdapter.Callback{
@@ -153,12 +159,12 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             val jsonObject = JSONObject()
             if(toll.tollVisitId == -1 && !toll.edited){
                 jsonObject.put(Constants.KEY_TOLL_NAME, toll.tollName)
-                jsonObject.put(Constants.KEY_TOLL, toll.toll)
+                jsonObject.put(Constants.KEY_MODIFIED_TOLL, toll.toll)
             } else if(toll.tollVisitId > 0 && toll.edited){
                 jsonObject.put(Constants.KEY_TOLL_VISIT_ID, toll.tollVisitId)
-                jsonObject.put(Constants.KEY_TOLL, toll.toll)
+                jsonObject.put(Constants.KEY_MODIFIED_TOLL, toll.toll)
             }
-            if(jsonObject.has(Constants.KEY_TOLL)){
+            if(jsonObject.has(Constants.KEY_MODIFIED_TOLL)){
                 jsonArray.put(jsonObject)
             }
         }

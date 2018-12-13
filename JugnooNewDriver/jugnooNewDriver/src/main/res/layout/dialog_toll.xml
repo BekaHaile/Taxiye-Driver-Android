@@ -17,6 +17,8 @@
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
         android:layout_centerInParent="true"
+        android:clickable="true"
+        android:focusable="true"
         >
 
         <TextView

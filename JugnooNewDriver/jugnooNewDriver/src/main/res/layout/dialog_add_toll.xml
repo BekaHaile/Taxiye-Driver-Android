@@ -18,6 +18,8 @@
         android:background="@drawable/dialog_background_color"
         android:orientation="vertical"
         android:splitMotionEvents="false"
+        android:clickable="true"
+        android:focusable="true"
 
         >
 

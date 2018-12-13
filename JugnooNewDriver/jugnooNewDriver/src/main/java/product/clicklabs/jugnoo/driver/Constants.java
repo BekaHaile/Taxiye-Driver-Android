@@ -412,7 +412,9 @@ public interface Constants {
 
 	String KEY_TOLL_NAME = "toll_name";
 	String KEY_TOLL = "toll";
+	String KEY_MODIFIED_TOLL = "modified_toll";
 	String KEY_TOLL_VISIT_ID = "toll_visit_id";
 	String KEY_UPDATED_TOLL = "updated_toll";
+	String SP_BATTERY_OPTIMIZATIONS_ASKED = "sp_battery_optimizations_asked";
 }
 
