@@ -256,13 +256,7 @@ public class Utils {
     }
 
 	public static void makeCallIntent(Activity activity, String phoneNumber) {
-		try {
-			Intent callIntent = new Intent(Intent.ACTION_CALL);
-			callIntent.setData(Uri.parse("tel:" + phoneNumber));
-			activity.startActivity(callIntent);
-		} catch (Exception e) {
-			openCallIntent(activity, phoneNumber);
-		}
+        openCallIntent(activity, phoneNumber);
 	}
 
     public static String hidePhoneNoString(String phoneNo) {
@@ -1249,5 +1243,16 @@ public class Utils {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static String retrieveOTPFromSMS(String message){
+        String[] arr = message.split("\\ ");
+        for(String iarr : arr){
+            iarr = iarr.replace(".", "");
+            if(iarr.length() >= 3 && checkIfOnlyDigits(iarr)){
+                return iarr;
+            }
+        }
+        return "";
     }
 }

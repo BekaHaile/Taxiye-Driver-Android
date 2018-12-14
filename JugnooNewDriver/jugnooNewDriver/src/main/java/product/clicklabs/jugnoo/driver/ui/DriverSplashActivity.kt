@@ -2,15 +2,11 @@ package product.clicklabs.jugnoo.driver.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.LocalBroadcastManager
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
@@ -23,7 +19,6 @@ import kotlinx.android.synthetic.main.driver_splash_activity.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
-import java.util.regex.Pattern
 
 /**
  * Created by Parminder Saini on 16/04/18.
@@ -37,14 +32,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private var otpDetectedViaSms :String? = null;
     private var otpLength:Int = 4;
 
-
-    private var otpBroadCastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent != null && intent.action.equals(Constants.INTENT_ACTION_NEW_MESSAGE, ignoreCase = true)) {
-               retrieveOTPFromSMS(intent)
-            }
-        }
-    };
 
     private val permissionCommon by lazy { PermissionCommon(this).setCallback(this) }
 
@@ -107,6 +94,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             setHomeAsUpIndicator(R.drawable.ic_back_selector)
         }
 
+        // TODO: 08/12/18 remove this
+        AppSignatureHelper.getAppSignatures(this)
+
         tvToolbar.typeface = Fonts.mavenMedium(this)
 
         setToolbarVisibility(false)
@@ -165,8 +155,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         firstTime = false
         grantPermissionText()
 
-        registerbackForOTPDetection()
-
 
     }
 
@@ -181,19 +169,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
     }
 
-    private fun registerbackForOTPDetection() {
-        if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, this)) {
-            var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
-            if (otpFragment != null) {
-                otpFragment = otpFragment as OTPConfirmFragment;
-                if (otpFragment.isWaitingForOTPDetection()) {
-                    registerForSmsReceiver(true)
-
-                }
-
-            }
-        }
-    }
 
 
     override fun onPause() {
@@ -204,7 +179,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             e.printStackTrace()
         }
         Database2.getInstance(this).close()
-        registerForSmsReceiver(false);
 
     }
 
@@ -273,16 +247,6 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         addPhoneNumberScreen(enableSharedTransition, sharedView)
     }
 
-    override fun registerForSmsReceiver(register: Boolean) {
-        if(register){
-            otpDetectedViaSms=null;
-            LocalBroadcastManager.getInstance(this).registerReceiver(otpBroadCastReceiver, IntentFilter(Constants.INTENT_ACTION_NEW_MESSAGE))
-
-        }else{
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(otpBroadCastReceiver)
-        }
-
-    }
 
     override fun getPrefillOtpIfany():String? {
        return otpDetectedViaSms;
@@ -375,40 +339,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
 
 
-    //Using Rx
-    public fun retrieveOTPFromSMS(intent: Intent) {
-        try {
-            if (intent.hasExtra("message")) {
-                var otp:String? = null ;
 
-                val message = intent.getStringExtra("message")
-                val pattern = Pattern.compile("\\b\\d{$otpLength}\\b")
-                val matcher = pattern.matcher(message)
-                if (matcher.find()) {
-                    otp = matcher.group(0)
-                }
-
-
-                if(otp!=null){
-
-                    otpDetectedViaSms = otp;
-
-                    var otpFragment = supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName);
-                    if (otpFragment != null) {
-                        otpFragment = otpFragment as OTPConfirmFragment;
-                        otpFragment.onOtpReceived(otp)
-
-                    }
-
-                }
-                registerForSmsReceiver(false);
-            }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
     public fun isLoginFragmentVisible():Boolean{
         val loginFragment= supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)
         return loginFragment!=null && loginFragment.isVisible/* && (loginFragment as LoginFragment).assist*/

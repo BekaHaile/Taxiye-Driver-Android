@@ -371,7 +371,6 @@ class DriverSetupFragment : Fragment() {
             putExtra("in_side", false)
             putExtra("doc_required", 3)
         }
-        Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
         startActivity(intent)
     }
 

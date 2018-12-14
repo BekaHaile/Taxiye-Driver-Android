@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.ui
 
 
-import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -43,8 +42,6 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
-import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_READ_SMS
-import product.clicklabs.jugnoo.driver.utils.PermissionCommon.SKIP_RATIONAL_REQUEST
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -128,24 +125,9 @@ class LoginFragment : Fragment() {
                 }
             })
 
-            btnGenerateOtp.setOnClickListener(View.OnClickListener {
-                permissionCommon.setCallback(object: PermissionCommon.PermissionListener{
-                    override fun permissionGranted(requestCode: Int) {
-                        generateOtpApi()
-                    }
-
-                    override fun permissionDenied(requestCode: Int, neverAsk: Boolean): Boolean {
-                        generateOtpApi()
-                        return false
-                    }
-
-                    override fun onRationalRequestIntercepted() {
-                        generateOtpApi()
-                    }
-                }).getPermission(REQUEST_CODE_READ_SMS, SKIP_RATIONAL_REQUEST, true,
-                        Manifest.permission.RECEIVE_SMS,
-                        Manifest.permission.READ_SMS)
-            })
+            btnGenerateOtp.setOnClickListener{
+                generateOtpApi()
+            }
             tvLanguage.setOnClickListener { getLanguageList(true) }
 
             if(edtPhoneNo.tag!=null && (edtPhoneNo.tag is String) &&
@@ -184,8 +166,6 @@ class LoginFragment : Fragment() {
 
         }
 
-        mListener?.registerForSmsReceiver(true);
-        Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
 
         val params = HashMap<String, String>()
         params[Constants.KEY_PHONE_NO] = countryCode + phoneNo

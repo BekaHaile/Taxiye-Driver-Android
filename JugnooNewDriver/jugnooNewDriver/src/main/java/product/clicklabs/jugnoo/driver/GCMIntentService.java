@@ -66,7 +66,6 @@ import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
-import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
@@ -920,11 +919,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
-								if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
-									Intent synIntent = new Intent(this, SyncMessageService.class);
-									synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
-									startService(synIntent);
-								}
 
 							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);

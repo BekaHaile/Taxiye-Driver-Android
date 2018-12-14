@@ -54,8 +54,7 @@
                         android:paddingEnd="40px"
                         android:gravity="center"
                         android:text="@string/nl_otp_please_enter_otp"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size_32" />
+                        style="@style/TextNormal"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -75,8 +74,7 @@
                             android:gravity="center"
                             android:textDirection="ltr"
                             android:text="+91 8859888755"
-                            android:textColor="@color/black_text_v2"
-                            android:textSize="@dimen/text_size_32" />
+                            style="@style/TextNormal"/>
 
                         <ImageView
                             android:id="@+id/imageViewSep"
@@ -128,10 +126,8 @@
                     android:paddingStart="20px"
                     android:paddingEnd="20px"
                     android:paddingTop="15px"
-                    android:textColor="@color/black_text_v2"
-                    android:textColorHint="@color/grey_light"
                     android:textCursorDrawable="@null"
-                    android:textSize="@dimen/text_size_32" />
+                    style="@style/TextNormal"/>
 
                 <ImageView
                     android:layout_width="410px"
@@ -155,8 +151,8 @@
                         android:gravity="center"
                         android:text="@string/resend_OTP"
                         android:textColor="@color/themeColor"
-                        android:textSize="24px"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        style="@style/TextSmall"/>
 
                     <ImageView
                         android:id="@+id/imgBtnReGenerateOtp"
