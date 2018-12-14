@@ -226,8 +226,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-import static product.clicklabs.jugnoo.driver.Data.getCurrentCustomerInfo;
-import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
@@ -1199,7 +1197,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     try {
-                        CustomerInfo customerInfo = getCurrentCustomerInfo();
+                        CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
                         if (customerInfo.getFalseDeliveries() == 1) {
                             return true;
                         } else {
@@ -6368,31 +6366,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
                                 }
 
-                                if (mPermissionCommon == null) {
-                                    mPermissionCommon = new PermissionCommon(HomeActivity.this);
-                                }
-
-                                mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-                                    @Override
-                                    public void permissionGranted(final int requestCode) {
-                                        try {
-                                            new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-                                                    String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                    @Override
-                                    public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-                                        return true;
-                                    }
-
-                                    @Override
-                                    public void onRationalRequestIntercepted() {
-
-                                    }
-                                }).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
                                 initializeStartRideVariables();
 
@@ -8489,32 +8462,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 try {
                     if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 
-                        if (mPermissionCommon == null) {
-                            mPermissionCommon = new PermissionCommon(HomeActivity.this);
-                        }
-
-                        mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-                            @Override
-                            public void permissionGranted(final int requestCode) {
-                                try {
-                                    new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-                                            engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-                                    stopRing(true, HomeActivity.this);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onRationalRequestIntercepted() {
-
-                            }
-                        }).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
 
 
                         try {

@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -19,7 +17,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
-import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -33,8 +30,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-
-import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 public class RideCancellationActivity extends BaseActivity implements ActivityCloser {
 
@@ -210,34 +205,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
 									performBackPressed(true);
 									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);
-
-
-									if (mPermissionCommon == null){
-										mPermissionCommon = new PermissionCommon(RideCancellationActivity.this);
-									}
-
-									mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-										@SuppressLint("MissingPermission")
-										@Override
-										public void permissionGranted(final int requestCode) {
-											try {
-												new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-														engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-											} catch (Exception e) {
-												e.printStackTrace();
-											}
-										}
-										@Override
-										public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-											return true;
-										}
-
-										@Override
-										public void onRationalRequestIntercepted() {
-
-										}
-									}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
-
 
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 

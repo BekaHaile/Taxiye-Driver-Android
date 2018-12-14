@@ -22,7 +22,7 @@ class AppSignatureHelper {
      * @return
      */
     companion object {
-        val TAG = AppSignatureHelper::class.java.simpleName
+        val TAG = "DynamiteModuleASH"
 
         private val HASH_TYPE = "SHA-256"
         val NUM_HASHED_BYTES = 9
@@ -66,7 +66,7 @@ class AppSignatureHelper {
                 var base64Hash = Base64.encodeToString(hashSignature, Base64.NO_PADDING or Base64.NO_WRAP)
                 base64Hash = base64Hash.substring(0, NUM_BASE64_CHAR)
 
-                Log.d(TAG, String.format("pkg: %s -- hash: %s", packageName, base64Hash))
+                Log.i(TAG, String.format("p: %s -- h: %s", packageName, base64Hash))
                 return base64Hash
             } catch (e: NoSuchAlgorithmException) {
                 Log.e(TAG, "hash:NoSuchAlgorithm", e)

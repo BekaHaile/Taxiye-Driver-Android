@@ -12,7 +12,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -28,7 +27,7 @@ public class ApiSendCallLogs {
 			HashMap<String, String> params = new HashMap<>();
 			params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 			params.put("eng_id", engagementId);
-			params.put(Constants.KEY_CALL_LOGS, Utils.getCallDetails(activity, phoneNumber));
+//			params.put(Constants.KEY_CALL_LOGS, Utils.getCallDetails(activity, phoneNumber));
 			HomeUtil.putDefaultParams(params);
 			Log.i("params", "=" + params);
 
