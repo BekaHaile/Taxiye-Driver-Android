@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -11,7 +10,6 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -32,8 +30,6 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.CallLog;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -49,8 +45,6 @@ import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -256,13 +250,7 @@ public class Utils {
     }
 
 	public static void makeCallIntent(Activity activity, String phoneNumber) {
-		try {
-			Intent callIntent = new Intent(Intent.ACTION_CALL);
-			callIntent.setData(Uri.parse("tel:" + phoneNumber));
-			activity.startActivity(callIntent);
-		} catch (Exception e) {
-			openCallIntent(activity, phoneNumber);
-		}
+        openCallIntent(activity, phoneNumber);
 	}
 
     public static String hidePhoneNoString(String phoneNo) {
@@ -631,67 +619,6 @@ public class Utils {
         }
     }
 
-	public static String getCallDetails(Context context, String phone) {
-		JSONArray callLogs = new JSONArray();
-		try {
-			Uri contacts = CallLog.Calls.CONTENT_URI;
-			if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-				return String.valueOf(callLogs);
-			}
-			Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
-			int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-			int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-			int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-			int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-			while (managedCursor.moveToNext()) {
-
-                if ((managedCursor.getString(number).equalsIgnoreCase(phone))
-                        || (("+91" + managedCursor.getString(number)).equalsIgnoreCase(phone))) {
-
-                    if ((Long.valueOf(managedCursor.getString(date))) > (Long.valueOf(Prefs.with(context).getString(SPLabels.ACCEPT_RIDE_TIME,
-                            String.valueOf(System.currentTimeMillis() - 18000l))))) {
-                        String phNumber = managedCursor.getString(number);
-                        String callType = managedCursor.getString(type);
-                        String callDate = managedCursor.getString(date);
-                        String callDayTime = (Long.valueOf(callDate)).toString();
-                        Log.i("CallLogTime", callDate);
-                        String callDuration = managedCursor.getString(duration);
-                        String dir = null;
-                        int dircode = Integer.parseInt(callType);
-                        switch (dircode) {
-                            case CallLog.Calls.OUTGOING_TYPE:
-                                dir = "OUTGOING";
-                                break;
-
-                            case CallLog.Calls.INCOMING_TYPE:
-                                dir = "INCOMING";
-                                break;
-
-                            case CallLog.Calls.MISSED_TYPE:
-                                dir = "MISSED";
-                                break;
-                        }
-
-                        JSONObject callObj = new JSONObject();
-                        callObj.put("phone_number", phNumber);
-                        callObj.put("call_type", dir);
-                        callObj.put("call_date", callDayTime);
-                        callObj.put("call_duration", callDuration);
-                        callLogs.put(callObj);
-
-                    }
-                }
-
-            }
-            managedCursor.close();
-            Log.i("CallLogs", String.valueOf(callLogs));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return String.valueOf(callLogs);
-
-    }
 
     public static void deleteGpsData(Context context) {
         /* Cold start */
@@ -1249,5 +1176,16 @@ public class Utils {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static String retrieveOTPFromSMS(String message){
+        String[] arr = message.split("\\ ");
+        for(String iarr : arr){
+            iarr = iarr.replace(".", "");
+            if(iarr.length() >= 3 && checkIfOnlyDigits(iarr)){
+                return iarr;
+            }
+        }
+        return "";
     }
 }

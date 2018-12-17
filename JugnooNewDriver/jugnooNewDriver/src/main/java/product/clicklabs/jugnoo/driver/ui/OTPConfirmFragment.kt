@@ -1,10 +1,11 @@
 package product.clicklabs.jugnoo.driver.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -16,6 +17,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.Status
 import com.google.firebase.iid.FirebaseInstanceId
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
@@ -124,8 +128,8 @@ class OTPConfirmFragment : Fragment(){
 
 
         tvResendOTP.setOnClickListener({ generateOTP() })
-        btnSubmit.setOnClickListener({ verifyOTP(edtOTP.text.toString()) })
-        tvCall.setOnClickListener({
+        btnSubmit.setOnClickListener { verifyOTP(edtOTP.text.toString()) }
+        tvCall.setOnClickListener {
             if (missedCallNumber != null && missedCallNumber!!.isNotEmpty()) {
 
                 DialogPopup.alertPopupTwoButtonsWithListeners(this@OTPConfirmFragment.requireActivity(), "",
@@ -139,7 +143,7 @@ class OTPConfirmFragment : Fragment(){
                             Utils.openCallIntent(this@OTPConfirmFragment.requireActivity(), missedCallNumber)
                         }, { }, false, false)
             }
-        })
+        }
         labelNumber.setOnTouchListener(object : View.OnTouchListener {
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -166,14 +170,8 @@ class OTPConfirmFragment : Fragment(){
                 edtOTP.setText(mListener?.getPrefillOtpIfany())
                 edtOTP.setSelection(edtOTP.text.length)
             }else{
-                if(PermissionCommon.isGranted(Manifest.permission.RECEIVE_SMS, requireActivity())){
-                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, true)
-                    mListener?.registerForSmsReceiver(true);
-                    showCountDownPopup()
-                } else {
-                    mListener?.registerForSmsReceiver(false);
-                    Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
-                }
+                startSMSListener()
+                showCountDownPopup()
             }
         }
 
@@ -189,7 +187,6 @@ class OTPConfirmFragment : Fragment(){
                     if (purpose == AppConstants.OperationType.CALL) {
 
                     } else if (purpose == AppConstants.OperationType.ENTER_OTP) {
-                        mListener?.registerForSmsReceiver(false);
                     }
                 }
 
@@ -197,7 +194,6 @@ class OTPConfirmFragment : Fragment(){
         otpDialog?.show {
             edtOTP.requestFocus();
             Utils.showSoftKeyboard(requireActivity(), edtOTP)
-            mListener?.registerForSmsReceiver(false);
         }
 
 
@@ -223,6 +219,7 @@ class OTPConfirmFragment : Fragment(){
             edtOTP.setSelection(edtOTP.text.length)
             otpDialog?.dismiss()
             countDownTimer?.cancel()
+            btnSubmit.performClick()
         }
 
     }
@@ -319,7 +316,6 @@ class OTPConfirmFragment : Fragment(){
                                 if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())) {
                                     JSONParser().parseAccessTokenLoginData(requireActivity(), jsonString)
                                     requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
-                                    Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false)
                                     startActivity(Intent(requireActivity(), HomeActivity::class.java))
                                     requireActivity().finish()
                                     requireActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out)
@@ -422,9 +418,7 @@ class OTPConfirmFragment : Fragment(){
         if (!hidden) {
             toolbarChangeListener.setToolbarText(getString(R.string.verification))
             toolbarChangeListener.setToolbarVisibility(true)
-            Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, true)
         }else{
-            Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
         }
 
     }
@@ -440,8 +434,39 @@ class OTPConfirmFragment : Fragment(){
     override fun onDestroyView() {
         otpDialog?.dismiss()
         super.onDestroyView()
-        Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false);
 
+    }
+
+    private fun startSMSListener() {
+        val client = SmsRetriever.getClient(requireActivity())
+        val task = client.startSmsRetriever()
+        task.addOnSuccessListener{
+            requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
+        }
+        task.addOnFailureListener{ }
+
+    }
+
+    private val smsReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent?) {
+            if (intent != null && intent.extras != null
+                    && SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.action)) {
+                val extras = intent.extras
+                val status = extras!!.get(SmsRetriever.EXTRA_STATUS) as Status
+                if (status != null)
+                    when (status.statusCode) {
+                        CommonStatusCodes.SUCCESS -> {
+                            val message = extras.get(SmsRetriever.EXTRA_SMS_MESSAGE) as String
+                            if (message != null) {
+                                onOtpReceived(Utils.retrieveOTPFromSMS(message))
+                            }
+                        }
+
+                        CommonStatusCodes.TIMEOUT -> {
+                        }
+                    }
+            }
+        }
     }
 
 

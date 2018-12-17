@@ -414,8 +414,6 @@ class SplashFragment : Fragment() {
 
         fun goToHomeScreen()
 
-        fun registerForSmsReceiver(register: Boolean)
-
         fun getPrefillOtpIfany():String?
 
         fun toggleDisplayFlags(remove:Boolean)

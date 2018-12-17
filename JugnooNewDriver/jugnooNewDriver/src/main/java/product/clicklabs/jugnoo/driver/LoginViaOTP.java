@@ -90,7 +90,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     public void onCreate(Bundle savedInstanceState) {
 
         //fetchLanguageList();
-        Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, true);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin_otp);
@@ -491,7 +490,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                     new JSONParser().parseAccessTokenLoginData(activity, jsonString);
                                     startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                                     Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
-                                    Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
                                     startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
                                     finish();
                                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -502,7 +500,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
                                 intent.putExtra("access_token", jObj.getString("access_token"));
                                 intent.putExtra("in_side", false);
 								intent.putExtra("doc_required", 3);
-                                Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 								relativeLayoutFake.setVisibility(View.VISIBLE);
                                 startActivity(intent);
                             } else {
@@ -569,7 +566,6 @@ public class LoginViaOTP extends BaseActivity implements CustomCountDownTimer.Do
     protected void onDestroy() {
         Prefs.with(LoginViaOTP.this).save(SPLabels.LOGIN_VIA_OTP_STATE, false);
         OTP_SCREEN_OPEN = null;
-        Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 
         super.onDestroy();
     }
