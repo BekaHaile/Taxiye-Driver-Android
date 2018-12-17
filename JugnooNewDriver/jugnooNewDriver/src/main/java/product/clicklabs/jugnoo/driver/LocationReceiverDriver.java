@@ -34,7 +34,8 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 					double timediff_1 = (System.currentTimeMillis() - oldlocation.getTime()) / 1000;
 					double speed_1 = displacement_1 / timediff_1;
 
-					if (speed_1 > 20) {
+					if (speed_1 > (double)(Prefs.with(context).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD,
+							(float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD))) {
 						Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
 						context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
 						setAlarm(context);

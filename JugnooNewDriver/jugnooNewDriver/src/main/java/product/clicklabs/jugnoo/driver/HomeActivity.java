@@ -7040,7 +7040,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     && totalDistanceFromLogInMeter - totalDistance < 40d * 1000d) {
                 long ridetimeInSec = rideTimeInMillis / 1000L;
                 double speed = totalDistanceFromLogInMeter / ((double) ridetimeInSec);
-                if (speed <= 15) {
+                if (speed <= (double)(Prefs.with(activity).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD,
+                        (float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD))) {
                     finalDistance = totalDistanceFromLogInMeter;
                     customerRideDataGlobal.setDistance(finalDistance);
                 } else {
