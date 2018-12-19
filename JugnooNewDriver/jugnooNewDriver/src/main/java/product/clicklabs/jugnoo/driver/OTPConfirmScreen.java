@@ -594,6 +594,11 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        try {
+            if(smsReceiver != null){
+                unregisterReceiver(smsReceiver);
+            }
+        } catch (Exception ignored) {}
         OTP_SCREEN_OPEN = null;
         ASSL.closeActivity(relative);
         System.gc();
@@ -705,6 +710,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                smsReceiver = getSmsReceiver();
                 registerReceiver(smsReceiver, new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
             }
         });
@@ -717,7 +723,9 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
     }
 
-    private BroadcastReceiver smsReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver smsReceiver = null;
+    private BroadcastReceiver getSmsReceiver(){
+    return new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getExtras() != null
@@ -739,6 +747,7 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
             }
         }
     };
+    }
 
 
 }
