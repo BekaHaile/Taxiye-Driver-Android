@@ -433,6 +433,13 @@ class OTPConfirmFragment : Fragment(){
 
     override fun onDestroyView() {
         otpDialog?.dismiss()
+        if (::smsReceiver.isInitialized) {
+            try {
+                requireActivity().unregisterReceiver(smsReceiver)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
+        }
         super.onDestroyView()
 
     }
@@ -441,13 +448,16 @@ class OTPConfirmFragment : Fragment(){
         val client = SmsRetriever.getClient(requireActivity())
         val task = client.startSmsRetriever()
         task.addOnSuccessListener{
+            smsReceiver = createSmsBroadcastReceiver()
             requireActivity().registerReceiver(smsReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
         }
         task.addOnFailureListener{ }
 
     }
 
-    private val smsReceiver = object : BroadcastReceiver() {
+    private lateinit var smsReceiver: BroadcastReceiver
+
+    private fun createSmsBroadcastReceiver() = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
             if (intent != null && intent.extras != null
                     && SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.action)) {
