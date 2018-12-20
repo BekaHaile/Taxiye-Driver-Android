@@ -163,7 +163,7 @@ class DocumentDetailsFragment:Fragment(){
 
     public fun submitInputData(){
         //if doc is editable and user has not uploaded image
-        if(docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1 && docInfo.docCount>0) {
+        if((docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1) && docInfo.docCount>0) {
 
             //if no image has been uploaded
             if (docInfo.file == null && docInfo.file1 == null &&

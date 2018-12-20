@@ -482,6 +482,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			if(docInfo.docCount<2){
 				holder.addImageLayout2.setVisibility(View.GONE);
 			}
+			if(docInfo.docCount < 1){
+				holder.addImageLayout.setVisibility(View.GONE);
+				holder.imageViewUploadDoc.setVisibility(View.GONE);
+			}
 
 			if (isActionable) {
 				holder.relativeLayoutSelectPictureStatus.setVisibility(View.GONE);
