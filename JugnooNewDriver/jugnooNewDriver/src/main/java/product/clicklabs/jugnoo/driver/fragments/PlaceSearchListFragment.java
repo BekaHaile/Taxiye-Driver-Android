@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -61,24 +61,25 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 
 	}
 
-	@SuppressLint("ValidFragment")
-	public PlaceSearchListFragment(SearchListAdapter.SearchListActionsHandler searchListActionsHandler, GoogleApiClient mGoogleApiClient){
-		this.searchListActionsHandler = searchListActionsHandler;
-		this.mGoogleApiClient = mGoogleApiClient;
+	public static PlaceSearchListFragment newInstance(){
+		PlaceSearchListFragment fragment = new PlaceSearchListFragment();
+		Bundle bundle = new Bundle();
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if(context instanceof SearchListAdapter.SearchListActionsHandler){
+			this.searchListActionsHandler = (SearchListAdapter.SearchListActionsHandler) context;
+		}
+		if(context instanceof  HomeActivity){
+			mGoogleApiClient = ((HomeActivity)context).mGoogleApiClient;
+		}
+	}
 
-    @Override
-    public void onStop() {
-		super.onStop();
-    }
-	
-
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_place_search_list, container, false);
 
@@ -117,7 +118,6 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 			}
 		});
 
-		Bundle bundle = getArguments();
 
 		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78), mGoogleApiClient,
 				new SearchListAdapter.SearchListActionsHandler() {

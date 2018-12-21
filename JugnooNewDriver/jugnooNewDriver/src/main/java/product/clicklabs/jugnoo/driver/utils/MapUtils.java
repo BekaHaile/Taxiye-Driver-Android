@@ -124,9 +124,7 @@ public class MapUtils {
 			language = context.getResources().getConfiguration().locale.toString();
 			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
 				language = "hi";
-            } else{
-				language = "en";
-			}
+            }
 
 			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
@@ -215,7 +213,7 @@ public class MapUtils {
 
 						Collections.reverse(selectedAddressComponentsArr);
 						fullAddress = "";
-						if (selectedAddressComponentsArr.size() > 0) {
+						if (selectedAddressComponentsArr.size() >= 2) {
 							for (int i = 0; i < selectedAddressComponentsArr.size(); i++) {
 								if (i < selectedAddressComponentsArr.size() - 1) {
 									fullAddress = fullAddress + selectedAddressComponentsArr.get(i) + ", ";

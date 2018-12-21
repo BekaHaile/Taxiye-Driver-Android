@@ -67,6 +67,28 @@ public class SearchListAdapter extends BaseAdapter {
 
 	private GoogleApiClient mGoogleApiClient;
 
+	long delay = 700; // 1 seconds after user stops typing
+	long last_text_edit = 0;
+	private Handler handler;
+	private class CustomRunnable implements Runnable {
+		private String textToSearch;
+		public CustomRunnable(String textToSearch){
+			this.textToSearch = textToSearch;
+		}
+		public CustomRunnable setTextToSearch(String textToSearch){
+			this.textToSearch = textToSearch;
+			return this;
+		}
+
+		@Override
+		public void run() {
+			if (System.currentTimeMillis() > (last_text_edit + delay - 200)) {
+				getSearchResults(textToSearch, defaultSearchPivotLatLng);
+			}
+		}
+	}
+	private CustomRunnable input_finish_checker = new CustomRunnable("");
+
     /**
      * Constructor for initializing search base adapter
      *
@@ -80,6 +102,7 @@ public class SearchListAdapter extends BaseAdapter {
                              GoogleApiClient mGoogleApiClient, SearchListActionsHandler searchListActionsHandler)
             throws IllegalStateException {
         if(context instanceof Activity) {
+			handler = new Handler();
             this.context = context;
             this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.searchResultsForSearch = new ArrayList<>();
@@ -92,6 +115,7 @@ public class SearchListAdapter extends BaseAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+					handler.removeCallbacks(input_finish_checker);
                 }
 
                 @Override
@@ -104,7 +128,8 @@ public class SearchListAdapter extends BaseAdapter {
 					try {
 						SearchListAdapter.this.searchListActionsHandler.onTextChange(s.toString());
 						if (s.length() > 0) {
-							getSearchResults(s.toString().trim(), defaultSearchPivotLatLng);
+							last_text_edit = System.currentTimeMillis();
+							handler.postDelayed(input_finish_checker.setTextToSearch(s.toString().trim()), delay);
 						}
 						else{
 							searchResultsForSearch.clear();

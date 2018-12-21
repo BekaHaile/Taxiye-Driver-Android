@@ -496,6 +496,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.google_apis_logging)));
 		Prefs.with(context).save(KEY_DRIVER_AUTO_ZOOM_ENABLED, userData.optInt(KEY_DRIVER_AUTO_ZOOM_ENABLED,
 				context.getResources().getInteger(R.integer.driver_auto_zoom_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, userData.optInt(KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS,
+				context.getResources().getInteger(R.integer.check_locale_for_address)));
 
 	}
 
@@ -675,7 +677,7 @@ public class JSONParser implements Constants {
 								Data.setCurrentEngagementId(engagementId);
 							}
 
-							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
+							CustomerInfo customerInfo = new CustomerInfo(context, Integer.parseInt(engagementId), Integer.parseInt(userId),
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
@@ -688,7 +690,7 @@ public class JSONParser implements Constants {
 								parseReturnDeliveryInfos(jObjCustomer, customerInfo);
 							}
 
-							updateDropAddressLatlng(jObjCustomer, customerInfo);
+							updateDropAddressLatlng(context, jObjCustomer, customerInfo);
 
 							parsePoolOrReverseBidFare(jObjCustomer, customerInfo);
 
@@ -729,7 +731,7 @@ public class JSONParser implements Constants {
 		return "";
 	}
 
-	public static void updateDropAddressLatlng(JSONObject jObjCustomer, CustomerInfo customerInfo) {
+	public static void updateDropAddressLatlng(Context context, JSONObject jObjCustomer, CustomerInfo customerInfo) {
 		try {
 			if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
 				double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
@@ -741,7 +743,7 @@ public class JSONParser implements Constants {
 				}
 			}
 			if(jObjCustomer.has(KEY_DROP_ADDRESS)){
-				customerInfo.setDropAddress(jObjCustomer.getString(KEY_DROP_ADDRESS));
+				customerInfo.setDropAddress(context, jObjCustomer.getString(KEY_DROP_ADDRESS), false);
 			}
 
 		} catch (Exception e) {

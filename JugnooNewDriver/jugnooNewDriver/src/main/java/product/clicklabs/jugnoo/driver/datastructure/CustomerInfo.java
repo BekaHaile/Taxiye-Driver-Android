@@ -68,17 +68,18 @@ public class CustomerInfo {
 	private int luggageCount;
 	private double waypointDistance;
 	private String pickupTime;
+	private String pickupAddressEng, dropAddressEng;
 
 
 	/**
 	 * For accepted customers
 	 */
-	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
+	public CustomerInfo(Context context, int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount,int luggageCount, String pickupTime){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -106,7 +107,13 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
 		this.isDeliveryPool = isDeliveryPool;
-		this.address = address;
+		if (Prefs.with(context).getInt(Constants.KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, 0) != 1
+				|| context.getResources().getConfiguration().locale.getLanguage().contains("en")) {
+			this.address = address;
+		} else {
+			this.address = "";
+			this.pickupAddressEng = address;
+		}
 
 		if(this.isDelivery == 1){
 			this.waitingChargesApplicable = 1;
@@ -353,8 +360,15 @@ public class CustomerInfo {
 		return dropAddress;
 	}
 
-	public void setDropAddress(String dropAddress) {
-		this.dropAddress = dropAddress;
+	public void setDropAddress(Context context, String dropAddress, boolean forceSet) {
+		if(forceSet
+				|| Prefs.with(context).getInt(Constants.KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, 0) != 1
+				|| context.getResources().getConfiguration().locale.getLanguage().contains("en")){
+			this.dropAddress = dropAddress;
+		} else {
+			this.dropAddress = "";
+			this.dropAddressEng = dropAddress;
+		}
 	}
 
 	public int getMeterFareApplicable() {
@@ -728,5 +742,13 @@ public class CustomerInfo {
 
 	public void setTollData(ArrayList<TollData> tollData) {
 		this.tollData = tollData;
+	}
+
+	public String getPickupAddressEng() {
+		return pickupAddressEng;
+	}
+
+	public String getDropAddressEng() {
+		return dropAddressEng;
 	}
 }

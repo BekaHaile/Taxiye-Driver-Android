@@ -120,7 +120,6 @@ import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
-import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.apis.ApiSendRingCountData;
 import product.clicklabs.jugnoo.driver.chat.ChatActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -192,7 +191,6 @@ import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
-import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
@@ -277,7 +275,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout languagePrefrencesRl;
     TextView languagePrefrencesText;
 
-    RelativeLayout logoutRl, relativeLayoutItemHeader;
+    RelativeLayout logoutRl;
     TextView logoutText;
     HeatMapResponse heatMapResponseGlobal;
 
@@ -483,13 +481,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         openedCustomerInfo = customerInfo;
     }
 
-    private PlaceSearchListFragment placeSearchListFragment;
 
     public RelativeLayout relativeLayoutContainer, relativeLayoutContainerEarnings;
     private ArrayList<Marker> requestMarkers = new ArrayList<>();
     ArrayList<Tile> infoTileResponses = new ArrayList<>();
     private final double FIX_ZOOM_DIAGONAL = 200;
-    private GoogleApiClient mGoogleApiClient;
+    public GoogleApiClient mGoogleApiClient;
 
     DialogPopup endDelivery = new DialogPopup();
 
@@ -1046,7 +1043,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             recyclerViewInfo.setAdapter(infoTilesAdapter);
             slidingUpPanelLayout.setScrollableView(recyclerViewInfo);
 
-            relativeLayoutItemHeader = (RelativeLayout) findViewById(R.id.relativeLayoutItemHeader);
             topRlOuter = (RelativeLayout) findViewById(R.id.topRlOuter);
             reCreateDeliveryMarkers = true;
             buttonAddLuggage = findViewById(R.id.buttonAddLuggage);
@@ -1896,11 +1892,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutEnterDestination.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!isTourFlag) {
+                    if (!isTourFlag && Data.getCurrentCustomerInfo() != null && Data.getCurrentCustomerInfo().getIsPooled() != 1) {
                         relativeLayoutContainer.setVisibility(View.VISIBLE);
-                        placeSearchListFragment = new PlaceSearchListFragment(HomeActivity.this, mGoogleApiClient);
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.relativeLayoutContainer, placeSearchListFragment, PlaceSearchListFragment.class.getName())
+                                .add(R.id.relativeLayoutContainer, PlaceSearchListFragment.newInstance(), PlaceSearchListFragment.class.getName())
                                 .addToBackStack(PlaceSearchListFragment.class.getName())
                                 .commit();
                     }
@@ -4460,7 +4455,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
                     startRideChronometer(customerInfo);
                     setNevigationButtonVisibiltyDelivery(0);
-                    if (customerInfo.getIsPooled() != 1 && customerInfo.getIsDelivery() != 1) {
+                    if (customerInfo.getIsDelivery() != 1) {
                         relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
                     }
 
@@ -4506,6 +4501,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     topRlOuter.setVisibility(View.GONE);
                     if (customerInfo.getIsDelivery() == 1) {
                         linearLayoutRide.setVisibility(View.GONE);
+						buttonAddLuggage.setVisibility(View.GONE);
                         deliveryListHorizontal.setVisibility(View.GONE);
                         deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos(), customerInfo.getFalseDeliveries(), customerInfo.getOrderId());
                         deliveryInfoTabs.notifyDatasetchange(true);
@@ -4559,11 +4555,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         driverIRFareRl.setVisibility(View.GONE);
                     }
 
-                    if (customerInfo.getIsPooled() == 1) {
-                        relativeLayoutItemHeader.setVisibility(View.VISIBLE);
-                    } else {
-                        relativeLayoutItemHeader.setVisibility(View.GONE);
-                    }
 
                     setMakeDeliveryButtonVisibility();
                     if (customerInfo.getIsDeliveryPool() != 1) {
@@ -4740,7 +4731,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (driverScreenMode == DriverScreenMode.D_IN_RIDE && showLuggageCharges) {
 
             int luggageCount = Data.getCurrentCustomerInfo().getLuggageCount();
-            if (luggageCount > 0) {
+            if (Data.getCurrentCustomerInfo().getIsDelivery() == 0
+					&& Data.getCurrentCustomerInfo().getIsDeliveryPool() == 0
+					&& luggageCount > 0) {
                 buttonAddLuggage.setVisibility(View.GONE);
                 layoutAddedLuggage.setVisibility(View.VISIBLE);
                 String amount = Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(), luggageCount * Data.fareStructure.getBaggageCharges());
@@ -5276,9 +5269,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     }
 
-    public void setBarAddress(String address) {
-//		relativeLayoutDestination.setVisibility(View.VISIBLE);
+    public void setDropAddressToTextView(String address) {
         textViewEnterDestination.setText(address);
+    }
+
+    public TextView getTextViewEnterDestination(){
+        return textViewEnterDestination;
     }
 
     @Override
@@ -6048,7 +6044,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     initializeStartRideVariables();
 
-                    CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+                    CustomerInfo customerInfo = new CustomerInfo(this, Integer.parseInt(engagementId),
                             Integer.parseInt(customerId), referenceId, userName, phoneNo, pickuplLatLng, cachedApiEnabled,
                             userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
@@ -6056,7 +6052,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
                             pickupTime);
 
-                    JSONParser.updateDropAddressLatlng(jObj, customerInfo);
+                    JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 
                     JSONParser.parsePoolOrReverseBidFare(jObj, customerInfo);
 
@@ -6348,7 +6344,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                         Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, jObj.optString(KEY_PR_DISTANCE, "1000"));
                                     }
                                     if (jObj.has(KEY_DROP_ADDRESS)) {
-                                        customerInfo.setDropAddress(jObj.getString(KEY_DROP_ADDRESS));
+                                        customerInfo.setDropAddress(activity, jObj.getString(KEY_DROP_ADDRESS), false);
                                     }
 
                                 } catch (Exception e) {
@@ -8998,7 +8994,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private void updateDropLatLngandPath(String engagementId, LatLng dropLatLng, String dropAddress) {
         try {
             Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
-            Data.getCustomerInfo(engagementId).setDropAddress(dropAddress);
+            Data.getCustomerInfo(engagementId).setDropAddress(this, dropAddress, false);
             customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
             setAttachedCustomerMarkers(true);
             setInRideZoom();
@@ -10868,7 +10864,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     CustomerInfo newCustomerInfo = Data.getCurrentCustomerInfo();
                     saveCustomerRideDataInSP(newCustomerInfo);
                     newCustomerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
-                    newCustomerInfo.setDropAddress(tourResponseModel.responses.acceptResponse.dropAddress);
+                    newCustomerInfo.setDropAddress(this, tourResponseModel.responses.acceptResponse.dropAddress, true);
                     Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, "1000");
                 } catch (Exception e) {
                     e.printStackTrace();
