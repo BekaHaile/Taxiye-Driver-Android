@@ -88,28 +88,7 @@ public class SupportOptionsActivity extends BaseActivity implements View.OnClick
 
 				HippoConfig.getInstance().showFAQSupport(builder.build());
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_CALL_US_MENU)){
-
-				if (mPermissionCommon == null) {
-					mPermissionCommon = new PermissionCommon(SupportOptionsActivity.this);
-				}
-					mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-						@SuppressLint("MissingPermission")
-						@Override
-						public void permissionGranted(final int requestCode) {
-							Utils.makeCallIntent(SupportOptionsActivity.this, Data.userData.driverSupportNumber);
-						}
-
-						@Override
-						public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-							return true;
-						}
-
-						@Override
-						public void onRationalRequestIntercepted() {
-
-						}
-					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
-
+				Utils.makeCallIntent(SupportOptionsActivity.this, Data.userData.driverSupportNumber);
 
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_IN_APP_CALL_US)){
 				HomeUtil.scheduleCallDriver(activity);

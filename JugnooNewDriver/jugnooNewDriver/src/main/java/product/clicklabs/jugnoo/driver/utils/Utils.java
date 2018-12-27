@@ -244,7 +244,7 @@ public class Utils {
 
 
     public static void openCallIntent(Activity activity, String phoneNumber) {
-        Intent callIntent = new Intent(Intent.ACTION_VIEW);
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + phoneNumber));
         activity.startActivity(callIntent);
     }

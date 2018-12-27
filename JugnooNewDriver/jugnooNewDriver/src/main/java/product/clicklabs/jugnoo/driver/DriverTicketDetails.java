@@ -137,26 +137,8 @@ public class DriverTicketDetails extends BaseActivity {
 		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mPermissionCommon == null) {
-					mPermissionCommon = new PermissionCommon(DriverTicketDetails.this);
-				}
-				mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-					@SuppressLint("MissingPermission")
-					@Override
-					public void permissionGranted(final int requestCode) {
-						Utils.makeCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
-					}
 
-					@Override
-					public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-						return true;
-					}
-
-					@Override
-					public void onRationalRequestIntercepted() {
-
-					}
-				}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
+				Utils.makeCallIntent(DriverTicketDetails.this, Data.userData.driverSupportNumber);
 
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}

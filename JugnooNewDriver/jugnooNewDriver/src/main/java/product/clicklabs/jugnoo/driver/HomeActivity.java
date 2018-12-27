@@ -1406,32 +1406,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             callUsRl.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mPermissionCommon == null) {
-                        mPermissionCommon = new PermissionCommon(HomeActivity.this);
-                    }
 
-                    mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        public void permissionGranted(final int requestCode) {
-                            Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                    Utils.makeCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                    FlurryEventLogger.event(CALL_US);
 
-                            FlurryEventLogger.event(CALL_US);
-
-                            drawerLayout.closeDrawer(GravityCompat.START);
-                            overridePendingTransition(R.anim.right_in, R.anim.right_out);
-                        }
-
-                        @Override
-                        public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-                            return true;
-                        }
-
-                        @Override
-                        public void onRationalRequestIntercepted() {
-
-                        }
-                    }).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
             rlGetSupport.setOnClickListener(new OnClickListener() {
