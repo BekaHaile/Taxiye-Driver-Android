@@ -541,7 +541,7 @@
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
-    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="start_ride_alert">If Customer is with you, then please start ride</string>
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>

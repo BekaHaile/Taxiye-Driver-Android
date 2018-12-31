@@ -950,25 +950,30 @@ public class Utils {
 
     private static NumberFormat currencyNumberFormat = null;
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setPrecision) {
-        if(currencyNumberFormat == null){
-            currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
-            currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
-            currencyNumberFormat.setGroupingUsed(false);
-        }
-		int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-		currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
-		currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
-        if (TextUtils.isEmpty(currency)) {
-            currency = fallbackCurrency;
-        }
-        currencyNumberFormat.setCurrency(Currency.getInstance(currency));
-        String result = currencyNumberFormat.format(value);
+        try {
+            if(currencyNumberFormat == null){
+                currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+                currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
+                currencyNumberFormat.setGroupingUsed(false);
+            }
+            int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
+            if (TextUtils.isEmpty(currency)) {
+                currency = fallbackCurrency;
+            }
+            currencyNumberFormat.setCurrency(Currency.getInstance(currency));
+            String result = currencyNumberFormat.format(value);
 
-        result = result.replaceFirst("\\s", "");
-        result = result.replace("BMD", "$");
-        result = result.replace("TTD", "$");
+            result = result.replaceFirst("\\s", "");
+            result = result.replace("BMD", "$");
+            result = result.replace("TTD", "$");
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return currency+Utils.getDecimalFormat().format(value);
+        }
     }
 
     public static String formatCurrencyValue(String currency, String value) {
