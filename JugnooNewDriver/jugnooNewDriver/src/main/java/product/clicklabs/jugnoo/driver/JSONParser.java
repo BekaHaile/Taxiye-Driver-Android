@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.Pair;
 
 import com.fugu.CaptureUserData;
-import com.fugu.HippoNotificationConfig;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -530,7 +530,7 @@ public class JSONParser implements Constants {
 
 				CaptureUserData captureUserData = Data.getFuguUserData(context);
 				if(captureUserData!=null){
-					HippoNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
+					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
 					Data.initFugu((Activity) context, captureUserData,
 							jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
 							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));

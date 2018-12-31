@@ -69,9 +69,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.fugu.HippoConfig;
-import com.fugu.HippoNotificationConfig;
-import com.fugu.HippoTicketAttributes;
+import com.fugu.FuguConfig;
+import com.fugu.FuguNotificationConfig;
+import com.fugu.FuguTicketAttributes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -1434,7 +1434,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutChatSupport.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    HippoConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
+                    FuguConfig.getInstance().showConversations(HomeActivity.this, getString(R.string.chat));
                 }
             });
             rlSupportMain.setOnClickListener(new OnClickListener() {
@@ -1453,16 +1453,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     try {
-                        HippoTicketAttributes.Builder builder = new HippoTicketAttributes.Builder();
+                        FuguTicketAttributes.Builder builder = new FuguTicketAttributes.Builder();
                         if (Data.userData != null) {
                             builder.setFaqName(Data.userData.getHippoTicketFAQ());
                         }
 
                         ArrayList<String> tags = new ArrayList<>();
                         tags.add(Constants.HIPPO_TAG_DRIVER_APP);
-                        builder.setTags(tags);
+//                        builder.setTags(tags);
 
-                        HippoConfig.getInstance().showFAQSupport(builder.build());
+                        FuguConfig.getInstance().showFAQSupport(builder.build());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -2450,7 +2450,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
 
         try {
-            HippoNotificationConfig.handleHippoPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
+            FuguNotificationConfig.handleFuguPushNotification(HomeActivity.this, getIntent().getBundleExtra(Constants.FUGU_CHAT_BUNDLE));
         } catch (Exception e) {
             e.printStackTrace();
         }
