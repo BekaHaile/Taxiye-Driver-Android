@@ -4482,6 +4482,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     if (customerInfo.getIsDelivery() == 1) {
                         linearLayoutRide.setVisibility(View.GONE);
 						buttonAddLuggage.setVisibility(View.GONE);
+                        layoutAddedLuggage.setVisibility(View.GONE);
                         deliveryListHorizontal.setVisibility(View.GONE);
                         deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos(), customerInfo.getFalseDeliveries(), customerInfo.getOrderId());
                         deliveryInfoTabs.notifyDatasetchange(true);
@@ -4708,12 +4709,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     public void setLuggageUI() {
-        if (driverScreenMode == DriverScreenMode.D_IN_RIDE && showLuggageCharges) {
+        if (driverScreenMode == DriverScreenMode.D_IN_RIDE && showLuggageCharges
+                && Data.getCurrentCustomerInfo().getIsDelivery() == 0
+                && Data.getCurrentCustomerInfo().getIsDeliveryPool() == 0) {
 
             int luggageCount = Data.getCurrentCustomerInfo().getLuggageCount();
-            if (Data.getCurrentCustomerInfo().getIsDelivery() == 0
-					&& Data.getCurrentCustomerInfo().getIsDeliveryPool() == 0
-					&& luggageCount > 0) {
+            if (luggageCount > 0) {
                 buttonAddLuggage.setVisibility(View.GONE);
                 layoutAddedLuggage.setVisibility(View.VISIBLE);
                 String amount = Utils.formatCurrencyValue(Data.getCurrentCustomerInfo().getCurrencyUnit(), luggageCount * Data.fareStructure.getBaggageCharges());
