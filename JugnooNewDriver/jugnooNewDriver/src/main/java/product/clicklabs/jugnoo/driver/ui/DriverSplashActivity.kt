@@ -257,6 +257,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         val intent = Intent(this, HomeActivity::class.java)
         if (getIntent().extras != null) {
             intent.putExtras(getIntent().extras)
+            intent.putExtra(Constants.FUGU_CHAT_BUNDLE, getIntent().extras)
 
         }
         if (HomeActivity.activity != null) {
@@ -358,6 +359,10 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun getMainIntent(): Intent {
+        return getIntent()
     }
 }
 

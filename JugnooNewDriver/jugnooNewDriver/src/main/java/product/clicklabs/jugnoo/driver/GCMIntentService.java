@@ -29,7 +29,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 
-import com.fugu.HippoNotificationConfig;
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -92,7 +92,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
 	public static final int NOTIFICATION_BIG_ICON = R.drawable.app_icon;
-	HippoNotificationConfig fuguNotificationConfig = new HippoNotificationConfig();
+	FuguNotificationConfig fuguNotificationConfig = new FuguNotificationConfig();
 	public GCMIntentService() {
 	}
 
@@ -489,7 +489,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 //		super.onMessageReceived(remoteMessage);
 
-		if (fuguNotificationConfig.isHippoNotification(remoteMessage.getData())) {
+		if (fuguNotificationConfig.isFuguNotification(remoteMessage.getData())) {
 			fuguNotificationConfig.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			//your icon drawable
 			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);

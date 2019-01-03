@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -94,7 +93,7 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		backBtn = findViewById(R.id.backBtn);
 //		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
-		saveDrawable = ContextCompat.getDrawable(this,R.drawable.ic_save_black);
+		saveDrawable = ContextCompat.getDrawable(this,R.drawable.ic_save);
 		editDrawable = ContextCompat.getDrawable(this,R.drawable.edit_pencil_icon);
 		saveDrawable.mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
 		editDrawable.mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);

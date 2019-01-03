@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/tv_earn_credits"
-        android:drawableEnd="@drawable/ic_hippo_support_right_arrow"
+        android:drawableEnd="@drawable/ic_chevron_right"
         android:padding="10dp"
         android:layout_marginBottom="1dp"
         android:text="@string/earn_more_credits"
@@ -77,7 +77,7 @@
 
     <TextView
         android:id="@+id/tv_share_credits"
-        android:drawableEnd="@drawable/ic_hippo_support_right_arrow"
+        android:drawableEnd="@drawable/ic_chevron_right"
         android:padding="10dp"
         android:background="@drawable/bg_white_grey_light_selector"
         android:text="@string/share_your_credits"

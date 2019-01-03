@@ -590,7 +590,7 @@ class VehicleDetailsFragment : Fragment() {
             if(s.length==4 && isYearValid(s.toString())){
                 edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor))
             }else{
-                edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.red_btn))
             }
 
         }

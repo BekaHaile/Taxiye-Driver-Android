@@ -417,6 +417,7 @@ class SplashFragment : Fragment() {
         fun getPrefillOtpIfany():String?
 
         fun toggleDisplayFlags(remove:Boolean)
+        fun getMainIntent() : Intent
     }
 
     override fun onDestroy() {
