@@ -421,7 +421,8 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				maxIndex = driverEarningsResponse.getEarnings().size();
 				boolean graphVisibility = false;
 				for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
-					entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings().intValue(), j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
+					float value = Float.parseFloat(driverEarningsResponse.getEarnings().get(i-1).getEarnings()+"");
+					entries.add(new BarEntry(value, j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
 					labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
 					if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
 						graphVisibility =true;
