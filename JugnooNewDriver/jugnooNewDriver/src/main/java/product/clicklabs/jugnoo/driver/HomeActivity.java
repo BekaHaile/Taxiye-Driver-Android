@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,8 +16,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -7637,7 +7643,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         markerOptions.snippet("");
         markerOptions.position(customerInfo.currentLatLng);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-                .createCustomMarkerBitmap(HomeActivity.this, assl, 20f, 20f, R.drawable.red_dot_icon)));
+                .createCustomMarkerBitmap(HomeActivity.this, assl, 45f, 45f, R.drawable.ic_customer_current_location)));
         return map.addMarker(markerOptions);
     }
 
@@ -9422,6 +9428,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
                 for (int i = 0; i < markersCustomers.size(); i++) {
                     builder.include(markersCustomers.get(i).getPosition());
+                    break;
+                }
+                ArrayList<CustomerInfo> engagedCustomers = Data.getAssignedCustomerInfosListForEngagedStatus();
+                for(CustomerInfo customerInfo : engagedCustomers){
+                    builder.include(customerInfo.getCurrentLatLng());
                     break;
                 }
                 if (polylineCustomersPath != null) {
