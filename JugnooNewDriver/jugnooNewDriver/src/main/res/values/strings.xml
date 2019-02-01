@@ -1156,5 +1156,6 @@
     <string name="edit_toll">Edit Toll</string>
     <string name="other">Other</string>
     <string name="please_specify_the_reason">Please specify the reason</string>
+    <string name="customer_live_location">Customer Live Location</string>
 
 </resources>

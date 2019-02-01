@@ -2879,7 +2879,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             map.setInfoWindowAdapter(null);
                             return false;
                         }
-                        if(arg0.getTitle().contains("distance=")){
+                        if(arg0.getTitle().contains(MARKER_TITLE_CUSTOMER_LIVE_LOCATION)){
+                            CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getString(R.string.customer_live_location), "");
+                            map.setInfoWindowAdapter(customIW);
+                            return false;
+                        }
+                        else if(arg0.getTitle().contains("distance=")){
                             CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getTitle(), "");
                             map.setInfoWindowAdapter(customIW);
                             return false;
@@ -7637,13 +7642,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         return map.addMarker(markerOptions);
     }
 
+    private final String MARKER_TITLE_CUSTOMER_LIVE_LOCATION = "_customer_live_location";
     public Marker addCustomerCurrentLocationMarker(GoogleMap map, CustomerInfo customerInfo) {
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title(String.valueOf(customerInfo.getEngagementId()));
+        markerOptions.title(String.valueOf(customerInfo.getEngagementId())+"_customer_live_location");
         markerOptions.snippet("");
         markerOptions.position(customerInfo.currentLatLng);
+        markerOptions.anchor(0.5f, 0.5f);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-                .createCustomMarkerBitmap(HomeActivity.this, assl, 45f, 45f, R.drawable.ic_customer_current_location)));
+                .createCustomMarkerBitmap(HomeActivity.this, assl, 45f, 45f, R.drawable.ic_red_dot_circle)));
         return map.addMarker(markerOptions);
     }
 
@@ -9432,8 +9439,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
                 ArrayList<CustomerInfo> engagedCustomers = Data.getAssignedCustomerInfosListForEngagedStatus();
                 for(CustomerInfo customerInfo : engagedCustomers){
-                    builder.include(customerInfo.getCurrentLatLng());
-                    break;
+                    if(Data.getDriverScreenModeFromEngagementStatus(customerInfo.getStatus()) == DriverScreenMode.D_ARRIVED) {
+                        builder.include(customerInfo.getCurrentLatLng());
+                        break;
+                    }
                 }
                 if (polylineCustomersPath != null) {
                     for (LatLng latLng : polylineCustomersPath.getPoints()) {
@@ -10629,6 +10638,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (map != null && currentCustomerLocMarker != null) {
                             LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
                             currentCustomerLocMarker.setPosition(currentLAtLng);
+                            currentCustomerLocMarker.hideInfoWindow();
                             Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
                             Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
                             Data.getCurrentCustomerInfo().setCurrentLatLng(currentLAtLng);

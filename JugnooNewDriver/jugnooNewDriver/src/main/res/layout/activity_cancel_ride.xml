@@ -79,7 +79,7 @@
                 android:background="@drawable/background_white_rounded_bordered"
                 android:gravity="start"
                 android:hint="@string/please_specify_the_reason"
-                android:maxLength="64"
+                android:maxLength="63"
                 android:minHeight="80dp"
                 android:padding="10dp"
                 style="@style/TextNormal"
