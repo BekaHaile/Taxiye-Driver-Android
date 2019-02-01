@@ -1154,5 +1154,7 @@
     <string name="invalid_fare">Invalid fare</string>
     <string name="are_you_sure_you_want_to_delete_this_toll">Are you sure you want to delete this toll?</string>
     <string name="edit_toll">Edit Toll</string>
+    <string name="other">Other</string>
+    <string name="please_specify_the_reason">Please specify the reason</string>
 
 </resources>
