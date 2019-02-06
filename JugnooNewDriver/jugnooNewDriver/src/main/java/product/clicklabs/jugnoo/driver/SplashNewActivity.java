@@ -53,8 +53,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -71,7 +69,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
@@ -185,7 +182,6 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
 
 //		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
 //			JSONParser.saveAccessToken(this, "");
