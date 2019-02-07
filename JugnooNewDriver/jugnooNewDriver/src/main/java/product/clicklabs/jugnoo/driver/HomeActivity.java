@@ -74,7 +74,6 @@ import com.fugu.FuguNotificationConfig;
 import com.fugu.FuguTicketAttributes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -88,6 +87,8 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -495,7 +496,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private ArrayList<Marker> requestMarkers = new ArrayList<>();
     ArrayList<Tile> infoTileResponses = new ArrayList<>();
     private final double FIX_ZOOM_DIAGONAL = 200;
-    public GoogleApiClient mGoogleApiClient;
+    public PlacesClient mGoogleApiClient;
 
     DialogPopup endDelivery = new DialogPopup();
 
@@ -549,13 +550,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             resumed = false;
             mapAnimatedToCustomerPath = false;
 
-            mGoogleApiClient = new GoogleApiClient
-                    .Builder(this)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
+            mGoogleApiClient = Places.createClient(this);
 
             appMode = AppMode.NORMAL;
 
@@ -8978,8 +8973,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         try {
             super.onStart();
 
-
-            mGoogleApiClient.connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -8990,7 +8983,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         super.onStop();
         try {
 
-            mGoogleApiClient.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }

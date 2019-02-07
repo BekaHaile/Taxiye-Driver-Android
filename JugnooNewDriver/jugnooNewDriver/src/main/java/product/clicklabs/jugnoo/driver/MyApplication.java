@@ -19,6 +19,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -69,6 +70,9 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Initialize Places.
+        Places.initialize(this, getResources().getString(R.string.google_maps_api_key));
     }
 
     public FirebaseAnalytics getmFirebaseAnalytics() {

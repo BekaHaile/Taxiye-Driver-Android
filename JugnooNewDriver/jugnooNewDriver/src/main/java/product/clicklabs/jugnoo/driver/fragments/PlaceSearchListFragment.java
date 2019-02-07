@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -51,7 +52,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 
 	private View rootView;
     private Activity activity;
-	private GoogleApiClient mGoogleApiClient;
+	private PlacesClient mGoogleApiClient;
 	private SearchListAdapter.SearchListActionsHandler searchListActionsHandler;
 	private SearchListAdapter searchListAdapter;
 
