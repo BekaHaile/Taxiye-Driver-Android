@@ -417,5 +417,6 @@ public interface Constants {
 	String KEY_UPDATED_TOLL = "updated_toll";
 	String SP_BATTERY_OPTIMIZATIONS_ASKED = "sp_battery_optimizations_asked";
 	String KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS = "driver_check_locale_for_address";
+	String KEY_IS_CORPORATE_RIDE = "is_corporate_ride";
 }
 

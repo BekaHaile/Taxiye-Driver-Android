@@ -69,6 +69,7 @@ public class CustomerInfo {
 	private double waypointDistance;
 	private String pickupTime;
 	private String pickupAddressEng, dropAddressEng;
+	private int isCorporateRide;
 
 
 	/**
@@ -79,7 +80,7 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime, int isCorporateRide){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -131,6 +132,7 @@ public class CustomerInfo {
 		this.tipAmount = tipAmount;
 		this.luggageCount = luggageCount;
 		this.pickupTime = pickupTime;
+		this.isCorporateRide = isCorporateRide;
 	}
 
 
@@ -750,5 +752,13 @@ public class CustomerInfo {
 
 	public String getDropAddressEng() {
 		return dropAddressEng;
+	}
+
+	public int getIsCorporateRide() {
+		return isCorporateRide;
+	}
+
+	public void setIsCorporateRide(int isCorporateRide) {
+		this.isCorporateRide = isCorporateRide;
 	}
 }
