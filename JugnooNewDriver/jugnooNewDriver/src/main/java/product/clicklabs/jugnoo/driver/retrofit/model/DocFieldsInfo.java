@@ -33,6 +33,10 @@ public class DocFieldsInfo extends SearchDataModel {
     private List<DocFieldsInfo> set;
     @SerializedName("ref_key")
     private String refKey;
+    @SerializedName("confirm_key")
+    private String confirmKey;
+    @SerializedName("is_secure")
+    private int isSecure;
 
     @SerializedName("is_selected")
     private boolean isSelected;
@@ -103,5 +107,21 @@ public class DocFieldsInfo extends SearchDataModel {
 
     public void setRefKey(String refKey) {
         this.refKey = refKey;
+    }
+
+    public String getConfirmKey() {
+        return confirmKey;
+    }
+
+    public void setConfirmKey(String confirmKey) {
+        this.confirmKey = confirmKey;
+    }
+
+    public int getIsSecured() {
+        return isSecure;
+    }
+
+    public void setIsSecured(int isSecured) {
+        this.isSecure = isSecured;
     }
 }

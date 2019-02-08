@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
+import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.inflate
 import product.clicklabs.jugnoo.driver.utils.pxValue
 import java.text.SimpleDateFormat
@@ -126,7 +127,7 @@ class DocumentDetailsFragment:Fragment(){
                 lastEdtId = editText.id
                 var docField = DocumentInputField(item.key,item.label,item.value,
                         editText, item.type,
-                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext())
+                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext(), item.isSecured)
 
                 documentInputFields[item.key] = docField
 
@@ -138,6 +139,10 @@ class DocumentDetailsFragment:Fragment(){
                 item.run {
                     if(!refKey.isNullOrEmpty() && documentInputFields.containsKey(refKey)){
                        documentInputFields[key]?.child = documentInputFields[refKey]
+                    }
+                    // check confirm_key and save confirm parent
+                    if(!confirmKey.isNullOrEmpty() && documentInputFields.containsKey(confirmKey)){
+                        documentInputFields[key]?.confirmParent = documentInputFields[confirmKey]
                     }
                 }
 
@@ -181,6 +186,8 @@ class DocumentDetailsFragment:Fragment(){
         }
 
         val keyValueMap = hashMapOf<String, ServerRequestInputFields>()
+        var confirmErrors = ""
+        var isFirst = true
         val listInputFields = documentInputFields.values.map {
             if(it.inputType == FieldTypes.SET_SS.type
                     || it.inputType == FieldTypes.SET_MS.type
@@ -189,7 +196,19 @@ class DocumentDetailsFragment:Fragment(){
             } else {
                 keyValueMap[it.key] = ServerRequestInputFields(it.key, it.getValue(), null)
             }
+
+            //Error Message for confirm fields
+            if(it.confirmParent != null && !it.getValue.equals(it.confirmParent!!.getValue)){
+                confirmErrors += (if(isFirst) "" else ", ").plus(it.confirmParent!!.label)
+                isFirst = false
+            }
             keyValueMap[it.key]
+        }
+
+        //Show error Message for confirm field if not matched with parent
+        if(!confirmErrors.isEmpty()){
+            Utils.showToast(activity, confirmErrors.plus(" ").plus(activity?.resources?.getString(R.string.not_match)))
+            return
         }
 
         val element = gson.toJsonTree(listInputFields, object : TypeToken<List<ServerRequestInputFields>>() {}.type)
@@ -270,7 +289,9 @@ class DocumentInputField(
         var set: List<DocFieldsInfo>?,
         var setValue: ArrayList<String>?,
         var context: Context,
-        child:DocumentInputField? = null) {
+        var isSecured: Int,
+        child:DocumentInputField? = null,
+        var confirmParent:DocumentInputField? = null) {
 
     val FORMAT_UTC = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -347,7 +368,10 @@ class DocumentInputField(
         setText(value)
         inputField.isEnabled = isEditable
 
-
+        //id is_secure == 1 then setting input type to Password_type
+        if(isSecured == 1) {
+            inputField.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
     }
 
     private fun setText(value: String?) {

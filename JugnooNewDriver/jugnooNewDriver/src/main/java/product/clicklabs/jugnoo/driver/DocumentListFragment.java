@@ -638,7 +638,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
-										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),data.getIsDocInfoEditable());
+										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
+										data.getIsDocInfoEditable());
 								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 									continue;
 								}
