@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.Manifest;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,13 +15,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -90,6 +84,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -3835,7 +3830,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         (mode == DriverScreenMode.D_ARRIVED
                                 || mode == DriverScreenMode.D_START_RIDE
                                 || mode == DriverScreenMode.D_IN_RIDE)) {
-                    map.clear();
                     ArrayList<CustomerInfo> customerInfosList;
 
                     if (Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1) {
@@ -3849,8 +3843,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if (customerInfosList.size() > 0 && sortCustomerState) {
                         Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
-                    } else {
-                        sortCustomerState = true;
                     }
                 }
             } catch (Exception e) {
@@ -3952,7 +3944,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
 
                     endRideInfoRl.setVisibility(View.VISIBLE);
-                    reviewFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), endRideData.toPay));
 
 
                     reviewReachedDistanceRl.setVisibility(View.VISIBLE);
@@ -4112,7 +4103,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
 
                     if (map != null) {
-                        map.clear();
                         drawHeatMapData(heatMapResponseGlobal);
                     }
 
@@ -4176,9 +4166,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                     }
 
-                    if (map != null) {
-                        map.clear();
-                    }
 
                     if (getOpenedCustomerInfo() != null) {
                         if (map != null) {
@@ -4221,7 +4208,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     if (map != null) {
                         if (currentCustomerLocMarker != null) {
                             currentCustomerLocMarker.remove();
-                            currentCustomerLocMarker = null;
                         }
 
                         if (customerInfo.getIsPooled() != 1) {
@@ -5239,9 +5225,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
+    Polyline oldPathPolyline;
     public synchronized void displayOldPath() {
 
         try {
+            if(oldPathPolyline != null){
+                oldPathPolyline.remove();
+            }
             if (Color.TRANSPARENT != MAP_PATH_COLOR) {
                 ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsSaved();
                 PolylineOptions polylineOptions = new PolylineOptions();
@@ -5253,7 +5243,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
                     }
                 }
-                map.addPolyline(polylineOptions);
+                oldPathPolyline = map.addPolyline(polylineOptions);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -6029,6 +6019,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     String currency = jObj.optString(Constants.KEY_CURRENCY);
                     double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
                     String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
+                    int isCorporateRide = jObj.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
 
                     Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -6042,7 +6033,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
-                            pickupTime);
+                            pickupTime, isCorporateRide);
 
                     JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 
@@ -6844,6 +6835,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else if (customerInfo.promoInfo != null) {
                             customerInfo.promoInfo.promoApplied = true;
                         }
+                        if(customerInfo.getIsCorporateRide() == 1){
+                            endRideData.paidUsingWallet = endRideData.toPay;
+                            endRideData.toPay = 0;
+                        }
                     }
 
                     if (map != null) {
@@ -7151,6 +7146,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
             Log.i("finalToPay == endride offline ", "=" + finalToPay);
             Log.i("wallet Balance ", "=" + customerInfo.jugnooBalance);
+
+            if(customerInfo.getIsCorporateRide() == 1){
+                customerInfo.jugnooBalance = finalToPay;
+            }
 
             // wallet application (with split fare)
             if (customerInfo.jugnooBalance > 0 && finalToPay > 0) {    // wallet
@@ -7496,10 +7495,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
+    ArrayList<Polygon> heatMapPolygons = new ArrayList<>();
     private void drawHeatMapData(HeatMapResponse heatMapResponse) {
         try {
             if (DriverScreenMode.D_INITIAL == driverScreenMode) {
-                map.clear();
+                if(heatMapPolygons != null){
+                    for(Polygon polygon : heatMapPolygons){
+                        if(polygon != null) {
+                            polygon.remove();
+                        }
+                    }
+                    heatMapPolygons.clear();
+                }
                 for (HeatMapResponse.Region region : heatMapResponse.getRegions()) {
                     ArrayList<LatLng> arrLatLng = new ArrayList<>();
                     List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
@@ -7507,11 +7514,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
                     }
                     if (region.getDriverFareFactor() != null) {
-                        addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-                                region.getColor(), region.getStrokeColor());
+                        heatMapPolygons.add(addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+                                region.getColor(), region.getStrokeColor()));
                     } else {
-                        addPolygonWithoutMarker(arrLatLng, region.getDriverFareFactorPriority(),
-                                region.getColor(), region.getStrokeColor());
+                        heatMapPolygons.add(addPolygonWithoutMarker(arrLatLng, region.getDriverFareFactorPriority(),
+                                region.getColor(), region.getStrokeColor()));
                     }
                 }
             }
@@ -7520,7 +7527,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
+    public Polygon addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
         try {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             PolygonOptions polygonOptions = new PolygonOptions();
@@ -7539,13 +7546,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         decimalFormat.format(fareFactor), 2, 20);
             }
 
-            map.addPolygon(polygonOptions);
+            return map.addPolygon(polygonOptions);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    public void addPolygonWithoutMarker(ArrayList<LatLng> arg, int zIndex, String color, String strokeColor) {
+    public Polygon addPolygonWithoutMarker(ArrayList<LatLng> arg, int zIndex, String color, String strokeColor) {
         try {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             PolygonOptions polygonOptions = new PolygonOptions();
@@ -7558,10 +7566,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
             polygonOptions.zIndex(100 / zIndex);
             LatLngBounds latLngBounds = builder.build();
-            map.addPolygon(polygonOptions);
+            return map.addPolygon(polygonOptions);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 
@@ -8227,10 +8236,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         try {
             if (userMode == UserMode.DRIVER) {
 
-//				if(map != null){
-//					map.clear();
-//				}
-
                 for (Marker marker : requestMarkers) {
                     marker.remove();
                 }
@@ -8339,6 +8344,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void run() {
                     showAllRideRequestsOnMap();
+
                     try {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + Data.getAssignedCustomerInfosListForStatus(
