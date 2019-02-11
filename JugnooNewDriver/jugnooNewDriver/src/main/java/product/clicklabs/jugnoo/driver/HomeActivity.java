@@ -3844,6 +3844,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     if (customerInfosList.size() > 0 && sortCustomerState) {
                         Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
                     }
+                } else {
+                    clearCustomerMarkers();
+                    clearDeliveryMarkers();
+                    if(polylineCustomersPath != null){
+                        polylineCustomersPath.remove();
+                    }
+                    if (polylineDelivery != null) {
+                        polylineDelivery.remove();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4064,6 +4073,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             earningsVisibility(showEarningsAsHome(mode) ? View.VISIBLE : View.GONE);
+            if (map != null) {
+                drawHeatMapData(heatMapResponseGlobal);
+                if (currentCustomerLocMarker != null) {
+                    currentCustomerLocMarker.remove();
+                }
+                if (polylineCustomersPath != null) {
+                    polylineCustomersPath.remove();
+                }
+                polylineCustomersPath = null;
+                if(dropPinMarkerDelivery != null){
+                    dropPinMarkerDelivery.remove();
+                }
+                if(oldPathPolyline != null){
+                    oldPathPolyline.remove();
+                }
+                if(perfectRideMarker != null){
+                    perfectRideMarker.remove();
+                }
+                if(inRidePolylines != null){
+                    for(Polyline polyline : inRidePolylines){
+                        if(polyline != null){
+                            polyline.remove();
+                        }
+                    }
+                    inRidePolylines.clear();
+                }
+                if(startMarker != null){
+                    startMarker.remove();
+                }
+            }
 
             switch (mode) {
 
@@ -4102,9 +4141,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         e.printStackTrace();
                     }
 
-                    if (map != null) {
-                        drawHeatMapData(heatMapResponseGlobal);
-                    }
 
                     showDriverEarning();
                     showRefreshUSLBar();
@@ -4294,10 +4330,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     setPannelVisibility(false);
                     if (map != null) {
                         buttonDriverNavigationSetVisibility(View.GONE);
-                        if (polylineCustomersPath != null) {
-                            polylineCustomersPath.remove();
-                        }
-                        polylineCustomersPath = null;
                     }
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
                     topRlOuter.setVisibility(View.GONE);
@@ -4458,7 +4490,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (customerInfo.getIsDeliveryPool() != 1) {
                                 double slatitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LATITUDE, "0"));
                                 double slongitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
-                                addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
+                                dropPinMarkerDelivery = addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
                             }
                         } else {
                             if (customerInfo.getIsPooled() != 1) {
@@ -4589,6 +4621,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverEngagedLayout.setVisibility(View.GONE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
+                    map.clear();
 
                     cancelTimerPathRerouting();
                     Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
@@ -6080,6 +6113,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public void createPerfectRideMarker() {
         if (Data.nextPickupLatLng != null) {
+            if(perfectRideMarker != null){
+                perfectRideMarker.remove();
+            }
             driverPerfectRidePassengerName.setText(Data.nextCustomerName);
             perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
             driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -6135,10 +6171,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 String log = jObj.getString("log");
                                 DialogPopup.alertPopup(activity, "", "" + log);
                             } else {
-                                if (map != null) {
-                                    map.clear();
-                                    drawHeatMapData(heatMapResponseGlobal);
-                                }
                                 stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
 
                                 reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(), "");
@@ -7496,17 +7528,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     ArrayList<Polygon> heatMapPolygons = new ArrayList<>();
+    ArrayList<Marker> heatMapMarkers = new ArrayList<>();
     private void drawHeatMapData(HeatMapResponse heatMapResponse) {
         try {
-            if (DriverScreenMode.D_INITIAL == driverScreenMode) {
-                if(heatMapPolygons != null){
-                    for(Polygon polygon : heatMapPolygons){
-                        if(polygon != null) {
-                            polygon.remove();
-                        }
+            if(heatMapPolygons != null){
+                for(Polygon polygon : heatMapPolygons){
+                    if(polygon != null) {
+                        polygon.remove();
                     }
-                    heatMapPolygons.clear();
                 }
+                heatMapPolygons.clear();
+            }
+            if(heatMapMarkers != null){
+                for(Marker marker : heatMapMarkers){
+                    if(marker != null) {
+                        marker.remove();
+                    }
+                }
+                heatMapMarkers.clear();
+            }
+            if (DriverScreenMode.D_INITIAL == driverScreenMode) {
                 for (HeatMapResponse.Region region : heatMapResponse.getRegions()) {
                     ArrayList<LatLng> arrLatLng = new ArrayList<>();
                     List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
@@ -7514,8 +7555,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
                     }
                     if (region.getDriverFareFactor() != null) {
-                        heatMapPolygons.add(addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-                                region.getColor(), region.getStrokeColor()));
+                        Pair<Polygon, Marker> pair = addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+                                region.getColor(), region.getStrokeColor());
+                        heatMapPolygons.add(pair.first);
+                        heatMapMarkers.add(pair.second);
                     } else {
                         heatMapPolygons.add(addPolygonWithoutMarker(arrLatLng, region.getDriverFareFactorPriority(),
                                 region.getColor(), region.getStrokeColor()));
@@ -7527,7 +7570,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public Polygon addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
+    public Pair<Polygon, Marker> addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
         try {
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             PolygonOptions polygonOptions = new PolygonOptions();
@@ -7540,13 +7583,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
             polygonOptions.zIndex(100 / zIndex);
             LatLngBounds latLngBounds = builder.build();
+            Marker marker = null;
             if (fareFactor > 0) {
-                CustomMapMarkerCreator.addTextMarkerToMap(this, map,
+                marker = CustomMapMarkerCreator.addTextMarkerToMap(this, map,
                         latLngBounds.getCenter(),
                         decimalFormat.format(fareFactor), 2, 20);
             }
-
-            return map.addPolygon(polygonOptions);
+            Polygon polygon = map.addPolygon(polygonOptions);
+            return new Pair(polygon, marker);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -9050,6 +9094,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         });
     }
 
+    ArrayList<Polyline> inRidePolylines = new ArrayList<>();
     @Override
     public void addPathToMap(final PolylineOptions polylineOptions) {
         runOnUiThread(new Runnable() {
@@ -9058,7 +9103,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             public void run() {
                 if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
                     if (Color.TRANSPARENT != MAP_PATH_COLOR) {
-                        map.addPolyline(polylineOptions.width(ASSL.Xscale() * 8).color(MAP_PATH_COLOR).geodesic(true));
+                        inRidePolylines.add(map.addPolyline(polylineOptions.width(ASSL.Xscale() * 8).color(MAP_PATH_COLOR).geodesic(true)));
                     }
                 }
             }
@@ -9086,7 +9131,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
 
                     if (Color.TRANSPARENT != MAP_PATH_COLOR) {
-                        map.addPolyline(polylineOptions);
+                        inRidePolylines.add(map.addPolyline(polylineOptions));
                     }
                 }
             }
@@ -9991,6 +10036,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PolylineOptions polylineOptionsDelivery = null;
     private Polyline polylineDelivery = null;
+    private Marker dropPinMarkerDelivery = null;
 
     private Marker addDropPinMarker(GoogleMap map, LatLng latLng, String text, int imgType) {
         final MarkerOptions markerOptions = new MarkerOptions()
@@ -10415,6 +10461,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PolylineOptions polylineOptionsCustomersPath = null;
     private Polyline polylineCustomersPath = null;
+    private Marker startMarker = null;
 
     private void addStartMarker() {
         try {
@@ -10426,7 +10473,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 markerOptions.title(getResources().getString(R.string.start_ride_loc));
                 markerOptions.position(new LatLng(latitude, longitude));
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
-                map.addMarker(markerOptions);
+                startMarker = map.addMarker(markerOptions);
             }
         } catch (Exception e) {
             e.printStackTrace();
