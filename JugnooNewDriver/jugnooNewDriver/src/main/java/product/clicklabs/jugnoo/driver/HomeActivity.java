@@ -7654,12 +7654,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private final String MARKER_TITLE_CUSTOMER_LIVE_LOCATION = "_customer_live_location";
     public Marker addCustomerCurrentLocationMarker(GoogleMap map, CustomerInfo customerInfo) {
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title(String.valueOf(customerInfo.getEngagementId())+"_customer_live_location");
+        markerOptions.title(String.valueOf(customerInfo.getEngagementId())+MARKER_TITLE_CUSTOMER_LIVE_LOCATION);
         markerOptions.snippet("");
         markerOptions.position(customerInfo.currentLatLng);
         markerOptions.anchor(0.5f, 0.5f);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-                .createCustomMarkerBitmap(HomeActivity.this, assl, 45f, 45f, R.drawable.ic_red_dot_circle)));
+                .createCustomMarkerBitmap(HomeActivity.this, assl, 25f, 25f, R.drawable.red_dot_icon)));
         return map.addMarker(markerOptions);
     }
 
@@ -9445,7 +9445,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
                 ArrayList<CustomerInfo> engagedCustomers = Data.getAssignedCustomerInfosListForEngagedStatus();
                 for(CustomerInfo customerInfo : engagedCustomers){
-                    if(Data.getDriverScreenModeFromEngagementStatus(customerInfo.getStatus()) == DriverScreenMode.D_ARRIVED) {
+                    if(Data.getDriverScreenModeFromEngagementStatus(customerInfo.getStatus()) == DriverScreenMode.D_ARRIVED
+                            && customerInfo.getCurrentLatLng() != null
+                            && Utils.compareDouble(customerInfo.getCurrentLatLng().latitude, 0) != 0 && Utils.compareDouble(customerInfo.getCurrentLatLng().longitude, 0) != 0) {
                         builder.include(customerInfo.getCurrentLatLng());
                         break;
                     }
@@ -10641,7 +10643,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void run() {
                     try {
-                        if (map != null && currentCustomerLocMarker != null) {
+                        if (map != null && currentCustomerLocMarker != null
+                                && Utils.compareDouble(currrentLatitude, 0) != 0 && Utils.compareDouble(currrentLongitude, 0) != 0) {
                             LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
                             currentCustomerLocMarker.setPosition(currentLAtLng);
                             currentCustomerLocMarker.hideInfoWindow();
