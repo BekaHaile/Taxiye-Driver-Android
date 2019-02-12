@@ -198,7 +198,7 @@ class DocumentDetailsFragment:Fragment(){
             }
 
             //Error Message for confirm fields
-            if(it.confirmParent != null && !it.getValue.equals(it.confirmParent!!.getValue)){
+            if(it.confirmParent != null && !it.getValue().equals(it.confirmParent!!.getValue())){
                 confirmErrors += (if(isFirst) "" else ", ").plus(it.confirmParent!!.label)
                 isFirst = false
             }
