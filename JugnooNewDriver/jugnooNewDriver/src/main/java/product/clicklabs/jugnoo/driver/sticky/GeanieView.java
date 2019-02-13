@@ -140,7 +140,7 @@ public class GeanieView extends Service {
 
 				convertView.setOnTouchListener(new View.OnTouchListener() {
 					long time_start = 0, time_end = 0;
-					boolean isLongclick = false, inBounded = false;
+					boolean isLongclick = false, inBounded = false, stopVisibilityRunnable = false;
 					int remove_img_width = 0, remove_img_height = 0;
 
 					Handler handler_longClick = new Handler();
@@ -149,8 +149,12 @@ public class GeanieView extends Service {
 						@Override
 						public void run() {
 
-							isLongclick = true;
-							showCloseView();
+							if(!stopVisibilityRunnable) {
+								isLongclick = true;
+								showCloseView();
+							} else {
+								handler_longClick.removeCallbacks(this);
+							}
 						}
 					};
 
@@ -165,6 +169,7 @@ public class GeanieView extends Service {
 						switch (event.getAction()) {
 							case MotionEvent.ACTION_DOWN:
 								time_start = System.currentTimeMillis();
+								stopVisibilityRunnable = false;
 								handler_longClick.removeCallbacks(runnable_longClick);
 								handler_longClick.postDelayed(runnable_longClick, 400);
 
@@ -248,8 +253,9 @@ public class GeanieView extends Service {
 							case MotionEvent.ACTION_UP:
 
 								isLongclick = false;
-
+								stopVisibilityRunnable = true;
 								handler_longClick.removeCallbacks(runnable_longClick);
+								removeImg.setVisibility(View.GONE);
 								hideCloseView(remove_img_height, remove_img_width);
 
 								if (inBounded) {
