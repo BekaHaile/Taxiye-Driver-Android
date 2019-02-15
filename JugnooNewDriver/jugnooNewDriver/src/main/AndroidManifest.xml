@@ -398,7 +398,7 @@
             android:enabled="true"
             android:exported="true"/>
         <service
-            android:name=".services.AltMeteringService"
+            android:name=".altmetering.AltMeteringService"
             android:enabled="true"
             android:exported="true"/>
         <service

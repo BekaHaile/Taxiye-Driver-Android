@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.services
+package product.clicklabs.jugnoo.driver.altmetering
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -6,13 +6,21 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
+import android.text.TextUtils
+import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.GCMIntentService
+import product.clicklabs.jugnoo.driver.GpsDistanceCalculator
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
 import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.utils.MapUtils
+import retrofit.mime.TypedByteArray
+import java.util.*
 
 class AltMeteringService : Service(){
 
@@ -25,6 +33,11 @@ class AltMeteringService : Service(){
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(METER_NOTIF_ID, generateNotification(this, TAG, METER_NOTIF_ID))
+
+        if (!GpsDistanceCalculator.isMeteringStateActive(this)) {
+            fetchInitialPath()
+        }
+
         return Service.START_STICKY
     }
 
@@ -72,6 +85,53 @@ class AltMeteringService : Service(){
             return null
         }
 
+    }
+
+
+    fun fetchInitialPath(){
+
+    }
+}
+
+class FetchPathAsync(val source: LatLng, val destination:LatLng, val waypoints:ArrayList<LatLng>): AsyncTask<Unit, Unit, String?>(){
+    private var strWaypoints:String
+    init{
+        val sb = StringBuilder()
+        for (i in waypoints.indices) {
+                sb.append("via:")
+                        .append(waypoints[i].latitude)
+                        .append("%2C")
+                        .append(waypoints[i].longitude)
+                        .append("%7C")
+        }
+        strWaypoints = sb.toString()
+    }
+
+    override fun doInBackground(vararg params: Unit?): String? {
+        try {
+            val strOrigin = source.latitude.toString() + "," + source.longitude.toString()
+            val strDestination = destination.latitude.toString() + "," + destination.longitude.toString()
+            val response = if (!TextUtils.isEmpty(strWaypoints)) {
+                GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints)
+            } else {
+                GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false)
+            }
+            return String((response.body as TypedByteArray).bytes)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+
+    }
+
+    override fun onPostExecute(result: String?) {
+        super.onPostExecute(result)
+        if(result != null){
+            val list = MapUtils.getLatLngListFromPath(result)
+            if (list.size > 0) {
+
+            }
+        }
     }
 
 }

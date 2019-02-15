@@ -183,7 +183,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
-import product.clicklabs.jugnoo.driver.services.AltMeteringService;
+import product.clicklabs.jugnoo.driver.altmetering.AltMeteringService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
