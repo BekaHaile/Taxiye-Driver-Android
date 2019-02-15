@@ -183,6 +183,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
+import product.clicklabs.jugnoo.driver.services.AltMeteringService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
@@ -4996,14 +4997,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             Database2.getInstance(this).updateMetringState(Database2.ON);
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
-            startService(new Intent(this, MeteringService.class));
+            startForegroundService(new Intent(this, AltMeteringService.class));
 
         } else {
             if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
                     || Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
                 Database2.getInstance(this).updateMetringState(Database2.OFF);
                 Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
-                stopService(new Intent(this, MeteringService.class));
+                stopService(new Intent(this, AltMeteringService.class));
             }
         }
     }
@@ -5330,7 +5331,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             GCMIntentService.clearNotifications(HomeActivity.this);
             GCMIntentService.stopRing(true, HomeActivity.this);
 
-            MeteringService.clearNotifications(HomeActivity.this);
 
             destroyFusedLocationFetchers();
 
@@ -5344,7 +5344,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             unregisterReceiver(broadcastReceiverIsCharging);
             unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 
-            System.gc();
         } catch (Exception e) {
             e.printStackTrace();
         }

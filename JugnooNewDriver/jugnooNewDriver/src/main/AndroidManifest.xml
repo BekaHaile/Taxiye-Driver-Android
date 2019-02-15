@@ -398,6 +398,10 @@
             android:enabled="true"
             android:exported="true"/>
         <service
+            android:name=".services.AltMeteringService"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
             android:name=".services.FetchDataUsageService"
             android:enabled="true"
             android:exported="true"/>
