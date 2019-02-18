@@ -10557,7 +10557,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (latLngs.size() > 1) {
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
+                //todo getResources().getColor(R.color.blue_polyline)
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.transparent), false,
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
@@ -11683,4 +11684,32 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
+    Polyline polylineAlt = null, polylineAltMatch = null;
+    @Override
+    public void pathAlt(List<LatLng> list) {
+        if(map != null){
+            if(polylineAlt != null){
+                polylineAlt.remove();
+            }
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.color(Color.CYAN).width(2);
+            polylineOptions.addAll(list);
+            polylineAlt = map.addPolyline(polylineOptions);
+        }
+    }
+
+    @Override
+    public void polylineAlt(LatLng start, LatLng end) {
+        if(map != null){
+            if(polylineAltMatch != null){
+                polylineAltMatch.remove();
+            }
+            if(start != null) {
+                PolylineOptions polylineOptions = new PolylineOptions();
+                polylineOptions.color(Color.RED).width(2);
+                polylineOptions.add(start, end);
+                polylineAltMatch = map.addPolyline(polylineOptions);
+            }
+        }
+    }
 }

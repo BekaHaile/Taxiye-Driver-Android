@@ -17,20 +17,21 @@ import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.Segment
+import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.MapUtils
 import retrofit.mime.TypedByteArray
-import java.util.*
 
 class AltMeteringService : Service() {
 
     private val TAG = AltMeteringService::class.java.simpleName
     private val METER_NOTIF_ID = 10102;
 
-    private val LOCATION_UPDATE_INTERVAL: Long = 2000 // in milliseconds
+    private val LOCATION_UPDATE_INTERVAL: Long = 10000 // in milliseconds
     private val LOCATION_SMALLEST_DISPLACEMENT: Float = 30f // in meters
+    private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 50.0 // in meters
 
     var meteringDB: MeteringDatabase? = null
         get() {
@@ -41,6 +42,8 @@ class AltMeteringService : Service() {
         }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var globalPath: MutableList<LatLng>
 
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
@@ -57,10 +60,10 @@ class AltMeteringService : Service() {
             val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
 
             FetchPathAsync(meteringDB, LatLng(sourceLat, sourceLng), LatLng(destinationLat, destinationLng),
-                    arrayListOf<LatLng>(), ::requestLocationUpdates).execute()
+                    mutableListOf(), ::requestLocationUpdates).execute()
         }
         else{
-            requestLocationUpdates()
+            ReadPathAsync(meteringDB, ::requestLocationUpdates)
         }
 
         return Service.START_STICKY
@@ -113,8 +116,11 @@ class AltMeteringService : Service() {
     }
 
     @SuppressLint("MissingPermission")
-    fun requestLocationUpdates(){
-
+    fun requestLocationUpdates(list : MutableList<LatLng>){
+        globalPath = list
+        if(HomeActivity.appInterruptHandler != null){
+            HomeActivity.appInterruptHandler.pathAlt(list)
+        }
         val locationRequest = LocationRequest().apply {
             interval = LOCATION_UPDATE_INTERVAL
             fastestInterval = LOCATION_UPDATE_INTERVAL
@@ -128,6 +134,16 @@ class AltMeteringService : Service() {
                 if(locationResult != null) {
                     val location = locationResult.locations[locationResult.locations.size - 1]
                     Log.e("new onLocationResult", "location = " + location)
+                    val time = System.currentTimeMillis()
+                    val position = PolyUtil.locationIndexOnPath(LatLng(location.latitude, location.longitude), globalPath,
+                            true, PATH_POINT_DISTANCE_TOLLERANCE)
+                    Log.e("new onLocationResult", "position on path = " + position)
+                    Log.e("new onLocationResult", "timeDiff = " + (System.currentTimeMillis() - time))
+                    if(HomeActivity.appInterruptHandler != null){
+                        val start = if (position > -1) globalPath[position] else null
+                        val end = if (position > -1) globalPath[position+1] else null
+                        HomeActivity.appInterruptHandler.polylineAlt(start, end)
+                    }
                 }
             }
         }, null)
@@ -135,9 +151,9 @@ class AltMeteringService : Service() {
 
 
 
-    internal class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng,
-                                  waypoints: ArrayList<LatLng>,
-                                  val onPost: ()->Unit) : AsyncTask<Unit, Unit, String?>() {
+    class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng,
+                                  waypoints: MutableList<LatLng>,
+                                  val onPost: (MutableList<LatLng>)->Unit) : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
         private var strWaypoints: String
 
         init {
@@ -152,7 +168,7 @@ class AltMeteringService : Service() {
             strWaypoints = sb.toString()
         }
 
-        override fun doInBackground(vararg params: Unit?): String? {
+        override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
             try {
                 val strOrigin = source.latitude.toString() + "," + source.longitude.toString()
                 val strDestination = destination.latitude.toString() + "," + destination.longitude.toString()
@@ -176,15 +192,36 @@ class AltMeteringService : Service() {
                     val segments2: MutableList<Segment> = meteringDB.getMeteringDao().getAllSegments(0) as MutableList<Segment>
                     Log.e("FetchPathAsync", "segments2 = " + segments2)
                 }
+                return list
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return ""
+            return mutableListOf()
         }
 
-        override fun onPostExecute(result: String?) {
+        override fun onPostExecute(result: MutableList<LatLng>) {
             super.onPostExecute(result)
-            onPost()
+            onPost(result)
+        }
+
+    }
+
+    class ReadPathAsync(val meteringDB: MeteringDatabase?, val onPost: (MutableList<LatLng>) -> Unit)
+        : AsyncTask<Unit, Unit, MutableList<LatLng>>(){
+        override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
+
+            val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(0) as MutableList<Segment>
+            Log.e("FetchPathAsync", "segments2 = " + segments2)
+            val list = mutableListOf<LatLng>()
+            for(segment in segments2){
+                list.add(LatLng(segment.slat, segment.sLng))
+            }
+            return list
+        }
+
+        override fun onPostExecute(result: MutableList<LatLng>) {
+            super.onPostExecute(result)
+            onPost(result)
         }
 
     }

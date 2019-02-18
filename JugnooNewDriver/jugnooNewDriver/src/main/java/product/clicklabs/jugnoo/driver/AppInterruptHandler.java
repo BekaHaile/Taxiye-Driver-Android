@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 
@@ -57,5 +58,9 @@ public interface AppInterruptHandler {
 	void showStartRidePopup();
 
 	public void showDialogFromPush(String message);
+
+	void pathAlt(List<LatLng> list);
+
+	void polylineAlt(LatLng start, LatLng end);
 
 }
