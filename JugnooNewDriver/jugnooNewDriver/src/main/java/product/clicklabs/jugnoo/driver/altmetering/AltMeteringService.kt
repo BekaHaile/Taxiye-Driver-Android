@@ -21,14 +21,14 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils
 import retrofit.mime.TypedByteArray
 import java.util.*
 
-class AltMeteringService : Service(){
+class AltMeteringService : Service() {
 
     private val TAG = AltMeteringService::class.java.simpleName
     private val METER_NOTIF_ID = 10102;
 
     var meteringDB: MeteringDatabase? = null
-        get(){
-            if(field == null){
+        get() {
+            if (field == null) {
                 field = MeteringDatabase.getInstance(MyApplication.getInstance())
             }
             return field
@@ -55,7 +55,7 @@ class AltMeteringService : Service(){
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        Log.e(TAG, "onTaskRemoved, intent="+rootIntent)
+        Log.e(TAG, "onTaskRemoved, intent=" + rootIntent)
     }
 
     override fun onDestroy() {
@@ -100,14 +100,15 @@ class AltMeteringService : Service(){
     }
 
 
-    fun fetchInitialPath(source: LatLng, destination:LatLng){
+    fun fetchInitialPath(source: LatLng, destination: LatLng) {
         FetchPathAsync(meteringDB, source, destination, arrayListOf<LatLng>()).execute()
     }
 
 
-    internal class FetchPathAsync(val meteringDB:MeteringDatabase?, val source: LatLng, val destination:LatLng, waypoints:ArrayList<LatLng>): AsyncTask<Unit, Unit, String?>(){
-        private var strWaypoints:String
-        init{
+    internal class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng, waypoints: ArrayList<LatLng>) : AsyncTask<Unit, Unit, String?>() {
+        private var strWaypoints: String
+
+        init {
             val sb = StringBuilder()
             for (i in waypoints.indices) {
                 sb.append("via:")
@@ -128,31 +129,29 @@ class AltMeteringService : Service(){
                 } else {
                     GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false)
                 }
-                return String((response.body as TypedByteArray).bytes)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return null
-            }
+                val result = String((response.body as TypedByteArray).bytes)
 
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            if(result != null){
                 val list = MapUtils.getLatLngListFromPath(result)
                 if (list.size > 0) {
-                    val segments:ArrayList<Segment> = arrayListOf()
+                    val segments: MutableList<Segment> = arrayListOf()
                     for (i in list.indices) {
-                        if(i<list.size-1){
-                            val segment = Segment(list[i], list[i+1], i+1)
+                        if (i < list.size - 1) {
+                            val segment = Segment(list[i].latitude, list[i].longitude, list[i + 1].latitude, list[i + 1].longitude, i + 1)
                             segments.add(segment)
                         }
                     }
                     meteringDB!!.getMeteringDao().insertAllSegments(segments)
-                    val segments2:ArrayList<Segment> = meteringDB.getMeteringDao().getAllSegments(0)
-                    Log.e("FetchPathAsync", "segments2 = "+segments2)
+                    val segments2: MutableList<Segment> = meteringDB.getMeteringDao().getAllSegments(0) as MutableList<Segment>
+                    Log.e("FetchPathAsync", "segments2 = " + segments2)
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+            return ""
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
         }
 
     }

@@ -4998,20 +4998,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Database2.getInstance(this).updateMetringState(Database2.ON);
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
 
-            CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-            Intent intent = new Intent(this, AltMeteringService.class);
-            intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
-            intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
-            intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
-            intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
-
-            startForegroundService(intent);
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			if(customerInfo.getDropLatLng() != null) {
+				Intent intent = new Intent(this, AltMeteringService.class);
+				intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
+				intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
+				intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
+				intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
+				startForegroundService(intent);
+			} else {
+				startForegroundService(new Intent(this, MeteringService.class));
+			}
 
         } else {
             if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
                     || Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
                 Database2.getInstance(this).updateMetringState(Database2.OFF);
                 Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
+				stopService(new Intent(this, MeteringService.class));
                 stopService(new Intent(this, AltMeteringService.class));
             }
         }

@@ -14,10 +14,10 @@ interface MeteringDao{
 
     //Segment queries------
     @Query("SELECT * FROM segment WHERE position >= :position")
-    fun getAllSegments(position:Int) : ArrayList<Segment>
+    fun getAllSegments(position:Int) : List<Segment>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllSegments(segments:ArrayList<Segment>)
+    fun insertAllSegments(segments:List<Segment>)
 
     @Query("UPDATE segment SET lastProjectedLat = :latitude, lastProjectedLng = :longitude WHERE position = :position")
     fun updateSegment(position:Int, latitude:Double, longitude:Double)
