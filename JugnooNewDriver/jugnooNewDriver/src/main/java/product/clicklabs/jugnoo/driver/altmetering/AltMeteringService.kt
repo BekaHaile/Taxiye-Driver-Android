@@ -276,7 +276,12 @@ class AltMeteringService : Service() {
                 if (diff > LAST_LOCATION_TIME_DIFF){
                     fusedLocationClient.removeLocationUpdates(locationCallback)
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(waypoint.latitude, waypoint.longitude))
-                    return meteringDB.getMeteringDao().getAllWaypoints() as MutableList<LatLng>
+                    val waypoints = meteringDB.getMeteringDao().getAllWaypoints()
+                    val latlngs:MutableList<LatLng> = mutableListOf()
+                    for(wp in waypoints){
+                        latlngs.add(LatLng(wp.lat, wp.lng))
+                    }
+                    return latlngs
                 }
             }
             return mutableListOf()
