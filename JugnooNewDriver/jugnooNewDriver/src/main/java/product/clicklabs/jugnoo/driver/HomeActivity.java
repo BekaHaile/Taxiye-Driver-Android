@@ -5219,7 +5219,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (DriverScreenMode.D_IN_RIDE == driverScreenMode
                 || DriverScreenMode.D_ARRIVED == driverScreenMode
                 || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-            setInRideZoom();
+            //todo
+//            setInRideZoom();
         }
     }
 
