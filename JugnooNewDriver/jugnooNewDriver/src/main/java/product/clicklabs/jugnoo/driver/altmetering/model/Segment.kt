@@ -30,3 +30,9 @@ class Segment(
     }
 
 }
+
+@Entity(tableName = "scanning_pointer")
+class ScanningPointer(val position: Int)
+
+@Entity(tableName = "last_location_timestamp")
+class LastLocationTimestamp(val timestamp:String)

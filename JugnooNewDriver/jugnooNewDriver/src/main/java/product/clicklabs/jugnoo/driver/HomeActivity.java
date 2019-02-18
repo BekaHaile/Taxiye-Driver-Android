@@ -4997,7 +4997,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             Database2.getInstance(this).updateMetringState(Database2.ON);
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
-            startForegroundService(new Intent(this, AltMeteringService.class));
+
+            CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+            Intent intent = new Intent(this, AltMeteringService.class);
+            intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
+            intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
+            intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
+            intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
+
+            startForegroundService(intent);
 
         } else {
             if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
