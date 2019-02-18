@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.altmetering
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -10,8 +11,10 @@ import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.text.TextUtils
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.Segment
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
@@ -26,6 +29,9 @@ class AltMeteringService : Service() {
     private val TAG = AltMeteringService::class.java.simpleName
     private val METER_NOTIF_ID = 10102;
 
+    private val LOCATION_UPDATE_INTERVAL: Long = 2000 // in milliseconds
+    private val LOCATION_SMALLEST_DISPLACEMENT: Float = 30f // in meters
+
     var meteringDB: MeteringDatabase? = null
         get() {
             if (field == null) {
@@ -34,12 +40,15 @@ class AltMeteringService : Service() {
             return field
         }
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(METER_NOTIF_ID, generateNotification(this, TAG, METER_NOTIF_ID))
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (!GpsDistanceCalculator.isMeteringStateActive(this)) {
             val sourceLat = intent!!.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
@@ -47,7 +56,11 @@ class AltMeteringService : Service() {
             val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
             val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
 
-            fetchInitialPath(LatLng(sourceLat, sourceLng), LatLng(destinationLat, destinationLng))
+            FetchPathAsync(meteringDB, LatLng(sourceLat, sourceLng), LatLng(destinationLat, destinationLng),
+                    arrayListOf<LatLng>(), ::requestLocationUpdates).execute()
+        }
+        else{
+            requestLocationUpdates()
         }
 
         return Service.START_STICKY
@@ -99,13 +112,32 @@ class AltMeteringService : Service() {
 
     }
 
+    @SuppressLint("MissingPermission")
+    fun requestLocationUpdates(){
 
-    fun fetchInitialPath(source: LatLng, destination: LatLng) {
-        FetchPathAsync(meteringDB, source, destination, arrayListOf<LatLng>()).execute()
+        val locationRequest = LocationRequest().apply {
+            interval = LOCATION_UPDATE_INTERVAL
+            fastestInterval = LOCATION_UPDATE_INTERVAL
+            maxWaitTime = LOCATION_UPDATE_INTERVAL
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, object: LocationCallback(){
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+                if(locationResult != null) {
+                    val location = locationResult.locations[locationResult.locations.size - 1]
+                    Log.e("new onLocationResult", "location = " + location)
+                }
+            }
+        }, null)
     }
 
 
-    internal class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng, waypoints: ArrayList<LatLng>) : AsyncTask<Unit, Unit, String?>() {
+
+    internal class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng,
+                                  waypoints: ArrayList<LatLng>,
+                                  val onPost: ()->Unit) : AsyncTask<Unit, Unit, String?>() {
         private var strWaypoints: String
 
         init {
@@ -152,6 +184,7 @@ class AltMeteringService : Service() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
+            onPost()
         }
 
     }
