@@ -34,7 +34,7 @@ data class ScanningPointer(@ColumnInfo(name = "position") val position: Int){
 }
 
 @Entity(tableName = "last_location_timestamp")
-data class LastLocationTimestamp(@ColumnInfo(name = "timestamp") val timestamp:String){
+data class LastLocationTimestamp(@ColumnInfo(name = "timestamp") val timestamp:Long){
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0
 }

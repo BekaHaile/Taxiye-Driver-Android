@@ -16,7 +16,10 @@ import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
+import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
+import product.clicklabs.jugnoo.driver.altmetering.model.ScanningPointer
 import product.clicklabs.jugnoo.driver.altmetering.model.Segment
+import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
@@ -32,6 +35,7 @@ class AltMeteringService : Service() {
     private val LOCATION_UPDATE_INTERVAL: Long = 10000 // in milliseconds
     private val LOCATION_SMALLEST_DISPLACEMENT: Float = 30f // in meters
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
+    val LAST_LOCATION_TIME_DIFF: Long = 30000 // in meters
 
     var meteringDB: MeteringDatabase? = null
         get() {
@@ -45,6 +49,8 @@ class AltMeteringService : Service() {
 
     private lateinit var globalPath: MutableList<LatLng>
     private var globalPathDistance: Double = 0.0
+    private lateinit var source: LatLng
+    private lateinit var destination: LatLng
 
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
@@ -60,7 +66,10 @@ class AltMeteringService : Service() {
             val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
             val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
 
-            FetchPathAsync(meteringDB, LatLng(sourceLat, sourceLng), LatLng(destinationLat, destinationLng),
+            source = LatLng(sourceLat, sourceLng)
+            destination = LatLng(destinationLat, destinationLng)
+
+            FetchPathAsync(meteringDB, source, destination,
                     mutableListOf(), ::requestLocationUpdates).execute()
         } else {
             ReadPathAsync(meteringDB, ::requestLocationUpdates).execute()
@@ -134,29 +143,40 @@ class AltMeteringService : Service() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                super.onLocationResult(locationResult)
-                if (locationResult != null) {
-                    val location = locationResult.locations[locationResult.locations.size - 1]
-                    Log.e("new onLocationResult", "location = " + location)
-                    val time = System.currentTimeMillis()
-                    val position = PolyUtil.locationIndexOnPath(LatLng(location.latitude, location.longitude), globalPath,
-                            true, PATH_POINT_DISTANCE_TOLLERANCE)
-                    Log.e("new onLocationResult", "position on path = " + position)
-                    Log.e("new onLocationResult", "timeDiff = " + (System.currentTimeMillis() - time))
-                    if (HomeActivity.appInterruptHandler != null) {
-                        val start = if (position > -1) globalPath[position] else null
-                        val end = if (position > -1) globalPath[position + 1] else null
-                        HomeActivity.appInterruptHandler.polylineAlt(start, end)
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
 
-                        HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
-                                location,
-                                location, globalPathDistance)
-                    }
+    val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
+            if (locationResult != null) {
+                val location = locationResult.locations[locationResult.locations.size - 1]
+                val latLng = LatLng(location.latitude, location.longitude)
+                Log.e("new onLocationResult", "location = " + location)
+                var time = System.currentTimeMillis()
+                val position = PolyUtil.locationIndexOnPath(latLng, globalPath,
+                        true, PATH_POINT_DISTANCE_TOLLERANCE)
+                Log.e("new onLocationResult", "position on path = " + position)
+                Log.e("new onLocationResult", "timeDiff = " + (System.currentTimeMillis() - time))
+                time = System.currentTimeMillis()
+                if(position > -1){
+                    UpdateTimeStampPointerAsync(meteringDB, position, time).execute()
+                } else {
+                    GetLastLocationTimeAndWaypointsAsync(meteringDB, time, latLng).execute()
+                }
+
+
+                if (HomeActivity.appInterruptHandler != null) {
+                    val start = if (position > -1) globalPath[position] else null
+                    val end = if (position > -1) globalPath[position + 1] else null
+                    HomeActivity.appInterruptHandler.polylineAlt(start, end)
+
+                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+                            location,
+                            location, globalPathDistance)
                 }
             }
-        }, null)
+        }
     }
 
 
@@ -197,7 +217,8 @@ class AltMeteringService : Service() {
                             segments.add(segment)
                         }
                     }
-                    meteringDB!!.getMeteringDao().insertAllSegments(segments)
+                    meteringDB!!.getMeteringDao().deleteAllSegments()
+                    meteringDB.getMeteringDao().insertAllSegments(segments)
                     val segments2: MutableList<Segment> = meteringDB.getMeteringDao().getAllSegments(0) as MutableList<Segment>
                     Log.e("FetchPathAsync", "segments2 = " + segments2)
                 }
@@ -220,7 +241,7 @@ class AltMeteringService : Service() {
         override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
 
             val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(0) as MutableList<Segment>
-            Log.e("FetchPathAsync", "segments2 = " + segments2)
+            Log.e("ReadPathAsync", "segments2 = " + segments2)
             val list = mutableListOf<LatLng>()
             for (segment in segments2) {
                 list.add(LatLng(segment.slat, segment.sLng))
@@ -231,6 +252,41 @@ class AltMeteringService : Service() {
         override fun onPostExecute(result: MutableList<LatLng>) {
             super.onPostExecute(result)
             onPost(result)
+        }
+    }
+
+
+    class UpdateTimeStampPointerAsync(val meteringDB: MeteringDatabase?, val position:Int, val timeStamp:Long): AsyncTask<Unit, Unit, Unit>(){
+        override fun doInBackground(vararg params: Unit?) {
+            meteringDB!!.getMeteringDao().deleteScanningPointer()
+            meteringDB.getMeteringDao().insertScanningPointer(ScanningPointer(position))
+
+            meteringDB.getMeteringDao().deleteLastLocationTimestamp()
+            meteringDB.getMeteringDao().insertLastLocationTimestamp(LastLocationTimestamp(timeStamp))
+        }
+    }
+
+
+    inner class GetLastLocationTimeAndWaypointsAsync(val meteringDB: MeteringDatabase?, val time:Long, val waypoint:LatLng)
+        : AsyncTask<Unit, Unit, MutableList<LatLng>>(){
+        override fun doInBackground(vararg params: Unit?) : MutableList<LatLng> {
+            val timestamps:MutableList<LastLocationTimestamp> = meteringDB!!.getMeteringDao().getLastLocationTimeStamp() as MutableList<LastLocationTimestamp>
+            if(timestamps.size > 0){
+                val diff = time - timestamps[0].timestamp
+                if (diff > LAST_LOCATION_TIME_DIFF){
+                    fusedLocationClient.removeLocationUpdates(locationCallback)
+                    meteringDB.getMeteringDao().insertWaypoint(Waypoint(waypoint.latitude, waypoint.longitude))
+                    return meteringDB.getMeteringDao().getAllWaypoints() as MutableList<LatLng>
+                }
+            }
+            return mutableListOf()
+        }
+
+        override fun onPostExecute(result: MutableList<LatLng>) {
+            super.onPostExecute(result)
+            if(result.size > 0){
+                FetchPathAsync(meteringDB, source, destination, result, ::requestLocationUpdates).execute()
+            }
         }
 
     }

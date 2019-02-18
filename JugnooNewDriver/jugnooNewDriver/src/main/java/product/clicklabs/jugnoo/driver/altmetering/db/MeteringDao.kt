@@ -33,6 +33,9 @@ interface MeteringDao{
     @Query("DELETE FROM scanning_pointer")
     fun deleteScanningPointer()
 
+    @Query("SELECT * FROM scanning_pointer")
+    fun getScanningPointer() : List<ScanningPointer>
+
 
 
     //LastLocationTimestamp queries---------
@@ -41,6 +44,9 @@ interface MeteringDao{
 
     @Query("DELETE FROM last_location_timestamp")
     fun deleteLastLocationTimestamp()
+
+    @Query("SELECT * FROM last_location_timestamp")
+    fun getLastLocationTimeStamp() : List<LastLocationTimestamp>
 
 
 
