@@ -60,22 +60,28 @@ class AltMeteringService : Service() {
         startForeground(METER_NOTIF_ID, generateNotification(this, TAG, METER_NOTIF_ID))
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        val sourceLat = intent!!.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
+        val sourceLng = intent.getDoubleExtra(Constants.KEY_PICKUP_LONGITUDE, 0.0)
+        val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
+        val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
+
+        source = LatLng(sourceLat, sourceLng)
+        destination = LatLng(destinationLat, destinationLng)
+
         if (!GpsDistanceCalculator.isMeteringStateActive(this)) {
-            val sourceLat = intent!!.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
-            val sourceLng = intent.getDoubleExtra(Constants.KEY_PICKUP_LONGITUDE, 0.0)
-            val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
-            val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
+            GpsDistanceCalculator.saveTrackingToSP(this, 1)
+            FirstTimeDataClearAsync(meteringDB, ::fetchPathAsyncCall).execute()
 
-            source = LatLng(sourceLat, sourceLng)
-            destination = LatLng(destinationLat, destinationLng)
-
-            FetchPathAsync(meteringDB, source, destination,
-                    mutableListOf(), ::requestLocationUpdates).execute()
         } else {
             ReadPathAsync(meteringDB, ::requestLocationUpdates).execute()
         }
 
         return Service.START_STICKY
+    }
+
+    fun fetchPathAsyncCall(){
+        FetchPathAsync(meteringDB, source, destination,
+                mutableListOf(), ::requestLocationUpdates).execute()
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -85,6 +91,7 @@ class AltMeteringService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         Log.e(TAG, "onDestroy")
     }
 
@@ -275,12 +282,24 @@ class AltMeteringService : Service() {
                 val diff = time - timestamps[0].timestamp
                 if (diff > LAST_LOCATION_TIME_DIFF){
                     fusedLocationClient.removeLocationUpdates(locationCallback)
+                    meteringDB.getMeteringDao().deleteScanningPointer()
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(waypoint.latitude, waypoint.longitude))
                     val waypoints = meteringDB.getMeteringDao().getAllWaypoints()
                     val latlngs:MutableList<LatLng> = mutableListOf()
                     for(wp in waypoints){
                         latlngs.add(LatLng(wp.lat, wp.lng))
                     }
+
+
+//                    val disposable = CompositeDisposable().add(meteringDB.getMeteringDao().getAllWaypoints().subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe({
+//
+//                            }, {
+//
+//                            }))
+
+
                     return latlngs
                 }
             }
@@ -292,6 +311,21 @@ class AltMeteringService : Service() {
             if(result.size > 0){
                 FetchPathAsync(meteringDB, source, destination, result, ::requestLocationUpdates).execute()
             }
+        }
+
+    }
+
+    class FirstTimeDataClearAsync(val meteringDB:MeteringDatabase?, val post:()->Unit) : AsyncTask<Unit, Unit, Unit>(){
+        override fun doInBackground(vararg params: Unit?) {
+            meteringDB!!.getMeteringDao().deleteAllSegments()
+            meteringDB.getMeteringDao().deleteAllWaypoints()
+            meteringDB.getMeteringDao().deleteScanningPointer()
+            meteringDB.getMeteringDao().deleteLastLocationTimestamp()
+        }
+
+        override fun onPostExecute(result: Unit?) {
+            super.onPostExecute(result)
+            post()
         }
 
     }

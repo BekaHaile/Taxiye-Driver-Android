@@ -11693,8 +11693,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 polylineAlt.remove();
             }
             PolylineOptions polylineOptions = new PolylineOptions();
-            polylineOptions.color(Color.CYAN).width(2);
+            polylineOptions.color(Color.CYAN).width(4);
             polylineOptions.addAll(list);
+            polylineOptions.zIndex(0);
             polylineAlt = map.addPolyline(polylineOptions);
         }
     }
@@ -11707,8 +11708,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
             if(start != null) {
                 PolylineOptions polylineOptions = new PolylineOptions();
-                polylineOptions.color(Color.RED).width(2);
+                polylineOptions.color(Color.RED).width(4);
                 polylineOptions.add(start, end);
+                polylineOptions.zIndex(2);
                 polylineAltMatch = map.addPolyline(polylineOptions);
             }
         }
