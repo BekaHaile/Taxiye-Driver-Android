@@ -43,7 +43,6 @@ public class RestClient {
 
 		ArrayList<Protocol> protocolList = new ArrayList<>();
 		protocolList.add(Protocol.HTTP_2);
-		protocolList.add(Protocol.SPDY_3);
 		protocolList.add(Protocol.HTTP_1_1);
 
 		ConnectionPool connectionPool = new ConnectionPool(3, 5 * 60 * 1000, TimeUnit.MILLISECONDS);

@@ -33,6 +33,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -1942,8 +1943,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
-                    updateWalletBalance(Data.getCurrentCustomerInfo());
-
+                    CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+                    if(customerInfo.getDropLatLng() != null) {
+                        DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
+                        LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER));
+                    } else {
+                        updateWalletBalance(customerInfo);
+                    }
                 }
             });
 
@@ -8984,6 +8990,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     protected void onStart() {
         try {
             super.onStart();
+            LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(serviceBroadcastReceiver, new IntentFilter(INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -8994,6 +9001,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     protected void onStop() {
         super.onStop();
         try {
+            LocalBroadcastManager.getInstance(HomeActivity.this).unregisterReceiver(serviceBroadcastReceiver);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -11715,4 +11723,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
     }
+
+    public static String INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK = "INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK";
+
+    private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getBooleanExtra(KEY_SUCCESS, false)) {
+                updateWalletBalance(Data.getCurrentCustomerInfo());
+            }
+            DialogPopup.dismissLoadingDialog();
+        }
+    };
 }

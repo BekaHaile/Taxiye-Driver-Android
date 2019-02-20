@@ -4,16 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
@@ -21,13 +26,20 @@ import product.clicklabs.jugnoo.driver.altmetering.model.ScanningPointer
 import product.clicklabs.jugnoo.driver.altmetering.model.Segment
 import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
+import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.MapUtils
+import product.clicklabs.jugnoo.driver.utils.Utils
+import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
 
 class AltMeteringService : Service() {
+
+    companion object {
+        const val INTENT_ACTION_END_RIDE_TRIGGER = "SERVICE_INTENT_ACTION_END_RIDE_TRIGGER"
+    }
 
     private val TAG = AltMeteringService::class.java.simpleName
     private val METER_NOTIF_ID = 10102;
@@ -49,16 +61,19 @@ class AltMeteringService : Service() {
 
     private lateinit var globalPath: MutableList<LatLng>
     private var globalPathDistance: Double = 0.0
+    private var globalWaypointLatLngs:MutableList<LatLng>? = null
     private lateinit var source: LatLng
     private lateinit var destination: LatLng
+    private lateinit var currentLocation: Location
 
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(METER_NOTIF_ID, generateNotification(this, TAG, METER_NOTIF_ID))
+        startForeground(METER_NOTIF_ID, generateNotification(this, getNotificationMessage(), METER_NOTIF_ID))
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
 
         val sourceLat = intent!!.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
         val sourceLng = intent.getDoubleExtra(Constants.KEY_PICKUP_LONGITUDE, 0.0)
@@ -92,6 +107,7 @@ class AltMeteringService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(activityBroadcastReceiver)
         Log.e(TAG, "onDestroy")
     }
 
@@ -133,16 +149,7 @@ class AltMeteringService : Service() {
 
     @SuppressLint("MissingPermission")
     fun requestLocationUpdates(list: MutableList<LatLng>) {
-        globalPath = list
-        globalPathDistance = 0.0
-        for (i in list.indices) {
-            if (i < list.size - 1) {
-                globalPathDistance += MapUtils.distance(list[i], list[i + 1])
-            }
-        }
-        if (HomeActivity.appInterruptHandler != null) {
-            HomeActivity.appInterruptHandler.pathAlt(list)
-        }
+        updatePathAndDistance(list)
         val locationRequest = LocationRequest().apply {
             interval = LOCATION_UPDATE_INTERVAL
             fastestInterval = LOCATION_UPDATE_INTERVAL
@@ -153,11 +160,28 @@ class AltMeteringService : Service() {
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
+    fun updatePathAndDistance(list: MutableList<LatLng>) {
+        globalPath = list
+        globalPathDistance = 0.0
+        for (i in list.indices) {
+            if (i < list.size - 1) {
+                globalPathDistance += MapUtils.distance(list[i], list[i + 1])
+            }
+        }
+        if (HomeActivity.appInterruptHandler != null) {
+            HomeActivity.appInterruptHandler.pathAlt(list)
+        }
+    }
+
     val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.locations[locationResult.locations.size - 1]
+                if (location.accuracy > MAX_ACCURACY) {
+                    return
+                }
+                currentLocation = location
                 val latLng = LatLng(location.latitude, location.longitude)
                 Log.e("new onLocationResult", "location = " + location)
                 var time = System.currentTimeMillis()
@@ -182,24 +206,33 @@ class AltMeteringService : Service() {
                             location,
                             location, globalPathDistance)
                 }
+                generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
             }
         }
     }
 
+    fun getNotificationMessage():String{
+        return getString(R.string.estimated_dis) + ": " +
+                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this)) +" "+
+                Utils.getDistanceUnit(UserData.getDistanceUnit(this))
+    }
+
 
     class FetchPathAsync(val meteringDB: MeteringDatabase?, val source: LatLng, val destination: LatLng,
-                         waypoints: MutableList<LatLng>,
+                         waypoints: MutableList<LatLng>?,
                          val onPost: (MutableList<LatLng>) -> Unit) : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
         private var strWaypoints: String
 
         init {
             val sb = StringBuilder()
-            for (i in waypoints.indices) {
-                sb.append("via:")
-                        .append(waypoints[i].latitude)
-                        .append("%2C")
-                        .append(waypoints[i].longitude)
-                        .append("%7C")
+            if(waypoints != null) {
+                for (i in waypoints.indices) {
+                    sb.append("via:")
+                            .append(waypoints[i].latitude)
+                            .append("%2C")
+                            .append(waypoints[i].longitude)
+                            .append("%7C")
+                }
             }
             strWaypoints = sb.toString()
         }
@@ -275,7 +308,7 @@ class AltMeteringService : Service() {
 
 
     inner class GetLastLocationTimeAndWaypointsAsync(val meteringDB: MeteringDatabase?, val time:Long, val waypoint:LatLng)
-        : AsyncTask<Unit, Unit, MutableList<LatLng>>(){
+        : AsyncTask<Unit, Unit, MutableList<LatLng>?>(){
         override fun doInBackground(vararg params: Unit?) : MutableList<LatLng> {
             val timestamps:MutableList<LastLocationTimestamp> = meteringDB!!.getMeteringDao().getLastLocationTimeStamp() as MutableList<LastLocationTimestamp>
             if(timestamps.size > 0){
@@ -285,30 +318,19 @@ class AltMeteringService : Service() {
                     meteringDB.getMeteringDao().deleteScanningPointer()
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(waypoint.latitude, waypoint.longitude))
                     val waypoints = meteringDB.getMeteringDao().getAllWaypoints()
-                    val latlngs:MutableList<LatLng> = mutableListOf()
+                    globalWaypointLatLngs = mutableListOf()
                     for(wp in waypoints){
-                        latlngs.add(LatLng(wp.lat, wp.lng))
+                        globalWaypointLatLngs!!.add(LatLng(wp.lat, wp.lng))
                     }
-
-
-//                    val disposable = CompositeDisposable().add(meteringDB.getMeteringDao().getAllWaypoints().subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe({
-//
-//                            }, {
-//
-//                            }))
-
-
-                    return latlngs
+                    return globalWaypointLatLngs!!
                 }
             }
             return mutableListOf()
         }
 
-        override fun onPostExecute(result: MutableList<LatLng>) {
+        override fun onPostExecute(result: MutableList<LatLng>?) {
             super.onPostExecute(result)
-            if(result.size > 0){
+            if(result!!.size > 0){
                 FetchPathAsync(meteringDB, source, destination, result, ::requestLocationUpdates).execute()
             }
         }
@@ -329,4 +351,41 @@ class AltMeteringService : Service() {
         }
 
     }
+
+    private val activityBroadcastReceiver:BroadcastReceiver = object:BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if(::currentLocation.isInitialized){
+                fusedLocationClient.removeLocationUpdates(locationCallback)
+                val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                val distance = MapUtils.distance(destination, latLng)
+                if(distance <= PATH_POINT_DISTANCE_TOLLERANCE){
+                    //no need to do anything
+                    updateDistanceAndTriggerEndRide()
+                } else {
+                    //update path by changing destination
+                    destination = latLng
+                    FetchPathAsync(meteringDB, source, destination, globalWaypointLatLngs, ::updateDistanceAndCallbackEndRide).execute()
+                }
+
+            } else {
+                Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
+                LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK))
+            }
+        }
+    }
+
+    private fun updateDistanceAndTriggerEndRide() {
+        if (HomeActivity.appInterruptHandler != null) {
+            HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+                    currentLocation,
+                    currentLocation, globalPathDistance)
+        }
+        LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK).putExtra(Constants.KEY_SUCCESS, true))
+    }
+
+    private fun updateDistanceAndCallbackEndRide(list: MutableList<LatLng>) {
+        updatePathAndDistance(list)
+        updateDistanceAndTriggerEndRide()
+    }
+
 }
