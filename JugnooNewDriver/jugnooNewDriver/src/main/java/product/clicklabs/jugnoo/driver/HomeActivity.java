@@ -5014,6 +5014,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(customerInfo.getDropLatLng() != null) {
 				Intent intent = new Intent(this, AltMeteringService.class);
+				intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
 				intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
 				intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
 				intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);

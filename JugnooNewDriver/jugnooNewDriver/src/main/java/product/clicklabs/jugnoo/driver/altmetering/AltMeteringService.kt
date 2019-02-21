@@ -45,7 +45,7 @@ class AltMeteringService : Service() {
     private val LOCATION_UPDATE_INTERVAL: Long = 10000 // in milliseconds
     private val LOCATION_SMALLEST_DISPLACEMENT: Float = 30f // in meters
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
-    val LAST_LOCATION_TIME_DIFF: Long = 30000 // in meters
+    val LAST_LOCATION_TIME_DIFF: Long = 60000 // in meters
 
     var meteringDB: MeteringDatabase? = null
         get() {
@@ -60,6 +60,7 @@ class AltMeteringService : Service() {
     private lateinit var globalPath: MutableList<LatLng>
     private var globalPathDistance: Double = 0.0
     private var globalWaypointLatLngs:MutableList<LatLng>? = null
+    private var engagementId:Int = 0
     private lateinit var source: LatLng
     private lateinit var destination: LatLng
     private lateinit var currentLocation: Location
@@ -79,6 +80,7 @@ class AltMeteringService : Service() {
         val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
         val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
 
+        engagementId = intent.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)
         source = LatLng(sourceLat, sourceLng)
         destination = LatLng(destinationLat, destinationLng)
 
@@ -324,7 +326,10 @@ class AltMeteringService : Service() {
         override fun doInBackground(vararg params: Unit?) : MutableList<LatLng> {
             val timestamps:MutableList<LastLocationTimestamp> = meteringDB!!.getMeteringDao().getLastLocationTimeStamp() as MutableList<LastLocationTimestamp>
             if(timestamps.size > 0){
+                Log.e("GetLastLocationTimeAndWaypointsAsync", "timestamps.size = " + timestamps.size)
+                Log.e("GetLastLocationTimeAndWaypointsAsync", "timestamps[0].timestamp = " + timestamps[0].timestamp)
                 val diff = time - timestamps[0].timestamp
+                Log.e("GetLastLocationTimeAndWaypointsAsync", "diff = " + diff)
                 if (diff > LAST_LOCATION_TIME_DIFF){
                     fusedLocationClient.removeLocationUpdates(locationCallback)
                     meteringDB.getMeteringDao().deleteScanningPointer()
@@ -387,17 +392,40 @@ class AltMeteringService : Service() {
     }
 
     private fun updateDistanceAndTriggerEndRide() {
-        if (HomeActivity.appInterruptHandler != null) {
-            HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
-                    currentLocation,
-                    currentLocation, globalPathDistance)
-        }
-        LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK).putExtra(Constants.KEY_SUCCESS, true))
+        InsertRideDataAndEndRide().execute()
     }
 
     private fun updateDistanceAndCallbackEndRide(list: MutableList<LatLng>) {
         updatePathAndDistance(list)
         updateDistanceAndTriggerEndRide()
+    }
+
+    inner class InsertRideDataAndEndRide() : AsyncTask<Unit, Unit, Unit>(){
+        override fun doInBackground(vararg params: Unit?) {
+            var accDistance = 0.0
+            for (i in globalPath.indices) {
+                if (i < globalPath.size - 1) {
+                    accDistance += MapUtils.distance(globalPath[i], globalPath[i + 1])
+                    Database2.getInstance(this@AltMeteringService).insertRideDataWOChecks(this@AltMeteringService,
+                            globalPath[i].latitude.toString(), globalPath[i].longitude.toString(), System.currentTimeMillis().toString(),
+                            engagementId, accDistance, 0)
+                }
+            }
+        }
+
+        override fun onPostExecute(result: Unit?) {
+            super.onPostExecute(result)
+
+            if (HomeActivity.appInterruptHandler != null) {
+                HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+                        currentLocation,
+                        currentLocation, globalPathDistance)
+            }
+            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK).putExtra(Constants.KEY_SUCCESS, true))
+            stopForeground(true)
+            stopSelf()
+        }
+
     }
 
 }

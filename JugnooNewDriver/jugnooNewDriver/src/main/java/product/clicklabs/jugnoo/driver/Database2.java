@@ -1054,6 +1054,17 @@ public class Database2 {                                                        
 		}
 	}
 
+	public void insertRideDataWOChecks(Context context, String lat, String lng, String t, int engagementId, double accDistance, int isWayPoint) {
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(Database2.RIDE_DATA_LAT, lat);
+		contentValues.put(Database2.RIDE_DATA_LNG, lng);
+		contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
+		contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
+		contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
+		contentValues.put(Database2.RIDE_DATA_IS_WAY_POINT, 0);
+		database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
+	}
 
 	public void deleteRideData() {
 		try {
