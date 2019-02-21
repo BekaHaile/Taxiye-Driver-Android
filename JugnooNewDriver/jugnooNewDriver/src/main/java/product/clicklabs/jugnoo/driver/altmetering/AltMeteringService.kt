@@ -19,6 +19,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
+import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_SPEED_THRESHOLD
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
@@ -28,10 +29,7 @@ import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
-import product.clicklabs.jugnoo.driver.utils.Log
-import product.clicklabs.jugnoo.driver.utils.MapUtils
-import product.clicklabs.jugnoo.driver.utils.Utils
+import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
 
@@ -65,6 +63,7 @@ class AltMeteringService : Service() {
     private lateinit var source: LatLng
     private lateinit var destination: LatLng
     private lateinit var currentLocation: Location
+    private var currentLocationTime: Long = 0
 
     override fun onBind(intent: Intent?): IBinder {
         throw UnsupportedOperationException("Not yet implemented")
@@ -178,13 +177,26 @@ class AltMeteringService : Service() {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.locations[locationResult.locations.size - 1]
-                if (location.accuracy > MAX_ACCURACY) {
+                val latLng = LatLng(location.latitude, location.longitude)
+                var time = System.currentTimeMillis()
+                if (location.accuracy > MAX_ACCURACY) { //accuracy check
+                    Log.e("new onLocationResult", "accuracy wrong")
                     return
                 }
+                if(::currentLocation.isInitialized){ //speed limit check
+                    val displacement = MapUtils.distance(latLng, LatLng(currentLocation.latitude, currentLocation.longitude))
+                    val millisDiff = time - currentLocationTime
+                    val secondsDiff = millisDiff / 1000L
+                    val speedMPS = if (secondsDiff > 0) displacement / secondsDiff else 0.0
+                    Log.e("new onLocationResult", "speedMPS ="+speedMPS)
+                    if (speedMPS > Prefs.with(this@AltMeteringService).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, MAX_SPEED_THRESHOLD.toFloat()).toDouble()) {
+                        Log.e("new onLocationResult", "speedMPS error")
+                       return
+                    }
+                }
                 currentLocation = location
-                val latLng = LatLng(location.latitude, location.longitude)
+                currentLocationTime = time
                 Log.e("new onLocationResult", "location = " + location)
-                var time = System.currentTimeMillis()
                 val position = PolyUtil.locationIndexOnPath(latLng, globalPath,
                         true, PATH_POINT_DISTANCE_TOLLERANCE)
                 Log.e("new onLocationResult", "position on path = " + position)

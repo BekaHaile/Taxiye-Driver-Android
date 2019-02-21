@@ -4757,6 +4757,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 case D_RIDE_END:
                     changeOnOFFStateTop();
+                    if(polylineAlt != null){
+                        polylineAlt.remove();
+                    }
+                    if(polylineAltMatch != null){
+                        polylineAltMatch.remove();
+                    }
+
                     updateDriverServiceFast("no");
                     setDriverServiceRunOnOnlineBasis();
                     stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
@@ -11729,10 +11736,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private BroadcastReceiver serviceBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+			DialogPopup.dismissLoadingDialog();
             if(intent.getBooleanExtra(KEY_SUCCESS, false)) {
                 updateWalletBalance(Data.getCurrentCustomerInfo());
             }
-            DialogPopup.dismissLoadingDialog();
         }
     };
 }
