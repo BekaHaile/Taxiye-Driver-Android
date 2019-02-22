@@ -56,6 +56,12 @@ class AltMeteringService : Service() {
         }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationRequest = LocationRequest().apply {
+        interval = LOCATION_UPDATE_INTERVAL
+        fastestInterval = LOCATION_UPDATE_INTERVAL
+        maxWaitTime = LOCATION_UPDATE_INTERVAL
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
 
     private lateinit var globalPath: MutableList<LatLng>
     private var globalPathDistance: Double = 0.0
@@ -71,6 +77,7 @@ class AltMeteringService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.e(TAG, "onStartCommand, intent=" + intent)
         startForeground(METER_NOTIF_ID, generateNotification(this, getNotificationMessage(), METER_NOTIF_ID))
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
@@ -151,13 +158,7 @@ class AltMeteringService : Service() {
     @SuppressLint("MissingPermission")
     fun requestLocationUpdates(list: MutableList<LatLng>) {
         updatePathAndDistance(list)
-        val locationRequest = LocationRequest().apply {
-            interval = LOCATION_UPDATE_INTERVAL
-            fastestInterval = LOCATION_UPDATE_INTERVAL
-            maxWaitTime = LOCATION_UPDATE_INTERVAL
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
@@ -369,8 +370,11 @@ class AltMeteringService : Service() {
 
     }
 
+    private var intentEngagementId:Int = 0
+
     private val activityBroadcastReceiver:BroadcastReceiver = object:BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
+            intentEngagementId = intent!!.getIntExtra(Constants.KEY_ENGAGEMENT_ID, engagementId)
             if(::currentLocation.isInitialized){
                 fusedLocationClient.removeLocationUpdates(locationCallback)
                 val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
@@ -421,7 +425,8 @@ class AltMeteringService : Service() {
                         currentLocation,
                         currentLocation, globalPathDistance)
             }
-            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK).putExtra(Constants.KEY_SUCCESS, true))
+            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)
+                    .putExtra(Constants.KEY_SUCCESS, true).putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId))
             stopForeground(true)
             stopSelf()
         }

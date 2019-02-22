@@ -1943,13 +1943,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
-                    CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-                    if(customerInfo.getDropLatLng() != null) {
-                        DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
-                        LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER));
-                    } else {
-                        updateWalletBalance(customerInfo);
-                    }
+                    updateWalletBalance(Data.getCurrentCustomerInfo());
                 }
             });
 
@@ -8206,19 +8200,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE + "_" + FirebaseEvents.CONFIRM_YES, null);
                         if (AppStatus.getInstance(activity).isOnline(activity)) {
                             if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-                                if (customerInfo != null
-                                        && (1 == customerInfo.meterFareApplicable
-                                        || 1 == customerInfo.luggageChargesApplicable)) {
-                                    driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
-                                    switchDriverScreen(driverScreenMode);
-                                    dialogEndRidePopup.dismiss();
+
+                                if(customerInfo.getDropLatLng() != null) {
+                                    DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
+                                    LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
+                                            new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
+                                                    .putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId()));
                                 } else {
-                                    boolean success = endRideGPSCorrection(customerInfo);
-                                    if (success) {
-                                        dialogEndRidePopup.dismiss();
-                                    }
+                                    endRideConfrimedFromPopup(customerInfo);
                                 }
-                                FlurryEventLogger.event(END_RIDE_CONFIRMED);
                             }
                         } else {
                             DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
@@ -11739,8 +11729,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         public void onReceive(Context context, Intent intent) {
 			DialogPopup.dismissLoadingDialog();
             if(intent.getBooleanExtra(KEY_SUCCESS, false)) {
-                updateWalletBalance(Data.getCurrentCustomerInfo());
+                endRideConfrimedFromPopup(Data.getCustomerInfo(String.valueOf(intent.getIntExtra(KEY_ENGAGEMENT_ID, 0))));
             }
         }
     };
+
+
+    private void endRideConfrimedFromPopup(CustomerInfo customerInfo) {
+        if (customerInfo != null
+                && (1 == customerInfo.meterFareApplicable
+                || 1 == customerInfo.luggageChargesApplicable)) {
+            driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
+            switchDriverScreen(driverScreenMode);
+            dialogEndRidePopup.dismiss();
+        } else {
+            boolean success = endRideGPSCorrection(customerInfo);
+            if (success) {
+                dialogEndRidePopup.dismiss();
+            }
+        }
+        FlurryEventLogger.event(END_RIDE_CONFIRMED);
+    }
 }
