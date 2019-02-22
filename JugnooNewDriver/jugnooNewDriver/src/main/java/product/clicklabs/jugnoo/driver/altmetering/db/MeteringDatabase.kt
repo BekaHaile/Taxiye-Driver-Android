@@ -13,7 +13,7 @@ import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
 @Database(entities = [Segment::class,
     Waypoint::class,
     ScanningPointer::class,
-    LastLocationTimestamp::class], version = 2)
+    LastLocationTimestamp::class], version = 3)
 abstract class MeteringDatabase: RoomDatabase(){
 
     companion object {

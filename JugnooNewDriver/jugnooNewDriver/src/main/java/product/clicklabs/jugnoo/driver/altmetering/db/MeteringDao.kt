@@ -13,28 +13,28 @@ import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
 interface MeteringDao{
 
     //Segment queries------
-    @Query("SELECT * FROM segment WHERE position >= :position")
-    fun getAllSegments(position:Int) : List<Segment>
+    @Query("SELECT * FROM segment WHERE engagementId = :engagementId AND position >= :position")
+    fun getAllSegments(engagementId:Int, position:Int) : List<Segment>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllSegments(segments:List<Segment>)
 
-    @Query("UPDATE segment SET lastProjectedLat = :latitude, lastProjectedLng = :longitude WHERE position = :position")
-    fun updateSegment(position:Int, latitude:Double, longitude:Double)
+    @Query("UPDATE segment SET lastProjectedLat = :latitude, lastProjectedLng = :longitude WHERE engagementId = :engagementId AND position = :position")
+    fun updateSegment(engagementId:Int, position:Int, latitude:Double, longitude:Double)
 
-    @Query("DELETE FROM segment")
-    fun deleteAllSegments()
+    @Query("DELETE FROM segment WHERE engagementId = :engagementId")
+    fun deleteAllSegments(engagementId:Int)
 
 
     //Scanning pointer queries-------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertScanningPointer(scanningPointer: ScanningPointer)
 
-    @Query("DELETE FROM scanning_pointer")
-    fun deleteScanningPointer()
+    @Query("DELETE FROM scanning_pointer WHERE engagementId = :engagementId")
+    fun deleteScanningPointer(engagementId:Int)
 
-    @Query("SELECT * FROM scanning_pointer")
-    fun getScanningPointer() : List<ScanningPointer>
+    @Query("SELECT * FROM scanning_pointer WHERE engagementId = :engagementId")
+    fun getScanningPointer(engagementId:Int) : List<ScanningPointer>
 
 
 
@@ -42,11 +42,11 @@ interface MeteringDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLastLocationTimestamp(lastLocationTimestamp: LastLocationTimestamp)
 
-    @Query("DELETE FROM last_location_timestamp")
-    fun deleteLastLocationTimestamp()
+    @Query("DELETE FROM last_location_timestamp WHERE engagementId = :engagementId")
+    fun deleteLastLocationTimestamp(engagementId:Int)
 
-    @Query("SELECT * FROM last_location_timestamp")
-    fun getLastLocationTimeStamp() : List<LastLocationTimestamp>
+    @Query("SELECT * FROM last_location_timestamp WHERE engagementId = :engagementId")
+    fun getLastLocationTimeStamp(engagementId:Int) : List<LastLocationTimestamp>
 
 
 
@@ -54,9 +54,9 @@ interface MeteringDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWaypoint(waypoint: Waypoint)
 
-    @Query("SELECT * FROM waypoint")
-    fun getAllWaypoints() : List<Waypoint>
+    @Query("SELECT * FROM waypoint WHERE engagementId = :engagementId")
+    fun getAllWaypoints(engagementId:Int) : List<Waypoint>
 
-    @Query("DELETE FROM waypoint")
-    fun deleteAllWaypoints()
+    @Query("DELETE FROM waypoint WHERE engagementId = :engagementId")
+    fun deleteAllWaypoints(engagementId:Int)
 }

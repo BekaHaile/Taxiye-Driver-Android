@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "segment")
 data class Segment(
+        @ColumnInfo(name = "engagementId")
+        val engagementId:Int,
         @ColumnInfo(name = "sLat")
         val slat:Double,
         @ColumnInfo(name = "sLng")
@@ -28,19 +30,29 @@ data class Segment(
 }
 
 @Entity(tableName = "scanning_pointer")
-data class ScanningPointer(@ColumnInfo(name = "position") val position: Int){
+data class ScanningPointer(
+        @ColumnInfo(name = "engagementId")
+        val engagementId:Int,
+        @ColumnInfo(name = "position")
+        val position: Int){
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0
 }
 
 @Entity(tableName = "last_location_timestamp")
-data class LastLocationTimestamp(@ColumnInfo(name = "timestamp") val timestamp:Long){
+data class LastLocationTimestamp(
+        @ColumnInfo(name = "engagementId")
+        val engagementId:Int,
+        @ColumnInfo(name = "timestamp")
+        val timestamp:Long){
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0
 }
 
 @Entity(tableName = "waypoint")
 class Waypoint(
+        @ColumnInfo(name = "engagementId")
+        val engagementId:Int,
         @ColumnInfo(name = "lat")
         val lat:Double,
         @ColumnInfo(name = "lng")
