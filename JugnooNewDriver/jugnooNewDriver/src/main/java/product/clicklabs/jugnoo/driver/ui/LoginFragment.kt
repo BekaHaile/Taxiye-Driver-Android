@@ -241,6 +241,8 @@ class LoginFragment : Fragment() {
                         Prefs.with(requireActivity()).save(Constants.KEY_SHOW_TERMS, t?.showTerms ?:showTerms)
                         Prefs.with(requireActivity()).save(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, t?.emailInputAtSignup ?:
                             requireActivity().resources.getInteger(R.integer.email_input_at_signup))
+                        Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_EMAIL_OPTIONAL, t?.driverEmailOptional ?:
+                            requireActivity().resources.getInteger(R.integer.driver_email_optional))
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {

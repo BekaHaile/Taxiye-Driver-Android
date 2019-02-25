@@ -108,6 +108,9 @@ class DriverSetupFragment : Fragment() {
             adapter = this@DriverSetupFragment.adapter
         }
 
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0) {
+            tvEnterEmail.text = getString(R.string.email)
+        }
         getCitiesAPI()
 
     }
@@ -155,6 +158,10 @@ class DriverSetupFragment : Fragment() {
     private fun validateData(): Boolean {
         if (editTextName.text.trim().toString().isBlank()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.first_name_required))
+            return false
+        }
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0 && editTextEmail.text.trim().toString().isBlank()) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
             return false
         }
         if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {
@@ -316,7 +323,8 @@ class DriverSetupFragment : Fragment() {
                 groupView.visible()
                 setPromoLayout(t.getShowPromo(),t.promoCode)
                 setupTermsAndConditionsTextView()
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1){
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
+                        || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1){
                     tvEnterEmail.visible()
                     editTextEmail.visible()
                 } else {

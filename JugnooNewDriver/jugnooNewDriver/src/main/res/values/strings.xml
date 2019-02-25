@@ -1158,5 +1158,6 @@
     <string name="please_specify_the_reason">Please specify the reason</string>
     <string name="customer_live_location">Customer Live Location</string>
     <string name="not_match">not match</string>
+    <string name="please_enter_email">Please enter email</string>
 
 </resources>
