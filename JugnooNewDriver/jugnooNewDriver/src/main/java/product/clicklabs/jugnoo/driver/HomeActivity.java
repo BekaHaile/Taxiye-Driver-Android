@@ -5014,9 +5014,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
 				intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
 				startForegroundService(intent);
-			} else {
-				startForegroundService(new Intent(this, MeteringService.class));
 			}
+            startForegroundService(new Intent(this, MeteringService.class));
 
         } else {
             if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
@@ -8206,9 +8205,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
                                             new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
                                                     .putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId()));
-                                } else {
-                                    endRideConfrimedFromPopup(customerInfo);
                                 }
+                                endRideConfrimedFromPopup(customerInfo);
                             }
                         } else {
                             DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
