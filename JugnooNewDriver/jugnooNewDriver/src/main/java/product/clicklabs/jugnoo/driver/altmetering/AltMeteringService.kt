@@ -200,28 +200,7 @@ class AltMeteringService : Service() {
                 currentLocation = location
                 currentLocationTime = time
                 Log.e("new onLocationResult", "location = " + location)
-                val position = PolyUtil.locationIndexOnPath(latLng, globalPath,
-                        true, PATH_POINT_DISTANCE_TOLLERANCE)
-                Log.e("new onLocationResult", "position on path = " + position)
-                Log.e("new onLocationResult", "timeDiff = " + (System.currentTimeMillis() - time))
-                time = System.currentTimeMillis()
-                if(position > -1){
-                    UpdateTimeStampPointerAsync(meteringDB, engagementId, position, time).execute()
-                } else {
-                    GetLastLocationTimeAndWaypointsAsync(meteringDB, time, latLng).execute()
-                }
-
-
-                if (BuildConfig.DEBUG && HomeActivity.appInterruptHandler != null) {
-                    val start = if (position > -1) globalPath[position] else null
-                    val end = if (position > -1) globalPath[position + 1] else null
-                    HomeActivity.appInterruptHandler.polylineAlt(start, end)
-
-//                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
-//                            location,
-//                            location, globalPathDistance)
-                }
-                generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
+                GetScanningPointerAndShortenPathToScan(latLng).execute()
             }
         }
     }
@@ -431,6 +410,45 @@ class AltMeteringService : Service() {
             stopSelf()
         }
 
+    }
+
+    inner class GetScanningPointerAndShortenPathToScan(val currentLatLng: LatLng): AsyncTask<Unit, Unit, Int>(){
+        override fun doInBackground(vararg params: Unit?): Int {
+            val list :List<ScanningPointer> = meteringDB!!.getMeteringDao().getScanningPointer(engagementId)
+            var lastScanningPoint = 0
+            if(list.isNotEmpty()){
+                lastScanningPoint = list[0].position
+            }
+
+            val pathLength = globalPath.size
+            val position = PolyUtil.locationIndexOnPath(currentLatLng, globalPath.subList(lastScanningPoint, pathLength),
+                    true, PATH_POINT_DISTANCE_TOLLERANCE)
+
+            return position
+        }
+
+        override fun onPostExecute(result: Int?) {
+            super.onPostExecute(result)
+            val position = result
+            val time = System.currentTimeMillis()
+            if(position != null && position > -1){
+                UpdateTimeStampPointerAsync(meteringDB, engagementId, position, time).execute()
+            } else {
+                GetLastLocationTimeAndWaypointsAsync(meteringDB, time, currentLatLng).execute()
+            }
+
+
+            if (BuildConfig.DEBUG && HomeActivity.appInterruptHandler != null) {
+                val start = if (position != null && position > -1) globalPath[position] else null
+                val end = if (position != null && position > -1) globalPath[position + 1] else null
+                HomeActivity.appInterruptHandler.polylineAlt(start, end)
+
+//                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+//                            location,
+//                            location, globalPathDistance)
+            }
+            generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
+        }
     }
 
 }
