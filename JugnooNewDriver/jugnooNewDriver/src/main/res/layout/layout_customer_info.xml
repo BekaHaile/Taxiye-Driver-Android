@@ -72,7 +72,9 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCall1"
-            style="@style/ButtonTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="@string/dont_touch_me"
             android:background="@drawable/green_btn_call_selector">
 
             <ImageView
@@ -80,13 +82,17 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="7dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/call_icon_selector"/>
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewCall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="34dp"
                 android:text="@string/call"
                 android:textColor="@color/textColorButton"
                 android:textSize="20sp"

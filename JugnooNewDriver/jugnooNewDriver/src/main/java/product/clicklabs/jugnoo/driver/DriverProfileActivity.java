@@ -499,10 +499,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 if (openedProfileInfo.textViewMonthlyValue > 0 && getResources().getBoolean(R.bool.show_earnings_on_profile)) {
                     textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency, openedProfileInfo.textViewMonthlyValue));
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
+                    findViewById(R.id.imageViewHorizontal1).setVisibility(View.VISIBLE);
 
 
                 } else {
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.GONE);
+                    findViewById(R.id.imageViewHorizontal1).setVisibility(View.GONE);
                 }
                 textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);

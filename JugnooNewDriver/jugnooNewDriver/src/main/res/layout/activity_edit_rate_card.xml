@@ -237,15 +237,12 @@
 
     <Button
         android:id="@+id/bSave"
+        style="@style/ButtonTheme"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/orange_btn_selector"
-        android:text="@string/save"
-        android:textColor="@drawable/white_color_selector"
-        android:textSize="16sp"/>
+        android:text="@string/save"/>
 
 </android.support.constraint.ConstraintLayout>
