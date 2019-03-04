@@ -312,7 +312,7 @@
                     <RelativeLayout
                         android:id="@+id/linearLayoutDeliveryItemHeader"
                         android:layout_width="match_parent"
-                        android:layout_height="95px"
+                        android:layout_height="110px"
                         android:background="@color/white">
 
                         <TextView
@@ -335,20 +335,23 @@
                             android:layout_width="wrap_content"
                             android:minWidth="80dp"
                             android:text="@string/drop"
+                            android:gravity="center"
                             android:layout_toStartOf="@+id/relativeLayoutCall"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:textAllCaps="false"
+                            android:drawableEnd="@drawable/ic_location_on_black_24dp"
+                            android:paddingEnd="5dp"
 
                             />
 
                         <RelativeLayout
                             android:id="@+id/relativeLayoutCall"
                             style="@style/ButtonTheme"
-                            android:layout_width="85dp"
-                            android:layout_height="37dp"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:layout_marginEnd="12dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
@@ -360,19 +363,8 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_centerVertical="true"
-                                android:layout_marginStart="11dp"
                                 android:src="@drawable/call_icon_selector"/>
 
-                            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                                android:id="@+id/textViewCall"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toEndOf="@+id/driverCallIcon"
-                                android:layout_marginStart="10dp"
-                                android:text="@string/call"
-                                android:textColor="@color/textColorButton"
-                                android:textSize="17sp"/>
                         </RelativeLayout>
 
                     </RelativeLayout>

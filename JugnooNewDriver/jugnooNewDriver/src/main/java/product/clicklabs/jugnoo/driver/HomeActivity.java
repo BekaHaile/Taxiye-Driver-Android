@@ -321,7 +321,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     RelativeLayout perfectRidePassengerCallRl;
     LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
-    TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions;
+    TextView driverPerfectRidePassengerName, textViewRideInstructions;
     Button driverEngagedMyLocationBtn;
 //	Button distanceReset2;
 
@@ -823,8 +823,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			textViewRideInstructionsInRide.setTypeface(Fonts.mavenRegular(this));
 
             perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
-            driverPassengerCallText = (TextView) findViewById(R.id.textViewCall);
-            driverPassengerCallText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
 //			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
