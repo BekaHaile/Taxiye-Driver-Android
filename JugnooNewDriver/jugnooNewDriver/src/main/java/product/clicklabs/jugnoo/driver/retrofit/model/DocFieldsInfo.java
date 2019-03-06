@@ -37,6 +37,8 @@ public class DocFieldsInfo extends SearchDataModel {
     private String confirmKey;
     @SerializedName("is_secure")
     private int isSecure;
+    @SerializedName("mandatory")
+    private boolean mandatory;
 
     @SerializedName("is_selected")
     private boolean isSelected;
@@ -123,5 +125,13 @@ public class DocFieldsInfo extends SearchDataModel {
 
     public void setIsSecured(int isSecured) {
         this.isSecure = isSecured;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void isMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
     }
 }

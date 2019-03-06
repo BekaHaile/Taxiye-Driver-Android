@@ -86,7 +86,7 @@ public class Data {
 	//https://test.jugnoo.in:8012 to http://54.173.65.120:9000
 
 	//TODO
-	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
+	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8030";
 	public static final String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
 	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 

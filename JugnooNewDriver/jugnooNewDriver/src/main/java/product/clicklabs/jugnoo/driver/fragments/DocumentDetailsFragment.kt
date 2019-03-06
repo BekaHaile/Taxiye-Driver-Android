@@ -119,15 +119,16 @@ class DocumentDetailsFragment:Fragment(){
 
                 val label = layoutInflater.inflate(R.layout.list_item_document_detail_label, null) as TextView
                 label.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
-                label.text = item.label
+                label.text = item.label + if (item.isMandatory) "*" else ""
 
                 val editText = layoutInflater.inflate(R.layout.list_item_document_edit_input, null) as EditText
                 editText.run(addViewToParentConstraint(label.id, inputTopMargin, sideMargin))
 
                 lastEdtId = editText.id
-                var docField = DocumentInputField(item.key,item.label,item.value,
+                val docField = DocumentInputField(item.key,item.label,item.value,
                         editText, item.type,
-                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext(), item.isSecured)
+                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext(), item.isSecured,
+                        isMandatory = item.isMandatory)
 
                 documentInputFields[item.key] = docField
 
@@ -160,8 +161,7 @@ class DocumentDetailsFragment:Fragment(){
         this.docInfo = docInfo
 
         viewHolder = (activity as DriverDocumentActivity).documentListFragment.driverDocumentListAdapter.getDocumentListView(
-                    pos, viewHolder, layoutInflater, activity as DriverDocumentActivity,true)
-
+                    pos, viewHolder, layoutInflater, activity as DriverDocumentActivity,true, true)
 
 
     }
@@ -189,6 +189,10 @@ class DocumentDetailsFragment:Fragment(){
         var confirmErrors = ""
         var isFirst = true
         val listInputFields = documentInputFields.values.map {
+            if (it.isMandatory && it.getValue().isNullOrBlank()) {
+                Utils.showToast(requireActivity(), getString(R.string.error_empty_mandatory_field, it.label))
+                return
+            }
             if(it.inputType == FieldTypes.SET_SS.type
                     || it.inputType == FieldTypes.SET_MS.type
                     || it.inputType == FieldTypes.SET_SS_REF.type){
@@ -291,7 +295,8 @@ class DocumentInputField(
         var context: Context,
         var isSecured: Int,
         child:DocumentInputField? = null,
-        var confirmParent:DocumentInputField? = null) {
+        var confirmParent:DocumentInputField? = null,
+        var isMandatory: Boolean) {
 
     val FORMAT_UTC = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

@@ -1159,5 +1159,6 @@
     <string name="customer_live_location">Customer Live Location</string>
     <string name="not_match">not match</string>
     <string name="please_enter_email">Please enter email</string>
+    <string name="error_empty_mandatory_field">%s is a mandatory field.</string>
 
 </resources>

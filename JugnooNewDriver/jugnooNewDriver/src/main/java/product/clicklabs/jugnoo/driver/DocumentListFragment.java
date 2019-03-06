@@ -210,7 +210,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture,relativeLayoutSelectPictureStatus;
-		RelativeLayout relativeLayoutImageStatus;
+		RelativeLayout relativeLayoutImageStatus, rlDocumentStatus;
 		LinearLayout rideHistoryItem;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
 				imageViewDocStatusImage,imageViewInfo,ivArrowForward;
@@ -243,12 +243,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			return getDocumentListView(position, convertView,mInflater, activity,false);
+			return getDocumentListView(position, convertView,mInflater, activity,false, false);
 		}
 
 		@NonNull
 		public  View getDocumentListView(int position, View convertView, LayoutInflater mInflater, final DriverDocumentActivity activity
-		,boolean isActionable) {
+		,boolean isActionable, boolean hideStatusIfNoImages) {
 			ViewHolderDriverDoc	holder = null;
 			if (convertView == null) {
 				holder = new ViewHolderDriverDoc();
@@ -288,6 +288,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 				holder.relativeLayoutImageStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutImageStatus);
+				holder.rlDocumentStatus = (RelativeLayout) convertView.findViewById(R.id.rlDocumentStatus);
 				holder.relativeLayoutSelectPictureStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutSelectPictureStatus);
 				holder.ivArrowForward = (ImageView) convertView.findViewById(R.id.ivArrowForward);
 
@@ -485,6 +486,27 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			if(docInfo.docCount < 1){
 				holder.addImageLayout.setVisibility(View.GONE);
 				holder.imageViewUploadDoc.setVisibility(View.GONE);
+			}
+
+			if (hideStatusIfNoImages) {
+				// if no images are to be shown, hide textview that shows current status
+				// if url list greater than 0, check if urls are null or not, hide if all null
+				if (docInfo.url == null || (docInfo.url != null && docInfo.url.isEmpty())) {
+					holder.rlDocumentStatus.setVisibility(View.GONE);
+				} else {
+					boolean allNulls = true;
+					for (String s: docInfo.url) {
+						if (s != null && !s.isEmpty()) {
+							allNulls = false;
+							break;
+						}
+
+					}
+					holder.rlDocumentStatus.setVisibility((allNulls
+							&& docInfo.getFile() == null && docInfo.getFile1() == null ? View.GONE: View.VISIBLE));
+				}
+			} else {
+				holder.rlDocumentStatus.setVisibility(View.VISIBLE);
 			}
 
 			if (isActionable) {
