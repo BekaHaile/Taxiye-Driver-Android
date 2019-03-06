@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 	TextView title;
 	String date = "";
 	TextView textViewInfoDisplay;
+	LinearLayout linearLayoutNoItems;
 	ArrayList<RideHistoryItem> rideHistoryItems = new ArrayList<>();
 	RecyclerView recyclerViewDailyInfo;
 
@@ -104,14 +106,15 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 //		title.getPaint().setShader(textShader);
 
 		title.setText(getResources().getString(R.string.ride_history_cap));
+		linearLayoutNoItems = findViewById(R.id.linearLayoutNoItems);
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
-		textViewInfoDisplay.setVisibility(View.GONE);
+		linearLayoutNoItems.setVisibility(View.GONE);
 		totalRides =0;
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				textViewInfoDisplay.setVisibility(View.GONE);
+				linearLayoutNoItems.setVisibility(View.GONE);
 				getRidesAsync(DriverRideHistoryNew.this, true);
 			}
 		});
@@ -158,7 +161,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 				DialogPopup.alertPopup(DriverRideHistoryNew.this,"",message);
 			} else {
 				textViewInfoDisplay.setText(message);
-				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				linearLayoutNoItems.setVisibility(View.VISIBLE);
 				driverRideHistoryAdapter.notifyDataSetChanged();
 			}
 		} else {
@@ -166,7 +169,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 				driverRideHistoryAdapter.setList(rideHistoryItems, totalRides);
 			} else {
 				textViewInfoDisplay.setText(getResources().getString(R.string.no_rides_currently));
-				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				linearLayoutNoItems.setVisibility(View.VISIBLE);
 				driverRideHistoryAdapter.notifyDataSetChanged();
 			}
 		}

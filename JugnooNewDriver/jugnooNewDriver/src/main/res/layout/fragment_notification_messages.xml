@@ -15,11 +15,10 @@
         android:orientation="vertical"
         >
         <ImageView
-            android:layout_width="241px"
-            android:layout_height="342px"
-            android:src="@drawable/ic_no_items"
-            android:visibility="gone"
-            android:tag="mwar"
+            android:layout_width="95dp"
+            android:layout_height="103dp"
+            android:src="@drawable/ic_bell_no_notiications"
+            android:tag="@string/dont_touch_me"
             />
 
         <TextView
