@@ -498,6 +498,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.driver_auto_zoom_enabled)));
 		Prefs.with(context).save(KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, userData.optInt(KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS,
 				context.getResources().getInteger(R.integer.check_locale_for_address)));
+		Prefs.with(context).save(KEY_DRIVER_MAX_BID_MULTIPLIER, userData.optString(KEY_DRIVER_MAX_BID_MULTIPLIER,
+				context.getString(R.string.driver_max_bid_multiplier)));
 
 	}
 
