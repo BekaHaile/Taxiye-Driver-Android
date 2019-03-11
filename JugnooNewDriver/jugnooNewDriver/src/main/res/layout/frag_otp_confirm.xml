@@ -81,16 +81,12 @@
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ButtonTheme"
         android:layout_marginTop="25dp"
-        android:background="@drawable/orange_btn_selector"
-        android:minWidth="150dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="18sp"
         android:text="@string/submit"
-        android:textColor="@drawable/white_color_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
