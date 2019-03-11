@@ -5793,7 +5793,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                setBidForEngagementAPI(customerInfo1, Double.parseDouble(bidValues.get(holder.id)));
+                                double bidValue = Double.parseDouble(bidValues.get(holder.id));
+                                double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
+                                if(maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue){
+                                	Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
+                                	return;
+								}
+                                setBidForEngagementAPI(customerInfo1, bidValue);
                             } else {
                                 acceptRequestFunc(customerInfo1);
                             }
