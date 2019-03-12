@@ -160,6 +160,12 @@ class DriverSetupFragment : Fragment() {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.first_name_required))
             return false
         }
+
+        if (resources.getBoolean(R.bool.last_name_mandatory) && edtLastName.text.trim().toString().isBlank()) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.last_name_required))
+            return false
+        }
+
         if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0 && editTextEmail.text.trim().toString().isBlank()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
             return false

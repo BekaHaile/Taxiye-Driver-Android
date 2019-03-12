@@ -1146,6 +1146,7 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="first_name_required">First name is mandatory</string>
+    <string name="last_name_required">Last name is mandatory</string>
     <string name="pickup_time_format">Pickup time: %s</string>
     <string name="tolls_incurred_during_ride">Following tolls are incurred during ride, Confirm them once</string>
     <string name="add_toll">Add Toll</string>
