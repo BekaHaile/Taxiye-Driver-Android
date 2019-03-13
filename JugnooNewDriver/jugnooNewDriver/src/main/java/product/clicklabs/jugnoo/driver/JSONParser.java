@@ -500,6 +500,8 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.check_locale_for_address)));
 		Prefs.with(context).save(KEY_DRIVER_MAX_BID_MULTIPLIER, userData.optString(KEY_DRIVER_MAX_BID_MULTIPLIER,
 				context.getString(R.string.driver_max_bid_multiplier)));
+		Prefs.with(context).save(KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED,
+				context.getResources().getInteger(R.integer.driver_google_traffic_enabled)));
 
 	}
 

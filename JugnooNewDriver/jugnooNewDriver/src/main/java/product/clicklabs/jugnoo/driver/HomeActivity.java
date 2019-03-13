@@ -2855,6 +2855,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 map.getUiSettings().setTiltGesturesEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                if(Prefs.with(this).getInt(Constants.KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED, 0) == 1){
+                    map.setTrafficEnabled(true);
+                }
 
                 //30.75, 76.78
 

@@ -420,5 +420,6 @@ public interface Constants {
 	String KEY_IS_CORPORATE_RIDE = "is_corporate_ride";
 	String KEY_DRIVER_EMAIL_OPTIONAL = "driver_email_optional";
 	String KEY_DRIVER_MAX_BID_MULTIPLIER = "driver_max_bid_multiplier";
+	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";
 }
 
