@@ -459,5 +459,9 @@ public interface Constants {
 	String KEY_CUSTOMER_ORDER_IMAGES = "customer_order_images";
 	String KEY_POSITION_REVIEW = "position";
 	String LIST_IMAGES_REVIEW = "list_images";
+
+	String KEY_CSV_PATH = "csv_path";
+	String KEY_CSV_WAYPOINTS = "csv_waypoints";
+	String KEY_WAYPOINT_PATH = "waypoint_path";
 }
 

@@ -4992,6 +4992,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)) {
                 GpsDistanceCalculator.saveTrackingToSP(this, 0);
+                AltMeteringService.Companion.updateMeteringActive(this, false);
             } else {
                 new Handler().postDelayed(new Runnable() {
 
@@ -6547,6 +6548,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
 
             MeteringService.gpsInstance(this).stop();
+            AltMeteringService.Companion.updateMeteringActive(this, false);
             Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
         }
     }
@@ -6956,7 +6958,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         params.put("ride_distance_using_haversine", String.valueOf(totalHaversineDistanceInKm));
         params.put(KEY_METERING_DISTANCE, String.valueOf(customerInfo.getSPSavedDistance(customerRideDataGlobal.getDistance(HomeActivity.this),
                 HomeActivity.this)/1000D));
-        params.put(KEY_WAYPOINT_DISTANCE, String.valueOf(customerInfo.getWaypointDistance()/1000D));
+        double waypointDistance = customerInfo.getWaypointDistance();
+        if(customerInfo.getMap().containsKey(KEY_WAYPOINT_DISTANCE)){
+            waypointDistance = Double.parseDouble(customerInfo.getMap().get(KEY_WAYPOINT_DISTANCE));
+        }
+        params.put(KEY_WAYPOINT_DISTANCE, String.valueOf(waypointDistance/1000D));
 
 
         HomeUtil.putDefaultParams(params);
@@ -7122,7 +7128,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     rideTimeChronometer.stop();
 
-                    driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(), totalHaversineDistanceInKm, customerInfo.getRequestlLatLng(),
+                    driverUploadPathDataFileAsync(activity, customerInfo, totalHaversineDistanceInKm, customerInfo.getRequestlLatLng(),
                             new LatLng(dropLatitude, dropLongitude));
 
                     driverScreenMode = DriverScreenMode.D_RIDE_END;
@@ -7473,7 +7479,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rideTimeChronometer.stop();
 
 
-            driverUploadPathDataFileAsync(activity, customerInfo.getEngagementId(),
+            driverUploadPathDataFileAsync(activity, customerInfo,
                     customerInfo.getTotalHaversineDistance(customerRideDataGlobal.getHaversineDistance(), HomeActivity.this),customerInfo.getRequestlLatLng(),
                     new LatLng(dropLatitude, dropLongitude));
 
@@ -7537,9 +7543,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 //Retrofit
-    public void driverUploadPathDataFileAsync(final Activity activity, int engagementId, double totalHaversineDistance, LatLng requestlatLng, LatLng dropLatLng) {
+    public void driverUploadPathDataFileAsync(final Activity activity, CustomerInfo customerInfo, double totalHaversineDistance, LatLng requestlatLng, LatLng dropLatLng) {
         try {
-            String rideDataStr = Database2.getInstance(activity).getRideData(engagementId);
+            String rideDataStr = Database2.getInstance(activity).getRideData(customerInfo.getEngagementId());
             if (!"".equalsIgnoreCase(rideDataStr)) {
                 totalHaversineDistance = totalHaversineDistance / 1000;
                 rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
@@ -7550,11 +7556,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 final HashMap<String, String> params = new HashMap<String, String>();
 
                 params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-                params.put(KEY_ENGAGEMENT_ID, String.valueOf(engagementId));
+                params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
                 params.put(KEY_RIDE_PATH_DATA, rideDataStr);
 
                 if(Prefs.with(activity).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
-                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(engagementId);
+                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
                     if(rideDatas.size() > 0) {
                         StringBuilder rideDataWaypointSB = new StringBuilder();
                         String newLine = "\n";
@@ -7570,10 +7576,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         params.put(Constants.KEY_WAYPOINTS, rideDataWaypointStr);
                     }
                 }
+                if(customerInfo.getMap().size() > 0) {
+                    if(customerInfo.getMap().containsKey(KEY_CSV_PATH)){
+                        params.put(Constants.KEY_WAYPOINT_PATH, customerInfo.getMap().get(KEY_CSV_PATH));
+                    }
+                    if(customerInfo.getMap().containsKey(KEY_CSV_WAYPOINTS)){
+                        params.put(Constants.KEY_WAYPOINTS, customerInfo.getMap().get(KEY_CSV_WAYPOINTS));
+                    }
+                }
 
                 HomeUtil.putDefaultParams(params);
 
-                Log.i(TAG, "driverUploadPathDataFileAsync params=" + params);
+                Log.i(TAG, "/upload_ride_data params=" + params);
 
                 RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
                     @Override
@@ -8205,8 +8219,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
                                             new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
                                                     .putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId()));
+                                } else {
+                                    endRideConfrimedFromPopup(customerInfo);
                                 }
-                                endRideConfrimedFromPopup(customerInfo);
                             }
                         } else {
                             DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
@@ -11727,7 +11742,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         public void onReceive(Context context, Intent intent) {
 			DialogPopup.dismissLoadingDialog();
             if(intent.getBooleanExtra(KEY_SUCCESS, false)) {
-                endRideConfrimedFromPopup(Data.getCustomerInfo(String.valueOf(intent.getIntExtra(KEY_ENGAGEMENT_ID, 0))));
+                CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(intent.getIntExtra(KEY_ENGAGEMENT_ID, 0)));
+                customerInfo.setWaypointDistance(intent.getDoubleExtra(KEY_WAYPOINT_DISTANCE, 0));
+                customerInfo.getMap().put(KEY_WAYPOINT_DISTANCE, String.valueOf(intent.getDoubleExtra(KEY_WAYPOINT_DISTANCE, 0)));
+                customerInfo.getMap().put(KEY_CSV_PATH, intent.getStringExtra(KEY_CSV_PATH));
+                customerInfo.getMap().put(KEY_CSV_WAYPOINTS, intent.getStringExtra(KEY_CSV_WAYPOINTS));
+
+                endRideConfrimedFromPopup(customerInfo);
             }
         }
     };

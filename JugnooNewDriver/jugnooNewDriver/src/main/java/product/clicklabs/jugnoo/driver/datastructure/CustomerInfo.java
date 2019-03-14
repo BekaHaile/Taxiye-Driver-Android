@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -71,6 +72,7 @@ public class CustomerInfo {
 	private String pickupTime;
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
+	private HashMap<String, String> map;
 	private String customerNotes;
 	private int tollApplicable;
 	private String rentalInfo;
@@ -811,5 +813,16 @@ public class CustomerInfo {
 
 	public void setCustomerOrderImagesList(List<String> customerOrderImagesList) {
 		this.customerOrderImagesList = customerOrderImagesList;
+	}
+
+	public HashMap<String, String> getMap() {
+		if(map == null){
+			map = new HashMap<>();
+		}
+		return map;
+	}
+
+	public void setMap(HashMap<String, String> map) {
+		this.map = map;
 	}
 }
