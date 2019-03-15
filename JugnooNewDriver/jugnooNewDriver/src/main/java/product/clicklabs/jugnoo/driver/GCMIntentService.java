@@ -28,6 +28,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
@@ -958,11 +959,19 @@ public class GCMIntentService extends FirebaseMessagingService {
 								Intent mpesaPush = new Intent(Constants.UPDATE_MPESA_PRICE);
 								mpesaPush.putExtra("to_pay", jObj.getString("to_pay"));
 								sendBroadcast(mpesaPush);
-
+								String message1 = jObj.optString("message", " ");
+								if (message1 != null && !TextUtils.isEmpty(message1)) {
+									if (HomeActivity.appInterruptHandler != null) {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
+									} else {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, DriverSplashActivity.class, null);
+									}
+								}
 							}
 
 							String message1 = jObj.optString("message", " ");
 							savePush(jObj, flag, title, message1);
+
 
 						} catch (Exception e) {
 							e.printStackTrace();
