@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,9 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.google.gson.Gson;
 
@@ -30,8 +28,8 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -44,6 +42,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 
 	ImageView backBtn;
 	TextView title;
+	LinearLayout linearLayoutNoItems;
 	TextView textViewInfoDisplay, textViewCall;
 	ArrayList<TicketResponse.TicketDatum> ticketHistoryItems = new ArrayList<>();
 	RecyclerView recyclerViewTicketInfo;
@@ -87,17 +86,18 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 		title.setTypeface(Fonts.mavenRegular(this));
 		title.setText(getResources().getString(R.string.support));
 
+		linearLayoutNoItems = findViewById(R.id.linearLayoutNoItems);
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
 		textViewCall = (TextView) findViewById(R.id.textViewCall);
 		textViewCall.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 
-		textViewInfoDisplay.setVisibility(View.GONE);
+		linearLayoutNoItems.setVisibility(View.GONE);
 		totalRides =0;
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				textViewInfoDisplay.setVisibility(View.GONE);
+				linearLayoutNoItems.setVisibility(View.GONE);
 				getTicketsAsync(DriverTicketHistory.this, true);
 			}
 		});
@@ -154,7 +154,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 				DialogPopup.alertPopup(DriverTicketHistory.this,"",message);
 			} else {
 				textViewInfoDisplay.setText(message);
-				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				linearLayoutNoItems.setVisibility(View.VISIBLE);
 				driverTicketHistoryAdapter.notifyDataSetChanged();
 			}
 		} else {
@@ -162,7 +162,7 @@ public class DriverTicketHistory extends BaseFragmentActivity {
 				driverTicketHistoryAdapter.setList(ticketHistoryItems, totalRides);
 			} else {
 				textViewInfoDisplay.setText(getResources().getString(R.string.no_tickets));
-				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				linearLayoutNoItems.setVisibility(View.VISIBLE);
 				driverTicketHistoryAdapter.notifyDataSetChanged();
 			}
 		}
