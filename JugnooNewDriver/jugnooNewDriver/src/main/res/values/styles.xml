@@ -178,4 +178,8 @@
         <item name="android:textColorSecondary">@color/bg_grey</item>
     </style>
 
+    <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/themeColor</item>
+    </style>
+
 </resources>

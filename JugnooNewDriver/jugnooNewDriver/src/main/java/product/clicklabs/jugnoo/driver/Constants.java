@@ -378,6 +378,8 @@ public interface Constants {
 	String KEY_UPDATED_USER_EMAIL = "updated_user_email";
 
 	String KEY_EMAIL_INPUT_AT_SIGNUP = "email_input_at_signup";
+	String KEY_GENDER_INPUT_AT_SIGNUP = "gender_input_at_signup";
+	String KEY_DOB_INPUT_AT_SIGNUP = "dob_input_at_signup";
 	String KEY_EMAIL_EDITABLE_IN_PROFILE = "email_editable_in_profile";
 	String KEY_USERNAME_EDITABLE_IN_PROFILE = "username_editable_in_profile";
 	String SP_LAST_PHONE_NUMBER_SAVED = "last_phone_number_saved";
@@ -420,9 +422,12 @@ public interface Constants {
 	String KEY_IS_CORPORATE_RIDE = "is_corporate_ride";
 	String KEY_CUSTOMER_NOTE = "customer_note";
 	String KEY_DRIVER_EMAIL_OPTIONAL = "driver_email_optional";
+	String KEY_GENDER_OPTIONAL = "gender_optional";
+	String KEY_DOB_OPTIONAL = "dob_optional";
 	String KEY_DRIVER_MAX_BID_MULTIPLIER = "driver_max_bid_multiplier";
 	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";
 
 	String KEY_DRIVER_SHOW_POOL_REQUEST_DEST = "driver_show_pool_request_dest";
+	String DOB_DATE_FORMAT = "dd-MM-yyyy";
 }
 
