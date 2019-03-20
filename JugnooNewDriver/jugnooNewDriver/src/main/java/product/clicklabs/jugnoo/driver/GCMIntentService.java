@@ -571,6 +571,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									if(Prefs.with(this).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0){
 										address = jObj.optString(Constants.KEY_PICKUP_ADDRESS, address);
 									}
+									String dropAddress = jObj.optString(Constants.KEY_DROP_ADDRESS, "");
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
@@ -579,6 +580,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
 									String currency = jObj.optString(Constants.KEY_CURRENCY, "");
 									String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
+
+									if(isPooled == 1 && Prefs.with(this).getInt(Constants.KEY_DRIVER_SHOW_POOL_REQUEST_DEST, 0) == 1){
+										address = address + "\n" + getString(R.string.to)+dropAddress;
+									}
 
 									ArrayList<String> dropPoints = new ArrayList<>();
 									if(jObj.has(Constants.KEY_DROP_POINTS)) {

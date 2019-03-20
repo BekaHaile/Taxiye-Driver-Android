@@ -421,5 +421,7 @@ public interface Constants {
 	String KEY_DRIVER_EMAIL_OPTIONAL = "driver_email_optional";
 	String KEY_DRIVER_MAX_BID_MULTIPLIER = "driver_max_bid_multiplier";
 	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";
+
+	String KEY_DRIVER_SHOW_POOL_REQUEST_DEST = "driver_show_pool_request_dest";
 }
 
