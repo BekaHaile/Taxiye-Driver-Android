@@ -234,11 +234,15 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
             return false
         }
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_OPTIONAL, 1) == 0 && mGender.isNullOrEmpty()) {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 1
+                && Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_OPTIONAL, 1) == 0
+                && mGender.isNullOrEmpty()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_gender))
             return false
         }
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_OPTIONAL, 1) == 0 && edtDob.text.toString().isEmpty()) {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_INPUT_AT_SIGNUP, 0) == 1
+                && Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_OPTIONAL, 1) == 0
+                && edtDob.text.toString().isEmpty()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_date_of_birth))
             return false
         }
@@ -286,8 +290,6 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
                 "user_name" to userName ,
-                "date_of_birth" to dob ,
-                "gender" to mGender!!,
                 "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
@@ -310,8 +312,13 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
         if(referralCode!=null){
-            params["referral_code"] = referralCode;
-
+            params["referral_code"] = referralCode
+        }
+        if(!dob.isEmpty()){
+            params["date_of_birth"] = dob
+        }
+        if(mGender != null && !mGender!!.isEmpty()){
+            params["gender"] = mGender!!
         }
     HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
