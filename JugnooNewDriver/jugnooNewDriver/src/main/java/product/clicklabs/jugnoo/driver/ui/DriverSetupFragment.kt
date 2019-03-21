@@ -170,7 +170,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
      * formatting and updating
      */
     private fun updateLabel() {
-        edtDob.setText(SimpleDateFormat(DOB_DATE_FORMAT)
+        edtDob.setText(SimpleDateFormat(DOB_DATE_FORMAT, Locale.ENGLISH)
                 .format(calendar?.getTime()))
     }
 
