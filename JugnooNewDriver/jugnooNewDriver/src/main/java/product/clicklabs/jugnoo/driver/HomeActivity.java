@@ -6060,6 +6060,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
                     String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
                     int isCorporateRide = jObj.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
+                    String customerNotes = jObj.optString(Constants.KEY_CUSTOMER_NOTE, "");
 
                     Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -6073,7 +6074,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
-                            pickupTime, isCorporateRide);
+                            pickupTime, isCorporateRide, customerNotes);
 
                     JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 

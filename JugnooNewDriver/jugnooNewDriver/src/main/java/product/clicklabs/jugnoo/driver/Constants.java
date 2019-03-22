@@ -418,6 +418,7 @@ public interface Constants {
 	String SP_BATTERY_OPTIMIZATIONS_ASKED = "sp_battery_optimizations_asked";
 	String KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS = "driver_check_locale_for_address";
 	String KEY_IS_CORPORATE_RIDE = "is_corporate_ride";
+	String KEY_CUSTOMER_NOTE = "customer_note";
 	String KEY_DRIVER_EMAIL_OPTIONAL = "driver_email_optional";
 	String KEY_DRIVER_MAX_BID_MULTIPLIER = "driver_max_bid_multiplier";
 	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";

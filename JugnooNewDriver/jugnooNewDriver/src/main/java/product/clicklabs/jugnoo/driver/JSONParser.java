@@ -678,6 +678,7 @@ public class JSONParser implements Constants {
 							int luggageCount = jObjCustomer.optInt(Constants.KEY_LUGGAGE_COUNT, 0);
 							String pickupTime = jObjCustomer.optString(Constants.KEY_PICKUP_TIME);
 							int isCorporateRide = jObjCustomer.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
+							String customerNotes = jObjCustomer.optString(Constants.KEY_CUSTOMER_NOTE, "");
 
 
 							if(i == 0){
@@ -690,7 +691,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide);
+									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));

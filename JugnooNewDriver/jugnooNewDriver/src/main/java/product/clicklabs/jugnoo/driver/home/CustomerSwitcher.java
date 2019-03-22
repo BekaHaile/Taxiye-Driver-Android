@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +46,7 @@ public class CustomerSwitcher {
 	private RecyclerView recyclerViewCustomersLinked;
 
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
-			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm;
+			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private CustomerInfoAdapter customerInfoAdapter;
@@ -61,6 +62,7 @@ public class CustomerSwitcher {
 
 		textViewCustomerName1 = (TextView) rootView.findViewById(R.id.textViewCustomerName1);
 		textViewCustomerName1.setTypeface(Fonts.mavenRegular(activity));
+		tvCustomerNotes = (TextView) rootView.findViewById(R.id.tvCustomerNotes);
 		textViewPickupFrm = (TextView) rootView.findViewById(R.id.textViewPickupFrm);
 		textViewPickupFrm.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
@@ -213,6 +215,12 @@ public class CustomerSwitcher {
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+					if(!TextUtils.isEmpty(customerInfo.getCustomerNotes())){
+						tvCustomerNotes.setVisibility(View.VISIBLE);
+						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+					} else {
+						tvCustomerNotes.setVisibility(View.GONE);
+					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					}

@@ -70,6 +70,7 @@ public class CustomerInfo {
 	private String pickupTime;
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
+	private String customerNotes;
 
 
 	/**
@@ -80,7 +81,8 @@ public class CustomerInfo {
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime, int isCorporateRide){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime,
+						int isCorporateRide, String customerNotes){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -133,6 +135,7 @@ public class CustomerInfo {
 		this.luggageCount = luggageCount;
 		this.pickupTime = pickupTime;
 		this.isCorporateRide = isCorporateRide;
+		this.customerNotes = customerNotes;
 	}
 
 
@@ -760,5 +763,12 @@ public class CustomerInfo {
 
 	public void setIsCorporateRide(int isCorporateRide) {
 		this.isCorporateRide = isCorporateRide;
+	}
+
+	public String getCustomerNotes() {
+		if(customerNotes != null && customerNotes.equalsIgnoreCase("null")){
+			customerNotes = "";
+		}
+		return customerNotes;
 	}
 }

@@ -1162,5 +1162,6 @@
     <string name="please_enter_email">Please enter email</string>
     <string name="error_empty_mandatory_field">%s is a mandatory field.</string>
     <string name="please_enter_less_value_for_bid">Please enter less value for bid</string>
+    <string name="note">Note</string>
 
 </resources>
