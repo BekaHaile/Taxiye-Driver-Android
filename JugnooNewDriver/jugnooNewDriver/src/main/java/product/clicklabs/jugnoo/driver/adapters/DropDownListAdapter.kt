@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.datastructure.Gender
 import product.clicklabs.jugnoo.driver.utils.Fonts
 
 
-class DropDownListAdapter(mContext : Context, mResource : Int, dataList : ArrayList<String>, isFirstItemTitle : Boolean) : ArrayAdapter<String>(mContext, mResource, 0, dataList) {
+class DropDownListAdapter(mContext : Context, mResource : Int, dataList : ArrayList<Gender>, isFirstItemTitle : Boolean) : ArrayAdapter<Gender>(mContext, mResource, 0, dataList) {
 
-    private var dataList: ArrayList<String> = ArrayList()
+    private var dataList: ArrayList<Gender> = ArrayList()
     private var isFirstItemTitle: Boolean = false
     private var resourceId: Int? = null
 

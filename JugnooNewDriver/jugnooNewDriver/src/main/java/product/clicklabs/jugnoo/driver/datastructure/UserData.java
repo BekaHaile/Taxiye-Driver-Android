@@ -34,6 +34,8 @@ public class UserData {
 	private int sendCreditsEnabled;
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
+	private int gender;
+	private String dateOfBirth;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -47,7 +49,7 @@ public class UserData {
 					String hippoTicketFAQ, String currency,
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
-					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel) {
+					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel, int gender, String dateOfBirth) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -73,6 +75,8 @@ public class UserData {
 		this.referralSMSToCustomer = referralSMSToCustomer;
 		this.getCreditsInfo = getCreditsInfo;
 		this.getCreditsImage = getCreditsImage;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
 		this.driverOnlineHours = "00:00";
 
 		this.showDriverRating = showDriverRating;
@@ -255,5 +259,13 @@ public class UserData {
 
 	public void setVehicleDetailsLogin(VehicleDetailsLogin vehicleDetailsLogin) {
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
 	}
 }

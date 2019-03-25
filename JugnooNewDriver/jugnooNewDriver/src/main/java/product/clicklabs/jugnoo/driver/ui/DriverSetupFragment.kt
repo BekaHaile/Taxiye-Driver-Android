@@ -31,6 +31,8 @@ import product.clicklabs.jugnoo.driver.Constants.DOB_DATE_FORMAT
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.adapters.DropDownListAdapter
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.Gender
+import product.clicklabs.jugnoo.driver.datastructure.GenderValues
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
@@ -51,7 +53,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         if(IS_FIRST_ITEM_TITLE && pos != 0 || !IS_FIRST_ITEM_TITLE) {
-            mGender = parent?.getItemAtPosition(pos).toString()
+            mGender = (parent?.getItemAtPosition(pos) as Gender).type
         }else{
             mGender =  null
         }
@@ -64,7 +66,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private var toolbarChangeListener: ToolbarChangeListener? = null
     private var citiesList:MutableList<CityResponse.City>? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
-    private var mGender : String? = null
+    private var mGender : Int? = null
     private var calendar: Calendar? = null
 
 
@@ -236,7 +238,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
         if (Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 1
                 && Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_OPTIONAL, 1) == 0
-                && mGender.isNullOrEmpty()) {
+                && mGender == null) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_gender))
             return false
         }
@@ -315,10 +317,10 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             params["referral_code"] = referralCode
         }
         if(!dob.isEmpty()){
-            params["date_of_birth"] = dob
+            params[Constants.KEY_DATE_OF_BIRTH] = dob
         }
-        if(mGender != null && !mGender!!.isEmpty()){
-            params["gender"] = mGender!!
+        if(mGender != null){
+            params[Constants.KEY_GENDER] = mGender!!.toString()
         }
     HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
@@ -394,11 +396,11 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
      private fun setSpinnerListGender() {
 
          // Spinner Drop down elements
-         val categories = java.util.ArrayList<String>()
-         categories.add(getString(R.string.hint_gender))
-         categories.add(getString(R.string.gender_female))
-         categories.add(getString(R.string.gender_male))
-         categories.add(getString(R.string.gender_others))
+         val categories = java.util.ArrayList<Gender>()
+         categories.add(Gender(0, getString(R.string.hint_gender)))
+         categories.add(Gender(GenderValues.FEMALE.type, getString(R.string.gender_female)))
+         categories.add(Gender(GenderValues.MALE.type, getString(R.string.gender_male)))
+         categories.add(Gender(GenderValues.OTHER.type, getString(R.string.gender_others)))
 
 //       // Creating adapter for spinner
          val dataAdapter = DropDownListAdapter(context!!,android.R.layout.simple_spinner_dropdown_item, categories, IS_FIRST_ITEM_TITLE)

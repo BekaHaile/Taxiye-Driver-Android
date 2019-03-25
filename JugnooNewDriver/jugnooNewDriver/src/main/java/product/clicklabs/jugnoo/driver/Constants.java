@@ -428,6 +428,8 @@ public interface Constants {
 	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";
 
 	String KEY_DRIVER_SHOW_POOL_REQUEST_DEST = "driver_show_pool_request_dest";
-	String DOB_DATE_FORMAT = "dd-MM-yyyy";
+	String DOB_DATE_FORMAT = "yyyy-MM-dd";
+	String KEY_GENDER = "gender";
+	String KEY_DATE_OF_BIRTH = "date_of_birth";
 }
 

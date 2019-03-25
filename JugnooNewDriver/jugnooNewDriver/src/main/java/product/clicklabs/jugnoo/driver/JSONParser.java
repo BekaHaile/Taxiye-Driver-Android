@@ -422,6 +422,9 @@ public class JSONParser implements Constants {
 
 			serviceDetailList = gson.fromJson(userData.getString("vehicle_sets"), listType);
 		}
+		int gender = userData.optInt(Constants.KEY_GENDER, 0);
+		String dateOfBirth = userData.optString(Constants.KEY_DATE_OF_BIRTH, "");
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -432,7 +435,8 @@ public class JSONParser implements Constants {
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,serviceDetailList);
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
+				serviceDetailList, gender, dateOfBirth);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData) {
