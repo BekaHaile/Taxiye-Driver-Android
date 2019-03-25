@@ -264,8 +264,27 @@ public class UserData {
 	public int getGender() {
 		return gender;
 	}
+	public String getGenderName(Context context) {
+		if(gender == GenderValues.MALE.getType()){
+			return context.getString(R.string.gender_male);
+		} else if(gender == GenderValues.FEMALE.getType()){
+			return context.getString(R.string.gender_female);
+		} else if(gender == GenderValues.OTHER.getType()){
+			return context.getString(R.string.gender_others);
+		} else {
+			return "";
+		}
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 
 	public String getDateOfBirth() {
 		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 }

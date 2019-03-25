@@ -12,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -66,6 +67,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms,tvServiceType;
+    TextView tvGender, tvDateOfBirth;
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
@@ -153,6 +155,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         textViewRankOverall.setTypeface(Fonts.mavenRegular(this));
         textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue);
         textViewMonthlyValue.setTypeface(Fonts.mavenRegular(this));
+
+        tvGender = findViewById(R.id.tvGender);
+        tvGender.setVisibility(View.GONE);
+        tvDateOfBirth = findViewById(R.id.tvDateOfBirth);
+        tvDateOfBirth.setVisibility(View.GONE);
 
         textViewRidesTakenValue = (TextView) findViewById(R.id.textViewRidesTakenValue);
         textViewRidesTakenValue.setTypeface(Fonts.mavenRegular(this));
@@ -437,6 +444,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                                                     textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI, accNo, ifscCode,
                                                     bankName, bankLoc, currency);
 
+
+                                            if(Data.userData != null) {
+                                                Data.userData.setGender(jObj.optInt(Constants.KEY_GENDER, Data.userData.getGender()));
+                                                Data.userData.setDateOfBirth(jObj.optString(Constants.KEY_DATE_OF_BIRTH, Data.userData.getDateOfBirth()));
+                                            }
+
                                             setUserData();
 
                                         } catch (Exception e) {
@@ -509,6 +522,14 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
                 textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);
+
+                tvGender.setVisibility((Prefs.with(this).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 0
+                        || Data.userData.getGender() == 0) ? View.GONE : View.VISIBLE);
+                tvGender.setText(getString(R.string.gender)+": "+Data.userData.getGenderName(this));
+                tvDateOfBirth.setVisibility((Prefs.with(this).getInt(Constants.KEY_DOB_INPUT_AT_SIGNUP, 0) == 0
+                        || TextUtils.isEmpty(Data.userData.getDateOfBirth())) ? View.GONE : View.VISIBLE);
+                tvDateOfBirth.setText(getString(R.string.hint_date_of_birth)+": "+Data.userData.getDateOfBirth());
+
             }
 
 

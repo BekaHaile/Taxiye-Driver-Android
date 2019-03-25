@@ -1174,4 +1174,5 @@
     <string name="label_select_gender">Select your gender</string>
     <string name="label_enter_date_of_birth">Enter your date of birth</string>
     <string name="hint_date_of_birth">Date of birth</string>
+    <string name="gender">Gender</string>
 </resources>
