@@ -251,6 +251,8 @@ class LoginFragment : Fragment() {
                         requireActivity().resources.getInteger(R.integer.dob_input_at_signup))
                         Prefs.with(requireActivity()).save(Constants.KEY_DOB_OPTIONAL, t?.dobOptional ?:
                         requireActivity().resources.getInteger(R.integer.dob_optional))
+                        Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_GENDER_FILTER, t?.driverGenderFilter ?:
+                        requireActivity().resources.getInteger(R.integer.driver_gender_filter))
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {

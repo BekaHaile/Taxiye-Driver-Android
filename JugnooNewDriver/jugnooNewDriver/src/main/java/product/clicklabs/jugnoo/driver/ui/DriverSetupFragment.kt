@@ -57,6 +57,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }else{
             mGender =  null
         }
+        setCityData(citySelected)
     }
 
     private var parentActivity: DriverSplashActivity? = null
@@ -522,18 +523,33 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         if(city!=null){
             tvCities.text = city.cityName
             cityId = city.cityId.toString()
-            adapter.setList(city.vehicleTypes,0)
-            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+
+            var list = city.vehicleTypes
+            if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 1) {
+                list = mutableListOf<CityResponse.VehicleType>()
+                for (vh in city.vehicleTypes) {
+                    if (mGender == null
+                            || mGender == 0
+                            || vh.applicableGender == 0
+                            || mGender == vh.applicableGender) {
+                        list.add(vh)
+                    }
+                }
+            }
+
+            adapter.setList(list,0)
+            if(list.size == 0){
                 rvVehicleTypes.gone()
                 Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
             }else{
                 rvVehicleTypes.visible()
             }
+            citySelected = city
         }else{
             rvVehicleTypes.gone()
             tvCities.text = getString(R.string.label_select_city)
             cityId = null
-
+            citySelected = null
 
         }
 
@@ -561,6 +577,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
     };
+    var citySelected: CityResponse.City? = null
 
     val countryPickerDialogInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.City> {
         override fun getAllCountries(): MutableList<CityResponse.City> {

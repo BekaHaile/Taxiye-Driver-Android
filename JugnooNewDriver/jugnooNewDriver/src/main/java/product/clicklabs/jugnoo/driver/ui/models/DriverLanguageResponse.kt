@@ -19,7 +19,8 @@ data class DriverLanguageResponse(
 @Expose @SerializedName("dob_input_at_signup") val dobInputAtSignup:Int?,
 @Expose @SerializedName("driver_email_optional") val driverEmailOptional:Int?,
 @Expose @SerializedName("gender_optional") val genderOptional:Int?,
-@Expose @SerializedName("dob_optional") val dobOptional:Int?
+@Expose @SerializedName("dob_optional") val dobOptional:Int?,
+@Expose @SerializedName("driver_gender_filter") val driverGenderFilter:Int?
 ):FeedCommonResponseKotlin()
 
 class LocaleModel(@Expose @SerializedName("locale") val locale:String?,
