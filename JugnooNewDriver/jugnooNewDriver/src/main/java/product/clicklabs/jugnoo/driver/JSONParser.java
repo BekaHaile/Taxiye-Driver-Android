@@ -509,6 +509,11 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_SHOW_POOL_REQUEST_DEST, userData.optInt(KEY_DRIVER_SHOW_POOL_REQUEST_DEST,
 				context.getResources().getInteger(R.integer.driver_show_pool_request_dest)));
 
+		Prefs.with(context).save(KEY_DRIVER_DOB_INPUT, userData.optInt(KEY_DRIVER_DOB_INPUT,
+				context.getResources().getInteger(R.integer.driver_dob_input)));
+		Prefs.with(context).save(KEY_DRIVER_GENDER_FILTER, userData.optInt(KEY_DRIVER_GENDER_FILTER,
+				context.getResources().getInteger(R.integer.driver_gender_filter)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

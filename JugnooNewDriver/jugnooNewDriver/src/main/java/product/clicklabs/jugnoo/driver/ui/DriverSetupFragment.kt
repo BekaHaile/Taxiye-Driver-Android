@@ -237,14 +237,12 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
             return false
         }
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 1
-                && Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_OPTIONAL, 1) == 0
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 1
                 && mGender == null) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_gender))
             return false
         }
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_INPUT_AT_SIGNUP, 0) == 1
-                && Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_OPTIONAL, 1) == 0
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 0) == 1
                 && edtDob.text.toString().isEmpty()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_date_of_birth))
             return false
@@ -440,16 +438,14 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     tvEnterEmail.gone()
                     editTextEmail.gone()
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_OPTIONAL, 1) == 0
-                        || Prefs.with(requireActivity()).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 1){
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 0){
                     tvGender.visible()
                     spinnerGender.visible()
                 } else {
                     tvGender.gone()
                     spinnerGender.gone()
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_OPTIONAL, 1) == 0
-                        || Prefs.with(requireActivity()).getInt(Constants.KEY_DOB_INPUT_AT_SIGNUP, 0) == 1){
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 0){
                     tvDob.visible()
                     edtDob.visible()
                 } else {

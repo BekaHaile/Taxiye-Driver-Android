@@ -281,6 +281,9 @@ public class UserData {
 	}
 
 	public String getDateOfBirth() {
+		if(dateOfBirth != null && dateOfBirth.equalsIgnoreCase("null")){
+			dateOfBirth = "";
+		}
 		return dateOfBirth;
 	}
 

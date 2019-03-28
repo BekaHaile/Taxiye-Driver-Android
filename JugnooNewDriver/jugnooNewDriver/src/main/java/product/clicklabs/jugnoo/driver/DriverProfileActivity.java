@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -523,12 +524,16 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
                 textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);
 
-                tvGender.setVisibility((Prefs.with(this).getInt(Constants.KEY_GENDER_INPUT_AT_SIGNUP, 0) == 0
+                tvGender.setVisibility((Prefs.with(this).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 0
                         || Data.userData.getGender() == 0) ? View.GONE : View.VISIBLE);
                 tvGender.setText(getString(R.string.gender)+": "+Data.userData.getGenderName(this));
-                tvDateOfBirth.setVisibility((Prefs.with(this).getInt(Constants.KEY_DOB_INPUT_AT_SIGNUP, 0) == 0
+                tvDateOfBirth.setVisibility((Prefs.with(this).getInt(Constants.KEY_DRIVER_DOB_INPUT, 0) == 0
                         || TextUtils.isEmpty(Data.userData.getDateOfBirth())) ? View.GONE : View.VISIBLE);
-                tvDateOfBirth.setText(getString(R.string.hint_date_of_birth)+": "+Data.userData.getDateOfBirth());
+                if(!TextUtils.isEmpty(Data.userData.getDateOfBirth())) {
+                    tvDateOfBirth.setText(getString(R.string.hint_date_of_birth)+": "+DateOperations.utcToLocalWithTZFallback(Data.userData.getDateOfBirth()).split(" ")[0]);
+                } else {
+                    tvDateOfBirth.setText("");
+                }
 
             }
 
