@@ -68,7 +68,7 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
                     tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
                 } else {
                     tollToEdit.edited = true
-                    tollToEdit.toll = fare.toDouble()
+                    tollToEdit.editedToll = fare.toDouble()
                 }
                 callback.tollAdded()
                 dismiss()
@@ -115,7 +115,7 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             val adapter = TollDataAdapter(activity, rvTolls, object:TollDataAdapter.Callback{
                 override fun onDeleteClick(pos: Int, tollData: TollData) : ArrayList<TollData> {
                     tollData.edited = true
-                    tollData.toll = 0.0
+                    tollData.editedToll = 0.0
                     return customerInfo.tollData
                 }
 
@@ -177,6 +177,13 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
         ApiCommonKt<FeedCommonResponseKotlin>(activity, true, true, true).execute(params, ApiName.UPDATE_TOLL_DATA,
                 object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
                     override fun onSuccess(feedCommonResponseKotlin: FeedCommonResponseKotlin, message: String, flag: Int) {
+
+                        for(tollData in customerInfo.tollData){
+                            if(tollData.edited) {
+                                tollData.toll = tollData.editedToll
+                            }
+                        }
+
                         dialog.dismiss()
                         callback.tollEntered(customerInfo.tollFare)
                     }

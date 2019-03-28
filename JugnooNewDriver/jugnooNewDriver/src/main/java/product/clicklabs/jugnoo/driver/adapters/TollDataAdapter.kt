@@ -21,7 +21,7 @@ class TollDataAdapter(val activity: Activity, val rv:RecyclerView, val callback:
     public fun setList(tollData: ArrayList<TollData>?, currency:String){
         this.tollData.clear()
         for(toll in tollData!!.iterator()){
-            if(!toll.edited || toll.toll > 0){
+            if(!toll.edited || toll.editedToll > 0){
                 this.tollData.add(toll)
             }
         }
@@ -40,7 +40,7 @@ class TollDataAdapter(val activity: Activity, val rv:RecyclerView, val callback:
 
     override fun onBindViewHolder(holder: TollDataAdapter.FareDetailViewHolder, position: Int) {
         holder.tvTollName.text = tollData[position].tollName
-        holder.tvTollValue.text = Utils.formatCurrencyValue(currency, tollData[position].toll)
+        holder.tvTollValue.text = Utils.formatCurrencyValue(currency, tollData[position].getTollForList())
         holder.vDiv.visibility = if(position == itemCount-1) View.GONE else View.VISIBLE
     }
 
