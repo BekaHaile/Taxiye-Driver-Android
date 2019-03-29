@@ -5848,6 +5848,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
+                    ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
+                    CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+                    if (customerInfo1.isReverseBid()) {
+                        double bidValue = Double.parseDouble(bidValues.get(holder.id));
+                        double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
+                        if (maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue) {
+                            Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
+                            return;
+                        }
+                    }
                     modifyBidValue(v, true);
                 }
             });
