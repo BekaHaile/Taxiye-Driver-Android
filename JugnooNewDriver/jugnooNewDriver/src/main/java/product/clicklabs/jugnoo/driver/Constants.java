@@ -429,5 +429,6 @@ public interface Constants {
 	String KEY_DATE_OF_BIRTH = "date_of_birth";
 	String KEY_DRIVER_GENDER_FILTER = "driver_gender_filter";
 	String KEY_DRIVER_DOB_INPUT = "driver_dob_input";
+	String KEY_LOGIN = "login";
 }
 

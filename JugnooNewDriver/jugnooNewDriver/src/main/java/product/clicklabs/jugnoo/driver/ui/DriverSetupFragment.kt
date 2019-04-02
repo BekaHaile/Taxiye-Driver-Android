@@ -438,14 +438,14 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     tvEnterEmail.gone()
                     editTextEmail.gone()
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 0){
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 1){
                     tvGender.visible()
                     spinnerGender.visible()
                 } else {
                     tvGender.gone()
                     spinnerGender.gone()
                 }
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 0){
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 1){
                     tvDob.visible()
                     edtDob.visible()
                 } else {

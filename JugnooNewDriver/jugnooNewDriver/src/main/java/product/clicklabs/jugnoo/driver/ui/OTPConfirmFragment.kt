@@ -329,6 +329,14 @@ class OTPConfirmFragment : Fragment(){
                             else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                                 Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                         if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+
+                                if(jObj.has(Constants.KEY_LOGIN)) {
+                                    Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_DOB_INPUT, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_DOB_INPUT,
+                                            getResources().getInteger(R.integer.driver_dob_input)))
+                                    Prefs.with(context).save(Constants.KEY_DRIVER_GENDER_FILTER, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_GENDER_FILTER,
+                                            getResources().getInteger(R.integer.driver_gender_filter)))
+                                }
+
                                 val accessToken = jObj.getString("access_token")
                                 JSONParser.saveAccessToken(requireActivity(), accessToken)
 //                                val intent = Intent(requireActivity(), DriverDocumentActivity::class.java)
