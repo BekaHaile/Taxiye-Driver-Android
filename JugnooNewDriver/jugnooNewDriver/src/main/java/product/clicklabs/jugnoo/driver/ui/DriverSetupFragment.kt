@@ -441,9 +441,11 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 1){
                     tvGender.visible()
                     spinnerGender.visible()
+                    tvArrow.visible()
                 } else {
                     tvGender.gone()
                     spinnerGender.gone()
+                    tvArrow.gone()
                 }
                 if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 1){
                     tvDob.visible()
