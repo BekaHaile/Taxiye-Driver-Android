@@ -331,7 +331,7 @@ public interface Constants {
 	String KEY_DEFAULT_LANG = "default_lang";
 	String KEY_LOCALE = "locale";
 	String KEY_TOLL_CHARGE = "toll_charge";
-	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
+	String KEY_SHOW_TOLL_CHARGE1 = "show_toll_charge";
 	String KEY_DEVICE_TYPE = "device_type";
 	String WALLET = "wallet";
 	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
@@ -424,5 +424,6 @@ public interface Constants {
 	String KEY_DRIVER_GOOGLE_TRAFFIC_ENABLED = "driver_google_traffic_enabled";
 
 	String KEY_DRIVER_SHOW_POOL_REQUEST_DEST = "driver_show_pool_request_dest";
+	String KEY_TOLL_APPLICABLE = "toll_applicable";
 }
 

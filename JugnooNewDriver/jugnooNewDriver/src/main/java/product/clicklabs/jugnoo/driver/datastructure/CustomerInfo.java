@@ -71,6 +71,7 @@ public class CustomerInfo {
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
 	private String customerNotes;
+	private int tollApplicable;
 
 
 	/**
@@ -82,7 +83,7 @@ public class CustomerInfo {
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
 						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime,
-						int isCorporateRide, String customerNotes){
+						int isCorporateRide, String customerNotes, int tollApplicable){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -136,6 +137,7 @@ public class CustomerInfo {
 		this.pickupTime = pickupTime;
 		this.isCorporateRide = isCorporateRide;
 		this.customerNotes = customerNotes;
+		this.tollApplicable = tollApplicable;
 	}
 
 
@@ -770,5 +772,13 @@ public class CustomerInfo {
 			customerNotes = "";
 		}
 		return customerNotes;
+	}
+
+	public int getTollApplicable() {
+		return tollApplicable;
+	}
+
+	public void setTollApplicable(int tollApplicable) {
+		this.tollApplicable = tollApplicable;
 	}
 }

@@ -5235,7 +5235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         if (!ignoreTollChargeTipAmount) {
             double taxAmount = Utils.currencyPrecision(fare * Data.fareStructure.getTaxPercent()/100D);
-            fare = fare + (JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D)
+            fare = fare + (customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D)
                     + customerInfo.getTipAmount() + taxAmount;
         }
 
@@ -6071,6 +6071,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
                     int isCorporateRide = jObj.optInt(Constants.KEY_IS_CORPORATE_RIDE, 0);
                     String customerNotes = jObj.optString(Constants.KEY_CUSTOMER_NOTE, "");
+                    int tollApplicable = jObj.optInt(Constants.KEY_TOLL_APPLICABLE, 0);
 
                     Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -6084,7 +6085,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
-                            pickupTime, isCorporateRide, customerNotes);
+                            pickupTime, isCorporateRide, customerNotes, tollApplicable);
 
                     JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 
@@ -6724,7 +6725,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
         params.put(KEY_RIDE_TIME_SECONDS_DB, rideTimeInSecFromDBStr);
         params.put(KEY_IS_CACHED, "0");
-        if (JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)) {
+        if (customerInfo.getTollApplicable() == 1) {
             params.put(Constants.KEY_TOLL_CHARGE, String.valueOf(customerInfo.getTollFare()));
         }
         params.put(Constants.KEY_TIP_AMOUNT, String.valueOf(customerInfo.getTipAmount()));
@@ -7096,7 +7097,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     //toll fare and tip amount should not be there in totalFare when calculating discount
                     taxAmount = Utils.currencyPrecision(totalFare * Data.fareStructure.getTaxPercent()/100D);
                     tipAmount = customerInfo.getTipAmount();
-                    tollFare = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE) ? customerInfo.getTollFare() : 0D;
+                    tollFare = customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -7957,7 +7958,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 tvTollValue.setText(getString(R.string.toll_value, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getTollFare())));
                 btnEnterToll.setVisibility(View.GONE);
                 tvTollValue.setVisibility(View.GONE);
-                if(JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_TOLL_CHARGE)){
+                if(customerInfo.getTollApplicable() == 1){
                     if(customerInfo.getTollFare() > 0){
                         tvTollValue.setVisibility(View.VISIBLE);
                     } else {
@@ -11235,22 +11236,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     private void getTollData(final CustomerInfo customerInfo){
-    	HashMap<String, String> params = new HashMap<>();
-    	params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
-    	new ApiCommonKt<TollDataResponse>(this, true, true, true).execute(params, ApiName.GET_TOLL_DATA,
-				new APICommonCallbackKotlin<TollDataResponse>() {
-			@Override
-			public void onSuccess(TollDataResponse tollDataResponse, String message, int flag) {
-                customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
-				endRidePopup(HomeActivity.this, customerInfo);
-			}
+        if(customerInfo.getTollApplicable() == 1) {
+            DialogPopup.showLoadingDialog(this, getString(R.string.loading));
+            HashMap<String, String> params = new HashMap<>();
+            params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+            new ApiCommonKt<TollDataResponse>(this, true, true, true).execute(params, ApiName.GET_TOLL_DATA,
+                    new APICommonCallbackKotlin<TollDataResponse>() {
+                        @Override
+                        public void onSuccess(TollDataResponse tollDataResponse, String message, int flag) {
+                            DialogPopup.dismissLoadingDialog();
+                            customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
+                            endRidePopup(HomeActivity.this, customerInfo);
+                        }
 
-			@Override
-			public boolean onError(TollDataResponse tollDataResponse, String message, int flag) {
-                customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
-                endRidePopup(HomeActivity.this, customerInfo);
-				return true;
-			}
-		});
+                        @Override
+                        public boolean onError(TollDataResponse tollDataResponse, String message, int flag) {
+                            DialogPopup.dismissLoadingDialog();
+                            customerInfo.setTollData((ArrayList<TollData>) tollDataResponse.getTollData());
+                            endRidePopup(HomeActivity.this, customerInfo);
+                            return true;
+                        }
+                    });
+        } else {
+            endRidePopup(HomeActivity.this, customerInfo);
+        }
 	}
 }
