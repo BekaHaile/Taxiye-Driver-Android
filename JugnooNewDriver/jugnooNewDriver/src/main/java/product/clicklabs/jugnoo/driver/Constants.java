@@ -462,6 +462,7 @@ public interface Constants {
 
 	String KEY_CSV_PATH = "csv_path";
 	String KEY_CSV_WAYPOINTS = "csv_waypoints";
+	String KEY_NUM_WAYPOINTS = "num_waypoints";
 	String KEY_WAYPOINT_PATH = "waypoint_path";
 }
 

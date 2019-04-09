@@ -7583,6 +7583,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     if(customerInfo.getMap().containsKey(KEY_CSV_WAYPOINTS)){
                         params.put(Constants.KEY_WAYPOINTS, customerInfo.getMap().get(KEY_CSV_WAYPOINTS));
                     }
+                    if(customerInfo.getMap().containsKey(KEY_NUM_WAYPOINTS)){
+                        params.put(Constants.KEY_NUM_WAYPOINTS, customerInfo.getMap().get(KEY_NUM_WAYPOINTS));
+                    }
                 }
 
                 HomeUtil.putDefaultParams(params);
@@ -11747,6 +11750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 customerInfo.getMap().put(KEY_WAYPOINT_DISTANCE, String.valueOf(intent.getDoubleExtra(KEY_WAYPOINT_DISTANCE, 0)));
                 customerInfo.getMap().put(KEY_CSV_PATH, intent.getStringExtra(KEY_CSV_PATH));
                 customerInfo.getMap().put(KEY_CSV_WAYPOINTS, intent.getStringExtra(KEY_CSV_WAYPOINTS));
+                customerInfo.getMap().put(KEY_NUM_WAYPOINTS, intent.getStringExtra(KEY_NUM_WAYPOINTS));
 
                 endRideConfrimedFromPopup(customerInfo);
             }

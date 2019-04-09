@@ -395,6 +395,7 @@ class AltMeteringService : Service() {
     inner class InsertRideDataAndEndRide() : AsyncTask<Unit, Unit, Unit>(){
         var csvPathStr:String = ""
         var csvWaypointsStr:String = ""
+        var numWaypoints:Int = 0
         override fun doInBackground(vararg params: Unit?) {
 
             val templatePath = "lat,lng,accDistance"
@@ -422,6 +423,7 @@ class AltMeteringService : Service() {
                     csvWP.append(globalWaypointLatLngs!![i].latitude.toString()+","+globalWaypointLatLngs!![i].longitude.toString())
                     csvWP.append(newLine)
                 }
+                numWaypoints = globalWaypointLatLngs!!.size
             }
             csvWaypointsStr = csvWP.toString()
 
@@ -441,6 +443,7 @@ class AltMeteringService : Service() {
                 putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
                 putExtra(Constants.KEY_CSV_PATH, csvPathStr)
                 putExtra(Constants.KEY_CSV_WAYPOINTS, csvWaypointsStr)
+                putExtra(Constants.KEY_NUM_WAYPOINTS, numWaypoints.toString())
                 putExtra(Constants.KEY_WAYPOINT_DISTANCE, globalPathDistance)
             }
             LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent)
