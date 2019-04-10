@@ -525,6 +525,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(DRIVER_HERE_APP_ID, userData.optString(DRIVER_HERE_APP_ID,
 				context.getString(R.string.driver_here_app_id)));
 
+		Prefs.with(context).save(KEY_DRIVER_ALT_DISTANCE_LOGIC, userData.optInt(KEY_DRIVER_ALT_DISTANCE_LOGIC,
+				context.getResources().getInteger(R.integer.driver_alt_distance_logic)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

@@ -464,5 +464,6 @@ public interface Constants {
 	String KEY_CSV_WAYPOINTS = "csv_waypoints";
 	String KEY_NUM_WAYPOINTS = "num_waypoints";
 	String KEY_WAYPOINT_PATH = "waypoint_path";
+	String KEY_DRIVER_ALT_DISTANCE_LOGIC = "driver_alt_distance_logic";
 }
 

@@ -5007,7 +5007,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
 
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-			if(customerInfo.getDropLatLng() != null) {
+			if(customerInfo.getDropLatLng() != null && Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
 				Intent intent = new Intent(this, AltMeteringService.class);
 				intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
 				intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
@@ -8217,7 +8217,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (AppStatus.getInstance(activity).isOnline(activity)) {
                             if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 
-                                if(customerInfo.getDropLatLng() != null) {
+                                if(customerInfo.getDropLatLng() != null && Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
                                     DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
                                     LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
                                             new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
