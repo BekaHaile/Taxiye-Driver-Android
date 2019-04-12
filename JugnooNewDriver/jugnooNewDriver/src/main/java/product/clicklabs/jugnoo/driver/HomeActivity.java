@@ -5014,9 +5014,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
 				intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
 				intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
-				startForegroundService(intent);
+                startService(intent);
 			}
-            startForegroundService(new Intent(this, MeteringService.class));
+            startService(new Intent(this, MeteringService.class));
 
         } else {
             if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null

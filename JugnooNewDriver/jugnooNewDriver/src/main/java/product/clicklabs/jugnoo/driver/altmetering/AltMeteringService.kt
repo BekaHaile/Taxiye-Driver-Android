@@ -38,9 +38,17 @@ class AltMeteringService : Service() {
     companion object {
         const val INTENT_ACTION_END_RIDE_TRIGGER = "SERVICE_INTENT_ACTION_END_RIDE_TRIGGER"
         private const val METERING_STATE_ACTIVE = "alt_metering_state_active"
+        private const val METERING_ = "alt_metering_"
 
         fun updateMeteringActive(context: Context, meteringState: Boolean){
             Prefs.with(context).save(METERING_STATE_ACTIVE, meteringState)
+            if(!meteringState){
+                Prefs.with(context).save(METERING_+ Constants.KEY_ENGAGEMENT_ID, 0)
+                Prefs.with(context).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, 0.toString())
+                Prefs.with(context).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, 0.toString())
+                Prefs.with(context).save(METERING_+ Constants.KEY_OP_DROP_LATITUDE, 0.toString())
+                Prefs.with(context).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, 0.toString())
+            }
         }
     }
 
@@ -88,18 +96,44 @@ class AltMeteringService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand, intent=$intent")
+
+        if (intent != null && intent.hasExtra(Constants.KEY_ENGAGEMENT_ID)) {
+            val sourceLat = intent.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
+            val sourceLng = intent.getDoubleExtra(Constants.KEY_PICKUP_LONGITUDE, 0.0)
+            val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
+            val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
+
+            engagementId = intent.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)
+            source = LatLng(sourceLat, sourceLng)
+            destination = LatLng(destinationLat, destinationLng)
+
+            Prefs.with(this).save(METERING_+ Constants.KEY_ENGAGEMENT_ID, engagementId)
+            Prefs.with(this).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, sourceLat.toString())
+            Prefs.with(this).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, sourceLng.toString())
+            Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LATITUDE, destinationLat.toString())
+            Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, destinationLng.toString())
+
+        } else if(isMeteringActive(this)) {
+
+            val sourceLat = Prefs.with(this).getString(METERING_+ Constants.KEY_PICKUP_LATITUDE, 0.toString()).toDouble()
+            val sourceLng = Prefs.with(this).getString(METERING_+ Constants.KEY_PICKUP_LONGITUDE, 0.toString()).toDouble()
+            val destinationLat = Prefs.with(this).getString(METERING_+ Constants.KEY_OP_DROP_LATITUDE, 0.toString()).toDouble()
+            val destinationLng = Prefs.with(this).getString(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, 0.toString()).toDouble()
+
+            engagementId = Prefs.with(this).getInt(METERING_+ Constants.KEY_ENGAGEMENT_ID, 0)
+            source = LatLng(sourceLat, sourceLng)
+            destination = LatLng(destinationLat, destinationLng)
+
+        } else {
+            stopSelf()
+            return Service.START_NOT_STICKY
+        }
+
+
         startForeground(METER_NOTIF_ID, generateNotification(this, getNotificationMessage(), METER_NOTIF_ID))
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
 
-        val sourceLat = intent!!.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
-        val sourceLng = intent.getDoubleExtra(Constants.KEY_PICKUP_LONGITUDE, 0.0)
-        val destinationLat = intent.getDoubleExtra(Constants.KEY_OP_DROP_LATITUDE, 0.0)
-        val destinationLng = intent.getDoubleExtra(Constants.KEY_OP_DROP_LONGITUDE, 0.0)
-
-        engagementId = intent.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)
-        source = LatLng(sourceLat, sourceLng)
-        destination = LatLng(destinationLat, destinationLng)
 
         if (!isMeteringActive(this)) {
             updateMeteringActive(this, true)
