@@ -5363,10 +5363,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
                 textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare,
                 textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare, textViewEstimatedDist, textViewDropPoint,
-                textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount;
+                textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount, tvRentalRideInfo;
         Button buttonAcceptRide, buttonCancelRide;
         ImageView imageViewDeliveryList;
-        LinearLayout relative, linearLayoutDeliveryParams;
+        LinearLayout relative, linearLayoutDeliveryParams, llRentalRequest;
         RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD, rlAcceptCancel;
         ProgressBar progressBarRequest;
         int id;
@@ -5522,9 +5522,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 //				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
                 holder.linearLayoutDeliveryParams = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryParams);
+                holder.llRentalRequest = (LinearLayout) convertView.findViewById(R.id.llRentalRequest);
                 holder.relativeLayoutDropPoints = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutDropPoints);
                 holder.driverRideTimeRl = (RelativeLayout) convertView.findViewById(R.id.driverRideTimeRl);
                 holder.driverFareFactor = (RelativeLayout) convertView.findViewById(R.id.driverFareFactor);
+                holder.tvRentalRideInfo = (TextView) convertView.findViewById(R.id.tvRentalRideInfo);
+                holder.tvRentalRideInfo.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.relative.setTag(holder);
                 holder.buttonAcceptRide.setTag(holder);
                 holder.buttonCancelRide.setTag(holder);
@@ -5571,6 +5574,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             holder.id = position;
 
             holder.textViewRequestAddress.setText(customerInfo.getAddress());
+            if (customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()) {
+                holder.llRentalRequest.setVisibility(View.VISIBLE);
+                holder.tvRentalRideInfo.setText(customerInfo.getRentalInfo());
+                holder.tvRentalRideInfo.setTextColor(getResources().getColor(R.color.text_color));
+            } else {
+                holder.llRentalRequest.setVisibility(View.GONE);
+            }
             long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
             long timeDiffInSec = timeDiff / 1000;
             holder.textViewRequestTime.setText("" + timeDiffInSec);
@@ -5597,6 +5607,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
             if (customerInfo.getIsDelivery() == 1) {
                 holder.linearLayoutDeliveryParams.setVisibility(View.VISIBLE);
+                holder.llRentalRequest.setVisibility(View.GONE);
                 if (customerInfo.getTotalDeliveries() > 0) {
                     holder.textViewRequestDetails.setVisibility(View.VISIBLE);
                     holder.textViewRequestDetails.setText(getResources().getString(R.string.delivery_numbers)
@@ -5618,6 +5629,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             } else {
                 holder.linearLayoutDeliveryParams.setVisibility(View.VISIBLE);
+                holder.llRentalRequest.setVisibility(View.VISIBLE);
                 holder.relativeLayoutDriverCOD.setVisibility(View.GONE);
             }
 
@@ -5658,6 +5670,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 holder.linearLayoutDeliveryParams.setVisibility(View.VISIBLE);
             }
+
 
             int dropAddress = customerInfo.getDeliveryAddress().size();
             android.view.ViewGroup.LayoutParams layoutParams = holder.imageViewDeliveryList.getLayoutParams();
@@ -6015,7 +6028,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
                     String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-                            vendorMessage = "", estimatedDriverFare = "";
+                            vendorMessage = "", estimatedDriverFare = "", strRentalInfo = "";
                     int ForceEndDelivery = 0, falseDeliveries = 0, loadingStatus = 0;
                     double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
                             currrentLatitude = 0, currrentLongitude = 0;
@@ -6050,6 +6063,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         Log.e("address", address);
                         currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
                         currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+                        JSONObject joRentalInfo = jObj.getJSONObject(Constants.KEY_RENTAL_INFO);
+                        if(joRentalInfo != null) {
+                            if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
+                                double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+                                String time;
+                                if(timeInMins > 60) {
+                                    time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+                                }else {
+                                    time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+                                }
+                                strRentalInfo = strRentalInfo.concat(time);
+                            }
+                            if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
+                                strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+                            }
+                            if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
+                                strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+                            }
+
+                        }
                     }
 
                     LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
@@ -6085,7 +6118,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
-                            pickupTime, isCorporateRide, customerNotes, tollApplicable);
+                            pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo);
 
                     JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 

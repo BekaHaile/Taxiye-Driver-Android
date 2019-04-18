@@ -615,7 +615,7 @@ public class JSONParser implements Constants {
 							}
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-									vendorMessage = "", estimatedDriverFare = "";
+									vendorMessage = "", estimatedDriverFare = "", strRentalInfo = "";
 							int forceEndDelivery =0, loadingStatus =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
@@ -655,6 +655,26 @@ public class JSONParser implements Constants {
 								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
 								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
+								JSONObject joRentalInfo = jObjCustomer.getJSONObject(Constants.KEY_RENTAL_INFO);
+								if(joRentalInfo != null) {
+									if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
+										double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+										String time;
+										if(timeInMins > 60) {
+											time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+										}else {
+											time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+										}
+										strRentalInfo = strRentalInfo.concat(time);
+									}
+									if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
+										strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+									}
+									if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
+										strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+									}
+
+								}
 							}
 
 
@@ -692,7 +712,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes, tollApplicable);
+									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -795,6 +815,7 @@ public class JSONParser implements Constants {
 			JSONArray jActiveRequests = jObject1.getJSONArray("active_requests");
 
 			for (int i = 0; i < jActiveRequests.length(); i++) {
+				String strRentalInfo = "";
 				JSONObject jActiveRequest = jActiveRequests.getJSONObject(i);
 				String requestEngagementId = jActiveRequest.getString("engagement_id");
 				String currency = jActiveRequest.getString(KEY_CURRENCY);
@@ -812,6 +833,26 @@ public class JSONParser implements Constants {
 					requestAddress = jActiveRequest.optString(Constants.KEY_PICKUP_ADDRESS, requestAddress);
 				}
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
+				JSONObject joRentalInfo = jActiveRequest.getJSONObject(Constants.KEY_RENTAL_INFO);
+				if(joRentalInfo != null) {
+					if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
+						double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+						String time;
+						if(timeInMins > 60) {
+							time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+						}else {
+							time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+						}
+						strRentalInfo = strRentalInfo.concat(time);
+					}
+					if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
+						strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+					}
+					if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
+						strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+					}
+
+				}
 
 				String startTime = jActiveRequest.getString("start_time");
 				String endTime = "";
@@ -874,7 +915,7 @@ public class JSONParser implements Constants {
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance, pickupTime);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance, pickupTime, strRentalInfo);
 
 				Data.addCustomerInfo(customerInfo);
 

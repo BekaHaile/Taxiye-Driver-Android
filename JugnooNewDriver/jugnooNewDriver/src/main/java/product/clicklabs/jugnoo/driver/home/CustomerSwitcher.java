@@ -46,7 +46,7 @@ public class CustomerSwitcher {
 	private RecyclerView recyclerViewCustomersLinked;
 
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
-			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes;
+			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private CustomerInfoAdapter customerInfoAdapter;
@@ -69,6 +69,8 @@ public class CustomerSwitcher {
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		tvRentalRideInfo = (TextView) rootView.findViewById(R.id.tvRentalRideInfo);
+		tvRentalRideInfo.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerCashRequired = (TextView) rootView.findViewById(R.id.textViewCustomerCashRequired);
 		textViewCustomerCashRequired.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
@@ -190,6 +192,12 @@ public class CustomerSwitcher {
 							&& customerInfo.getDropLatLng() != null) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
+							tvRentalRideInfo.setVisibility(View.VISIBLE);
+							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
+						}else {
+							tvRentalRideInfo.setVisibility(View.GONE);
+						}
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
@@ -245,6 +253,12 @@ public class CustomerSwitcher {
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
+						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
+							tvRentalRideInfo.setVisibility(View.VISIBLE);
+							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
+						}else {
+							tvRentalRideInfo.setVisibility(View.GONE);
+						}
 					}
 					if(customerInfo.getDropLatLng() != null) {
 						activity.bDropAddressToggle.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0)

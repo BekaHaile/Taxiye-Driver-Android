@@ -580,6 +580,27 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
 									String currency = jObj.optString(Constants.KEY_CURRENCY, "");
 									String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
+									JSONObject joRentalInfo = jObj.getJSONObject(Constants.KEY_RENTAL_INFO);
+									String strRentalInfo = "";
+									if(joRentalInfo != null) {
+										if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
+											double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+											String time;
+											if(timeInMins > 60) {
+												time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+											}else {
+												time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+											}
+											strRentalInfo = strRentalInfo.concat(time);
+										}
+										if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
+											strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+										}
+										if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
+											strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+										}
+
+									}
 
 									if(isPooled == 1 && Prefs.with(this).getInt(Constants.KEY_DRIVER_SHOW_POOL_REQUEST_DEST, 0) == 1){
 										address = address + "\n" + getString(R.string.to)+dropAddress;
@@ -645,7 +666,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
 												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-												pickupTime);
+												pickupTime, strRentalInfo);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId, changeRing);

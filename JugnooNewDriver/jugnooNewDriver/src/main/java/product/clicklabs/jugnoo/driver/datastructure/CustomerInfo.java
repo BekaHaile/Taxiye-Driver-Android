@@ -72,6 +72,7 @@ public class CustomerInfo {
 	private int isCorporateRide;
 	private String customerNotes;
 	private int tollApplicable;
+	private String rentalInfo;
 
 
 	/**
@@ -83,7 +84,7 @@ public class CustomerInfo {
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
 						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime,
-						int isCorporateRide, String customerNotes, int tollApplicable){
+						int isCorporateRide, String customerNotes, int tollApplicable, final String rentalInfo){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -138,6 +139,7 @@ public class CustomerInfo {
 		this.isCorporateRide = isCorporateRide;
 		this.customerNotes = customerNotes;
 		this.tollApplicable = tollApplicable;
+		this.rentalInfo = rentalInfo;
 	}
 
 
@@ -156,7 +158,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime){
+						String pickupTime, String rentalInfo){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -184,6 +186,7 @@ public class CustomerInfo {
 		this.initialBidValue = initialBidValue;
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
+		this.rentalInfo = rentalInfo;
 	}
 
 	public double getDryDistance() {
@@ -780,5 +783,13 @@ public class CustomerInfo {
 
 	public void setTollApplicable(int tollApplicable) {
 		this.tollApplicable = tollApplicable;
+	}
+
+	public String getRentalInfo() {
+		return rentalInfo;
+	}
+
+	public void setRentalInfo(String rentalInfo) {
+		this.rentalInfo = rentalInfo;
 	}
 }

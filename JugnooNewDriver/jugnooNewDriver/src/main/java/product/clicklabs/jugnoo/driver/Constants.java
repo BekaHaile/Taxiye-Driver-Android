@@ -425,5 +425,11 @@ public interface Constants {
 
 	String KEY_DRIVER_SHOW_POOL_REQUEST_DEST = "driver_show_pool_request_dest";
 	String KEY_TOLL_APPLICABLE = "toll_applicable";
+
+//	****** Rental *********
+	String KEY_RENTAL_INFO = "package_info";
+	String KEY_RENTAL_TIME = "fare_threshold_time";
+	String KEY_RENTAL_DISTANCE = "fare_threshold_distance";
+	String KEY_RENTAL_AMOUNT = "fare_fixed";
 }
 
