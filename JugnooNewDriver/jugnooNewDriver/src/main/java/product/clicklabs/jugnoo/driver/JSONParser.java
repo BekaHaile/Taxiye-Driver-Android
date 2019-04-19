@@ -655,7 +655,7 @@ public class JSONParser implements Constants {
 								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
 								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
-								JSONObject joRentalInfo = jObjCustomer.getJSONObject(Constants.KEY_RENTAL_INFO);
+								JSONObject joRentalInfo = jObjCustomer.optJSONObject(Constants.KEY_RENTAL_INFO);
 								if(joRentalInfo != null) {
 									if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
 										double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
@@ -833,7 +833,7 @@ public class JSONParser implements Constants {
 					requestAddress = jActiveRequest.optString(Constants.KEY_PICKUP_ADDRESS, requestAddress);
 				}
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
-				JSONObject joRentalInfo = jActiveRequest.getJSONObject(Constants.KEY_RENTAL_INFO);
+				JSONObject joRentalInfo = jActiveRequest.optJSONObject(Constants.KEY_RENTAL_INFO);
 				if(joRentalInfo != null) {
 					if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
 						double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));

@@ -6063,7 +6063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         Log.e("address", address);
                         currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
                         currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
-                        JSONObject joRentalInfo = jObj.getJSONObject(Constants.KEY_RENTAL_INFO);
+                        JSONObject joRentalInfo = jObj.optJSONObject(Constants.KEY_RENTAL_INFO);
                         if(joRentalInfo != null) {
                             if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
                                 double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
