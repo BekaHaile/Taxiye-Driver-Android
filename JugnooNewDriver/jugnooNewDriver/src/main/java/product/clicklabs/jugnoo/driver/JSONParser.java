@@ -657,23 +657,25 @@ public class JSONParser implements Constants {
 								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 								JSONObject joRentalInfo = jObjCustomer.optJSONObject(Constants.KEY_RENTAL_INFO);
 								if(joRentalInfo != null) {
-									if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
-										double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+									if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
+										double timeInMins = joRentalInfo.getDouble(Constants.KEY_RENTAL_TIME);
 										String time;
-										if(timeInMins > 60) {
-											time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+										if(timeInMins >= 60) {
+											time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" ").concat(
+													timeInMins / 60 == 1 ? context.getString(R.string.rental_hour).concat(" ") : context.getString(R.string.rental_hours).concat(" ")));
 										}else {
-											time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+											time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
+													timeInMins <= 1 ? context.getString(R.string.rental_min).concat(" ") : context.getString(R.string.rental_mins).concat(" ")));
 										}
 										strRentalInfo = strRentalInfo.concat(time);
 									}
 									if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
-										strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+										strRentalInfo = strRentalInfo.concat(context.getString(R.string.rental_max)).concat(" ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE))
+												.concat(" ").concat(UserData.getDistanceUnit(context)).concat(" | ");
 									}
-									if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
-										strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+									if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT) != 0) {
+										strRentalInfo = strRentalInfo.concat(Utils.formatCurrencyValue(Data.userData.getCurrency(), joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT)));
 									}
-
 								}
 							}
 
@@ -835,23 +837,25 @@ public class JSONParser implements Constants {
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 				JSONObject joRentalInfo = jActiveRequest.optJSONObject(Constants.KEY_RENTAL_INFO);
 				if(joRentalInfo != null) {
-					if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.getString(Constants.KEY_RENTAL_TIME) != null) {
-						double timeInMins = Double.parseDouble(joRentalInfo.getString(Constants.KEY_RENTAL_TIME));
+					if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
+						double timeInMins = joRentalInfo.getDouble(Constants.KEY_RENTAL_TIME);
 						String time;
-						if(timeInMins > 60) {
-							time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" hour | "));
+						if(timeInMins >= 60) {
+							time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" ").concat(
+									timeInMins / 60 == 1 ? context.getString(R.string.rental_hour) : context.getString(R.string.rental_hours)));
 						}else {
-							time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" min | "));
+							time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
+									timeInMins <= 1 ? context.getString(R.string.rental_min) : context.getString(R.string.rental_mins)));
 						}
 						strRentalInfo = strRentalInfo.concat(time);
 					}
 					if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE) != null) {
-						strRentalInfo = strRentalInfo.concat("Max. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE)).concat(" km | ");
+						strRentalInfo = strRentalInfo.concat(context.getString(R.string.rental_max)).concat(" ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE))
+								.concat(UserData.getDistanceUnit(context)).concat(" | ");
 					}
-					if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT) != null) {
-						strRentalInfo = strRentalInfo.concat("Rs. ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_AMOUNT));
+					if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT) != 0) {
+						strRentalInfo = strRentalInfo.concat(Utils.formatCurrencyValue(Data.userData.getCurrency(), joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT)));
 					}
-
 				}
 
 				String startTime = jActiveRequest.getString("start_time");

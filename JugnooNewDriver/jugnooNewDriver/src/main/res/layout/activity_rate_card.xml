@@ -20,7 +20,9 @@
             android:textSize="32px"/>
 
     </RelativeLayout>
-
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <LinearLayout
         android:id="@+id/linearLayoutMain"
         android:layout_width="wrap_content"
@@ -460,7 +462,35 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlRentalVehicles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30px"
+            android:layout_marginTop="30px">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvRentalVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlOutstationVehicles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="35px"
+            android:layout_marginStart="30px"
+            android:layout_marginTop="30px">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvOutstationVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
-
+</android.support.v4.widget.NestedScrollView>
 </LinearLayout>

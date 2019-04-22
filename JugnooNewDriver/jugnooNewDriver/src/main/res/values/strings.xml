@@ -1164,4 +1164,16 @@
     <string name="please_enter_less_value_for_bid">Please enter less value for bid</string>
     <string name="note">Note</string>
 
+    <!--Rental-->
+    <string name="rate_card_title_rental_packages">Rental Packages</string>
+    <string name="rate_card_title_outstation_packages">Outstation Packages</string>
+    <string name="additional_per_min">Additional Per Min Fare</string>
+    <string name="additional_per_km_fare">Additional Per %s Fare</string>
+    <string name="package_rate_format">Package Rate: %s</string>
+    <string name="rental_hour">hour |</string>
+    <string name="rental_hours">hours |</string>
+    <string name="rental_min">min |</string>
+    <string name="rental_mins">mins |</string>
+    <string name="rental_max">Max.</string>
+
 </resources>

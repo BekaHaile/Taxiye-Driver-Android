@@ -1,6 +1,9 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +15,17 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.RentalAndOutstationVehicleAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.Packages;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RentalAndOutstation;
+import product.clicklabs.jugnoo.driver.retrofit.model.RentalVehicle;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -39,7 +48,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 	TextView textViewSpecialInfo;
 	LinearLayout llBeforeRide, llInRide;
 	RelativeLayout rlBeforeRide;
-	
+	RecyclerView rvRentalVehicle, rvOutstationVehicle;
+
 	NewRateCardActivity activity;
 	private View rootView;
 	public DriverRateCard(){
@@ -96,6 +106,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		textViewDtoC = (TextView) rootView.findViewById(R.id.textViewDtoC);
 		textViewDtoC.setTypeface(Fonts.mavenRegular(activity));
 		textViewDtoD = (TextView) rootView.findViewById(R.id.textViewDtoD);
+		rvRentalVehicle = rootView.findViewById(R.id.rvRentalVehicle);
+		rvOutstationVehicle = rootView.findViewById(R.id.rvOutstationVehicle);
 		textViewDtoD.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewPickupChargesCond = (TextView) rootView.findViewById(R.id.textViewPickupChargesCond);
@@ -252,6 +264,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
+							setRentalAndOutstationAdapter();
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}
@@ -272,6 +285,46 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			e.printStackTrace();
 			relativeLayoutNoData.setVisibility(View.VISIBLE);
 		}
+	}
+
+	private void setRentalAndOutstationAdapter() {
+		ArrayList<RentalVehicle> rentalAndOutstationList = new ArrayList<>();
+		for(int i= 0; i < 2; i++){
+			List<Packages> packagesList = new ArrayList<>();
+			for (int j= 0; j< 5; j++){
+				Packages packages = new Packages(70, 15, 229);
+				packagesList.add(packages);
+			}
+			RentalVehicle rentalAndOutstation = new RentalVehicle("Rental " + i, 20.5D, packagesList);
+			rentalAndOutstationList.add(rentalAndOutstation);
+		}
+
+		LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
+		rvRentalVehicle.setLayoutManager(layoutManager);
+		rvRentalVehicle.setNestedScrollingEnabled(false);
+		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter = new RentalAndOutstationVehicleAdapter();
+		rentalAndOutstationVehicleAdapter.setList(rentalAndOutstationList, getString(R.string.currency_fallback));
+		rvRentalVehicle.setAdapter(rentalAndOutstationVehicleAdapter);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvRentalVehicle.getContext(),
+				layoutManager.getOrientation());
+		rvRentalVehicle.addItemDecoration(dividerItemDecoration);
+
+		ArrayList<RentalVehicle> rentalAndOutstationList1 = new ArrayList<>();
+		for(int i= 0; i < 2; i++){
+			List<Packages> packagesList = new ArrayList<>();
+			for (int j= 0; j< 5; j++){
+				Packages packages = new Packages(70, 15, 229);
+				packagesList.add(packages);
+			}
+			RentalVehicle rentalAndOutstation = new RentalVehicle("Outstation " + i, 20.5D, packagesList);
+			rentalAndOutstationList1.add(rentalAndOutstation);
+		}
+
+		rvOutstationVehicle.setLayoutManager(new LinearLayoutManager(activity));
+		rvOutstationVehicle.setNestedScrollingEnabled(false);
+		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter1 = new RentalAndOutstationVehicleAdapter();
+		rentalAndOutstationVehicleAdapter1.setList(rentalAndOutstationList1, getString(R.string.currency_fallback));
+		rvOutstationVehicle.setAdapter(rentalAndOutstationVehicleAdapter1);
 	}
 
 }

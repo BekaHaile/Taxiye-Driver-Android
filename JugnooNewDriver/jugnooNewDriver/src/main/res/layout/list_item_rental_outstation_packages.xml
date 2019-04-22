@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvBaseFare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Base Fare: $30"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_color"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/tvPackages"/>
+    <TextView
+        android:id="@+id/tvFarePerMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Per Minute: $3"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        android:textColor="@color/text_color"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/tvBaseFare"/>
+
+    <TextView
+        android:id="@+id/tvFarePerMile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="Per Mile: $10"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/text_color"
+        android:layout_marginStart="5dp"
+        android:layout_below="@+id/tvFarePerMinute"/>
+
+    <TextView
+        android:id="@+id/textViewTripsText"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/grey_ride_detail_bg"
+        android:gravity="center_vertical"
+        android:paddingStart="13dp"
+        android:text="@string/trips"
+        android:textSize="14sp"
+        style="@style/TextNormal" />
+
+</LinearLayout>
+
+
+
+
