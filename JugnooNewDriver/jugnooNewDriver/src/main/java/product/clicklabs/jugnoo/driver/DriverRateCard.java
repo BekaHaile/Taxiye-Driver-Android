@@ -264,7 +264,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
-							setRentalAndOutstationAdapter();
+//							setRentalAndOutstationAdapter();
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}

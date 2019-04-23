@@ -463,6 +463,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rlRentalVehicles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -477,6 +478,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rlOutstationVehicles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
