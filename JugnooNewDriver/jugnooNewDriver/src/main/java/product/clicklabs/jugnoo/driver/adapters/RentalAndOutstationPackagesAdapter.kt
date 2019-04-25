@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.retrofit.model.Packages
+import product.clicklabs.jugnoo.driver.utils.Utils
 
 class RentalAndOutstationPackagesAdapter() : RecyclerView.Adapter<RentalAndOutstationPackagesAdapter.FareDetailViewHolder>() {
     private var details: ArrayList<Packages>? = null
@@ -25,15 +28,16 @@ class RentalAndOutstationPackagesAdapter() : RecyclerView.Adapter<RentalAndOutst
     }
 
     override fun getItemCount(): Int {
-        return if(details == null) 0 else details!!.size;
+        return if(details == null) 0 else details!!.size
     }
 
     override fun onBindViewHolder(holder: RentalAndOutstationPackagesAdapter.FareDetailViewHolder, position: Int) {
         val context : Context = holder.textViewTripsText.context
-        holder.textViewTripsText.text = details!![position].fareThresholdDistance.toString()
+        holder.textViewTripsText.text = details!![position].farePerKmThresholdDistance.toString()
         holder.tvBaseFare.text = context.getString(R.string.package_rate_format, " " + details!!.get(position).fareFixed)
-        holder.tvFarePerMinute.text = context.getString(R.string.additional_per_min).plus(": ").plus(details!!.get(position).fareFixed.toString())
-        holder.tvFarePerMile.text = context.getString(R.string.additional_per_km_fare, ": " + details!!.get(position).fareFixed.toString())
+        holder.tvBaseFare.visibility = View.GONE
+        holder.tvFarePerMinute.text = context.getString(R.string.additional_per_min).plus(": ").plus(Utils.formatCurrencyValue(Data.userData.currency, details!![position].farePerMin, false))
+        holder.tvFarePerMile.text = context.getString(R.string.additional_per_km_fare, Utils.getDistanceUnit(UserData.getDistanceUnit(context))).plus(": ").plus(Utils.formatCurrencyValue(Data.userData.currency, details!![position].farePerKmAfterThreshold, false))
     }
 
 

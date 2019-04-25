@@ -22,9 +22,7 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.adapters.RentalAndOutstationVehicleAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.Packages;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RentalAndOutstation;
 import product.clicklabs.jugnoo.driver.retrofit.model.RentalVehicle;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -264,7 +262,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
-//							setRentalAndOutstationAdapter();
+							setRentalAndOutstationAdapter(rateCardResponse.getRegions());
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}
@@ -287,44 +285,47 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		}
 	}
 
-	private void setRentalAndOutstationAdapter() {
-		ArrayList<RentalVehicle> rentalAndOutstationList = new ArrayList<>();
-		for(int i= 0; i < 2; i++){
-			List<Packages> packagesList = new ArrayList<>();
-			for (int j= 0; j< 5; j++){
-				Packages packages = new Packages(70, 15, 229);
-				packagesList.add(packages);
-			}
-			RentalVehicle rentalAndOutstation = new RentalVehicle("Rental " + i, 20.5D, packagesList);
-			rentalAndOutstationList.add(rentalAndOutstation);
-		}
-
+	private void setRentalAndOutstationAdapter(List<RentalVehicle> regions) {
+//		ArrayList<RentalVehicle> rentalAndOutstationList = new ArrayList<>();
+//		for(int i= 0; i < 2; i++){
+//			List<Packages> packagesList = new ArrayList<>();
+//			for (int j= 0; j< 5; j++){
+//				Packages packages = new Packages(70, 15, 229);
+//				packagesList.add(packages);
+//			}
+//			RentalVehicle rentalAndOutstation = new RentalVehicle("Rental " + i, 20.5D, packagesList);
+//			rentalAndOutstationList.add(rentalAndOutstation);
+//		}
+//
 		LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
 		rvRentalVehicle.setLayoutManager(layoutManager);
 		rvRentalVehicle.setNestedScrollingEnabled(false);
 		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter = new RentalAndOutstationVehicleAdapter();
-		rentalAndOutstationVehicleAdapter.setList(rentalAndOutstationList, getString(R.string.currency_fallback));
+		rentalAndOutstationVehicleAdapter.setList((ArrayList<RentalVehicle>) regions, getString(R.string.currency_fallback));
 		rvRentalVehicle.setAdapter(rentalAndOutstationVehicleAdapter);
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvRentalVehicle.getContext(),
 				layoutManager.getOrientation());
 		rvRentalVehicle.addItemDecoration(dividerItemDecoration);
+//
+//		ArrayList<RentalVehicle> rentalAndOutstationList1 = new ArrayList<>();
+//		for(int i= 0; i < 2; i++){
+//			List<Packages> packagesList = new ArrayList<>();
+//			for (int j= 0; j< 5; j++){
+//				Packages packages = new Packages(70, 15, 229);
+//				packagesList.add(packages);
+//			}
+//			RentalVehicle rentalAndOutstation = new RentalVehicle("Outstation " + i, 20.5D, packagesList);
+//			rentalAndOutstationList1.add(rentalAndOutstation);
+//		}
+//
+        rvOutstationVehicle.setVisibility(View.GONE);
+//		rvOutstationVehicle.setLayoutManager(new LinearLayoutManager(activity));
+//		rvOutstationVehicle.setNestedScrollingEnabled(false);
+//		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter1 = new RentalAndOutstationVehicleAdapter();
+//		rentalAndOutstationVehicleAdapter1.setList(rentalAndOutstationList1, getString(R.string.currency_fallback));
+//		rvOutstationVehicle.setAdapter(rentalAndOutstationVehicleAdapter1);
 
-		ArrayList<RentalVehicle> rentalAndOutstationList1 = new ArrayList<>();
-		for(int i= 0; i < 2; i++){
-			List<Packages> packagesList = new ArrayList<>();
-			for (int j= 0; j< 5; j++){
-				Packages packages = new Packages(70, 15, 229);
-				packagesList.add(packages);
-			}
-			RentalVehicle rentalAndOutstation = new RentalVehicle("Outstation " + i, 20.5D, packagesList);
-			rentalAndOutstationList1.add(rentalAndOutstation);
-		}
 
-		rvOutstationVehicle.setLayoutManager(new LinearLayoutManager(activity));
-		rvOutstationVehicle.setNestedScrollingEnabled(false);
-		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter1 = new RentalAndOutstationVehicleAdapter();
-		rentalAndOutstationVehicleAdapter1.setList(rentalAndOutstationList1, getString(R.string.currency_fallback));
-		rvOutstationVehicle.setAdapter(rentalAndOutstationVehicleAdapter1);
 	}
 
 }

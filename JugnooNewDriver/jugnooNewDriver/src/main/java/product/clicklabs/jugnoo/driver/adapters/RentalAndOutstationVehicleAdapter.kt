@@ -29,13 +29,13 @@ class RentalAndOutstationVehicleAdapter() : RecyclerView.Adapter<RentalAndOutsta
     }
 
     override fun onBindViewHolder(holder: RentalAndOutstationVehicleAdapter.FareDetailViewHolder, position: Int) {
-        holder.tvPackages.text = details!![position].packageName
+        holder.tvPackages.text = details!![position].rideType.toString()
         holder.tvPackages.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvPackages.context)
 
         holder.rvPackages.layoutManager = LinearLayoutManager(holder.rvPackages.context)
         holder.rvPackages.isNestedScrollingEnabled = false
         val rentalAndOutstationPackagesAdapter = RentalAndOutstationPackagesAdapter()
-        rentalAndOutstationPackagesAdapter.setList(details!![position].packageInfo, holder.rvPackages.context.getString(R.string.currency_fallback))
+        rentalAndOutstationPackagesAdapter.setList(details!![position].fares, holder.rvPackages.context.getString(R.string.currency_fallback))
         holder.rvPackages.adapter = rentalAndOutstationPackagesAdapter
     }
 

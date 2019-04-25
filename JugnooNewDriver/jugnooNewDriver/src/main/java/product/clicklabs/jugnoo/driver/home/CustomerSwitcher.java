@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class CustomerSwitcher {
 			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
+	private LinearLayout llRentalRequest;
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
 	String dropAddress;
@@ -71,6 +73,7 @@ public class CustomerSwitcher {
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
 		tvRentalRideInfo = (TextView) rootView.findViewById(R.id.tvRentalRideInfo);
 		tvRentalRideInfo.setTypeface(Fonts.mavenRegular(activity));
+		llRentalRequest = rootView.findViewById(R.id.llRentalRequest);
 		textViewCustomerCashRequired = (TextView) rootView.findViewById(R.id.textViewCustomerCashRequired);
 		textViewCustomerCashRequired.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
@@ -194,8 +197,10 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
 							tvRentalRideInfo.setVisibility(View.VISIBLE);
+							llRentalRequest.setVisibility(View.VISIBLE);
 							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
 						}else {
+							llRentalRequest.setVisibility(View.GONE);
 							tvRentalRideInfo.setVisibility(View.GONE);
 						}
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
@@ -255,8 +260,10 @@ public class CustomerSwitcher {
 						textViewCustomerCashRequired.setVisibility(View.GONE);
 						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
 							tvRentalRideInfo.setVisibility(View.VISIBLE);
+							llRentalRequest.setVisibility(View.VISIBLE);
 							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
 						}else {
+							llRentalRequest.setVisibility(View.GONE);
 							tvRentalRideInfo.setVisibility(View.GONE);
 						}
 					}
