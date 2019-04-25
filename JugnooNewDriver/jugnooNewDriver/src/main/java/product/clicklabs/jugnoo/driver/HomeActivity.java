@@ -5579,6 +5579,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.tvRentalRideInfo.setText(customerInfo.getRentalInfo());
                 holder.tvRentalRideInfo.setTextColor(getResources().getColor(R.color.text_color));
             } else {
+                holder.tvRentalRideInfo.setText("");
                 holder.llRentalRequest.setVisibility(View.GONE);
             }
             long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
