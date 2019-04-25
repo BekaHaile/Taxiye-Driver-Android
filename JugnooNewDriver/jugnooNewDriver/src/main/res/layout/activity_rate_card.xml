@@ -32,6 +32,11 @@
         android:visibility="visible"
         android:padding="4px">
 
+        <LinearLayout
+            android:id="@+id/llInRideBefore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llBeforeRide"
@@ -316,34 +321,36 @@
                 />
         </LinearLayout>
 
-
+        </LinearLayout>
         <TextView
             android:id="@+id/textViewSpecialInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
-            android:textSize="28px"
-            android:padding="15px"
-            android:visibility="gone"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:tag="@string/dont_touch_me"
+            android:visibility="visible"
             />
 
 
         <RelativeLayout
             android:id="@+id/relativeLayoutDriverReferralHeading"
             android:layout_width="match_parent"
+            android:tag="@string/dont_touch_me"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30px"
-            android:layout_marginTop="30px">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/textViewReferral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:padding="10px"
                 android:text="@string/referral_rate"
                 android:textColor="@color/themeColor"
-                android:textSize="40px"
+                android:textSize="20sp"
             />
 
         </RelativeLayout>
@@ -461,14 +468,11 @@
                 android:textSize="34px"/>
 
         </RelativeLayout>
-
         <RelativeLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/rlRentalVehicles"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30px"
-            android:layout_marginTop="30px">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvRentalVehicle"

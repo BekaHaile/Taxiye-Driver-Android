@@ -44,7 +44,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			textViewPickupChargesperkm, textViewPKm;
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
-	LinearLayout llBeforeRide, llInRide;
+	LinearLayout llBeforeRide, llInRide, llInRideBefore;
 	RelativeLayout rlBeforeRide;
 	RecyclerView rvRentalVehicle, rvOutstationVehicle;
 
@@ -130,6 +130,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		llBeforeRide = (LinearLayout) rootView.findViewById(R.id.llBeforeRide);
 		rlBeforeRide = rootView.findViewById(R.id.rlBeforeRide);
 		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
+		llInRideBefore = (LinearLayout) rootView.findViewById(R.id.llInRideBefore);
+		llInRideBefore.setVisibility(View.GONE);
 		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
 		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
 
@@ -262,7 +264,9 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
-							setRentalAndOutstationAdapter(rateCardResponse.getRegions());
+							if(rateCardResponse.getRegions() != null && !rateCardResponse.getRegions().isEmpty()) {
+								setRentalAndOutstationAdapter(rateCardResponse.getRegions());
+							}
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}
@@ -286,45 +290,14 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 	}
 
 	private void setRentalAndOutstationAdapter(List<RentalVehicle> regions) {
-//		ArrayList<RentalVehicle> rentalAndOutstationList = new ArrayList<>();
-//		for(int i= 0; i < 2; i++){
-//			List<Packages> packagesList = new ArrayList<>();
-//			for (int j= 0; j< 5; j++){
-//				Packages packages = new Packages(70, 15, 229);
-//				packagesList.add(packages);
-//			}
-//			RentalVehicle rentalAndOutstation = new RentalVehicle("Rental " + i, 20.5D, packagesList);
-//			rentalAndOutstationList.add(rentalAndOutstation);
-//		}
-//
 		LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
 		rvRentalVehicle.setLayoutManager(layoutManager);
 		rvRentalVehicle.setNestedScrollingEnabled(false);
 		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter = new RentalAndOutstationVehicleAdapter();
-		rentalAndOutstationVehicleAdapter.setList((ArrayList<RentalVehicle>) regions, getString(R.string.currency_fallback));
+		rentalAndOutstationVehicleAdapter.setList((ArrayList<RentalVehicle>) regions, Data.userData.getCurrency());
 		rvRentalVehicle.setAdapter(rentalAndOutstationVehicleAdapter);
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvRentalVehicle.getContext(),
-				layoutManager.getOrientation());
-		rvRentalVehicle.addItemDecoration(dividerItemDecoration);
-//
-//		ArrayList<RentalVehicle> rentalAndOutstationList1 = new ArrayList<>();
-//		for(int i= 0; i < 2; i++){
-//			List<Packages> packagesList = new ArrayList<>();
-//			for (int j= 0; j< 5; j++){
-//				Packages packages = new Packages(70, 15, 229);
-//				packagesList.add(packages);
-//			}
-//			RentalVehicle rentalAndOutstation = new RentalVehicle("Outstation " + i, 20.5D, packagesList);
-//			rentalAndOutstationList1.add(rentalAndOutstation);
-//		}
-//
-        rvOutstationVehicle.setVisibility(View.GONE);
-//		rvOutstationVehicle.setLayoutManager(new LinearLayoutManager(activity));
-//		rvOutstationVehicle.setNestedScrollingEnabled(false);
-//		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter1 = new RentalAndOutstationVehicleAdapter();
-//		rentalAndOutstationVehicleAdapter1.setList(rentalAndOutstationList1, getString(R.string.currency_fallback));
-//		rvOutstationVehicle.setAdapter(rentalAndOutstationVehicleAdapter1);
 
+        rvOutstationVehicle.setVisibility(View.GONE);
 
 	}
 

@@ -1175,5 +1175,8 @@
     <string name="rental_min">min |</string>
     <string name="rental_mins">mins |</string>
     <string name="rental_max">Max.</string>
+    <string name="base_fare_format">BASE FARE: <b>%s</b></string>
+    <string name="nl_per_km">Per Km</string>
+    <string name="nl_per_min">Per Min</string>
 
 </resources>
