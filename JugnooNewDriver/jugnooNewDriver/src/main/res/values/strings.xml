@@ -1170,10 +1170,10 @@
     <string name="additional_per_min">Additional Per Min Fare</string>
     <string name="additional_per_km_fare">Additional Per %s Fare</string>
     <string name="package_rate_format">Package Rate: %s</string>
-    <string name="rental_hour">hour |</string>
-    <string name="rental_hours">hours |</string>
-    <string name="rental_min">min |</string>
-    <string name="rental_mins">mins |</string>
+    <string name="rental_hour">hour </string>
+    <string name="rental_hours">hours </string>
+    <string name="rental_min">min </string>
+    <string name="rental_mins">mins </string>
     <string name="rental_max">Max.</string>
     <string name="base_fare_format">BASE FARE: <b>%s</b></string>
     <string name="nl_per_km">Per Km</string>

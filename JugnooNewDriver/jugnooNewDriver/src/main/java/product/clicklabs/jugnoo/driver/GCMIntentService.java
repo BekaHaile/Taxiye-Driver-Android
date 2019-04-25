@@ -586,12 +586,15 @@ public class GCMIntentService extends FirebaseMessagingService {
 										if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
 											double timeInMins = joRentalInfo.getDouble(Constants. KEY_RENTAL_TIME);
 											String time;
-											if(timeInMins >= 60) {
-												time = strRentalInfo.concat(Utils.getDecimalFormat().format(timeInMins / 60).concat(" ").concat(
-														timeInMins / 60 == 1 ? getString(R.string.rental_hour).concat(" ") : getString(R.string.rental_hours).concat(" ")));
-											}else {
+											if (timeInMins >= 60) {
+												int hours =  (int)(timeInMins / 60);
+												int  minutes = (int) timeInMins % 60;
+												String strMins = minutes > 1 ? getString(R.string.rental_mins).concat(" ") : getString(R.string.rental_min).concat(" ");
+												String strHours = hours > 1 ? getString(R.string.rental_hours).concat(" ") : getString(R.string.rental_hour).concat(" ");
+												time = strRentalInfo + (Utils.getDecimalFormat().format(hours) + " " +strHours + Utils.getDecimalFormat().format(minutes)+" "+strMins + " | ");
+											} else {
 												time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
-														timeInMins <= 1 ? getString(R.string.rental_min).concat(" ") : getString(R.string.rental_mins).concat(" ")));
+														timeInMins <= 1 ? getString(R.string.rental_min).concat(" ") : getString(R.string.rental_mins).concat(" | ")));
 											}
 											strRentalInfo = strRentalInfo.concat(time);
 										}

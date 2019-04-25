@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import product.clicklabs.jugnoo.driver.R
@@ -38,14 +39,21 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
         val context : Context = holder.textViewTripsText.context
         setTypeFace(holder, context)
         holder.textViewPKm.typeface = Fonts.mavenRegular(context)
+        if(holder.adapterPosition == ((details?.size!!) - 1)){
+            holder.ivSeparator.visibility = View.GONE
+        }
         var strRentalInfo = ""
             if (details?.get(position)?.fareThresholdTime != null && details?.get(position)?.fareThresholdTime != 0.0) {
                 val timeInMins = details?.get(position)?.fareThresholdTime!!
                 val time: String
                 if (timeInMins >= 60) {
-                    time = strRentalInfo + (Utils.getDecimalFormat().format(timeInMins / 60) + " " + if (timeInMins / 60 == 1.0) context.getString(R.string.rental_hour).plus(" ") else context.getString(R.string.rental_hours).plus(" "))
+                    val hours =  (timeInMins / 60).toInt()
+                    val  minutes = timeInMins % 60
+                    val strMins = if(minutes > 1) context.getString(R.string.rental_mins).plus(" ") else context.getString(R.string.rental_min).plus(" ")
+                    val strHours = if(hours > 1) context.getString(R.string.rental_hours).plus(" ") else context.getString(R.string.rental_hour).plus(" ")
+                    time = strRentalInfo + (Utils.getDecimalFormat().format(hours) + " " +strHours + Utils.getDecimalFormat().format(minutes)+" "+strMins + " | ")
                 } else {
-                    time = strRentalInfo + (timeInMins.toString() + " " + if (timeInMins <= 1) context.getString(R.string.rental_min).plus(" ") else context.getString(R.string.rental_mins).plus(" "))
+                    time = strRentalInfo + (timeInMins.toString() + " " + if (timeInMins <= 1) context.getString(R.string.rental_min).plus(" ") else context.getString(R.string.rental_mins).plus(" | "))
                 }
                 strRentalInfo += time
             }
@@ -62,9 +70,11 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             holder.tvBaseFare.visibility = View.GONE
             holder.tvFarePerMinute.text = context.getString(R.string.additional_per_min).plus(": ").plus(Utils.formatCurrencyValue(currency, details!![position].farePerMin, false))
             holder.tvFarePerMile.text = context.getString(R.string.additional_per_km_fare, Utils.getDistanceUnit(UserData.getDistanceUnit(context))).plus(": ").plus(Utils.formatCurrencyValue(currency, details!![position].farePerKmAfterThreshold, false))
+            holder.tvPackageName.text = "" + (position + 1).toString().plus(". ").plus(details?.get(position)?.packageName)
             holder.llInRide.visibility = View.GONE
             holder.llBeforeRide.visibility = View.GONE
             holder.textViewTripsText.visibility = View.VISIBLE
+            holder.tvPackageName.visibility = View.VISIBLE
 
         } else if(details?.get(position)?.rideType == outstation ){
 
@@ -73,12 +83,14 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             holder.tvBaseFare.visibility = View.GONE
             holder.llInRide.visibility = View.GONE
             holder.textViewTripsText.visibility = View.VISIBLE
+            holder.tvPackageName.text = "" + (position + 1).toString().plus(". ").plus(details?.get(position)?.packageName)
 
             val baseFare = if(details?.get(position)?.displayBaseFare!! != 0.0) Utils.formatCurrencyValue(currency, details?.get(position)?.displayBaseFare!!) else Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false)
             holder.tvBaseFare.text = context.getString(R.string.base_fare_format, " ".plus(baseFare))
             holder.tvFarePerMinute.text = context.getString(R.string.nl_per_min).plus(": ").plus(Utils.formatCurrencyValue(currency, details?.get(position)?.farePerMin!!, false))
             holder.tvFarePerMile.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + ": "
                     + Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false))
+            holder.tvPackageName.visibility = View.VISIBLE
 
         }  else {
             holder.llBeforeRide.visibility = View.VISIBLE
@@ -87,18 +99,18 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             holder.textViewDistancePKmValue.text = Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false)
             holder.textViewTimePKmValue.text = Utils.formatCurrencyValue(currency, details?.get(position)?.farePerMin!!, false)
             holder.textViewPickupChargesperkm.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)))
-//            if (details?.get(position)?.farePerKmThresholdDistance!! > 0) {
-//
-//                holder.textViewDifferentialPricingEnable.visibility = View.VISIBLE
-//                holder.textViewDifferentialPricingEnable.text = context.getString(R.string.diffrential_pricing_rate,
-//                        details?.get(position)?.farePerKmThresholdDistance!!.toString()
-//                                + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(context)),
-//                        (Utils.formatCurrencyValue(currency,
-//                                details?.get(position)?.farePerKmAfterThreshold!!, false)
-//                                + "/" + Utils.getDistanceUnit(UserData.getDistanceUnit(context))))
-//            } else {
+            if (details?.get(position)?.farePerKmThresholdDistance!! > 0) {
+
+                holder.textViewDifferentialPricingEnable.visibility = View.VISIBLE
+                holder.textViewDifferentialPricingEnable.text = context.getString(R.string.diffrential_pricing_rate,
+                        details?.get(position)?.farePerKmThresholdDistance!!.toString()
+                                + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(context)),
+                        (Utils.formatCurrencyValue(currency,
+                                details?.get(position)?.farePerKmAfterThreshold!!, false)
+                                + "/" + Utils.getDistanceUnit(UserData.getDistanceUnit(context))))
+            } else {
                 holder.textViewDifferentialPricingEnable.visibility = View.GONE
-//            }
+            }
             if (details?.get(position)?.acceptSubsidyThresholdDistance!! > 0.0) {
                 holder.textViewPickupChargesCond.text = context.getString(R.string.applicable_after,
                         details?.get(position)?.acceptSubsidyThresholdDistance.toString()
@@ -116,14 +128,17 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             holder.tvFarePerMile.text = context.getString(R.string.additional_per_km_fare, Utils.getDistanceUnit(UserData.getDistanceUnit(context))).plus(": ").plus(Utils.formatCurrencyValue(currency, details!![position].farePerKmAfterThreshold, false))
             holder.llInRide.visibility = View.VISIBLE
             holder.textViewTripsText.visibility = View.GONE
+            holder.tvPackageName.visibility = View.GONE
             holder.tvFarePerMinute.visibility = View.GONE
+            holder.tvFarePerMile.visibility = View.GONE
+            holder.ivSeparatorUpper.visibility = View.GONE
         }
 
     }
 
     private fun setTypeFace(holder: RentalAndOutstationPackagesAdapter.FareDetailViewHolder, context: Context) {
         holder.textViewPickupChargesValues.typeface = Fonts.mavenRegular(context)
-        holder.textViewTripsText.typeface = Fonts.mavenRegular(context)
+        holder.textViewTripsText.typeface = Fonts.mavenMedium(context)
         holder.tvBaseFare.typeface = Fonts.mavenRegular(context)
         holder.tvFarePerMinute.typeface = Fonts.mavenRegular(context)
         holder.tvFarePerMile.typeface = Fonts.mavenRegular(context)
@@ -135,6 +150,8 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
         holder.textViewPickupChargesCond.typeface = Fonts.mavenRegular(context)
         holder.textViewPickupChargesCondStar.typeface = Fonts.mavenRegular(context)
         holder.textViewPickupChargesValues.typeface = Fonts.mavenRegular(context)
+        holder.textViewPickupChargesValues.typeface = Fonts.mavenRegular(context)
+        holder.tvPackageName.typeface = Fonts.mavenBold(context)
     }
 
 
@@ -152,7 +169,10 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
         val textViewPickupChargesCond: TextView = view.findViewById(R.id.textViewPickupChargesCond) as TextView
         val textViewPickupChargesCondStar: TextView = view.findViewById(R.id.textViewPickupChargesCondStar) as TextView
         val textViewPickupChargesValues: TextView = view.findViewById(R.id.textViewPickupChargesValues) as TextView
+        val tvPackageName: TextView = view.findViewById(R.id.tvPackageName) as TextView
         val llInRide: LinearLayout = view.findViewById(R.id.llInRide) as LinearLayout
         val llBeforeRide: LinearLayout = view.findViewById(R.id.llBeforeRide) as LinearLayout
+        val ivSeparator: ImageView = view.findViewById(R.id.ivSeparator) as ImageView
+        val ivSeparatorUpper: ImageView = view.findViewById(R.id.ivSeparatorUpper) as ImageView
     }
 }

@@ -35,5 +35,6 @@ class Packages(
         @SerializedName("type") @Expose var type : Int = 0,
         @SerializedName("city") @Expose var city : Int = 0,
         @SerializedName("operatot_id") @Expose var operatorId : Int = 0,
-        @SerializedName("business_id") @Expose var businessId : Int = 0
+        @SerializedName("business_id") @Expose var businessId : Int = 0,
+        @SerializedName("package_name") @Expose var packageName : String = ""
 )

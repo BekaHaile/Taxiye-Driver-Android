@@ -193,16 +193,20 @@ public class CustomerSwitcher {
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
-						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
-						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
 							tvRentalRideInfo.setVisibility(View.VISIBLE);
-							llRentalRequest.setVisibility(View.VISIBLE);
+							if(llRentalRequest != null) {
+								llRentalRequest.setVisibility(View.VISIBLE);
+							}
 							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
 						}else {
-							llRentalRequest.setVisibility(View.GONE);
+							if(llRentalRequest != null) {
+								llRentalRequest.setVisibility(View.GONE);
+							}
 							tvRentalRideInfo.setVisibility(View.GONE);
 						}
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
@@ -260,10 +264,14 @@ public class CustomerSwitcher {
 						textViewCustomerCashRequired.setVisibility(View.GONE);
 						if(customerInfo.getRentalInfo() != null && !customerInfo.getRentalInfo().isEmpty()){
 							tvRentalRideInfo.setVisibility(View.VISIBLE);
-							llRentalRequest.setVisibility(View.VISIBLE);
+							if(llRentalRequest != null) {
+								llRentalRequest.setVisibility(View.VISIBLE);
+							}
 							tvRentalRideInfo.setText(customerInfo.getRentalInfo());
 						}else {
-							llRentalRequest.setVisibility(View.GONE);
+							if(llRentalRequest != null) {
+								llRentalRequest.setVisibility(View.GONE);
+							}
 							tvRentalRideInfo.setVisibility(View.GONE);
 						}
 					}

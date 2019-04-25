@@ -148,6 +148,7 @@ public class CustomerInfo {
 	 */
 	public CustomerInfo(int engagementId){
 		this.engagementId = engagementId;
+		this.rentalInfo = "";
 	}
 
 	/**
