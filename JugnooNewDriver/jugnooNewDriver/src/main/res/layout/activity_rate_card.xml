@@ -359,7 +359,7 @@
         <LinearLayout
             android:id="@+id/linearLayoutDriverReferral"
             android:layout_width="match_parent"
-            android:layout_height="330px"
+            android:layout_height="250px"
             android:orientation="vertical"
             android:visibility="visible">
 
