@@ -63,34 +63,37 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             if (details?.get(position)?.fareFixed != null && details?.get(position)?.fareFixed != 0.0) {
                 strRentalInfo += Utils.formatCurrencyValue(currency, details?.get(position)?.fareFixed.toString())
             }
-        if(details?.get(position)?.rideType == rental ){
+        if(details?.get(position)?.rideType == rental || details?.get(position)?.rideType == outstation){
 
             holder.textViewTripsText.text = strRentalInfo
             holder.tvBaseFare.text = context.getString(R.string.package_rate_format, " " + details!!.get(position).fareFixed)
             holder.tvBaseFare.visibility = View.GONE
             holder.tvFarePerMinute.text = context.getString(R.string.additional_per_min).plus(": ").plus(Utils.formatCurrencyValue(currency, details!![position].farePerMin, false))
             holder.tvFarePerMile.text = context.getString(R.string.additional_per_km_fare, Utils.getDistanceUnit(UserData.getDistanceUnit(context))).plus(": ").plus(Utils.formatCurrencyValue(currency, details!![position].farePerKmAfterThreshold, false))
-            holder.tvPackageName.text = "" + (position + 1).toString().plus(". ").plus(details?.get(position)?.packageName)
+            var packageName = "".plus((position + 1).toString()).plus(". ").plus(details?.get(position)?.packageName)
+            holder.tvPackageName.text = packageName
             holder.llInRide.visibility = View.GONE
             holder.llBeforeRide.visibility = View.GONE
             holder.textViewTripsText.visibility = View.VISIBLE
             holder.tvPackageName.visibility = View.VISIBLE
+            holder.tvFarePerMinute.visibility = View.VISIBLE
+            holder.tvFarePerMile.visibility = View.VISIBLE
 
-        } else if(details?.get(position)?.rideType == outstation ){
-
-            holder.llBeforeRide.visibility = View.GONE
-            holder.textViewTripsText.text = strRentalInfo
-            holder.tvBaseFare.visibility = View.GONE
-            holder.llInRide.visibility = View.GONE
-            holder.textViewTripsText.visibility = View.VISIBLE
-            holder.tvPackageName.text = "" + (position + 1).toString().plus(". ").plus(details?.get(position)?.packageName)
-
-            val baseFare = if(details?.get(position)?.displayBaseFare!! != 0.0) Utils.formatCurrencyValue(currency, details?.get(position)?.displayBaseFare!!) else Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false)
-            holder.tvBaseFare.text = context.getString(R.string.base_fare_format, " ".plus(baseFare))
-            holder.tvFarePerMinute.text = context.getString(R.string.nl_per_min).plus(": ").plus(Utils.formatCurrencyValue(currency, details?.get(position)?.farePerMin!!, false))
-            holder.tvFarePerMile.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + ": "
-                    + Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false))
-            holder.tvPackageName.visibility = View.VISIBLE
+//        } else if(details?.get(position)?.rideType == outstation ){
+//
+//            holder.llBeforeRide.visibility = View.GONE
+//            holder.textViewTripsText.text = strRentalInfo
+//            holder.tvBaseFare.visibility = View.GONE
+//            holder.llInRide.visibility = View.GONE
+//            holder.textViewTripsText.visibility = View.VISIBLE
+//            holder.tvPackageName.text = "" + (position + 1).toString().plus(". ").plus(details?.get(position)?.packageName)
+//
+//            val baseFare = if(details?.get(position)?.displayBaseFare!! != 0.0) Utils.formatCurrencyValue(currency, details?.get(position)?.displayBaseFare!!) else Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false)
+//            holder.tvBaseFare.text = context.getString(R.string.base_fare_format, " ".plus(baseFare))
+//            holder.tvFarePerMinute.text = context.getString(R.string.nl_per_min).plus(": ").plus(Utils.formatCurrencyValue(currency, details?.get(position)?.farePerMin!!, false))
+//            holder.tvFarePerMile.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + ": "
+//                    + Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false))
+//            holder.tvPackageName.visibility = View.VISIBLE
 
         }  else {
             holder.llBeforeRide.visibility = View.VISIBLE
