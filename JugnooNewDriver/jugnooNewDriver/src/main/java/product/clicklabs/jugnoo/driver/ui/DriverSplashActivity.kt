@@ -57,6 +57,11 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         llGrantPermission.gone()
         val uid = DeviceUniqueID.getUniqueId(this)
         Log.d(TAG, "UID : $uid")
+        try {
+            Data.filldetails(this@DriverSplashActivity)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, e.localizedMessage)
+        }
         LocationInit.showLocationAlertDialog(this)
         supportFragmentManager.inTransaction {
             add(container.id, SplashFragment(), SplashFragment::class.simpleName)

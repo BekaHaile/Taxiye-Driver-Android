@@ -237,6 +237,8 @@ public class CustomerSwitcher {
 						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
 					} else {
 						tvCustomerNotes.setVisibility(View.GONE);
+						tvCustomerNotes.setText("");
+
 					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
