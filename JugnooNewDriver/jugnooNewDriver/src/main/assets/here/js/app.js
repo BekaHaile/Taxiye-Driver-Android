@@ -6,6 +6,9 @@ const CONFIG = {
 	YOUR_ACCESS_TOKEN: "AU2S5zlMHzBKTFfMJcVbIgw",
 	YOUR_SPACE_ID: "tFRXwS5L",
 
+	JUG_APP_ID:"Y8pzxL8Y52FBp0qtaYVO", //YOUR_SPACE_ID
+	JUG_APP_CODE:"Am5XvFppRInSeFpAtijKeg", //YOUR_ACCESS_TOKEN
+
 	// Configure the space with the base places + a corresponding access token:
 	BASE_PLACES_ACCESS_TOKEN: "AaZ0BoklkXtuQdihOtfP9hk",
 	BASE_PLACES_SPACE_ID: "here-place",
@@ -28,7 +31,8 @@ const imageLayer = new here.xyz.maps.layers.TileLayer({
 	max: 20,
 	provider: new here.xyz.maps.providers.ImageProvider({
 		name: 'Live Map',
-		url: 'https://{SUBDOMAIN_INT_1_4}.mapcreator.tilehub.api.here.com/tilehub/wv_livemap_bc/png/sat/256/{QUADKEY}?access_token=' + CONFIG.YOUR_ACCESS_TOKEN
+		url: 'https://{SUBDOMAIN_INT_1_4}.mapcreator.tilehub.api.here.com/tilehub/wv_livemap_bc/png/sat/256/{QUADKEY}?access_token=' + CONFIG.JUG_APP_CODE,
+//		url: 'https://{SUBDOMAIN_INT_1_4}.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/{Z}/{X}/{Y}/256/png8?app_id={'+CONFIG.JUG_APP_ID+'}+&app_code={'+CONFIG.JUG_APP_CODE+'}'
 	})
 });
 
@@ -69,11 +73,11 @@ const customPlacesLayer = new here.xyz.maps.layers.TileLayer({
 	max: 20,
 	provider: new here.xyz.maps.providers.SpaceProvider({
 		name: 'Custom Places',
-		space: CONFIG.YOUR_SPACE_ID,
+		space: CONFIG.JUG_APP_ID,
 		environment: "prd",
 		level: 16,
 		credentials: {
-			access_token: CONFIG.YOUR_ACCESS_TOKEN
+			access_token: CONFIG.JUG_APP_CODE
 		}
 	}),
 	style: {
