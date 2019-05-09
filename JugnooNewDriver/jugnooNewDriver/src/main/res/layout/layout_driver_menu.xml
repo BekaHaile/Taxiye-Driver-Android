@@ -557,6 +557,36 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlHereMaps"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:visibility="@integer/show_driver_resources"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/ivHereMapsFeedback"
+                    android:layout_width="56px"
+                    android:layout_height="37px"
+                    android:layout_marginStart="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_driver_resources"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/tvHereMaps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48px"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/ivHereMapsFeedback"
+                    android:layout_marginStart="8px"
+                    android:text="@string/here_maps_feedback"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/relativeLayoutPlans"
                 android:layout_width="match_parent"
                 android:layout_height="84px"

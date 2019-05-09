@@ -510,6 +510,10 @@
             android:name=".stripe.wallet.StripeCardsActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".heremaps.HereMapsActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".emergency.EmergencyActivity"

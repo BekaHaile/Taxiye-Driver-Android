@@ -441,6 +441,7 @@ public interface Constants {
 	String KEY_EMERGENCY_NO = "emergency_no";
 	String KEY_DRIVER_EMERGENCY_MODE_ENABLED = "driver_emergency_mode_enabled";
 
+	String KEY_DRIVER_HERE_MAPS_FEEDBACK = "driver_here_maps_feedback";
 	String KEY_TASK_TYPE = "task_type";
 	String KEY_DRIVER_TASKS = "driver_tasks";
 	String KEY_FLAG_DISTANCE_TRAVELLED = "flag_distance_travelled";

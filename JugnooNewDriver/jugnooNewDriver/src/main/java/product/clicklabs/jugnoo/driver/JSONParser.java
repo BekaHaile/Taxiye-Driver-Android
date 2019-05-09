@@ -513,6 +513,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_FARE_MANDATORY, userData.optInt(KEY_DRIVER_FARE_MANDATORY, 0));
 		Prefs.with(context).save(KEY_DRIVER_EMERGENCY_MODE_ENABLED, userData.optInt(KEY_DRIVER_EMERGENCY_MODE_ENABLED,
 				context.getResources().getInteger(R.integer.driver_emergency_mode_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_HERE_MAPS_FEEDBACK, userData.optInt(KEY_DRIVER_HERE_MAPS_FEEDBACK,
+				context.getResources().getInteger(R.integer.driver_here_maps_feedback)));
 
 	}
 

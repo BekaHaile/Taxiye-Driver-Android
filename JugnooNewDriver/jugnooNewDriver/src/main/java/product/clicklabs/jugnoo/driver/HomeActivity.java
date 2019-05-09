@@ -166,6 +166,7 @@ import product.clicklabs.jugnoo.driver.emergency.EmergencyDisableDialog;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
+import product.clicklabs.jugnoo.driver.heremaps.HereMapsActivity;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
@@ -518,6 +519,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private RecyclerView rvFareDetails;
     private FareDetailsAdapter fareDetailsAdapter;
 
+    private RelativeLayout rlHereMaps;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -713,6 +717,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
             logoutText = (TextView) findViewById(R.id.logoutText);
             logoutText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			rlHereMaps = findViewById(R.id.rlHereMaps);
+            ((TextView) findViewById(R.id.tvHereMaps)).setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 
             //Top RL
@@ -1313,6 +1319,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 public void onClick(View v) {
                     startActivity(new Intent(HomeActivity.this, StripeCardsActivity.class));
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+                }
+            });
+
+			rlHereMaps.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this, HereMapsActivity.class));
 
                 }
             });
@@ -2453,6 +2468,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 walletRl.setVisibility(View.GONE);
             }
+
+			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_HERE_MAPS_FEEDBACK, 0) == 1) {
+				rlHereMaps.setVisibility(View.VISIBLE);
+			} else {
+				rlHereMaps.setVisibility(View.GONE);
+			}
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
                 textViewSuperDrivers.setText(R.string.leaderboard);
