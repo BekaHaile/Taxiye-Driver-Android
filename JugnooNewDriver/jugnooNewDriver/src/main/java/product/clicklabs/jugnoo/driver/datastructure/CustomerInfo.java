@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -73,6 +74,7 @@ public class CustomerInfo {
 	private String customerNotes;
 	private int tollApplicable;
 	private String rentalInfo;
+	private List<String> customerOrderImagesList;
 
 
 	/**
@@ -84,7 +86,7 @@ public class CustomerInfo {
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
 						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime,
-						int isCorporateRide, String customerNotes, int tollApplicable, final String rentalInfo){
+						int isCorporateRide, String customerNotes, int tollApplicable, final String rentalInfo,List<String> customerOrderImagesList){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -140,6 +142,7 @@ public class CustomerInfo {
 		this.customerNotes = customerNotes;
 		this.tollApplicable = tollApplicable;
 		this.rentalInfo = rentalInfo;
+		this.customerOrderImagesList = customerOrderImagesList;
 	}
 
 
@@ -800,5 +803,13 @@ public class CustomerInfo {
 
 	public void setRentalInfo(String rentalInfo) {
 		this.rentalInfo = rentalInfo;
+	}
+
+	public List<String> getCustomerOrderImagesList() {
+		return customerOrderImagesList!=null ? customerOrderImagesList : new ArrayList<String>();
+	}
+
+	public void setCustomerOrderImagesList(List<String> customerOrderImagesList) {
+		this.customerOrderImagesList = customerOrderImagesList;
 	}
 }

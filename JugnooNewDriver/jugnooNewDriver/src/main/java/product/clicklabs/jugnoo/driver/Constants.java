@@ -455,5 +455,8 @@ public interface Constants {
 	String KEY_IMG_POSITION = "img_position";
 	String KEY_PLACE_TYPE = "place_type";
 	String KEY_FEEDBACK = "feedback";
+	String KEY_CUSTOMER_ORDER_IMAGES = "customer_order_images";
+	String KEY_POSITION_REVIEW = "position";
+	String LIST_IMAGES_REVIEW = "list_images";
 }
 

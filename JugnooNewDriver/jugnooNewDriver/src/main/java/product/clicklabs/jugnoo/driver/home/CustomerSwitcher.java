@@ -15,11 +15,15 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.DialogReviewImagesFragment;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
@@ -52,6 +56,7 @@ public class CustomerSwitcher {
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private LinearLayout llRentalRequest;
+	private RecyclerView rvPickupFeedImages;
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
 	String dropAddress;
@@ -90,6 +95,9 @@ public class CustomerSwitcher {
 		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
 		recyclerViewCustomersLinked.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewCustomersLinked.setHasFixedSize(false);
+		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
+		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
+		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
 
 
 		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
@@ -191,6 +199,20 @@ public class CustomerSwitcher {
 
 				textViewCustomerName1.setText(customerInfo.getName().toUpperCase());
 				textViewCustomerName.setText(customerInfo.getName());
+				if (customerInfo.getCustomerOrderImagesList() != null && customerInfo.getCustomerOrderImagesList().size() > 0) {
+					rvPickupFeedImages.setAdapter(new ImageWithTextAdapter(customerInfo.getCustomerOrderImagesList(), new ImageWithTextAdapter.OnItemClickListener() {
+						@Override
+						public void onItemClick(String image, int pos) {
+							ArrayList<String> imagesCustomer = new ArrayList<>();
+							imagesCustomer.addAll(customerInfo.getCustomerOrderImagesList());
+							DialogReviewImagesFragment dialog = DialogReviewImagesFragment.newInstance(pos,imagesCustomer);
+							dialog.show(activity.getFragmentManager(),DialogReviewImagesFragment.class.getSimpleName());
+						}
+					}));
+					rvPickupFeedImages.setVisibility(View.VISIBLE);
+				} else {
+					rvPickupFeedImages.setVisibility(View.GONE);
+				}
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
@@ -246,6 +268,12 @@ public class CustomerSwitcher {
 						tvCustomerNotes.setVisibility(View.GONE);
 						tvCustomerNotes.setText("");
 
+					}
+					if(!TextUtils.isEmpty(customerInfo.getVendorMessage())) {
+						tvCustomerNotes.setVisibility(View.VISIBLE);
+						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
+					} else {
+						tvCustomerNotes.setVisibility(View.GONE);
 					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);

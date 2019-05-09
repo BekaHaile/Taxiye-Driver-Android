@@ -205,4 +205,5 @@
         <item name="colorControlHighlight">@color/grey_light_more</item>
     </style>
 
+    <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar"/>
 </resources>

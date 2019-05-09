@@ -640,6 +640,8 @@ public class JSONParser implements Constants {
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
 							int totalDeliveries = 0, falseDeliveries = 0, orderId =0;
+							JSONArray customerOrderImages;
+							List<String> customerOrderImagesList = new ArrayList<>();
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
 								userId = userData.optString(KEY_USER_ID, "0");
@@ -660,6 +662,17 @@ public class JSONParser implements Constants {
 								falseDeliveries = userData.optInt("false_deliveries",0);
 								orderId = userData.optInt("order_id",0);
 								loadingStatus = userData.optInt(KEY_IS_LOADING, 0);
+
+								try {
+									customerOrderImages = userData.optJSONArray(KEY_CUSTOMER_ORDER_IMAGES);
+									if (customerOrderImages != null && customerOrderImages.length() > 0) {
+										for(int k = 0; k < customerOrderImages.length(); k++) {
+											customerOrderImagesList.add((String)customerOrderImages.get(k));
+										}
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
@@ -737,7 +750,7 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
 									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare, falseDeliveries,
-									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo);
+									orderId, loadingStatus, currency, tipAmount,luggageCount, pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo,customerOrderImagesList);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));

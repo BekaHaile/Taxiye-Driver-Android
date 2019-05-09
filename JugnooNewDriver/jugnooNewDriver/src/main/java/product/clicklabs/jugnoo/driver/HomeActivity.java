@@ -6120,6 +6120,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
                             currrentLatitude = 0, currrentLongitude = 0;
                     int totalDeliveries = 0, orderId = 0;
+                    JSONArray customerOrderImages;
+                    List<String> customerOrderImagesList = new ArrayList<>();
                     if (isDelivery == 1) {
                         userName = userData.optString(KEY_NAME, "");
                         userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -6138,6 +6140,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         loadingStatus = userData.optInt(KEY_IS_LOADING, 0);
                         falseDeliveries = userData.optInt("false_deliveries", 0);
                         orderId = userData.optInt("order_id", 0);
+
+                        try {
+                            customerOrderImages = userData.optJSONArray(KEY_CUSTOMER_ORDER_IMAGES);
+                            if (customerOrderImages != null && customerOrderImages.length() > 0) {
+                                for(int k = 0; k < customerOrderImages.length(); k++) {
+                                    customerOrderImagesList.add((String)customerOrderImages.get(k));
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         userName = userData.optString(KEY_USER_NAME, "");
                         userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -6211,7 +6224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
                             isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
                             currentLatLng, ForceEndDelivery, estimatedDriverFare, falseDeliveries, orderId, loadingStatus, currency, tipAmount, 0,
-                            pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo);
+                            pickupTime, isCorporateRide, customerNotes, tollApplicable, strRentalInfo,customerOrderImagesList);
 
                     JSONParser.updateDropAddressLatlng(HomeActivity.this, jObj, customerInfo);
 
