@@ -7,11 +7,11 @@ import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
+import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
 import product.clicklabs.jugnoo.driver.utils.Fonts
 import product.clicklabs.jugnoo.driver.utils.Log
-
-
+import product.clicklabs.jugnoo.driver.utils.Utils
 
 
 class HereMapsActivity  : BaseFragmentActivity(){
@@ -43,16 +43,10 @@ class HereMapsActivity  : BaseFragmentActivity(){
 
 
 
-        var jsMap:String = "" +
-                "display = new here.xyz.maps.Map(document.getElementById(\"map\"), " +
-                "{ zoomLevel: 18, " +
-                "center: " +
-                "   { longitude: 30.7333, " +
-                "       latitude: 76.7794 " +
-                "   }, " +
-                "layers: " +
-                "[imageLayer, herePlacesLayer, customPlacesLayer] " +
-                "});"
+        var jsMap:String = Utils.readFileFromAssets(this, "here/js/app.js")
+
+        jsMap = jsMap.replace("<gps_latitude>", intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0).toString())
+        jsMap = jsMap.replace("<gps_longitude>", intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0).toString())
 
         wv.postDelayed({
             wv.evaluateJavascript(
@@ -61,8 +55,8 @@ class HereMapsActivity  : BaseFragmentActivity(){
                         Log.d("HTML", html)
                         // code here
                     })
-        }, 50000)
 
+        }, 500)
 
     }
 

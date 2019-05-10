@@ -1193,4 +1193,23 @@ public class Utils {
         }
         return "";
     }
+
+    public static String readFileFromAssets(Activity activity, String fileName){
+        String mLine;
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(activity.getAssets().open(fileName), "UTF-8"))) {
+
+            // do reading, usually loop until end of file reading
+            String slashN = "\n";
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                sb.append(mLine).append(slashN);
+            }
+        } catch (IOException e) {
+            //log the exception
+        }
+        //log the exception
+        return sb.toString();
+    }
 }

@@ -102,12 +102,13 @@ const customPlacesLayer = new here.xyz.maps.layers.TileLayer({
 const display = new here.xyz.maps.Map(document.getElementById("map"), {
 	zoomLevel: 18,
 	center: {
-		longitude: 100.4888, latitude: 13.7554
+		longitude: <gps_longitude>, latitude: <gps_latitude>
 	},
 
 	// add layers to display
 	layers: [imageLayer, herePlacesLayer, customPlacesLayer]
 });
+//longitude: <gps_longitude>, latitude: <gps_latitude>    ,    longitude: 100.4888, latitude: 13.7554
 
 
 

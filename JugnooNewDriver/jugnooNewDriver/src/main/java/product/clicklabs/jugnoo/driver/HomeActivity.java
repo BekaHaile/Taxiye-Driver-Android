@@ -1327,7 +1327,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, HereMapsActivity.class));
+                    if(myLocation != null) {
+                        startActivity(new Intent(HomeActivity.this, HereMapsActivity.class)
+                                .putExtra(Constants.KEY_LATITUDE, myLocation.getLatitude())
+                                .putExtra(Constants.KEY_LONGITUDE, myLocation.getLongitude())
+                        );
+                    } else {
+                        Utils.showToast(HomeActivity.this, getString(R.string.waiting_for_location));
+                    }
 
                 }
             });
