@@ -510,10 +510,20 @@
             android:name=".stripe.wallet.StripeCardsActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".heremaps.HereMapsActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".heremaps.HereMapsImageCaptureActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+        <provider
+            android:name="product.clicklabs.jugnoo.driver.utils.PhotoProvider"
+            android:authorities="product.clicklabs.jugnoo.driver.utils.PhotoProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
 
         <activity
             android:name=".emergency.EmergencyActivity"

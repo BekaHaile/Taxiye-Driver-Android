@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.heremaps
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,8 @@ import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_here_maps.*
+import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
 import product.clicklabs.jugnoo.driver.utils.Fonts
@@ -19,16 +22,15 @@ class HereMapsActivity  : BaseFragmentActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(product.clicklabs.jugnoo.driver.R.layout.activity_here_maps)
+        setContentView(R.layout.activity_here_maps)
 
-        val tvTitle: TextView = findViewById(product.clicklabs.jugnoo.driver.R.id.title)
-        tvTitle.text = getString(product.clicklabs.jugnoo.driver.R.string.add_a_place)
+        val tvTitle: TextView = findViewById(R.id.title)
+        tvTitle.text = getString(R.string.add_a_place)
         tvTitle.typeface = Fonts.mavenRegular(applicationContext)
-        val backBtn = findViewById<View>(product.clicklabs.jugnoo.driver.R.id.backBtn)
+        val backBtn = findViewById<View>(R.id.backBtn)
         backBtn.setOnClickListener { onBackPressed() }
 
 
-        val wv:WebView = findViewById(product.clicklabs.jugnoo.driver.R.id.wv)
         wv.webViewClient = MyWebViewClient()
         wv.settings.javaScriptEnabled = true
 
@@ -41,34 +43,14 @@ class HereMapsActivity  : BaseFragmentActivity(){
         // Render the HTML file on WebView
         wv.loadUrl(file)
 
-
-
-        var jsMap:String = Utils.readFileFromAssets(this, "here/js/app.js")
-
-        jsMap = jsMap.replace("<gps_latitude>", intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0).toString())
-        jsMap = jsMap.replace("<gps_longitude>", intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0).toString())
-
-        wv.postDelayed({
-            wv.evaluateJavascript(
-                    jsMap,
-                    ValueCallback<String> { html ->
-                        Log.d("HTML", html)
-                        // code here
-                    })
-
-        }, 500)
-
-    }
-
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount == 1) {
-            finish()
-            return
+        bAddPlace.setOnClickListener{
+            startActivity(Intent(this@HereMapsActivity, HereMapsImageCaptureActivity::class.java))
         }
-        super.onBackPressed()
+        bAddPlace.visibility = View.GONE
+
     }
 
+    var scriptRun:Boolean = false
     inner class MyWebViewClient : WebViewClient() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -84,6 +66,25 @@ class HereMapsActivity  : BaseFragmentActivity(){
         override fun onLoadResource(view: WebView?, url: String?) {
             super.onLoadResource(view, url)
             Log.w("MyWebViewClient", "onLoadResource url = $url")
+            if(!scriptRun && url.equals("https://xyz.api.here.com/maps/latest/xyz-maps-display.min.js")){
+
+                var jsMap:String = Utils.readFileFromAssets(this@HereMapsActivity, "here/js/app.js")
+
+                jsMap = jsMap.replace("<gps_latitude>", intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0).toString())
+                jsMap = jsMap.replace("<gps_longitude>", intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0).toString())
+
+                wv.postDelayed({
+                    wv.evaluateJavascript(
+                            jsMap,
+                            ValueCallback<String> { html ->
+                                Log.d("HTML", html)
+                                // code here
+                                bAddPlace.visibility = View.VISIBLE
+                            })
+
+                }, 2000)
+                scriptRun = true
+            }
         }
 
 

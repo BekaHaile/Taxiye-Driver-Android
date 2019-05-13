@@ -1224,5 +1224,8 @@
     <string name="valid_till">Valid till %s</string>
     <string name="title_tasks">Tasks</string>
     <string name="driver_tasks">Driver Tasks</string>
+    <string name="add_place">Add Place</string>
+    <string name="retake">Retake</string>
+    <string name="use_photo">Use Photo</string>
 
 </resources>

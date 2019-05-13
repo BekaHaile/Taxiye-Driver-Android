@@ -25,6 +25,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -809,19 +810,20 @@ public class Utils {
 
 
     public static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
-                                      int quality, int index) {
+                                       int quality) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         src.compress(format, quality, os);
-        File f = new File(context.getFilesDir(), "temp" + index + ".jpg");
+        long index2 = System.currentTimeMillis();
+        File f = new File(context.getFilesDir(), "temp" + index2 + ".jpg");
         try {
             f.createNewFile();
-            byte[] bitmapdata = os.toByteArray();
+            byte[] bitmapData = os.toByteArray();
 
             FileOutputStream fos = new FileOutputStream(f);
-            fos.write(bitmapdata);
+            fos.write(bitmapData);
             fos.flush();
             fos.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return f;
@@ -829,16 +831,21 @@ public class Utils {
 
 
     public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-                matrix, false);
+        try {
+            int width = bm.getWidth();
+            int height = bm.getHeight();
+            float scaleWidth = ((float) newWidth) / width;
+            float scaleHeight = ((float) newHeight) / height;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+                    matrix, false);
 
-        return resizedBitmap;
+            return resizedBitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return bm;
+        }
     }
 
     public static int dpToPx(Context context, float dp) {
@@ -1211,5 +1218,34 @@ public class Utils {
         }
         //log the exception
         return sb.toString();
+    }
+
+    public static int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+            Log.i("RotateImage", "Exif orientation: " + orientation);
+            Log.i("RotateImage", "Rotate value: " + rotate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 }
