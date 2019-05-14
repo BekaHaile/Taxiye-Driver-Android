@@ -1,7 +1,12 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,6 +104,13 @@ class RentalAndOutstationPackagesAdapter : RecyclerView.Adapter<RentalAndOutstat
             holder.llBeforeRide.visibility = View.VISIBLE
             holder.textViewPKm.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)))
             holder.textViewBaseFareValue.text = Utils.formatCurrencyValue(currency, details?.get(position)?.fareFixed!!, false)
+            if(details?.get(position)!!.fareThresholdDistance > 0){
+                val ssb = SpannableStringBuilder("\n"+details?.get(position)!!.fareThresholdDistance.toString()
+                        + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " " + context.getString(R.string.included))
+                ssb.setSpan(RelativeSizeSpan(0.8f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                ssb.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.textColorLight)), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                holder.textViewBaseFareValue.append(ssb)
+            }
             holder.textViewDistancePKmValue.text = Utils.formatCurrencyValue(currency, details?.get(position)?.farePerKm!!, false)
             holder.textViewTimePKmValue.text = Utils.formatCurrencyValue(currency, details?.get(position)?.farePerMin!!, false)
             holder.textViewPickupChargesperkm.text = context.getString(R.string.per_format, Utils.getDistanceUnit(UserData.getDistanceUnit(context)))

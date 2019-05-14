@@ -1178,5 +1178,6 @@
     <string name="base_fare_format">BASE FARE: <b>%s</b></string>
     <string name="nl_per_km">Per Km</string>
     <string name="nl_per_min">Per Min</string>
+    <string name="included">included</string>
 
 </resources>
