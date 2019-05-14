@@ -1231,5 +1231,6 @@
     <string name="please_capture_an_image_first">Please capture an image first</string>
     <string name="image_not_captured">Image not captured successfully</string>
     <string name="please_select_a_category">Please select a category</string>
+    <string name="place_added_successfully">Place added successfully</string>
 
 </resources>

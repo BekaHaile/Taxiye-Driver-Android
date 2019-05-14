@@ -14,6 +14,6 @@ interface HereMapsAPIService {
                  @Header("Auth-Secret") secret:String,
                  @Part("myfile") image: TypedFile,
                  @PartMap params: Map<String, String>,
-                 cb: Callback<SettleUserDebt>)
+                 cb: Callback<ArrayList<SettleUserDebt>>)
 
 }

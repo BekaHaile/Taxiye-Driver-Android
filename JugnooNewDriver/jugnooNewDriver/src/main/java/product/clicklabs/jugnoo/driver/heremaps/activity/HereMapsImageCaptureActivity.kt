@@ -26,9 +26,14 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
     private var imgPixel = 512
     private var fileCaptured:File? = null
 
+    companion object {
+        var closeActivity = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_here_maps_image_capture)
+        closeActivity = false
 
         bRetake.setOnClickListener{
             chooseImageFromCamera()
@@ -47,6 +52,14 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
 
         ivReviewImage.postDelayed({chooseImageFromCamera()}, 500)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(closeActivity){
+            finish()
+            closeActivity = false
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

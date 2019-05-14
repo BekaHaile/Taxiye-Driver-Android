@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_here_maps_feedback.*
+import org.json.JSONArray
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
@@ -255,19 +256,28 @@ class HereMapsFeedbackActivity  : BaseFragmentActivity(), HereMapsCategoryAdapte
                 val params = HashMap<String, String>()
                 val placeType = category.placeType
                 params["feedback"] = "{\"coordinates\":[$longitude, $latitude, 0],\"type\":\"Point\"" +
-                        ",\"properties\":{\"appId\":\"here-mapcreator\",\"error\": 30,\"v\":\"2.7\",\"type\":\"$placeType\"}}"
+                        ",\"properties\":{\"appId\":\"jugnoo\",\"error\": 30,\"v\":\"2.7\",\"type\":\"$placeType\"}}"
 
                 val typedFile = TypedFile(Constants.MIME_TYPE, photoFile)
 
                 RestClient.getHereMapsApiService().feedback(
                         "here_app", "Y8pzxL8Y52FBp0qtaYVO", "Am5XvFppRInSeFpAtijKeg",
-                        typedFile, params, object : Callback<SettleUserDebt> {
-                    override fun success(docRequirementResponse: SettleUserDebt, response: Response) {
+                        typedFile, params, object : Callback<ArrayList<SettleUserDebt>> {
+                    override fun success(docRequirementResponse: ArrayList<SettleUserDebt>, response: Response) {
                         try {
                             val jsonString = String((response.body as TypedByteArray).bytes)
-                            val jObj: JSONObject
-                            jObj = JSONObject(jsonString)
-                            Log.e("uploadPicToServer", "resp = $jObj")
+                            val jArray: JSONArray = JSONArray(jsonString)
+                            Log.e("uploadPicToServer", "resp = $jArray")
+                            val jObj:JSONObject = jArray.getJSONObject(0)
+                            if(jObj.has("id")){
+                                DialogPopup.alertPopupWithListener(activity, "",
+                                        getString(R.string.place_added_successfully)) {
+                                    HereMapsImageCaptureActivity.closeActivity = true
+                                    finish()
+                                }
+                            } else{
+                                DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG)
+                            }
 
                         } catch (exception: Exception) {
                             exception.printStackTrace()
