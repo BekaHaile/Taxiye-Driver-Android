@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.heremaps
+package product.clicklabs.jugnoo.driver.heremaps.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -44,7 +44,10 @@ class HereMapsActivity  : BaseFragmentActivity(){
         wv.loadUrl(file)
 
         bAddPlace.setOnClickListener{
-            startActivity(Intent(this@HereMapsActivity, HereMapsImageCaptureActivity::class.java))
+            startActivity(Intent(this@HereMapsActivity, HereMapsImageCaptureActivity::class.java)
+                    .putExtra(Constants.KEY_LATITUDE, intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0))
+                    .putExtra(Constants.KEY_LONGITUDE, intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0))
+            )
         }
         bAddPlace.visibility = View.GONE
 

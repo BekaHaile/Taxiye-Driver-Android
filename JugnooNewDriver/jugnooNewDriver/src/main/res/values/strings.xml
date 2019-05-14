@@ -1227,5 +1227,9 @@
     <string name="add_place">Add Place</string>
     <string name="retake">Retake</string>
     <string name="use_photo">Use Photo</string>
+    <string name="add_category">Add Category</string>
+    <string name="please_capture_an_image_first">Please capture an image first</string>
+    <string name="image_not_captured">Image not captured successfully</string>
+    <string name="please_select_a_category">Please select a category</string>
 
 </resources>

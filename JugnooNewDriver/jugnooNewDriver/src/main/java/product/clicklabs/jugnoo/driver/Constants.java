@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by Shankar on 12/1/2015.
  */
@@ -445,5 +447,6 @@ public interface Constants {
 	String KEY_TASK_TYPE = "task_type";
 	String KEY_DRIVER_TASKS = "driver_tasks";
 	String KEY_FLAG_DISTANCE_TRAVELLED = "flag_distance_travelled";
+	String KEY_FILE_SELECTED = "file_selected";
 }
 

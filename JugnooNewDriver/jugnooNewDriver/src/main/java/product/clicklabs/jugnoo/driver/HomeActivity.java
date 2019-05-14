@@ -166,7 +166,7 @@ import product.clicklabs.jugnoo.driver.emergency.EmergencyDisableDialog;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
-import product.clicklabs.jugnoo.driver.heremaps.HereMapsActivity;
+import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsActivity;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;

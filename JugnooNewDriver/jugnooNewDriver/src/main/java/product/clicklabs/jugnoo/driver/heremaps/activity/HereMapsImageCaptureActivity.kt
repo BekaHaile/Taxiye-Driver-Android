@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.heremaps
+package product.clicklabs.jugnoo.driver.heremaps.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,6 +12,7 @@ import com.kbeanie.multipicker.api.Picker
 import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback
 import com.kbeanie.multipicker.api.entity.ChosenImage
 import kotlinx.android.synthetic.main.activity_here_maps_image_capture.*
+import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CAMERA
@@ -22,7 +23,8 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
 
     private var mPermissionCommon: PermissionCommon? = null
     private var mCameraImagePicker: CameraImagePicker? = null
-    private var imgPixel = 1600
+    private var imgPixel = 512
+    private var fileCaptured:File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,15 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
             chooseImageFromCamera()
         }
         bUsePhoto.setOnClickListener{
-
+            if(fileCaptured!= null) {
+                startActivity(Intent(this@HereMapsImageCaptureActivity, HereMapsFeedbackActivity::class.java)
+                        .putExtra(Constants.KEY_FILE_SELECTED, fileCaptured!!.absolutePath)
+                        .putExtra(Constants.KEY_LATITUDE, intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0))
+                        .putExtra(Constants.KEY_LONGITUDE, intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0))
+                )
+            } else {
+                Utils.showToast(this@HereMapsImageCaptureActivity, getString(R.string.please_capture_an_image_first))
+            }
         }
 
         ivReviewImage.postDelayed({chooseImageFromCamera()}, 500)
@@ -98,6 +108,7 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
                 try {
                     val image = list!!.get(0)
                     if (image != null) {
+                        ivReviewImage.setImageBitmap(null)
 
                         val opt: BitmapFactory.Options
                         opt = BitmapFactory.Options()
@@ -138,9 +149,8 @@ class HereMapsImageCaptureActivity  : BaseFragmentActivity(), PermissionCommon.P
                             }
                         }
 
-                        val f: File
                         if (newBitmap != null) {
-                            f = Utils.compressToFile(this, newBitmap, Bitmap.CompressFormat.JPEG, 100)
+                            fileCaptured = Utils.compressToFile(this, newBitmap, Bitmap.CompressFormat.JPEG, 100)
                             ivReviewImage.setImageBitmap(newBitmap)
                         }
                     }
