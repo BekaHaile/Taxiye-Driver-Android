@@ -11,8 +11,8 @@ import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
-import product.clicklabs.jugnoo.driver.heremaps.model.HMCategory
 import product.clicklabs.jugnoo.driver.heremaps.adapter.HereMapsCategoryAdapter
+import product.clicklabs.jugnoo.driver.heremaps.model.HMCategory
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt
 import product.clicklabs.jugnoo.driver.utils.*
@@ -255,7 +255,7 @@ class HereMapsFeedbackActivity  : BaseFragmentActivity(), HereMapsCategoryAdapte
                 val params = HashMap<String, String>()
                 val placeType = category.placeType
                 params["feedback"] = "{\"coordinates\":[$longitude, $latitude, 0],\"type\":\"Point\"" +
-                        ",\"properties\":{\"appId\":\"here-mapcreator\",\"error\": 30,\"v\":\"2.7\",”type”:$placeType}}"
+                        ",\"properties\":{\"appId\":\"here-mapcreator\",\"error\": 30,\"v\":\"2.7\",\"type\":\"$placeType\"}}"
 
                 val typedFile = TypedFile(Constants.MIME_TYPE, photoFile)
 
