@@ -4,11 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
-
 public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 
 	private static final String SEND_LOCATION = "product.clicklabs.jugnoo.driver.SEND_LOCATION";
@@ -47,12 +42,12 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 					} finally {
 					}
 				}
-				if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-					if (!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
-						Log.i(TAG, "onReceive startDriverService called");
-						context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
-					}
-				}
+//				if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+//					if (!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
+//						Log.i(TAG, "onReceive startDriverService called");
+//						context.startService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
+//					}
+//				}
 
 			} else {
 				context.stopService(new Intent(context.getApplicationContext(), DriverLocationUpdateService.class));
