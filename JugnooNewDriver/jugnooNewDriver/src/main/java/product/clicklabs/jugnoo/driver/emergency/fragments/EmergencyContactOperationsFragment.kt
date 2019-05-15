@@ -57,7 +57,6 @@ class EmergencyContactOperationsFragment : Fragment() {
 
     private var linearLayoutEmergencyContacts: LinearLayout? = null
     private var recyclerViewEmergencyContacts: RecyclerView? = null
-    private var imageViewEmergencyContactsSep: ImageView? = null
     private var relativeLayoutOr: RelativeLayout? = null
     private var textViewOr: TextView? = null
     private var buttonAddContact: Button? = null
@@ -179,7 +178,6 @@ class EmergencyContactOperationsFragment : Fragment() {
 
         linearLayoutEmergencyContacts = rootView!!.findViewById<View>(R.id.linearLayoutEmergencyContacts) as LinearLayout
         (rootView!!.findViewById<View>(R.id.textViewEmergencyContacts) as TextView).typeface = Fonts.mavenLight(activity!!)
-        imageViewEmergencyContactsSep = rootView!!.findViewById<View>(R.id.imageViewEmergencyContactsSep) as ImageView
         relativeLayoutOr = rootView!!.findViewById<View>(R.id.relativeLayoutOr) as RelativeLayout
         textViewOr = rootView!!.findViewById<View>(R.id.textViewOr) as TextView
         textViewOr!!.typeface = Fonts.mavenLight(activity!!)
@@ -312,18 +310,18 @@ class EmergencyContactOperationsFragment : Fragment() {
         setEmergencyContactsToList()
 
 
-        val keyboardLayoutListener = KeyboardLayoutListener(linearLayoutMain, textViewScroll,
-                object : KeyboardLayoutListener.KeyBoardStateHandler {
-                    override fun keyboardOpened() {
-                        linearLayoutEmergencyContacts!!.visibility = View.GONE
-                    }
-
-                    override fun keyBoardClosed() {
-                        linearLayoutEmergencyContacts!!.visibility = View.VISIBLE
-                    }
-                })
-        keyboardLayoutListener.setResizeTextView(false)
-        linearLayoutMain!!.viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener)
+//        val keyboardLayoutListener = KeyboardLayoutListener(linearLayoutMain, textViewScroll,
+//                object : KeyboardLayoutListener.KeyBoardStateHandler {
+//                    override fun keyboardOpened() {
+//                        linearLayoutEmergencyContacts!!.visibility = View.GONE
+//                    }
+//
+//                    override fun keyBoardClosed() {
+//                        linearLayoutEmergencyContacts!!.visibility = View.VISIBLE
+//                    }
+//                })
+//        keyboardLayoutListener.setResizeTextView(false)
+//        linearLayoutMain!!.viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener)
 
 
         if (ContactsListAdapter.ListMode.SEND_RIDE_STATUS === listMode) {
@@ -378,11 +376,9 @@ class EmergencyContactOperationsFragment : Fragment() {
             }
             emergencyContactsListAdapter!!.notifyDataSetChanged()
             if (emergencyContactBeans!!.size > 0) {
-                imageViewEmergencyContactsSep!!.visibility = View.VISIBLE
                 relativeLayoutOr!!.visibility = View.GONE
                 buttonAddContact!!.visibility = View.GONE
             } else {
-                imageViewEmergencyContactsSep!!.visibility = View.GONE
                 relativeLayoutOr!!.visibility = View.VISIBLE
                 buttonAddContact!!.visibility = View.VISIBLE
                 if (listMode === ContactsListAdapter.ListMode.SEND_RIDE_STATUS) {
@@ -392,7 +388,6 @@ class EmergencyContactOperationsFragment : Fragment() {
                 }
             }
         } else {
-            imageViewEmergencyContactsSep!!.visibility = View.GONE
             relativeLayoutOr!!.visibility = View.VISIBLE
             buttonAddContact!!.visibility = View.VISIBLE
             if (listMode === ContactsListAdapter.ListMode.SEND_RIDE_STATUS) {

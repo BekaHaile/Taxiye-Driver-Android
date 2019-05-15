@@ -75,12 +75,6 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/imageViewEmergencyContactsSep"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:background="@color/textColorLight"
-                />
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutOr"
