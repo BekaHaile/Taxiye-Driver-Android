@@ -121,7 +121,9 @@ public class JSONParser implements Constants {
 						mandatoryFareDetails.getDouble("mandatory_fare_value"),
 						mandatoryFareDetails.getDouble("mandatory_fare_capping"),
 						fareDetails.optDouble("fare_per_baggage",0.0),
-						fareDetails.optDouble("tax_percentage",0.0));
+						fareDetails.optDouble("tax_percentage",0.0),
+						mandatoryFareDetails.getDouble("mandatory_distance"),
+						mandatoryFareDetails.getDouble("mandatory_time"));
 			} else {
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
 						fareDetails.getDouble("fare_threshold_distance"),
@@ -135,11 +137,11 @@ public class JSONParser implements Constants {
 						fareDetails.getDouble("fare_per_km_before_threshold"),
 						fareDetails.getDouble("fare_minimum"),0,0,
 						fareDetails.optDouble("fare_per_baggage",0.0),
-						fareDetails.optDouble("tax_percentage",0.0));
+						fareDetails.optDouble("tax_percentage",0.0), 0, 0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0,0,0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0, 40, 0, 0, 0, 0, 0, 0);
 		}
 	}
 
@@ -504,6 +506,7 @@ public class JSONParser implements Constants {
 				context.getResources().getInteger(R.integer.driver_google_traffic_enabled)));
 		Prefs.with(context).save(KEY_DRIVER_SHOW_POOL_REQUEST_DEST, userData.optInt(KEY_DRIVER_SHOW_POOL_REQUEST_DEST,
 				context.getResources().getInteger(R.integer.driver_show_pool_request_dest)));
+		Prefs.with(context).save(KEY_DRIVER_FARE_MANDATORY, userData.optInt(KEY_DRIVER_FARE_MANDATORY, 0));
 
 	}
 
@@ -958,7 +961,7 @@ public class JSONParser implements Constants {
 
 
 
-	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
+	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare, FareStructure fareStructure) {
 		try {
 			JSONArray fareDetails = jObj.optJSONArray(Constants.KEY_FARE_BREAKDOWN);
 			ArrayList<FareDetail> fareDetailsArr = new ArrayList<>();
@@ -973,7 +976,7 @@ public class JSONParser implements Constants {
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr);
+					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr, fareStructure);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -982,7 +985,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"", null);
+					PaymentMode.CASH.getOrdinal(),"", null, fareStructure);
 		}
 	}
 
