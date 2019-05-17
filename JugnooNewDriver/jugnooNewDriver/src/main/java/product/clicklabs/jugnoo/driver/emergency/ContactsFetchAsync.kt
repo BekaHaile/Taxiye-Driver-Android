@@ -61,8 +61,7 @@ class ContactsFetchAsync(private val activity: FragmentActivity, private val con
                             val type = getContactTypeString(activity, pCur.getString(
                                     pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE)))
 
-                            phone = phone!!.replace(" ", "")
-                            phone = phone.replace("-", "")
+                            phone = Utils.retrievePhoneNumberTenChars("",phone!!)
                             if (phone != null && Utils.validPhoneNumber(phone)) {
                                 contactBeans.add(ContactBean(name, phone, "", type))
                             }
@@ -96,6 +95,9 @@ class ContactsFetchAsync(private val activity: FragmentActivity, private val con
         set.addAll(list)
 
         val newList = ArrayList(set)
+        newList.sortWith(Comparator { o1, o2 ->
+            o1.name.compareTo(o2.name, true)
+        })
         contactBeans.addAll(newList)
     }
 

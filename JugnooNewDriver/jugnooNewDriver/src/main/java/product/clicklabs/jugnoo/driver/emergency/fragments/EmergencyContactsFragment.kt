@@ -154,7 +154,7 @@ class EmergencyContactsFragment : Fragment() {
         buttonAddContact!!.setOnClickListener(onClickListener)
 
 
-        setEmergencyContactsToList()
+        getAllEmergencyContacts(activity)
 
 
         return rootView
