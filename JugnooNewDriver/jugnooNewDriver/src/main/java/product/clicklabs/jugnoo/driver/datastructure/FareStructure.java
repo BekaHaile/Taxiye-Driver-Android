@@ -85,12 +85,17 @@ public class FareStructure {
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
-		fare = fare + computeLuggageChargesCharges(luggageCount);
+
+		if(fareMinimum > 0){
+			if(fare < fareMinimum){
+				fare = fareMinimum;
+			}
+		}
 
 		if(mandatoryFare > 0) {
 			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
 			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
-			if(fare < cappedFareUp && fare > cappedFareDown){
+			if(fare <= cappedFareUp && fare >= cappedFareDown){
 				fare = mandatoryFare;
 				mandatoryFareApplicable = 1;
 			} else {
@@ -98,11 +103,7 @@ public class FareStructure {
 			}
 		}
 
-		if(fareMinimum > 0){
-			if(fare < fareMinimum){
-				fare = fareMinimum;
-			}
-		}
+		fare = fare + computeLuggageChargesCharges(luggageCount);
 
 		return Utils.currencyPrecision(fare);
 	}
