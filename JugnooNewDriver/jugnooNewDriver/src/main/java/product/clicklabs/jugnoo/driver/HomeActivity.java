@@ -4515,7 +4515,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     .getDistance(HomeActivity.this), HomeActivity.this),
                             rideTimeChronometer.eclipsedTime,
                             waitTime);
-                    int vis = Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1 ? View.GONE:View.VISIBLE;
+                    int vis = Data.fareStructure != null && Data.fareStructure.mandatoryFare > 0
+                            && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1 ? View.GONE:View.VISIBLE;
                     findViewById(R.id.driverIRDistanceRl).setVisibility(vis);
                     findViewById(R.id.driverRideTimeRl).setVisibility(vis);
                     findViewById(R.id.ivWaitInRideDiv).setVisibility(findViewById(R.id.driverRideTimeRl).getVisibility());
