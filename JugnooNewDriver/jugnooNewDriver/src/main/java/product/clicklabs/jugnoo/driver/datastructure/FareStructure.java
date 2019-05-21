@@ -19,11 +19,13 @@ public class FareStructure {
 	public int mandatoryFareApplicable = 0;
 	private double baggageCharges ;
 	private double taxPercent;
+	private double mandatoryDistance;
+	private double mandatoryTime;
 
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
 						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping,
-						 double baggageCharges, double taxPercent){
+						 double baggageCharges, double taxPercent, double mandatoryDistance, double mandatoryTime){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -43,6 +45,8 @@ public class FareStructure {
 		this.fareMinimum = fareMinimum;
 		this.baggageCharges = baggageCharges;
 		this.taxPercent = taxPercent;
+		this.mandatoryDistance = mandatoryDistance;
+		this.mandatoryTime = mandatoryTime;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, int luggageCount){
@@ -81,12 +85,17 @@ public class FareStructure {
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
-		fare = fare + computeLuggageChargesCharges(luggageCount);
+
+		if(fareMinimum > 0){
+			if(fare < fareMinimum){
+				fare = fareMinimum;
+			}
+		}
 
 		if(mandatoryFare > 0) {
 			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
 			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
-			if(fare < cappedFareUp && fare > cappedFareDown){
+			if(fare <= cappedFareUp && fare >= cappedFareDown){
 				fare = mandatoryFare;
 				mandatoryFareApplicable = 1;
 			} else {
@@ -94,11 +103,7 @@ public class FareStructure {
 			}
 		}
 
-		if(fareMinimum > 0){
-			if(fare < fareMinimum){
-				fare = fareMinimum;
-			}
-		}
+		fare = fare + computeLuggageChargesCharges(luggageCount);
 
 		return Utils.currencyPrecision(fare);
 	}
@@ -128,5 +133,13 @@ public class FareStructure {
 
 	public double getTaxPercent() {
 		return taxPercent;
+	}
+
+	public double getMandatoryDistance() {
+		return mandatoryDistance;
+	}
+
+	public double getMandatoryTime() {
+		return mandatoryTime;
 	}
 }

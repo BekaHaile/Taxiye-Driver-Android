@@ -694,6 +694,7 @@
                         android:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/ivWaitInRideDiv"
                             android:layout_width="2px"
                             android:layout_height="72px"
                             android:background="@color/bg_grey_opaque"

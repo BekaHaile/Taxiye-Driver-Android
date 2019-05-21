@@ -136,6 +136,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
+import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
@@ -3892,6 +3893,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         e.printStackTrace();
                     }
 
+                    if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
+                            && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
+                        totalDistanceInKm = endRideData.getFareStructure().getMandatoryDistance() * UserData.getDistanceUnitFactor(this);
+                    }
+                    if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
+                            && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
+                        rideTime = String.valueOf((int)endRideData.getFareStructure().getMandatoryTime());
+                    }
+
                     kmsStr = Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 
                     tvRideEndID.setText(getString(R.string.Invoice) + " #" + endRideData.engagementId);
@@ -4505,6 +4515,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     .getDistance(HomeActivity.this), HomeActivity.this),
                             rideTimeChronometer.eclipsedTime,
                             waitTime);
+                    int vis = Data.fareStructure != null && Data.fareStructure.mandatoryFare > 0
+                            && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1 ? View.GONE:View.VISIBLE;
+                    findViewById(R.id.driverIRDistanceRl).setVisibility(vis);
+                    findViewById(R.id.driverRideTimeRl).setVisibility(vis);
+                    findViewById(R.id.ivWaitInRideDiv).setVisibility(findViewById(R.id.driverRideTimeRl).getVisibility());
 
                     textViewEnterDestination.setText("");
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
@@ -6827,10 +6842,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         params.put(KEY_RIDE_TYPE, "3");
                     }
                     RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-                            eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
+                            eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB, Data.fareStructure));
                 } else {
                     RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-                            eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
+                            eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB, Data.fareStructure));
                 }
             }
         } catch (Exception e) {
@@ -6848,9 +6863,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private CallbackEndRide getCallbackEndDelivery(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude,
                                                    double dropLongitude, HashMap<String, String> params, long eoRideTimeInMillis,
-                                                   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB) {
+                                                   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB,
+                                                   FareStructure fareStructure) {
         callbackEndDelivery = new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude,
-                params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
+                params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB, fareStructure);
         return callbackEndDelivery;
     }
 
@@ -6861,10 +6877,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         private long eoRideTimeInMillis, eoWaitTimeInMillis;
         private String url;
         private long rideTimeInMillisFromDB;
+        private FareStructure fareStructure;
 
         public CallbackEndRide(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude, double dropLongitude, HashMap<String, String> params,
                                long eoRideTimeInMillis, long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter,
-                               long rideTimeInMillisFromDB) {
+                               long rideTimeInMillisFromDB, FareStructure fareStructure) {
             this.customerInfo = customerInfo;
             this.totalHaversineDistanceInKm = totalHaversineDistanceInKm;
             this.dropLatitude = dropLatitude;
@@ -6875,6 +6892,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             this.totalDistanceFromLogInMeter = totalDistanceFromLogInMeter;
             this.url = url;
             this.rideTimeInMillisFromDB = rideTimeInMillisFromDB;
+            this.fareStructure = fareStructure;
         }
 
         @Override
@@ -6918,7 +6936,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         fixedDeliveryWaitTime = -1;
                     }
 
-                    endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
+                    endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare, fareStructure);
                     if (customerInfo != null) {
                         if (customerInfo.couponInfo != null) {
                             customerInfo.couponInfo.couponApplied = true;
@@ -7276,7 +7294,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
                     finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode, customerInfo.getCurrencyUnit(),
-                    fareDetails);
+                    fareDetails, Data.fareStructure);
 
             try {
                 Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
