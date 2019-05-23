@@ -1187,7 +1187,7 @@
     <string name="are_you_sure_want_to_disable_emergency">Are you sure you want to disable Emergency mode?</string>
     <string name="edit">Edit</string>
     <string name="configure_your_emergency_contacts">Configure your\nemergency contacts</string>
-    <string name="inform_your_friends">Inform your friends and family\nabout your current location everytime\nyou ride with %s</string>
+    <string name="inform_your_friends">Inform your friends and family\nabout your current location everytime\nyou drive with %s</string>
     <string name="or_call_directly">or Call directly</string>
     <string name="or_send_directly">or Send directly</string>
     <string name="type_a_name_or_mobile_number">Type a name or a mobile number</string>

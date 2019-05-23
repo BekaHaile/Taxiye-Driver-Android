@@ -216,14 +216,14 @@ class AddEmergencyContactsFragment : Fragment() {
         })
     }
 
-    fun addEmergencyContact(contactBean: ContactBean) {
+    fun addEmergencyContact(contactBean: ContactBean, countryCode:String, phoneNo:String) {
         try {
             val jsonArray = JSONArray()
             if (contactBean.isSelected) {
                 val jsonObject = JSONObject()
                 jsonObject.put(Constants.KEY_NAME, contactBean.name)
-                jsonObject.put(Constants.KEY_PHONE_NO, contactBean.phoneNo)
-                jsonObject.put(Constants.KEY_COUNTRY_CODE, contactBean.countryCode)
+                jsonObject.put(Constants.KEY_PHONE_NO, phoneNo)
+                jsonObject.put(Constants.KEY_COUNTRY_CODE, countryCode)
                 jsonArray.put(jsonObject)
             }
             if (jsonArray.length() > 0) {
@@ -396,9 +396,9 @@ class AddEmergencyContactsFragment : Fragment() {
             btnOk.typeface = Fonts.mavenRegular(activity)
             val btnClose = dialog!!.findViewById<View>(R.id.close) as ImageView
             btnOk.setOnClickListener {
-                contactBean.countryCode = tvCountryCode.text.toString()
-                contactBean.phoneNo = tvCountryCode.text.toString() + editTextPhoneNumber.text.toString()
-                addEmergencyContact(contactBean)
+//                contactBean.countryCode = tvCountryCode.text.toString()
+//                contactBean.phoneNo = tvCountryCode.text.toString() + editTextPhoneNumber.text.toString()
+                addEmergencyContact(contactBean, tvCountryCode.text.toString(), tvCountryCode.text.toString() + editTextPhoneNumber.text.toString())
                 dialog!!.dismiss()
             }
 
