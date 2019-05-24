@@ -432,5 +432,13 @@ public interface Constants {
 	String KEY_RENTAL_DISTANCE = "fare_threshold_distance";
 	String KEY_RENTAL_AMOUNT = "fare_fixed";
 	String KEY_DRIVER_FARE_MANDATORY = "driver_fare_mandatory";
+
+	String KEY_CLIENT_ID = "client_id";
+	String KEY_EMERGENCY_CONTACTS = "emergency_contacts";
+	String KEY_EMERGENCY_ACTIVITY_MODE = "emergency_activity_mode";
+	String SP_EMERGENCY_MODE_ENABLED = "sp_emergency_mode_enabled";
+	String KEY_ALERT_TYPE = "alert_type";
+	String KEY_EMERGENCY_NO = "emergency_no";
+	String KEY_DRIVER_EMERGENCY_MODE_ENABLED = "driver_emergency_mode_enabled";
 }
 

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:splitMotionEvents="false">
+
+
+    <RelativeLayout
+        android:id="@+id/linearLayoutInner"
+        android:layout_width="640px"
+        android:layout_marginTop="20px"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:splitMotionEvents="false">
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4px"
+            android:layout_marginStart="4px"
+            android:layout_marginEnd="4px"
+            android:layout_marginTop="4px"
+            android:background="@drawable/button_white_normal"
+            android:orientation="vertical"
+            android:splitMotionEvents="false">
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:gravity="center"
+                android:paddingStart="40px"
+                android:paddingEnd="40px"
+                android:text="@string/connection_lost"
+                android:textColor="#51515D"
+                android:textSize="@dimen/text_size_42"
+                android:visibility="visible" />
+
+
+            <RelativeLayout
+                android:id="@+id/rlPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45px"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:layout_marginEnd="40px"
+                android:layout_marginStart="40px">
+
+
+                <LinearLayout
+                    android:id="@+id/llCountryCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:tag="@string/dont_touch_me"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvCountryCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:hint="@string/code"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="15sp"
+                        android:textSize="15sp"
+                        android:textColorHint="@color/textColorLight"
+                        android:drawableEnd="@drawable/arrow_down"
+                        android:drawablePadding="3dp"
+                        android:fontFamily="@font/maven_pro_medium"/>
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/editTextPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="88px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10px"
+                    android:layout_toEndOf="@+id/llCountryCode"
+                    android:background="#0000"
+                    android:completionThreshold="1"
+                    android:gravity="center_vertical"
+                    android:hint="@string/phone_number"
+                    android:inputType="number"
+                    android:paddingStart="20px"
+                    android:paddingEnd="20px"
+                    android:maxLines="1"
+                    android:maxLength="14"
+                    android:layoutDirection="ltr"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/textColorLight"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/text_size_34"
+                    android:fontFamily="@font/maven_pro_medium"/>
+
+
+
+
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="45px"
+                android:gravity="center"
+                android:paddingStart="40px"
+                android:paddingEnd="40px"
+                android:visibility="gone"
+                android:textColor="#51515D"
+                android:textSize="@dimen/text_size_30" />
+
+            <Button
+                android:id="@+id/btnOk"
+                style="@style/ButtonTheme"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:layout_marginBottom="40px"
+                android:singleLine="true"
+                android:text="@string/add" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/close"
+            style="@style/cross_popup"
+            />
+
+</RelativeLayout>

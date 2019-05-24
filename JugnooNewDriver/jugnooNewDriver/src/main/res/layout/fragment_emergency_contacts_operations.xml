@@ -1,0 +1,204 @@
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/layout_top_bar"/>
+
+        <TextView
+            android:id="@+id/textViewSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10px"
+            android:padding="20px"
+            android:text="@string/send"
+            android:textAllCaps="true"
+            android:textColor="@color/text_color_light_selector"
+            android:textSize="@dimen/text_size_28"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topBar"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:id="@+id/linearLayoutEmergencyContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <include
+                layout="@layout/layout_emergency_contacts_header"
+                />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewEmergencyContacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="256px"
+                    android:layout_marginStart="40px"
+                    android:layout_marginEnd="40px"
+                    android:scrollbars="vertical"
+                    android:fadeScrollbars="true"
+                    />
+
+                <Button
+                    android:id="@+id/buttonAddContact"
+                    style="@style/ButtonTheme"
+                    android:layout_width="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:text="@string/add_contacts"
+                    android:layout_centerInParent="true"
+                    />
+                
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20px"
+                    android:layout_toStartOf="@+id/textViewOr"
+                    android:background="@color/textColorLight"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewOr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/or_call_directly"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="@dimen/text_size_32"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20px"
+                    android:layout_toEndOf="@+id/textViewOr"
+                    android:background="@color/textColorLight"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <include
+                layout="@layout/layout_emergency_contacts_search_header"
+                />
+
+
+            <product.clicklabs.jugnoo.driver.utils.ProgressWheel
+                android:id="@+id/progressWheelLoadContacts"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:tag="@string/dont_touch_me"
+                xmlns:wheel="http://schemas.android.com/apk/res-auto"
+                wheel:matProg_barColor="@color/themeColor"
+                wheel:matProg_barWidth="3dp"
+                wheel:matProg_fillRadius="true"
+                wheel:matProg_progressIndeterminate="true"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewPhoneContacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="40px"
+                android:layout_marginEnd="40px"
+                android:scrollbars="vertical"
+                android:fadeScrollbars="true"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llPermission"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_permission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="30px"
+                android:paddingEnd="30px"
+                android:layout_marginTop="40px"
+                android:layout_marginBottom="30px"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/grant_contact_permission"
+                android:textColor="@color/text_color_light"
+                android:textSize="@dimen/text_size_32"
+                />
+
+
+            <Button
+                android:id="@+id/buttonGrantPermission"
+                style="@style/ButtonTheme"
+                android:layout_width="wrap_content"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@string/grant_permission"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textViewScroll"
+            android:layout_width="10px"
+            android:layout_height="10px"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

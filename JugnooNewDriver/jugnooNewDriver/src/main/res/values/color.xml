@@ -170,6 +170,9 @@
     <color name="call">#00cc00</color>
     <color name="call_selected">#9000cc00</color>
 
+    <color name="red_dark">#EA452F</color>
+    <color name="red_dark_alpha">#99EA452F</color>
+
 
 
 </resources>

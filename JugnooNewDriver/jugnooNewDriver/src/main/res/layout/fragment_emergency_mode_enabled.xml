@@ -1,0 +1,140 @@
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include layout="@layout/layout_top_bar"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="6px"
+        android:layout_below="@+id/topBar"
+        android:background="@drawable/shadow_down"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topRl"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        >
+
+        <ImageView
+            android:layout_width="172px"
+            android:layout_height="134px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="94px"
+            android:src="@drawable/ic_siren"
+            android:tag="mwar"
+            />
+
+        <TextView
+            android:id="@+id/textViewEmergencyModeEnabledTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="64px"
+            android:gravity="center_horizontal"
+            android:text="@string/emergency_mode_enabled_title"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_34"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewEmergencyModeEnabledMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10px"
+            android:gravity="center_horizontal"
+            android:text="@string/emergency_mode_enabled_message"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_30"
+
+            />
+
+
+        <Button
+            android:id="@+id/buttonCallPolice"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38px"
+            android:background="@drawable/button_red_dark_selector"
+            android:text="@string/call_police"
+            />
+
+        <Button
+            android:id="@+id/buttonCallEmergencyContact"
+            style="@style/ButtonTheme"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38px"
+            android:background="@drawable/button_white_red_dark_border_selector"
+            android:text="@string/call_emergency_contact"
+            android:textColor="@color/text_color_red_dark_aplha_selector"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDisableEmergencyMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="74px"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="80px"
+                    android:layout_marginEnd="20px"
+                    android:layout_toStartOf="@+id/textViewOr"
+                    android:src="@color/stroke_color_light"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewOr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/or"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_36"
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20px"
+                    android:layout_marginEnd="80px"
+                    android:layout_toEndOf="@+id/textViewOr"
+                    android:src="@color/stroke_color_light"
+                    />
+
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/buttonDisableEmergencyMode"
+                style="@style/ButtonTheme"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="74px"
+                android:text="@string/disable_emergency_mode"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

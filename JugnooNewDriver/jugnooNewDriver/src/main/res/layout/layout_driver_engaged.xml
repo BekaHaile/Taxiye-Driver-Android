@@ -37,6 +37,7 @@
                     android:textColor="@color/textColor"
                     android:textSize="36px"
                     android:layout_marginStart="18px"
+                    android:drawablePadding="5dp"
                     android:layout_centerVertical="true"/>
 
                 <Button

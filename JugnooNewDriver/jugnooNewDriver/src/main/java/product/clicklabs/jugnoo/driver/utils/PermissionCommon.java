@@ -472,7 +472,7 @@ public final class PermissionCommon {
     }
 
 
-    public void openSettingsScreen(Activity activity){
+    public static void openSettingsScreen(Activity activity){
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", activity.getPackageName(), null);

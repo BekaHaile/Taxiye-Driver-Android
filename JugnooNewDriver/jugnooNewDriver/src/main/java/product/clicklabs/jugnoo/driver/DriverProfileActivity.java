@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
@@ -70,7 +71,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
     SwitchCompat switchNavigation, switchMaxSound;
-    TextView tvDocuments;
+    TextView tvDocuments, tvEmergencyContacts;
     private   RecyclerView rvVehicleTypes;
     private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
 
@@ -178,6 +179,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         tvServiceType =  (TextView)findViewById(R.id.tvServiceType);
 
         tvDocuments = findViewById(R.id.tvDocuments);
+        tvEmergencyContacts = findViewById(R.id.tvEmergencyContacts);
 
         terms = (TextView) findViewById(R.id.terms);
         terms.setTypeface(Fonts.mavenRegular(this));
@@ -241,6 +243,21 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 intent.putExtra("access_token", Data.userData.accessToken);
                 intent.putExtra("in_side", true);
                 intent.putExtra("doc_required", 0);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
+        tvEmergencyContacts.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_EMERGENCY_MODE_ENABLED, 0) == 1 ? View.VISIBLE : View.GONE);
+        findViewById(R.id.ivDivEmergencyContacts).setVisibility(tvEmergencyContacts.getVisibility());
+        tvEmergencyContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Data.userData == null) {
+                    return;
+                }
+                Intent intent = new Intent(DriverProfileActivity.this, EmergencyActivity.class);
+                intent.putExtra(Constants.KEY_EMERGENCY_ACTIVITY_MODE,
+                        EmergencyActivity.EmergencyActivityMode.EMERGENCY_CONTACTS.getOrdinal1());
                 startActivity(intent);
                 overridePendingTransition(R.anim.right_in, R.anim.right_out);
             }

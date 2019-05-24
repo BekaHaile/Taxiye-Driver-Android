@@ -6,7 +6,8 @@ package product.clicklabs.jugnoo.driver.datastructure;
 public enum PendingCall {
 
 	END_RIDE("end_ride"), MARK_DELIVERED("mark_delivered"), UPLOAD_RIDE_DATA("upload_ride_data"),
-	END_DELIVERY("end_delivery");
+	END_DELIVERY("end_delivery"),
+	EMERGENCY_ALERT("/emergency/alert");
 
 	private String path;
 
