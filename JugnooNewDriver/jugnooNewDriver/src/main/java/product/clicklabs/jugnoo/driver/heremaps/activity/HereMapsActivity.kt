@@ -1,9 +1,12 @@
 package product.clicklabs.jugnoo.driver.heremaps.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.view.View
+import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -44,12 +47,36 @@ class HereMapsActivity  : BaseFragmentActivity(){
         wv.loadUrl(file)
 
         bAddPlace.setOnClickListener{
-            startActivity(Intent(this@HereMapsActivity, HereMapsImageCaptureActivity::class.java)
-                    .putExtra(Constants.KEY_LATITUDE, intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0))
-                    .putExtra(Constants.KEY_LONGITUDE, intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0))
-            )
+            wv.loadUrl("javascript:Android.getIds(getCenter());");
+
         }
         bAddPlace.visibility = View.GONE
+
+        wv.addJavascriptInterface(CustomJavaScriptInterface(this), "Android");
+
+
+    }
+
+    inner class CustomJavaScriptInterface(val mContext:Context) {
+
+        var centre:String? = null
+
+        @JavascriptInterface
+        fun getIds(centre:String){
+            this.centre = centre
+
+            Log.e("CustomJavaScriptInterface", "centre=$centre")
+            if(centre.contains(",")){
+                val arr = centre.split(",");
+                val lat = arr[0].toDouble()
+                val lng = arr[1].toDouble()
+
+                startActivity(Intent(mContext, HereMapsImageCaptureActivity::class.java)
+                        .putExtra(Constants.KEY_LATITUDE, lat)
+                        .putExtra(Constants.KEY_LONGITUDE, lng)
+                )
+            }
+        }
 
     }
 

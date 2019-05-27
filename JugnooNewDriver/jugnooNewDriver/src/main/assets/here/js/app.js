@@ -203,4 +203,14 @@ window.addEventListener('resize', () => {
 	display.resize();
 })
 
+var a = ""
+
+const getCenter = () => {
+    const feature = generateFeature(display.getCenter())
+//    console.log("hello feature="+feature.geometry.coordinates)
+    a = feature.geometry.coordinates[1]+","+feature.geometry.coordinates[0]
+//    console.log("hello a="+a)
+	return a;
+}
+
 handleAddPlace();

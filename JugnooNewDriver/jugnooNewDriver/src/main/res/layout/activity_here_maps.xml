@@ -20,15 +20,6 @@
     </WebView>
 
 
-    <RelativeLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_below="@+id/topRl"
-        />
-
     <Button
         android:id="@+id/bAddPlace"
         style="@style/ButtonTheme"
