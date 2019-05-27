@@ -1232,5 +1232,6 @@
     <string name="image_not_captured">Image not captured successfully</string>
     <string name="please_select_a_category">Please select a category</string>
     <string name="place_added_successfully">Place added successfully</string>
+    <string name="search_a_category">Search a category</string>
 
 </resources>

@@ -3,7 +3,11 @@ package product.clicklabs.jugnoo.driver.heremaps.activity
 import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_here_maps_feedback.*
@@ -33,6 +37,7 @@ class HereMapsFeedbackActivity  : BaseFragmentActivity(), HereMapsCategoryAdapte
     var fileSelected:File? = null
     var latitude:Double? = 0.0
     var longitude:Double? = 0.0
+    lateinit var llNoData:LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +72,22 @@ class HereMapsFeedbackActivity  : BaseFragmentActivity(), HereMapsCategoryAdapte
             uploadPicToServer(this, fileSelected!!, categorySelected!!)
         }
 
+        llNoData = findViewById(R.id.llNoData)
 
         setCategoriesAdapter()
 
+        etSearch.addTextChangedListener(object:TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                categoryAdapter.search(s.toString(), llNoData)
+            }
 
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
     private fun setCategoriesAdapter() {
