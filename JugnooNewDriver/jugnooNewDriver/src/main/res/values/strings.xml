@@ -1212,5 +1212,6 @@
     <string name="emergency_mode_enabled">Emergency Mode Enabled</string>
     <string name="call_support">Call Support</string>
     <string name="included">included</string>
+    <string name="delivery_earnings">DELIVERY EARNINGS</string>
 
 </resources>

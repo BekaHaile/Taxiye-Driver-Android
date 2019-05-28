@@ -58,6 +58,51 @@
                     android:rotationY="@integer/locale_mirror_flip" />
 
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDeliveryEarnings"
+                android:layout_width="match_parent"
+                android:layout_height="160px"
+                android:background="@drawable/bg_transparent_blue_black_selector"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/grey_light_seprator" />
+                <TextView
+                    android:id="@+id/textViewDeliveryEarnings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="13dp"
+                    android:text="@string/delivery_earnings"
+                    android:textColor="@color/white"
+                    style="@style/TextNormal"/>
+
+
+                <TextView
+                    android:id="@+id/textViewDeliveryEarningsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/arrowDeliveryEarnings"
+                    android:text="NA"
+                    style="@style/TextLarge"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/arrowDeliveryEarnings"
+                    android:layout_width="56px"
+                    android:layout_height="48px"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="24px"
+                    android:visibility="invisible"
+                    android:src="@drawable/arrow_today_earning_top"
+                    android:rotationY="@integer/locale_mirror_flip" />
+
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="match_parent"
