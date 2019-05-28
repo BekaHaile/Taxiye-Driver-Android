@@ -391,14 +391,15 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 					if(Data.userData.getDeliveryEnabled()==1) {
-						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+//						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
 						textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
 						relativeLayoutDeliveryEarnings.setVisibility(View.VISIBLE);
 					}
 					else {
-						relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
 						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+						relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
 					}
+					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
 				} else {
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 				}
