@@ -108,7 +108,7 @@ public class FareStructure {
 		return Utils.currencyPrecision(fare);
 	}
 
-	public double getEffectiveConvenienceCharge(){
+	private double getEffectiveConvenienceCharge(){
 		return (convenienceCharge - convenienceChargeWaiver);
 	}
 
@@ -116,7 +116,7 @@ public class FareStructure {
 		return  mandatoryFareApplicable;
 	}
 
-	public double computeLuggageChargesCharges(int luggageCount) {
+	private double computeLuggageChargesCharges(int luggageCount) {
 		return Utils.currencyPrecision(((double)luggageCount) * baggageCharges);
 	}
 

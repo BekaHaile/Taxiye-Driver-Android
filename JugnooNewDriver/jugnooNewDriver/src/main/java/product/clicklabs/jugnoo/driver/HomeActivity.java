@@ -5278,10 +5278,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(this)));
             driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
-            if (Data.fareStructure != null) {
-                driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), getTotalFare(customerInfo, distance,
-                        elapsedTime, waitTime, 0, false)));
-            }
+//            if (Data.fareStructure != null) {
+//                driverIRFareValue.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), getTotalFare(customerInfo, distance,
+//                        elapsedTime, waitTime, 0, false)));
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
