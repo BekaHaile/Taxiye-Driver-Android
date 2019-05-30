@@ -69,6 +69,7 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 		viewPager.setAdapter(shareFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		tabs.setTextSize(28);
 		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
 		tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
 		tabs.setTypeface(Fonts.mavenRegular(this), Typeface.NORMAL);

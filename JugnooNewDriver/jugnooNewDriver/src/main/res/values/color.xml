@@ -117,6 +117,7 @@
     <color name="grey_light">#DDDDDD</color>
     <color name="grey_light_delivery">#20595968</color>
     <color name="grey_light_op_60">#60DDDDDD</color>
+    <color name="grey_new">#f2f4f5</color>>
     <color name="grey_light_seprator">#60a1a0a0</color>
     <color name="grey_light_side_menu">#f9fafb</color>
     <color name="grey_default">#fafbfc</color>
