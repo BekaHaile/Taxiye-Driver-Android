@@ -493,7 +493,16 @@ public class CustomerInfo {
 		this.vendorMessage = vendorMessage;
 	}
 
+	private boolean distanceRecover = false;
+	private double totalDistanceRecovered = 0;
+
+	public void setTotalDistance(double distance){
+		distanceRecover = true;
+		totalDistanceRecovered = distance;
+	}
+
 	public double getTotalDistance(double distance, Context context){
+		if(distanceRecover){return totalDistanceRecovered;}
 //		if(getIsPooled() == 1 && getPoolFare() != null){
 //			return getPoolFare().getDistance();
 //		} else {

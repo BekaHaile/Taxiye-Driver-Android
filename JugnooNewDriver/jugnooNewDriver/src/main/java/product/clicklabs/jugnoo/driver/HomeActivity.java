@@ -6531,7 +6531,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
                 if (flagDistanceTravelled == -1 && currentPathItemPair != null
-                        && (Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) - currentPathItemPair.first) > 500
+                        && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
                     try {
@@ -8185,7 +8185,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //                    if (fusedLocationUsed) {
                         calculateFusedLocationDistance(activity, oldGPSLatLng,
                                 new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()),
-                                lastloctime, customerInfo);
+                                lastloctime, customerInfo, fusedLocationUsed);
 //                    } else {
 //                        driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
 //                                -1, customerInfo);
@@ -8210,7 +8210,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     int flagDistanceTravelled = -1;
 
     public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination,
-                                               final long lastloctime, final CustomerInfo customerInfo) {
+                                               final long lastloctime, final CustomerInfo customerInfo, final boolean fusedLocationUsed) {
         DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
         new Thread(new Runnable() {
 
@@ -8243,12 +8243,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
 							Log.e("calculateFusedLocationDistance directions customerRideDataGlobal.getDistance(activity) ", "=" + customerRideDataGlobal.getDistance(activity));
 
-							customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(activity) + totalDistance);
+							customerInfo.setTotalDistance(totalDistance);
 							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal();
 							afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
 							return;
 						}
 					}
+					if(!fusedLocationUsed){
+                        afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
+                        return;
+                    }
 
                     Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
                             destination.latitude + "," + destination.longitude, "EN", false, false);
