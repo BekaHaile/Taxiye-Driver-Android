@@ -6464,6 +6464,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
                                 }
 
+                                customerInfo.setRequestlLatLng(driverAtPickupLatLng);
+
 
                                 initializeStartRideVariables();
 
@@ -6482,15 +6484,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                                 switchDriverScreen(driverScreenMode);
 
-                                try {
-                                    JSONObject map = new JSONObject();
-                                    map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
-                                    map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
-                                    map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-                                    map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                                 new DriverTimeoutCheck().clearCount(activity);
                                 Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, customerInfo.getPhoneNumber());
                             } else {
@@ -6538,7 +6531,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
                 if (flagDistanceTravelled == -1 && currentPathItemPair != null
-                        && (Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) - currentPathItemPair.first) > 500
+                        && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
                     try {
@@ -8189,14 +8182,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     driverScreenMode = DriverScreenMode.D_RIDE_END;
 
-                    if (fusedLocationUsed) {
+//                    if (fusedLocationUsed) {
                         calculateFusedLocationDistance(activity, oldGPSLatLng,
                                 new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()),
-                                lastloctime, customerInfo);
-                    } else {
-                        driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
-                                -1, customerInfo);
-                    }
+                                lastloctime, customerInfo, fusedLocationUsed);
+//                    } else {
+//                        driverEndRideWithDistanceSafetyCheck(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
+//                                -1, customerInfo);
+//                    }
                     return true;
                 } else {
                     Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
@@ -8217,7 +8210,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     int flagDistanceTravelled = -1;
 
     public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination,
-                                               final long lastloctime, final CustomerInfo customerInfo) {
+                                               final long lastloctime, final CustomerInfo customerInfo, final boolean fusedLocationUsed) {
         DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
         new Thread(new Runnable() {
 
@@ -8233,6 +8226,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.v("lasttime diff", "" + lastTimeDiff);
                     Log.v("displacement", "" + displacement);
                     Log.v("displacement speed", "" + endDisplacementSpeed);
+
+					double customerDist = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity);
+					double totalDisp = MapUtils.distance(customerInfo.getRequestlLatLng(), destination);
+					double totalDistance = totalDisp;
+					if(totalDisp > 0 && customerDist < totalDisp){
+						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
+								destination.latitude + "," + destination.longitude, "EN", false, false);
+						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
+						JSONObject jsonObject = new JSONObject(response);
+						String status = jsonObject.getString("status");
+						if ("OK".equalsIgnoreCase(status)) {
+							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+							totalDistance = element0.getJSONObject("distance").getDouble("value");
+
+							Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
+							Log.e("calculateFusedLocationDistance directions customerRideDataGlobal.getDistance(activity) ", "=" + customerRideDataGlobal.getDistance(activity));
+
+							customerInfo.setTotalDistance(totalDistance);
+							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal();
+							afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
+							return;
+						}
+					}
+					if(!fusedLocationUsed){
+                        afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
+                        return;
+                    }
 
                     Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
                             destination.latitude + "," + destination.longitude, "EN", false, false);
@@ -8277,19 +8297,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                activity.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DialogPopup.dismissLoadingDialog();
-                        driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
-                                flagDistanceTravelled, customerInfo);
-                    }
-                });
+				afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
 
             }
         }).start();
     }
+
+    private void afterFusedDistanceEstimation(Activity activity, LatLng source, LatLng destination, CustomerInfo customerInfo, int flagDistanceTravelled){
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				DialogPopup.dismissLoadingDialog();
+				driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
+						flagDistanceTravelled, customerInfo);
+			}
+		});
+	}
 
 
     @Override
@@ -9483,7 +9507,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     arrivedOrStartStateZoom();
                 }
                 if(Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_AUTO_ZOOM_ENABLED, 0) == 1) {
-                    inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
+                    inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 60000);
                 }
             }
         }
