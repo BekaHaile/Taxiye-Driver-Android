@@ -15,7 +15,7 @@
         android:tag="@string/dont_touch_me"
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
         android:visibility="visible"
         app:pstsIndicatorHeight="2dp"
         app:pstsDividerColor="@color/menu_black"

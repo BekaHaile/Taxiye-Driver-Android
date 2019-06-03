@@ -163,17 +163,17 @@ public class ShareLeaderboardFragment extends Fragment {
 
 			if (LBTimeType.DAILY == lbTimeType) {
 				if (this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.color.themeColor);
-					textViewDaily.setTextColor(getResources().getColor(R.color.white));
-					textViewWeekly.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewDaily.setBackgroundResource(R.drawable.background_orange_bottom_line);
+					textViewDaily.setTextColor(getResources().getColor(R.color.themeColor));
+					textViewWeekly.setBackgroundResource(R.color.white);
 					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
 			} else if (LBTimeType.WEEKLY == lbTimeType) {
 				if (this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewDaily.setBackgroundResource(R.color.white);
 					textViewDaily.setTextColor(getResources().getColorStateList(R.color.menu_black));
-					textViewWeekly.setBackgroundResource(R.color.themeColor);
-					textViewWeekly.setTextColor(getResources().getColor(R.color.white));
+					textViewWeekly.setBackgroundResource(R.drawable.background_orange_bottom_line);
+					textViewWeekly.setTextColor(getResources().getColor(R.color.themeColor));
 				}
 			}
 
