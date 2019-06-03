@@ -200,4 +200,8 @@
         <item name="android:layout_marginTop">-20px</item>
     </style>
 
+    <style name="GreyHighlight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlHighlight">@color/grey_light_more</item>
+    </style>
+
 </resources>

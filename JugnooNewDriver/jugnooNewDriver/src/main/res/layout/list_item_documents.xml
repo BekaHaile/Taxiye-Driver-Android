@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/rideHistoryItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
-    android:background="@drawable/background_white"
-    android:orientation="vertical"
-    android:splitMotionEvents="false">
+    android:background="?attr/selectableItemBackground"
+    android:splitMotionEvents="false"
+    android:theme="@style/GreyHighlight">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutSelectPicture"
@@ -18,6 +18,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutSelectPictureStatus"
             android:layout_width="wrap_content"
+            android:minHeight="50dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -47,18 +48,6 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/docRejectionReason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="16dp"
-                android:layout_toEndOf="@+id/docType"
-                android:text="@string/Requirement"
-                android:textColor="@color/red_status"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/docRequirement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,17 +57,10 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/Requirement"
                 android:textColor="@color/textColorMedium"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:drawablePadding="3dp"
+                android:drawableEnd="@drawable/ic_info"/>
 
-
-            <ImageView
-                android:id="@+id/imageViewInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/docType"
-                android:layout_marginTop="10dp"
-                android:layout_toEndOf="@id/docRequirement"
-                android:src="@drawable/ic_information" />
         </RelativeLayout>
 
 
@@ -117,8 +99,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="12dp"
         android:visibility="visible"
+        android:layout_below="@+id/relativeLayoutSelectPicture"
         >
 
         <RelativeLayout
@@ -133,27 +115,6 @@
             android:orientation="vertical"
             android:padding="0dp"
             android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/image_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/image_icon"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/addImage2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_icon"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="6dp"
-                android:text="@string/add_image"
-                android:textColor="@color/themeColor"
-                android:textSize="10sp"
-                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/setCapturedImage"
@@ -185,27 +146,6 @@
             android:tag="mwar">
 
             <ImageView
-                android:id="@+id/image_icon2"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/image_icon"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/addImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_icon2"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="6dp"
-                android:text="@string/add_image"
-                android:textColor="@color/themeColor"
-                android:textSize="10sp"
-                android:visibility="gone"/>
-
-            <ImageView
                 android:id="@+id/setCapturedImage2"
                 android:layout_width="86dp"
                 android:layout_height="86dp"
@@ -224,15 +164,6 @@
             android:visibility="gone"/>
 
 
-        <ImageView
-            android:id="@+id/imageViewDocStatus"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/doc_uploaded"/>
-
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -241,7 +172,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:layout_marginBottom="12dp"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/relativeLayoutImageStatus"
+        >
 
         <TextView
             android:id="@+id/docStatus"
@@ -265,6 +198,16 @@
 
     </RelativeLayout>
 
+
+    <ImageView
+        android:id="@+id/imageViewDocStatus"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/relativeLayoutSelectPicture"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/doc_uploaded"/>
+
     <ImageView
         android:id="@+id/bottomLine"
         android:layout_width="match_parent"
@@ -273,4 +216,4 @@
         android:layout_marginStart="15dp"
         android:background="@color/dividerColor"/>
 
-</LinearLayout>
+</RelativeLayout>

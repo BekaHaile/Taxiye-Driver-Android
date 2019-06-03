@@ -12,14 +12,15 @@
 
     <product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:tag="@string/dont_touch_me"
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="99px"
+        android:layout_height="48dp"
         android:visibility="visible"
-        app:pstsIndicatorHeight="7px"
+        app:pstsIndicatorHeight="2dp"
         app:pstsDividerColor="@color/menu_black"
         app:pstsShouldExpand="true"
-        app:pstsUnderlineHeight="2px"
+        app:pstsUnderlineHeight="1dp"
         />
 
     <android.support.v4.view.ViewPager
