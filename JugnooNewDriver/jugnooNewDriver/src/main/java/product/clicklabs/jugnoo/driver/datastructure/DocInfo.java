@@ -2,9 +2,9 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.text.TextUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.adapters.DocImage;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo;
 
 public class DocInfo {
@@ -14,8 +14,7 @@ public class DocInfo {
 	public Integer docRequirement;
 	public String status, reason;
 	public boolean isExpended;
-	public ArrayList<String> url;
-	private File file, file1;
+	private ArrayList<DocImage> docImages;
 	private String docInstructions;
 	private Integer galleryRestricted;
 	private ArrayList<DocFieldsInfo> listDocFieldsInfo;
@@ -31,40 +30,24 @@ public class DocInfo {
 		this.docRequirement = docRequirement;
 		this.status = status;
 		this.reason = reason;
-		this.file = null;
-		this.file1 = null;
 		this.isEditable = isEditable;
 		this.isExpended = false;
 		this.docCount = docCount;
-		this.url = url;
-		this.docInstructions = docInstructions;
-		if(this.url != null) {
-			if (this.url.size() == 0) {
-				this.url.add(null);
-				this.url.add(null);
-			} else if (this.url.size() == 1) {
-				this.url.add(null);
+
+		docImages = new ArrayList<>();
+		for(int i=0; i<docCount; i++){
+			if(url != null && i < url.size()){
+				docImages.add(new DocImage(url.get(i), null));
+			} else {
+				docImages.add(new DocImage());
 			}
 		}
+
+		this.docInstructions = docInstructions;
+
 		this.galleryRestricted = galleryRestricted;
 		this.listDocFieldsInfo = listDocFieldsInfo;
 		this.docInfoEditable = docInfoEditable;
-	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-	public File getFile1() {
-		return file1;
-	}
-
-	public void setFile1(File file1) {
-		this.file1 = file1;
 	}
 
 	public String getDocInstructions() {
@@ -88,11 +71,15 @@ public class DocInfo {
 	}
 
 	public boolean checkIfURLEmpty(){
-		for(String urli : url){
-			if(!TextUtils.isEmpty(urli)){
+		for(DocImage docImage : docImages){
+			if(!TextUtils.isEmpty(docImage.getImageUrl()) || docImage.getFile() != null){
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public ArrayList<DocImage> getDocImages(){
+		return docImages;
 	}
 }

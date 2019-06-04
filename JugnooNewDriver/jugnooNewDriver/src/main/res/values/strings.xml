@@ -1212,5 +1212,6 @@
     <string name="emergency_mode_enabled">Emergency Mode Enabled</string>
     <string name="call_support">Call Support</string>
     <string name="included">included</string>
+    <string name="are_you_sure_you_want_to_delete_this_image">Are you sure you want to delete this image?</string>
 
 </resources>

@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.DocImagesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
@@ -208,21 +211,19 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 
 	static class ViewHolderDriverDoc {
-		TextView docType, docRequirement, docStatus, docRejected;
-		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture,relativeLayoutSelectPictureStatus;
-		RelativeLayout relativeLayoutImageStatus, rlDocumentStatus;
-		RelativeLayout rideHistoryItem;
-		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1,
-				imageViewDocStatusImage,ivArrowForward;
-		int id;
+		TextView tvDocNameAndDetails, tvDocStatus;
+		LinearLayout rideHistoryItem;
+		RecyclerView rvDocImages;
 		View bottomLine;
+		DocImagesAdapter docImagesAdapter;
+		int id;
 	}
 
 	public class DriverDocumentListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverDoc holder;
 
-		public DriverDocumentListAdapter() {
+		DriverDocumentListAdapter() {
 			mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
@@ -254,49 +255,16 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				holder = new ViewHolderDriverDoc();
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
-				holder.docType = (TextView) convertView.findViewById(R.id.docType);
-				holder.docType.setTypeface(Fonts.mavenMedium(activity));
-				holder.docRejected = (TextView) convertView.findViewById(R.id.docRejected);
-				holder.docRejected.setTypeface(Fonts.mavenRegular(activity));
-
-				holder.docRequirement = (TextView) convertView.findViewById(R.id.docRequirement);
-				holder.docRequirement.setTypeface(Fonts.mavenRegular(activity));
-				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
-				holder.docStatus.setTypeface(Fonts.mavenRegular(activity));
-				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
-				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
-				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
-				holder.imageViewDocStatusImage = (ImageView) convertView.findViewById(R.id.imageViewDocStatusImage);
-
-				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
-				holder.deleteImage1.setTag(holder);
-				holder.deleteImage2 = (ImageView) convertView.findViewById(R.id.deleteImage2);
-				holder.deleteImage2.setTag(holder);
-
-				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
 				holder.rideHistoryItem = convertView.findViewById(R.id.rideHistoryItem);
-
-				holder.addImageLayout.setTag(holder);
-
-				holder.imageViewUploadDoc = (ImageView) convertView.findViewById(R.id.imageViewUploadDoc);
-				holder.relativeLayoutSelectPicture = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutSelectPicture);
-
-				holder.addImageLayout2 = (RelativeLayout) convertView.findViewById(R.id.addImageLayout2);
-
-				holder.addImageLayout2.setTag(holder);
-
-
-				holder.relativeLayoutImageStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutImageStatus);
-				holder.rlDocumentStatus = (RelativeLayout) convertView.findViewById(R.id.rlDocumentStatus);
-				holder.relativeLayoutSelectPictureStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutSelectPictureStatus);
-				holder.ivArrowForward = (ImageView) convertView.findViewById(R.id.ivArrowForward);
-
-				holder.imageViewUploadDoc.setTag(holder);
-				holder.relativeLayoutSelectPicture.setTag(holder);
-				holder.relativeLayoutSelectPictureStatus.setTag(holder);
-				holder.addImageLayout.setTag(holder);
-				holder.addImageLayout2.setTag(holder);
+				holder.tvDocNameAndDetails = convertView.findViewById(R.id.tvDocNameAndDetails);
+				holder.tvDocNameAndDetails.setTypeface(Fonts.mavenMedium(activity));
+				holder.tvDocStatus = convertView.findViewById(R.id.tvDocStatus);
+				holder.tvDocStatus.setTypeface(Fonts.mavenRegular(activity));
+				holder.rvDocImages = convertView.findViewById(R.id.rvDocImages);
+				holder.rvDocImages.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
 				holder.bottomLine = convertView.findViewById(R.id.bottomLine);
+
+				holder.rideHistoryItem.setTag(holder);
 
 				convertView.setTag(holder);
 			} else {
@@ -506,7 +474,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 			holder.docRequirement.setVisibility(holder.rlDocumentStatus.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 
-			holder.bottomLine.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+			holder.bottomLine.setVisibility(position > 0 ? View.VISIBLE : View.GONE);
 
 			if (isActionable) {
 				holder.relativeLayoutSelectPictureStatus.setVisibility(View.GONE);
@@ -1038,8 +1006,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 											docInfo.setFile1(null);
 										}
 										docInfo.url.set(column, null);
-										if(docInfo.getFile() == null && docInfo.getFile1() == null
-												&& docInfo.checkIfURLEmpty()){
+										if(docInfo.checkIfURLEmpty()){
 											docInfo.isExpended = false;
 											docInfo.status = "-1";
 										}
