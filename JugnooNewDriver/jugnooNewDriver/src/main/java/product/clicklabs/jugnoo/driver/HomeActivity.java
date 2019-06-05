@@ -6146,6 +6146,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     GCMIntentService.clearNotifications(getApplicationContext());
 
                     initializeStartRideVariables();
+                    Prefs.with(this).save(Constants.KEY_EMERGENCY_NO, jObj.optString(KEY_EMERGENCY_NO, getString(R.string.police_number)));
 
                     CustomerInfo customerInfo = new CustomerInfo(this, Integer.parseInt(engagementId),
                             Integer.parseInt(customerId), referenceId, userName, phoneNo, pickuplLatLng, cachedApiEnabled,

@@ -101,6 +101,7 @@
                 android:layout_marginStart="20px"
                 android:layout_marginEnd="20px"
                 android:background="@color/dividerColor"
+                android:visibility="gone"
                 />
 
             <TextView
@@ -115,6 +116,7 @@
                 android:paddingEnd="40px"
                 android:text="@string/call_support"
                 android:textAllCaps="true"
+                android:visibility="gone"
                 />
 
             <View
