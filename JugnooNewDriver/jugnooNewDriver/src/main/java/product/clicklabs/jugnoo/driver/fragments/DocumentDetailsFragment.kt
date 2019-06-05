@@ -113,6 +113,10 @@ class DocumentDetailsFragment:Fragment(){
         val inputTopMargin = 10.pxValue(requireContext())
         val sideMargin = labelTopMargin
 
+        setDocData(docInfo)
+        viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
+        lastEdtId = viewHolder!!.id
+
 
         if (docInfo.listDocFieldsInfo!=null) {
             for (item in docInfo.listDocFieldsInfo) {
@@ -150,8 +154,6 @@ class DocumentDetailsFragment:Fragment(){
             }
         }
 
-        setDocData(docInfo)
-        viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
 
 
 
@@ -171,8 +173,7 @@ class DocumentDetailsFragment:Fragment(){
         if((docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1) && docInfo.docCount>0) {
 
             //if no image has been uploaded
-            if (docInfo.file == null && docInfo.file1 == null &&
-                (docInfo.url==null   ||  (docInfo.url[0].isNullOrEmpty() && docInfo.url[1].isNullOrEmpty()))) {
+            if (docInfo.docCount > 0 && docInfo.checkIfURLEmpty()) {
                 DialogPopup.alertPopup(requireActivity(), "", getString(R.string.upload_images_error))
                 return
 

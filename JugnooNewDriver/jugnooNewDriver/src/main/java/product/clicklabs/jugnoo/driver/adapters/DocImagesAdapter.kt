@@ -13,11 +13,17 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import java.io.File
 
-class DocImagesAdapter(val activity:Activity, val rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<DocImagesAdapter.DocImageViewHolder>(),ItemListener {
+class DocImagesAdapter(val activity:Activity, var rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<DocImagesAdapter.DocImageViewHolder>(),ItemListener {
+
+    var editable:Boolean = false
+    var docIndex = 0
 
     private var docImages:MutableList<DocImage>? = mutableListOf()
 
-    fun setList(docImages: MutableList<DocImage>?){
+    fun setList(docImages: MutableList<DocImage>?, rv:RecyclerView, editable:Boolean, docIndex:Int){
+        this.rv = rv
+        this.editable = editable
+        this.docIndex = docIndex
         this.docImages = docImages
         notifyDataSetChanged()
     }
@@ -33,26 +39,30 @@ class DocImagesAdapter(val activity:Activity, val rv:RecyclerView, val callback:
 
     override fun onBindViewHolder(holder: DocImagesAdapter.DocImageViewHolder, position: Int) {
         if(!TextUtils.isEmpty(docImages!![position].imageUrl)){
-            holder.deleteImage1.visibility = View.VISIBLE
-            holder.ivDocImage1.isEnabled = false
+            holder.deleteImage1.visibility = if(editable) View.VISIBLE else View.GONE
+            holder.ivDocImage1.isEnabled = editable
 
             Picasso.with(activity).load(docImages!![position].imageUrl)
                     .transform(RoundBorderTransform()).resize(200, 200).centerCrop()
+                    .placeholder(R.drawable.ic_picture_placeholder)
+                    .error(R.drawable.ic_picture_error)
                     .into(holder.ivDocImage1)
 
         }
         else if(docImages!![position].file != null){
-            holder.deleteImage1.visibility = View.VISIBLE
-            holder.ivDocImage1.isEnabled = false
+            holder.deleteImage1.visibility = if(editable) View.VISIBLE else View.GONE
+            holder.ivDocImage1.isEnabled = editable
 
             Picasso.with(activity).load(docImages!![position].file)
                     .transform(RoundBorderTransform()).resize(200, 200).centerCrop()
+                    .placeholder(R.drawable.ic_picture_placeholder)
+                    .error(R.drawable.ic_picture_error)
                     .into(holder.ivDocImage1)
         }
         else {
             holder.deleteImage1.visibility = View.GONE
-            holder.ivDocImage1.isEnabled = true
-            holder.ivDocImage1.setImageDrawable(null)
+            holder.ivDocImage1.isEnabled = editable
+            holder.ivDocImage1.setImageResource(R.drawable.add_img_selector)
         }
     }
 
@@ -75,19 +85,19 @@ class DocImagesAdapter(val activity:Activity, val rv:RecyclerView, val callback:
         if(pos != RecyclerView.NO_POSITION){
             when(childView!!.id){
                 R.id.ivDocImage1->{
-                    callback.onClick(pos, docImages!![pos])
+                    callback.onClick(pos, docImages!![pos], docIndex)
                 }
                 R.id.deleteImage1->{
                     DialogPopup.alertPopupTwoButtonsWithListeners(activity, activity.getString(R.string.are_you_sure_you_want_to_delete_this_image)
-                    ) { callback.onDeleteClick(pos, docImages!![pos]) }
+                    ) { callback.onDeleteClick(pos, docImages!![pos], docIndex) }
                 }
             }
         }
     }
 
     interface Callback {
-        fun onDeleteClick(pos:Int, docImage:DocImage)
-        fun onClick(pos:Int, docImage:DocImage)
+        fun onDeleteClick(pos:Int, docImage:DocImage, docIndex:Int)
+        fun onClick(pos:Int, docImage:DocImage, docIndex:Int)
     }
 }
 
