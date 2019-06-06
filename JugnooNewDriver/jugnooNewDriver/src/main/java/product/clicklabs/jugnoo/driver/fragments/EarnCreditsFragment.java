@@ -78,7 +78,8 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
         if(Data.userData == null){
             return;
         }
-        TextView textView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.textview_earn_credits, null);
+        LinearLayout llGetCredits = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.textview_earn_credits, null);
+        TextView textView = llGetCredits.findViewById(R.id.tv_get_credits);
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         ssb.append(supportOption.getName());
@@ -99,10 +100,7 @@ public class EarnCreditsFragment extends BaseFragment implements View.OnClickLis
         textView.setOnClickListener(this);
         Utils.setTypeface(getActivity(), textView);
 
-        ((LinearLayout)rootView.findViewById(R.id.llRoot)).addView(textView);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
-        params.setMargins(0, 0, 0, getActivity().getResources().getDimensionPixelSize(R.dimen.dp_1));
-        textView.setLayoutParams(params);
+        ((LinearLayout)rootView.findViewById(R.id.llRoot)).addView(llGetCredits);
     }
 
     @Override
