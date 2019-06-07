@@ -56,7 +56,8 @@ object GoogleRestApis {
                     + "&language=" + language
                     + "&sensor=" + sensor
                     + "&alternatives=" + alternatives
-                    + "&client=" + BuildConfig.MAPS_CLIENT)
+                    + "&client=" + BuildConfig.MAPS_CLIENT
+                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -64,7 +65,7 @@ object GoogleRestApis {
             }
 
             response = RestClient.getGoogleApiServices().getDistanceMatrix(originLatLng, destLatLng, language,
-                    sensor, alternatives, BuildConfig.MAPS_CLIENT, googleSignature)
+                    sensor, alternatives, BuildConfig.MAPS_CLIENT, BuildConfig.FLAVOR + "-android-driver", googleSignature)
         } else {
             response = RestClient.getGoogleApiServices().getDistanceMatrix(originLatLng, destLatLng, language,
                     sensor, alternatives, BuildConfig.MAPS_BROWSER_KEY)
@@ -83,14 +84,15 @@ object GoogleRestApis {
                     "latlng=" + latLng
                     + "&language=" + language
                     + "&sensor=" + false
-                    + "&client=" + BuildConfig.MAPS_CLIENT)
+                    + "&client=" + BuildConfig.MAPS_CLIENT
+                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
             } catch (ignored: Exception) {
             }
 
-            response = RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_CLIENT, googleSignature)
+            response = RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_CLIENT, BuildConfig.FLAVOR + "-android-driver", googleSignature)
         } else {
             response = RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_BROWSER_KEY)
         }

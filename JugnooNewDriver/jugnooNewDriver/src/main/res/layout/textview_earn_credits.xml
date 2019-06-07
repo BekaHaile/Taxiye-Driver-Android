@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv_get_credits"
-    android:drawableEnd="@drawable/ic_chevron_right"
-    android:background="@drawable/bg_white_grey_light_selector"
-    android:padding="10dp"
-    android:textSize="17sp"
-    android:textColor="@color/text_color"
-    android:text="@string/get_credits"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp" />
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:id="@+id/llGetCredits"
+    >
+    <TextView
+        android:id="@+id/tv_get_credits"
+        style="@style/TextNormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:drawableEnd="@drawable/ic_chevron_right"
+        android:paddingBottom="17dp"
+        android:paddingEnd="17dp"
+        android:paddingStart="22dp"
+        android:paddingTop="17dp"
+        android:text="@string/get_credits"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/grey_new"
+        />
+</LinearLayout>

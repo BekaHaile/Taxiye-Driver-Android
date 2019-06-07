@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
-import android.os.Build;
-
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -36,6 +34,7 @@ public interface GoogleAPIServices {
 							   @Query("sensor") Boolean sensor,
 							   @Query("alternatives") Boolean alternatives,
 							   @Query("client") String client,
+							   @Query("channel") String  channel,
 							   @Query(value = "signature", encodeValue = false) String signature);
 	@GET("/maps/api/distancematrix/json")
 	Response getDistanceMatrix(@Query(value = "origins", encodeValue = false) String originLatLng,
@@ -51,6 +50,7 @@ public interface GoogleAPIServices {
 					 @Query("language") String language,
 					 @Query("sensor") Boolean sensor,
 					 @Query("client") String client,
+					 @Query("channel") String  channel,
 					 @Query(value = "signature", encodeValue = false) String signature);
 	@GET("/maps/api/geocode/json")
 	Response geocode(@Query(value = "latlng", encodeValue = false) String latLng,

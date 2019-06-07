@@ -7,10 +7,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -99,6 +101,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 					return;
 				}
+
+				Pair<Boolean, String> pair = getDocumentListFragment().allDocsMandatoryFieldsFilled();
+				if(!pair.first){
+					Utils.showToast(DriverDocumentActivity.this, getString(R.string.error_empty_mandatory_field, pair.second), Toast.LENGTH_LONG);
+					return;
+				}
+
 
 				if(brandingImagesOnly == 1){
 					docSubmission();
@@ -441,5 +450,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		if(getDocumentListFragment() != null) {
 			getDocumentListFragment().updateDocInfo(pos, docInfo);
 		}
+	}
+
+	@Override
+	public void setSubmitButtonVisibility(int visibility) {
+		submitButton.setVisibility(visibility);
 	}
 }
