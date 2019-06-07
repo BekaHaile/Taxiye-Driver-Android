@@ -62,6 +62,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
+import product.clicklabs.jugnoo.driver.utils.PhotoProvider;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -927,7 +928,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
 							Bitmap bitmap = BitmapFactory.decodeFile(image.getOriginalPath(), opt);
 
-							Uri uri = Uri.fromFile(new File(image.getOriginalPath()));
+							Uri uri = PhotoProvider.Companion.getPhotoUri(new File(image.getOriginalPath()));
 							int rotate = getCameraPhotoOrientation(activity, uri, image.getOriginalPath());
 							Bitmap rotatedBitmap;
 							Matrix rotateMatrix = new Matrix();
