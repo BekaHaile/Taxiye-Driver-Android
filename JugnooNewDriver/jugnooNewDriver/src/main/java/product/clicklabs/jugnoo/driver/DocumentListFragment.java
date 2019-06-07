@@ -257,7 +257,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		}
 
 		@NonNull
-		public  View getDocumentListView(int position, View convertView, LayoutInflater mInflater, final DriverDocumentActivity activity
+		public  View getDocumentListView(int position, View convertView, LayoutInflater mInflater, DriverDocumentActivity activity
 		,boolean isActionable, boolean hideStatusIfNoImages) {
 			ViewHolderDriverDoc	holder = null;
 			if (convertView == null) {
@@ -322,11 +322,17 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 						@Override
 						public void onClick(int pos, @NotNull DocImage docImage, int docIndex) {
-							if(docImage.getFile() == null && TextUtils.isEmpty(docImage.getImageUrl())) {
+							if(docImage.getFile() == null && TextUtils.isEmpty(docImage.getImageUrl())
+									&& TextUtils.isEmpty(docs.get(docIndex).reason)) {
 								uploadImageChooserDialog(activity, docIndex, pos);
 							} else {
 								addImageLayotOnClick(docIndex, activity, pos);
 							}
+						}
+
+						@Override
+						public int getEmptyImagePlaceHolder(int docIndex) {
+							return docs.get(docIndex).status.equalsIgnoreCase(DocStatus.REJECTED.getI()) ? R.drawable.reload_image : R.drawable.add_img_selector;
 						}
 					});
 					holder.rvDocImages.setAdapter(holder.docImagesAdapter);

@@ -62,7 +62,7 @@ class DocImagesAdapter(val activity:Activity, var rv:RecyclerView, val callback:
         else {
             holder.deleteImage1.visibility = View.GONE
             holder.ivDocImage1.isEnabled = editable
-            holder.ivDocImage1.setImageResource(R.drawable.add_img_selector)
+            holder.ivDocImage1.setImageResource(callback.getEmptyImagePlaceHolder(docIndex))
         }
     }
 
@@ -98,6 +98,7 @@ class DocImagesAdapter(val activity:Activity, var rv:RecyclerView, val callback:
     interface Callback {
         fun onDeleteClick(pos:Int, docImage:DocImage, docIndex:Int)
         fun onClick(pos:Int, docImage:DocImage, docIndex:Int)
+        fun getEmptyImagePlaceHolder(docIndex:Int):Int
     }
 }
 
