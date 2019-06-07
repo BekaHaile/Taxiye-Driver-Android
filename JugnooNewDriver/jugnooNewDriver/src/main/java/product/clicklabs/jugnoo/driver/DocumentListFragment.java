@@ -22,6 +22,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -219,6 +221,20 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	@Override
 	public void onRationalRequestIntercepted() {
 
+	}
+
+	public Pair<Boolean, String> allDocsMandatoryFieldsFilled() {
+		for(DocInfo docInfo : docs){
+			if(docInfo.getListDocFieldsInfo() != null){
+				for(DocFieldsInfo fieldsInfo : docInfo.getListDocFieldsInfo()){
+					if (fieldsInfo.isMandatory() && TextUtils.isEmpty(fieldsInfo.getValue())
+							&& (fieldsInfo.getSetValue() == null || fieldsInfo.getSetValue().size() == 0)) {
+						return new Pair<>(false, docInfo.docType + ": " + fieldsInfo.getLabel());
+					}
+				}
+			}
+		}
+		return new Pair<>(true, "");
 	}
 
 
