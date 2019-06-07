@@ -117,6 +117,7 @@ class DocumentDetailsFragment:Fragment(){
         viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
         lastEdtId = viewHolder!!.id
 
+        listener?.setSubmitButtonVisibility(if(docInfo.listDocFieldsInfo == null || docInfo.listDocFieldsInfo.size == 0) View.GONE else View.VISIBLE)
 
         if (docInfo.listDocFieldsInfo!=null) {
             for (item in docInfo.listDocFieldsInfo) {
@@ -281,6 +282,7 @@ class DocumentDetailsFragment:Fragment(){
 
     interface InteractionListener{
         fun updateDocInfo(pos: Int, docInfo: DocInfo)
+        fun setSubmitButtonVisibility(visibility:Int)
     }
 }
 

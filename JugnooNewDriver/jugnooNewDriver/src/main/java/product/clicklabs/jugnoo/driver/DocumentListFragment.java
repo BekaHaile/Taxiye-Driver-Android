@@ -112,6 +112,14 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	}
 
 	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if(!hidden){
+			activity.setSubmitButtonVisibility(View.VISIBLE);
+		}
+	}
+
+	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		docs.clear();
@@ -132,6 +140,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		getDocsAsync(getActivity());
+		activity.setSubmitButtonVisibility(View.VISIBLE);
 
 
 		return rootView;

@@ -442,4 +442,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 			getDocumentListFragment().updateDocInfo(pos, docInfo);
 		}
 	}
+
+	@Override
+	public void setSubmitButtonVisibility(int visibility) {
+		submitButton.setVisibility(visibility);
+	}
 }
