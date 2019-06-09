@@ -106,7 +106,9 @@ const display = new here.xyz.maps.Map(document.getElementById("map"), {
 	},
 
 	// add layers to display
-	layers: [imageLayer, herePlacesLayer, customPlacesLayer]
+	layers: [imageLayer]
+	//here places and custom places layers commented
+	//herePlacesLayer, customPlacesLayer
 });
 //longitude: <gps_longitude>, latitude: <gps_latitude>    ,    longitude: 100.4888, latitude: 13.7554
 
@@ -214,3 +216,38 @@ const getCenter = () => {
 }
 
 handleAddPlace();
+
+function restrictMap(map){
+
+  var bounds = new H.geo.Rect(<ne_lat>, <ne_lng>, <sw_lat>, <sw_lng>);
+
+  map.getViewModel().addEventListener('sync', function() {
+    var center = map.getCenter();
+
+    if (!bounds.containsPoint(center)) {
+      if (center.lat > bounds.getTop()) {
+        center.lat = bounds.getTop();
+      } else if (center.lat < bounds.getBottom()) {
+        center.lat = bounds.getBottom();
+      }
+      if (center.lng < bounds.getLeft()) {
+        center.lng = bounds.getLeft();
+      } else if (center.lng > bounds.getRight()) {
+        center.lng = bounds.getRight();
+      }
+      map.setCenter(center);
+    }
+  });
+
+  //Debug code to visualize where your restriction is
+  map.addObject(new H.map.Rect(bounds, {
+    style: {
+        fillColor: 'rgba(55, 85, 170, 0.1)',
+        strokeColor: 'rgba(55, 85, 170, 0.6)',
+        lineWidth: 8
+      }
+    }
+  ));
+}
+
+restrictMap(display)

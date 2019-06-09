@@ -4,23 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
 import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.TextView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import kotlinx.android.synthetic.main.activity_here_maps.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.Constants
-import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
-import product.clicklabs.jugnoo.driver.utils.Fonts
-import product.clicklabs.jugnoo.driver.utils.Log
-import product.clicklabs.jugnoo.driver.utils.Utils
+import product.clicklabs.jugnoo.driver.utils.*
 
 
-class HereMapsActivity  : BaseFragmentActivity(){
+class HereMapsActivity : BaseFragmentActivity(){
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +44,13 @@ class HereMapsActivity  : BaseFragmentActivity(){
         // Render the HTML file on WebView
         wv.loadUrl(file)
 
-        bAddPlace.setOnClickListener{
+        bAddPlace.setOnClickListener {
             wv.loadUrl("javascript:Android.getIds(getCenter());");
 
         }
         bAddPlace.visibility = View.GONE
 
         wv.addJavascriptInterface(CustomJavaScriptInterface(this), "Android");
-
-
     }
 
     inner class CustomJavaScriptInterface(val mContext:Context) {
@@ -100,8 +96,21 @@ class HereMapsActivity  : BaseFragmentActivity(){
 
                 var jsMap:String = Utils.readFileFromAssets(this@HereMapsActivity, "here/js/app.js")
 
-                jsMap = jsMap.replace("<gps_latitude>", intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0).toString())
-                jsMap = jsMap.replace("<gps_longitude>", intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0).toString())
+                val gpsLatLng = LatLng(intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0),
+                        intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0))
+
+                val boundsBuilder = LatLngBounds.Builder()
+                boundsBuilder.include(gpsLatLng)
+                val bounds:LatLngBounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(boundsBuilder, 15.0)
+
+
+                jsMap = jsMap.replace("<gps_latitude>", gpsLatLng.latitude.toString())
+                jsMap = jsMap.replace("<gps_longitude>", gpsLatLng.longitude.toString())
+
+                jsMap = jsMap.replace("<ne_lat>", bounds.northeast.latitude.toString())
+                jsMap = jsMap.replace("<ne_lng>", bounds.northeast.longitude.toString())
+                jsMap = jsMap.replace("<sw_lat>", bounds.southwest.latitude.toString())
+                jsMap = jsMap.replace("<sw_lng>", bounds.southwest.longitude.toString())
 
                 wv.postDelayed({
                     wv.evaluateJavascript(

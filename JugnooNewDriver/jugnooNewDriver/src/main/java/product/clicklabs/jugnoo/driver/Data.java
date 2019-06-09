@@ -97,7 +97,7 @@ public class Data {
     public static final String CHAT_URL_DEV = "https://test.jugnoo.in:8095";
     public static final String CHAT_URL_LIVE = "https://prod-autos-api.jugnoo.in:4010";
 
-	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 
 
 

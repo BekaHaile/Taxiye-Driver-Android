@@ -1233,5 +1233,17 @@
     <string name="please_select_a_category">Please select a category</string>
     <string name="place_added_successfully">Place added successfully</string>
     <string name="search_a_category">Search a category</string>
+    <string name="hotel">Hotel</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="hospital">Hospital</string>
+    <string name="business_facility">Business Facility</string>
+    <string name="petrol_gasoline_station">Petrol/Gasoline Station</string>
+    <string name="government_office">Government Office</string>
+    <string name="place_of_worship">Place of Worship</string>
+    <string name="residential_area_building">Residential Area Building</string>
+    <string name="higher_education">Higher Education</string>
+    <string name="school">School</string>
+    <string name="bank">Bank</string>
+    <string name="atm">ATM</string>
 
 </resources>
