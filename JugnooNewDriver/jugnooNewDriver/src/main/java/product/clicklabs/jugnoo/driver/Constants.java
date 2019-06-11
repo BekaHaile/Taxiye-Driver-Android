@@ -440,5 +440,7 @@ public interface Constants {
 	String KEY_ALERT_TYPE = "alert_type";
 	String KEY_EMERGENCY_NO = "emergency_no";
 	String KEY_DRIVER_EMERGENCY_MODE_ENABLED = "driver_emergency_mode_enabled";
+
+	String KEY_TASK_TYPE = "task_type";
 }
 

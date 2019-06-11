@@ -24,7 +24,7 @@ import java.util.*
 
 class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTasksListener {
     override fun onTaskClicked(tasks: Tasks) {
-        openDriverDocumentActivity()
+        openDriverDocumentActivity(tasks)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,18 +78,19 @@ class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTas
         rvTasks.layoutManager = layoutManager
         rvTasks.isNestedScrollingEnabled = false
         val driverTasksAdapter = DriverTasksAdapter()
-        driverTasksAdapter.setList(tasks as ArrayList<Tasks>, Data.userData.currency)
         rvTasks.adapter = driverTasksAdapter
+        driverTasksAdapter.setList(tasks as ArrayList<Tasks>, Data.userData.currency)
     }
 
 
-    private fun openDriverDocumentActivity() {
+    private fun openDriverDocumentActivity(tasks: Tasks) {
         val preIntent = intent
         val intent = Intent(this@DriverTasksActivity, DriverDocumentActivity::class.java)
         intent.putExtra("access_token", preIntent.getStringExtra("access_token"))
         intent.putExtra("in_side", preIntent.getBooleanExtra("in_side", true))
         intent.putExtra("doc_required", preIntent.getIntExtra("doc_required", 0))
         intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1)
+        intent.putExtra(Constants.KEY_TASK_TYPE, tasks.taskType)
         startActivity(intent)
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
