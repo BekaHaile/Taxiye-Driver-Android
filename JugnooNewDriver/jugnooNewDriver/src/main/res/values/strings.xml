@@ -1215,4 +1215,9 @@
     <string name="are_you_sure_you_want_to_delete_this_image">Are you sure you want to delete this image?</string>
     <string name="choose_image_from">Choose Image from</string>
 
+    <!--Branding-->
+    <string name="branding_msg">Earn money upto %s by self branding</string>
+    <string name="valid_till">Valid till %s</string>
+    <string name="title_tasks">Tasks</string>
+
 </resources>

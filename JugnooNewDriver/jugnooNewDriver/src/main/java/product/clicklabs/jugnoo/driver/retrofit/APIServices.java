@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.DriverTasks;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
@@ -748,6 +749,10 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/emergency/alert")
 	Response emergencyAlertSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_tasks")
+	void fetchDriverTask(@FieldMap Map<String, String> params, Callback<DriverTasks> callback);
 
 
 }

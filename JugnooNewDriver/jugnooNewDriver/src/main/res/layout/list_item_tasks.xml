@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:id="@+id/viewMain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/background_white_top_rounded_bordered"
+        app:layout_constraintBottom_toTopOf="@+id/ivSeparator"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivTasksImage"
+        android:layout_width="60dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_driver_tasks"
+        app:layout_constraintStart_toStartOf="@id/viewMain"
+        app:layout_constraintEnd_toEndOf="@id/viewMain"
+        app:layout_constraintTop_toTopOf="@id/viewMain"
+        android:layout_height="60dp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvBrandingOffer"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/viewMain"
+        app:layout_constraintEnd_toEndOf="@id/viewMain"
+        app:layout_constraintTop_toBottomOf="@id/ivTasksImage"
+        app:layout_constraintBottom_toTopOf="@+id/tvValidTill"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center_horizontal"
+        tools:text="Earn money upto 100 by self branding"
+        android:textColor="@color/text_color"
+        android:textSize="18sp"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvValidTill"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="@id/viewMain"
+        app:layout_constraintEnd_toEndOf="@id/viewMain"
+        app:layout_constraintTop_toBottomOf="@id/tvBrandingOffer"
+        app:layout_constraintBottom_toBottomOf="@id/viewMain"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center_horizontal"
+        tools:text="Valid till 29-06-2019"
+        android:textColor="@color/grey_dark"
+        android:textSize="12sp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/ivSeparator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewMain"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:background="@color/chat_background" />
+</android.support.constraint.ConstraintLayout>

@@ -74,7 +74,12 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 		tvBrandingImages.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(DriverResourceActivity.this, DriverDocumentActivity.class);
+//				Intent intent = new Intent(DriverResourceActivity.this, DriverDocumentActivity.class);
+//				intent.putExtra("access_token",Data.userData.accessToken);
+//				intent.putExtra("in_side", true);
+//				intent.putExtra("doc_required", 0);
+//				intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+				Intent intent = new Intent(DriverResourceActivity.this, DriverTasksActivity.class);
 				intent.putExtra("access_token",Data.userData.accessToken);
 				intent.putExtra("in_side", true);
 				intent.putExtra("doc_required", 0);
