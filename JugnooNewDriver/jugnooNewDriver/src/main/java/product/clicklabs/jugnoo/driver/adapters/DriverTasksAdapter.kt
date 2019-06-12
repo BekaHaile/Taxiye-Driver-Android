@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import product.clicklabs.jugnoo.driver.DocumentListFragment
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.Tasks
 import product.clicklabs.jugnoo.driver.utils.DateOperations
@@ -32,7 +33,11 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
 
     override fun onBindViewHolder(holder: DriverTasksAdapter.FareDetailViewHolder, position: Int) {
         val context = holder.tvBrandingOffer.context
-        holder.tvBrandingOffer.text = context.getString(R.string.branding_msg, Utils.formatCurrencyValue(currency, details!![position].advertiseCredits.toString()))
+        holder.tvBrandingOffer.text = context.getString(
+                if(details!![position].taskType == DocumentListFragment.TASK_TYPE_OTHER_BRANDING)
+                    R.string.branding_msg
+                else R.string.branding_msg_autos,
+                Utils.formatCurrencyValue(currency, details!![position].advertiseCredits.toString()))
         holder.tvBrandingOffer.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
 
         if(position == details!!.size -1 ){

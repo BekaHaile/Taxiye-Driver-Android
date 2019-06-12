@@ -56,15 +56,19 @@ class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTas
                         if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                             setAdapter(driverTasks.tasks)
                         } else {
+                            DialogPopup.alertPopup(this@DriverTasksActivity, "", message)
                         }
                     } catch (exception: Exception) {
                         exception.printStackTrace()
+                        DialogPopup.alertPopup(this@DriverTasksActivity, "", Data.SERVER_ERROR_MSG)
                     }
 
                     DialogPopup.dismissLoadingDialog()
                 }
 
                 override fun failure(error: RetrofitError) {
+                    DialogPopup.dismissLoadingDialog()
+                    DialogPopup.alertPopup(this@DriverTasksActivity, "", Data.SERVER_NOT_RESOPNDING_MSG)
                 }
             })
         } catch (e: Exception) {

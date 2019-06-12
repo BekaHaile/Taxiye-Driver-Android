@@ -79,8 +79,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
-	private static final int TASK_TYPE_SELF_BRANDING = 1;
-	private static final int TASK_TYPE_OTHER_BRANDING = 2;
+	public static final int TASK_TYPE_SELF_BRANDING = 1;
+	public static final int TASK_TYPE_OTHER_BRANDING = 0;
 	private static final int DOC_REQUIREMENT_OTHER_BRANDING = 6;
 	TextView textViewInfoDisplay;
 	ListView listView;
