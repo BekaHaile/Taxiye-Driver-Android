@@ -510,6 +510,22 @@
 
             </RelativeLayout>
 
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/tvDriverTasks"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/driver_tasks"
+                android:textColor="@color/white"
+                android:layout_height="42dp"
+                android:tag="@string/dont_touch_me"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:drawablePadding="8dp"
+                android:paddingStart="14dp"
+                android:drawableStart="@drawable/ic_task_list"
+                android:textSize="18sp"
+                android:fontFamily="@font/maven_pro_medium"
+                />
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutDocs"
                 android:layout_width="match_parent"

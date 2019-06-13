@@ -109,7 +109,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	@Override
 	public void openAdvertiseScreen() {
-		Intent intent = new Intent(this, DriverDocumentActivity.class);
+		Intent intent = new Intent(this, DriverTasksActivity.class);
 		intent.putExtra("access_token",Data.userData.accessToken);
 		intent.putExtra("in_side", true);
 		intent.putExtra("doc_required", 0);
