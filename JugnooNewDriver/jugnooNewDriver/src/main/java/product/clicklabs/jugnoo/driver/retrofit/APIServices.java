@@ -39,6 +39,7 @@ import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
@@ -749,5 +750,7 @@ public interface APIServices {
 	@POST("/emergency/alert")
 	Response emergencyAlertSync(@FieldMap Map<String, String> params);
 
-
+	@FormUrlEncoded
+	@POST("/send_email_invoice")
+	void sendEmailInvoice(@FieldMap Map<String, String> params, Callback<FeedCommonResponse> callback);
 }

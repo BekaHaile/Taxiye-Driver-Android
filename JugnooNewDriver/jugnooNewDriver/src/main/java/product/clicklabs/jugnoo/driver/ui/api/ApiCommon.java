@@ -213,6 +213,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
             case SHOW_RATE_CARD:
                 RestClient.getApiServices().rateCardDetail(params, callback);
                 break;
+            case SEND_EMAIL_INVOICE:
+                RestClient.getApiServices().sendEmailInvoice(params, callback);
+                break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
 

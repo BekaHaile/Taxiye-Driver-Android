@@ -33,6 +33,7 @@ public class UserData {
 	private String referralImageD2D, referralImageD2C;
 	private String getCreditsInfo, getCreditsImage;
 	private int sendCreditsEnabled;
+	private int resendEmailInvoiceEnabled;
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
@@ -49,7 +50,8 @@ public class UserData {
 					String hippoTicketFAQ, String currency,
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
-					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel) {
+					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
+					int resendEmailInvoiceEnabled) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -105,6 +107,7 @@ public class UserData {
 		this.referralImageD2C = referralImageD2C;
 		this.sendCreditsEnabled = sendCreditsEnabled;
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
+		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		setVehicleServicesModel(vehicleServicesModel);
 	}
 
@@ -266,5 +269,9 @@ public class UserData {
 
 	public void setEmergencyContactsList(ArrayList<EmergencyContact> emergencyContactsList) {
 		this.emergencyContactsList = emergencyContactsList;
+	}
+
+	public int getResendEmailInvoiceEnabled() {
+		return resendEmailInvoiceEnabled;
 	}
 }
