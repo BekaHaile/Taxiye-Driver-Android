@@ -35,22 +35,22 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
         val context = holder.tvBrandingOffer.context
         holder.tvBrandingOffer.text = context.getString(
                 if(details!![position].taskType == DocumentListFragment.TASK_TYPE_OTHER_BRANDING)
-                    R.string.branding_msg
-                else R.string.branding_msg_autos,
+                    R.string.branding_msg_autos
+                else R.string.branding_msg,
                 Utils.formatCurrencyValue(currency, details!![position].advertiseCredits.toString()))
         holder.tvBrandingOffer.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
 
-        if(position == details!!.size -1 ){
-            holder.ivSeparator.visibility = View.GONE
-        } else {
+//        if(position == details!!.size -1 ){
+//            holder.ivSeparator.visibility = View.GONE
+//        } else {
             holder.ivSeparator.visibility = View.VISIBLE
-        }
+//        }
         if(details!![position].endTime != null) {
             holder.tvValidTill.visibility = View.VISIBLE
             holder.tvValidTill.text = context.getString(R.string.valid_till, DateOperations.utcToLocalForSelfBranding(details!![position].endTime))
             holder.tvValidTill.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
         } else {
-            holder.tvValidTill.visibility = View.GONE
+            holder.tvValidTill.visibility = View.INVISIBLE
         }
         holder.viewMain.setOnClickListener {
             (context as DriverTasksListener).onTaskClicked(details!![position])
