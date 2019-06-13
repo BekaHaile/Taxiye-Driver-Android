@@ -519,11 +519,11 @@
                 android:layout_height="42dp"
                 android:tag="@string/dont_touch_me"
                 android:background="@drawable/background_tranparend_red_v2_selector"
-                android:drawablePadding="8dp"
+                android:drawablePadding="9dp"
                 android:paddingStart="14dp"
                 android:drawableStart="@drawable/ic_task_list"
                 android:textSize="18sp"
-                android:fontFamily="@font/maven_pro_medium"
+                android:fontFamily="@font/maven_pro_regular"
                 />
 
             <RelativeLayout
