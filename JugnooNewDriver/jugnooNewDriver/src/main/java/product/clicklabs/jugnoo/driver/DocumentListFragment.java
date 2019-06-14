@@ -79,10 +79,13 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
+	public static final int TASK_TYPE_SELF_BRANDING = 1;
+	public static final int TASK_TYPE_OTHER_BRANDING = 0;
+	private static final int DOC_REQUIREMENT_OTHER_BRANDING = 6;
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
-	int requirement, brandingImagesOnly;
+	int requirement, brandingImagesOnly, taskType;
 	int imgPixel;
 
 	private PermissionCommon mPermissionCommon;
@@ -141,6 +144,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
+		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, TASK_TYPE_SELF_BRANDING);
 		getDocsAsync(getActivity());
 		activity.setSubmitButtonVisibility(View.VISIBLE);
 
@@ -792,10 +796,17 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
 										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
 										data.getIsDocInfoEditable());
-								if(brandingImagesOnly == 1 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
-									continue;
+								if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
+									if(taskType == TASK_TYPE_OTHER_BRANDING
+											&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
+										docs.add(docInfo);
+									} else if(taskType == TASK_TYPE_SELF_BRANDING
+											&& docInfo.docRequirement != DOC_REQUIREMENT_OTHER_BRANDING){
+										docs.add(docInfo);
+									}
+								} else if(brandingImagesOnly == 0 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
+									docs.add(docInfo);
 								}
-								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();

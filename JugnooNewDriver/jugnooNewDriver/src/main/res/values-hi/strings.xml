@@ -718,8 +718,11 @@
 	<string name="code">कोड</string>
 	<string name="btn_text_OTP">ओटीपी उत्पन्न करें</string>
 	<string name="languages">भाषा</string>
-    <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
+    <string name="number_should_not_start_with_zero">फोन नंबर 0 से शुरू नहीं होना चाहिए</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+
+	<string name="branding_msg">स्वयं ब्रांडिंग द्वारा %s तक पैसा कमाएं</string>
+	<string name="branding_msg_autos">अन्य ऑटो रिक्शाओं ब्रांडिंग की द्वारा %s तक पैसा कमाएं</string>
 
 
 </resources>

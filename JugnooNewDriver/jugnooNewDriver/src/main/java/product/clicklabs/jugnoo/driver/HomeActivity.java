@@ -506,7 +506,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private View customView;
     private GenrateTourPush gcmIntentService;
     private RelativeLayout relativeLayoutTour, relativeLayoutDocs, layoutAddedLuggage;
-    private TextView textViewTour, textViewDoc;
+    private TextView textViewTour, textViewDoc, tvDriverTasks;
     private TextView croutonTourTextView;
     private ImageView crossTourImageView;
     public boolean deliveryInfolistFragVisibility = false;
@@ -745,6 +745,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutDocs = (RelativeLayout) findViewById(R.id.relativeLayoutDocs);
             textViewDoc = (TextView) findViewById(R.id.textViewDoc);
             textViewDoc.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+            tvDriverTasks = findViewById(R.id.tvDriverTasks);
 
             relativeLayoutTour.setOnClickListener(this);
             // Inflate any custom view
@@ -1489,6 +1490,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
                     startActivityForResult(intent, 14);
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+            });
+            tvDriverTasks.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Data.userData != null) {
+                        Intent intent = new Intent(HomeActivity.this, DriverTasksActivity.class);
+                        intent.putExtra("access_token", Data.userData.accessToken);
+                        intent.putExtra("in_side", true);
+                        intent.putExtra("doc_required", 0);
+                        intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                    }
                 }
             });
 
@@ -2398,6 +2413,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutDocs.setVisibility(View.VISIBLE);
             } else {
                 relativeLayoutDocs.setVisibility(View.GONE);
+            }
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TASKS, 1) == 1) {
+                tvDriverTasks.setVisibility(View.VISIBLE);
+            } else {
+                tvDriverTasks.setVisibility(View.GONE);
             }
             if (Prefs.with(HomeActivity.this).getInt(Constants.SUPER_DRIVERS_IN_MENU, 1) == 1) {
                 relativeLayoutSuperDrivers.setVisibility(View.VISIBLE);

@@ -79,9 +79,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		}
 		requirement  = getIntent().getExtras().getInt("doc_required");
 		brandingImagesOnly  = getIntent().getIntExtra(Constants.BRANDING_IMAGES_ONLY, 0);
+		int taskType  = getIntent().getIntExtra(Constants.KEY_TASK_TYPE, 1);
 		bundle.putString("access_token", accessToken);
 		bundle.putInt("doc_required", requirement);
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
+		bundle.putInt(Constants.KEY_TASK_TYPE, taskType);
 		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()

@@ -516,6 +516,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".DriverTasksActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
