@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +98,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	DriverDocumentListAdapter driverDocumentListAdapter;
 
 	RelativeLayout main;
+	LinearLayout llDocumentsState;
+	private TextView tvDocsPending, tvDocsFailed, tvDocsCompleted;
 
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
@@ -120,7 +124,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
 		if(!hidden){
-			activity.setSubmitButtonVisibility(View.VISIBLE);
+			activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
 		}
 	}
 
@@ -128,7 +132,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		docs.clear();
-		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+		View rootView = inflater.inflate(R.layout.fragment_document_list, container, false);
 
 		main = rootView.findViewById(R.id.main);
 
@@ -140,13 +144,19 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setText(getResources().getString(R.string.no_doc_available));
+		tvDocsPending = rootView.findViewById(R.id.tvDocsPending);
+		tvDocsFailed = rootView.findViewById(R.id.tvDocsFailed);
+		tvDocsCompleted = rootView.findViewById(R.id.tvDocsCompleted);
+		llDocumentsState = rootView.findViewById(R.id.llDocumentsState);
 
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, TASK_TYPE_SELF_BRANDING);
 		getDocsAsync(getActivity());
-		activity.setSubmitButtonVisibility(View.VISIBLE);
+		activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
+		llDocumentsState.setVisibility(brandingImagesOnly == 1 ? View.VISIBLE : View.GONE);
+
 
 
 		return rootView;
@@ -812,6 +822,31 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
 							checkForDocumentsSubmit();
 
+							if(brandingImagesOnly == 1) {
+								int pendingC = 0, failedC = 0, completedC = 0;
+								for(DocInfo docInfo : docs){
+									if (docInfo.status.equalsIgnoreCase(DocStatus.REJECTED.getI())) {
+										failedC++;
+									} else if (docInfo.status.equalsIgnoreCase(DocStatus.VERIFIED.getI())) {
+										completedC++;
+									} else {
+										pendingC++;
+									}
+								}
+								tvDocsPending.setText(R.string.pending);
+								tvDocsPending.append("\n");
+								tvDocsPending.append(getCountSpannable(pendingC, R.color.yellow_jugnoo));
+
+								tvDocsFailed.setText(R.string.failed);
+								tvDocsFailed.append("\n");
+								tvDocsFailed.append(getCountSpannable(failedC, R.color.red_status_v2));
+
+								tvDocsCompleted.setText(R.string.completed);
+								tvDocsCompleted.append("\n");
+								tvDocsCompleted.append(getCountSpannable(completedC, R.color.green_doc_status));
+							}
+
+
 
 						}
 					} catch (Exception exception) {
@@ -832,6 +867,13 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		}
 	}
 
+	private SpannableStringBuilder getCountSpannable(int count, int colorRes){
+		SpannableStringBuilder ssb = new SpannableStringBuilder(String.valueOf(count));
+		ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(activity, colorRes)), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		ssb.setSpan(new RelativeSizeSpan(1.4f), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return ssb;
+	}
 
 	public void updateListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
