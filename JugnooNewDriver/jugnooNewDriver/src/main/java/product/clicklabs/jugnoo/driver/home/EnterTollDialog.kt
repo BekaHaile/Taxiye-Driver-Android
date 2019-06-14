@@ -67,6 +67,10 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
                 if(tollToEdit == null){
                     tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
                 } else {
+                    if(tollToEdit.toll < fare.toDouble()){
+                        Utils.showToast(activity, activity.getString(R.string.enter_less_amount))
+                        return@setOnClickListener
+                    }
                     tollToEdit.edited = true
                     tollToEdit.editedToll = fare.toDouble()
                 }
