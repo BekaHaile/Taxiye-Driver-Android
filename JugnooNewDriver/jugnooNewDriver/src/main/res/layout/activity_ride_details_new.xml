@@ -434,6 +434,17 @@
                 android:textColor="@color/black_text_v2"
                 android:textSize="30px"
                 android:visibility="gone"/>
+            <Button
+                android:id="@+id/buttonSendInvoice"
+                android:layout_width="432px"
+                android:layout_height="80px"
+                android:layout_marginBottom="25px"
+                android:background="@drawable/shadow_btn_selector"
+                android:text="@string/send_invoice"
+                android:textAllCaps="true"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"
+                android:visibility="gone"/>
 
 
         </LinearLayout>

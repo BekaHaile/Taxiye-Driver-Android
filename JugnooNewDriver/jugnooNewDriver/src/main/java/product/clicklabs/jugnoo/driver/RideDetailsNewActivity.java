@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
@@ -41,10 +42,15 @@ import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommon;
+import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -64,7 +70,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	RelativeLayout relative, relativeContainer, relativeLayoutCreateTicket;
 
 	ImageView backBtn;
-	Button buttonReportIssue, buttonGetSupport;
+	Button buttonReportIssue, buttonGetSupport, buttonSendInvoice;
 	TextView title;
 
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue, textViewTicketDate,
@@ -137,6 +143,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		relativeLayoutCreateTicket = (RelativeLayout) findViewById(R.id.relativeLayoutCreateTicket);
 		buttonReportIssue = (Button) findViewById(R.id.buttonReportIssue);
 		buttonGetSupport = (Button) findViewById(R.id.buttonGetSupport);
+		buttonSendInvoice = (Button) findViewById(R.id.buttonSendInvoice);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Fonts.mavenRegular(this));
 		title.setText(R.string.trip_details);
@@ -368,6 +375,14 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			}
 		});
 
+		buttonSendInvoice.setVisibility(Data.userData.getResendEmailInvoiceEnabled() == 1 ? View.VISIBLE : View.GONE);
+		buttonSendInvoice.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+               sendEmailInvoice();
+			}
+		});
+
 
 		if (extras != null) {
 
@@ -476,6 +491,29 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 	}
 
+	private void sendEmailInvoice() {
+		final HashMap<String, String> params = new HashMap<>();
+		params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(extras.getEngagementId()));
+		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+
+		new ApiCommon<>(this).showLoader(true).execute(params, ApiName.SEND_EMAIL_INVOICE,
+				new APICommonCallback<FeedCommonResponse>() {
+
+					@Override
+					public void onSuccess(final FeedCommonResponse response, String message, int flag) {
+
+						DialogPopup.alertPopupWithListener(RideDetailsNewActivity.this,"",
+								message, v -> {
+								});
+					}
+
+					@Override
+					public boolean onError(FeedCommonResponse feedCommonResponse, String message, int flag) {
+						return false;
+					}
+
+				});
+	}
 	public void setTicketState(final String date){
 		buttonReportIssue.setVisibility(View.GONE);
 		textViewStatus.setVisibility(View.VISIBLE);
