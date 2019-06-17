@@ -39,6 +39,8 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
                 else R.string.branding_msg,
                 Utils.formatCurrencyValue(currency, details!![position].advertiseCredits.toString()))
         holder.tvBrandingOffer.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
+        holder.ivTasksImage.setImageResource(if(details!![position].taskType == DocumentListFragment.TASK_TYPE_OTHER_BRANDING)
+            R.drawable.ic_other_autos_branding else R.drawable.ic_self_branding)
 
 //        if(position == details!!.size -1 ){
 //            holder.ivSeparator.visibility = View.GONE
@@ -62,6 +64,7 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
         val tvBrandingOffer: TextView = view.findViewById(R.id.tvBrandingOffer) as TextView
         val tvValidTill: TextView = view.findViewById(R.id.tvValidTill) as TextView
         val ivSeparator: ImageView = view.findViewById(R.id.ivSeparator) as ImageView
+        val ivTasksImage: ImageView = view.findViewById(R.id.ivTasksImage) as ImageView
         val viewMain: View = view.findViewById(R.id.viewMain) as View
     }
 
