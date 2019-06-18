@@ -443,5 +443,6 @@ public interface Constants {
 
 	String KEY_TASK_TYPE = "task_type";
 	String KEY_DRIVER_TASKS = "driver_tasks";
+	String KEY_FLAG_DISTANCE_TRAVELLED = "flag_distance_travelled";
 }
 

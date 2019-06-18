@@ -136,6 +136,7 @@ public class GpsDistanceCalculator {
 				getWaitTimeFromSP(context), lastGPSLocation,
 				lastFusedLocation, totalHaversineDistance, true);
 		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at start =" + totalDistance);
+		GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 	}
 
 
@@ -548,6 +549,7 @@ public class GpsDistanceCalculator {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStart();
 		}
 
 		@Override
@@ -568,6 +570,7 @@ public class GpsDistanceCalculator {
 			if (result != null) {
 				updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
 			}
+			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 			directionsAsyncTasks.remove(this);
 		}
 

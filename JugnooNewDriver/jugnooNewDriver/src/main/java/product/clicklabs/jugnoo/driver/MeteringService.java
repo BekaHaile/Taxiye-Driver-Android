@@ -170,7 +170,20 @@ public class MeteringService extends Service {
 						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
 					}
 				}
-				
+
+				@Override
+				public void googleApiHitStart() {
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.googleApiHitStart();
+					}
+				}
+
+				@Override
+				public void googleApiHitStop() {
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.googleApiHitStop();
+					}
+				}
 			};
 		}
 		return gpsDistanceTimeUpdater;
