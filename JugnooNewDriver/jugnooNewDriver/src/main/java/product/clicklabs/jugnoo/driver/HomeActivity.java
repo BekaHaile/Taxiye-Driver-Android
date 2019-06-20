@@ -426,6 +426,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     public static Location myLocation;
     public Location lastGPSLocation, lastFusedLocation;
     public boolean distanceUpdateFromService = false;
+    public boolean gdcGapiHit = false;
     public boolean walletBalanceUpdatePopup = false;
     private boolean mapAnimatedToCustomerPath = false;
 
@@ -2975,7 +2976,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 switchDriverScreen(driverScreenMode);
 
 
-                changeJugnooONUIAndInitService();
+                changeJugnooONUIAndInitService(false);
 
 
                 Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, FirebaseInstanceId.getInstance().getToken(), Data.SERVER_URL);
@@ -3241,7 +3242,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else {
                             Data.userData.autosAvailable = jugnooOnFlag;
                         }
-                        changeJugnooONUIAndInitService();
+                        changeJugnooONUIAndInitService(false);
                         if (jugnooOnFlag == 1) {
                             AGPSRefresh.softRefreshGpsData(HomeActivity.this);
                             isJugnooOnTraining = true;
@@ -3298,7 +3299,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 } else {
                                     Data.userData.autosAvailable = jugnooOnFlag;
                                 }
-                                changeJugnooONUIAndInitService();
+                                changeJugnooONUIAndInitService(true);
                                 if (jugnooOnFlag == 1) {
                                     AGPSRefresh.softRefreshGpsData(HomeActivity.this);
                                 } else {
@@ -3385,7 +3386,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         int flag = jObj.getInt("flag");
                         if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                             Data.userData.sharingAvailable = mode;
-                            changeJugnooONUIAndInitService();
+                            changeJugnooONUIAndInitService(false);
                         }
                     }
                     String message = JSONParser.getServerMessage(jObj);
@@ -3503,7 +3504,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void changeJugnooONUIAndInitService() {
+    public void changeJugnooONUIAndInitService(final boolean fromApi) {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -3587,7 +3588,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 setDriverServiceRunOnOnlineBasis();
                                 linearLayoutJugnooOff.setVisibility(View.GONE);
                                 jugnooOffText.setVisibility(View.GONE);
-                                fetchHeatMapData(HomeActivity.this);
+                                if(fromApi) {
+                                    fetchHeatMapData(HomeActivity.this);
+                                }
                                 stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                                 startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                             }
@@ -4062,7 +4065,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             try {
-                heatMapHandler.removeCallbacks(heatMapRunnalble);
+                if(mode != DriverScreenMode.D_INITIAL){
+                    if(heatMapHandler != null) {
+                        heatMapHandler.removeCallbacks(heatMapRunnalble);
+                    }
+                    heatMapHandler = null;
+                } else {
+                    if (Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0) > 0) {
+                        if(heatMapHandler == null) {
+                            heatMapHandler = new Handler();
+                            heatMapHandler.removeCallbacks(heatMapRunnalble);
+                            heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+                        }
+                    }
+                }
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4206,15 +4224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     cancelTimerPathRerouting();
                     Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
-                    try {
 
-
-                        if (Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0) > 0) {
-                            heatMapHandler.postDelayed(heatMapRunnalble, 1000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     Data.nextPickupLatLng = null;
                     Data.nextCustomerName = null;
                     Prefs.with(HomeActivity.this).save(SPLabels.DELIVERY_IN_PROGRESS, -1);
@@ -5090,7 +5100,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         long timediff = System.currentTimeMillis() - fetchHeatMapTime;
         if (timediff > Constants.HEAT_MAP_FETCH_DELAY) {
             fetchHeatMapData(HomeActivity.this);
-            fetchHeatMapTime = System.currentTimeMillis();
         }
         stopService(new Intent(HomeActivity.this, GeanieView.class));
 
@@ -6543,15 +6552,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     public void driverEndRideWithDistanceSafetyCheck(final Activity activity, final LatLng lastAccurateLatLng,
-                                                     final double dropLatitude, final double dropLongitude,
-                                                     final int flagDistanceTravelled, final CustomerInfo customerInfo) {
+                                                     final double dropLatitude, final double dropLongitude, final CustomerInfo customerInfo) {
         DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (flagDistanceTravelled == -1 && currentPathItemPair != null
+                if (getFlagDistanceTravelled() == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
@@ -6614,11 +6622,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     @Override
                     public void run() {
                         DialogPopup.dismissLoadingDialog();
-                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, flagDistanceTravelled, customerInfo);
+                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, getFlagDistanceTravelled(), customerInfo);
                     }
                 });
             }
         }).start();
+    }
+
+    private int getFlagDistanceTravelled(){
+        return Prefs.with(this).getInt(Constants.KEY_FLAG_DISTANCE_TRAVELLED, -1);
+    }
+    private void setFlagDistanceTravelled(int flag){
+        Prefs.with(this).save(Constants.KEY_FLAG_DISTANCE_TRAVELLED, flag);
     }
 
     private int waypointsRetryCount = 0;
@@ -6718,16 +6733,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
      */
     public void driverEndRideAsync1(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
                                     int flagDistanceTravelled, CustomerInfo customerInfo) {
-        if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+//        if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
             autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
                     flagDistanceTravelled, customerInfo);
-        } else {
-            if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
-                driverScreenMode = DriverScreenMode.D_IN_RIDE;
-                startRideChronometer(customerInfo);
-            }
-            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-        }
+//        } else {
+//            if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
+//                driverScreenMode = DriverScreenMode.D_IN_RIDE;
+//                startRideChronometer(customerInfo);
+//            }
+//            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+//        }
 
     }
 
@@ -7589,7 +7604,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public void fetchHeatMapData(final Activity activity) {
         try {
-            if (AppStatus.getInstance(activity).isOnline(activity)) {
+            if (hasWindowFocus() && DriverScreenMode.D_INITIAL == driverScreenMode && Data.userData.autosAvailable == 1
+                    && AppStatus.getInstance(activity).isOnline(activity)) {
                 final long responseTime = System.currentTimeMillis();
                 HashMap<String, String> params = new HashMap<>();
                 params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -7625,6 +7641,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     public void failure(RetrofitError error) {
                     }
                 });
+                fetchHeatMapTime = System.currentTimeMillis();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -8117,6 +8134,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 });
 
                 dialogEndRidePopup.show();
+                setFlagDistanceTravelled(-1);
+
                 if (isTourFlag) {
                     handleTourView(true, getString(R.string.tutorial_tap_ok_endride));
                 }
@@ -8129,7 +8148,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public boolean endRideGPSCorrection(CustomerInfo customerInfo) {
         try {
-            if (distanceUpdateFromService) {
+            if (!AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+                DialogPopup.alertPopup(this, "", Data.CHECK_INTERNET_MSG);
+                return false;
+            }
+
+            if (distanceUpdateFromService && !gdcGapiHit) {
                 Location locationToUse;
                 boolean fusedLocationUsed = false;
 
@@ -8228,7 +8252,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    int flagDistanceTravelled = -1;
 
     public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination,
                                                final long lastloctime, final CustomerInfo customerInfo, final boolean fusedLocationUsed) {
@@ -8237,7 +8260,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             @Override
             public void run() {
-                flagDistanceTravelled = -1;
                 try {
                     double lastTimeDiff = (System.currentTimeMillis() - lastloctime) / 1000; // in seconds
                     double displacement = MapUtils.distance(source, destination);
@@ -8248,10 +8270,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.v("displacement", "" + displacement);
                     Log.v("displacement speed", "" + endDisplacementSpeed);
 
+
+                    double maxSpeedThreshold = (double) (Prefs.with(activity).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, (float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD));
+
 					double customerDist = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity);
 					double totalDisp = MapUtils.distance(customerInfo.getRequestlLatLng(), destination);
+                    Log.e("calculateFusedLocationDistance directions totalDisp ", "=" + totalDisp);
+                    Log.e("calculateFusedLocationDistance directions customerDist ", "=" + customerDist);
+                    Log.e("calculateFusedLocationDistance directions destination ", "=" + destination);
 					double totalDistance = totalDisp;
-					if(totalDisp > 0 && customerDist < totalDisp){
+					if(getFlagDistanceTravelled() == -1 && totalDisp > 0 && customerDist < totalDisp){
 						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
 								destination.latitude + "," + destination.longitude, "EN", false, false);
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
@@ -8261,77 +8289,85 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
 							totalDistance = element0.getJSONObject("distance").getDouble("value");
 
-							Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
-							Log.e("calculateFusedLocationDistance directions customerRideDataGlobal.getDistance(activity) ", "=" + customerRideDataGlobal.getDistance(activity));
+                            double speedDirections = totalDistance / (Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId())/1000);
 
-							customerInfo.setTotalDistance(totalDistance);
-							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal();
-							afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
-							return;
+							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
+
+                            Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
+                            if(getFlagDistanceTravelled() == -1 && speedDirections < maxSpeedThreshold) {
+                                Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
+                                customerInfo.setTotalDistance(totalDistance);
+                                setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
+                            }
 						}
-					}
-					if(!fusedLocationUsed){
-                        afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
-                        return;
-                    }
+                        afterFusedDistanceEstimation(activity, source, destination, customerInfo);
+					} else if (fusedLocationUsed && getFlagDistanceTravelled() == -1) {
 
-                    Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
-                            destination.latitude + "," + destination.longitude, "EN", false, false);
-                    String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-                    double maxSpeedThreshold = (double)(Prefs.with(activity).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, (float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD));
-                    if (endDisplacementSpeed < maxSpeedThreshold) {
-                        try {
-                            double distanceOfPath = -1;
-                            JSONObject jsonObject = new JSONObject(response);
-                            String status = jsonObject.getString("status");
-                            if ("OK".equalsIgnoreCase(status)) {
-                                JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-                                distanceOfPath = element0.getJSONObject("distance").getDouble("value");
-                                endDistanceSpeed = distanceOfPath / lastTimeDiff;
-                                Log.v("dist", "" + distanceOfPath);
-                                Log.v("displacement speed", "" + endDistanceSpeed);
+                        Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
+                                destination.latitude + "," + destination.longitude, "EN", false, false);
+                        String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
+                        if (endDisplacementSpeed < maxSpeedThreshold) {
+                            try {
+                                double distanceOfPath = -1;
+                                JSONObject jsonObject = new JSONObject(response);
+                                String status = jsonObject.getString("status");
+                                if ("OK".equalsIgnoreCase(status)) {
+                                    JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+                                    distanceOfPath = element0.getJSONObject("distance").getDouble("value");
+                                    endDistanceSpeed = distanceOfPath / lastTimeDiff;
+                                    Log.v("dist", "" + distanceOfPath);
+                                    Log.v("displacement speed", "" + endDistanceSpeed);
+                                }
+
+                                if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
+                                    if(getFlagDistanceTravelled() == -1) {
+                                        customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
+                                        setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal());
+                                        Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
+                                    }
+                                    Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+                                } else {
+                                    throw new Exception();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                if(getFlagDistanceTravelled() == -1) {
+                                    customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
+                                    setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal());
+                                    Log.e("calculateFusedLocationDistance displacement ", "=" + displacement);
+                                }
+                                Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+
                             }
-                            Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
-                            if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
-                                customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
-                                flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
-                                Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
-                            } else {
-                                throw new Exception();
+                        } else {
+                            double complimentaryDistance = 4.5 * lastTimeDiff;
+                            Log.v("distComp", "" + complimentaryDistance);
+                            if(getFlagDistanceTravelled() == -1) {
+                                customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + complimentaryDistance);
+                                setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal());
+                                Log.e("calculateFusedLocationDistance complimentaryDistance ", "=" + complimentaryDistance);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
-                            flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal();
-                            Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
 
                         }
-                    } else {
-                        double complimentaryDistance = 4.5 * lastTimeDiff;
-                        Log.v("distComp", "" + complimentaryDistance);
-                        customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + complimentaryDistance);
-                        flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal();
-
+                        Log.e("calculateFusedLocationDistance totalDistance ", "=" + customerRideDataGlobal.getDistance(HomeActivity.this));
+                        afterFusedDistanceEstimation(activity, source, destination, customerInfo);
                     }
-                    Log.e("calculateFusedLocationDistance totalDistance ", "=" + customerRideDataGlobal.getDistance(HomeActivity.this));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-				afterFusedDistanceEstimation(activity, source, destination, customerInfo, flagDistanceTravelled);
+					else if(!fusedLocationUsed && getFlagDistanceTravelled() == -1){
+                        afterFusedDistanceEstimation(activity, source, destination, customerInfo);
+                    }
+                } catch (Exception ignored) {}
 
             }
         }).start();
     }
 
-    private void afterFusedDistanceEstimation(Activity activity, LatLng source, LatLng destination, CustomerInfo customerInfo, int flagDistanceTravelled){
+    private void afterFusedDistanceEstimation(Activity activity, LatLng source, LatLng destination, CustomerInfo customerInfo){
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
-				driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude,
-						flagDistanceTravelled, customerInfo);
+				driverEndRideWithDistanceSafetyCheck(activity, source, destination.latitude, destination.longitude, customerInfo);
 			}
 		});
 	}
@@ -9184,6 +9220,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     @Override
+    public void googleApiHitStart() {
+        gdcGapiHit = true;
+    }
+
+    @Override
+    public void googleApiHitStop() {
+        gdcGapiHit = false;
+    }
+
+    @Override
     public void updateMeteringUI(final double distance, final long elapsedTime, final long waitTime,
                                  final Location lastGPSLocation, final Location lastFusedLocation, final double totalHaversineDistance) {
         if (UserMode.DRIVER == userMode
@@ -9406,7 +9452,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     try {
                         timeOutValue.setText("done!");
                         Data.userData.autosAvailable = 0;
-                        changeJugnooONUIAndInitService();
+                        changeJugnooONUIAndInitService(false);
                         dialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -9422,17 +9468,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    Handler heatMapHandler = new Handler();
+    Handler heatMapHandler = null;
 
     Runnable heatMapRunnalble = new Runnable() {
         @Override
         public void run() {
-            try {
-                fetchHeatMapData(HomeActivity.this);
-            } catch (Exception e) {
+            if(heatMapHandler != null) {
+                try {
+                    fetchHeatMapData(HomeActivity.this);
+                } catch (Exception e) {
 
+                }
+                heatMapHandler.postDelayed(this, Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0));
             }
-            heatMapHandler.postDelayed(heatMapRunnalble, Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0));
         }
     };
 

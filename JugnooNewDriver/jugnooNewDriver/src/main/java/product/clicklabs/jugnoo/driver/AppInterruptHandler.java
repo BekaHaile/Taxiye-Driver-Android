@@ -28,6 +28,9 @@ public interface AppInterruptHandler {
 	
 	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);
+
+	void googleApiHitStart();
+	void googleApiHitStop();
 	
 	public void drawOldPath();
 	
