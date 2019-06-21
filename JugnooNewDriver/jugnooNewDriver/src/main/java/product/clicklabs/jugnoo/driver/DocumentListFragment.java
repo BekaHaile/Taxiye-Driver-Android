@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -55,6 +54,7 @@ import product.clicklabs.jugnoo.driver.adapters.DocImage;
 import product.clicklabs.jugnoo.driver.adapters.DocImagesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo;
@@ -80,8 +80,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
-	public static final int TASK_TYPE_SELF_BRANDING = 1;
-	public static final int TASK_TYPE_OTHER_BRANDING = 0;
 	private static final int DOC_REQUIREMENT_OTHER_BRANDING = 6;
 	TextView textViewInfoDisplay;
 	ListView listView;
@@ -151,7 +149,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
-		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, TASK_TYPE_SELF_BRANDING);
+		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, DriverTaskTypes.SELF_BRANDING.getType());
 		getDocsAsync(getActivity());
 		activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
 		llDocumentsState.setVisibility(brandingImagesOnly == 1 ? View.VISIBLE : View.GONE);
@@ -806,10 +804,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
 										data.getIsDocInfoEditable());
 								if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
-									if(taskType == TASK_TYPE_OTHER_BRANDING
+									if(taskType == DriverTaskTypes.OTHER_BRANDING.getType()
 											&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
 										docs.add(docInfo);
-									} else if(taskType == TASK_TYPE_SELF_BRANDING
+									} else if(taskType == DriverTaskTypes.SELF_BRANDING.getType()
 											&& docInfo.docRequirement != DOC_REQUIREMENT_OTHER_BRANDING){
 										docs.add(docInfo);
 									}

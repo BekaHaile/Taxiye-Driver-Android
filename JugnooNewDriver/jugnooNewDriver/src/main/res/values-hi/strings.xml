@@ -723,6 +723,7 @@
 
 	<string name="branding_msg">स्वयं ब्रांडिंग द्वारा %s तक पैसा कमाएं</string>
 	<string name="branding_msg_autos">अन्य ऑटो रिक्शाओं ब्रांडिंग की द्वारा %s तक पैसा कमाएं</string>
+	<string name="branding_msg_here_maps">स्थानों/स्थलों को दर्ज कीजिये और %s तक पैसा कमाएं</string>
 
 
 	<string name="add_a_place">स्थान दर्ज करें</string>

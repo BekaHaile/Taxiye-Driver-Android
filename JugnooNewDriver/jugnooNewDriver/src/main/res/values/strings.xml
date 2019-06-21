@@ -1221,6 +1221,7 @@
     <!--Branding-->
     <string name="branding_msg">Earn money upto %s by Self branding</string>
     <string name="branding_msg_autos">Earn money upto %s by Other Autos branding</string>
+    <string name="branding_msg_here_maps">Earn money upto %s by Adding places/landmarks</string>
     <string name="valid_till">Valid till %s</string>
     <string name="title_tasks">Tasks</string>
     <string name="driver_tasks">Driver Tasks</string>

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import product.clicklabs.jugnoo.driver.DocumentListFragment
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.Tasks
 import product.clicklabs.jugnoo.driver.utils.DateOperations
 import product.clicklabs.jugnoo.driver.utils.Utils
@@ -33,14 +33,31 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
 
     override fun onBindViewHolder(holder: DriverTasksAdapter.FareDetailViewHolder, position: Int) {
         val context = holder.tvBrandingOffer.context
-        holder.tvBrandingOffer.text = context.getString(
-                if(details!![position].taskType == DocumentListFragment.TASK_TYPE_OTHER_BRANDING)
-                    R.string.branding_msg_autos
-                else R.string.branding_msg,
-                Utils.formatCurrencyValue(currency, details!![position].advertiseCredits.toString()))
+        val task = details!![position]
+
+        when(task.taskType){
+            DriverTaskTypes.SELF_BRANDING.type -> {
+                holder.tvBrandingOffer.text = context.getString(R.string.branding_msg,
+                        Utils.formatCurrencyValue(currency, task.advertiseCredits.toString()))
+                holder.ivTasksImage.setImageResource(R.drawable.ic_self_branding)
+
+            }
+            DriverTaskTypes.OTHER_BRANDING.type -> {
+                holder.tvBrandingOffer.text = context.getString(R.string.branding_msg_autos,
+                        Utils.formatCurrencyValue(currency, task.advertiseCredits.toString()))
+                holder.ivTasksImage.setImageResource(R.drawable.ic_other_autos_branding)
+
+            }
+            DriverTaskTypes.HERE_MAPS_FEEDBACK.type -> {
+                holder.tvBrandingOffer.text = context.getString(R.string.branding_msg_here_maps,
+                        Utils.formatCurrencyValue(currency, task.advertiseCredits.toString()))
+                holder.ivTasksImage.setImageResource(R.drawable.ic_marker_on_map)
+
+            }
+            else -> {}
+        }
+
         holder.tvBrandingOffer.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
-        holder.ivTasksImage.setImageResource(if(details!![position].taskType == DocumentListFragment.TASK_TYPE_OTHER_BRANDING)
-            R.drawable.ic_other_autos_branding else R.drawable.ic_self_branding)
 
 //        if(position == details!!.size -1 ){
 //            holder.ivSeparator.visibility = View.GONE

@@ -465,7 +465,7 @@
                     android:layout_height="37px"
                     android:layout_marginStart="20px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_driver_resources"
+                    android:src="@drawable/ic_here_map"
                     android:tag="mwar"/>
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
