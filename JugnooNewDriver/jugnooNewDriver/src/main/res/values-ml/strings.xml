@@ -638,6 +638,10 @@
     <string name="bid_placed">Bid Placed</string>
     <string name="number_should_not_start_with_zero">Phone number should not start with 0</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="total_credits_earned">ആകെ ക്രെഡിറ്റുകൾ. </string>
+    <string name="commission_saved">സംരക്ഷിച്ച കമ്മീഷനുകൾ.</string>
+    <string name="earn_more_credits">ക്രെഡിറ്റുകൾ നേടുക.</string>
+    <string name="share_your_credits">ക്രെഡിറ്റുകൾ പങ്കിടുക.</string>
 
 
 </resources>

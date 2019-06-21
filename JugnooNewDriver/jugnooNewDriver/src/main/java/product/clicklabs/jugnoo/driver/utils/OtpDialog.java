@@ -250,6 +250,7 @@ public class OtpDialog {
     public void swictchLayout() {
         llMissedCall.setVisibility(View.VISIBLE);
         linearLayoutWaiting.setVisibility(View.GONE);
+        alertDialog.dismiss();
     }
 
 

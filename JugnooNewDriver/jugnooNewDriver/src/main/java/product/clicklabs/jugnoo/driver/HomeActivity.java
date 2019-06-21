@@ -3589,7 +3589,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 linearLayoutJugnooOff.setVisibility(View.GONE);
                                 jugnooOffText.setVisibility(View.GONE);
                                 if(fromApi) {
-                                    fetchHeatMapData(HomeActivity.this);
+                                    fetchHeatMapData(HomeActivity.this, fromApi);
                                 }
                                 stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                                 startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
@@ -5099,7 +5099,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         language = Locale.getDefault().getLanguage();
         long timediff = System.currentTimeMillis() - fetchHeatMapTime;
         if (timediff > Constants.HEAT_MAP_FETCH_DELAY) {
-            fetchHeatMapData(HomeActivity.this);
+            fetchHeatMapData(HomeActivity.this, false);
         }
         stopService(new Intent(HomeActivity.this, GeanieView.class));
 
@@ -7602,10 +7602,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void fetchHeatMapData(final Activity activity) {
+    public void fetchHeatMapData(final Activity activity, boolean forceHit) {
         try {
-            if (hasWindowFocus() && DriverScreenMode.D_INITIAL == driverScreenMode && Data.userData.autosAvailable == 1
-                    && AppStatus.getInstance(activity).isOnline(activity)) {
+            if (forceHit || (hasWindowFocus() && DriverScreenMode.D_INITIAL == driverScreenMode && Data.userData.autosAvailable == 1
+                    && AppStatus.getInstance(activity).isOnline(activity))) {
                 final long responseTime = System.currentTimeMillis();
                 HashMap<String, String> params = new HashMap<>();
                 params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -8585,7 +8585,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     @Override
     public void fetchHeatMapDataCall(Context context) {
-        fetchHeatMapData(this);
+        fetchHeatMapData(this, true);
     }
 
     @Override
@@ -9475,7 +9475,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         public void run() {
             if(heatMapHandler != null) {
                 try {
-                    fetchHeatMapData(HomeActivity.this);
+                    fetchHeatMapData(HomeActivity.this, false);
                 } catch (Exception e) {
 
                 }
