@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import kotlinx.android.synthetic.main.activity_here_maps.*
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.HomeActivity.activity
 import product.clicklabs.jugnoo.driver.utils.*
 
 
@@ -103,6 +104,13 @@ class HereMapsActivity : BaseFragmentActivity(){
                 boundsBuilder.include(gpsLatLng)
                 val bounds:LatLngBounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(boundsBuilder, 15.0)
 
+
+                jsMap = jsMap.replace("<here_auth_identifier>",
+                        Prefs.with(this@HereMapsActivity).getString(Constants.DRIVER_HERE_AUTH_IDENTIFIER,
+                                getString(R.string.driver_here_auth_identifier)))
+                jsMap = jsMap.replace("<here_auth_secret>",
+                        Prefs.with(this@HereMapsActivity).getString(Constants.DRIVER_HERE_AUTH_SECRET,
+                                getString(R.string.driver_here_auth_secret)))
 
                 jsMap = jsMap.replace("<gps_latitude>", gpsLatLng.latitude.toString())
                 jsMap = jsMap.replace("<gps_longitude>", gpsLatLng.longitude.toString())

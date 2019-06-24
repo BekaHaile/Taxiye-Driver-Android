@@ -175,7 +175,7 @@ public class RestClient {
 		};
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint("https://maphub.cit.api.here.com")
+				.setEndpoint("https://maphub.api.here.com")
 				.setClient(new Ok3Client(getOkHttpClient()))
 //				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);

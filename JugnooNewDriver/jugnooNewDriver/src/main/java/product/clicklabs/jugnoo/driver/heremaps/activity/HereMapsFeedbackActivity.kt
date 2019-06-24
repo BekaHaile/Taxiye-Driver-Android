@@ -275,13 +275,16 @@ class HereMapsFeedbackActivity  : BaseFragmentActivity(), HereMapsCategoryAdapte
                 DialogPopup.showLoadingDialog(activity, resources.getString(R.string.loading))
                 val params = HashMap<String, String>()
                 val placeType = category.placeType
+                val appId = Prefs.with(activity).getString(Constants.DRIVER_HERE_APP_ID, getString(R.string.driver_here_app_id))
                 params["feedback"] = "{\"coordinates\":[$longitude, $latitude, 0],\"type\":\"Point\"" +
-                        ",\"properties\":{\"appId\":\"jugnoo\",\"error\": 30,\"v\":\"2.7\",\"type\":\"$placeType\"}}"
+                        ",\"properties\":{\"appId\":\"$appId\",\"error\": 30,\"v\":\"2.7\",\"type\":\"$placeType\"}}"
 
                 val typedFile = TypedFile(Constants.MIME_TYPE, photoFile)
 
                 RestClient.getHereMapsApiService().feedback(
-                        "here_app", "Y8pzxL8Y52FBp0qtaYVO", "Am5XvFppRInSeFpAtijKeg",
+                        Prefs.with(activity).getString(Constants.DRIVER_HERE_AUTH_SERVICE_ID, getString(R.string.driver_here_auth_service_id)),
+                        Prefs.with(activity).getString(Constants.DRIVER_HERE_AUTH_IDENTIFIER, getString(R.string.driver_here_auth_identifier)),
+                        Prefs.with(activity).getString(Constants.DRIVER_HERE_AUTH_SECRET, getString(R.string.driver_here_auth_secret)),
                         typedFile, params, object : Callback<ArrayList<SettleUserDebt>> {
                     override fun success(docRequirementResponse: ArrayList<SettleUserDebt>, response: Response) {
                         try {

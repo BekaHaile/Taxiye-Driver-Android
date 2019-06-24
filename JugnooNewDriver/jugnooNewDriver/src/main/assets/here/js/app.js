@@ -6,8 +6,8 @@ const CONFIG = {
 	YOUR_ACCESS_TOKEN: "AU2S5zlMHzBKTFfMJcVbIgw",
 	YOUR_SPACE_ID: "tFRXwS5L",
 
-	JUG_APP_ID:"Y8pzxL8Y52FBp0qtaYVO", //YOUR_SPACE_ID
-	JUG_APP_CODE:"Am5XvFppRInSeFpAtijKeg", //YOUR_ACCESS_TOKEN
+	JUG_APP_ID: "<here_auth_identifier>",  //"Y8pzxL8Y52FBp0qtaYVO", //YOUR_SPACE_ID
+	JUG_APP_CODE: "<here_auth_secret>",     //"Am5XvFppRInSeFpAtijKeg", //YOUR_ACCESS_TOKEN
 
 	// Configure the space with the base places + a corresponding access token:
 	BASE_PLACES_ACCESS_TOKEN: "AaZ0BoklkXtuQdihOtfP9hk",
