@@ -514,6 +514,17 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_EMERGENCY_MODE_ENABLED, userData.optInt(KEY_DRIVER_EMERGENCY_MODE_ENABLED,
 				context.getResources().getInteger(R.integer.driver_emergency_mode_enabled)));
 
+		Prefs.with(context).save(KEY_DRIVER_HERE_MAPS_FEEDBACK, userData.optInt(KEY_DRIVER_HERE_MAPS_FEEDBACK,
+				context.getResources().getInteger(R.integer.driver_here_maps_feedback)));
+		Prefs.with(context).save(DRIVER_HERE_AUTH_SERVICE_ID, userData.optString(DRIVER_HERE_AUTH_SERVICE_ID,
+				context.getString(R.string.driver_here_auth_service_id)));
+		Prefs.with(context).save(DRIVER_HERE_AUTH_IDENTIFIER, userData.optString(DRIVER_HERE_AUTH_IDENTIFIER,
+				context.getString(R.string.driver_here_auth_identifier)));
+		Prefs.with(context).save(DRIVER_HERE_AUTH_SECRET, userData.optString(DRIVER_HERE_AUTH_SECRET,
+				context.getString(R.string.driver_here_auth_secret)));
+		Prefs.with(context).save(DRIVER_HERE_APP_ID, userData.optString(DRIVER_HERE_APP_ID,
+				context.getString(R.string.driver_here_app_id)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

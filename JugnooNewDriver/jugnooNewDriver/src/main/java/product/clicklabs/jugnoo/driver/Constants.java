@@ -441,8 +441,15 @@ public interface Constants {
 	String KEY_EMERGENCY_NO = "emergency_no";
 	String KEY_DRIVER_EMERGENCY_MODE_ENABLED = "driver_emergency_mode_enabled";
 
+	String KEY_DRIVER_HERE_MAPS_FEEDBACK = "driver_here_maps_feedback";
 	String KEY_TASK_TYPE = "task_type";
 	String KEY_DRIVER_TASKS = "driver_tasks";
 	String KEY_FLAG_DISTANCE_TRAVELLED = "flag_distance_travelled";
+	String KEY_FILE_SELECTED = "file_selected";
+
+	String DRIVER_HERE_AUTH_SERVICE_ID = "driver_here_auth_service_id";
+	String DRIVER_HERE_AUTH_IDENTIFIER = "driver_here_auth_identifier";
+	String DRIVER_HERE_AUTH_SECRET = "driver_here_auth_secret";
+	String DRIVER_HERE_APP_ID = "driver_here_app_id";
 }
 

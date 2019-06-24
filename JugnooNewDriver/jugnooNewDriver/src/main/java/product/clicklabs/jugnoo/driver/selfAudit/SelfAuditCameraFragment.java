@@ -451,7 +451,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 			File f = null;
 			if (newBitmap != null) {
-				f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
+				f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100);
 			}
 
 			if (frontImage == null && auditState == 0) {

@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.heremaps.HereMapsAPIService;
 import product.clicklabs.jugnoo.driver.retrofit.model.PushAckAPIService;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.RestAdapter;
@@ -22,6 +23,7 @@ public class RestClient {
 	private static String CURRENT_URL, CURRENT_URL_CHAT;
 	private static APIServices API_SERVICES;
 	private static DirectionAPIService DISTANCE_API_SERVICE;
+	private static HereMapsAPIService HERE_MAPS_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
 	private static RoadApiService ROADS_API_SERVICE;
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
@@ -34,6 +36,7 @@ public class RestClient {
 		setupDistanceAPIRestClient();
 		setupPushAckAPIRestClient();
 		setupChatAPIRestClient();
+		setupHereMapApiServices();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -162,6 +165,27 @@ public class RestClient {
 
 	public static DirectionAPIService getDistanceApiServices() {
 		return DISTANCE_API_SERVICE;
+	}
+
+	private static void setupHereMapApiServices() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint("https://maphub.api.here.com")
+				.setClient(new Ok3Client(getOkHttpClient()))
+//				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+		RestAdapter restAdapter = builder.build();
+		HERE_MAPS_API_SERVICE = restAdapter.create(HereMapsAPIService.class);
+	}
+
+	public static HereMapsAPIService getHereMapsApiService() {
+		return HERE_MAPS_API_SERVICE;
 	}
 
 	public static void setupPushAckAPIRestClient() {

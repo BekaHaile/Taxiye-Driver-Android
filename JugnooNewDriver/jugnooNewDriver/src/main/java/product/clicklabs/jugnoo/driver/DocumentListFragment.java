@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,9 +45,7 @@ import com.kbeanie.multipicker.api.entity.ChosenImage;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +54,7 @@ import product.clicklabs.jugnoo.driver.adapters.DocImage;
 import product.clicklabs.jugnoo.driver.adapters.DocImagesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo;
@@ -67,6 +65,7 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.PhotoProvider;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -81,8 +80,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 	private static final String BRANDING_IMAGE = "Branding Image";
 	private static final int DOC_TYPE_BRANDING_IMAGE = 2;
-	public static final int TASK_TYPE_SELF_BRANDING = 1;
-	public static final int TASK_TYPE_OTHER_BRANDING = 0;
 	private static final int DOC_REQUIREMENT_OTHER_BRANDING = 6;
 	TextView textViewInfoDisplay;
 	ListView listView;
@@ -152,7 +149,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		accessToken = getArguments().getString("access_token");
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
-		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, TASK_TYPE_SELF_BRANDING);
+		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, DriverTaskTypes.SELF_BRANDING.getType());
 		getDocsAsync(getActivity());
 		activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
 		llDocumentsState.setVisibility(brandingImagesOnly == 1 ? View.VISIBLE : View.GONE);
@@ -807,10 +804,10 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
 										data.getIsDocInfoEditable());
 								if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
-									if(taskType == TASK_TYPE_OTHER_BRANDING
+									if(taskType == DriverTaskTypes.OTHER_BRANDING.getType()
 											&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
 										docs.add(docInfo);
-									} else if(taskType == TASK_TYPE_SELF_BRANDING
+									} else if(taskType == DriverTaskTypes.SELF_BRANDING.getType()
 											&& docInfo.docRequirement != DOC_REQUIREMENT_OTHER_BRANDING){
 										docs.add(docInfo);
 									}
@@ -1007,7 +1004,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							Bitmap bitmap = BitmapFactory.decodeFile(image.getOriginalPath(), opt);
 
 							Uri uri = PhotoProvider.Companion.getPhotoUri(new File(image.getOriginalPath()));
-							int rotate = getCameraPhotoOrientation(activity, uri, image.getOriginalPath());
+							int rotate = Utils.getCameraPhotoOrientation(activity, uri, image.getOriginalPath());
 							Bitmap rotatedBitmap;
 							Matrix rotateMatrix = new Matrix();
 							rotateMatrix.postRotate(rotate);
@@ -1022,17 +1019,17 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 								if (oldWidth > oldHeight) {
 									int newHeight = imgPixel;
 									int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-									newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+									newBitmap = Utils.getResizedBitmap(rotatedBitmap, newHeight, newWidth);
 								} else {
 									int newWidth = imgPixel;
 									int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-									newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+									newBitmap = Utils.getResizedBitmap(rotatedBitmap, newHeight, newWidth);
 								}
 							}
 
 							File f;
 							if (newBitmap != null) {
-								f = compressToFile(activity, newBitmap, Bitmap.CompressFormat.JPEG, 100);
+								f = Utils.compressToFile(activity, newBitmap, Bitmap.CompressFormat.JPEG, 100);
 								driverDocumentListAdapter.notifyDataSetChanged();
 								uploadPicToServer(getActivity(), f, docs.get(index), coloum);
 							}
@@ -1057,34 +1054,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	}
 
 
-	public int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
-		int rotate = 0;
-		try {
-			context.getContentResolver().notifyChange(imageUri, null);
-			File imageFile = new File(imagePath);
-
-			ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
-			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-			switch (orientation) {
-				case ExifInterface.ORIENTATION_ROTATE_270:
-					rotate = 270;
-					break;
-				case ExifInterface.ORIENTATION_ROTATE_180:
-					rotate = 180;
-					break;
-				case ExifInterface.ORIENTATION_ROTATE_90:
-					rotate = 90;
-					break;
-			}
-
-			Log.i("RotateImage", "Exif orientation: " + orientation);
-			Log.i("RotateImage", "Rotate value: " + rotate);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return rotate;
-	}
 
 
 	private void uploadPicToServer(final Activity activity, final File photoFile, final DocInfo docInfo, final int column) {
@@ -1265,45 +1234,6 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	}
 
 
-
-	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
-									   int quality) {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		src.compress(format, quality, os);
-		long index2 = System.currentTimeMillis();
-		File f = new File(context.getFilesDir(), "temp" + index2 + ".jpg");
-		try {
-			f.createNewFile();
-			byte[] bitmapData = os.toByteArray();
-
-			FileOutputStream fos = new FileOutputStream(f);
-			fos.write(bitmapData);
-			fos.flush();
-			fos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return f;
-	}
-
-
-	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-		try {
-			int width = bm.getWidth();
-			int height = bm.getHeight();
-			float scaleWidth = ((float) newWidth) / width;
-			float scaleHeight = ((float) newHeight) / height;
-			Matrix matrix = new Matrix();
-			matrix.postScale(scaleWidth, scaleHeight);
-			Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-					matrix, false);
-
-			return resizedBitmap;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return bm;
-		}
-	}
 
 	private void checkForDocumentsSubmit(){
 		if(brandingImagesOnly == 1){

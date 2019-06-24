@@ -706,10 +706,10 @@
     <string name="error_no_countries_found">No Countries Found!</string>
 	<string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
-    <string name="place_bid">Place Bid</string>
-    <string name="please_enter_some_value">Please enter some value</string>
-    <string name="bid">Bid</string>
-    <string name="bid_placed">Bid Placed</string>
+    <string name="place_bid">बोली लगाओ</string>
+    <string name="please_enter_some_value">कृपया कुछ मूल्य दर्ज करें</string>
+    <string name="bid">बोली</string>
+    <string name="bid_placed">बोली लगाई गई है</string>
     <!--Strings for Subscription plans-->
 
 	<!--login with phone-->
@@ -723,6 +723,32 @@
 
 	<string name="branding_msg">स्वयं ब्रांडिंग द्वारा %s तक पैसा कमाएं</string>
 	<string name="branding_msg_autos">अन्य ऑटो रिक्शाओं ब्रांडिंग की द्वारा %s तक पैसा कमाएं</string>
+	<string name="branding_msg_here_maps">स्थानों/स्थलों को दर्ज कीजिये और %s तक पैसा कमाएं</string>
+
+
+	<string name="add_a_place">स्थान दर्ज करें</string>
+	<string name="add_place">स्थान दर्ज करें</string>
+	<string name="retake">फिर से लीजिये</string>
+	<string name="use_photo">फोटो उपयोग करें</string>
+	<string name="add_category">वर्ग जोड़े</string>
+	<string name="please_capture_an_image_first">कृपया पहले एक फोटो लीजिये</string>
+	<string name="image_not_captured">फोटो नहीं खींची गई</string>
+	<string name="please_select_a_category">कृपया एक वर्ग चुनें</string>
+	<string name="place_added_successfully">स्थान सफलतापूर्वक दर्ज हो गया है</string>
+	<string name="search_a_category">वर्ग खोजें</string>
+
+	<string name="hotel">होटल</string>
+	<string name="restaurant">रेस्टोरेंट</string>
+	<string name="hospital">अस्पताल</string>
+	<string name="business_facility">बिज़नेस ऑफिस</string>
+	<string name="petrol_gasoline_station">पेट्रोल/डीज़ल स्टेशन</string>
+	<string name="government_office">सरकारी कार्यालय</string>
+	<string name="place_of_worship">पूजा स्थल</string>
+	<string name="residential_area_building">आवासीय क्षेत्र/मकान</string>
+	<string name="higher_education">उच्च शिक्षा संस्थान</string>
+	<string name="school">स्कूल</string>
+	<string name="bank">बैंक</string>
+	<string name="atm">एटीएम</string>
 
 
 </resources>

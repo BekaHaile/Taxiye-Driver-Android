@@ -10,11 +10,14 @@ import kotlinx.android.synthetic.main.layout_top_bar.*
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.adapters.DriverTasksAdapter
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes
+import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsImageCaptureActivity
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.DriverTasks
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.Tasks
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
+import product.clicklabs.jugnoo.driver.utils.Utils
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
@@ -24,7 +27,21 @@ import java.util.*
 
 class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTasksListener {
     override fun onTaskClicked(tasks: Tasks) {
-        openDriverDocumentActivity(tasks)
+        when(tasks.taskType){
+            DriverTaskTypes.HERE_MAPS_FEEDBACK.type -> {
+                if (HomeActivity.myLocation != null) {
+                    startActivity(Intent(this@DriverTasksActivity, HereMapsImageCaptureActivity::class.java)
+                            .putExtra(Constants.KEY_LATITUDE, HomeActivity.myLocation.getLatitude())
+                            .putExtra(Constants.KEY_LONGITUDE, HomeActivity.myLocation.getLongitude())
+                    )
+                } else {
+                    Utils.showToast(this@DriverTasksActivity, getString(R.string.waiting_for_location))
+                }
+            }
+            else -> {
+                openDriverDocumentActivity(tasks)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
