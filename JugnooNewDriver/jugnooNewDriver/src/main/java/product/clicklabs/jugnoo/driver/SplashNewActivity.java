@@ -2494,7 +2494,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 		params.put("latitude", "" + Data.latitude);
 		params.put("longitude", "" + Data.longitude);
 		HomeUtil.putDefaultParams(params);
-		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
+		RestClient.getApiServices().getCityRetro(params, "", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
 				try {
