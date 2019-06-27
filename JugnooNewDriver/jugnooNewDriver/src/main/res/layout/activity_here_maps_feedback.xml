@@ -30,6 +30,18 @@
             />
 
 
+        <ImageView
+            android:id="@+id/ivSelectImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="70dp"
+            android:src="@drawable/add_img_selector"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            />
+
+
         <TextView
             android:id="@+id/tvAddCategory"
             android:layout_width="wrap_content"

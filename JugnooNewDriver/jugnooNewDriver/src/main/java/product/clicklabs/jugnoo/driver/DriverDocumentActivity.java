@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
@@ -79,11 +80,17 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		}
 		requirement  = getIntent().getExtras().getInt("doc_required");
 		brandingImagesOnly  = getIntent().getIntExtra(Constants.BRANDING_IMAGES_ONLY, 0);
-		int taskType  = getIntent().getIntExtra(Constants.KEY_TASK_TYPE, 1);
+
+		int taskType  = getIntent().getIntExtra(Constants.KEY_TASK_TYPE, DriverTaskTypes.SELF_BRANDING.getType());
+		double latitude  = getIntent().getDoubleExtra(Constants.KEY_LATITUDE, 0);
+		double longitude  = getIntent().getDoubleExtra(Constants.KEY_LONGITUDE, 0);
+
 		bundle.putString("access_token", accessToken);
 		bundle.putInt("doc_required", requirement);
 		bundle.putInt(Constants.BRANDING_IMAGES_ONLY, brandingImagesOnly);
 		bundle.putInt(Constants.KEY_TASK_TYPE, taskType);
+		bundle.putDouble(Constants.KEY_LATITUDE, latitude);
+		bundle.putDouble(Constants.KEY_LONGITUDE, longitude);
 		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()

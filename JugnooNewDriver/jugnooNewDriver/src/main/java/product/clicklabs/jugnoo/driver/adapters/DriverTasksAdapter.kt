@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,10 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
             else -> {}
         }
 
+        if(!TextUtils.isEmpty(task.message)){
+            holder.tvBrandingOffer.text = task.message
+        }
+
         holder.tvBrandingOffer.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
 
 //        if(position == details!!.size -1 ){
@@ -64,15 +69,15 @@ class DriverTasksAdapter() : RecyclerView.Adapter<DriverTasksAdapter.FareDetailV
 //        } else {
             holder.ivSeparator.visibility = View.VISIBLE
 //        }
-        if(details!![position].endTime != null) {
+        if(task.endTime != null) {
             holder.tvValidTill.visibility = View.VISIBLE
-            holder.tvValidTill.text = context.getString(R.string.valid_till, DateOperations.utcToLocalForSelfBranding(details!![position].endTime))
+            holder.tvValidTill.text = context.getString(R.string.valid_till, DateOperations.utcToLocalForSelfBranding(task.endTime))
             holder.tvValidTill.typeface = product.clicklabs.jugnoo.driver.utils.Fonts.mavenRegular(holder.tvBrandingOffer.context)
         } else {
             holder.tvValidTill.visibility = View.INVISIBLE
         }
         holder.viewMain.setOnClickListener {
-            (context as DriverTasksListener).onTaskClicked(details!![position])
+            (context as DriverTasksListener).onTaskClicked(task)
         }
     }
 

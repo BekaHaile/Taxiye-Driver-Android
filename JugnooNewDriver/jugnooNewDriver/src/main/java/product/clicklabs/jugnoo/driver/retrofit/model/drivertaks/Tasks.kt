@@ -19,4 +19,7 @@ class Tasks {
     @SerializedName("end_time")
     @Expose
     var endTime: String? = null
+    @SerializedName("message")
+    @Expose
+    var message: String? = null
 }

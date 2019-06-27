@@ -451,5 +451,8 @@ public interface Constants {
 	String DRIVER_HERE_AUTH_IDENTIFIER = "driver_here_auth_identifier";
 	String DRIVER_HERE_AUTH_SECRET = "driver_here_auth_secret";
 	String DRIVER_HERE_APP_ID = "driver_here_app_id";
+	String KEY_DOC_TYPE_NUM = "doc_type_num";
+	String KEY_IMG_POSITION = "img_position";
+	String KEY_PLACE_TYPE = "place_type";
 }
 

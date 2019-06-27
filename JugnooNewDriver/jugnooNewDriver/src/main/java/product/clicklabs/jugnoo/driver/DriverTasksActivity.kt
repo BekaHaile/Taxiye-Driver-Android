@@ -11,7 +11,6 @@ import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.adapters.DriverTasksAdapter
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes
-import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsImageCaptureActivity
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.DriverTasks
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.Tasks
@@ -27,21 +26,23 @@ import java.util.*
 
 class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTasksListener {
     override fun onTaskClicked(tasks: Tasks) {
-        when(tasks.taskType){
-            DriverTaskTypes.HERE_MAPS_FEEDBACK.type -> {
-                if (HomeActivity.myLocation != null) {
-                    startActivity(Intent(this@DriverTasksActivity, HereMapsImageCaptureActivity::class.java)
-                            .putExtra(Constants.KEY_LATITUDE, HomeActivity.myLocation.getLatitude())
-                            .putExtra(Constants.KEY_LONGITUDE, HomeActivity.myLocation.getLongitude())
-                    )
-                } else {
-                    Utils.showToast(this@DriverTasksActivity, getString(R.string.waiting_for_location))
-                }
-            }
-            else -> {
-                openDriverDocumentActivity(tasks)
-            }
-        }
+//        when(tasks.taskType){
+//            DriverTaskTypes.HERE_MAPS_FEEDBACK.type -> {
+//                if (HomeActivity.myLocation != null) {
+//                    startActivity(Intent(this@DriverTasksActivity, HereMapsImageCaptureActivity::class.java)
+//                            .putExtra(Constants.KEY_LATITUDE, HomeActivity.myLocation.getLatitude())
+//                            .putExtra(Constants.KEY_LONGITUDE, HomeActivity.myLocation.getLongitude())
+//                    )
+//                } else {
+//                    Utils.showToast(this@DriverTasksActivity, getString(R.string.waiting_for_location))
+//                }
+//            }
+//            else -> {
+//                openDriverDocumentActivity(tasks)
+//            }
+//        }
+
+        openDriverDocumentActivity(tasks)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,6 +113,17 @@ class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTas
         intent.putExtra("doc_required", preIntent.getIntExtra("doc_required", 0))
         intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1)
         intent.putExtra(Constants.KEY_TASK_TYPE, tasks.taskType)
+
+        if(tasks.taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.type) {
+            if (HomeActivity.myLocation != null) {
+                intent.putExtra(Constants.KEY_LATITUDE, HomeActivity.myLocation.latitude)
+                        .putExtra(Constants.KEY_LONGITUDE, HomeActivity.myLocation.longitude)
+            } else {
+                Utils.showToast(this@DriverTasksActivity, getString(R.string.waiting_for_location))
+                return
+            }
+        }
+
         startActivity(intent)
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
     }
