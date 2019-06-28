@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -52,6 +54,7 @@ public class CustomerSwitcher {
 
 	private LinearLayout llRentalRequest;
 	private CustomerInfoAdapter customerInfoAdapter;
+	private Button btnViewNotes;
 	double distanceRefreshTime = 0;
 	String dropAddress;
 
@@ -65,6 +68,7 @@ public class CustomerSwitcher {
 		textViewCustomerName1 = (TextView) rootView.findViewById(R.id.textViewCustomerName1);
 		textViewCustomerName1.setTypeface(Fonts.mavenRegular(activity));
 		tvCustomerNotes = (TextView) rootView.findViewById(R.id.tvCustomerNotes);
+		btnViewNotes = rootView.findViewById(R.id.btnViewNotes);
 		textViewPickupFrm = (TextView) rootView.findViewById(R.id.textViewPickupFrm);
 		textViewPickupFrm.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
@@ -233,9 +237,16 @@ public class CustomerSwitcher {
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 					if(!TextUtils.isEmpty(customerInfo.getCustomerNotes())){
-						tvCustomerNotes.setVisibility(View.VISIBLE);
-						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+						if(activity.getResources().getBoolean(R.bool.show_notes_in_popup)) {
+							btnViewNotes.setVisibility(View.VISIBLE);
+							tvCustomerNotes.setVisibility(View.GONE);
+						} else {
+							tvCustomerNotes.setVisibility(View.VISIBLE);
+							btnViewNotes.setVisibility(View.GONE);
+							tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+						}
 					} else {
+						btnViewNotes.setVisibility(View.GONE);
 						tvCustomerNotes.setVisibility(View.GONE);
 						tvCustomerNotes.setText("");
 
@@ -278,9 +289,13 @@ public class CustomerSwitcher {
 						}
 					}
 					if(customerInfo.getDropLatLng() != null) {
-						activity.bDropAddressToggle.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0)
+						activity.bDropAddressToggle.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
+						 || activity.getResources().getBoolean(R.bool.hide_drop_btn_and_show_drop_location_all_time))
 								? View.GONE : View.VISIBLE);
-						if(activity.bDropAddressToggle.getVisibility() == View.VISIBLE) {
+						activity.tvDropAddressToggleView.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
+								|| !activity.getResources().getBoolean(R.bool.hide_drop_btn_and_show_drop_location_all_time))
+								? View.GONE : View.VISIBLE);
+						if(activity.tvDropAddressToggleView.getVisibility() == View.VISIBLE || activity.bDropAddressToggle.getVisibility() == View.VISIBLE) {
 							activity.tvDropAddressToggleView.setText(R.string.loading);
 							if (customerInfo.getDropAddress().equalsIgnoreCase("")) {
 								new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
@@ -310,6 +325,22 @@ public class CustomerSwitcher {
 				textViewShowDistance.setText("");
 			}
 
+			btnViewNotes.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					openNotesDialog(customerInfo.getCustomerNotes());
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void openNotesDialog(final String customerNotes) {
+		try {
+			NotesDialog notesDialog = new NotesDialog(activity, customerNotes, notes -> {
+			});
+			notesDialog.show(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

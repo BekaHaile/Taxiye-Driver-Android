@@ -347,6 +347,22 @@
                             android:paddingEnd="5dp"
 
                             />
+                        <Button
+                            android:id="@+id/btnViewNotes"
+                            style="@style/ButtonTheme"
+                            android:layout_width="wrap_content"
+                            android:minWidth="80dp"
+                            android:text="@string/view_notes"
+                            android:gravity="center"
+                            android:layout_toStartOf="@+id/relativeLayoutCall"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:visibility="visible"
+                            android:textAllCaps="false"
+                            android:paddingEnd="5dp"
+
+                            />
 
                         <RelativeLayout
                             android:id="@+id/relativeLayoutCall"

@@ -1246,5 +1246,11 @@
     <string name="school">School</string>
     <string name="bank">Bank</string>
     <string name="atm">ATM</string>
+    <string name="view_notes">View Notes</string>
 
+    <!--Notes-->
+    <string name="notes">Notes</string>
+    <string name="write_notes_here">Write notes here...</string>
+    <string name="save_notes">Save notes</string>
+    <string name="alert_provide_some_notes">Please add some notes</string>
 </resources>
