@@ -93,6 +93,10 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		bundle.putDouble(Constants.KEY_LONGITUDE, longitude);
 		documentListFragment.setArguments(bundle);
 
+		if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()){
+			title.setText(R.string.places);
+		}
+
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
 				.commit();

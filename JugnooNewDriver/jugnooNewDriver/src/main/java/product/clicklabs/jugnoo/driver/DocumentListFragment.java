@@ -457,6 +457,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 					if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()){
 						startActivityForResult(new Intent(activity, HereMapsFeedbackActivity.class)
+                            .putExtra(Constants.KEY_DOC_TYPE_NUM, docs.get(holder1.id).docTypeNum)
+                            .putExtra(Constants.KEY_IMG_POSITION, 0)
                             .putExtra(Constants.KEY_LATITUDE, latitude)
 								.putExtra(Constants.KEY_LONGITUDE, longitude), ACTION_HERE_MAP_IMAGE_RESULT);
 					} else {
@@ -724,7 +726,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				getMImagePicker().submit(data);
             } else if (requestCode == Picker.PICK_IMAGE_CAMERA) {
 				getMCameraImagePicker().submit(data);
-            } else if(requestCode == ACTION_HERE_MAP_IMAGE_RESULT && resultCode == Activity.RESULT_OK) {
+            } else if(requestCode == ACTION_HERE_MAP_IMAGE_RESULT
+					&& resultCode == Activity.RESULT_OK) {
 				int docTypeNum = data.getIntExtra(Constants.KEY_DOC_TYPE_NUM, 0);
 				int imgPosition = data.getIntExtra(Constants.KEY_IMG_POSITION, 0);
 				int placeType = data.getIntExtra(Constants.KEY_PLACE_TYPE, 0);

@@ -101,6 +101,7 @@ class HereMapsFeedbackActivity  : ImageCaptureBaseActivity(), HereMapsCategoryAd
                 intent.putExtra(Constants.KEY_PLACE_TYPE, categorySelected!!.placeType)
                 intent.putExtra(Constants.KEY_FILE_SELECTED, fileSelected!!.absolutePath)
                 setResult(Activity.RESULT_OK, intent)
+                finish()
             } else {
                 uploadPicToServer(this, fileSelected!!, categorySelected!!)
             }

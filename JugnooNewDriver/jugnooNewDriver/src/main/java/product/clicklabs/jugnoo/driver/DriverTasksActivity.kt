@@ -26,22 +26,6 @@ import java.util.*
 
 class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTasksListener {
     override fun onTaskClicked(tasks: Tasks) {
-//        when(tasks.taskType){
-//            DriverTaskTypes.HERE_MAPS_FEEDBACK.type -> {
-//                if (HomeActivity.myLocation != null) {
-//                    startActivity(Intent(this@DriverTasksActivity, HereMapsImageCaptureActivity::class.java)
-//                            .putExtra(Constants.KEY_LATITUDE, HomeActivity.myLocation.getLatitude())
-//                            .putExtra(Constants.KEY_LONGITUDE, HomeActivity.myLocation.getLongitude())
-//                    )
-//                } else {
-//                    Utils.showToast(this@DriverTasksActivity, getString(R.string.waiting_for_location))
-//                }
-//            }
-//            else -> {
-//                openDriverDocumentActivity(tasks)
-//            }
-//        }
-
         openDriverDocumentActivity(tasks)
     }
 
