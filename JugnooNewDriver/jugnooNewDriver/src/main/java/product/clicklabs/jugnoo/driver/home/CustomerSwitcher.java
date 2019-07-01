@@ -32,6 +32,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -234,7 +235,13 @@ public class CustomerSwitcher {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 					if(!TextUtils.isEmpty(customerInfo.getCustomerNotes())){
 						tvCustomerNotes.setVisibility(View.VISIBLE);
-						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+						if(customerInfo.getCustomerNotes().length() > 20) {
+							tvCustomerNotes.setText(R.string.click_to_view_notes);
+							tvCustomerNotes.setEnabled(true);
+						} else {
+							tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+							tvCustomerNotes.setEnabled(false);
+						}
 					} else {
 						tvCustomerNotes.setVisibility(View.GONE);
 						tvCustomerNotes.setText("");
@@ -278,7 +285,7 @@ public class CustomerSwitcher {
 						}
 					}
 					if(customerInfo.getDropLatLng() != null) {
-						activity.bDropAddressToggle.setVisibility((Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0)
+						activity.bDropAddressToggle.setVisibility(Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
 								? View.GONE : View.VISIBLE);
 						if(activity.bDropAddressToggle.getVisibility() == View.VISIBLE) {
 							activity.tvDropAddressToggleView.setText(R.string.loading);
@@ -310,6 +317,17 @@ public class CustomerSwitcher {
 				textViewShowDistance.setText("");
 			}
 
+			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(customerInfo.getCustomerNotes()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void openNotesDialog(final String customerNotes) {
+		try {
+			NotesDialog notesDialog = new NotesDialog(activity, customerNotes, notes -> {
+			});
+			notesDialog.show(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

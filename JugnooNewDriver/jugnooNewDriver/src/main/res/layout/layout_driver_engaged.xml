@@ -12,7 +12,10 @@
     <RelativeLayout
         android:id="@+id/inRideCustomerInfoRl"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        >
 
         <LinearLayout
             android:id="@+id/driverPassengerInfoRl"
@@ -237,6 +240,8 @@
         android:background="@drawable/transparent"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
 
@@ -431,10 +436,17 @@
                                 android:layout_height="wrap_content"
                                 android:visibility="visible"
                                 android:tag="@string/dont_touch_me"
-                                android:layout_marginTop="2dp"
-                                android:layout_marginBottom="4dp"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="4dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:theme="@style/GreyHighlight"
+                                android:drawableStart="@drawable/ic_notes_grey"
+                                android:drawablePadding="5dp"
                                 style="@style/TextMedium"
-                                tools:text="lllllllllllllll"
+                                tools:text="wwwwwwwwwwwwwwwwwwww"
+
                             />
 
                         </LinearLayout>
