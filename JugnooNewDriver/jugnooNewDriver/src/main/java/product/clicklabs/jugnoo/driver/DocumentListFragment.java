@@ -66,6 +66,7 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.PhotoProvider;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -843,9 +844,11 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				HomeUtil.putDefaultParams(params);
 
 				if(placeType != -1){
-					params.put(Constants.KEY_PLACE_TYPE, String.valueOf(placeType));
-					params.put(Constants.KEY_LATITUDE, String.valueOf(latitude));
-					params.put(Constants.KEY_LONGITUDE, String.valueOf(longitude));
+					String appId = Prefs.with(activity).getString(Constants.DRIVER_HERE_APP_ID, getString(R.string.driver_here_app_id));
+					String feedback = "{\"coordinates\":["+longitude+", "+latitude+", 0],\"type\":\"Point\"" +
+							",\"properties\":{\"appId\":\""+appId+"\",\"error\": 30,\"v\":\"2.7\",\"type\":\""+placeType+"\"}}";
+
+					params.put(Constants.KEY_FEEDBACK, feedback);
 				}
 
 				TypedFile typedFile;

@@ -454,5 +454,6 @@ public interface Constants {
 	String KEY_DOC_TYPE_NUM = "doc_type_num";
 	String KEY_IMG_POSITION = "img_position";
 	String KEY_PLACE_TYPE = "place_type";
+	String KEY_FEEDBACK = "feedback";
 }
 
