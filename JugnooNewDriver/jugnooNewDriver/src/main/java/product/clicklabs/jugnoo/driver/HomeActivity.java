@@ -11708,8 +11708,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     Polyline polylineAlt = null, polylineAltMatch = null;
+    ArrayList<Marker> markersWaypointsAlt = null;
     @Override
-    public void pathAlt(List<LatLng> list) {
+    public void pathAlt(List<LatLng> list, List<LatLng> waypoints) {
         if(map != null){
             if(polylineAlt != null){
                 polylineAlt.remove();
@@ -11719,6 +11720,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             polylineOptions.addAll(list);
             polylineOptions.zIndex(0);
             polylineAlt = map.addPolyline(polylineOptions);
+
+
+            if(markersWaypointsAlt == null){
+                markersWaypointsAlt = new ArrayList<>();
+            }
+            for(Marker marker : markersWaypointsAlt){
+                marker.remove();
+            }
+            markersWaypointsAlt.clear();
+            if(waypoints != null) {
+                for (LatLng latLng : waypoints) {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latLng);
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.radio_select));
+                    markersWaypointsAlt.add(map.addMarker(markerOptions));
+                }
+            }
         }
     }
 

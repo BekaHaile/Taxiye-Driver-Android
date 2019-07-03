@@ -59,7 +59,7 @@ public interface AppInterruptHandler {
 
 	public void showDialogFromPush(String message);
 
-	void pathAlt(List<LatLng> list);
+	void pathAlt(List<LatLng> list, List<LatLng> waypoints);
 
 	void polylineAlt(LatLng start, LatLng end);
 
