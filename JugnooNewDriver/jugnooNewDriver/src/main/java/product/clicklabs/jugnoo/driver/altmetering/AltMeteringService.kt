@@ -52,6 +52,9 @@ class AltMeteringService : Service() {
                 Prefs.with(context).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, 0.toString())
             }
         }
+
+        var fusedLocationClient: FusedLocationProviderClient? = null
+        var activityBroadcastReceiver:BroadcastReceiver? = null
     }
 
 
@@ -75,7 +78,6 @@ class AltMeteringService : Service() {
             return field
         }
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationRequest = LocationRequest().apply {
         interval = LOCATION_UPDATE_INTERVAL
         fastestInterval = LOCATION_UPDATE_INTERVAL
@@ -137,8 +139,10 @@ class AltMeteringService : Service() {
 
 
         startForeground(METER_NOTIF_ID, generateNotification(this, getNotificationMessage(), METER_NOTIF_ID))
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
+        if(fusedLocationClient == null){
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        }
+        registerActivityBroadcast()
 
 
         if (!isMeteringActive(this)) {
@@ -164,8 +168,8 @@ class AltMeteringService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(activityBroadcastReceiver)
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+        unregisterActivityBroadcast()
         Log.e(TAG, "onDestroy")
     }
 
@@ -208,8 +212,8 @@ class AltMeteringService : Service() {
     @SuppressLint("MissingPermission")
     fun requestLocationUpdates(list: MutableList<LatLng>, waypoints: MutableList<LatLng>?) {
         updatePathAndDistance(list, waypoints)
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
     private fun updatePathAndDistance(list: MutableList<LatLng>, waypoints: MutableList<LatLng>?) {
@@ -382,7 +386,7 @@ class AltMeteringService : Service() {
                 val diff = time - timestamps[0].timestamp
                 Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "diff = $diff")
                 if (diff > LAST_LOCATION_TIME_DIFF){
-                    fusedLocationClient.removeLocationUpdates(locationCallback)
+                    fusedLocationClient?.removeLocationUpdates(locationCallback)
                     meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(engagementId, waypoint.latitude, waypoint.longitude))
                     val waypoints = meteringDB.getMeteringDao().getAllWaypoints(engagementId)
@@ -394,7 +398,7 @@ class AltMeteringService : Service() {
                     return globalWaypointLatLngs
                 }
             } else {
-                fusedLocationClient.removeLocationUpdates(locationCallback)
+                fusedLocationClient?.removeLocationUpdates(locationCallback)
                 meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
                 source = waypoint
                 Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, source.toString())
@@ -432,27 +436,40 @@ class AltMeteringService : Service() {
 
     private var intentEngagementId:Int = 0
 
-    private val activityBroadcastReceiver:BroadcastReceiver = object:BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intentEngagementId = intent!!.getIntExtra(Constants.KEY_ENGAGEMENT_ID, engagementId)
-            if(::currentLocation.isInitialized){
-                fusedLocationClient.removeLocationUpdates(locationCallback)
-                val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                val distance = MapUtils.distance(destination, latLng)
-                Log.e(TAG, "activityBroadcastReceiver distance = $distance")
-                if(distance <= PATH_POINT_DISTANCE_TOLLERANCE){
-                    //no need to do anything
-                    updateDistanceAndTriggerEndRide()
-                } else {
-                    //update path by changing destination
-                    destination = latLng
-                    FetchPathAsync(meteringDB, engagementId, source, destination, null, ::updateDistanceAndCallbackEndRide).execute()
-                }
 
-            } else {
-                Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
-                LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK))
+    private fun registerActivityBroadcast(){
+        if(activityBroadcastReceiver == null){
+            activityBroadcastReceiver = object:BroadcastReceiver(){
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    intentEngagementId = intent!!.getIntExtra(Constants.KEY_ENGAGEMENT_ID, engagementId)
+                    if(::currentLocation.isInitialized){
+                        fusedLocationClient?.removeLocationUpdates(locationCallback)
+                        val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                        val distance = MapUtils.distance(destination, latLng)
+                        Log.e(TAG, "activityBroadcastReceiver distance = $distance")
+                        if(distance <= PATH_POINT_DISTANCE_TOLLERANCE){
+                            //no need to do anything
+                            updateDistanceAndTriggerEndRide()
+                        } else {
+                            //update path by changing destination
+                            destination = latLng
+                            FetchPathAsync(meteringDB, engagementId, source, destination, null, ::updateDistanceAndCallbackEndRide).execute()
+                        }
+
+                    } else {
+                        Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
+                        LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK))
+                    }
+                }
             }
+            LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
+        }
+    }
+
+    private fun unregisterActivityBroadcast(){
+        if(activityBroadcastReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(activityBroadcastReceiver!!)
+            activityBroadcastReceiver = null
         }
     }
 
