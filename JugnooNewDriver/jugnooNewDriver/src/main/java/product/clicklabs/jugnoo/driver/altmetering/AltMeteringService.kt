@@ -116,7 +116,6 @@ class AltMeteringService : Service() {
             Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LATITUDE, destinationLat.toString())
             Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, destinationLng.toString())
 
-            Log.e(TAG, "intent not null, $engagementId, $source, $destination")
 
         } else if(isMeteringActive(this)) {
 
@@ -129,10 +128,8 @@ class AltMeteringService : Service() {
             source = LatLng(sourceLat, sourceLng)
             destination = LatLng(destinationLat, destinationLng)
 
-            Log.e(TAG, "intent null, $engagementId, $source, $destination")
 
         } else {
-            Log.e(TAG, "intent kill")
             stopSelf()
             return START_NOT_STICKY
         }
@@ -140,6 +137,7 @@ class AltMeteringService : Service() {
 
         startForeground(METER_NOTIF_ID, generateNotification(this, getNotificationMessage(), METER_NOTIF_ID))
         if(fusedLocationClient == null){
+            Log.e(TAG, "fusedLocationClient initiated")
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         }
         registerActivityBroadcast()
@@ -170,6 +168,8 @@ class AltMeteringService : Service() {
         super.onDestroy()
         fusedLocationClient?.removeLocationUpdates(locationCallback)
         unregisterActivityBroadcast()
+        stopForeground(true)
+        stopSelf()
         Log.e(TAG, "onDestroy")
     }
 

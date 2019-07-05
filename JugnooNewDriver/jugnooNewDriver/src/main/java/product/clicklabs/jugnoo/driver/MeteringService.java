@@ -56,7 +56,7 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
-    	restartServiceViaAlarm();
+//    	restartServiceViaAlarm();
     }
 
 	@Override
@@ -93,6 +93,8 @@ public class MeteringService extends Service {
     		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
+				stopForeground(true);
+				stopSelf();
     		}
     		else{
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
@@ -100,6 +102,7 @@ public class MeteringService extends Service {
 				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 				AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+				Log.e("MeteringService restartServiceViaAlarm","="+restartService);
     		}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,6 +137,7 @@ public class MeteringService extends Service {
 				@Override
 				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
+					Log.e("MeteringService updateDistanceTime","=running elapsedTime="+ (elapsedTime/1000));
 					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 							DriverScreenMode.D_INITIAL.getOrdinal());
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {

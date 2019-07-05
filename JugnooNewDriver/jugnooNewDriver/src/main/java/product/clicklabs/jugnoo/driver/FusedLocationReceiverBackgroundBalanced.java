@@ -16,7 +16,7 @@ public class FusedLocationReceiverBackgroundBalanced extends BroadcastReceiver {
         final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
         if(!Utils.mockLocationEnabled(location)) {
             if (location != null && GpsDistanceCalculator.fusedLocationUpdate != null) {
-                GpsDistanceCalculator.fusedLocationUpdate.onFusedLocationChanged(location);
+                GpsDistanceCalculator.fusedLocationUpdate.onGPSLocationChanged(location);
             }
         }
     }
