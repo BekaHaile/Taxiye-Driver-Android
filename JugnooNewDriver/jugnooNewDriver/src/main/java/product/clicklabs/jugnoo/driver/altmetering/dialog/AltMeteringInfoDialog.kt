@@ -8,10 +8,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
@@ -63,26 +59,6 @@ class AltMeteringInfoDialog{
             meteringDb!!.getMeteringDao().getAllWaypoints(engagementId)
         }
 
-        waypointsObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<Waypoint>>{
-                    override fun onComplete() {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun onNext(t: List<Waypoint>) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun onError(e: Throwable) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                })
 
     }
 

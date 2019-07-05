@@ -10582,7 +10582,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (latLngs.size() > 1) {
                 //todo getResources().getColor(R.color.blue_polyline)
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.transparent), false,
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false,
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
@@ -11712,7 +11712,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     ArrayList<Marker> markersWaypointsAlt = null;
     @Override
     public void pathAlt(List<LatLng> list, List<LatLng> waypoints) {
-        if(map != null){
+        if(BuildConfig.DEBUG && map != null){
             if(polylineAlt != null){
                 polylineAlt.remove();
             }
@@ -11744,7 +11744,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     @Override
     public void polylineAlt(LatLng start, LatLng end) {
-        if(map != null){
+        if(BuildConfig.DEBUG && map != null){
             if(polylineAltMatch != null){
                 polylineAltMatch.remove();
             }
