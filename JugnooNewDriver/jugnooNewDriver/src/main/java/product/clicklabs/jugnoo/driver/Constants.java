@@ -465,5 +465,7 @@ public interface Constants {
 	String KEY_NUM_WAYPOINTS = "num_waypoints";
 	String KEY_WAYPOINT_PATH = "waypoint_path";
 	String KEY_DRIVER_ALT_DISTANCE_LOGIC = "driver_alt_distance_logic";
+	String KEY_DRIVER_ALT_DEVIATION_DISTANCE = "driver_alt_deviation_distance";
+	String KEY_DRIVER_ALT_DEVIATION_TIME = "driver_alt_deviation_time";
 }
 

@@ -70,6 +70,13 @@ class AltMeteringService : Service() {
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
     val LAST_LOCATION_TIME_DIFF: Long = 60000 // in meters
 
+    private fun getDeviationDistance(): Double{
+        return Prefs.with(this).getString(Constants.KEY_DRIVER_ALT_DEVIATION_DISTANCE, PATH_POINT_DISTANCE_TOLLERANCE.toString()).toDouble()
+    }
+    private fun getDeviationTime(): Long{
+        return Prefs.with(this).getString(Constants.KEY_DRIVER_ALT_DEVIATION_TIME, LAST_LOCATION_TIME_DIFF.toString()).toLong()
+    }
+
     var meteringDB: MeteringDatabase? = null
         get() {
             if (field == null) {
@@ -386,7 +393,7 @@ class AltMeteringService : Service() {
                 Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "timestamps[0].timestamp = " + timestamps[0].timestamp)
                 val diff = time - timestamps[0].timestamp
                 Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "diff = $diff")
-                if (diff > LAST_LOCATION_TIME_DIFF){
+                if (diff > getDeviationTime()){
                     fusedLocationClient?.removeLocationUpdates(locationCallback)
                     meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(engagementId, waypoint.latitude, waypoint.longitude))
@@ -448,7 +455,7 @@ class AltMeteringService : Service() {
                         val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                         val distance = MapUtils.distance(destination, latLng)
                         Log.e(TAG, "activityBroadcastReceiver distance = $distance")
-                        if(distance <= PATH_POINT_DISTANCE_TOLLERANCE){
+                        if(distance <= getDeviationDistance()){
                             //no need to do anything
                             updateDistanceAndTriggerEndRide()
                         } else {
@@ -572,7 +579,7 @@ class AltMeteringService : Service() {
 
             val pathLength = globalPath.size
             val position = PolyUtil.locationIndexOnPath(currentLatLng, globalPath.subList(lastScanningPoint, pathLength),
-                    true, PATH_POINT_DISTANCE_TOLLERANCE)
+                    true, getDeviationDistance())
             return position
         }
 
