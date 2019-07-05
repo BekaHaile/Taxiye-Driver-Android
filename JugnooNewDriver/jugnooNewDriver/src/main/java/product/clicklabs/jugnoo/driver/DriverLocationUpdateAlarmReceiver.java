@@ -22,10 +22,6 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 				if (SEND_LOCATION.equals(action)) {
 					try {
 						long lastTime = Database2.getInstance(context).getDriverLastLocationTime();
-						String accessToken = Database2.getInstance(context).getDLDAccessToken();
-						if ("".equalsIgnoreCase(accessToken)) {
-							DriverLocationUpdateService.updateServerData(context);
-						}
 						long currentTime = System.currentTimeMillis();
 
 						if (currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)) {

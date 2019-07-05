@@ -2728,7 +2728,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         } else if (infoTileResponse.getDeepIndex() == 11) {
             try {
                 String finalUrl = String.valueOf(infoTileResponse.getExtras().getRedirectUrl())
-                        + "?access_token=" + Database2.getInstance(HomeActivity.this).getDLDAccessToken();
+                        + "?access_token=" + JSONParser.getAccessTokenPair(this).first;
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setPackage("com.android.chrome");
@@ -3036,7 +3036,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 changeJugnooONUIAndInitService(false);
 
 
-                Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, FirebaseInstanceId.getInstance().getToken(), Data.SERVER_URL);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5007,7 +5006,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
 
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-			if(customerInfo.getDropLatLng() != null && Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+			if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+                    && customerInfo.getDropLatLng() != null
+                    && Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
 				Intent intent = new Intent(this, AltMeteringService.class);
 				intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
 				intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
@@ -11733,7 +11734,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 for (LatLng latLng : waypoints) {
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(latLng);
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.radio_select));
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.red_dot_icon_small));
+					markerOptions.anchor(0.5f, 0.5f);
                     markersWaypointsAlt.add(map.addMarker(markerOptions));
                 }
             }

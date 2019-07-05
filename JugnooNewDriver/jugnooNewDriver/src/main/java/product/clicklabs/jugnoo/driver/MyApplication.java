@@ -245,7 +245,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         }
         Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
         RestClient.setupRestClient(Data.SERVER_URL);
-        DriverLocationUpdateService.updateServerData(context);
     }
 
     public Locale getCurrentLocale(){

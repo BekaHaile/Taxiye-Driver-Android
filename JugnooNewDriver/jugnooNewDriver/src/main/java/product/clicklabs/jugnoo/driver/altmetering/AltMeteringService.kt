@@ -167,6 +167,7 @@ class AltMeteringService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         fusedLocationClient?.removeLocationUpdates(locationCallback)
+        fusedLocationClient = null
         unregisterActivityBroadcast()
         stopForeground(true)
         stopSelf()

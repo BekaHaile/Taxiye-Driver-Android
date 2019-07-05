@@ -1,28 +1,29 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.location.Location;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.android.gms.location.LocationRequest;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class DriverLocationUpdateService extends Service {
+public class DriverLocationUpdateService extends Service implements GPSLocationUpdate{
+
+	private static final String TAG = DriverLocationUpdateService.class.getSimpleName();
 	
-	LocationFetcherDriver locationFetcherDriver;
+	private static FusedLocationFetcherBackground locationFetcherDriver;
 
 	public static int DRIVER_UPDATE_SERVICE_NOTFI_ID = 1818;
 
@@ -34,174 +35,94 @@ public class DriverLocationUpdateService extends Service {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
 	
-	
-	@Override
-    public void onCreate() {
-
-	}
 
 
-	public static void updateServerData(final Context context){
-    	String SHARED_PREF_NAME = "myPref";
-    	String SP_ACCESS_TOKEN_KEY = "access_token";
-    	String accessToken = "", deviceToken = "", SERVER_URL = "";
-    	
-    	//TODO Toggle live to trial
-		String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-		String LIVE_SERVER_URL = BuildConfig.LIVE_URL;
-		String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
-        String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
-        String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
-        String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
-
-		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
-
-		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
-
-		
-		
-		
-		
-		String SETTINGS_SHARED_PREF_NAME = "settingsPref", SP_SERVER_LINK = "sp_server_link";
-		
-		SERVER_URL = DEFAULT_SERVER_URL;
-		
-		SharedPreferences preferences = context.getSharedPreferences(SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		String link = preferences.getString(SP_SERVER_LINK, DEFAULT_SERVER_URL);
-		
-		if(link.equalsIgnoreCase(TRIAL_SERVER_URL)){
-			SERVER_URL = TRIAL_SERVER_URL;
-		}
-		else if(link.equalsIgnoreCase(DEV_SERVER_URL)){
-			SERVER_URL = DEV_SERVER_URL;
-		}
-		else if(link.equalsIgnoreCase(LIVE_SERVER_URL)){
-			SERVER_URL = LIVE_SERVER_URL;
-		}
-        else if(link.equalsIgnoreCase(DEV_1_SERVER_URL)){
-            SERVER_URL = DEV_1_SERVER_URL;
-        }
-        else if(link.equalsIgnoreCase(DEV_2_SERVER_URL)){
-            SERVER_URL = DEV_2_SERVER_URL;
-        }
-        else if(link.equalsIgnoreCase(DEV_3_SERVER_URL)){
-            SERVER_URL = DEV_3_SERVER_URL;
-        }
-		else{
-			SERVER_URL = CUSTOM_URL;
-		}
-
-		
-		SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		accessToken = pref.getString(SP_ACCESS_TOKEN_KEY, "");
-
-		final String finalAccessToken = accessToken;
-		final String finalSERVER_URL = SERVER_URL;
-		Database2.getInstance(context).insertDriverLocData(finalAccessToken,FirebaseInstanceId.getInstance().getToken(), finalSERVER_URL);
-
-
-		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
-				Context.MODE_PRIVATE).getString("pushy_registration_id", "");
-		Database2.getInstance(context).updatePushyToken(pushyToken);
-
-		RestClient.setupRestClient(SERVER_URL);
-
-    }
-    
-    
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
 
-		RestClient.setCurrentUrl("");
-
-		if(Utils.isServiceRunning(this, DriverLocationUpdateService.class)){
-			}
-		else{
-		}
-
 		try {
 			int isOffline = getSharedPreferences(SPLabels.SETTINGS_SP,Context.MODE_PRIVATE).getInt(Constants.IS_OFFLINE, 1);
+			Log.i(TAG, "onStartCommand: is Offline" +	isOffline );
 
-			Log.i("TAG", "onStartCommand: is Offline" +	isOffline );
+			if(locationFetcherDriver != null){
+				locationFetcherDriver.disconnect();
+				locationFetcherDriver = null;
+			}
 
 			if(isOffline == 0){
                 startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,getString(R.string.update_location_notif_label),DRIVER_UPDATE_SERVICE_NOTFI_ID));
+
+
+				String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
+				if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
+					String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
+					long interval = 120000;
+					if(fast.equalsIgnoreCase(Database2.NO)){
+						interval = Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
+					} else{
+						interval = Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
+					}
+					Log.i(TAG, "onStartCommand interval="+interval);
+					locationFetcherDriver = new FusedLocationFetcherBackground(this, interval, LocationRequest.PRIORITY_HIGH_ACCURACY, this);
+					locationFetcherDriver.connect();
+					setupLocationUpdateAlarm();
+				}
+				else{
+					stopForeground(true);
+					stopSelf();
+				}
             }else{
                 stopForeground(true);
+                stopSelf();
             }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-
 		return Service.START_STICKY;
     }
-
-	@Override
-	public void onStart(Intent intent, int startId) {
-		try{
-			Log.i("TAG", "onStart: here");
-			String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
-			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
-				updateServerData(this);
-				String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
-				if(fast.equalsIgnoreCase(Database2.NO)){
-					if(locationFetcherDriver != null){
-						locationFetcherDriver.destroy();
-						locationFetcherDriver = null;
-					}
-					locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000));
-				}
-				else{
-					if(locationFetcherDriver != null){
-						locationFetcherDriver.destroy();
-						locationFetcherDriver = null;
-					}
-					locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000));
-				}
-				setupLocationUpdateAlarm();
-			}
-			else{
-
-				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
-			}
-
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 
 
 	@Override
     public void onTaskRemoved(Intent rootIntent) {
-    	try {
-    		String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
-			Log.i("driverLocation","");
-    		if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-				Log.i("driverLocation", driverServiceRun);
-				Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);
-				Intent restartService = new Intent(getApplicationContext(), this.getClass());
-				restartService.setPackage(getPackageName());
-				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
-				AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
-			} else{
-				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
-    		}
-    		stopForeground(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		super.onTaskRemoved(rootIntent);
+		Log.i(TAG, "onTaskRemoved rootIntent="+rootIntent);
+//    	try {
+//    		String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
+//
+//    		if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+//				Log.i("driverLocation", driverServiceRun);
+//				Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);
+//				Intent restartService = new Intent(getApplicationContext(), this.getClass());
+//				restartService.setPackage(getPackageName());
+//				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
+//				AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+//			} else{
+//				stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
+//    		}
+//    		stopForeground(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
     }
-    
 
+	@Override
+	public void onGPSLocationChanged(Location location) {
+		onReceiveLocation(this, location);
+	}
+
+	@Override
+	public void refreshLocationFetchers(Context context) {
+
+	}
 
 	public void destroyLocationFetcher(){
 		if(locationFetcherDriver != null){
-			locationFetcherDriver.destroy();
+			locationFetcherDriver.disconnect();
 			locationFetcherDriver = null;
 
 		}
@@ -209,27 +130,15 @@ public class DriverLocationUpdateService extends Service {
 
     @Override
     public void onDestroy() {
-		Log.i("TAG", "onDestroy: ");
+		Log.i(TAG, "onDestroy: ");
 		destroyLocationFetcher();
 
 		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
-		try {
-			stopForeground(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		stopForeground(true);
+		stopSelf();
 
-	}
-
-	private void dismissNotifcation() {
-		try {
-			NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.cancel(DRIVER_UPDATE_SERVICE_NOTFI_ID);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -279,18 +188,118 @@ public class DriverLocationUpdateService extends Service {
         pendingIntent.cancel();
     }
 
-	public static boolean isForegroundServiceRunning(Context context){
-		ActivityManager manager = (ActivityManager) context.getSystemService(
-				Context.ACTIVITY_SERVICE);
-		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
-				Integer.MAX_VALUE)) {
-			if(service.foreground && DriverLocationUpdateService.class.getSimpleName().equals(service.service.getClassName())){
-				return true;
-			}
+	public static final double FREE_MAX_ACCURACY = 200;
+	public static final double MAX_TIME_WINDOW = 3600000;
+	public void onReceiveLocation(final Context context, Location location) {
+		try {
+			if (!Utils.mockLocationEnabled(location)) {
+				if (location != null) {
+					Location oldlocation = Database2.getInstance(context).getDriverCurrentLocation(context);
+					double displacement_1 = MapUtils.distance(oldlocation, location);
+					double timediff_1 = (System.currentTimeMillis() - oldlocation.getTime()) / 1000L;
+					double speed_1 = displacement_1 / timediff_1;
 
+					if (timediff_1 > 0 && speed_1 > (double)(Prefs.with(context).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD,
+							(float) GpsDistanceCalculator.MAX_SPEED_THRESHOLD))) {
+						Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
+						setAlarm();
+						Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_SPEED_20PLUS_RESTART);
+					} else {
+
+						if (location.getAccuracy() > FREE_MAX_ACCURACY) {
+							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
+						}
+
+						long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
+						if (timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))) {
+							if (5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
+
+								location.setAccuracy(3000.001f);
+								Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_5_LOC_BAD_ACCURACY);
+
+								Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
+								Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
+							}
+						} else if (timeLapse > MAX_TIME_WINDOW) {
+							Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
+							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
+							Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
+						}
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
+								new DriverLocationDispatcher().sendLocationToServer(context);
+							}
+						}).start();
+
+
+						int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
+
+						if(Prefs.with(context).getInt(Constants.IS_OFFLINE, 0) == 1){
+							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+									Prefs.with(context).getLong(Constants.OFFLINE_UPDATE_TIME_PERIOD, 180000l));
+						} else {
+							if (Utils.isBatteryCharging(context)) {
+								if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+									// Do something for lollipop and above versions
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
+										setAlarm();
+									}
+								} else {
+									// do something for phones running an SDK before lollipop
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
+										setAlarm();
+									}
+								}
+							} else {
+								if (location.getAccuracy() > 200) {
+									Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()=" + location.getAccuracy());
+									setAlarm();
+									Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_LOC_BAD_ACCURACY_RESTART);
+								} else {
+									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l)) {
+										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, 120000l));
+										setAlarm();
+									}
+								}
+							}
+						}
+
+						if((Utils.compareDouble(oldlocation.getLatitude(), location.getLatitude())==0)
+								&& (Utils.compareDouble(oldlocation.getLongitude(), location.getLongitude())==0)){
+							Database2.getInstance(context).insertUSLLog(Constants.EVENT_LRD_STALE_GPS_RESTART_SERVICE);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return false;
 	}
 
+	private Handler handler;
+	private Runnable runnableReconnectLocation;
+	private void setAlarm(){
+		locationFetcherDriver.disconnect();
+
+		if(handler == null){
+			handler = new Handler();
+		}
+		if(runnableReconnectLocation == null){
+			runnableReconnectLocation = () -> locationFetcherDriver.connect();
+		}
+		handler.postDelayed(runnableReconnectLocation, 5000);
+		Log.i(TAG, "setAlarm");
+	}
 
 }

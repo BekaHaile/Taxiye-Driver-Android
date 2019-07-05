@@ -3,17 +3,13 @@ package product.clicklabs.jugnoo.driver;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -49,7 +45,7 @@ public class DriverTimeoutIntentService extends IntentService implements Constan
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
 
-			params.put("access_token", Database2.getInstance(DriverTimeoutIntentService.this).getDLDAccessToken());
+			params.put("access_token", JSONParser.getAccessTokenPair(this).first);
 			params.put("latitude", "0");
 			params.put("longitude", "0");
 			params.put("flag", "" + jugnooOnFlag);

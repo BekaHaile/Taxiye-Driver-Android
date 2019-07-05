@@ -53,10 +53,6 @@ public class Database2 {                                                        
 	private static final String TABLE_TOTAL_DISTANCE = "table_total_distance";
 	private static final String TOTAL_DISTANCE = "total_distance";
 
-	private static final String TABLE_DRIVER_LOC_DATA = "table_driver_loc_data";
-	private static final String DLD_ACCESS_TOKEN = "dld_access_token";
-	private static final String DLD_DEVICE_TOKEN = "dld_device_token";
-	private static final String DLD_SERVER_URL = "dld_server_url";
 
 	private static final String TABLE_DRIVER_SCREEN_MODE = "table_driver_screen_mode";
 	private static final String DRIVER_SCREEN_MODE = "driver_screen_mode";
@@ -179,9 +175,6 @@ public class Database2 {                                                        
 	private static final String LOG_TIMESTAMP = "log_timestamp";
 	private static final String LOG_EVENT = "log_event";
 
-	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
-	private static final String PUSHY_TOKEN = "pushy_token";
-
 	private static final String TABLE_WAIT_TIME = "table_wait_time";
 	private static final String WAIT_TIME = "wait_time";
 
@@ -218,11 +211,6 @@ public class Database2 {                                                        
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_TOTAL_DISTANCE + " ("
 				+ TOTAL_DISTANCE + " TEXT" + ");");
 
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LOC_DATA + " ("
-				+ DLD_ACCESS_TOKEN + " TEXT, "
-				+ DLD_DEVICE_TOKEN + " TEXT, "
-				+ DLD_SERVER_URL + " TEXT"
-				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SCREEN_MODE + " ("
 				+ DRIVER_SCREEN_MODE + " TEXT" + ");");
@@ -342,8 +330,6 @@ public class Database2 {                                                        
 				+ ");");
 
 
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PUSHY_TOKEN + " ("
-				+ PUSHY_TOKEN + " TEXT" + ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_WAIT_TIME + " ("
 				+ WAIT_TIME + " TEXT" + ");");
@@ -473,67 +459,6 @@ public class Database2 {                                                        
 		}
 	}
 
-
-	public void insertDriverLocData(String accessToken, String deviceToken, String serverUrl) {
-		try {
-			deleteDriverLocData();
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DLD_ACCESS_TOKEN, accessToken);
-			contentValues.put(Database2.DLD_DEVICE_TOKEN, deviceToken);
-			contentValues.put(Database2.DLD_SERVER_URL, serverUrl);
-			database.insert(Database2.TABLE_DRIVER_LOC_DATA, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void deleteDriverLocData() {
-		try {
-			database.delete(Database2.TABLE_DRIVER_LOC_DATA, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public String getDLDAccessToken() {
-		try {
-			String[] columns = new String[]{Database2.DLD_ACCESS_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_ACCESS_TOKEN));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	public String getDLDDeviceToken() {
-		try {
-			String[] columns = new String[]{Database2.DLD_DEVICE_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_DEVICE_TOKEN));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	public String getDLDServerUrl() {
-		try {
-			String[] columns = new String[]{Database2.DLD_SERVER_URL};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_SERVER_URL));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
 
 
 	public String getDriverScreenMode() {
@@ -1924,40 +1849,6 @@ public class Database2 {                                                        
 		}
 	}
 
-	public String getPushyToken(){
-		try {
-			String [] colums = new String[] {Database2.PUSHY_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_PUSHY_TOKEN, colums, null, null, null, null, null);
-			if(cursor.getCount() > 0){
-				cursor.moveToFirst();
-				String token = cursor.getString(cursor.getColumnIndex(Database2.PUSHY_TOKEN));
-				return token;
-			} else {
-				return "";
-			}
-		} catch (Exception e) {
-			return "";
-		}
-	}
-
-
-	public int updatePushyToken(String token){
-
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.PUSHY_TOKEN, token);
-			int rowsAffected = database.update(Database2.TABLE_PUSHY_TOKEN, contentValues, null, null);
-			if(rowsAffected == 0){
-				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
-				return 1;
-			} else {
-				return rowsAffected;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
 
 	public String getWaitTimeFromDB(){
 		try {

@@ -359,7 +359,6 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".home.utils.LocationReceiverBG"/>
 
         <service
             android:name=".home.StartRideLocationUpdateService"
@@ -406,10 +405,6 @@
             android:enabled="true"
             android:exported="true"/>
 
-        <receiver android:name=".LocationReceiverDriver"/>
-        <receiver android:name=".GPSLocationReceiverBackground"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundBalanced"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundHigh"/>
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
