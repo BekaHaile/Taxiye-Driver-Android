@@ -278,6 +278,11 @@ public interface APIServices {
 							Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/toggle_delivery_for_driver")
+	void enableDelivery(@FieldMap Map<String, String> params,
+							   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/get_missed_rides")
 	void getMissedRides(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);

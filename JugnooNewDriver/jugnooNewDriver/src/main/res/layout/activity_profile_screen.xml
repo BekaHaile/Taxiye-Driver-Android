@@ -540,6 +540,30 @@
 
 
                 <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/deliveryEnable"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:visibility="gone"
+                    android:paddingTop="15dp"
+                    android:text="@string/delivery_enable"
+                    android:theme="@style/ThemeSwitch"
+                    />
+
+                <View
+                    android:id="@+id/ivDeliveryEnable"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:visibility="gone"
+                    android:background="@color/dividerColor"/>
+
+
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/switchNavigation"
                     style="@style/TextNormal"
                     android:layout_width="match_parent"

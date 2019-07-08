@@ -38,9 +38,11 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -61,7 +63,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     RelativeLayout relative;
     RelativeLayout driverDetailsRL;
     LinearLayout driverDetailsRLL;
-    View backBtn;
+    View backBtn,ivDeliveryEnable;
     TextView title;
 
     TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
@@ -70,7 +72,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
-    SwitchCompat switchNavigation, switchMaxSound;
+    SwitchCompat switchNavigation, switchMaxSound,enableDelivery;
     TextView tvDocuments, tvEmergencyContacts;
     private   RecyclerView rvVehicleTypes;
     private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
@@ -79,6 +81,9 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     public static ProfileInfo openedProfileInfo;
     private DriverVehicleServiceTypePopup driverVehicleServiceTypePopup;
     private VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter;
+    int delivery_available = 0;
+    boolean checked = false;
+
 
     @Override
     protected void onStart() {
@@ -134,6 +139,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
         backBtn = findViewById(R.id.backBtn);
+        ivDeliveryEnable = findViewById(R.id.ivDeliveryEnable);
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this));
         title.setText(R.string.profile);
@@ -142,6 +148,16 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
         cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
+        enableDelivery = (SwitchCompat)findViewById(R.id.deliveryEnable);
+        if(Data.userData.getDeliveryEnabled()==1){
+            enableDelivery.setVisibility(View.VISIBLE);
+            ivDeliveryEnable.setVisibility(View.VISIBLE);
+            if(Data.userData.getDeliveryAvailable()==1){
+                enableDelivery.setChecked(true);
+            }else{
+                enableDelivery.setChecked(false);
+            }
+        }
         switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
         textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
@@ -263,6 +279,71 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             }
         });
 
+        enableDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(enableDelivery.isChecked()){
+                    delivery_available =1;
+                }
+                try {
+                    if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+                        DialogPopup.showLoadingDialog(DriverProfileActivity.this, getResources().getString(R.string.loading));
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("client_id", Data.CLIENT_ID);
+                        params.put("access_token", Data.userData.accessToken);
+                        params.put("delivery_available",""+delivery_available);
+                        HomeUtil.putDefaultParams(params);
+
+                        Log.i("params", ">" + params);
+
+                        RestClient.getApiServices().enableDelivery(params, new Callback<RegisterScreenResponse>() {
+                            @Override
+                            public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                                try {
+                                    String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+                                    Log.i("Server response", "response = " + responseStr);
+                                    JSONObject jObj = new JSONObject(responseStr);
+                                    int flag = jObj.getInt("flag");
+                                    if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+                                      setDefaultValue();
+                                        String error = jObj.getString("error");
+                                        DialogPopup.dialogBanner(DriverProfileActivity.this, error);
+                                    } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                                        Data.userData.setDeliveryAvailable(delivery_available);
+                                    } else {
+                                       setDefaultValue();
+                                        DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_ERROR_MSG);
+                                    }
+
+
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                    DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_ERROR_MSG);
+                                }
+                                DialogPopup.dismissLoadingDialog();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("request fail", error.toString());
+                                setDefaultValue();
+                                DialogPopup.dismissLoadingDialog();
+                                DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_NOT_RESOPNDING_MSG);
+                            }
+                        });
+
+                    } else {
+                        DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.CHECK_INTERNET_MSG);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        });
+
         switchMaxSound.setChecked(Prefs.with(this).getInt(Constants.KEY_MAX_SOUND, 1) == 1);
         switchMaxSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -288,6 +369,15 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         setVehicleSetsData();
 
 
+    }
+
+    private void setDefaultValue() {
+        if(Data.userData.getDeliveryAvailable()==1){
+            checked = true;
+        }else{
+            checked = false;
+        }
+        enableDelivery.setChecked(checked);
     }
 
     private void setVehicleSetsData() {
