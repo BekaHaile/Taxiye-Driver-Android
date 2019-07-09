@@ -243,27 +243,29 @@ class AltMeteringService : Service() {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.locations[locationResult.locations.size - 1]
-                val latLng = LatLng(location.latitude, location.longitude)
-                val time = System.currentTimeMillis()
-                if (location.accuracy > MAX_ACCURACY) { //accuracy check
-                    Log.e("$TAG new onLocationResult", "accuracy wrong")
-                    return
-                }
-                if(::currentLocation.isInitialized){ //speed limit check
-                    val displacement = MapUtils.distance(latLng, LatLng(currentLocation.latitude, currentLocation.longitude))
-                    val millisDiff = time - currentLocationTime
-                    val secondsDiff = millisDiff / 1000L
-                    val speedMPS = if (secondsDiff > 0) displacement / secondsDiff else 0.0
-                    Log.e("$TAG new onLocationResult", "speedMPS =$speedMPS")
-                    if (speedMPS > Prefs.with(this@AltMeteringService).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, MAX_SPEED_THRESHOLD.toFloat()).toDouble()) {
-                        Log.e("$TAG new onLocationResult", "speedMPS error")
+                if(!Utils.mockLocationEnabled(location)) {
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    val time = System.currentTimeMillis()
+                    if (location.accuracy > MAX_ACCURACY) { //accuracy check
+                        Log.e("$TAG new onLocationResult", "accuracy wrong")
                         return
                     }
+                    if (::currentLocation.isInitialized) { //speed limit check
+                        val displacement = MapUtils.distance(latLng, LatLng(currentLocation.latitude, currentLocation.longitude))
+                        val millisDiff = time - currentLocationTime
+                        val secondsDiff = millisDiff / 1000L
+                        val speedMPS = if (secondsDiff > 0) displacement / secondsDiff else 0.0
+                        Log.e("$TAG new onLocationResult", "speedMPS =$speedMPS")
+                        if (speedMPS > Prefs.with(this@AltMeteringService).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, MAX_SPEED_THRESHOLD.toFloat()).toDouble()) {
+                            Log.e("$TAG new onLocationResult", "speedMPS error")
+                            return
+                        }
+                    }
+                    currentLocation = location
+                    currentLocationTime = time
+                    Log.e("$TAG new onLocationResult", "location = $location")
+                    GetScanningPointerAndShortenPathToScan(latLng, time).execute()
                 }
-                currentLocation = location
-                currentLocationTime = time
-                Log.e("$TAG new onLocationResult", "location = $location")
-                GetScanningPointerAndShortenPathToScan(latLng, time).execute()
             }
         }
     }
