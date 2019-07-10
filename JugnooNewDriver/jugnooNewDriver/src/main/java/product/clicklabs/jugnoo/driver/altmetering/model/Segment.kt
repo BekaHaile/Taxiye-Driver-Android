@@ -61,3 +61,17 @@ class Waypoint(
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0
 }
+
+@Entity(tableName = "log_item")
+class LogItem(
+        @ColumnInfo(name = "engagementId")
+        val engagementId:Int,
+        @ColumnInfo(name = "message")
+        val message:String
+){
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0
+
+    @ColumnInfo(name = "creation_date")
+    var creationDate: Long = System.currentTimeMillis()
+}

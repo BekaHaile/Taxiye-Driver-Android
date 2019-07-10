@@ -17,21 +17,21 @@ import android.support.v4.content.LocalBroadcastManager
 import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_SPEED_THRESHOLD
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
-import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
-import product.clicklabs.jugnoo.driver.altmetering.model.ScanningPointer
-import product.clicklabs.jugnoo.driver.altmetering.model.Segment
-import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
+import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AltMeteringService : Service() {
 
@@ -97,7 +97,7 @@ class AltMeteringService : Service() {
     private var engagementId:Int = 0
     private lateinit var source: LatLng
     private lateinit var destination: LatLng
-    private lateinit var currentLocation: Location
+    private var currentLocation: Location? = null
     private var currentLocationTime: Long = 0
 
     override fun onBind(intent: Intent?): IBinder {
@@ -106,6 +106,7 @@ class AltMeteringService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand, intent=$intent")
+        log("service", "startCommand="+isMeteringActive(this))
 
         if (intent != null && intent.hasExtra(Constants.KEY_ENGAGEMENT_ID)) {
             val sourceLat = intent.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
@@ -169,6 +170,7 @@ class AltMeteringService : Service() {
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
         Log.e(TAG, "onTaskRemoved, intent=$rootIntent")
+        log("service", "taskRemoved")
     }
 
     override fun onDestroy() {
@@ -179,6 +181,7 @@ class AltMeteringService : Service() {
         stopForeground(true)
         stopSelf()
         Log.e(TAG, "onDestroy")
+        log("service", "destroy")
     }
 
     fun generateNotification(context: Context, message: String, notificationId: Int): Notification? {
@@ -222,6 +225,7 @@ class AltMeteringService : Service() {
         updatePathAndDistance(list, waypoints)
         fusedLocationClient?.removeLocationUpdates(locationCallback)
         fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
+        log("service", "requestLocation")
     }
 
     private fun updatePathAndDistance(list: MutableList<LatLng>, waypoints: MutableList<LatLng>?) {
@@ -233,6 +237,7 @@ class AltMeteringService : Service() {
             }
         }
         Log.e(TAG, "updatePathAndDistance globalPathDistance=$globalPathDistance")
+        log("distance", "total=$globalPathDistance")
         if (HomeActivity.appInterruptHandler != null) {
             HomeActivity.appInterruptHandler.pathAlt(list, waypoints)
         }
@@ -250,14 +255,15 @@ class AltMeteringService : Service() {
                         Log.e("$TAG new onLocationResult", "accuracy wrong")
                         return
                     }
-                    if (::currentLocation.isInitialized) { //speed limit check
-                        val displacement = MapUtils.distance(latLng, LatLng(currentLocation.latitude, currentLocation.longitude))
+                    if (currentLocation != null) { //speed limit check
+                        val displacement = MapUtils.distance(latLng, LatLng(currentLocation!!.latitude, currentLocation!!.longitude))
                         val millisDiff = time - currentLocationTime
                         val secondsDiff = millisDiff / 1000L
                         val speedMPS = if (secondsDiff > 0) displacement / secondsDiff else 0.0
                         Log.e("$TAG new onLocationResult", "speedMPS =$speedMPS")
                         if (speedMPS > Prefs.with(this@AltMeteringService).getFloat(Constants.KEY_MAX_SPEED_THRESHOLD, MAX_SPEED_THRESHOLD.toFloat()).toDouble()) {
                             Log.e("$TAG new onLocationResult", "speedMPS error")
+                            log("location", "speedextra=$speedMPS")
                             return
                         }
                     }
@@ -277,7 +283,7 @@ class AltMeteringService : Service() {
     }
 
 
-    class FetchPathAsync(private val meteringDB: MeteringDatabase?, val engagementId:Int, val source: LatLng, val destination: LatLng,
+    inner class FetchPathAsync(private val meteringDB: MeteringDatabase?, val engagementId:Int, val source: LatLng, val destination: LatLng,
                          var waypoints: MutableList<LatLng>?,
                          val onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit) : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
         private lateinit var strWaypoints: String
@@ -310,14 +316,18 @@ class AltMeteringService : Service() {
 
                 val strOrigin = source.latitude.toString() + "," + source.longitude.toString()
                 val strDestination = destination.latitude.toString() + "," + destination.longitude.toString()
+                log("gapi", "strOrigin=$strOrigin, strDest=$strDestination, strWp=$strWaypoints")
+
                 val response = if (!TextUtils.isEmpty(strWaypoints)) {
                     GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints)
                 } else {
                     GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false)
                 }
                 val result = String((response.body as TypedByteArray).bytes)
+                val json = JSONObject(result)
 
                 val list = MapUtils.getLatLngListFromPath(result)
+                log("gapi", "status="+json.getString("status")+", list="+list.size)
                 if (list.size > 0) {
                     val segments: MutableList<Segment> = arrayListOf()
                     for (i in list.indices) {
@@ -335,6 +345,7 @@ class AltMeteringService : Service() {
                 return list
             } catch (e: Exception) {
                 e.printStackTrace()
+                log("gapi", "error=$e")
             }
             return mutableListOf()
         }
@@ -346,7 +357,7 @@ class AltMeteringService : Service() {
 
     }
 
-    class ReadPathAsync(private val meteringDB: MeteringDatabase?, val engagementId: Int, val onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit)
+    inner class ReadPathAsync(private val meteringDB: MeteringDatabase?, val engagementId: Int, val onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit)
         : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
         lateinit var waypointsL:MutableList<LatLng>
         override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
@@ -364,6 +375,7 @@ class AltMeteringService : Service() {
             for(wp in waypoints){
                 waypointsL.add(LatLng(wp.lat, wp.lng))
             }
+            log("old", "segments="+list.size+", waypoints="+waypoints.size)
 
             return list
         }
@@ -396,6 +408,7 @@ class AltMeteringService : Service() {
                 val diff = time - timestamps[0].timestamp
                 Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "diff = $diff")
                 if (diff > getDeviationTime()){
+                    log("deviation", "diff="+(diff/1000)+", serverTime="+getDeviationTime())
                     fusedLocationClient?.removeLocationUpdates(locationCallback)
                     meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
                     meteringDB.getMeteringDao().insertWaypoint(Waypoint(engagementId, waypoint.latitude, waypoint.longitude))
@@ -414,6 +427,7 @@ class AltMeteringService : Service() {
                 Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, source.toString())
                 Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, source.toString())
                 Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "source shifted to waypoint = $waypoint")
+                log("deviation", "first")
                 return mutableListOf()
             }
             return null
@@ -428,13 +442,15 @@ class AltMeteringService : Service() {
 
     }
 
-    class FirstTimeDataClearAsync(private val meteringDB:MeteringDatabase?, val engagementId: Int, val post:()->Unit) : AsyncTask<Unit, Unit, Unit>(){
+    inner class FirstTimeDataClearAsync(private val meteringDB:MeteringDatabase?, val engagementId: Int, val post:()->Unit) : AsyncTask<Unit, Unit, Unit>(){
         override fun doInBackground(vararg params: Unit?) {
             meteringDB!!.getMeteringDao().deleteAllSegments(engagementId)
             meteringDB.getMeteringDao().deleteAllWaypoints(engagementId)
             meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
             meteringDB.getMeteringDao().deleteLastLocationTimestamp(engagementId)
+            meteringDB.getMeteringDao().deleteLogItem(engagementId)
             Log.e(TAG, "FirstTimeDataClearAsync")
+            log("firstClear", "done")
         }
 
         override fun onPostExecute(result: Unit?) {
@@ -452,11 +468,12 @@ class AltMeteringService : Service() {
             activityBroadcastReceiver = object:BroadcastReceiver(){
                 override fun onReceive(context: Context?, intent: Intent?) {
                     intentEngagementId = intent!!.getIntExtra(Constants.KEY_ENGAGEMENT_ID, engagementId)
-                    if(::currentLocation.isInitialized){
+                    if(currentLocation != null){
                         fusedLocationClient?.removeLocationUpdates(locationCallback)
-                        val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
+                        val latLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
                         val distance = MapUtils.distance(destination, latLng)
                         Log.e(TAG, "activityBroadcastReceiver distance = $distance")
+                        log("receiver", "end dist=$distance")
                         if(distance <= getDeviationDistance()){
                             //no need to do anything
                             updateDistanceAndTriggerEndRide()
@@ -473,6 +490,7 @@ class AltMeteringService : Service() {
                 }
             }
             LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
+            log("service", "registerReceiver")
         }
     }
 
@@ -480,6 +498,7 @@ class AltMeteringService : Service() {
         if(activityBroadcastReceiver != null) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(activityBroadcastReceiver!!)
             activityBroadcastReceiver = null
+            log("service", "unregisterReceiver")
         }
     }
 
@@ -512,13 +531,15 @@ class AltMeteringService : Service() {
             for (i in list.indices) {
                 if (i < list.size - 1) {
                     accDistance += MapUtils.distance(list[i], list[i + 1])
-                    csvPath.append(list[i].latitude.toString()+","+list[i].longitude.toString()+","+accDistance)
-                    csvPath.append(newLine)
+                }
+                csvPath.append(list[i].latitude.toString()+","+list[i].longitude.toString()+","+accDistance)
+                csvPath.append(newLine)
 //                    Database2.getInstance(this@AltMeteringService).insertRideDataWOChecks(this@AltMeteringService,
 //                            globalPath[i].latitude.toString(), globalPath[i].longitude.toString(), System.currentTimeMillis().toString(),
 //                            engagementId, accDistance, 0)
-                }
             }
+            csvPath.append(newLine).append(accDistance)
+
             csvPathStr = csvPath.toString()
 
             Log.e(TAG, "InsertRideDataAndEndRide accDistance = $accDistance")
@@ -529,16 +550,26 @@ class AltMeteringService : Service() {
                 waypointsL.add(LatLng(wp.lat, wp.lng))
             }
 
+            meteringDB!!.getMeteringDao().insertLogItem(LogItem(engagementId, "endAsync: "+"wppath="+list.size+", accDist="+accDistance))
+
             val templateWP = "lat,lng"
             val csvWP = StringBuilder()
-            if(waypointsL.size > 0) {
                 csvWP.append(templateWP).append(newLine)
                 for (i in waypointsL.indices){
                     csvWP.append(waypointsL[i].latitude.toString()+","+waypointsL[i].longitude.toString())
                     csvWP.append(newLine)
                 }
                 numWaypoints = waypointsL.size
+            csvWP.append(newLine).append(numWaypoints)
+
+
+            val logs = meteringDB!!.getMeteringDao().getLogItem(engagementId)
+            csvWP.append(newLine)
+            val sdfTo = SimpleDateFormat("HH:mm:ss", Locale.ENGLISH)
+            for(i in logs.indices){
+                csvWP.append(sdfTo.format(Date(logs[i].creationDate))).append(" ").append(logs[i].message).append(newLine)
             }
+
             csvWaypointsStr = csvWP.toString()
             Log.e(TAG, "InsertRideDataAndEndRide waypointsL = "+waypointsL.size)
 
@@ -608,6 +639,18 @@ class AltMeteringService : Service() {
             }
             generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
         }
+    }
+
+    fun log(tag:String, message:String){
+        Log.e(tag, message)
+        LogDBAsync(tag, message).execute()
+    }
+
+    inner class LogDBAsync(val tag:String, val message:String) : AsyncTask<Unit, Unit, Unit>(){
+        override fun doInBackground(vararg params: Unit?) {
+            meteringDB!!.getMeteringDao().insertLogItem(LogItem(engagementId, "$tag: $message"))
+        }
+
     }
 
 }

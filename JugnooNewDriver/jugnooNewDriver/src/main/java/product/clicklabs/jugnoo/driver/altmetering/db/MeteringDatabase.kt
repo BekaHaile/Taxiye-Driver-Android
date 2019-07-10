@@ -5,16 +5,14 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
-import product.clicklabs.jugnoo.driver.altmetering.model.ScanningPointer
-import product.clicklabs.jugnoo.driver.altmetering.model.Segment
-import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
+import product.clicklabs.jugnoo.driver.altmetering.model.*
 
 @Database(entities = [
     Segment::class,
     Waypoint::class,
     ScanningPointer::class,
-    LastLocationTimestamp::class
+    LastLocationTimestamp::class,
+    LogItem::class
 ],
         version = 3)
 abstract class MeteringDatabase: RoomDatabase(){

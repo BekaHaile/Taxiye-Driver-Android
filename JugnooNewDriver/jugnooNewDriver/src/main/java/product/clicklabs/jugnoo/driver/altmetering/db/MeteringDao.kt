@@ -4,10 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import product.clicklabs.jugnoo.driver.altmetering.model.LastLocationTimestamp
-import product.clicklabs.jugnoo.driver.altmetering.model.ScanningPointer
-import product.clicklabs.jugnoo.driver.altmetering.model.Segment
-import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
+import product.clicklabs.jugnoo.driver.altmetering.model.*
 
 @Dao
 interface MeteringDao{
@@ -59,4 +56,16 @@ interface MeteringDao{
 
     @Query("DELETE FROM waypoint WHERE engagementId = :engagementId")
     fun deleteAllWaypoints(engagementId:Int)
+
+
+
+    //Log queries---------
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLogItem(logItem: LogItem)
+
+    @Query("SELECT * FROM log_item WHERE engagementId = :engagementId")
+    fun getLogItem(engagementId:Int) : List<LogItem>
+
+    @Query("DELETE FROM log_item WHERE engagementId = :engagementId")
+    fun deleteLogItem(engagementId:Int)
 }
