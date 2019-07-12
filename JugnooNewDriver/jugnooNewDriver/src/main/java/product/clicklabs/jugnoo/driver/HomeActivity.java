@@ -90,7 +90,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -120,6 +119,9 @@ import product.clicklabs.jugnoo.driver.adapters.FareDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
+import product.clicklabs.jugnoo.driver.altmetering.AltMeteringService;
+import product.clicklabs.jugnoo.driver.altmetering.GenerateCSVForUploadRideData;
+import product.clicklabs.jugnoo.driver.altmetering.dialog.AltMeteringInfoDialog;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiEmergencyDisable;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
@@ -184,7 +186,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
-import product.clicklabs.jugnoo.driver.altmetering.AltMeteringService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
@@ -3763,6 +3764,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         @Override
         public void onClick(View v) {
+//        	if(driverScreenMode == DriverScreenMode.D_ARRIVED
+//					|| driverScreenMode == DriverScreenMode.D_START_RIDE
+//					|| driverScreenMode == DriverScreenMode.D_IN_RIDE) {
+//				new AltMeteringInfoDialog().show(HomeActivity.this, Integer.parseInt(Data.getCurrentEngagementId()));
+//			}
             if (myLocation != null) {
                 firebaseScreenEvent(FirebaseEvents.LOCATION_BUTTON);
                 boolean state = false;
@@ -6959,10 +6965,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         params.put("ride_distance_using_haversine", String.valueOf(totalHaversineDistanceInKm));
         params.put(KEY_METERING_DISTANCE, String.valueOf(customerInfo.getSPSavedDistance(customerRideDataGlobal.getDistance(HomeActivity.this),
                 HomeActivity.this)/1000D));
-        double waypointDistance = customerInfo.getWaypointDistance();
-        if(customerInfo.getMap().containsKey(KEY_WAYPOINT_DISTANCE)){
-            waypointDistance = Double.parseDouble(customerInfo.getMap().get(KEY_WAYPOINT_DISTANCE));
-        }
+        double waypointDistance = Double.parseDouble(customerInfo.getMapValue(customerInfo.getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE));
         params.put(KEY_WAYPOINT_DISTANCE, String.valueOf(waypointDistance/1000D));
 
 
@@ -7544,70 +7547,70 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 //Retrofit
-    public void driverUploadPathDataFileAsync(final Activity activity, CustomerInfo customerInfo, double totalHaversineDistance, LatLng requestlatLng, LatLng dropLatLng) {
-        try {
-            String rideDataStr = Database2.getInstance(activity).getRideData(customerInfo.getEngagementId());
-            if (!"".equalsIgnoreCase(rideDataStr)) {
-                totalHaversineDistance = totalHaversineDistance / 1000;
-                rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
+    public void driverUploadPathDataFileAsync(final Activity activity, CustomerInfo customerInfo, final double totalHaversineDistance, LatLng requestlatLng, LatLng dropLatLng) {
 
-                rideDataStr = rideDataStr + "\n" + LocationFetcher.getSavedLatFromSP(activity) + "," + LocationFetcher.getSavedLngFromSP(activity);
+        GenerateCSVForUploadRideData async = new GenerateCSVForUploadRideData(customerInfo){
+
+            @Override
+            public void onDataReceived(@NotNull String csvPath, @NotNull String csvWaypoints, int numWaypoints) {
+                try {
+                    String rideDataStr = Database2.getInstance(activity).getRideData(customerInfo.getEngagementId());
+                    if (!"".equalsIgnoreCase(rideDataStr)) {
+                        double totalHaversineDistance1 = totalHaversineDistance / 1000;
+                        rideDataStr = rideDataStr + "\n" + totalHaversineDistance1;
+
+                        rideDataStr = rideDataStr + "\n" + LocationFetcher.getSavedLatFromSP(activity) + "," + LocationFetcher.getSavedLngFromSP(activity);
 
 
-                final HashMap<String, String> params = new HashMap<String, String>();
+                        final HashMap<String, String> params = new HashMap<String, String>();
 
-                params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-                params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
-                params.put(KEY_RIDE_PATH_DATA, rideDataStr);
+                        params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+                        params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+                        params.put(KEY_RIDE_PATH_DATA, rideDataStr);
 
-                if(Prefs.with(activity).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
-                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
-                    if(rideDatas.size() > 0) {
-                        StringBuilder rideDataWaypointSB = new StringBuilder();
-                        String newLine = "\n";
-                        rideDataWaypointSB.append(0 + "," + requestlatLng.latitude + "," + requestlatLng.longitude + "," + System.currentTimeMillis()).append(newLine);
-                        for (RideData rd : rideDatas) {
-                            rideDataWaypointSB.append(rd.i + "," + rd.lat + "," + rd.lng + "," + rd.t).append(newLine);
+                        if(Prefs.with(activity).getInt(Constants.KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+                            ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
+                            if(rideDatas.size() > 0) {
+                                StringBuilder rideDataWaypointSB = new StringBuilder();
+                                String newLine = "\n";
+                                rideDataWaypointSB.append(0 + "," + requestlatLng.latitude + "," + requestlatLng.longitude + "," + System.currentTimeMillis()).append(newLine);
+                                for (RideData rd : rideDatas) {
+                                    rideDataWaypointSB.append(rd.i + "," + rd.lat + "," + rd.lng + "," + rd.t).append(newLine);
+                                }
+                                rideDataWaypointSB.append(0 + "," + dropLatLng.latitude + "," + dropLatLng.longitude + "," + System.currentTimeMillis());
+                                String rideDataWaypointStr = "";
+                                if (rideDataWaypointSB.length() > 0) {
+                                    rideDataWaypointStr = "i,lat,long,t" + newLine + rideDataWaypointSB.toString();
+                                }
+                                params.put(Constants.KEY_WAYPOINTS, rideDataWaypointStr);
+                            }
                         }
-                        rideDataWaypointSB.append(0 + "," + dropLatLng.latitude + "," + dropLatLng.longitude + "," + System.currentTimeMillis());
-                        String rideDataWaypointStr = "";
-                        if (rideDataWaypointSB.length() > 0) {
-                            rideDataWaypointStr = "i,lat,long,t" + newLine + rideDataWaypointSB.toString();
-                        }
-                        params.put(Constants.KEY_WAYPOINTS, rideDataWaypointStr);
+                        params.put(Constants.KEY_WAYPOINT_PATH, csvPath);
+                        params.put(Constants.KEY_WAYPOINTS, csvWaypoints);
+                        params.put(Constants.KEY_NUM_WAYPOINTS, String.valueOf(numWaypoints));
+
+                        HomeUtil.putDefaultParams(params);
+
+                        Log.i(TAG, "/upload_ride_data params=" + params);
+
+                        RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
+                            @Override
+                            public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                                Log.e(TAG, "driverUploadPathDataFileRetro response=" + new String(((TypedByteArray) response.getBody()).getBytes()));
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Database2.getInstance(activity).insertPendingAPICall(activity, PendingCall.UPLOAD_RIDE_DATA.getPath(), params);
+                            }
+                        });
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(customerInfo.getMap().size() > 0) {
-                    if(customerInfo.getMap().containsKey(KEY_CSV_PATH)){
-                        params.put(Constants.KEY_WAYPOINT_PATH, customerInfo.getMap().get(KEY_CSV_PATH));
-                    }
-                    if(customerInfo.getMap().containsKey(KEY_CSV_WAYPOINTS)){
-                        params.put(Constants.KEY_WAYPOINTS, customerInfo.getMap().get(KEY_CSV_WAYPOINTS));
-                    }
-                    if(customerInfo.getMap().containsKey(KEY_NUM_WAYPOINTS)){
-                        params.put(Constants.KEY_NUM_WAYPOINTS, customerInfo.getMap().get(KEY_NUM_WAYPOINTS));
-                    }
-                }
-
-                HomeUtil.putDefaultParams(params);
-
-                Log.i(TAG, "/upload_ride_data params=" + params);
-
-                RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
-                    @Override
-                    public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-                        Log.e(TAG, "driverUploadPathDataFileRetro response=" + new String(((TypedByteArray) response.getBody()).getBytes()));
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Database2.getInstance(activity).insertPendingAPICall(activity, PendingCall.UPLOAD_RIDE_DATA.getPath(), params);
-                    }
-                });
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        };
+        async.execute();
     }
 
 
@@ -11766,12 +11769,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			DialogPopup.dismissLoadingDialog();
             if(intent.getBooleanExtra(KEY_SUCCESS, false)) {
                 CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(intent.getIntExtra(KEY_ENGAGEMENT_ID, 0)));
-                customerInfo.setWaypointDistance(intent.getDoubleExtra(KEY_WAYPOINT_DISTANCE, 0));
-                customerInfo.getMap().put(KEY_WAYPOINT_DISTANCE, String.valueOf(intent.getDoubleExtra(KEY_WAYPOINT_DISTANCE, 0)));
-                customerInfo.getMap().put(KEY_CSV_PATH, intent.getStringExtra(KEY_CSV_PATH));
-                customerInfo.getMap().put(KEY_CSV_WAYPOINTS, intent.getStringExtra(KEY_CSV_WAYPOINTS));
-                customerInfo.getMap().put(KEY_NUM_WAYPOINTS, intent.getStringExtra(KEY_NUM_WAYPOINTS));
-
                 endRideConfrimedFromPopup(customerInfo);
             }
         }

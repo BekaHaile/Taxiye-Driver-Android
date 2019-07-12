@@ -7,10 +7,15 @@ import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
-import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint
+import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.Utils
 
 
@@ -27,7 +32,7 @@ class AltMeteringInfoDialog{
 
     lateinit var tvMessage:TextView
 
-    fun show(activity:Activity, engagementId:Int){
+    fun show(activity: Activity, engagementId:Int) {
 
         val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
         dialog.window!!.attributes.windowAnimations = product.clicklabs.jugnoo.driver.R.style.Animations_LoadingDialogFade
@@ -55,10 +60,26 @@ class AltMeteringInfoDialog{
 
     fun readAsync(engagementId:Int){
 
-        val waypointsObservable: Observable<List<Waypoint>> = Observable.fromCallable {
+        val waypointsObservable: Single<List<Waypoint>> = Single.fromCallable {
             meteringDb!!.getMeteringDao().getAllWaypoints(engagementId)
         }
 
+        val subscription = waypointsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Waypoint>> {
+                    override fun onSuccess(t: List<Waypoint>) {
+                        Log.e("AltMeteringInfoDialog", "new onSuccess")
+                        tvMessage.text = t.toString()
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+
+                });
 
     }
 

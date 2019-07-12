@@ -178,6 +178,10 @@ public class Database2 {                                                        
 	private static final String TABLE_WAIT_TIME = "table_wait_time";
 	private static final String WAIT_TIME = "wait_time";
 
+	private static final String TABLE_KEY_VALUE = "table_key_value";
+	private static final String KEY = "skey";
+	private static final String VALUE = "value";
+
 
 	/**
 	 * Creates and opens database for the application use
@@ -333,6 +337,11 @@ public class Database2 {                                                        
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_WAIT_TIME + " ("
 				+ WAIT_TIME + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_KEY_VALUE + " ("
+				+ KEY + " TEXT, "
+				+ VALUE + " TEXT"
+				+ ");");
 
 	}
 
@@ -2004,6 +2013,32 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public void setKeyValue(String key, String value) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(VALUE, value);
+		int rowsAffected = database.update(TABLE_KEY_VALUE, contentValues, KEY + "=?", new String[]{key});
+		if (rowsAffected < 1) {
+			contentValues.put(KEY, key);
+			database.insert(TABLE_KEY_VALUE, null, contentValues);
+		}
+	}
+
+
+	public String getKeyValue(String key){
+		String[] columns = new String[]{VALUE};
+		Cursor cursor = database.query(TABLE_KEY_VALUE, columns, KEY+"=?", new String[]{key}, null, null, null);
+
+		int i0 = cursor.getColumnIndex(Database2.VALUE);
+		String value = "";
+		if(cursor.moveToFirst()){
+			value = cursor.getString(i0);
+		}
+		cursor.close();
+		return value;
 	}
 
 

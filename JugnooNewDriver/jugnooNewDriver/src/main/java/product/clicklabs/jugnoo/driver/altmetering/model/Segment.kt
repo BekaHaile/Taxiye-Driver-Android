@@ -60,6 +60,10 @@ class Waypoint(
 ){
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0
+
+    override fun toString(): String {
+        return "$lat,$lng"
+    }
 }
 
 @Entity(tableName = "log_item")

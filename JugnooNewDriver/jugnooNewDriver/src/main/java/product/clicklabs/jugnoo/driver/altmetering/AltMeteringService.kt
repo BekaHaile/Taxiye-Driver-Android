@@ -25,13 +25,12 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AltMeteringService : Service() {
 
@@ -512,67 +511,16 @@ class AltMeteringService : Service() {
     }
 
     inner class InsertRideDataAndEndRide() : AsyncTask<Unit, Unit, Unit>(){
-        var csvPathStr:String = ""
-        var csvWaypointsStr:String = ""
-        var numWaypoints:Int = 0
         var accDistance = 0.0
         override fun doInBackground(vararg params: Unit?) {
             val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
             Log.e("$TAG InsertRideDataAndEndRide", "segments2 = $segments2")
-            val list = mutableListOf<LatLng>()
             for (segment in segments2) {
-                list.add(LatLng(segment.slat, segment.sLng))
+                accDistance += MapUtils.distance(LatLng(segment.slat, segment.sLng), LatLng(segment.dLat, segment.dLng))
             }
-
-            val templatePath = "lat,lng,accDistance"
-            val newLine = "\n"
-            val csvPath = StringBuilder()
-            if(list.size > 0){ csvPath.append(templatePath).append(newLine) }
-            for (i in list.indices) {
-                if (i < list.size - 1) {
-                    accDistance += MapUtils.distance(list[i], list[i + 1])
-                }
-                csvPath.append(list[i].latitude.toString()+","+list[i].longitude.toString()+","+accDistance)
-                csvPath.append(newLine)
-//                    Database2.getInstance(this@AltMeteringService).insertRideDataWOChecks(this@AltMeteringService,
-//                            globalPath[i].latitude.toString(), globalPath[i].longitude.toString(), System.currentTimeMillis().toString(),
-//                            engagementId, accDistance, 0)
-            }
-            csvPath.append(newLine).append(accDistance)
-
-            csvPathStr = csvPath.toString()
-
-            Log.e(TAG, "InsertRideDataAndEndRide accDistance = $accDistance")
-
-            val waypoints = meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
-            val waypointsL = mutableListOf<LatLng>()
-            for(wp in waypoints){
-                waypointsL.add(LatLng(wp.lat, wp.lng))
-            }
-
-            meteringDB!!.getMeteringDao().insertLogItem(LogItem(engagementId, "endAsync: "+"wppath="+list.size+", accDist="+accDistance))
-
-            val templateWP = "lat,lng"
-            val csvWP = StringBuilder()
-                csvWP.append(templateWP).append(newLine)
-                for (i in waypointsL.indices){
-                    csvWP.append(waypointsL[i].latitude.toString()+","+waypointsL[i].longitude.toString())
-                    csvWP.append(newLine)
-                }
-                numWaypoints = waypointsL.size
-            csvWP.append(newLine).append(numWaypoints)
-
-
-            val logs = meteringDB!!.getMeteringDao().getLogItem(engagementId)
-            csvWP.append(newLine)
-            val sdfTo = SimpleDateFormat("HH:mm:ss", Locale.ENGLISH)
-            for(i in logs.indices){
-                csvWP.append(sdfTo.format(Date(logs[i].creationDate))).append(" ").append(logs[i].message).append(newLine)
-            }
-
-            csvWaypointsStr = csvWP.toString()
-            Log.e(TAG, "InsertRideDataAndEndRide waypointsL = "+waypointsL.size)
-
+            Log.e("$TAG InsertRideDataAndEndRide", "accDistance = $accDistance")
+            //save ride values to db
+            CustomerInfo.setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, accDistance.toString())
         }
 
         override fun onPostExecute(result: Unit?) {
@@ -587,10 +535,6 @@ class AltMeteringService : Service() {
             intent.apply {
                 putExtra(Constants.KEY_SUCCESS, true)
                 putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
-                putExtra(Constants.KEY_CSV_PATH, csvPathStr)
-                putExtra(Constants.KEY_CSV_WAYPOINTS, csvWaypointsStr)
-                putExtra(Constants.KEY_NUM_WAYPOINTS, numWaypoints.toString())
-                putExtra(Constants.KEY_WAYPOINT_DISTANCE, accDistance)
             }
             Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
             LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent)

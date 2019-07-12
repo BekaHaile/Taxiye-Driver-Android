@@ -7,10 +7,11 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
@@ -72,7 +73,6 @@ public class CustomerInfo {
 	private String pickupTime;
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
-	private HashMap<String, String> map;
 	private String customerNotes;
 	private int tollApplicable;
 	private String rentalInfo;
@@ -145,6 +145,12 @@ public class CustomerInfo {
 		this.tollApplicable = tollApplicable;
 		this.rentalInfo = rentalInfo;
 		this.customerOrderImagesList = customerOrderImagesList;
+
+
+		setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, "0");
+//		setMapValue(engagementId, Constants.KEY_CSV_PATH, "");
+//		setMapValue(engagementId, Constants.KEY_CSV_WAYPOINTS, "");
+//		setMapValue(engagementId, Constants.KEY_NUM_WAYPOINTS, "0");
 	}
 
 
@@ -815,14 +821,11 @@ public class CustomerInfo {
 		this.customerOrderImagesList = customerOrderImagesList;
 	}
 
-	public HashMap<String, String> getMap() {
-		if(map == null){
-			map = new HashMap<>();
-		}
-		return map;
+	public static void setMapValue(int engagementId, String key, String value){
+		Database2.getInstance(MyApplication.getInstance()).setKeyValue(key+engagementId, value);
 	}
 
-	public void setMap(HashMap<String, String> map) {
-		this.map = map;
+	public static String getMapValue(int engagementId, String key){
+		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId);
 	}
 }
