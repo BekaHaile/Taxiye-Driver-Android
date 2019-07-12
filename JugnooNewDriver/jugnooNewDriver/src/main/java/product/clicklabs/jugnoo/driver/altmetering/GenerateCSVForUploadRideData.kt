@@ -14,18 +14,18 @@ import product.clicklabs.jugnoo.driver.utils.Prefs
 import java.text.SimpleDateFormat
 import java.util.*
 
-abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : AsyncTask<Unit, Unit, Unit>(){
+abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : AsyncTask<Int, Int, Int>(){
     val TAG = GenerateCSVForUploadRideData::class.java.simpleName
     private var csvPathStr:String = ""
     private var csvWaypointsStr:String = ""
     private var numWaypoints:Int = 0
-    override fun doInBackground(vararg params: Unit?) {
+    override fun doInBackground(vararg params: Int?):Int {
         if (customerInfo.getDropLatLng() != null && Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
             val engagementId = customerInfo.getEngagementId()
             val meteringDB = MeteringDatabase.getInstance(MyApplication.getInstance())
 
             val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
-            Log.e("${TAG}", "segments2 = $segments2")
+            Log.e(TAG, "segments2 = $segments2")
             val list = mutableListOf<LatLng>()
             for (segment in segments2) {
                 list.add(LatLng(segment.slat, segment.sLng))
@@ -91,10 +91,10 @@ abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : As
 //        CustomerInfo.setMapValue(engagementId, Constants.KEY_NUM_WAYPOINTS, numWaypoints.toString())
 
         }
-
+        return 0
     }
 
-    override fun onPostExecute(result: Unit?) {
+    override fun onPostExecute(result: Int?) {
         super.onPostExecute(result)
 
         onDataReceived(csvPathStr, csvWaypointsStr, numWaypoints)

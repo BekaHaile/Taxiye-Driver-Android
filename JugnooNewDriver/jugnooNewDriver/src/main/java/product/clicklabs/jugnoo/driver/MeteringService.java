@@ -137,7 +137,6 @@ public class MeteringService extends Service {
 				@Override
 				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
-					Log.e("MeteringService updateDistanceTime","=running elapsedTime="+ (elapsedTime/1000));
 					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 							DriverScreenMode.D_INITIAL.getOrdinal());
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {

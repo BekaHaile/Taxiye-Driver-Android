@@ -586,8 +586,10 @@ class AltMeteringService : Service() {
     }
 
     fun log(tag:String, message:String){
-        Log.e(tag, message)
-        LogDBAsync(tag, message).execute()
+        if(Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_LOGGING_ENABLED, 1) == 1) {
+            Log.e(tag, message)
+            LogDBAsync(tag, message).execute()
+        }
     }
 
     inner class LogDBAsync(val tag:String, val message:String) : AsyncTask<Unit, Unit, Unit>(){
