@@ -184,6 +184,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.support.SupportMailActivity;
 import product.clicklabs.jugnoo.driver.support.SupportOptionsActivity;
@@ -390,7 +391,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
     RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
+            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow, rlLowWalletBalance;
     View viewRefreshUSLBar;
     ProgressBar progressBarUSL;
     TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -1026,6 +1027,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
             relativeLayoutBatteryLow = (RelativeLayout) findViewById(R.id.relativeLayoutBatteryLow);
+            rlLowWalletBalance = (RelativeLayout) findViewById(R.id.rlLowWalletBalance);
 
             textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
             progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
@@ -2472,6 +2474,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1) {
                 walletRl.setVisibility(View.VISIBLE);
+                fetchWalletData();
             } else {
                 walletRl.setVisibility(View.GONE);
             }
@@ -2517,6 +2520,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         int width = displayMetrics.widthPixels;
         Log.e("device_height", height + "");
         Log.e("device_width", width + "");
+    }
+
+    private void fetchWalletData(){
+        new ApiCommonKt<WalletModelResponse>(this, true, true, true).execute((HashMap<String, String>) null, ApiName.FETCH_WALLET,new APICommonCallbackKotlin<WalletModelResponse>() {
+            @Override
+            public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
+                if(Data.userData != null) {
+                    Data.userData.setWalletBalance(walletModelResponse.getBalance());
+                    checkForLowWalletBalance();
+                }
+            }
+
+            @Override
+            public boolean onError(WalletModelResponse walletModelResponse, String message, int flag) {
+                return false;
+            }
+        });
     }
 
     private AddLuggageInteractor addLuggageInteractor;
@@ -4231,6 +4251,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     showDriverEarning();
                     showRefreshUSLBar();
                     showLowBatteryAlert(true);
+                    checkForLowWalletBalance();
 
                     try {
                         if (timer != null) {
@@ -4807,6 +4828,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void checkForLowWalletBalance() {
+        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1) {
+            if (Data.userData != null && Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
+                rlLowWalletBalance.setVisibility(View.GONE);
+            } else {
+                rlLowWalletBalance.setVisibility(View.VISIBLE);
+            }
+        } else {
+            rlLowWalletBalance.setVisibility(View.GONE);
         }
     }
 

@@ -1255,4 +1255,7 @@
     <string name="save_notes">Save notes</string>
     <string name="alert_provide_some_notes">Please add some notes</string>
     <string name="click_to_view_notes">Click to View Notes</string>
+
+    <!--low wallet balance-->
+    <string name="alert_low_wallet_balance">Wallet Balance is low. Credit your Wallet to receive requests.</string>
 </resources>
