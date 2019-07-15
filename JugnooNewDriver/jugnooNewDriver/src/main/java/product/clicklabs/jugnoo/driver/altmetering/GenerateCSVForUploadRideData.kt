@@ -27,8 +27,11 @@ abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : As
             val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
             Log.e(TAG, "segments2 = $segments2")
             val list = mutableListOf<LatLng>()
-            for (segment in segments2) {
-                list.add(LatLng(segment.slat, segment.sLng))
+            for (i in segments2.indices) {
+                list.add(LatLng(segments2[i].slat, segments2[i].sLng))
+                if(i == segments2.size-1){
+                    list.add(LatLng(segments2[i].dLat, segments2[i].dLng))
+                }
             }
 
             val templatePath = "lat,lng,accDistance"
