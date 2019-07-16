@@ -222,7 +222,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, OTPConfirmFragment.newInstance(phone, countryCode, missedCallNumber), OTPConfirmFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
+                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
                     .addToBackStack(OTPConfirmFragment::class.simpleName)
         }
     }
@@ -230,7 +230,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     fun openDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
+                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
     }
@@ -244,7 +244,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
         supportFragmentManager.beginTransaction()
-                .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
                 .commit()
     }
 
@@ -355,7 +355,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
        supportFragmentManager.inTransactionWithAnimation {
 
             add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType,userName), VehicleDetailsFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName))
+                    .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName)!!)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
 
