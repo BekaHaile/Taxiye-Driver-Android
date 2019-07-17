@@ -65,7 +65,7 @@ class AltMeteringService : Service() {
 
     private val METER_NOTIF_ID = 10102;
 
-    private val LOCATION_UPDATE_INTERVAL: Long = 10000 // in milliseconds
+    private val LOCATION_UPDATE_INTERVAL: Long = 5000 // in milliseconds
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
     private val DROP_DISTANCE_DEVIATION: Double = 200.0 // in meters
     val LAST_LOCATION_TIME_DIFF: Long = 60000 // in meters
