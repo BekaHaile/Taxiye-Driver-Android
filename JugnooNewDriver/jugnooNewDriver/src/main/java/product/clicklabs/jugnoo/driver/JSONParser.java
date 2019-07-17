@@ -533,6 +533,8 @@ public class JSONParser implements Constants {
 				context.getString(R.string.driver_alt_deviation_time)));
 		Prefs.with(context).save(KEY_DRIVER_ALT_LOGGING_ENABLED, userData.optInt(KEY_DRIVER_ALT_LOGGING_ENABLED,
 				context.getResources().getInteger(R.integer.driver_alt_logging_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE, userData.optString(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE,
+				context.getString(R.string.driver_alt_drop_deviation_distance)));
 
 	}
 

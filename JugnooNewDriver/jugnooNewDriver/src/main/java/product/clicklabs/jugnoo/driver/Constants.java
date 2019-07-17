@@ -468,5 +468,6 @@ public interface Constants {
 	String KEY_DRIVER_ALT_DEVIATION_DISTANCE = "driver_alt_deviation_distance";
 	String KEY_DRIVER_ALT_DEVIATION_TIME = "driver_alt_deviation_time";
 	String KEY_DRIVER_ALT_LOGGING_ENABLED = "driver_alt_logging_enabled";
+	String KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE = "driver_alt_drop_deviation_distance";
 }
 

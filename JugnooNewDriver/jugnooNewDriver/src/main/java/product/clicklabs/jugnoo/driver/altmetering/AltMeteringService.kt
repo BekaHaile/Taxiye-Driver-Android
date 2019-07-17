@@ -67,10 +67,14 @@ class AltMeteringService : Service() {
 
     private val LOCATION_UPDATE_INTERVAL: Long = 10000 // in milliseconds
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
+    private val DROP_DISTANCE_DEVIATION: Double = 200.0 // in meters
     val LAST_LOCATION_TIME_DIFF: Long = 60000 // in meters
 
     private fun getDeviationDistance(): Double{
         return Prefs.with(this).getString(Constants.KEY_DRIVER_ALT_DEVIATION_DISTANCE, PATH_POINT_DISTANCE_TOLLERANCE.toString()).toDouble()
+    }
+    private fun getDropDeviationDistance(): Double{
+        return Prefs.with(this).getString(Constants.KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE, DROP_DISTANCE_DEVIATION.toString()).toDouble()
     }
     private fun getDeviationTime(): Long{
         return Prefs.with(this).getString(Constants.KEY_DRIVER_ALT_DEVIATION_TIME, LAST_LOCATION_TIME_DIFF.toString()).toLong()
@@ -246,8 +250,8 @@ class AltMeteringService : Service() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
-                val location = locationResult.locations[locationResult.locations.size - 1]
-                if(!Utils.mockLocationEnabled(location)) {
+                val location = locationResult.lastLocation
+                if(location != null && !Utils.mockLocationEnabled(location)) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     val time = System.currentTimeMillis()
                     if (location.accuracy > MAX_ACCURACY) { //accuracy check
@@ -467,13 +471,14 @@ class AltMeteringService : Service() {
             activityBroadcastReceiver = object:BroadcastReceiver(){
                 override fun onReceive(context: Context?, intent: Intent?) {
                     intentEngagementId = intent!!.getIntExtra(Constants.KEY_ENGAGEMENT_ID, engagementId)
-                    if(currentLocation != null){
+                    val latLng = LatLng(intent.getDoubleExtra(Constants.KEY_LATITUDE, 0.0),
+                            intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0.0))
+                    if (Math.abs(latLng.latitude) > 0 && Math.abs(latLng.longitude) > 0) {
                         fusedLocationClient?.removeLocationUpdates(locationCallback)
-                        val latLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
                         val distance = MapUtils.distance(destination, latLng)
                         Log.e(TAG, "activityBroadcastReceiver distance = $distance")
-                        log("receiver", "end dist=$distance")
-                        if(distance <= getDeviationDistance()){
+                        log("receiver", "end dist=$distance, latlng="+latLng.latitude+","+latLng.longitude+", destination="+destination.latitude+","+destination.longitude)
+                        if(distance <= getDropDeviationDistance()){
                             //no need to do anything
                             updateDistanceAndTriggerEndRide()
                         } else {

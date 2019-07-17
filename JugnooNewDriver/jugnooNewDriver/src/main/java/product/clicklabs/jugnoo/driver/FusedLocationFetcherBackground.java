@@ -60,7 +60,7 @@ public class FusedLocationFetcherBackground extends LocationCallback {
 	public void onLocationResult(LocationResult locationResult) {
 		super.onLocationResult(locationResult);
 		if (locationResult != null) {
-			Location location = locationResult.getLocations().get(locationResult.getLocations().size() - 1);
+			Location location = locationResult.getLastLocation();
 			if(location != null && gpsLocationUpdate != null && !Utils.mockLocationEnabled(location)) {
 				Log.w("FusedLocationFetcherBackground", "onReceive location="+location);
 				gpsLocationUpdate.onGPSLocationChanged(location);
