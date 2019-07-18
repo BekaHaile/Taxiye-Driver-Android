@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <!--<string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>-->
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -1064,7 +1063,7 @@
     <string name="cvc">CVC</string>
     <string name="save">Save</string>
     <string name="title_view_card">VIEW CARD</string>
-    <string name="label_add_card" >Add Card</string>
+    <string name="label_add_card">Add Card</string>
     <string name="delete">Delete</string>
     <string name="bullet">\u2022</string>
     <string name="card_details">Card Details</string>
@@ -1257,4 +1256,5 @@
     <string name="save_notes">Save notes</string>
     <string name="alert_provide_some_notes">Please add some notes</string>
     <string name="click_to_view_notes">Click to View Notes</string>
+    <string name="income_details">Income Details</string>
 </resources>

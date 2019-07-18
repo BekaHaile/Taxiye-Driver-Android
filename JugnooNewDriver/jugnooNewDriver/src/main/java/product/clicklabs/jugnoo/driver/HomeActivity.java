@@ -1562,14 +1562,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             earningsRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if((Data.getAssignedCustomerInfos() == null || Data.getAssignedCustomerInfos().size() == 0)
-                            && driverScreenMode == DriverScreenMode.D_INITIAL && Prefs.with(HomeActivity.this).getInt(KEY_EARNINGS_AS_HOME, 0) == 1){
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        earningsVisibility(View.VISIBLE);
-                    } else {
-                        startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
-                        overridePendingTransition(R.anim.right_in, R.anim.right_out);
-                    }
+                    startActivity(new Intent(HomeActivity.this, IncomeDetailsActivity.class));
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
 
@@ -2448,11 +2442,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutSuperDrivers.setVisibility(View.GONE);
             }
             if (Prefs.with(HomeActivity.this).getInt(Constants.INVOICES_IN_MENU, 1) == 1) {
-                paymentsRl.setVisibility(View.VISIBLE);
+                paymentsRl.setVisibility(View.GONE);
             } else {
                 paymentsRl.setVisibility(View.GONE);
             }
-            if (Prefs.with(HomeActivity.this).getInt(Constants.EARNINGS_IN_MENU, 1) == 1) {
+            if (Prefs.with(HomeActivity.this).getInt(Constants.EARNINGS_IN_MENU, 1) == 1 || Prefs.with(HomeActivity.this).getInt(Constants.INVOICES_IN_MENU, 1) == 1) {
                 earningsRL.setVisibility(View.VISIBLE);
             } else {
                 earningsRL.setVisibility(View.GONE);
@@ -3543,11 +3537,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (1 == Data.userData.autosAvailable) {
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
+                            tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
                             textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
                         } else {
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
+                            tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));
                             relativeLayoutLastRideEarning.setVisibility(View.GONE);
                             textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                         }
@@ -8585,7 +8581,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 getSupportFragmentManager().popBackStack();
             }
             rlNotificationCenter.setVisibility(View.VISIBLE);
-            tvTitle.setText(R.string.appname);
+            tvTitle.setText((Data.userData.autosAvailable == 1)?getString(R.string.jugnoo_on,getString(R.string.app_name)): getString(R.string.jugnoo_off,getString(R.string.app_name)));
         }
     }
 
