@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.ReferralsInfoResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
@@ -764,4 +765,8 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/send_email_invoice")
 	void sendEmailInvoice(@FieldMap Map<String, String> params, Callback<FeedCommonResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_referral_info")
+	void fetchDriverReferral(@FieldMap Map<String, String> params, Callback<ReferralsInfoResponse> callback);
 }

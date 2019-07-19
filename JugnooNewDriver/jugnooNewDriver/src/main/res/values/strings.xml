@@ -1259,4 +1259,12 @@
     <string name="income_details">Income Details</string>
     <string name="online_caps">ONLINE</string>
     <string name="offline_caps">OFFLINE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="driver_name">Driver Name</string>
+    <string name="driver_no">Driver No</string>
+    <string name="credits_earned">Credits Earned</string>
+    <string name="money_earned_f">Money Earned</string>
+    <string name="no_data_available">No Data Available</string>
 </resources>

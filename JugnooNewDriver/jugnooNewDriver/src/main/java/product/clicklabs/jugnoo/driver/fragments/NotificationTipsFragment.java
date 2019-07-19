@@ -94,9 +94,11 @@ public class NotificationTipsFragment extends Fragment {
 		webview.getSettings().setDomStorageEnabled(true);
 		webview.getSettings().setDatabaseEnabled(true);
 		webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+		webview.getSettings().setAppCacheEnabled(true);
 
 		//enable Javascript
 		webview.getSettings().setJavaScriptEnabled(true);
+
 		textViewInfo.setOnClickListener(new View.OnClickListener() {
 
 			@Override

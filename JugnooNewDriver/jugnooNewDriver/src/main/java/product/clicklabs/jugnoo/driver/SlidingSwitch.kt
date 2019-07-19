@@ -26,7 +26,7 @@ class SlidingSwitch(context: Context,var view : View) {
 
                 }
                 MotionEvent.ACTION_MOVE -> kotlin.run {
-                    if(event.rawX - getRelativeSliderLeftMargin() > view.viewSlide.width / 2 && event.rawX - getRelativeSliderLeftMargin() < view.switchContainer.getWidth() - view.viewSlide.getWidth() / 2) {
+                    if(event.x - getRelativeSliderLeftMargin() > view.viewSlide.width/2 && event.rawX - getRelativeSliderLeftMargin() < view.switchContainer.getWidth() - view.viewSlide.getWidth()/2) {
                         paramF.leftMargin = (layoutX(event.rawX - getRelativeSliderLeftMargin())).toInt()
                         paramF.marginStart = (layoutX(event.rawX - getRelativeSliderLeftMargin())).toInt()
                         view.switchContainer.updateViewLayout(view.viewSlide, paramF)

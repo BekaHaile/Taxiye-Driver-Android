@@ -2261,7 +2261,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-            rlOnOff.setOnClickListener(new OnClickListener() {
+//            rlOnOff.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    relativeLayoutAutosOn.performClick();
+//                }
+//            });
+//
+            tvOfflineTop.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    relativeLayoutAutosOn.performClick();
+                }
+            });
+
+            tvOnlineTop.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     relativeLayoutAutosOn.performClick();
@@ -3556,6 +3570,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
                             tvOnlineTop.setSelected(true);
                             tvOfflineTop.setSelected(false);
+                            tvOfflineTop.setEnabled(true);
+                            tvOnlineTop.setEnabled(false);
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
@@ -3565,6 +3581,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             tvOnlineTop.setSelected(false);
                             tvOfflineTop.setSelected(true);
+                            tvOfflineTop.setEnabled(false);
+                            tvOnlineTop.setEnabled(true);
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.ReferalsFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareActivityFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 
@@ -31,7 +32,7 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = new ShareActivityFragment();
+				fragment = new ReferalsFragment();
 				break;
 		}
 

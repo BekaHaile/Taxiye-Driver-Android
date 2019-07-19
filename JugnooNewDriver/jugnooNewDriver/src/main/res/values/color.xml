@@ -179,6 +179,9 @@
     <color name="green_online">#6EB616</color>
     <color name="red_offline">#E9FF3F10</color>
 
+    <color name="green_online_alpha">#4DA1C47E</color>
+    <color name="red_offline_alpha">#32FFCFC5</color>
+    <color name="theme_color_aplha">#4AE2B7A3</color>
 
 
 </resources>
