@@ -521,6 +521,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private RelativeLayout rlHereMaps;
 
+    private LinearLayout rlOnOff;
+    private TextView tvOnlineTop,tvOfflineTop;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -1076,6 +1079,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rvFareDetails.setLayoutManager(new LinearLayoutManagerForResizableRecyclerView(this));
             fareDetailsAdapter = new FareDetailsAdapter();
             rvFareDetails.setAdapter(fareDetailsAdapter);
+
+            rlOnOff = findViewById(R.id.rlOnOff);
+            tvOfflineTop = findViewById(R.id.tvOfflineTop);
+            tvOnlineTop = findViewById(R.id.tvOnlineTop);
+            tvOfflineTop.setTypeface(Fonts.mavenRegular(this));
+            tvOnlineTop.setTypeface(Fonts.mavenRegular(this));
+
+//            SlidingSwitch slidingSwitch = new SlidingSwitch(this,findViewById(R.id.containerSwitch));
 
             slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
             new Handler().postDelayed(new Runnable() {
@@ -2247,6 +2258,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     tvDropAddressToggleView.setVisibility(tvDropAddressToggleView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                }
+            });
+
+            rlOnOff.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    relativeLayoutAutosOn.performClick();
                 }
             });
 
@@ -3536,12 +3554,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     if (Data.userData != null) {
                         if (1 == Data.userData.autosAvailable) {
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
+                            tvOnlineTop.setSelected(true);
+                            tvOfflineTop.setSelected(false);
+                            rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
                             textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
 
                         } else {
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
+                            tvOnlineTop.setSelected(false);
+                            tvOfflineTop.setSelected(true);
+                            rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));
                             relativeLayoutLastRideEarning.setVisibility(View.GONE);

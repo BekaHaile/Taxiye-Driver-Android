@@ -1257,4 +1257,6 @@
     <string name="alert_provide_some_notes">Please add some notes</string>
     <string name="click_to_view_notes">Click to View Notes</string>
     <string name="income_details">Income Details</string>
+    <string name="online_caps">ONLINE</string>
+    <string name="offline_caps">OFFLINE</string>
 </resources>

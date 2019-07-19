@@ -175,6 +175,9 @@
 
     <color name="red_dark">#EA452F</color>
     <color name="red_dark_alpha">#99EA452F</color>
+    <color name="green_status_alpha">#992EA058</color>
+    <color name="green_online">#6EB616</color>
+    <color name="red_offline">#E9FF3F10</color>
 
 
 
