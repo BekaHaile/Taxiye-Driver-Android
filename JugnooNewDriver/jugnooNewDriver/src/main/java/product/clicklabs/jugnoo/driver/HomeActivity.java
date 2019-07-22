@@ -237,7 +237,7 @@ import retrofit.mime.TypedByteArray;
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents,
-        ViewPager.OnPageChangeListener, View.OnClickListener {
+        ViewPager.OnPageChangeListener, View.OnClickListener, CallbackSlideOnOff {
 
 
     private final String TAG = HomeActivity.class.getSimpleName();
@@ -522,7 +522,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private RelativeLayout rlHereMaps;
 
     private LinearLayout rlOnOff;
+    private RelativeLayout viewSlide;
     private TextView tvOnlineTop,tvOfflineTop;
+    private SlidingSwitch slidingSwitch;
 
 
     @Override
@@ -1085,8 +1087,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tvOnlineTop = findViewById(R.id.tvOnlineTop);
             tvOfflineTop.setTypeface(Fonts.mavenRegular(this));
             tvOnlineTop.setTypeface(Fonts.mavenRegular(this));
+            viewSlide = findViewById(R.id.viewSlide);
 
-//            SlidingSwitch slidingSwitch = new SlidingSwitch(this,findViewById(R.id.containerSwitch));
+            slidingSwitch = new SlidingSwitch(this,findViewById(R.id.containerSwitch),this);
 
             slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
             new Handler().postDelayed(new Runnable() {
@@ -2268,19 +2271,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //                }
 //            });
 //
-            tvOfflineTop.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    relativeLayoutAutosOn.performClick();
-                }
-            });
-
-            tvOnlineTop.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    relativeLayoutAutosOn.performClick();
-                }
-            });
+//            tvOfflineTop.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    relativeLayoutAutosOn.performClick();
+//                }
+//            });
+//
+//            tvOnlineTop.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    relativeLayoutAutosOn.performClick();
+//                }
+//            });
 
 //			distanceReset2.setOnClickListener(new OnClickListener() {
 //				@Override
@@ -3570,8 +3573,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
                             tvOnlineTop.setSelected(true);
                             tvOfflineTop.setSelected(false);
-                            tvOfflineTop.setEnabled(true);
-                            tvOnlineTop.setEnabled(false);
+                            viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
+                            slidingSwitch.setSlideRight();
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
@@ -3581,8 +3584,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             tvOnlineTop.setSelected(false);
                             tvOfflineTop.setSelected(true);
-                            tvOfflineTop.setEnabled(false);
-                            tvOnlineTop.setEnabled(true);
+                            viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
+                            slidingSwitch.setSlideLeft();
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));
@@ -5480,6 +5483,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onClickStandAction(int slideDir) {
+        if(slideDir != Data.userData.autosAvailable) {
+            relativeLayoutAutosOn.performClick();
+        }
     }
 
 

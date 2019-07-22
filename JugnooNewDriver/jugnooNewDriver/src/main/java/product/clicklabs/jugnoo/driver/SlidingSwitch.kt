@@ -10,43 +10,61 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_switch_slide.view.*
+import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.utils.Utils
 
-class SlidingSwitch(context: Context,var view : View) {
+class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: CallbackSlideOnOff) {
 
     var paramF = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
     var animDuration = 150
     init {
         setUpSwitcher()
     }
-
+    var isLeft = true
+    var movePx = 0f
     fun setUpSwitcher() {
         view.viewSlide.setOnTouchListener { v, event -> kotlin.run {
+            Log.i("SlidingSwitch", "setOnTouchListener event="+event.rawX+", view.x="+view.x)
+            val rawX = event.rawX - getRelativeSliderLeftMargin() - Utils.dpToPx(view.context, 4f) - view.x //- getViewSlideLeftMargin()
             when(event.action) {
                 MotionEvent.ACTION_DOWN -> kotlin.run {
-
+                    movePx = event.rawX
                 }
                 MotionEvent.ACTION_MOVE -> kotlin.run {
-                    if(event.x - getRelativeSliderLeftMargin() > view.viewSlide.width/2 && event.rawX - getRelativeSliderLeftMargin() < view.switchContainer.getWidth() - view.viewSlide.getWidth()/2) {
-                        paramF.leftMargin = (layoutX(event.rawX - getRelativeSliderLeftMargin())).toInt()
-                        paramF.marginStart = (layoutX(event.rawX - getRelativeSliderLeftMargin())).toInt()
+                    if(rawX > view.viewSlide.width/2 && rawX < view.switchContainer.getWidth() - view.viewSlide.getWidth()/2) {
+                        paramF.leftMargin = (layoutX(rawX)).toInt()
+                        paramF.marginStart = (layoutX(rawX)).toInt()
                         view.switchContainer.updateViewLayout(view.viewSlide, paramF)
                     }
                 }
                 MotionEvent.ACTION_UP -> kotlin.run {
-                    if((event.rawX - getRelativeSliderLeftMargin()) < (view.switchContainer.width - view.viewSlide.width/2)*0.6f) {
-                        setSlideInitial()
+                    if((rawX) < (view.switchContainer.width)*0.5f) {
+                        setSlideLeft()
+                        callbackSlideOnOff.onClickStandAction(SlideDirection.LEFT.i)
                     } else {
-                        animateSliderButton(paramF.getMarginStart(), (view.switchContainer.getWidth() - view.viewSlide.width.toFloat()))
+                        setSlideRight()
+                        callbackSlideOnOff.onClickStandAction(SlideDirection.RIGHT.i)
                     }
                 }
             }
             true
             }
         }
+        view.viewSlide.setOnClickListener {
+            toggle()
+        }
+        view.switchContainer.setOnClickListener{
+            toggle()
+        }
     }
+
 
     fun getRelativeSliderLeftMargin(): Int {
         val layoutParams = view.switchContainer.layoutParams as RelativeLayout.LayoutParams
+        return layoutParams.marginStart
+    }
+    fun getViewSlideLeftMargin(): Int {
+        val layoutParams = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
         return layoutParams.marginStart
     }
 
@@ -88,8 +106,33 @@ class SlidingSwitch(context: Context,var view : View) {
         view.viewSlide.startAnimation(translateAnim)
     }
 
-    fun setSlideInitial() {
-        animateSliderButton(paramF.getMarginStart(), 0f)
-        view.viewSlide.setVisibility(View.VISIBLE)
+    fun setSlideLeft() {
+        animateSliderButton(paramF.getMarginStart(), Utils.dpToPx(view.context, 2f).toFloat())
+        isLeft = true
     }
+
+    fun setSlideRight() {
+        animateSliderButton(paramF.getMarginStart(), (view.switchContainer.getWidth() - view.viewSlide.width.toFloat())-Utils.dpToPx(view.context, 2f))
+        isLeft = false
+    }
+
+    fun toggle(){
+        if(isLeft){
+            setSlideRight()
+            callbackSlideOnOff.onClickStandAction(SlideDirection.RIGHT.i)
+        } else {
+            setSlideLeft()
+            callbackSlideOnOff.onClickStandAction(SlideDirection.LEFT.i)
+        }
+
+    }
+
+}
+
+interface CallbackSlideOnOff {
+    fun onClickStandAction(slideDir: Int)
+}
+enum class SlideDirection(var i:Int ) {
+    LEFT(0),
+    RIGHT(1)
 }
