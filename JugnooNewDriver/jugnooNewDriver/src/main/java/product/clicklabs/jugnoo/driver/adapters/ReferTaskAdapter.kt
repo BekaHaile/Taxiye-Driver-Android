@@ -28,17 +28,18 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
         holder.tvCreditsValue.text = list[position].credits.toString()
         holder.tvDriverNoValue.text = list[position].phoneNo
         holder.tvMoneyValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),list[position].money.toString())
+        holder.tvStatus.text = list[position].taskMessage
         if(list[position].status == TaskType.SUCCESS.i) {
-            holder.tvStatus.text = context.getString(R.string.completed)
+            if(list[position].money == 0 && list[position].credits == 0) {
+                holder.tvStatus.visibility = View.GONE
+            }
             holder.tvStatus.setTextColor(context.resources.getColor(R.color.green_online))
             holder.tvStatus.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
 
         } else if(list[position].status == TaskType.PENDING.i) {
-            holder.tvStatus.text = context.getString(R.string.pending)
             holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
             holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
         } else {
-            holder.tvStatus.text = context.getString(R.string.failed)
             holder.tvStatus.setTextColor(context.resources.getColor(R.color.red_offline))
             holder.tvStatus.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
         }

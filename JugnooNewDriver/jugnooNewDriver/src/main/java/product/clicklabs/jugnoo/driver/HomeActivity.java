@@ -4754,7 +4754,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     break;
 
                 case D_RIDE_END:
-
+                    changeOnOFFStateTop();
                     updateDriverServiceFast("no");
                     setDriverServiceRunOnOnlineBasis();
                     stopService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
@@ -11657,6 +11657,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void changeOnOFFStateTop() {
+        if (Data.userData.autosAvailable == 1) {
+            tvOnlineTop.setSelected(true);
+            tvOfflineTop.setSelected(false);
+            viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
+            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+            viewSlide.postDelayed(() -> slidingSwitch.setSlideRight(), 100);
+            rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
+        } else {
+            tvOnlineTop.setSelected(false);
+            tvOfflineTop.setSelected(true);
+            viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
+            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+            viewSlide.postDelayed(() -> slidingSwitch.setSlideLeft(), 100);
+            rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
         }
     }
 

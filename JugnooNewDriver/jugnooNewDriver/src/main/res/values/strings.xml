@@ -1267,4 +1267,7 @@
     <string name="credits_earned">Credits Earned</string>
     <string name="money_earned_f">Money Earned</string>
     <string name="no_data_available">No Data Available</string>
+    <string name="documents_pending">Documents Pending</string>
+    <string name="documents_rejected">Documents Rejected</string>
+
 </resources>

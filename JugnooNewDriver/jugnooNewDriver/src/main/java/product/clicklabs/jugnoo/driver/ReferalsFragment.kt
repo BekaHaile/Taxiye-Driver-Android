@@ -60,14 +60,14 @@ class ReferalsFragment : Fragment() {
                     groupMain.visibility = View.VISIBLE
                     tvNoData.visibility = View.GONE
                     listRefer = it
-                    rvReferralTasks.adapter = ReferTaskAdapter(listRefer)
-                    countSuccededAndPending(listRefer) { succeeded, pending ->
+                    countSuccededAndPending(listRefer) { succeeded, pending, list ->
                         tvTaskCompleted.text = getCountSpannable(succeeded,R.color.green_online)
                         tvTaskCompleted.append("\n")
                         tvTaskCompleted.append(getString(R.string.completed))
                         tvTaskPending.text = getCountSpannable(pending,R.color.themeColor)
                         tvTaskPending.append("\n")
                         tvTaskPending.append(getString(R.string.pending))
+                        rvReferralTasks.adapter = ReferTaskAdapter(list)
                     }
 
                 }
@@ -83,16 +83,28 @@ class ReferalsFragment : Fragment() {
         })
     }
 
-    fun countSuccededAndPending(list: List<ReferInfo>,callback :(suceeded:Int,pending: Int) -> Unit) {
+    fun countSuccededAndPending(list: ArrayList<ReferInfo>,callback :(suceeded:Int,pending: Int,list: List<ReferInfo>) -> Unit) {
+
         var succeeded = 0
         var pending = 0
-        for(items in list) {
-            if(items.status == TaskType.SUCCESS.i) {
-                succeeded++
-            } else {
+
+        for(item in list) {
+            if (item.status == TaskType.PENDING.i) {
+                item.taskMessage = getString(R.string.documents_pending)
                 pending++
+            } else if (item.status == TaskType.FAILED.i) {
+                item.taskMessage = getString(R.string.documents_rejected)
+                pending++
+            } else if (item.status == TaskType.SUCCESS.i) {
+                if (item.money == 0 && item.credits == 0) {
+                    pending++
+                } else {
+                    item.taskMessage = "Earn this much to succeed"
+                    succeeded++
+                }
             }
         }
-        return callback(succeeded,pending)
+
+        return callback(succeeded,pending,list)
     }
 }

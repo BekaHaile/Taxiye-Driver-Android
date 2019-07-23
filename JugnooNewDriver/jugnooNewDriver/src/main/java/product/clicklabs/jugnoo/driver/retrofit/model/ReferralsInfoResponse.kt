@@ -10,4 +10,5 @@ data class ReferInfo @JvmOverloads constructor(@SerializedName("name") @Expose v
                                                            @SerializedName("status") @Expose var status: Int = 0,
                                                            @SerializedName("money") @Expose var money: Int = 0,
                                                            @SerializedName("credits") @Expose var credits: Int = 0,
-                                                           @SerializedName("phone_no") @Expose var phoneNo: String? = null)
+                                                           @SerializedName("phone_no") @Expose var phoneNo: String? = null,
+                                                           var taskMessage: String? = null)
