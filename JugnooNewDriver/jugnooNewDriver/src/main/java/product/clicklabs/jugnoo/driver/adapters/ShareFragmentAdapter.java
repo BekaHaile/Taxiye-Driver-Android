@@ -28,7 +28,7 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 		Fragment fragment = null;
 		switch(position){
 			case 0:
-				fragment = ShareEarnFragment.newInstance(true);
+				fragment = ShareEarnFragment.newInstance(false);
 				break;
 
 			case 1:

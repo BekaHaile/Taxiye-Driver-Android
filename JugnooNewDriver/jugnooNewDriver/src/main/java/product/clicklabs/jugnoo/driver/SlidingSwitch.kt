@@ -1,19 +1,16 @@
 package product.clicklabs.jugnoo.driver
 
-import android.content.Context
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_switch_slide.view.*
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.Utils
 
-class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: CallbackSlideOnOff) {
+class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) {
 
     var paramF = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
     var animDuration = 150
@@ -31,7 +28,7 @@ class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: Cal
                     movePx = event.rawX
                 }
                 MotionEvent.ACTION_MOVE -> kotlin.run {
-                    if(rawX > view.viewSlide.width/2 && rawX < view.switchContainer.getWidth() - view.viewSlide.getWidth()/2) {
+                    if(rawX > view.viewSlide.width/2 && rawX < view.switchContainer.width - view.viewSlide.getWidth()/2) {
                         paramF.leftMargin = (layoutX(rawX)).toInt()
                         paramF.marginStart = (layoutX(rawX)).toInt()
                         view.switchContainer.updateViewLayout(view.viewSlide, paramF)
@@ -63,9 +60,17 @@ class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: Cal
         val layoutParams = view.switchContainer.layoutParams as RelativeLayout.LayoutParams
         return layoutParams.marginStart
     }
+    fun getSwitchContainerWidth(): Int {
+        val layoutParams = view.switchContainer.layoutParams as RelativeLayout.LayoutParams
+        return layoutParams.width
+    }
     fun getViewSlideLeftMargin(): Int {
         val layoutParams = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
         return layoutParams.marginStart
+    }
+    fun getViewSlideWidth(): Float {
+        val layoutParams = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
+        return layoutParams.width.toFloat()
     }
 
     fun layoutX(rawX :Float) = (rawX - (sliderWidth()/2))
@@ -112,7 +117,7 @@ class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: Cal
     }
 
     fun setSlideRight() {
-        animateSliderButton(paramF.getMarginStart(), (view.switchContainer.getWidth() - view.viewSlide.width.toFloat())-Utils.dpToPx(view.context, 2f))
+        animateSliderButton(paramF.getMarginStart(), (view.switchContainer.measuredWidth - view.viewSlide.measuredWidth.toFloat())-Utils.dpToPx(view.context, 2f))
         isLeft = false
     }
 
@@ -125,6 +130,14 @@ class SlidingSwitch(context: Context,var view : View,var callbackSlideOnOff: Cal
             callbackSlideOnOff.onClickStandAction(SlideDirection.LEFT.i)
         }
 
+    }
+
+    fun toggleWithoutAction() {
+        if(isLeft){
+            setSlideRight()
+        } else {
+            setSlideLeft()
+        }
     }
 
 }

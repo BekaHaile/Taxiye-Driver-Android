@@ -525,6 +525,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private RelativeLayout viewSlide;
     private TextView tvOnlineTop,tvOfflineTop;
     private SlidingSwitch slidingSwitch;
+    private RelativeLayout containerSwitch;
 
 
     @Override
@@ -569,6 +570,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             //Swipe menu
             menuLayout = (LinearLayout) findViewById(R.id.menuLayout);
+
+            rlOnOff = findViewById(R.id.rlOnOff);
+            tvOfflineTop = findViewById(R.id.tvOfflineTop);
+            tvOnlineTop = findViewById(R.id.tvOnlineTop);
+            tvOfflineTop.setTypeface(Fonts.mavenRegular(this));
+            tvOnlineTop.setTypeface(Fonts.mavenRegular(this));
+            viewSlide = findViewById(R.id.viewSlide);
+
+            slidingSwitch = new SlidingSwitch(findViewById(R.id.containerSwitch),this);
+            containerSwitch = findViewById(R.id.containerSwitch);
 
 
             profileImg = (ImageView) findViewById(R.id.profileImg);
@@ -1082,14 +1093,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             fareDetailsAdapter = new FareDetailsAdapter();
             rvFareDetails.setAdapter(fareDetailsAdapter);
 
-            rlOnOff = findViewById(R.id.rlOnOff);
-            tvOfflineTop = findViewById(R.id.tvOfflineTop);
-            tvOnlineTop = findViewById(R.id.tvOnlineTop);
-            tvOfflineTop.setTypeface(Fonts.mavenRegular(this));
-            tvOnlineTop.setTypeface(Fonts.mavenRegular(this));
-            viewSlide = findViewById(R.id.viewSlide);
 
-            slidingSwitch = new SlidingSwitch(this,findViewById(R.id.containerSwitch),this);
 
             slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
             new Handler().postDelayed(new Runnable() {
@@ -3365,7 +3369,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     HomeActivity.this.startService(intent1);
                                 }
                                 resetSharedPrefs();
-                                showDialogFromBackground(message);
+                                showDialogFromBackground(message,false);
                             } else if (ApiResponseFlags.TNC_NOT_ACCEPTED.getOrdinal() == flag) {
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -3392,16 +3396,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 intent.putExtra("doc_required", 0);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        slidingSwitch.toggleWithoutAction();
+                                    }
+                                });
                             } else {
-                                showDialogFromBackground(message);
+                                showDialogFromBackground(message,true);
                             }
                         } else {
-                            showDialogFromBackground(message);
+                            showDialogFromBackground(message,true);
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        showDialogFromBackground(Data.SERVER_ERROR_MSG);
+                        showDialogFromBackground(Data.SERVER_ERROR_MSG,true);
                     }
                     dismissLoadingFromBackground();
 
@@ -3447,11 +3457,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                     }
                     String message = JSONParser.getServerMessage(jObj);
-                    showDialogFromBackground(message);
+                    showDialogFromBackground(message,false);
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    showDialogFromBackground(Data.SERVER_ERROR_MSG);
+                    showDialogFromBackground(Data.SERVER_ERROR_MSG,true);
                 }
                 dismissLoadingFromBackground();
                 if (mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
@@ -3462,10 +3472,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void showDialogFromBackground(final String message) {
+    public void showDialogFromBackground(final String message,boolean isSlideReturn) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(isSlideReturn) {
+                    slidingSwitch.toggleWithoutAction();
+                }
                 DialogPopup.dismissLoadingDialog();
                 DialogPopup.alertPopup(HomeActivity.this, "", message);
             }
@@ -3529,9 +3542,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (Data.userData != null) {
             if (1 == Data.userData.autosEnabled) {
                 relativeLayoutAutosOn.setVisibility(View.VISIBLE);
+                containerSwitch.setVisibility(View.VISIBLE);
             } else {
                 relativeLayoutAutosOn.setVisibility(View.GONE);
                 Data.userData.autosAvailable = 0;
+                containerSwitch.setVisibility(View.GONE);
             }
 
             if (1 == Data.userData.sharingEnabled) {
@@ -3553,9 +3568,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutDeliveryOn.setVisibility(View.GONE);
             } else if (menuOptionVisibility == 2) {
                 relativeLayoutAutosOn.setVisibility(View.GONE);
+                containerSwitch.setVisibility(View.GONE);
             } else if (menuOptionVisibility == 3) {
                 relativeLayoutDeliveryOn.setVisibility(View.VISIBLE);
                 relativeLayoutAutosOn.setVisibility(View.VISIBLE);
+                containerSwitch.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -3574,7 +3591,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             tvOnlineTop.setSelected(true);
                             tvOfflineTop.setSelected(false);
                             viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
-                            slidingSwitch.setSlideRight();
+                            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+                            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+                            viewSlide.postDelayed(() -> slidingSwitch.setSlideRight(), 100);
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
@@ -3585,7 +3604,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             tvOnlineTop.setSelected(false);
                             tvOfflineTop.setSelected(true);
                             viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
-                            slidingSwitch.setSlideLeft();
+                            slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+                            slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+                            viewSlide.postDelayed(() -> slidingSwitch.setSlideLeft(), 100);
                             rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));
