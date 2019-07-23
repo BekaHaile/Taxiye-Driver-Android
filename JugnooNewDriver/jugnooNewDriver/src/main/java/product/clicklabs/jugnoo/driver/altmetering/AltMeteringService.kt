@@ -17,6 +17,10 @@ import android.support.v4.content.LocalBroadcastManager
 import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
@@ -159,7 +163,7 @@ class AltMeteringService : Service() {
             FirstTimeDataClearAsync(meteringDB, engagementId, ::fetchPathAsyncCall).execute()
 
         } else {
-            ReadPathAsync(meteringDB, engagementId, ::requestLocationUpdates).execute()
+            readPathAsync(meteringDB, engagementId, ::requestLocationUpdates)
         }
 
         return START_STICKY
@@ -273,7 +277,7 @@ class AltMeteringService : Service() {
                     currentLocation = location
                     currentLocationTime = time
                     Log.e("$TAG new onLocationResult", "location = $location")
-                    GetScanningPointerAndShortenPathToScan(latLng, time).execute()
+                    getScanningPointerAndShortenPathToScan(latLng, time)
                 }
             }
         }
@@ -360,35 +364,40 @@ class AltMeteringService : Service() {
 
     }
 
-    inner class ReadPathAsync(private val meteringDB: MeteringDatabase?, val engagementId: Int, val onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit)
-        : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
-        lateinit var waypointsL:MutableList<LatLng>
-        override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
+    private fun readPathAsync(meteringDB: MeteringDatabase?, engagementId: Int, onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                delay(100)
+                val segments2: MutableList<Segment> = try {
+                    meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
+                } catch (e: Exception) {
+                    delay(200)
+                    meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
+                }
+                Log.e("$TAG ReadPathAsync", "segments2 = $segments2")
+                Log.e("$TAG ReadPathAsync", "segments2size = "+segments2.size)
+                val list = mutableListOf<LatLng>()
+                for (segment in segments2) {
+                    list.add(LatLng(segment.slat, segment.sLng))
+                }
 
-            val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
-            Log.e("$TAG ReadPathAsync", "segments2 = $segments2")
-            Log.e("$TAG ReadPathAsync", "segments2size = "+segments2.size)
-            val list = mutableListOf<LatLng>()
-            for (segment in segments2) {
-                list.add(LatLng(segment.slat, segment.sLng))
+                val waypoints = try {
+                    meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
+                } catch (e: Exception) {
+                    delay(200)
+                    meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
+                }
+                val waypointsL:MutableList<LatLng> = mutableListOf()
+                for(wp in waypoints){
+                    waypointsL.add(LatLng(wp.lat, wp.lng))
+                }
+                log("old", "segments="+list.size+", waypoints="+waypoints.size)
+
+                launch(Dispatchers.Main){onPost(list, waypointsL)}
+            } catch (e: Exception) {
             }
-
-            val waypoints = meteringDB.getMeteringDao().getAllWaypoints(engagementId)
-            waypointsL = mutableListOf<LatLng>()
-            for(wp in waypoints){
-                waypointsL.add(LatLng(wp.lat, wp.lng))
-            }
-            log("old", "segments="+list.size+", waypoints="+waypoints.size)
-
-            return list
-        }
-
-        override fun onPostExecute(result: MutableList<LatLng>) {
-            super.onPostExecute(result)
-            onPost(result, waypointsL)
         }
     }
-
 
     class UpdateTimeStampPointerAsync(private val meteringDB: MeteringDatabase?, val engagementId: Int, val position:Int, val timeStamp:Long): AsyncTask<Unit, Unit, Unit>(){
         override fun doInBackground(vararg params: Unit?) {
@@ -493,14 +502,14 @@ class AltMeteringService : Service() {
                     }
                 }
             }
-            LocalBroadcastManager.getInstance(this).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
+            LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
             log("service", "registerReceiver")
         }
     }
 
     private fun unregisterActivityBroadcast(){
         if(activityBroadcastReceiver != null) {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(activityBroadcastReceiver!!)
+            LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!)
             activityBroadcastReceiver = null
             log("service", "unregisterReceiver")
         }
@@ -549,59 +558,57 @@ class AltMeteringService : Service() {
 
     }
 
-    inner class GetScanningPointerAndShortenPathToScan(val currentLatLng: LatLng, val time:Long): AsyncTask<Unit, Unit, Int>(){
+    fun getScanningPointerAndShortenPathToScan(currentLatLng: LatLng, time:Long){
         var lastScanningPoint = 0
-        override fun doInBackground(vararg params: Unit?): Int {
-            val list :List<ScanningPointer> = meteringDB!!.getMeteringDao().getScanningPointer(engagementId)
-            lastScanningPoint = 0
-            if(list.isNotEmpty()){
-                lastScanningPoint = list[0].position
+        GlobalScope.launch(Dispatchers.IO){
+            try {
+                val list :List<ScanningPointer> = meteringDB!!.getMeteringDao().getScanningPointer(engagementId)
+                lastScanningPoint = 0
+                if(list.isNotEmpty()){
+                    lastScanningPoint = list[0].position
+                }
+                Log.e(TAG, "GetScanningPointerAndShortenPathToScan lastScanningPoint=$lastScanningPoint")
+
+                val pathLength = globalPath.size
+                val result = PolyUtil.locationIndexOnPath(currentLatLng, globalPath.subList(lastScanningPoint, pathLength),
+                        true, getDeviationDistance())
+
+                GlobalScope.launch(Dispatchers.Main){
+
+                    Log.i(TAG, "GetScanningPointerAndShortenPathToScan position=$result")
+
+                    if(result > -1){
+                        UpdateTimeStampPointerAsync(meteringDB, engagementId, lastScanningPoint + result, time).execute()
+                    } else {
+                        GetLastLocationTimeAndWaypointsAsync(meteringDB, time, currentLatLng).execute()
+                    }
+
+
+                    if (HomeActivity.appInterruptHandler != null) {
+                        val start = if (result > -1) globalPath[lastScanningPoint + result] else null
+                        val end = if (result > -1) globalPath[lastScanningPoint + result + 1] else null
+                        HomeActivity.appInterruptHandler.polylineAlt(start, end)
+
+    //                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+    //                            location,
+    //                            location, globalPathDistance)
+                    }
+                    generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
+                }
+            } catch (e: Exception) {
             }
-            Log.e(TAG, "GetScanningPointerAndShortenPathToScan lastScanningPoint=$lastScanningPoint")
-
-            val pathLength = globalPath.size
-            val position = PolyUtil.locationIndexOnPath(currentLatLng, globalPath.subList(lastScanningPoint, pathLength),
-                    true, getDeviationDistance())
-            return position
-        }
-
-        override fun onPostExecute(result: Int) {
-            super.onPostExecute(result)
-
-            Log.i(TAG, "GetScanningPointerAndShortenPathToScan position=$result")
-
-            if(result > -1){
-                UpdateTimeStampPointerAsync(meteringDB, engagementId, lastScanningPoint + result, time).execute()
-            } else {
-                GetLastLocationTimeAndWaypointsAsync(meteringDB, time, currentLatLng).execute()
-            }
-
-
-            if (HomeActivity.appInterruptHandler != null) {
-                val start = if (result > -1) globalPath[lastScanningPoint + result] else null
-                val end = if (result > -1) globalPath[lastScanningPoint + result + 1] else null
-                HomeActivity.appInterruptHandler.polylineAlt(start, end)
-
-//                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
-//                            location,
-//                            location, globalPathDistance)
-            }
-            generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
         }
     }
 
     fun log(tag:String, message:String){
         if(Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_LOGGING_ENABLED, 1) == 1) {
             Log.e(tag, message)
-            LogDBAsync(tag, message).execute()
+            GlobalScope.launch(Dispatchers.IO){
+                try {
+                    meteringDB!!.getMeteringDao().insertLogItem(LogItem(engagementId, "$tag: $message"))
+                } catch (e: Exception) {
+                }
+            }
         }
     }
-
-    inner class LogDBAsync(val tag:String, val message:String) : AsyncTask<Unit, Unit, Unit>(){
-        override fun doInBackground(vararg params: Unit?) {
-            meteringDB!!.getMeteringDao().insertLogItem(LogItem(engagementId, "$tag: $message"))
-        }
-
-    }
-
 }

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -55,6 +56,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
@@ -1248,4 +1250,14 @@ public class Utils {
         }
         return rotate;
     }
+
+	public static void cursorWindowFix() {
+		try {
+			Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+			field.setAccessible(true);
+			field.set(null, 102400 * 1024); //the 102400 is the new size added
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -386,7 +386,10 @@ class SplashFragment : Fragment() {
         if (FirebaseInstanceId.getInstance().token != null) {
             deviceTokenObservable.onComplete()
         } else {
-            LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(deviceTokenReceiver,intentFilter)
+            try {
+                LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(deviceTokenReceiver,intentFilter)
+            } catch (e: Exception) {
+            }
         }
 
         // if the pending api execution has already been subscribed once, resubscribe
@@ -400,7 +403,10 @@ class SplashFragment : Fragment() {
         super.onPause()
 
         // unregister the device token broadcast in paused state
-        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(deviceTokenReceiver)
+        try {
+            LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(deviceTokenReceiver)
+        } catch (e: Exception) {
+        }
 
         // if pending api execution has been started dispose the api disposable
         // which will be resubscribed in onResume

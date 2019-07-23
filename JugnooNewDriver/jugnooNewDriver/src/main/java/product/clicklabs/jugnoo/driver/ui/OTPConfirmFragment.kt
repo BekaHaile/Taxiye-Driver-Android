@@ -349,7 +349,9 @@ class OTPConfirmFragment : Fragment(){
                         }
                     } catch (exception: Exception) {
                         exception.printStackTrace()
-                        DialogPopup.alertPopup(requireActivity(), "", Data.SERVER_ERROR_MSG)
+                        try {
+                            DialogPopup.alertPopup(requireActivity(), "", Data.SERVER_ERROR_MSG)
+                        } catch (e: Exception) {}
                     }
 
                     dialogLoading?.dismiss()

@@ -290,13 +290,19 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 	private Handler handler;
 	private Runnable runnableReconnectLocation;
 	private void setAlarm(){
-		locationFetcherDriver.disconnect();
+		if(locationFetcherDriver != null) {
+			locationFetcherDriver.disconnect();
+		}
 
 		if(handler == null){
 			handler = new Handler();
 		}
 		if(runnableReconnectLocation == null){
-			runnableReconnectLocation = () -> locationFetcherDriver.connect();
+			runnableReconnectLocation = () -> {
+				if(locationFetcherDriver != null){
+					locationFetcherDriver.connect();
+				}
+			};
 		}
 		handler.postDelayed(runnableReconnectLocation, 5000);
 		Log.i(TAG, "setAlarm");

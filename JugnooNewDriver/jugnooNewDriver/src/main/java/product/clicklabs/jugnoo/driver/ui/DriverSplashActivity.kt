@@ -101,6 +101,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         // TODO: 08/12/18 remove this
         AppSignatureHelper.getAppSignatures(this)
+        Utils.cursorWindowFix()
 
         tvToolbar.typeface = Fonts.mavenMedium(this)
 
