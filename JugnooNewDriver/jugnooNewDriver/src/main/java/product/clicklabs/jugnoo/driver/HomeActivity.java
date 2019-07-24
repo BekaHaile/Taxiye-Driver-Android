@@ -8219,17 +8219,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 
                                 if(customerInfo.getDropLatLng() != null && Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
-                                	if(lastGPSLocation != null) {
-										DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
-										LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
-												new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
-														.putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId())
-														.putExtra(KEY_LATITUDE, lastGPSLocation.getLatitude())
-														.putExtra(KEY_LONGITUDE, lastGPSLocation.getLongitude())
-										);
-									} else {
-										Utils.showToast(HomeActivity.this, getString(R.string.waiting_for_location));
+                                	LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
+                                	if(lastGPSLocation != null){
+										latLng = new LatLng(lastGPSLocation.getLatitude(), lastGPSLocation.getLongitude());
+									} else if(myLocation != null){
+										latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 									}
+									DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
+									LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
+											new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
+													.putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId())
+													.putExtra(KEY_LATITUDE, latLng.latitude)
+													.putExtra(KEY_LONGITUDE, latLng.longitude)
+									);
                                 } else {
                                     endRideConfrimedFromPopup(customerInfo);
                                 }
