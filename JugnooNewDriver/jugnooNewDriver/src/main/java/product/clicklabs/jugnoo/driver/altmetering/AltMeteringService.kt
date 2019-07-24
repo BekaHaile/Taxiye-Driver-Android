@@ -584,14 +584,17 @@ class AltMeteringService : Service() {
                     }
 
 
-                    if (HomeActivity.appInterruptHandler != null) {
-                        val start = if (result > -1) globalPath[lastScanningPoint + result] else null
-                        val end = if (result > -1) globalPath[lastScanningPoint + result + 1] else null
-                        HomeActivity.appInterruptHandler.polylineAlt(start, end)
+                    try {
+                        if (HomeActivity.appInterruptHandler != null) {
+                            val start = if (result > -1 && (lastScanningPoint + result) < globalPath.size) globalPath[lastScanningPoint + result] else null
+                            val end = if (result > -1 && (lastScanningPoint + result + 1) < globalPath.size) globalPath[lastScanningPoint + result + 1] else null
+                            HomeActivity.appInterruptHandler.polylineAlt(start, end)
 
-    //                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
-    //                            location,
-    //                            location, globalPathDistance)
+        //                    HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
+        //                            location,
+        //                            location, globalPathDistance)
+                        }
+                    } catch (e: Exception) {
                     }
                     generateNotification(this@AltMeteringService, getNotificationMessage(), METER_NOTIF_ID)
                 }

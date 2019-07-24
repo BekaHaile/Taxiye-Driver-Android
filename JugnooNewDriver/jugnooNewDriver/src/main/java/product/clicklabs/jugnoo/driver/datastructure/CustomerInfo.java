@@ -828,4 +828,8 @@ public class CustomerInfo {
 	public static String getMapValue(int engagementId, String key){
 		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId);
 	}
+
+	public long getElapsedTime(){
+		return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
+	}
 }

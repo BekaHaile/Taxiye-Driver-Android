@@ -147,7 +147,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                             rowIds.add(currentPathItem.id);
                                         }
                                         FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
-                                        Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
+                                        Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds);
                                         if(HomeActivity.appInterruptHandler != null){
                                             HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
                                         }

@@ -615,7 +615,7 @@ public class GpsDistanceCalculator {
 				GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(source, destination));
 
 				if(rowId != -1) {
-					Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
+					Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId);
 				}
 
 			}

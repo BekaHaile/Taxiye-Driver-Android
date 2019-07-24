@@ -121,7 +121,6 @@ import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.altmetering.AltMeteringService;
 import product.clicklabs.jugnoo.driver.altmetering.GenerateCSVForUploadRideData;
-import product.clicklabs.jugnoo.driver.altmetering.dialog.AltMeteringInfoDialog;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiEmergencyDisable;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
@@ -2895,7 +2894,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Prefs.with(this).remove(SPLabels.PERFECT_ACCEPT_RIDE_DATA);
             Prefs.with(this).remove(SPLabels.PERFECT_CUSTOMER_CONT);
             Prefs.with(this).remove(EngagementSP.SP_ENGAGEMENTS_ATTACHED);
-            Database2.getInstance(this).deleteCustomerRideData();
             Database2.getInstance(this).deleteAllCurrentPathItems();
             Database2.getInstance(this).deleteRideData();
             Database2.getInstance(this).deleteDriverCurrentLocation();
@@ -6591,7 +6589,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)) {
                             if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
 
-                                Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
+                                customerInfo.setMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME, String.valueOf(System.currentTimeMillis()));
 
                                 double dropLatitude = 0, dropLongitude = 0;
                                 try {
@@ -6894,9 +6892,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         double Average_endRideMinute = totalDistanceInKm * 2;
 
         long rideTimeInMillis = customerInfo.getElapsedRideTime(HomeActivity.this);
-        long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
-        long startTime = Database2.getInstance(activity).getCustomerStartRideTime(customerInfo.getEngagementId());
+        long rideTimeInMillisFromDB = customerInfo.getElapsedTime();
         try {
+			String startTimeStr = customerInfo.getMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME);
+			long startTime = Long.parseLong(startTimeStr);
 //			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
             totalDistanceFromLogInMeter = Database2.getInstance(activity).checkRideData(customerInfo.getEngagementId(), startTime);
             Log.e("totalDistanceFromLogInMeter", String.valueOf(totalDistanceFromLogInMeter));
@@ -7140,7 +7139,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
                     switchDriverScreen(driverScreenMode);
 
-                    Database2.getInstance(activity).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
+					customerInfo.setMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME, String.valueOf(0));
 
 
                     initializeStartRideVariables();
@@ -7491,7 +7490,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
             switchDriverScreen(driverScreenMode);
 
-            Database2.getInstance(activity).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
+			customerInfo.setMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME, String.valueOf(0));
             try {
                 if (customerInfo.getIsPooled() == 1) {
                     Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
@@ -8435,7 +8434,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
 							totalDistance = element0.getJSONObject("distance").getDouble("value");
 
-                            double speedDirections = totalDistance / (Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId())/1000);
+                            double speedDirections = totalDistance / (customerInfo.getElapsedTime()/1000);
 
 							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
 
@@ -9920,12 +9919,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         try {
                             String pickupTime = jObj.optString(KEY_PICKUP_TIME, "");
                             if (!"".equalsIgnoreCase(pickupTime)) {
-                                long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
+                                long rideTimeInMillisFromDB = customerInfo.getElapsedTime();
                                 long pickupTimeMillis = DateOperations.getMilliseconds(DateOperations.utcToLocalTZ(pickupTime));
                                 if (rideTimeInMillisFromDB <= 0) {
-                                    Database2.getInstance(HomeActivity.this).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
-                                    Database2.getInstance(HomeActivity.this).insertCustomerRideData(customerInfo.getEngagementId(),
-                                            pickupTimeMillis);
+									customerInfo.setMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME, String.valueOf(pickupTimeMillis));
                                 }
                             }
                         } catch (Exception e) {
@@ -10411,7 +10408,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     public double getCurrentDeliveryDistance(CustomerInfo customerInfo) {
         double totalDistanceFromLogInMeter = 0;
         try {
-            long startTime = Database2.getInstance(activity).getCustomerStartRideTime(customerInfo.getEngagementId());
+            long startTime = Long.parseLong(customerInfo.getMapValue(customerInfo.getEngagementId(), Constants.KEY_RIDE_START_TIME));
 //			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
             totalDistanceFromLogInMeter = Database2.getInstance(activity).
                     checkRideData(customerInfo.getEngagementId(), startTime);
