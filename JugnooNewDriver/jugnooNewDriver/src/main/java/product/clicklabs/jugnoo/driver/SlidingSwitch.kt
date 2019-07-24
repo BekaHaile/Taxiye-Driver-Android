@@ -117,7 +117,7 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
     }
 
     fun setSlideRight() {
-        animateSliderButton(paramF.getMarginStart(), (view.switchContainer.measuredWidth - view.viewSlide.measuredWidth.toFloat())-Utils.dpToPx(view.context, 2f))
+        view.switchContainer.post { animateSliderButton(paramF.getMarginStart(), (view.switchContainer.measuredWidth - view.viewSlide.measuredWidth.toFloat())-Utils.dpToPx(view.context, 2f)) }
         isLeft = false
     }
 

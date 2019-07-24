@@ -529,6 +529,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TextView tvOnlineTop,tvOfflineTop;
     private SlidingSwitch slidingSwitch;
     private RelativeLayout containerSwitch;
+    private RelativeLayout switchContainer;
 
 
     @Override
@@ -574,9 +575,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tvOfflineTop.setTypeface(Fonts.mavenRegular(this));
             tvOnlineTop.setTypeface(Fonts.mavenRegular(this));
             viewSlide = findViewById(R.id.viewSlide);
-
-            slidingSwitch = new SlidingSwitch(findViewById(R.id.containerSwitch),this);
+            switchContainer = findViewById(R.id.switchContainer);
             containerSwitch = findViewById(R.id.containerSwitch);
+            slidingSwitch = new SlidingSwitch(containerSwitch,this);
+
 
 
             profileImg = (ImageView) findViewById(R.id.profileImg);
@@ -4329,6 +4331,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                     }
                     disableEmergencyModeIfNeeded(Data.getCurrentEngagementId());
+                    containerSwitch.post(this::changeOnOFFStateTop);
 
                     break;
 
@@ -4753,7 +4756,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     break;
 
                 case D_RIDE_END:
-                    changeOnOFFStateTop();
                     if(polylineAlt != null){
                         polylineAlt.remove();
                     }
@@ -11702,7 +11704,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-            viewSlide.postDelayed(() -> slidingSwitch.setSlideRight(), 100);
+            switchContainer.post(() -> slidingSwitch.setSlideRight());
             rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
         } else {
             tvOnlineTop.setSelected(false);
@@ -11710,7 +11712,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-            viewSlide.postDelayed(() -> slidingSwitch.setSlideLeft(), 100);
+            switchContainer.post(()-> slidingSwitch.setSlideLeft());
             rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
         }
     }
