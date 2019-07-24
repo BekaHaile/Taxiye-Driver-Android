@@ -1264,11 +1264,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="driver_name">Driver Name</string>
     <string name="driver_no">Driver No</string>
-    <string name="credits_earned">Credits Earned</string>
-    <string name="money_earned_f">Money Earned</string>
+    <string name="credits_processed">Credits Processed</string>
+    <string name="money_processed">Money Processed</string>
     <string name="no_data_available">No Data Available</string>
     <string name="documents_pending">Documents Pending</string>
     <string name="documents_rejected">Documents Rejected</string>
+    <string name="total_money">Total Money</string>
+    <string name="total_credits">Total Credits</string>
+    <string name="processed_money">Money Processed</string>
+    <string name="processed_credits">Credits Processed</string>
+    <string name="credits_next_target">Next Target Credits</string>
+    <string name="money_next_target">Next Target Money</string>
+    <string name="num_of_rides_next_targer">No of rides in next target</string>
 
 
     <string name="select_fleet">Select Fleet</string>

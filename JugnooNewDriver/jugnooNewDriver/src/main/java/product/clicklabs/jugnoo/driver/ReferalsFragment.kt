@@ -24,6 +24,8 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
+import product.clicklabs.jugnoo.driver.utils.Prefs
+import product.clicklabs.jugnoo.driver.utils.Utils
 
 class ReferalsFragment : Fragment() {
 
@@ -96,10 +98,20 @@ class ReferalsFragment : Fragment() {
                 item.taskMessage = getString(R.string.documents_rejected)
                 pending++
             } else if (item.status == TaskType.SUCCESS.i) {
-                if (item.money == 0 && item.credits == 0) {
+                if (item.processedMoney == 0 && item.processedCredits == 0) {
                     pending++
                 } else {
-                    item.taskMessage = "Earn this much to succeed"
+                    if(item.userNumRides < item.numOfRidesNextTarget) {
+                        if(item.moneyNextTarget > 0 && item.creditsNextTarget > 0) {
+                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),
+                                    item.moneyNextTarget.toString())} money and ${item.creditsNextTarget} credits by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
+                        } else if(item.moneyNextTarget > 0) {
+                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),
+                                    item.moneyNextTarget.toString())} money by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
+                        } else if(item.creditsNextTarget > 0) {
+                            item.taskMessage = "Earn ${item.creditsNextTarget} credits by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
+                        }
+                    }
                     succeeded++
                 }
             }
