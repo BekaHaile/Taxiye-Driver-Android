@@ -3395,9 +3395,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        slidingSwitch.toggleWithoutAction();
+                                        if(Data.userData.autosAvailable == 1) {
+                                            slidingSwitch.setSlideRight();
+                                        } else {
+                                            slidingSwitch.setSlideLeft();
+                                        }
                                     }
                                 });
+//                                if(Data.userData.autosAvailable == 1) {
+//                                    slidingSwitch.setSlideRight();
+//                                } else {
+//                                    slidingSwitch.setSlideLeft();
+//                                }
                             } else {
                                 showDialogFromBackground(message,true);
                             }
@@ -3407,6 +3416,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(Data.userData.autosAvailable == 1) {
+                                    slidingSwitch.setSlideRight();
+                                } else {
+                                    slidingSwitch.setSlideLeft();
+                                }
+                            }
+                        });
                         showDialogFromBackground(Data.SERVER_ERROR_MSG,true);
                     }
                     dismissLoadingFromBackground();
@@ -3458,6 +3477,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 } catch (Exception e) {
                     e.printStackTrace();
                     showDialogFromBackground(Data.SERVER_ERROR_MSG,true);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(Data.userData.autosAvailable == 1) {
+                                slidingSwitch.setSlideRight();
+                            } else {
+                                slidingSwitch.setSlideLeft();
+                            }
+                        }
+                    });
                 }
                 dismissLoadingFromBackground();
                 if (mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
@@ -3472,9 +3501,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(isSlideReturn) {
-                    slidingSwitch.toggleWithoutAction();
-                }
                 DialogPopup.dismissLoadingDialog();
                 DialogPopup.alertPopup(HomeActivity.this, "", message);
             }
@@ -3589,7 +3615,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_theme_rounded));
                             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
                             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-                            viewSlide.postDelayed(() -> slidingSwitch.setSlideRight(), 100);
+                            viewSlide.post(() -> slidingSwitch.setSlideRight());
                             rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
@@ -3602,7 +3628,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_theme_rounded));
                             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
                             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-                            viewSlide.postDelayed(() -> slidingSwitch.setSlideLeft(), 100);
+                            viewSlide.post(() -> slidingSwitch.setSlideLeft());
                             rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));

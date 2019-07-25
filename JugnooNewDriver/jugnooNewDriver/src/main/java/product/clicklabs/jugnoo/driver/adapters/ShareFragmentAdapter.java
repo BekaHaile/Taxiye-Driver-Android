@@ -32,7 +32,7 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = new ShareActivityFragment();
+				fragment = new ReferalsFragment();
 				break;
 		}
 

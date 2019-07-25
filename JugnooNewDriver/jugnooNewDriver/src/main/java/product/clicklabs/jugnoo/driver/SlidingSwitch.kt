@@ -60,18 +60,6 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
         val layoutParams = view.switchContainer.layoutParams as RelativeLayout.LayoutParams
         return layoutParams.marginStart
     }
-    fun getSwitchContainerWidth(): Int {
-        val layoutParams = view.switchContainer.layoutParams as RelativeLayout.LayoutParams
-        return layoutParams.width
-    }
-    fun getViewSlideLeftMargin(): Int {
-        val layoutParams = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
-        return layoutParams.marginStart
-    }
-    fun getViewSlideWidth(): Float {
-        val layoutParams = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
-        return layoutParams.width.toFloat()
-    }
 
     fun layoutX(rawX :Float) = (rawX - (sliderWidth()/2))
 
@@ -114,7 +102,7 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
     }
 
     fun setSlideLeft() {
-        animateSliderButton(paramF.getMarginStart(), Utils.dpToPx(view.context, 2f).toFloat())
+        view.switchContainer.post { animateSliderButton(paramF.getMarginStart(), Utils.dpToPx(view.context, 2f).toFloat()) }
         isLeft = true
     }
 

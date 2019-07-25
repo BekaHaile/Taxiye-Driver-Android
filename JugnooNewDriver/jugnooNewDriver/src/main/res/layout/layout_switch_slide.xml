@@ -20,7 +20,7 @@
         android:layout_margin="10dp"
         android:tag="@string/dont_touch_me"
         android:visibility="visible"
-        app:cardCornerRadius="17dp"
+        app:cardCornerRadius="18dp"
         app:cardElevation="5dp">
 
         <RelativeLayout
@@ -34,7 +34,7 @@
             <RelativeLayout
                 android:id="@+id/viewSlide"
                 android:layout_width="80dp"
-                android:layout_height="33dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_margin="2dp"
                 android:clickable="true"
