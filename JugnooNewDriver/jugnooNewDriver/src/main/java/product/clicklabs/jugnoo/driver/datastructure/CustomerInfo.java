@@ -830,6 +830,11 @@ public class CustomerInfo {
 	}
 
 	public long getElapsedTime(){
-		return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
+		try {
+			return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getElapsedRideTime(MyApplication.getInstance());
+		}
 	}
 }
