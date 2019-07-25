@@ -489,7 +489,7 @@ class AltMeteringService : Service() {
                         log("receiver", "end dist=$distance, latlng="+latLng.latitude+","+latLng.longitude+", destination="+destination.latitude+","+destination.longitude)
                         if(distance <= getDropDeviationDistance()){
                             //no need to do anything
-                            updateDistanceAndTriggerEndRide()
+                            insertRideDataAndEndRide()
                         } else {
                             //update path by changing destination
                             destination = latLng
@@ -515,47 +515,49 @@ class AltMeteringService : Service() {
         }
     }
 
-    private fun updateDistanceAndTriggerEndRide() {
-        InsertRideDataAndEndRide().execute()
-    }
-
     private fun updateDistanceAndCallbackEndRide(list: MutableList<LatLng>, waypoints: MutableList<LatLng>?) {
         updatePathAndDistance(list, waypoints)
-        updateDistanceAndTriggerEndRide()
+        insertRideDataAndEndRide()
     }
 
-    inner class InsertRideDataAndEndRide() : AsyncTask<Unit, Unit, Unit>(){
+    fun insertRideDataAndEndRide(){
         var accDistance = 0.0
-        override fun doInBackground(vararg params: Unit?) {
-            val segments2: MutableList<Segment> = meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
-            Log.e("$TAG InsertRideDataAndEndRide", "segments2 = $segments2")
-            for (segment in segments2) {
-                accDistance += MapUtils.distance(LatLng(segment.slat, segment.sLng), LatLng(segment.dLat, segment.dLng))
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val segments2: MutableList<Segment> = try {
+                    meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
+                } catch (e: Exception) {
+                    delay(200)
+                    meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
+                }
+                Log.e("$TAG InsertRideDataAndEndRide", "segments2 = $segments2")
+                for (segment in segments2) {
+                    accDistance += MapUtils.distance(LatLng(segment.slat, segment.sLng), LatLng(segment.dLat, segment.dLng))
+                }
+                Log.e("$TAG InsertRideDataAndEndRide", "accDistance = $accDistance")
+                //save ride values to db
+                CustomerInfo.setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, accDistance.toString())
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            Log.e("$TAG InsertRideDataAndEndRide", "accDistance = $accDistance")
-            //save ride values to db
-            CustomerInfo.setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, accDistance.toString())
-        }
 
-        override fun onPostExecute(result: Unit?) {
-            super.onPostExecute(result)
-
-            if (HomeActivity.appInterruptHandler != null) {
+            launch(Dispatchers.Main){
+                if (HomeActivity.appInterruptHandler != null) {
 //                HomeActivity.appInterruptHandler.updateMeteringUI(globalPathDistance, 0, 0,
 //                        currentLocation,
 //                        currentLocation, globalPathDistance)
+                }
+                val intent = Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)
+                intent.apply {
+                    putExtra(Constants.KEY_SUCCESS, true)
+                    putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
+                }
+                Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
+                LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent)
+                stopForeground(true)
+                stopSelf()
             }
-            val intent = Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)
-            intent.apply {
-                putExtra(Constants.KEY_SUCCESS, true)
-                putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
-            }
-            Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
-            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent)
-            stopForeground(true)
-            stopSelf()
         }
-
     }
 
     fun getScanningPointerAndShortenPathToScan(currentLatLng: LatLng, time:Long){
@@ -573,7 +575,7 @@ class AltMeteringService : Service() {
                 val result = PolyUtil.locationIndexOnPath(currentLatLng, globalPath.subList(lastScanningPoint, pathLength),
                         true, getDeviationDistance())
 
-                GlobalScope.launch(Dispatchers.Main){
+                launch(Dispatchers.Main){
 
                     Log.i(TAG, "GetScanningPointerAndShortenPathToScan position=$result")
 
