@@ -70,6 +70,7 @@ class AltMeteringService : Service() {
     private val METER_NOTIF_ID = 10102;
 
     private val LOCATION_UPDATE_INTERVAL: Long = 5000 // in milliseconds
+    private val COROUTINE_EXCEPTION_DELAY: Long = 200 // in milliseconds
     private val PATH_POINT_DISTANCE_TOLLERANCE: Double = 100.0 // in meters
     private val DROP_DISTANCE_DEVIATION: Double = 200.0 // in meters
     val LAST_LOCATION_TIME_DIFF: Long = 60000 // in meters
@@ -160,7 +161,7 @@ class AltMeteringService : Service() {
 
         if (!isMeteringActive(this)) {
             updateMeteringActive(this, true)
-            FirstTimeDataClearAsync(meteringDB, engagementId, ::fetchPathAsyncCall).execute()
+            firstTimeDataClearAsync(meteringDB, engagementId, ::fetchPathAsyncCall)
 
         } else {
             readPathAsync(meteringDB, engagementId, ::requestLocationUpdates)
@@ -367,11 +368,11 @@ class AltMeteringService : Service() {
     private fun readPathAsync(meteringDB: MeteringDatabase?, engagementId: Int, onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit){
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                delay(100)
+                delay(COROUTINE_EXCEPTION_DELAY)
                 val segments2: MutableList<Segment> = try {
                     meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
                 } catch (e: Exception) {
-                    delay(200)
+                    delay(COROUTINE_EXCEPTION_DELAY)
                     meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
                 }
                 Log.e("$TAG ReadPathAsync", "segments2 = $segments2")
@@ -384,7 +385,7 @@ class AltMeteringService : Service() {
                 val waypoints = try {
                     meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
                 } catch (e: Exception) {
-                    delay(200)
+                    delay(COROUTINE_EXCEPTION_DELAY)
                     meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
                 }
                 val waypointsL:MutableList<LatLng> = mutableListOf()
@@ -395,81 +396,103 @@ class AltMeteringService : Service() {
 
                 launch(Dispatchers.Main){onPost(list, waypointsL)}
             } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
-    class UpdateTimeStampPointerAsync(private val meteringDB: MeteringDatabase?, val engagementId: Int, val position:Int, val timeStamp:Long): AsyncTask<Unit, Unit, Unit>(){
-        override fun doInBackground(vararg params: Unit?) {
-            meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
-            meteringDB.getMeteringDao().insertScanningPointer(ScanningPointer(engagementId, position))
-
-            meteringDB.getMeteringDao().deleteLastLocationTimestamp(engagementId)
-            meteringDB.getMeteringDao().insertLastLocationTimestamp(LastLocationTimestamp(engagementId, timeStamp))
-        }
-    }
-
-
-    inner class GetLastLocationTimeAndWaypointsAsync(private val meteringDB: MeteringDatabase?, val time:Long, private val waypoint:LatLng)
-        : AsyncTask<Unit, Unit, MutableList<LatLng>?>(){
-        override fun doInBackground(vararg params: Unit?) : MutableList<LatLng>? {
-            val timestamps:MutableList<LastLocationTimestamp> = meteringDB!!.getMeteringDao().getLastLocationTimeStamp(engagementId) as MutableList<LastLocationTimestamp>
-            Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "timestamps= $timestamps")
-            if(timestamps.size > 0){
-                Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "timestamps[0].timestamp = " + timestamps[0].timestamp)
-                val diff = time - timestamps[0].timestamp
-                Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "diff = $diff")
-                if (diff > getDeviationTime()){
-                    log("deviation", "diff="+(diff/1000)+", serverTime="+getDeviationTime())
-                    fusedLocationClient?.removeLocationUpdates(locationCallback)
-                    meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
-                    meteringDB.getMeteringDao().insertWaypoint(Waypoint(engagementId, waypoint.latitude, waypoint.longitude))
-                    val waypoints = meteringDB.getMeteringDao().getAllWaypoints(engagementId)
-                    val globalWaypointLatLngs = mutableListOf<LatLng>()
-                    for(wp in waypoints){
-                        globalWaypointLatLngs.add(LatLng(wp.lat, wp.lng))
-                    }
-                    Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "waypoint added = $waypoint")
-                    return globalWaypointLatLngs
+    fun updateTimeStampPointerAsync(meteringDB: MeteringDatabase?, engagementId: Int, position:Int, timeStamp:Long){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                try {
+                    meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
+                } catch (e: Exception) {
+                    delay(COROUTINE_EXCEPTION_DELAY)
+                    meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
                 }
-            } else {
-                fusedLocationClient?.removeLocationUpdates(locationCallback)
-                meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
-                source = waypoint
-                Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, source.toString())
-                Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, source.toString())
-                Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "source shifted to waypoint = $waypoint")
-                log("deviation", "first")
-                return mutableListOf()
-            }
-            return null
-        }
+                meteringDB!!.getMeteringDao().insertScanningPointer(ScanningPointer(engagementId, position))
 
-        override fun onPostExecute(result: MutableList<LatLng>?) {
-            super.onPostExecute(result)
-            if(result != null) {
-                FetchPathAsync(meteringDB, engagementId, source, destination, result, ::requestLocationUpdates).execute()
+                meteringDB.getMeteringDao().deleteLastLocationTimestamp(engagementId)
+                meteringDB.getMeteringDao().insertLastLocationTimestamp(LastLocationTimestamp(engagementId, timeStamp))
+                Log.e(TAG, "updateTimeStampPointerAsync position=$position")
+            } catch (e: Exception) {
             }
         }
-
     }
 
-    inner class FirstTimeDataClearAsync(private val meteringDB:MeteringDatabase?, val engagementId: Int, val post:()->Unit) : AsyncTask<Unit, Unit, Unit>(){
-        override fun doInBackground(vararg params: Unit?) {
-            meteringDB!!.getMeteringDao().deleteAllSegments(engagementId)
-            meteringDB.getMeteringDao().deleteAllWaypoints(engagementId)
-            meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
-            meteringDB.getMeteringDao().deleteLastLocationTimestamp(engagementId)
-            meteringDB.getMeteringDao().deleteLogItem(engagementId)
-            Log.e(TAG, "FirstTimeDataClearAsync")
-            log("firstClear", "done")
-        }
 
-        override fun onPostExecute(result: Unit?) {
-            super.onPostExecute(result)
-            post()
-        }
+    private fun getLastLocationTimeAndWaypointsAsync(meteringDB: MeteringDatabase?, time:Long, waypoint:LatLng){
+        GlobalScope.launch(Dispatchers.IO) {
+            var globalWaypointLatLngs:MutableList<LatLng>? = null
+            try {
+                val timestamps: MutableList<LastLocationTimestamp> = try {
+                    meteringDB!!.getMeteringDao().getLastLocationTimeStamp(engagementId) as MutableList<LastLocationTimestamp>
+                } catch (e: Exception) {
+                    delay(COROUTINE_EXCEPTION_DELAY)
+                    meteringDB!!.getMeteringDao().getLastLocationTimeStamp(engagementId) as MutableList<LastLocationTimestamp>
+                }
+                Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "timestamps= $timestamps")
 
+                if(timestamps.size > 0){
+                    Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "timestamps[0].timestamp = " + timestamps[0].timestamp)
+                    val diff = time - timestamps[0].timestamp
+                    Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "diff = $diff")
+
+                    if (diff > getDeviationTime()){
+                        log("deviation", "diff="+(diff/1000)+", serverTime="+getDeviationTime())
+                        fusedLocationClient?.removeLocationUpdates(locationCallback)
+
+                        meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
+                        meteringDB.getMeteringDao().insertWaypoint(Waypoint(engagementId, waypoint.latitude, waypoint.longitude))
+
+                        val waypoints = meteringDB.getMeteringDao().getAllWaypoints(engagementId)
+                        globalWaypointLatLngs = mutableListOf()
+                        for(wp in waypoints){
+                            globalWaypointLatLngs.add(LatLng(wp.lat, wp.lng))
+                        }
+                        Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "waypoint added = $waypoint")
+                    }
+                } else {
+                    fusedLocationClient?.removeLocationUpdates(locationCallback)
+                    meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
+
+                    source = waypoint
+                    Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, source.toString())
+                    Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, source.toString())
+
+                    Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "source shifted to waypoint = $waypoint")
+                    log("deviation", "first")
+                    globalWaypointLatLngs = mutableListOf()
+                }
+            } catch (e: Exception) {
+            }
+            launch(Dispatchers.Main){
+                if(globalWaypointLatLngs != null) {
+                    FetchPathAsync(meteringDB, engagementId, source, destination, globalWaypointLatLngs, ::requestLocationUpdates).execute()
+                }
+            }
+        }
+    }
+
+    private fun firstTimeDataClearAsync(meteringDB:MeteringDatabase?, engagementId: Int, post:()->Unit){
+        GlobalScope.launch(Dispatchers.IO){
+            try {
+                try {
+                    meteringDB!!.getMeteringDao().deleteAllSegments(engagementId)
+                } catch (e: Exception) {
+                    delay(COROUTINE_EXCEPTION_DELAY)
+                    meteringDB!!.getMeteringDao().deleteAllSegments(engagementId)
+                }
+                meteringDB!!.getMeteringDao().deleteAllWaypoints(engagementId)
+                meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
+                meteringDB.getMeteringDao().deleteLastLocationTimestamp(engagementId)
+                meteringDB.getMeteringDao().deleteLogItem(engagementId)
+                Log.e(TAG, "FirstTimeDataClearAsync")
+                log("firstClear", "done")
+            } catch (e: Exception) {
+            }
+            launch(Dispatchers.Main){ post() }
+        }
     }
 
     private var intentEngagementId:Int = 0
@@ -527,7 +550,7 @@ class AltMeteringService : Service() {
                 val segments2: MutableList<Segment> = try {
                     meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
                 } catch (e: Exception) {
-                    delay(200)
+                    delay(COROUTINE_EXCEPTION_DELAY)
                     meteringDB!!.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
                 }
                 Log.e("$TAG InsertRideDataAndEndRide", "segments2 = $segments2")
@@ -561,7 +584,7 @@ class AltMeteringService : Service() {
     }
 
     fun getScanningPointerAndShortenPathToScan(currentLatLng: LatLng, time:Long){
-        var lastScanningPoint = 0
+        var lastScanningPoint: Int
         GlobalScope.launch(Dispatchers.IO){
             try {
                 val list :List<ScanningPointer> = meteringDB!!.getMeteringDao().getScanningPointer(engagementId)
@@ -580,9 +603,9 @@ class AltMeteringService : Service() {
                     Log.i(TAG, "GetScanningPointerAndShortenPathToScan position=$result")
 
                     if(result > -1){
-                        UpdateTimeStampPointerAsync(meteringDB, engagementId, lastScanningPoint + result, time).execute()
+                        updateTimeStampPointerAsync(meteringDB, engagementId, lastScanningPoint + result, time)
                     } else {
-                        GetLastLocationTimeAndWaypointsAsync(meteringDB, time, currentLatLng).execute()
+                        getLastLocationTimeAndWaypointsAsync(meteringDB, time, currentLatLng)
                     }
 
 

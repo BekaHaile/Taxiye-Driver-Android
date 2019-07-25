@@ -13,8 +13,8 @@ import product.clicklabs.jugnoo.driver.altmetering.model.*
     ScanningPointer::class,
     LastLocationTimestamp::class,
     LogItem::class
-],
-        version = 3)
+],//please update version number in any changes or addition to schema classes
+        version = 5)
 abstract class MeteringDatabase: RoomDatabase(){
 
     companion object {
