@@ -246,6 +246,7 @@ class AltMeteringService : Service() {
         }
         Log.e(TAG, "updatePathAndDistance globalPathDistance=$globalPathDistance")
         log("distance", "total=$globalPathDistance")
+        CustomerInfo.setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, globalPathDistance.toString())
         if (HomeActivity.appInterruptHandler != null) {
             HomeActivity.appInterruptHandler.pathAlt(list, waypoints)
         }

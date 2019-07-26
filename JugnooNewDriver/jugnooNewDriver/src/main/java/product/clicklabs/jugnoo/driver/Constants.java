@@ -470,5 +470,7 @@ public interface Constants {
 	String KEY_DRIVER_ALT_LOGGING_ENABLED = "driver_alt_logging_enabled";
 	String KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE = "driver_alt_drop_deviation_distance";
 	String KEY_RIDE_START_TIME = "ride_start_time";
+	String KEY_FLEET_ID = "fleet_id";
+	String KEY_DRIVER_TAG = "driver_tag";
 }
 

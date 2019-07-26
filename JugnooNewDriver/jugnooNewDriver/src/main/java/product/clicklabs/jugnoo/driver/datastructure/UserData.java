@@ -37,6 +37,7 @@ public class UserData {
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
+	private String driverTag;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -51,7 +52,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled) {
+					int resendEmailInvoiceEnabled, String driverTag) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -109,6 +110,7 @@ public class UserData {
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		setVehicleServicesModel(vehicleServicesModel);
+		this.driverTag = driverTag;
 	}
 
 	public String getUserId() {
@@ -273,5 +275,13 @@ public class UserData {
 
 	public int getResendEmailInvoiceEnabled() {
 		return resendEmailInvoiceEnabled;
+	}
+
+	public String getDriverTag() {
+		return driverTag;
+	}
+
+	public void setDriverTag(String driverTag) {
+		this.driverTag = driverTag;
 	}
 }

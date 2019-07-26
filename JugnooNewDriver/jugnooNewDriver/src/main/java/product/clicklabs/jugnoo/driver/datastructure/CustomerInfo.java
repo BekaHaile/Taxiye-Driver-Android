@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -514,6 +516,13 @@ public class CustomerInfo {
 
 	public double getTotalDistance(double distance, Context context){
 		if(distanceRecover){return totalDistanceRecovered;}
+		if(Data.userData != null && Data.userData.getDriverTag().equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())){
+			try {
+				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE);
+				Log.e("CustomerInfo getTotalDistance", "wpDistance = "+wpDistance);
+				return Double.parseDouble(wpDistance);
+			} catch (Exception ignored) {}
+		}
 //		if(getIsPooled() == 1 && getPoolFare() != null){
 //			return getPoolFare().getDistance();
 //		} else {
