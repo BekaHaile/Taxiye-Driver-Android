@@ -79,7 +79,10 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		@SerializedName("vehicle_types")
 		@Expose
-		private List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+		private List<VehicleType> vehicleTypes = new ArrayList<>();
+		@SerializedName("fleets")
+		@Expose
+		private List<Fleet> fleets = new ArrayList<>();
 
 		public City(Integer cityId, String cityName) {
 			this.cityId = cityId;
@@ -127,6 +130,10 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		@Override
 		public boolean isSelected() {
 			return false;
+		}
+
+		public List<Fleet> getFleets() {
+			return fleets;
 		}
 	}
 
@@ -212,6 +219,46 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		public void setRegionId(int regionId) {
 			this.regionId = regionId;
+		}
+	}
+
+	public class Fleet extends SearchDataModel{
+		@SerializedName("id")
+		int id;
+		@SerializedName("name")
+		String name;
+
+		public int getId() {
+			return id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public String getLabel() {
+			return getName();
+		}
+
+		@Override
+		public int getImage(Context context) {
+			return -1;
+		}
+
+		@Override
+		public boolean showImage() {
+			return false;
+		}
+
+		@Override
+		public boolean isSelected() {
+			return false;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj instanceof Fleet && ((Fleet)obj).id == id;
 		}
 	}
 

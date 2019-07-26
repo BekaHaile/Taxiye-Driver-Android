@@ -1270,4 +1270,8 @@
     <string name="documents_pending">Documents Pending</string>
     <string name="documents_rejected">Documents Rejected</string>
 
+
+    <string name="select_fleet">Select Fleet</string>
+    <string name="fleet">Fleet</string>
+    <string name="error_no_fleets_in_this_city_format">No fleets in %s</string>
 </resources>
