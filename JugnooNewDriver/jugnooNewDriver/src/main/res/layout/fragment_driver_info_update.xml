@@ -10,7 +10,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:animateLayoutChanges="true"
+        >
 
 
         <TextView
@@ -192,6 +194,41 @@
             android:background="@drawable/background_white_rounded_grey_alpha_bordered"
             app:layout_constraintTop_toBottomOf="@+id/barrierCityLabel" />
 
+        <TextView
+            android:id="@+id/tvSelectFleet"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/select_fleet"
+            android:textColor="@color/textColorMedium"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes"
+            android:fontFamily="@font/maven_pro_regular"
+            android:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/tvFleetSelected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:drawablePadding="5dp"
+            android:drawableEnd="@drawable/ic_drop_down_arrow"
+            android:hint="@string/fleet"
+            android:textDirection="locale"
+            android:padding="13dp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            android:fontFamily="@font/maven_pro_regular"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectFleet"
+            android:visibility="visible"
+            />
 
         <Button
             android:id="@+id/bContinue"
@@ -203,7 +240,7 @@
             android:layout_marginStart="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bCancel"
-            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFleetSelected" />
 
         <Button
             android:id="@+id/bCancel"
@@ -215,7 +252,7 @@
             android:textAllCaps="true"
             app:layout_constraintEnd_toStartOf="@+id/bContinue"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvVehicleTypes" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFleetSelected" />
         <TextView
             android:id="@+id/tvTermsOfUse"
             android:layout_width="match_parent"
@@ -234,7 +271,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities"/>
+            app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities,tvTermsOfUse"/>
 
         <android.support.constraint.Group
             android:id="@+id/promoGroupView"
@@ -242,6 +279,12 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="tvPromo,edtPromo"/>
+        <android.support.constraint.Group
+            android:id="@+id/fleetGroupView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvSelectFleet,tvFleetSelected"/>
 
     </android.support.constraint.ConstraintLayout>
 

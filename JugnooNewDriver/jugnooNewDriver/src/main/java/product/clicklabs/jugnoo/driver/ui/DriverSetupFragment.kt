@@ -42,9 +42,12 @@ class DriverSetupFragment : Fragment() {
 
     private lateinit var accessToken: String
     private var cityId: String? = null
+    private var citySelected: CityResponse.City? = null
+    private var fleetSelected: CityResponse.Fleet? = null
     private var toolbarChangeListener: ToolbarChangeListener? = null
     private var citiesList:MutableList<CityResponse.City>? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
+    private val FLEET_DIALOG_FRAGMENT_TAG = "fleet_fragment_dialog";
 
     private val adapter by lazy { VehicleTypeSelectionAdapter(requireActivity(), rvVehicleTypes, null) }
 
@@ -101,6 +104,7 @@ class DriverSetupFragment : Fragment() {
         bCancel.typeface = Fonts.mavenMedium(requireActivity())
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
         tvCities.setOnClickListener{showCountriesDialog(requireActivity().supportFragmentManager)}
+        tvFleetSelected.setOnClickListener{showFleetDialog(requireActivity().supportFragmentManager)}
         tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(requireActivity(), 3)
@@ -236,7 +240,9 @@ class DriverSetupFragment : Fragment() {
         )
         if(referralCode!=null){
             params["referral_code"] = referralCode;
-
+        }
+        if(fleetSelected != null){
+            params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
     HomeUtil.putDefaultParams(params)
     ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
@@ -404,6 +410,7 @@ class DriverSetupFragment : Fragment() {
         if(city!=null){
             tvCities.text = city.cityName
             cityId = city.cityId.toString()
+            citySelected = city
             adapter.setList(city.vehicleTypes,0)
             if(city.vehicleTypes==null || city.vehicleTypes.size==0){
                 rvVehicleTypes.gone()
@@ -411,10 +418,25 @@ class DriverSetupFragment : Fragment() {
             }else{
                 rvVehicleTypes.visible()
             }
+            if(city.fleets != null && city.fleets.size > 0) {
+                fleetGroupView.visibility = View.VISIBLE
+                if (fleetSelected != null && city.fleets.contains(fleetSelected)){
+                    tvFleetSelected.text = fleetSelected!!.name
+                } else {
+                    fleetSelected = null
+                    tvFleetSelected.text = null
+                }
+            } else {
+                fleetGroupView.visibility = View.GONE
+                fleetSelected = null
+            }
         }else{
             rvVehicleTypes.gone()
             tvCities.text = getString(R.string.label_select_city)
             cityId = null
+            citySelected = null
+            fleetGroupView.visibility = View.GONE
+            fleetSelected = null
 
 
         }
@@ -435,16 +457,13 @@ class DriverSetupFragment : Fragment() {
             countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)
         }
     }
-    val onCountryPickerListener = object : OnCountryPickerListener<CityResponse.City> {
-        override fun onSelectCountry(country: CityResponse.City?) {
-                if(country!=null){
-                    setCityData(country)
-                }
+    private val onCountryPickerListener = OnCountryPickerListener<CityResponse.City> { country ->
+        if(country!=null){
+            setCityData(country)
         }
-
     };
 
-    val countryPickerDialogInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.City> {
+    private val countryPickerDialogInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.City> {
         override fun getAllCountries(): MutableList<CityResponse.City> {
             return citiesList!!
         }
@@ -458,5 +477,36 @@ class DriverSetupFragment : Fragment() {
         }
 
 
-    };
+    }
+
+    private fun showFleetDialog(supportFragmentManager: FragmentManager) {
+        if (citiesList == null || citiesList!!.isEmpty() || citySelected == null) {
+            Utils.showToast(requireActivity(), getString(R.string.error_no_cities_found))
+        } else if(citySelected!!.fleets == null || citySelected!!.fleets.size == 0){
+            Utils.showToast(requireActivity(), getString(R.string.error_no_fleets_in_this_city_format, citySelected!!.cityName))
+        } else {
+            val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.select_fleet), false)
+            countryPickerDialog.setCountryPickerListener(object:OnCountryPickerListener<CityResponse.Fleet>{
+                override fun onSelectCountry(country: CityResponse.Fleet?) {
+                    fleetSelected = country
+                    tvFleetSelected.text = fleetSelected!!.name
+                }
+
+            });
+            countryPickerDialog.setDialogInteractionListener(object:CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet>{
+                override fun getAllCountries(): MutableList<CityResponse.Fleet> {
+                    return citySelected!!.fleets
+                }
+
+                override fun sortCountries(searchResults: MutableList<CityResponse.Fleet>?) {
+                }
+
+                override fun canSearch(): Boolean {
+                    return citySelected!!.fleets.size>7
+                }
+
+            })
+            countryPickerDialog.show(supportFragmentManager, FLEET_DIALOG_FRAGMENT_TAG)
+        }
+    }
 }

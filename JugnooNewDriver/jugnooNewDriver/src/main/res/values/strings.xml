@@ -1257,4 +1257,8 @@
     <string name="save_notes">Save notes</string>
     <string name="alert_provide_some_notes">Please add some notes</string>
     <string name="click_to_view_notes">Click to View Notes</string>
+
+    <string name="select_fleet">Select Fleet</string>
+    <string name="fleet">Fleet</string>
+    <string name="error_no_fleets_in_this_city_format">No fleets in %s</string>
 </resources>
