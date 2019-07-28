@@ -134,7 +134,10 @@ class SplashFragment : Fragment() {
                 { showBlockerDialog(getString(R.string.device_token_not_found_message))},
                 {
                     if(!isMockLocationEnabled()){
-                        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(deviceTokenReceiver)
+                        try {
+                            LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(deviceTokenReceiver)
+                        } catch (e: Exception) {
+                        }
                         subscribeSubjectForAccessTokenLogin()
                         startExecutionForPendingAPis()
                     } else {

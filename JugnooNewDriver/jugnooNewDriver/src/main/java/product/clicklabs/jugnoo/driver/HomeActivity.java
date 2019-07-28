@@ -3586,11 +3586,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
                             tvOnlineTop.setSelected(true);
                             tvOfflineTop.setSelected(false);
-                            viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
+                            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_theme_rounded));
                             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
                             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
                             viewSlide.postDelayed(() -> slidingSwitch.setSlideRight(), 100);
-                            rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
+                            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_stroke_red_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_on, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_on,getString(R.string.app_name)));
                             textViewAutosOn.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
@@ -3599,11 +3599,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             tvOnlineTop.setSelected(false);
                             tvOfflineTop.setSelected(true);
-                            viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
+                            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_theme_rounded));
                             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
                             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
                             viewSlide.postDelayed(() -> slidingSwitch.setSlideLeft(), 100);
-                            rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
+                            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_stroke_white_theme));
                             textViewAutosOn.setText(getString(R.string.jugnoo_off, getString(R.string.appname)));
                             tvTitle.setText(getString(R.string.jugnoo_off,getString(R.string.app_name)));
                             relativeLayoutLastRideEarning.setVisibility(View.GONE);
@@ -11701,19 +11701,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (Data.userData.autosAvailable == 1) {
             tvOnlineTop.setSelected(true);
             tvOfflineTop.setSelected(false);
-            viewSlide.setBackground(getDrawable(R.drawable.selector_green_theme_rounded));
+            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_theme_rounded));
             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
             switchContainer.post(() -> slidingSwitch.setSlideRight());
-            rlOnOff.setBackground(getDrawable(R.drawable.selector_green_stroke_red_white_theme));
+            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_green_stroke_red_white_theme));
         } else {
             tvOnlineTop.setSelected(false);
             tvOfflineTop.setSelected(true);
-            viewSlide.setBackground(getDrawable(R.drawable.selector_red_theme_rounded));
+            viewSlide.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_theme_rounded));
             slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
             slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
             switchContainer.post(()-> slidingSwitch.setSlideLeft());
-            rlOnOff.setBackground(getDrawable(R.drawable.selector_red_stroke_white_theme));
+            rlOnOff.setBackground(ContextCompat.getDrawable(HomeActivity.this, R.drawable.selector_red_stroke_white_theme));
         }
     }
 

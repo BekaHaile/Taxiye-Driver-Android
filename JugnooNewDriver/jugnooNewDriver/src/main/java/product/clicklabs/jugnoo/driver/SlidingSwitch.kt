@@ -81,34 +81,36 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
     }
 
     private fun animateSliderButton(currMargin: Int, newMargin: Float) {
-        val diff = newMargin - currMargin.toFloat()
-        val translateAnim = TranslateAnimation(TranslateAnimation.ABSOLUTE, 0f,
-                TranslateAnimation.ABSOLUTE, diff,
-                TranslateAnimation.ABSOLUTE, 0f,
-                TranslateAnimation.ABSOLUTE, 0f)
-        translateAnim.duration = animDuration.toLong()
-        translateAnim.interpolator = AccelerateDecelerateInterpolator()
-        translateAnim.fillAfter = false
-        translateAnim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
+        if(view.viewSlide != null) {
+            val diff = newMargin - currMargin.toFloat()
+            val translateAnim = TranslateAnimation(TranslateAnimation.ABSOLUTE, 0f,
+                    TranslateAnimation.ABSOLUTE, diff,
+                    TranslateAnimation.ABSOLUTE, 0f,
+                    TranslateAnimation.ABSOLUTE, 0f)
+            translateAnim.duration = animDuration.toLong()
+            translateAnim.interpolator = AccelerateDecelerateInterpolator()
+            translateAnim.fillAfter = false
+            translateAnim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
 
-            }
+                }
 
-            override fun onAnimationEnd(animation: Animation) {
-                view.viewSlide.clearAnimation()
-                paramF.leftMargin = newMargin.toInt()
-                paramF.setMarginStart(newMargin.toInt())
-                view.switchContainer.updateViewLayout(view.viewSlide, paramF)
-                view.viewSlide.setEnabled(true)
-            }
+                override fun onAnimationEnd(animation: Animation) {
+                    view.viewSlide.clearAnimation()
+                    paramF.leftMargin = newMargin.toInt()
+                    paramF.setMarginStart(newMargin.toInt())
+                    view.switchContainer.updateViewLayout(view.viewSlide, paramF)
+                    view.viewSlide.setEnabled(true)
+                }
 
-            override fun onAnimationRepeat(animation: Animation) {
+                override fun onAnimationRepeat(animation: Animation) {
 
-            }
-        })
-        view.viewSlide.clearAnimation()
-        view.viewSlide.isEnabled = false
-        view.viewSlide.startAnimation(translateAnim)
+                }
+            })
+            view.viewSlide.clearAnimation()
+            view.viewSlide.isEnabled = false
+            view.viewSlide.startAnimation(translateAnim)
+        }
     }
 
     fun setSlideLeft() {
@@ -117,8 +119,10 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
     }
 
     fun setSlideRight() {
-        view.switchContainer.post { animateSliderButton(paramF.getMarginStart(), (view.switchContainer.measuredWidth - view.viewSlide.measuredWidth.toFloat())-Utils.dpToPx(view.context, 2f)) }
-        isLeft = false
+        if(view.switchContainer != null) {
+            view.switchContainer.post { animateSliderButton(paramF.getMarginStart(), (view.switchContainer.measuredWidth - view.viewSlide.measuredWidth.toFloat()) - Utils.dpToPx(view.context, 2f)) }
+            isLeft = false
+        }
     }
 
     fun toggle(){
