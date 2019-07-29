@@ -93,6 +93,12 @@ abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : As
             meteringDB.getMeteringDao().deleteLogItem(engagementId)
             AltMeteringService.updateMeteringActive(MyApplication.getInstance(), false, engagementId)
 
+            Log.e(TAG, "allSegments = "+meteringDB.getMeteringDao().getAllSegments())
+            Log.e(TAG, "allWaypoints = "+meteringDB.getMeteringDao().getAllWaypoints())
+            Log.e(TAG, "allScanningPointers = "+meteringDB.getMeteringDao().getAllScanningPointers())
+            Log.e(TAG, "allLocationTimestamps = "+meteringDB.getMeteringDao().getAllLocationTimeStamps())
+            Log.e(TAG, "allLogItems = "+meteringDB.getMeteringDao().getAllLogItems())
+
             //save ride values to db
 //        CustomerInfo.setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, accDistance.toString())
 //        CustomerInfo.setMapValue(engagementId, Constants.KEY_CSV_PATH, csvPathStr)

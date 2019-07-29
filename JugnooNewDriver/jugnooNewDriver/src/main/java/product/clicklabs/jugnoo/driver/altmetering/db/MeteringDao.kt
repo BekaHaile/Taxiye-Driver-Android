@@ -22,6 +22,9 @@ interface MeteringDao{
     @Query("DELETE FROM segment WHERE engagementId = :engagementId")
     fun deleteAllSegments(engagementId:Int)
 
+    @Query("SELECT count(*) FROM segment")
+    fun getAllSegments() : Int
+
 
     //Scanning pointer queries-------
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -32,6 +35,9 @@ interface MeteringDao{
 
     @Query("SELECT * FROM scanning_pointer WHERE engagementId = :engagementId")
     fun getScanningPointer(engagementId:Int) : List<ScanningPointer>
+
+    @Query("SELECT count(*) FROM scanning_pointer")
+    fun getAllScanningPointers() : Int
 
 
 
@@ -45,6 +51,9 @@ interface MeteringDao{
     @Query("SELECT * FROM last_location_timestamp WHERE engagementId = :engagementId")
     fun getLastLocationTimeStamp(engagementId:Int) : List<LastLocationTimestamp>
 
+    @Query("SELECT count(*) FROM last_location_timestamp")
+    fun getAllLocationTimeStamps() : Int
+
 
 
     //Waypoints queries---------
@@ -57,6 +66,9 @@ interface MeteringDao{
     @Query("DELETE FROM waypoint WHERE engagementId = :engagementId")
     fun deleteAllWaypoints(engagementId:Int)
 
+    @Query("SELECT count(*) FROM waypoint")
+    fun getAllWaypoints() : Int
+
 
 
     //Log queries---------
@@ -68,4 +80,7 @@ interface MeteringDao{
 
     @Query("DELETE FROM log_item WHERE engagementId = :engagementId")
     fun deleteLogItem(engagementId:Int)
+
+    @Query("SELECT count(*) FROM log_item")
+    fun getAllLogItems() : Int
 }

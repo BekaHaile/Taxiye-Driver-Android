@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.location.Location
-import android.os.AsyncTask
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.LocalBroadcastManager
@@ -151,8 +150,8 @@ class AltMeteringService : Service() {
     }
 
     private fun fetchPathAsyncCall(waypoints: MutableList<LatLng>?){
-        FetchPathAsync(meteringDB, engagementId, source, destination,
-                waypoints, ::requestLocationUpdates).execute()
+        fetchPathAsync(meteringDB, engagementId, source, destination,
+                waypoints, ::requestLocationUpdates)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -272,37 +271,29 @@ class AltMeteringService : Service() {
     }
 
 
-    inner class FetchPathAsync(private val meteringDB: MeteringDatabase?, val engagementId:Int, val source: LatLng, val destination: LatLng,
-                         var waypoints: MutableList<LatLng>?,
-                         val onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit) : AsyncTask<Unit, Unit, MutableList<LatLng>>() {
-        private lateinit var strWaypoints: String
-
-        fun getWaypointsStr() {
+    private fun fetchPathAsync(meteringDB: MeteringDatabase?, engagementId:Int, source: LatLng, destination: LatLng,
+                               waypointsP: MutableList<LatLng>?, onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit){
+        GlobalScope.launch(Dispatchers.IO) {
+            var waypoints = waypointsP
             if(waypoints == null){
                 val waypointsDB = meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
                 waypoints = mutableListOf()
                 for(wp in waypointsDB){
-                    waypoints!!.add(LatLng(wp.lat, wp.lng))
+                    waypoints.add(LatLng(wp.lat, wp.lng))
                 }
             }
 
             val sb = StringBuilder()
-            if(waypoints != null) {
-                for (i in waypoints!!.indices) {
-                    sb.append("via:")
-                            .append(waypoints!![i].latitude)
-                            .append("%2C")
-                            .append(waypoints!![i].longitude)
-                            .append("%7C")
-                }
+            for (i in waypoints.indices) {
+                sb.append("via:")
+                        .append(waypoints[i].latitude)
+                        .append("%2C")
+                        .append(waypoints[i].longitude)
+                        .append("%7C")
             }
-            strWaypoints = sb.toString()
-        }
-
-        override fun doInBackground(vararg params: Unit?): MutableList<LatLng> {
+            val strWaypoints = sb.toString()
+            var list = mutableListOf<LatLng>()
             try {
-                getWaypointsStr()
-
                 val strOrigin = source.latitude.toString() + "," + source.longitude.toString()
                 val strDestination = destination.latitude.toString() + "," + destination.longitude.toString()
                 log("gapi", "strOrigin=$strOrigin, strDest=$strDestination, strWp=$strWaypoints")
@@ -315,7 +306,7 @@ class AltMeteringService : Service() {
                 val result = String((response.body as TypedByteArray).bytes)
                 val json = JSONObject(result)
 
-                val list = MapUtils.getLatLngListFromPath(result)
+                list = MapUtils.getLatLngListFromPath(result)
                 log("gapi", "status="+json.getString("status")+", list="+list.size)
                 if (list.size > 0) {
                     val segments: MutableList<Segment> = arrayListOf()
@@ -331,17 +322,15 @@ class AltMeteringService : Service() {
                     Log.e("$TAG FetchPathAsync", "segments2 = $segments2")
                     Log.e("$TAG FetchPathAsync", "segments2size = "+segments2.size)
                 }
-                return list
             } catch (e: Exception) {
                 e.printStackTrace()
                 log("gapi", "error=$e")
+                delay(5000)
             }
-            return mutableListOf()
-        }
 
-        override fun onPostExecute(result: MutableList<LatLng>) {
-            super.onPostExecute(result)
-            onPost(result, waypoints)
+            launch(Dispatchers.Main){
+                onPost(list, waypoints)
+            }
         }
 
     }
@@ -447,7 +436,7 @@ class AltMeteringService : Service() {
             }
             launch(Dispatchers.Main){
                 if(globalWaypointLatLngs != null) {
-                    FetchPathAsync(meteringDB, engagementId, source, destination, globalWaypointLatLngs, ::requestLocationUpdates).execute()
+                    fetchPathAsync(meteringDB, engagementId, source, destination, globalWaypointLatLngs, ::requestLocationUpdates)
                 }
             }
         }
@@ -495,7 +484,7 @@ class AltMeteringService : Service() {
                         } else {
                             //update path by changing destination
                             destination = latLng
-                            FetchPathAsync(meteringDB, engagementId, source, destination, null, ::updateDistanceAndCallbackEndRide).execute()
+                            fetchPathAsync(meteringDB, engagementId, source, destination, null, ::updateDistanceAndCallbackEndRide)
                         }
 
                     } else {
