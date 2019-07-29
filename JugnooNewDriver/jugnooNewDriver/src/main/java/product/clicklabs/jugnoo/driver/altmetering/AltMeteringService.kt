@@ -44,15 +44,12 @@ class AltMeteringService : Service() {
         private const val METERING_ = "alt_metering_"
         val TAG = AltMeteringService::class.java.simpleName
 
-        fun updateMeteringActive(context: Context, meteringState: Boolean){
-            Log.e(TAG, "updateMeteringActive meteringState=$meteringState")
-            Prefs.with(context).save(METERING_STATE_ACTIVE, meteringState)
+        fun updateMeteringActive(context: Context, meteringState: Boolean, engagementId:Int){
+            Log.e(TAG, "updateMeteringActive meteringState$engagementId =$meteringState")
             if(!meteringState){
-                Prefs.with(context).save(METERING_+ Constants.KEY_ENGAGEMENT_ID, 0)
-                Prefs.with(context).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, 0.toString())
-                Prefs.with(context).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, 0.toString())
-                Prefs.with(context).save(METERING_+ Constants.KEY_OP_DROP_LATITUDE, 0.toString())
-                Prefs.with(context).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, 0.toString())
+                Prefs.with(context).remove(METERING_STATE_ACTIVE+engagementId)
+            } else {
+                Prefs.with(context).save(METERING_STATE_ACTIVE+engagementId, meteringState)
             }
         }
 
@@ -61,9 +58,9 @@ class AltMeteringService : Service() {
     }
 
 
-    private fun isMeteringActive(context:Context): Boolean{
-        val state = Prefs.with(context).getBoolean(METERING_STATE_ACTIVE, false)
-        Log.e(TAG, "isMeteringActive state=$state")
+    private fun isMeteringActive(context:Context, engagementId:Int): Boolean{
+        val state = Prefs.with(context).getBoolean(METERING_STATE_ACTIVE+engagementId, false)
+        Log.e(TAG, "isMeteringActive state$engagementId=$state")
         return state
     }
 
@@ -114,7 +111,6 @@ class AltMeteringService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.e(TAG, "onStartCommand, intent=$intent")
-        log("service", "startCommand="+isMeteringActive(this))
 
         if (intent != null && intent.hasExtra(Constants.KEY_ENGAGEMENT_ID)) {
             val sourceLat = intent.getDoubleExtra(Constants.KEY_PICKUP_LATITUDE, 0.0)
@@ -125,25 +121,6 @@ class AltMeteringService : Service() {
             engagementId = intent.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)
             source = LatLng(sourceLat, sourceLng)
             destination = LatLng(destinationLat, destinationLng)
-
-            Prefs.with(this).save(METERING_+ Constants.KEY_ENGAGEMENT_ID, engagementId)
-            Prefs.with(this).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, sourceLat.toString())
-            Prefs.with(this).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, sourceLng.toString())
-            Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LATITUDE, destinationLat.toString())
-            Prefs.with(this).save(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, destinationLng.toString())
-
-
-        } else if(isMeteringActive(this)) {
-
-            val sourceLat = Prefs.with(this).getString(METERING_+ Constants.KEY_PICKUP_LATITUDE, 0.toString()).toDouble()
-            val sourceLng = Prefs.with(this).getString(METERING_+ Constants.KEY_PICKUP_LONGITUDE, 0.toString()).toDouble()
-            val destinationLat = Prefs.with(this).getString(METERING_+ Constants.KEY_OP_DROP_LATITUDE, 0.toString()).toDouble()
-            val destinationLng = Prefs.with(this).getString(METERING_+ Constants.KEY_OP_DROP_LONGITUDE, 0.toString()).toDouble()
-
-            engagementId = Prefs.with(this).getInt(METERING_+ Constants.KEY_ENGAGEMENT_ID, 0)
-            source = LatLng(sourceLat, sourceLng)
-            destination = LatLng(destinationLat, destinationLng)
-
 
         } else {
             stopSelf()
@@ -158,11 +135,14 @@ class AltMeteringService : Service() {
         }
         registerActivityBroadcast()
 
+        log("service", "startCommand="+isMeteringActive(this, engagementId))
 
-        if (!isMeteringActive(this)) {
-            updateMeteringActive(this, true)
-            firstTimeDataClearAsync(meteringDB, engagementId, ::fetchPathAsyncCall)
+        if (!isMeteringActive(this, engagementId)) {
+            updateMeteringActive(this, true, engagementId)
+            firstTimeDataClearAsync(meteringDB, engagementId, ::fetchPathAsyncCall, mutableListOf())
 
+        } else if(intent.getBooleanExtra(Constants.KEY_DROP_UPDATED, false)){
+            fetchPathAsyncCall(null)
         } else {
             readPathAsync(meteringDB, engagementId, ::requestLocationUpdates)
         }
@@ -170,9 +150,9 @@ class AltMeteringService : Service() {
         return START_STICKY
     }
 
-    private fun fetchPathAsyncCall(){
+    private fun fetchPathAsyncCall(waypoints: MutableList<LatLng>?){
         FetchPathAsync(meteringDB, engagementId, source, destination,
-                mutableListOf(), ::requestLocationUpdates).execute()
+                waypoints, ::requestLocationUpdates).execute()
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -458,8 +438,6 @@ class AltMeteringService : Service() {
                     meteringDB!!.getMeteringDao().deleteScanningPointer(engagementId)
 
                     source = waypoint
-                    Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LATITUDE, source.toString())
-                    Prefs.with(this@AltMeteringService).save(METERING_+ Constants.KEY_PICKUP_LONGITUDE, source.toString())
 
                     Log.e("$TAG GetLastLocationTimeAndWaypointsAsync", "source shifted to waypoint = $waypoint")
                     log("deviation", "first")
@@ -475,7 +453,7 @@ class AltMeteringService : Service() {
         }
     }
 
-    private fun firstTimeDataClearAsync(meteringDB:MeteringDatabase?, engagementId: Int, post:()->Unit){
+    private fun firstTimeDataClearAsync(meteringDB:MeteringDatabase?, engagementId: Int, post:(MutableList<LatLng>?)->Unit, waypoints:MutableList<LatLng>?){
         GlobalScope.launch(Dispatchers.IO){
             try {
                 try {
@@ -492,7 +470,7 @@ class AltMeteringService : Service() {
                 log("firstClear", "done")
             } catch (e: Exception) {
             }
-            launch(Dispatchers.Main){ post() }
+            launch(Dispatchers.Main){ post(waypoints) }
         }
     }
 

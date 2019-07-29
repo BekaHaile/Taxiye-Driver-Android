@@ -472,5 +472,6 @@ public interface Constants {
 	String KEY_RIDE_START_TIME = "ride_start_time";
 	String KEY_FLEET_ID = "fleet_id";
 	String KEY_DRIVER_TAG = "driver_tag";
+	String KEY_DROP_UPDATED = "drop_updated";
 }
 

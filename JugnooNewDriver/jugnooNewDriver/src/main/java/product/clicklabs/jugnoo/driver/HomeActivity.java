@@ -4995,9 +4995,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             String meteringState = Database2.getInstance(this).getMetringState();
             String meteringStateSp = Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
 
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+
             if (!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)) {
                 GpsDistanceCalculator.saveTrackingToSP(this, 0);
-                AltMeteringService.Companion.updateMeteringActive(this, false);
+                AltMeteringService.Companion.updateMeteringActive(this, false, customerInfo.getEngagementId());
             } else {
                 new Handler().postDelayed(new Runnable() {
 
@@ -5011,17 +5013,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             Database2.getInstance(this).updateMetringState(Database2.ON);
             Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
 
-			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(DriverScreenMode.D_IN_RIDE == driverScreenMode
                     && customerInfo.getDropLatLng() != null
                     && Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
-				Intent intent = new Intent(this, AltMeteringService.class);
-				intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
-				intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
-				intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
-				intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
-				intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
-                startService(intent);
+                startService(getAltServiceIntent(customerInfo));
 			}
             startService(new Intent(this, MeteringService.class));
 
@@ -5035,6 +5030,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
     }
+
+    private Intent getAltServiceIntent(CustomerInfo customerInfo){
+		Intent intent = new Intent(this, AltMeteringService.class);
+		intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
+		intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
+		intent.putExtra(Constants.KEY_PICKUP_LONGITUDE, customerInfo.getRequestlLatLng().longitude);
+		intent.putExtra(Constants.KEY_OP_DROP_LATITUDE, customerInfo.getDropLatLng().latitude);
+		intent.putExtra(Constants.KEY_OP_DROP_LONGITUDE, customerInfo.getDropLatLng().longitude);
+		return intent;
+	}
+
+    private void updateDropLatngForAltService(CustomerInfo customerInfo){
+		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+				&& customerInfo.getDropLatLng() != null
+				&& Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+			Intent intent = getAltServiceIntent(customerInfo);
+			intent.putExtra(Constants.KEY_DROP_UPDATED, true);
+			startService(intent);
+		}
+	}
 
 
     public void buttonDriverNavigationSetVisibility(int visibility) {
@@ -6555,7 +6570,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
 
             MeteringService.gpsInstance(this).stop();
-            AltMeteringService.Companion.updateMeteringActive(this, false);
+            for(CustomerInfo customerInfo : Data.getAssignedCustomerInfosListForEngagedStatus()) {
+				AltMeteringService.Companion.updateMeteringActive(this, false, customerInfo.getEngagementId());
+			}
             Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
         }
     }
@@ -9349,6 +9366,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     DialogPopup.alertPopup(HomeActivity.this, "", message+"\n"+dropAddress);
                 }
                 updateDropLatLngandPath(engagementId, dropLatLng, dropAddress);
+				updateDropLatngForAltService(Data.getCustomerInfo(engagementId));
             }
         });
     }
