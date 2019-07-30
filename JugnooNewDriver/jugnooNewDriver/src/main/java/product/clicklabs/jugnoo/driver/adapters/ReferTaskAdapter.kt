@@ -64,11 +64,15 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
 
         holder.tvStatus.text = list[position].taskMessage
         if(list[position].status == TaskType.SUCCESS.i) {
-            if(list[position].numOfRidesNextTarget == 0) {
+            if(list[position].nextTarget?.numOfRidesNextTarget == 0) {
                 holder.tvStatus.visibility = View.GONE
             }
             holder.tvStatus.setTextColor(context.resources.getColor(R.color.green_online))
             holder.tvStatus.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
+            list[position].nextTarget?.let {
+                holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
+                holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+            }
 
         } else if(list[position].status == TaskType.PENDING.i) {
             holder.groupCreditsProcessed.gone()
@@ -87,6 +91,9 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
             var layoutparms = holder.tvDriverNoValue.layoutParams as ConstraintLayout.LayoutParams
             layoutparms.topMargin = 0
             holder.tvDriverNoValue.layoutParams = layoutparms
+        }
+        list[position].nextTarget?.let {
+            if(it.numOfRidesNextTarget <=  list[position].userNumRides) { holder.tvStatus.gone() }
         }
     }
 

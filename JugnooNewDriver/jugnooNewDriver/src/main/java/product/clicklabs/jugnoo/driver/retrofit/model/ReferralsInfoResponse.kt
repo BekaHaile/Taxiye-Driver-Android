@@ -13,8 +13,11 @@ data class ReferInfo @JvmOverloads constructor(@SerializedName("name") @Expose v
                                                            @SerializedName("processed_money") @Expose var processedMoney: Int = 0,
                                                            @SerializedName("processed_credits") @Expose var processedCredits: Int = 0,
                                                            @SerializedName("user_num_rides") @Expose var userNumRides: Int = 0,
-                                                           @SerializedName("credits_next_target") @Expose var creditsNextTarget: Int = 0,
-                                                           @SerializedName("money_next_target") @Expose var moneyNextTarget: Int = 0,
-                                                           @SerializedName("num_rides_next_target") @Expose var numOfRidesNextTarget: Int = 0,
+                                                           @SerializedName("next_target") @Expose var nextTarget: NextTarget? = null,
                                                            @SerializedName("phone_no") @Expose var phoneNo: String? = null,
                                                            var taskMessage: String? = null)
+
+data class NextTarget @JvmOverloads constructor(@SerializedName("credits") @Expose var creditsNextTarget: Int = 0,
+                                                @SerializedName("money") @Expose var moneyNextTarget: Int = 0,
+                                                @SerializedName("num_rides") @Expose var numOfRidesNextTarget: Int = 0)
+

@@ -1092,6 +1092,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             fareDetailsAdapter = new FareDetailsAdapter();
             rvFareDetails.setAdapter(fareDetailsAdapter);
 
+            if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY, getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
+                containerSwitch.setVisibility(View.VISIBLE);
+                tvTitle.setVisibility(View.GONE);
+            } else {
+                containerSwitch.setVisibility(View.GONE);
+                tvTitle.setVisibility(View.VISIBLE);
+            }
 
 
             slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
@@ -3566,7 +3573,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if (Data.userData != null) {
             if (1 == Data.userData.autosEnabled) {
                 relativeLayoutAutosOn.setVisibility(View.VISIBLE);
-                containerSwitch.setVisibility(View.VISIBLE);
+                if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY,getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
+                    containerSwitch.setVisibility(View.VISIBLE);
+                }
             } else {
                 relativeLayoutAutosOn.setVisibility(View.GONE);
                 Data.userData.autosAvailable = 0;
@@ -3596,7 +3605,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else if (menuOptionVisibility == 3) {
                 relativeLayoutDeliveryOn.setVisibility(View.VISIBLE);
                 relativeLayoutAutosOn.setVisibility(View.VISIBLE);
-                containerSwitch.setVisibility(View.VISIBLE);
+                if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY,getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
+                    containerSwitch.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

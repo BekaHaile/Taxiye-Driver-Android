@@ -101,18 +101,23 @@ class ReferalsFragment : Fragment() {
                 if (item.processedMoney == 0 && item.processedCredits == 0) {
                     pending++
                 } else {
-                    if(item.userNumRides < item.numOfRidesNextTarget) {
-                        if(item.moneyNextTarget > 0 && item.creditsNextTarget > 0) {
-                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),
-                                    item.moneyNextTarget.toString())} money and ${item.creditsNextTarget} credits by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
-                        } else if(item.moneyNextTarget > 0) {
-                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),
-                                    item.moneyNextTarget.toString())} money by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
-                        } else if(item.creditsNextTarget > 0) {
-                            item.taskMessage = "Earn ${item.creditsNextTarget} credits by completing ${item.numOfRidesNextTarget - item.userNumRides} rides"
+                    succeeded++
+                }
+                item.nextTarget?.let {
+                    if (item.userNumRides < item.nextTarget?.numOfRidesNextTarget!!) {
+                        if (item.nextTarget?.moneyNextTarget!! > 0 && item.nextTarget?.creditsNextTarget!! > 0) {
+                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                                    item.nextTarget?.moneyNextTarget.toString())} and ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
+                        } else if (item.nextTarget?.moneyNextTarget!! > 0) {
+                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                                    item.nextTarget?.moneyNextTarget.toString())} by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
+                        } else if (item.nextTarget?.creditsNextTarget!! > 0) {
+                            item.taskMessage = "Earn ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
                         }
                     }
-                    succeeded++
+                }
+                if(item.nextTarget == null) {
+                    item.taskMessage = "Completed"
                 }
             }
         }
