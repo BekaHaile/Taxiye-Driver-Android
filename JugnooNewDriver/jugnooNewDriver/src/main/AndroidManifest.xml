@@ -93,6 +93,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".IncomeDetailsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" />
+
         <service
             android:name=".MyInstanceIDListenerService"
             android:exported="false">
@@ -354,7 +359,6 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".home.utils.LocationReceiverBG"/>
 
         <service
             android:name=".home.StartRideLocationUpdateService"
@@ -393,14 +397,14 @@
             android:enabled="true"
             android:exported="true"/>
         <service
+            android:name=".altmetering.AltMeteringService"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
             android:name=".services.FetchDataUsageService"
             android:enabled="true"
             android:exported="true"/>
 
-        <receiver android:name=".LocationReceiverDriver"/>
-        <receiver android:name=".GPSLocationReceiverBackground"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundBalanced"/>
-        <receiver android:name=".FusedLocationReceiverBackgroundHigh"/>
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

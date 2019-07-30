@@ -56,7 +56,7 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
-    	restartServiceViaAlarm();
+//    	restartServiceViaAlarm();
     }
 
 	@Override
@@ -93,6 +93,8 @@ public class MeteringService extends Service {
     		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
+				stopForeground(true);
+				stopSelf();
     		}
     		else{
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
@@ -100,6 +102,7 @@ public class MeteringService extends Service {
 				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 				AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+				Log.e("MeteringService restartServiceViaAlarm","="+restartService);
     		}
 		} catch (Exception e) {
 			e.printStackTrace();

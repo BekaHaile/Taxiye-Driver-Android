@@ -390,7 +390,6 @@
             </RelativeLayout>
 
 
-
             <RelativeLayout
                 android:id="@+id/walletRl"
                 android:layout_width="match_parent"

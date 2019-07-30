@@ -50,7 +50,7 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
             long responseTime = System.currentTimeMillis();
             int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
                     DriverScreenMode.D_INITIAL.getOrdinal());
-            String accessToken = Database2.getInstance(context).getDLDAccessToken();
+            String accessToken = JSONParser.getAccessTokenPair(context).first;
             if (DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
                     && location != null
                     && !"".equalsIgnoreCase(accessToken)) {

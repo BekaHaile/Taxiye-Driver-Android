@@ -418,6 +418,7 @@ public interface Constants {
 	String SP_BATTERY_OPTIMIZATIONS_ASKED = "sp_battery_optimizations_asked";
 	String KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS = "driver_check_locale_for_address";
 	String KEY_IS_CORPORATE_RIDE = "is_corporate_ride";
+	String KEY_SUCCESS = "success";
 	String KEY_CUSTOMER_NOTE = "customer_note";
 	String KEY_DRIVER_EMAIL_OPTIONAL = "driver_email_optional";
 	String KEY_DRIVER_MAX_BID_MULTIPLIER = "driver_max_bid_multiplier";
@@ -458,6 +459,19 @@ public interface Constants {
 	String KEY_CUSTOMER_ORDER_IMAGES = "customer_order_images";
 	String KEY_POSITION_REVIEW = "position";
 	String LIST_IMAGES_REVIEW = "list_images";
+
+	String KEY_CSV_PATH = "csv_path";
+	String KEY_CSV_WAYPOINTS = "csv_waypoints";
+	String KEY_NUM_WAYPOINTS = "num_waypoints";
+	String KEY_WAYPOINT_PATH = "waypoint_path";
+	String KEY_DRIVER_ALT_DISTANCE_LOGIC = "driver_alt_distance_logic";
+	String KEY_DRIVER_ALT_DEVIATION_DISTANCE = "driver_alt_deviation_distance";
+	String KEY_DRIVER_ALT_DEVIATION_TIME = "driver_alt_deviation_time";
+	String KEY_DRIVER_ALT_LOGGING_ENABLED = "driver_alt_logging_enabled";
+	String KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE = "driver_alt_drop_deviation_distance";
+	String KEY_RIDE_START_TIME = "ride_start_time";
 	String KEY_FLEET_ID = "fleet_id";
+	String KEY_DRIVER_TAG = "driver_tag";
+	String KEY_DROP_UPDATED = "drop_updated";
 }
 

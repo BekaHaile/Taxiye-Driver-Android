@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -428,6 +429,9 @@ public class JSONParser implements Constants {
 
 			serviceDetailList = gson.fromJson(userData.getString("vehicle_sets"), listType);
 		}
+		String driverTag = userData.optString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType());
+		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -438,7 +442,8 @@ public class JSONParser implements Constants {
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,serviceDetailList, resendEmailInvoiceEnabled);
+				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData) {
@@ -524,6 +529,17 @@ public class JSONParser implements Constants {
 				context.getString(R.string.driver_here_auth_secret)));
 		Prefs.with(context).save(DRIVER_HERE_APP_ID, userData.optString(DRIVER_HERE_APP_ID,
 				context.getString(R.string.driver_here_app_id)));
+
+		Prefs.with(context).save(KEY_DRIVER_ALT_DISTANCE_LOGIC, userData.optInt(KEY_DRIVER_ALT_DISTANCE_LOGIC,
+				context.getResources().getInteger(R.integer.driver_alt_distance_logic)));
+		Prefs.with(context).save(KEY_DRIVER_ALT_DEVIATION_DISTANCE, userData.optString(KEY_DRIVER_ALT_DEVIATION_DISTANCE,
+				context.getString(R.string.driver_alt_deviation_distance)));
+		Prefs.with(context).save(KEY_DRIVER_ALT_DEVIATION_TIME, userData.optString(KEY_DRIVER_ALT_DEVIATION_TIME,
+				context.getString(R.string.driver_alt_deviation_time)));
+		Prefs.with(context).save(KEY_DRIVER_ALT_LOGGING_ENABLED, userData.optInt(KEY_DRIVER_ALT_LOGGING_ENABLED,
+				context.getResources().getInteger(R.integer.driver_alt_logging_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE, userData.optString(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE,
+				context.getString(R.string.driver_alt_drop_deviation_distance)));
 
 	}
 

@@ -29,8 +29,6 @@ public class SPLabels {
     public static final String
             METERING_STATE = "meteringstate";
     public static final String
-            GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
-    public static final String
             NOTIFICATION_ID = "notificationId";
     public static final String
             DISTANCE_RESET_LOG_ID = "distanceResetLogId";

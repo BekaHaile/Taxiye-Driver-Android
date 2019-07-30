@@ -26,7 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Observable;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 
 public class DialogPopup {

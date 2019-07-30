@@ -64,7 +64,7 @@ public class NotificationService extends NotificationListenerService {
 //        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
 			if (sbn != null && (pack.toLowerCase().contains("ola") || pack.toLowerCase().contains("uber"))
 					&& (Prefs.with(context).getInt(SPLabels.NOTIFICATION_SAVE_COUNT, 0) > 0)) {
-				Database2.getInstance(context).insertNotificationdb(context, id, pack, text, title);
+				Database2.getInstance(context).insertNotificationdb(id, pack, text, title);
 			}
 
 			if (Database2.getInstance(context).getAllDbNotificationCount() >

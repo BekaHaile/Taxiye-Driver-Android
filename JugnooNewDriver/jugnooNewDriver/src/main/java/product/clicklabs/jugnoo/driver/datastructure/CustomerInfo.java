@@ -10,9 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -143,6 +147,12 @@ public class CustomerInfo {
 		this.tollApplicable = tollApplicable;
 		this.rentalInfo = rentalInfo;
 		this.customerOrderImagesList = customerOrderImagesList;
+
+
+		setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, "0");
+//		setMapValue(engagementId, Constants.KEY_CSV_PATH, "");
+//		setMapValue(engagementId, Constants.KEY_CSV_WAYPOINTS, "");
+//		setMapValue(engagementId, Constants.KEY_NUM_WAYPOINTS, "0");
 	}
 
 
@@ -506,6 +516,13 @@ public class CustomerInfo {
 
 	public double getTotalDistance(double distance, Context context){
 		if(distanceRecover){return totalDistanceRecovered;}
+		if(Data.userData != null && Data.userData.getDriverTag().equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())){
+			try {
+				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE);
+				Log.e("CustomerInfo getTotalDistance", "wpDistance = "+wpDistance);
+				return Double.parseDouble(wpDistance);
+			} catch (Exception ignored) {}
+		}
 //		if(getIsPooled() == 1 && getPoolFare() != null){
 //			return getPoolFare().getDistance();
 //		} else {
@@ -811,5 +828,22 @@ public class CustomerInfo {
 
 	public void setCustomerOrderImagesList(List<String> customerOrderImagesList) {
 		this.customerOrderImagesList = customerOrderImagesList;
+	}
+
+	public static void setMapValue(int engagementId, String key, String value){
+		Database2.getInstance(MyApplication.getInstance()).setKeyValue(key+engagementId, value);
+	}
+
+	public static String getMapValue(int engagementId, String key){
+		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId);
+	}
+
+	public long getElapsedTime(){
+		try {
+			return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getElapsedRideTime(MyApplication.getInstance());
+		}
 	}
 }

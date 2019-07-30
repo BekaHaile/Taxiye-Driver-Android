@@ -931,13 +931,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
 								if(PermissionCommon.isGranted(Manifest.permission.READ_CONTACTS, this)) {
 									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
-									intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+									intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 									startService(intent1);
 								}
 
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
-								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 								intent1.putExtra("file_id", jObj.getString("engagement_id"));
 								startService(intent1);
 
@@ -955,7 +955,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);
-								fetchDocIntent.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								fetchDocIntent.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
@@ -1576,13 +1576,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			@Override
 			public void run() {
 				try {
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if ("".equalsIgnoreCase(accessToken)) {
-						DriverLocationUpdateService.updateServerData(context);
-						accessToken = Database2.getInstance(context).getDLDAccessToken();
-					}
+					String accessToken = JSONParser.getAccessTokenPair(context).first;
 
-					String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 					String networkName = getNetworkName(context);
 
 
@@ -1618,11 +1613,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 			@Override
 			public void run() {
 				try {
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if ("".equalsIgnoreCase(accessToken)) {
-						DriverLocationUpdateService.updateServerData(context);
-						accessToken = Database2.getInstance(context).getDLDAccessToken();
-					}
 					JSONObject params = new JSONObject();
 					try {
 						params.put("user_id", Data.userData.getUserId());

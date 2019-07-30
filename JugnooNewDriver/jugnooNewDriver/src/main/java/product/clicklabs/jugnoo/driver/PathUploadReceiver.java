@@ -111,10 +111,9 @@ public class PathUploadReceiver extends BroadcastReceiver {
                 }
 
 
-                String accessToken = Database2.getInstance(context).getDLDAccessToken();
-                String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+                String accessToken = JSONParser.getAccessTokenPair(context).first;
                 long responseTime = System.currentTimeMillis();
-                if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(serverUrl))){
+                if((!"".equalsIgnoreCase(accessToken))){
                     HashMap<String, String> nameValuePairs = new HashMap<>();
                     nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 
@@ -148,7 +147,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                             rowIds.add(currentPathItem.id);
                                         }
                                         FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
-                                        Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
+                                        Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds);
                                         if(HomeActivity.appInterruptHandler != null){
                                             HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
                                         }

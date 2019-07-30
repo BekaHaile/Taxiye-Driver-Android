@@ -52,10 +52,9 @@ public class DriverLocationDispatcher {
 					wakeLock.acquire(5000);
 				}
 				
-				String accessToken = Database2.getInstance(context).getDLDAccessToken();
-				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
-				String pushyToken = Database2.getInstance(context).getPushyToken();
-				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+				String accessToken = JSONParser.getAccessTokenPair(context).first;
+				String deviceToken = FirebaseInstanceId.getInstance().getToken();
+				String pushyToken = "";
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
@@ -100,7 +99,6 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 
 							Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
-							RestClient.setupRestClient(serverUrl);
 
 							Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 							String result = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -131,7 +129,6 @@ public class DriverLocationDispatcher {
 								if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
 									String deviceTokenNew =	FirebaseInstanceId.getInstance().getToken();
 
-									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 									sendLocationToServer(context);
 									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
 								}

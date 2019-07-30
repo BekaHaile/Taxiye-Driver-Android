@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content">
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextNormal"
+        tools:text="@string/pending"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        app:layout_constraintVertical_bias="0.1"
+        android:minWidth="100dp"
+        android:maxWidth="105dp"
+        android:layout_margin="15dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:background="@drawable/selector_red_stroke_white_theme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="125dp"/>
+    
+    <TextView
+        android:id="@+id/tvDriverName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextMedium"
+        android:text="@string/driver_name"
+        android:singleLine="true"
+        android:layout_margin="15dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideVertical"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <TextView
+        android:id="@+id/tvDriverNameValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/TextNormal"
+        android:textStyle="bold"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@id/tvStatus"
+        android:layout_margin="10dp"
+        tools:text="Hello"
+        app:layout_constraintStart_toStartOf="@id/guideVertical"/>
+
+    <TextView
+        android:id="@+id/tvDriverNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextMedium"
+        android:text="@string/driver_no"
+        android:layout_margin="15dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/guideVertical"
+        app:layout_constraintTop_toBottomOf="@id/tvDriverNameValue"/>
+
+    <TextView
+        android:id="@+id/tvDriverNoValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvDriverNameValue"
+        style="@style/TextNormal"
+        android:layout_margin="10dp"
+        tools:text="Hello"
+        android:textStyle="bold"
+        android:singleLine="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@id/tvStatus"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="@id/guideVertical"/>
+
+    <TextView
+        android:id="@+id/tvCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextMedium"
+        android:text="@string/credits_earned"
+        android:singleLine="true"
+        android:layout_margin="15dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideVertical"
+        app:layout_constraintTop_toBottomOf="@id/tvDriverNoValue"/>
+
+    <TextView
+        android:id="@+id/tvCreditsValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvDriverNoValue"
+        style="@style/TextNormal"
+        tools:text="Hello"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:singleLine="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@id/tvStatus"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="@id/guideVertical"/>
+
+    <TextView
+        android:id="@+id/tvMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextMedium"
+        android:text="@string/money_earned_f"
+        android:layout_margin="15dp"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideVertical"
+        app:layout_constraintTop_toBottomOf="@id/tvCreditsValue"/>
+
+    <TextView
+        android:id="@+id/tvMoneyValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@id/tvStatus"
+        app:layout_constraintTop_toBottomOf="@id/tvCreditsValue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/TextNormal"
+        tools:text="Hello"
+        app:layout_constraintStart_toStartOf="@id/guideVertical"/>
+
+
+</android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

@@ -144,9 +144,11 @@ public class Database {																	// class for handling database related a
 			}
 	
 			String[] emails = result.split("\n");
+			cursor.close();
 
 			return emails;
 		} else {
+			cursor.close();
 			return null;
 		}
 

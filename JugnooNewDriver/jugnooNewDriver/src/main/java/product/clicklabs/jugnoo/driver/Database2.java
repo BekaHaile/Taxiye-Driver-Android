@@ -53,10 +53,6 @@ public class Database2 {                                                        
 	private static final String TABLE_TOTAL_DISTANCE = "table_total_distance";
 	private static final String TOTAL_DISTANCE = "total_distance";
 
-	private static final String TABLE_DRIVER_LOC_DATA = "table_driver_loc_data";
-	private static final String DLD_ACCESS_TOKEN = "dld_access_token";
-	private static final String DLD_DEVICE_TOKEN = "dld_device_token";
-	private static final String DLD_SERVER_URL = "dld_server_url";
 
 	private static final String TABLE_DRIVER_SCREEN_MODE = "table_driver_screen_mode";
 	private static final String DRIVER_SCREEN_MODE = "driver_screen_mode";
@@ -161,9 +157,6 @@ public class Database2 {                                                        
 	private static final String GPS_STATE = "gps_state";
 
 
-	private static final String TABLE_CUSTOMER_RIDE_DATA = "table_customer_ride_data";
-	private static final String CUSTOMER_START_RIDE_TIME = "customer_start_ride_time";
-	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
 
 
 	private static final String TABLE_DATA_USAGE = "table_data_usage";
@@ -179,11 +172,12 @@ public class Database2 {                                                        
 	private static final String LOG_TIMESTAMP = "log_timestamp";
 	private static final String LOG_EVENT = "log_event";
 
-	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
-	private static final String PUSHY_TOKEN = "pushy_token";
-
 	private static final String TABLE_WAIT_TIME = "table_wait_time";
 	private static final String WAIT_TIME = "wait_time";
+
+	private static final String TABLE_KEY_VALUE = "table_key_value";
+	private static final String KEY = "skey";
+	private static final String VALUE = "value";
 
 
 	/**
@@ -193,7 +187,7 @@ public class Database2 {                                                        
 	 */
 	private static class DbHelper extends SQLiteOpenHelper {
 
-		public DbHelper(Context context) {
+		DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
@@ -210,19 +204,14 @@ public class Database2 {                                                        
 	}
 
 
+	/****************************************** CREATING ALL THE TABLES *****************************************************/
 	private static void createAllTables(SQLiteDatabase database) {
-		/****************************************** CREATING ALL THE TABLES *****************************************************/
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE_FAST + " ("
 				+ FAST + " TEXT" + ");");
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_TOTAL_DISTANCE + " ("
 				+ TOTAL_DISTANCE + " TEXT" + ");");
 
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LOC_DATA + " ("
-				+ DLD_ACCESS_TOKEN + " TEXT, "
-				+ DLD_DEVICE_TOKEN + " TEXT, "
-				+ DLD_SERVER_URL + " TEXT"
-				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SCREEN_MODE + " ("
 				+ DRIVER_SCREEN_MODE + " TEXT" + ");");
@@ -320,11 +309,6 @@ public class Database2 {                                                        
 				+ GPS_STATE + " INTEGER" + ");");
 
 
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_RIDE_DATA + " ("
-				+ CUSTOMER_RIDE_ENGAGEMENT_ID + " INTEGER, "
-				+ CUSTOMER_START_RIDE_TIME + " TEXT"
-				+ ");");
-
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DATA_USAGE + " ("
 				+ LOG_TIME + " TEXT, "
 				+ BYTES_RECEIVED + " TEXT, "
@@ -342,11 +326,14 @@ public class Database2 {                                                        
 				+ ");");
 
 
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PUSHY_TOKEN + " ("
-				+ PUSHY_TOKEN + " TEXT" + ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_WAIT_TIME + " ("
 				+ WAIT_TIME + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_KEY_VALUE + " ("
+				+ KEY + " TEXT, "
+				+ VALUE + " TEXT"
+				+ ");");
 
 	}
 
@@ -402,21 +389,24 @@ public class Database2 {                                                        
 
 	public double getTotalDistance() {
 		double totaldistance = 0;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.TOTAL_DISTANCE};
-			Cursor cursor = database.query(Database2.TABLE_TOTAL_DISTANCE, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_TOTAL_DISTANCE, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				totaldistance = Double.parseDouble(cursor.getString(cursor.getColumnIndex(Database2.TOTAL_DISTANCE)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return totaldistance;
 	}
 
 
-	public void updateTotalDistance(double totalDistance) {
+	void updateTotalDistance(double totalDistance) {
 		try {
 			deleteTotalDistance();
 			ContentValues contentValues = new ContentValues();
@@ -428,24 +418,25 @@ public class Database2 {                                                        
 	}
 
 
-	public int deleteTotalDistance() {
+	private void deleteTotalDistance() {
 		try {
-			return database.delete(Database2.TABLE_TOTAL_DISTANCE, null, null);
+			database.delete(Database2.TABLE_TOTAL_DISTANCE, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 
-	public String getDriverServiceFast() {
+	String getDriverServiceFast() {
 		String[] columns = new String[]{Database2.FAST};
 		Cursor cursor = database.query(Database2.TABLE_DRIVER_SERVICE_FAST, columns, null, null, null, null, null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			String choice = cursor.getString(cursor.getColumnIndex(Database2.FAST));
+			cursor.close();
 			return choice;
 		} else {
+			cursor.close();
 			return NO;
 		}
 	}
@@ -455,7 +446,7 @@ public class Database2 {                                                        
 		insertDriverServiceFast(choice);
 	}
 
-	public void insertDriverServiceFast(String choice) {
+	private void insertDriverServiceFast(String choice) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.FAST, choice);
@@ -465,7 +456,7 @@ public class Database2 {                                                        
 		}
 	}
 
-	public void deleteDriverServiceFast() {
+	private void deleteDriverServiceFast() {
 		try {
 			database.delete(Database2.TABLE_DRIVER_SERVICE_FAST, null, null);
 		} catch (Exception e) {
@@ -474,83 +465,23 @@ public class Database2 {                                                        
 	}
 
 
-	public void insertDriverLocData(String accessToken, String deviceToken, String serverUrl) {
-		try {
-			deleteDriverLocData();
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DLD_ACCESS_TOKEN, accessToken);
-			contentValues.put(Database2.DLD_DEVICE_TOKEN, deviceToken);
-			contentValues.put(Database2.DLD_SERVER_URL, serverUrl);
-			database.insert(Database2.TABLE_DRIVER_LOC_DATA, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void deleteDriverLocData() {
-		try {
-			database.delete(Database2.TABLE_DRIVER_LOC_DATA, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public String getDLDAccessToken() {
-		try {
-			String[] columns = new String[]{Database2.DLD_ACCESS_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_ACCESS_TOKEN));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	public String getDLDDeviceToken() {
-		try {
-			String[] columns = new String[]{Database2.DLD_DEVICE_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_DEVICE_TOKEN));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	public String getDLDServerUrl() {
-		try {
-			String[] columns = new String[]{Database2.DLD_SERVER_URL};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LOC_DATA, columns, null, null, null, null, null);
-			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.DLD_SERVER_URL));
-			return choice;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-
 
 	public String getDriverScreenMode() {
+		Cursor cursor = null;
+		String userMode = Database2.NOT_VULNERABLE;
 		try {
 			String[] columns = new String[]{Database2.DRIVER_SCREEN_MODE};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_SCREEN_MODE, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DRIVER_SCREEN_MODE, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				String userMode = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_SCREEN_MODE));
-				return userMode;
-			} else {
-				return Database2.NOT_VULNERABLE;
+				userMode = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_SCREEN_MODE));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Database2.NOT_VULNERABLE;
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return userMode;
 	}
 
 
@@ -566,7 +497,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void deleteDriverScreenMode() {
+	private void deleteDriverScreenMode() {
 		try {
 			database.delete(Database2.TABLE_DRIVER_SCREEN_MODE, null, null);
 		} catch (Exception e) {
@@ -597,6 +528,7 @@ public class Database2 {                                                        
 				location.setBearing(Float.parseFloat(cursor.getString(in4)));
 
 			}
+			cursor.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
@@ -625,6 +557,7 @@ public class Database2 {                                                        
 				location.setTime(Long.parseLong(cursor.getString(in3)));
 				location.setBearing(Float.parseFloat(cursor.getString(in4)));
 			}
+			cursor.close();
 		}
 		return location;
 	}
@@ -639,7 +572,7 @@ public class Database2 {                                                        
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, "" + location.getAccuracy());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_BEARING, "" + location.getBearing());
-			long rowId = database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 
 		} catch (Exception e) {
 			try {
@@ -666,7 +599,7 @@ public class Database2 {                                                        
 		}
 	}
 
-	public void alterTableDriverCurrentLocation() {
+	private void alterTableDriverCurrentLocation() {
 		try {
 			database.execSQL("DROP TABLE " + TABLE_DRIVER_CURRENT_LOCATION);
 			database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
@@ -693,11 +626,12 @@ public class Database2 {                                                        
 	}
 
 
-	public long getDriverLastLocationTime() {
+	long getDriverLastLocationTime() {
 		long lastTimeInMillis = 0;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.LAST_LOCATION_TIME};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, columns, null, null, null, null, null);
 
 			int in0 = cursor.getColumnIndex(Database2.LAST_LOCATION_TIME);
 
@@ -707,12 +641,14 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return lastTimeInMillis;
 	}
 
 
-	public void updateDriverLastLocationTime() {
+	void updateDriverLastLocationTime() {
 		try {
 			long timeInMillis = System.currentTimeMillis();
 			deleteDriverLastLocationTime();
@@ -725,31 +661,31 @@ public class Database2 {                                                        
 	}
 
 
-	public int deleteDriverLastLocationTime() {
+	private void deleteDriverLastLocationTime() {
 		try {
-			return database.delete(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, null);
+			database.delete(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 
-	public String getDriverServiceRun() {
+	String getDriverServiceRun() {
+		String choice = YES;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.DRIVER_SERVICE_RUN};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_SERVICE, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DRIVER_SERVICE, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				String choice = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_SERVICE_RUN));
-				return choice;
-			} else {
-				return YES;
+				choice = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_SERVICE_RUN));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return YES;
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return choice;
 	}
 
 	public void updateDriverServiceRun(String choice) {
@@ -764,7 +700,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void deleteDriverServiceRun() {
+	private void deleteDriverServiceRun() {
 		try {
 			database.delete(Database2.TABLE_DRIVER_SERVICE, null, null);
 		} catch (Exception e) {
@@ -774,20 +710,21 @@ public class Database2 {                                                        
 
 
 	public String getDriverManualPatchPushReceived() {
+		Cursor cursor = null;
+		String choice = NO;
 		try {
 			String[] columns = new String[]{Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_MANUAL_PATCH, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DRIVER_MANUAL_PATCH, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				String choice = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED));
-				return choice;
-			} else {
-				return NO;
+				choice = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return NO;
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return choice;
 	}
 
 	public void updateDriverManualPatchPushReceived(String choice) {
@@ -802,7 +739,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void deleteDriverManualPatchPushReceived() {
+	private void deleteDriverManualPatchPushReceived() {
 		try {
 			database.delete(Database2.TABLE_DRIVER_MANUAL_PATCH, null, null);
 		} catch (Exception e) {
@@ -811,24 +748,25 @@ public class Database2 {                                                        
 	}
 
 
-	public int getDriverGcmIntent() {
+	int getDriverGcmIntent() {
+		Cursor cursor = null;
+		int choice = 1;
 		try {
 			String[] columns = new String[]{Database2.DRIVER_GCM_INTENT};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_GCM_INTENT, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DRIVER_GCM_INTENT, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				int choice = cursor.getInt(cursor.getColumnIndex(Database2.DRIVER_GCM_INTENT));
-				return choice;
-			} else {
-				return 1;
+				choice = cursor.getInt(cursor.getColumnIndex(Database2.DRIVER_GCM_INTENT));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 1;
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return choice;
 	}
 
-	public void updateDriverGcmIntent(int choice) {
+	void updateDriverGcmIntent(int choice) {
 		try {
 			deleteDriverGcmIntent();
 			ContentValues contentValues = new ContentValues();
@@ -840,7 +778,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void deleteDriverGcmIntent() {
+	private void deleteDriverGcmIntent() {
 		try {
 			database.delete(Database2.TABLE_DRIVER_GCM_INTENT, null, null);
 		} catch (Exception e) {
@@ -850,10 +788,11 @@ public class Database2 {                                                        
 
 
 	public ArrayList<PendingAPICall> getAllPendingAPICalls() {
-		ArrayList<PendingAPICall> pendingAPICalls = new ArrayList<PendingAPICall>();
+		ArrayList<PendingAPICall> pendingAPICalls = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.API_ID, Database2.API_URL, Database2.API_REQUEST_PARAMS};
-			Cursor cursor = database.query(Database2.TABLE_PENDING_API_CALLS, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_PENDING_API_CALLS, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				int in0 = cursor.getColumnIndex(Database2.API_ID);
 				int in1 = cursor.getColumnIndex(Database2.API_URL);
@@ -869,19 +808,25 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return pendingAPICalls;
 	}
 
 	public int getAllPendingAPICallsCount() {
+		int count = 0;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.API_ID};
-			Cursor cursor = database.query(Database2.TABLE_PENDING_API_CALLS, columns, null, null, null, null, null);
-			return cursor.getCount();
+			cursor = database.query(Database2.TABLE_PENDING_API_CALLS, columns, null, null, null, null, null);
+			count = cursor.getCount();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
-		return 0;
+		return count;
 	}
 
 
@@ -897,17 +842,16 @@ public class Database2 {                                                        
 		}
 	}
 
-	public int deletePendingAPICall(int apiId) {
+	public void deletePendingAPICall(int apiId) {
 		try {
-			return database.delete(Database2.TABLE_PENDING_API_CALLS, Database2.API_ID + "=" + apiId, null);
+			database.delete(Database2.TABLE_PENDING_API_CALLS, Database2.API_ID + "=" + apiId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
 
-	public void checkStartPendingApisService(Context context) {
+	void checkStartPendingApisService(Context context) {
 		if (!Utils.isServiceRunning(context, PushPendingCallsService.class)) {
 			context.startService(new Intent(context, PushPendingCallsService.class));
 		}
@@ -915,13 +859,14 @@ public class Database2 {                                                        
 
 
 	public String getRideData(int engagementId) {
-		String rideDataStr = "";
+		StringBuilder rideDataStr = new StringBuilder();
 		String template = "i,lat,long,t,accDist";
 		String newLine = "\n";
 		boolean hasValues = false;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T, Database2.RIDE_DATA_ACC_DISTANCE};
-			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
+			cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
 					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId, null, null, null, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
@@ -938,27 +883,30 @@ public class Database2 {                                                        
 							cursor.getLong(i3),
 							cursor.getDouble(i4), 0);
 
-					rideDataStr = rideDataStr + rideData.toString() + newLine;
+					rideDataStr.append(rideData.toString()).append(newLine);
 					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			if (hasValues) {
-				rideDataStr = template + newLine + rideDataStr;
+				rideDataStr.insert(0, template + newLine);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 
-		return rideDataStr;
+		return rideDataStr.toString();
 	}
 	public ArrayList<RideData> getRideDataWaypoints(int engagementId) {
 		ArrayList<RideData> rideDatas = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T,
 					Database2.RIDE_DATA_ACC_DISTANCE, Database2.RIDE_DATA_IS_WAY_POINT};
-			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
+			cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
 					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1", null, null, null, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
@@ -988,6 +936,8 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return rideDatas;
 	}
@@ -1054,6 +1004,17 @@ public class Database2 {                                                        
 		}
 	}
 
+	public void insertRideDataWOChecks(String lat, String lng, String t, int engagementId, double accDistance) {
+
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(Database2.RIDE_DATA_LAT, lat);
+		contentValues.put(Database2.RIDE_DATA_LNG, lng);
+		contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
+		contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
+		contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
+		contentValues.put(Database2.RIDE_DATA_IS_WAY_POINT, 0);
+		database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
+	}
 
 	public void deleteRideData() {
 		try {
@@ -1066,6 +1027,7 @@ public class Database2 {                                                        
 	}
 
 	public RideData getLastRideData(int engagementId, int limit){
+		RideData rideData = null;
 		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
 				+" WHERE "+RIDE_DATA_ENGAGEMENT_ID+"="+engagementId
 				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT "+limit, null);
@@ -1079,18 +1041,19 @@ public class Database2 {                                                        
 			if(limit == 2){
 				cursor.moveToLast();
 			}
-			RideData rideData = new RideData(cursor.getInt(i0),
+			rideData = new RideData(cursor.getInt(i0),
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
 					cursor.getLong(i3),
 					cursor.getDouble(i4),
 					cursor.getInt(i5));
-			return rideData;
 		}
-		return null;
+		cursor.close();
+		return rideData;
 	}
 
-	public RideData getLastRideDataWaypoint(int engagementId){
+	private RideData getLastRideDataWaypoint(int engagementId){
+		RideData rideData = null;
 		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
 				+" WHERE "+RIDE_DATA_ENGAGEMENT_ID+"="+engagementId+" AND "+RIDE_DATA_IS_WAY_POINT+"=1"
 				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT "+1, null);
@@ -1101,14 +1064,15 @@ public class Database2 {                                                        
 		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
 		int i5 = cursor.getColumnIndex(Database2.RIDE_DATA_IS_WAY_POINT);
 		if(cursor.moveToFirst()){
-			return new RideData(cursor.getInt(i0),
+			rideData = new RideData(cursor.getInt(i0),
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
 					cursor.getLong(i3),
 					cursor.getDouble(i4),
 					cursor.getInt(i5));
 		}
-		return null;
+		cursor.close();
+		return rideData;
 	}
 
 
@@ -1119,7 +1083,6 @@ public class Database2 {                                                        
 		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RIDE_DATA
 				+ " WHERE " + RIDE_DATA_ENGAGEMENT_ID + "=" + engagementId
 				+ " ORDER BY " + RIDE_DATA_I, null);
-		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
 		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
 		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
@@ -1137,13 +1100,15 @@ public class Database2 {                                                        
 		if (!containsZero) {
 			cursor.moveToLast();
 			acctualDistance = cursor.getDouble(i4) - startDistance;
-			return acctualDistance;
 		} else {
-			return getLastRideData(engagementId, 1).accDistance;
+			acctualDistance = getLastRideData(engagementId, 1).accDistance;
 		}
+		cursor.close();
+		return acctualDistance;
 	}
 
 	public long getFirstRideDataTime(int engagementId){
+		long time = 0;
 		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RIDE_DATA
 				+ " WHERE " + RIDE_DATA_ENGAGEMENT_ID + "=" + engagementId
 				+ " AND " + RIDE_DATA_LAT + "='0.0' AND " + RIDE_DATA_LNG + "='0.0'", null);
@@ -1158,12 +1123,14 @@ public class Database2 {                                                        
 					, null);
 			int i31 = cursor1.getColumnIndex(Database2.RIDE_DATA_T);
 			if(cursor1.moveToFirst()){
-				return System.currentTimeMillis() - Long.parseLong(cursor1.getString(i31));
+				time = System.currentTimeMillis() - Long.parseLong(cursor1.getString(i31));
 			} else{
-				return System.currentTimeMillis() - cursor.getLong(i3);
+				time = System.currentTimeMillis() - cursor.getLong(i3);
 			}
+			cursor1.close();
 		}
-		return 0;
+		cursor.close();
+		return time;
 	}
 
 
@@ -1173,11 +1140,10 @@ public class Database2 {                                                        
 
 	public RingData getRingData(String limit) {
 		RingData ringData = null;
-		String template = "engagement,time";
+		Cursor cursor = null;
 		try {
-			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
 
-			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
+			cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
 					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC LIMIT " + limit, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
@@ -1192,6 +1158,8 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 
 		return ringData;
@@ -1200,14 +1168,15 @@ public class Database2 {                                                        
 
 
 	public String getRingCompleteData() {
-		String ringDataStr = "";
-		RingData ringData = null;
+		StringBuilder ringDataStr = new StringBuilder();
+		RingData ringData;
 		String template = "engagement,time";
 		String newLine = "\n";
 		boolean hasValues = false;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
-			Cursor cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
 
 //			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
 //					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC" , null);
@@ -1220,9 +1189,9 @@ public class Database2 {                                                        
 					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
 					if(ringData.time > 130000){
 						ringData = new RingData(cursor.getInt(i0),1);
-						ringDataStr = ringDataStr + ringData.toString() + newLine;
+						ringDataStr.append(ringData.toString()).append(newLine);
 					} else{
-						ringDataStr = ringDataStr + ringData.toString() + newLine;
+						ringDataStr.append(ringData.toString()).append(newLine);
 					}
 
 					hasValues = true;
@@ -1231,18 +1200,20 @@ public class Database2 {                                                        
 				}
 			}
 			if (hasValues) {
-				ringDataStr = template + newLine + ringDataStr;
+				ringDataStr.insert(0, template + newLine);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 
-		return ringDataStr;
+		return ringDataStr.toString();
 	}
 
 
 
-	public void insertRingData(int engagementId, String time) {
+	void insertRingData(int engagementId, String time) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
@@ -1278,28 +1249,23 @@ public class Database2 {                                                        
 	}
 
 
-	public int getPenalityData(String timediff) {
+	int getPenalityData(String timediff) {
+		Cursor cursor = null;
+		int count = 0;
 		try {
-			int count;
-			String[] columns = new String[]{Database2.PENALITY_ID, Database2.PENALITY_TIME, Database2.PENALITY_FACTOR};
-			String selection = Database2.PENALITY_TIME + ">";
-			Cursor cursor = database.rawQuery("select sum(" + Database2.PENALITY_FACTOR + ") as sum_penalty from " + Database2.TABLE_PENALITY_COUNT + " where " + Database2.PENALITY_TIME + " >" + timediff, null);
-//			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, selection, new String[]{timediff}, null, null, null);
+			cursor = database.rawQuery("select sum(" + Database2.PENALITY_FACTOR + ") as sum_penalty from " + Database2.TABLE_PENALITY_COUNT + " where " + Database2.PENALITY_TIME + " >" + timediff, null);
 			if (cursor.moveToFirst()) {
 				count = cursor.getInt(cursor.getColumnIndex("sum_penalty"));
-				Log.i("DBcount", String.valueOf(count));
-			} else {
-				count = 0;
 			}
-			cursor.close();
-			return count;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
-		return 0;
+		return count;
 	}
 
-	public void insertPenalityData(String penalityTime, double penalityFactor) {
+	void insertPenalityData(String penalityTime, double penalityFactor) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.PENALITY_TIME, penalityTime);
@@ -1311,7 +1277,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void deletePenalityData() {
+	void deletePenalityData() {
 		try {
 			database.delete(Database2.TABLE_PENALITY_COUNT, null, null);
 		} catch (Exception e) {
@@ -1321,15 +1287,15 @@ public class Database2 {                                                        
 
 
 	public String getMetringState() {
+		String choice = OFF;
 		String[] columns = new String[]{Database2.METERING_STATE};
 		Cursor cursor = database.query(Database2.TABLE_METERING_STATE, columns, null, null, null, null, null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.METERING_STATE));
-			return choice;
-		} else {
-			return OFF;
+			choice = cursor.getString(cursor.getColumnIndex(Database2.METERING_STATE));
 		}
+		cursor.close();
+		return choice;
 	}
 
 
@@ -1364,16 +1330,16 @@ public class Database2 {                                                        
 
 
 	public String getCustomAudioUrl(String id) {
+		String choice = "";
 		String[] columns = new String[]{Database2.CUSTOM_AUDIO_URL};
 		Cursor cursor = database.query(Database2.TABLE_CUSTOM_AUDIO, columns, CUSTOM_AUDIO_ID + "=?",
 				new String[]{id}, null, null, null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			String choice = cursor.getString(cursor.getColumnIndex(Database2.CUSTOM_AUDIO_URL));
-			return choice;
-		} else {
-			return "";
+			choice = cursor.getString(cursor.getColumnIndex(Database2.CUSTOM_AUDIO_URL));
 		}
+		cursor.close();
+		return choice;
 	}
 
 
@@ -1413,24 +1379,21 @@ public class Database2 {                                                        
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(SECTION_INCOMPLETE, sectionIncomplete);
-			int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
-			return rowsAffected;
+			return database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
 	}
 
-	public int updateCurrentPathItemSectionIncompleteAndGooglePath(long rowId, int sectionIncomplete, int googlePath) {
+	void updateCurrentPathItemSectionIncompleteAndGooglePath(long rowId) {
 		try {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(SECTION_INCOMPLETE, sectionIncomplete);
-			contentValues.put(GOOGLE_PATH, googlePath);
-			int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
-			return rowsAffected;
+			contentValues.put(SECTION_INCOMPLETE, 0);
+			contentValues.put(GOOGLE_PATH, 0);
+			database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 0;
 		}
 	}
 
@@ -1438,8 +1401,7 @@ public class Database2 {                                                        
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(ACKNOWLEDGED, acknowledged);
-			int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
-			return rowsAffected;
+			return database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
@@ -1447,51 +1409,56 @@ public class Database2 {                                                        
 	}
 
 
-	public int updateCurrentPathItemAcknowledgedForArray(ArrayList<Long> rowId, int acknowledged) {
+	void updateCurrentPathItemAcknowledgedForArray(ArrayList<Long> rowId) {
 		try {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(ACKNOWLEDGED, acknowledged);
+			contentValues.put(ACKNOWLEDGED, 1);
 			int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
 			Log.e("rowsAffected", "=" + rowsAffected);
-			return rowsAffected;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 0;
 		}
 	}
 
 
 	public ArrayList<CurrentPathItem> getCurrentPathItemsSaved() {
-		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED};
-			Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, null, null, null, null, null);
+			cursor = database.query(TABLE_CURRENT_PATH, columns, null, null, null, null, null);
 			currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return currentPathItems;
 	}
 
 
-	public ArrayList<CurrentPathItem> getCurrentPathItemsToUpload() {
-		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+	ArrayList<CurrentPathItem> getCurrentPathItemsToUpload() {
+		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED};
-			Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
+			cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
 			currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return currentPathItems;
 	}
 
 	public Pair<Double, CurrentPathItem> getCurrentPathItemsAllComplete() {
-		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<>();
 		Pair<Double, CurrentPathItem> pathItemPair = null;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED};
-			Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, SECTION_INCOMPLETE + "=0", null, null, null, null);
+			cursor = database.query(TABLE_CURRENT_PATH, columns, SECTION_INCOMPLETE + "=0", null, null, null, null);
 			currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
 			if(currentPathItems.size() > 0) {
 				double totalDistance = 0;
@@ -1503,13 +1470,15 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return pathItemPair;
 	}
 
 
-	public ArrayList<CurrentPathItem> getCurrentPathItemsFromCursor(Cursor cursor) {
-		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+	private ArrayList<CurrentPathItem> getCurrentPathItemsFromCursor(Cursor cursor) {
+		ArrayList<CurrentPathItem> currentPathItems = new ArrayList<>();
 		try {
 			if (cursor.getCount() > 0) {
 				int in0 = cursor.getColumnIndex(ID);
@@ -1523,8 +1492,8 @@ public class Database2 {                                                        
 				int in8 = cursor.getColumnIndex(ACKNOWLEDGED);
 
 
-				int currentCursorPosition = -1;
-				long parentId = 0;
+				int currentCursorPosition;
+				long parentId;
 				for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 					try {
 						if (0 == cursor.getInt(in6)) {
@@ -1568,7 +1537,6 @@ public class Database2 {                                                        
 									}
 								}
 								cursor.moveToPosition(currentCursorPosition);
-							} else {
 							}
 						} else {
 							break;
@@ -1602,48 +1570,46 @@ public class Database2 {                                                        
 
 
 
-	public int getGpsState() {
+	int getGpsState() {
+		Cursor cursor = null;
+		int gpsState = GpsState.ZERO_TWO.getOrdinal();
 		try {
 			String[] columns = new String[]{Database2.GPS_STATE};
-			Cursor cursor = database.query(Database2.TABLE_GPS_STATE, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_GPS_STATE, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				int choice = cursor.getInt(cursor.getColumnIndex(Database2.GPS_STATE));
-				return choice;
-			} else {
-				return GpsState.ZERO_TWO.getOrdinal();
+				gpsState = cursor.getInt(cursor.getColumnIndex(Database2.GPS_STATE));
 			}
-		} catch (Exception e) {
-			return GpsState.ZERO_TWO.getOrdinal();
+		} catch (Exception ignored) {
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return gpsState;
 	}
 
 
-	public int updateGpsState(int choice) {
+	void updateGpsState(int choice) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.GPS_STATE, choice);
 			int rowsAffected = database.update(Database2.TABLE_GPS_STATE, contentValues, null, null);
 			if (rowsAffected == 0) {
 				database.insert(Database2.TABLE_GPS_STATE, null, contentValues);
-				return 1;
-			} else {
-				return rowsAffected;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 0;
 		}
 	}
 
 
 
 
-	public ArrayList<NotificationData> getAllNotification() {
-		ArrayList<NotificationData> allNotification = new ArrayList<NotificationData>();
+	private ArrayList<NotificationData> getAllNotification() {
+		ArrayList<NotificationData> allNotification = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{NOTIFICATION_ID, TIME_PUSH_ARRIVED, MESSAGE, TIME_TO_DISPLAY, TIME_TILL_DISPLAY, NOTIFICATION_IMAGE};
-			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				int in0 = cursor.getColumnIndex(NOTIFICATION_ID);
 				int in1 = cursor.getColumnIndex(TIME_PUSH_ARRIVED);
@@ -1665,29 +1631,22 @@ public class Database2 {                                                        
 						}
 						long pushArrAndTimeToDisVal = (savedIn4 + DateOperations.getMilliseconds(cursor.getString(in1)));
 
-						boolean added = false;
 						if ((!"0".equalsIgnoreCase(cursor.getString(in4))) && (!"".equalsIgnoreCase(cursor.getString(in5)))) { //if both values
 							if ((currentTimeLong < pushArrAndTimeToDisVal) &&
 									(currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
 								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2), cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
-								added = true;
 							}
 						} else if ((!"0".equalsIgnoreCase(cursor.getString(in4))) && ("".equalsIgnoreCase(cursor.getString(in5)))) { // only timeToDisplay
 							if ((currentTimeLong < pushArrAndTimeToDisVal)) {
 								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
 										cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
-								added = true;
 							}
 						} else if ((!"".equalsIgnoreCase(cursor.getString(in5))) && ("0".equalsIgnoreCase(cursor.getString(in4)))) { //only timeTillDisplay
 							if ((currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
 								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
 										cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
-								added = true;
 							}
 						}
-						/*if(!added){
-							deleteNotification(cursor.getInt(in0));
-						}*/
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -1695,23 +1654,29 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return allNotification;
 	}
 
-	public int getAllNotificationCount() {
+	private int getAllNotificationCount() {
+		Cursor cursor = null;
+		int count = 0;
 		try {
 			String[] columns = new String[]{NOTIFICATION_ID};
-			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
-			return cursor.getCount();
+			cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			count =cursor.getCount();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
-		return 0;
+		return count;
 	}
 
-	public void insertNotification(Context context, int id, String timePushArrived, String message, String timeToDisplay,
-								   String timeTillDisplay, String notificationImage) {
+	private void insertNotification(Context context, int id, String timePushArrived, String message, String timeToDisplay,
+									String timeTillDisplay, String notificationImage) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(NOTIFICATION_ID, id);
@@ -1721,7 +1686,7 @@ public class Database2 {                                                        
 			contentValues.put(TIME_TILL_DISPLAY, timeTillDisplay);
 			contentValues.put(NOTIFICATION_IMAGE, notificationImage);
 			database.insert(TABLE_NOTIFICATION_CENTER, null, contentValues);
-			int rowCount = getAllNotificationCount();
+			getAllNotificationCount();
 		} catch (Exception e) {
 			e.printStackTrace();
 			dropAndCreateNotificationTable(database, context);
@@ -1729,30 +1694,13 @@ public class Database2 {                                                        
 		}
 	}
 
-	public int deleteNotification(int notificationId) {
-		try {
-			return database.delete(TABLE_NOTIFICATION_CENTER, NOTIFICATION_ID + "=" + notificationId, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	public void deleteNotificationTable() {
-		try {
-			database.execSQL("delete from " + TABLE_NOTIFICATION_CENTER);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
 
 	public ArrayList<AllNotificationData> getAllDBNotification() {
-		ArrayList<AllNotificationData> allDBNotification = new ArrayList<AllNotificationData>();
+		ArrayList<AllNotificationData> allDBNotification = new ArrayList<>();
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{DB_NOTIFICATION_ID, DB_NOTIFICATION_PACKAGE, DB_NOTIFICATION_MESSAGE, DB_NOTIFICATION_TITLE};
-			Cursor cursor = database.query(TABLE_NOTIFICATION_DB, columns, null, null, null, null, null);
+			cursor = database.query(TABLE_NOTIFICATION_DB, columns, null, null, null, null, null);
 			if (cursor.getCount() > 0) {
 				int in0 = cursor.getColumnIndex(DB_NOTIFICATION_ID);
 				int in1 = cursor.getColumnIndex(DB_NOTIFICATION_PACKAGE);
@@ -1773,24 +1721,30 @@ public class Database2 {                                                        
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 		return allDBNotification;
 	}
 
 
 	public int getAllDbNotificationCount() {
+		int count = 0;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{DB_NOTIFICATION_ID};
-			Cursor cursor = database.query(TABLE_NOTIFICATION_DB, columns, null, null, null, null, null);
-			return cursor.getCount();
+			cursor = database.query(TABLE_NOTIFICATION_DB, columns, null, null, null, null, null);
+			count = cursor.getCount();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
-		return 0;
+		return count;
 	}
 
 
-	public void insertNotificationdb(Context context, int id, String packageText, String message, String title) {
+	public void insertNotificationdb(int id, String packageText, String message, String title) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(DB_NOTIFICATION_ID, id);
@@ -1822,53 +1776,7 @@ public class Database2 {                                                        
 	}
 
 
-	public void insertCustomerRideData(int engagementId, long rideStartTime) {
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.CUSTOMER_RIDE_ENGAGEMENT_ID, engagementId);
-			contentValues.put(Database2.CUSTOMER_START_RIDE_TIME, rideStartTime);
-			database.insert(Database2.TABLE_CUSTOMER_RIDE_DATA, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-
-	public long getCustomerElapsedRideTime(int engagementId){
-		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_CUSTOMER_RIDE_DATA
-				+ " WHERE " + CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
-		int i0 = cursor.getColumnIndex(Database2.CUSTOMER_START_RIDE_TIME);
-		if(cursor.moveToFirst()){
-			return System.currentTimeMillis() - Long.parseLong(cursor.getString(i0));
-		}
-		return 0;
-	}
-
-	public long getCustomerStartRideTime(int engagementId){
-		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_CUSTOMER_RIDE_DATA
-				+ " WHERE " + CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
-		int i0 = cursor.getColumnIndex(Database2.CUSTOMER_START_RIDE_TIME);
-		if(cursor.moveToFirst()){
-			return Long.parseLong(cursor.getString(i0));
-		}
-		return 0;
-	}
-
-	public void deleteCustomerRideDataForEngagement(int engagementId) {
-		try {
-			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void deleteCustomerRideData() {
-		try {
-			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	public void insertPoolDiscountFlag(int engagementId, int flag) {
@@ -1884,13 +1792,15 @@ public class Database2 {                                                        
 
 
 	public int getPoolDiscountFlag(int engagementId){
+		int poolDiscount = 0;
 		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_POOL_DISCOUNT_FLAG
 				+ " WHERE " + POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
 		int i0 = cursor.getColumnIndex(Database2.POOL_RIDE_DISCOUNT_FLAG);
 		if(cursor.moveToFirst()){
-			return Integer.parseInt(cursor.getString(i0));
+			poolDiscount = Integer.parseInt(cursor.getString(i0));
 		}
-		return 0;
+		cursor.close();
+		return poolDiscount;
 	}
 
 
@@ -1913,59 +1823,26 @@ public class Database2 {                                                        
 		}
 	}
 
-	public String getPushyToken(){
-		try {
-			String [] colums = new String[] {Database2.PUSHY_TOKEN};
-			Cursor cursor = database.query(Database2.TABLE_PUSHY_TOKEN, colums, null, null, null, null, null);
-			if(cursor.getCount() > 0){
-				cursor.moveToFirst();
-				String token = cursor.getString(cursor.getColumnIndex(Database2.PUSHY_TOKEN));
-				return token;
-			} else {
-				return "";
-			}
-		} catch (Exception e) {
-			return "";
-		}
-	}
 
-
-	public int updatePushyToken(String token){
-
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.PUSHY_TOKEN, token);
-			int rowsAffected = database.update(Database2.TABLE_PUSHY_TOKEN, contentValues, null, null);
-			if(rowsAffected == 0){
-				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
-				return 1;
-			} else {
-				return rowsAffected;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public String getWaitTimeFromDB(){
+	String getWaitTimeFromDB(){
+		String wait = "0";
+		Cursor cursor = null;
 		try {
 			String [] colums = new String[] {Database2.WAIT_TIME};
-			Cursor cursor = database.query(Database2.TABLE_WAIT_TIME, colums, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_WAIT_TIME, colums, null, null, null, null, null);
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
-				String token = cursor.getString(cursor.getColumnIndex(Database2.WAIT_TIME));
-				return token;
-			} else {
-				return "0";
+				wait = cursor.getString(cursor.getColumnIndex(Database2.WAIT_TIME));
 			}
-		} catch (Exception e) {
-			return "0";
+		} catch (Exception ignored) {
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
+		return wait;
 	}
 
 
-	public int updateWaitTime(String time){
+	void updateWaitTime(String time){
 
 		try {
 			ContentValues contentValues = new ContentValues();
@@ -1973,13 +1850,9 @@ public class Database2 {                                                        
 			int rowsAffected = database.update(Database2.TABLE_WAIT_TIME, contentValues, null, null);
 			if(rowsAffected == 0){
 				database.insert(Database2.TABLE_WAIT_TIME, null, contentValues);
-				return 1;
-			} else {
-				return rowsAffected;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 0;
 		}
 	}
 
@@ -1992,28 +1865,28 @@ public class Database2 {                                                        
 	}
 
 
-	public long insertDataUsage(String time, String recived, String sent) {
+	public void insertDataUsage(String time, String recived, String sent) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(LOG_TIME, time);
 			contentValues.put(BYTES_RECEIVED, recived);
 			contentValues.put(BYTES_SENT, sent);
 
-			return database.insert(TABLE_DATA_USAGE, null, contentValues);
+			database.insert(TABLE_DATA_USAGE, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
 		}
 	}
 
 	public String getDataUsage() {
-		String usageDataStr = "";
+		StringBuilder usageDataStr = new StringBuilder();
 		String template = "time,receive,sent";
 		String newLine = "\n";
 		boolean hasValues = false;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.LOG_TIME, Database2.BYTES_RECEIVED, Database2.BYTES_SENT};
-			Cursor cursor = database.query(Database2.TABLE_DATA_USAGE, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_DATA_USAGE, columns, null, null, null, null, null);
 
 			int i0 = cursor.getColumnIndex(Database2.LOG_TIME);
 			int i1 = cursor.getColumnIndex(Database2.BYTES_RECEIVED);
@@ -2025,20 +1898,22 @@ public class Database2 {                                                        
 							cursor.getString(i1),
 							cursor.getString(i2));
 
-					usageDataStr = usageDataStr + usageData.toString() + newLine;
+					usageDataStr.append(usageData.toString()).append(newLine);
 					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			if (hasValues) {
-				usageDataStr = template + newLine + usageDataStr;
+				usageDataStr.insert(0, template + newLine);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 
-		return usageDataStr;
+		return usageDataStr.toString();
 	}
 
 	public void deleteUsageData() {
@@ -2050,27 +1925,27 @@ public class Database2 {                                                        
 	}
 
 
-	public long insertUSLLog(String event) {
+	void insertUSLLog(String event) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(LOG_TIMESTAMP, DateOperations.getCurrentTime());
 			contentValues.put(LOG_EVENT, event);
 
-			return database.insert(TABLE_USL_LOG, null, contentValues);
+			database.insert(TABLE_USL_LOG, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
 		}
 	}
 
 	public String getUSLLog() {
-		String usageDataStr = "";
+		StringBuilder usageDataStr = new StringBuilder();
 		String template = "time,event";
 		String newLine = "\n";
 		boolean hasValues = false;
+		Cursor cursor = null;
 		try {
 			String[] columns = new String[]{Database2.LOG_TIMESTAMP, Database2.LOG_EVENT};
-			Cursor cursor = database.query(Database2.TABLE_USL_LOG, columns, null, null, null, null, null);
+			cursor = database.query(Database2.TABLE_USL_LOG, columns, null, null, null, null, null);
 
 			int i0 = cursor.getColumnIndex(Database2.LOG_TIMESTAMP);
 			int i1 = cursor.getColumnIndex(Database2.LOG_EVENT);
@@ -2080,20 +1955,22 @@ public class Database2 {                                                        
 					LogUSL logUSL = new LogUSL(cursor.getString(i0),
 							cursor.getString(i1));
 
-					usageDataStr = usageDataStr + logUSL.toString() + newLine;
+					usageDataStr.append(logUSL.toString()).append(newLine);
 					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 			if (hasValues) {
-				usageDataStr = template + newLine + usageDataStr;
+				usageDataStr.insert(0, template + newLine);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			if(cursor != null){cursor.close();}
 		}
 
-		return usageDataStr;
+		return usageDataStr.toString();
 	}
 
 	public void deleteUSLLog() {
@@ -2102,6 +1979,32 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public void setKeyValue(String key, String value) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(VALUE, value);
+		int rowsAffected = database.update(TABLE_KEY_VALUE, contentValues, KEY + "=?", new String[]{key});
+		if (rowsAffected < 1) {
+			contentValues.put(KEY, key);
+			database.insert(TABLE_KEY_VALUE, null, contentValues);
+		}
+	}
+
+
+	public String getKeyValue(String key){
+		String[] columns = new String[]{VALUE};
+		Cursor cursor = database.query(TABLE_KEY_VALUE, columns, KEY+"=?", new String[]{key}, null, null, null);
+
+		int i0 = cursor.getColumnIndex(Database2.VALUE);
+		String value = "";
+		if(cursor.moveToFirst()){
+			value = cursor.getString(i0);
+		}
+		cursor.close();
+		return value;
 	}
 
 
