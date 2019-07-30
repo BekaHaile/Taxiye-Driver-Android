@@ -3246,6 +3246,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         enableSharing, toggleDelivery);
             } else {
                 Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
+                viewSlide.post(()->slidingSwitch.setSlideLeft());
             }
         } else {
             if (Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1) {
@@ -3267,6 +3268,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             } else {
                 Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
+                viewSlide.post(()->slidingSwitch.setSlideLeft());
             }
         } else {
             toggleSharingModeAPI(0, new LatLng(0, 0), disableAutos, toggleDelivery);

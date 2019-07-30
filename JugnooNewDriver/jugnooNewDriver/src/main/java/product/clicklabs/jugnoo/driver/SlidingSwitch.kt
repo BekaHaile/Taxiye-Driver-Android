@@ -10,6 +10,16 @@ import kotlinx.android.synthetic.main.layout_switch_slide.view.*
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.Utils
 
+/**
+ * @author Nitkarsh Gupta
+ *
+ * Custom SlidingSwitch for Online/Offline
+ *
+ * @constructor
+ * @param view :- view to be inflated
+ * @param callbackSlideOnOff :- callback to handle click and touch end events
+ */
+
 class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) {
 
     var paramF = view.viewSlide.layoutParams as RelativeLayout.LayoutParams
