@@ -3520,8 +3520,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DialogPopup.dismissLoadingDialog();
-                DialogPopup.alertPopup(HomeActivity.this, "", message);
+                if(isSlideReturn) {
+                    if (Data.userData.autosAvailable == 1) {
+                        slidingSwitch.setSlideRight();
+                    } else {
+                        slidingSwitch.setSlideLeft();
+                    }
+                    new Handler().postDelayed(() -> {
+                        DialogPopup.dismissLoadingDialog();
+                        DialogPopup.alertPopup(HomeActivity.this, "", message);
+                    },200);
+                } else {
+                    DialogPopup.dismissLoadingDialog();
+                    DialogPopup.alertPopup(HomeActivity.this, "", message);
+                }
+
             }
         });
     }
