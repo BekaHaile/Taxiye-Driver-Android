@@ -97,6 +97,11 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
         }
     }
 
+    fun updateList(list: List<ReferInfo>) {
+        this.list = list
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var groupTotalMoney = view.groupTotalMoney
         var groupTotalCredits = view.groupTotalCredits

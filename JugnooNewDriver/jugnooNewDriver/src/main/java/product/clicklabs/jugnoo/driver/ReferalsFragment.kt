@@ -30,6 +30,10 @@ import product.clicklabs.jugnoo.driver.utils.Utils
 class ReferalsFragment : Fragment() {
 
     var listRefer = ArrayList<ReferInfo>()
+    var pendingList = ArrayList<ReferInfo>()
+    var successList = ArrayList<ReferInfo>()
+    var referTaskAdapter: ReferTaskAdapter? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_referals, container, false)
@@ -41,6 +45,32 @@ class ReferalsFragment : Fragment() {
         rvReferralTasks.layoutManager = LinearLayoutManager(context)
         rvReferralTasks.itemAnimator = DefaultItemAnimator()
         callFetchDriverApi()
+        tvTaskPending.setOnClickListener {
+            if(rvReferralTasks.adapter == null) {
+                referTaskAdapter = ReferTaskAdapter(pendingList)
+                rvReferralTasks.adapter = referTaskAdapter
+            } else {
+                referTaskAdapter?.updateList(pendingList)
+            }
+            if(pendingList.isEmpty()) {
+                tvNoData.visibility = View.VISIBLE
+            } else {
+                tvNoData.visibility = View.GONE
+            }
+        }
+        tvTaskCompleted.setOnClickListener {
+            if(rvReferralTasks.adapter == null) {
+                referTaskAdapter = ReferTaskAdapter(successList)
+                rvReferralTasks.adapter = referTaskAdapter
+            } else {
+                referTaskAdapter?.updateList(successList)
+            }
+            if(successList.isEmpty()) {
+                tvNoData.visibility = View.VISIBLE
+            } else {
+                tvNoData.visibility = View.GONE
+            }
+        }
     }
 
 
@@ -69,7 +99,7 @@ class ReferalsFragment : Fragment() {
                         tvTaskPending.text = getCountSpannable(pending,R.color.themeColor)
                         tvTaskPending.append("\n")
                         tvTaskPending.append(getString(R.string.pending))
-                        rvReferralTasks.adapter = ReferTaskAdapter(list)
+                        tvTaskPending.performClick()
                     }
 
                 }
@@ -94,28 +124,22 @@ class ReferalsFragment : Fragment() {
             if (item.status == TaskType.PENDING.i) {
                 item.taskMessage = getString(R.string.documents_pending)
                 pending++
+                pendingList.add(item)
             } else if (item.status == TaskType.FAILED.i) {
                 item.taskMessage = getString(R.string.documents_rejected)
                 pending++
+                pendingList.add(item)
             } else if (item.status == TaskType.SUCCESS.i) {
                 if (item.processedMoney == 0 && item.processedCredits == 0) {
+                    handleSuccessItemMessage(item)
                     pending++
+                    pendingList.add(item)
                 } else {
                     succeeded++
+                    handleSuccessItemMessage(item)
+                    successList.add(item)
                 }
-                item.nextTarget?.let {
-                    if (item.userNumRides < item.nextTarget?.numOfRidesNextTarget!!) {
-                        if (item.nextTarget?.moneyNextTarget!! > 0 && item.nextTarget?.creditsNextTarget!! > 0) {
-                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
-                                    item.nextTarget?.moneyNextTarget.toString())} and ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
-                        } else if (item.nextTarget?.moneyNextTarget!! > 0) {
-                            item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
-                                    item.nextTarget?.moneyNextTarget.toString())} by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
-                        } else if (item.nextTarget?.creditsNextTarget!! > 0) {
-                            item.taskMessage = "Earn ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
-                        }
-                    }
-                }
+
                 if(item.nextTarget == null) {
                     item.taskMessage = "Completed"
                 }
@@ -123,5 +147,21 @@ class ReferalsFragment : Fragment() {
         }
 
         return callback(succeeded,pending,list)
+    }
+
+    fun handleSuccessItemMessage(item: ReferInfo) {
+        item.nextTarget?.let {
+            if (item.userNumRides < item.nextTarget?.numOfRidesNextTarget!!) {
+                if (item.nextTarget?.moneyNextTarget!! > 0 && item.nextTarget?.creditsNextTarget!! > 0) {
+                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                            item.nextTarget?.moneyNextTarget.toString())} and ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
+                } else if (item.nextTarget?.moneyNextTarget!! > 0) {
+                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                            item.nextTarget?.moneyNextTarget.toString())} by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
+                } else if (item.nextTarget?.creditsNextTarget!! > 0) {
+                    item.taskMessage = "Earn ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
+                }
+            }
+        }
     }
 }
