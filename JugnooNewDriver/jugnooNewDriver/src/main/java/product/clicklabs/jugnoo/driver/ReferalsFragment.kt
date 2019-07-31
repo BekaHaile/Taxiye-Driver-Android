@@ -142,17 +142,15 @@ class ReferalsFragment : Fragment() {
                 pendingList.add(item)
             } else if (item.status == TaskType.SUCCESS.i) {
                 if (item.processedMoney == 0 && item.processedCredits == 0) {
-                    handleSuccessItemMessage(item)
+                    handleSuccessItemMessage(item){
+                        newItem ->  pendingList.add(newItem)
+                    }
                     pending++
-                    pendingList.add(item)
                 } else {
+                    handleSuccessItemMessage(item) {
+                        newItem -> successList.add(item)
+                    }
                     succeeded++
-                    handleSuccessItemMessage(item)
-                    successList.add(item)
-                }
-
-                if(item.nextTarget == null) {
-                    item.taskMessage = "Completed"
                 }
             }
         }
@@ -160,7 +158,7 @@ class ReferalsFragment : Fragment() {
         return callback(succeeded,pending,list)
     }
 
-    fun handleSuccessItemMessage(item: ReferInfo) {
+    fun handleSuccessItemMessage(item: ReferInfo,callback:(newItem :ReferInfo)-> Unit) {
         item.nextTarget?.let {
             if (item.userNumRides < item.nextTarget?.numOfRidesNextTarget!!) {
                 if (item.nextTarget?.moneyNextTarget!! > 0 && item.nextTarget?.creditsNextTarget!! > 0) {
@@ -174,5 +172,9 @@ class ReferalsFragment : Fragment() {
                 }
             }
         }
+        if(item.nextTarget == null) {
+            item.taskMessage = "Completed"
+        }
+        return callback(item)
     }
 }

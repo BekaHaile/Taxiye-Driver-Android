@@ -28,6 +28,7 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
         if(list[position].name.isNullOrEmpty()) {
             holder.groupName.gone()
         } else {
+            holder.groupName.visible()
             holder.tvDriverNameValue.text = list[position].name
         }
         holder.tvDriverNoValue.text = list[position].phoneNo
@@ -35,78 +36,75 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
         if(list[position].totalMoney == 0){
             holder.groupTotalMoney.gone()
         } else {
+            holder.groupTotalMoney.visible()
             holder.tvTotalMoneyValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),list[position].totalMoney.toString())
         }
 
         if(list[position].totalCredits == 0) {
             holder.groupTotalCredits.gone()
         } else {
+            holder.groupTotalCredits.visible()
             holder.tvTotalCreditsValue.text = list[position].totalCredits.toString()
         }
 
         if(list[position].processedMoney == 0) {
             holder.groupMoneyProcessed.gone()
         } else {
+            holder.groupMoneyProcessed.visible()
             holder.tvMoneyProcessedValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),list[position].processedMoney.toString())
         }
 
         if(list[position].processedCredits == 0) {
             holder.groupCreditsProcessed.gone()
         } else {
+            holder.groupCreditsProcessed.visible()
             holder.tvCreditsProcessedValue.text = list[position].processedCredits.toString()
         }
 
         if(list[position].userNumRides == 0) {
             holder.groupTotalTargets.gone()
         } else {
+            holder.groupTotalTargets.visible()
             holder.tvTotalTargetsValue.text = list[position].userNumRides.toString()
         }
 
-//        holder.tvStatus.text = list[position].taskMessage
-        holder.tvStatus2.text = list[position].taskMessage
-
         if(list[position].status == TaskType.SUCCESS.i) {
             if(list[position].nextTarget?.numOfRidesNextTarget == 0) {
-//                holder.tvStatus.visibility = View.GONE
                 holder.tvStatus2.visibility = View.GONE
+            } else {
+                holder.tvStatus2.visibility = View.VISIBLE
             }
-//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.green_online))
-//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
             holder.tvStatus2.setTextColor(context.resources.getColor(R.color.green_online))
             holder.tvStatus2.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
             list[position].nextTarget?.let {
-//                holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
-//                holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
-            holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
+                holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
                 holder.tvStatus2.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+            }
+            if(list[position].processedCredits != 0) {
+                holder.groupCreditsProcessed.visible()
+            }
+            if(list[position].processedMoney != 0) {
+                holder.groupMoneyProcessed.visible()
+            }
+            if(list[position].userNumRides != 0) {
+                holder.groupTotalTargets.visible()
             }
 
         } else if(list[position].status == TaskType.PENDING.i) {
             holder.groupCreditsProcessed.gone()
             holder.groupMoneyProcessed.gone()
             holder.groupTotalTargets.gone()
-//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
-//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
-        holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
+            holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
             holder.tvStatus2.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
         } else {
             holder.groupCreditsProcessed.gone()
             holder.groupMoneyProcessed.gone()
             holder.groupTotalTargets.gone()
-//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.red_offline))
-//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
-        holder.tvStatus2.setTextColor(context.resources.getColor(R.color.red_offline))
+            holder.tvStatus2.setTextColor(context.resources.getColor(R.color.red_offline))
             holder.tvStatus2.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
         }
-        if(holder.groupName.isGone() && holder.groupNo.isVisible()) {
-            var layoutparms = holder.tvDriverNoValue.layoutParams as ConstraintLayout.LayoutParams
-            layoutparms.topMargin = 0
-            holder.tvDriverNoValue.layoutParams = layoutparms
-        }
-        list[position].nextTarget?.let {
-            if(it.numOfRidesNextTarget <=  list[position].userNumRides) { /*holder.tvStatus.gone()*/
-                holder.tvStatus2.gone()}
-        }
+
+        holder.tvStatus2.text = list[position].taskMessage
     }
 
     fun updateList(list: List<ReferInfo>) {
