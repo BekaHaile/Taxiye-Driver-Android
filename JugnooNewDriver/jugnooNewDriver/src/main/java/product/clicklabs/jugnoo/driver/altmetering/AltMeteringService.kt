@@ -321,6 +321,7 @@ class AltMeteringService : Service() {
                     val segments2: MutableList<Segment> = meteringDB.getMeteringDao().getAllSegments(engagementId, 0) as MutableList<Segment>
                     Log.e("$TAG FetchPathAsync", "segments2 = $segments2")
                     Log.e("$TAG FetchPathAsync", "segments2size = "+segments2.size)
+                    meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
