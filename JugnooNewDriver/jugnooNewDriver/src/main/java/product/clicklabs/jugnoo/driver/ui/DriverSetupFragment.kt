@@ -241,7 +241,7 @@ class DriverSetupFragment : Fragment() {
         if(referralCode!=null){
             params["referral_code"] = referralCode;
         }
-        if(fleetSelected != null){
+        if(fleetSelected != null && fleetSelected!!.id > 0){
             params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
     HomeUtil.putDefaultParams(params)
@@ -495,7 +495,13 @@ class DriverSetupFragment : Fragment() {
             });
             countryPickerDialog.setDialogInteractionListener(object:CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet>{
                 override fun getAllCountries(): MutableList<CityResponse.Fleet> {
-                    return citySelected!!.fleets
+                    val fleets = mutableListOf<CityResponse.Fleet>()
+                    fleets.addAll(citySelected!!.fleets)
+                    val noneFleet = CityResponse.Fleet()
+                    noneFleet.name = getString(R.string.none)
+                    noneFleet.id = -1
+                    fleets.add(noneFleet)
+                    return fleets
                 }
 
                 override fun sortCountries(searchResults: MutableList<CityResponse.Fleet>?) {

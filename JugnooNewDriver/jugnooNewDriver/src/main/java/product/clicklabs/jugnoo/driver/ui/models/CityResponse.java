@@ -222,7 +222,7 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		}
 	}
 
-	public class Fleet extends SearchDataModel{
+	public static class Fleet extends SearchDataModel{
 		@SerializedName("id")
 		int id;
 		@SerializedName("name")
@@ -230,6 +230,14 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		public int getId() {
 			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public void setName(String name) {
+			this.name = name;
 		}
 
 		public String getName() {
