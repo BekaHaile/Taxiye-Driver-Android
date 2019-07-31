@@ -24,7 +24,7 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var context = holder.tvStatus.context
+        var context = holder.tvDriverNameValue.context
         if(list[position].name.isNullOrEmpty()) {
             holder.groupName.gone()
         } else {
@@ -62,30 +62,41 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
             holder.tvTotalTargetsValue.text = list[position].userNumRides.toString()
         }
 
-        holder.tvStatus.text = list[position].taskMessage
+//        holder.tvStatus.text = list[position].taskMessage
+        holder.tvStatus2.text = list[position].taskMessage
+
         if(list[position].status == TaskType.SUCCESS.i) {
             if(list[position].nextTarget?.numOfRidesNextTarget == 0) {
-                holder.tvStatus.visibility = View.GONE
+//                holder.tvStatus.visibility = View.GONE
+                holder.tvStatus2.visibility = View.GONE
             }
-            holder.tvStatus.setTextColor(context.resources.getColor(R.color.green_online))
-            holder.tvStatus.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
+//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.green_online))
+//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
+            holder.tvStatus2.setTextColor(context.resources.getColor(R.color.green_online))
+            holder.tvStatus2.background = context.resources.getDrawable(R.drawable.green_rounded_with_dim_green)
             list[position].nextTarget?.let {
-                holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
-                holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+//                holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
+//                holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+            holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
+                holder.tvStatus2.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
             }
 
         } else if(list[position].status == TaskType.PENDING.i) {
             holder.groupCreditsProcessed.gone()
             holder.groupMoneyProcessed.gone()
             holder.groupTotalTargets.gone()
-            holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
-            holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.themeColor))
+//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
+        holder.tvStatus2.setTextColor(context.resources.getColor(R.color.themeColor))
+            holder.tvStatus2.background = context.resources.getDrawable(R.drawable.theme_stroke_alpha_background)
         } else {
             holder.groupCreditsProcessed.gone()
             holder.groupMoneyProcessed.gone()
             holder.groupTotalTargets.gone()
-            holder.tvStatus.setTextColor(context.resources.getColor(R.color.red_offline))
-            holder.tvStatus.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
+//            holder.tvStatus.setTextColor(context.resources.getColor(R.color.red_offline))
+//            holder.tvStatus.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
+        holder.tvStatus2.setTextColor(context.resources.getColor(R.color.red_offline))
+            holder.tvStatus2.background = context.resources.getDrawable(R.drawable.red_rounded_with_alpha_background)
         }
         if(holder.groupName.isGone() && holder.groupNo.isVisible()) {
             var layoutparms = holder.tvDriverNoValue.layoutParams as ConstraintLayout.LayoutParams
@@ -93,7 +104,8 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
             holder.tvDriverNoValue.layoutParams = layoutparms
         }
         list[position].nextTarget?.let {
-            if(it.numOfRidesNextTarget <=  list[position].userNumRides) { holder.tvStatus.gone() }
+            if(it.numOfRidesNextTarget <=  list[position].userNumRides) { /*holder.tvStatus.gone()*/
+                holder.tvStatus2.gone()}
         }
     }
 
@@ -117,7 +129,8 @@ class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTask
         var tvTotalTargetsValue = view.tvTotalTargetsValue
         var tvDriverNoValue = view.tvDriverNoValue
         var tvDriverNameValue = view.tvDriverNameValue
-        var tvStatus = view.tvStatus
+//        var tvStatus = view.tvStatus
+        var tvStatus2 = view.tvStatus2
     }
 }
 

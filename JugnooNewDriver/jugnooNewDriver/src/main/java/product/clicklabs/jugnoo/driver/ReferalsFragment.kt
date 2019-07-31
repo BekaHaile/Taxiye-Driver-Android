@@ -26,6 +26,9 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.Utils
+import android.util.TypedValue
+
+
 
 class ReferalsFragment : Fragment() {
 
@@ -52,6 +55,10 @@ class ReferalsFragment : Fragment() {
             } else {
                 referTaskAdapter?.updateList(pendingList)
             }
+            tvTaskPending.background = resources.getDrawable(R.color.grey_new)
+            val outValue = TypedValue()
+            context!!.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+            tvTaskCompleted.setBackgroundResource(outValue.resourceId)
             if(pendingList.isEmpty()) {
                 tvNoData.visibility = View.VISIBLE
             } else {
@@ -65,6 +72,10 @@ class ReferalsFragment : Fragment() {
             } else {
                 referTaskAdapter?.updateList(successList)
             }
+            tvTaskCompleted.background = resources.getDrawable(R.color.grey_new)
+            val outValue = TypedValue()
+            context!!.theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+            tvTaskPending.setBackgroundResource(outValue.resourceId)
             if(successList.isEmpty()) {
                 tvNoData.visibility = View.VISIBLE
             } else {
