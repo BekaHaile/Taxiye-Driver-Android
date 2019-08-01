@@ -274,40 +274,65 @@ class AltMeteringService : Service() {
     private fun fetchPathAsync(meteringDB: MeteringDatabase?, engagementId:Int, source: LatLng, destination: LatLng,
                                waypointsP: MutableList<LatLng>?, onPost: (MutableList<LatLng>, MutableList<LatLng>?) -> Unit){
         GlobalScope.launch(Dispatchers.IO) {
-            var waypoints = waypointsP
-            if(waypoints == null){
-                val waypointsDB = meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
-                waypoints = mutableListOf()
-                for(wp in waypointsDB){
-                    waypoints.add(LatLng(wp.lat, wp.lng))
-                }
-            }
-
-            val sb = StringBuilder()
-            for (i in waypoints.indices) {
-                sb.append("via:")
-                        .append(waypoints[i].latitude)
-                        .append("%2C")
-                        .append(waypoints[i].longitude)
-                        .append("%7C")
-            }
-            val strWaypoints = sb.toString()
-            var list = mutableListOf<LatLng>()
             try {
-                val strOrigin = source.latitude.toString() + "," + source.longitude.toString()
-                val strDestination = destination.latitude.toString() + "," + destination.longitude.toString()
-                log("gapi", "strOrigin=$strOrigin, strDest=$strDestination, strWp=$strWaypoints")
+                val comma = ","
+                val via = "via:"
+                val p2c = "%2C"
+                val p7c = "%7C"
 
-                val response = if (!TextUtils.isEmpty(strWaypoints)) {
-                    GoogleRestApis.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints)
-                } else {
-                    GoogleRestApis.getDirections(strOrigin, strDestination, false, "driving", false)
+                var waypoints = waypointsP
+                if(waypoints == null){ //if waypoints passed is null, list will be fetched from database
+                    val waypointsDB = meteringDB!!.getMeteringDao().getAllWaypoints(engagementId)
+                    waypoints = mutableListOf()
+                    for(wp in waypointsDB){
+                        waypoints.add(LatLng(wp.lat, wp.lng))
+                    }
                 }
-                val result = String((response.body as TypedByteArray).bytes)
-                val json = JSONObject(result)
+                //adding parameter source at first and destination at last of the list of waypoints
+                waypoints.add(0, source)
+                waypoints.add(destination)
 
-                list = MapUtils.getLatLngListFromPath(result)
-                log("gapi", "status="+json.getString("status")+", list="+list.size)
+
+                //here we will divide the waypoints list in DirectionWaypointData consisting of source destination and at max 8 waypoints
+                //because to restrict google directions advanced api usage
+                val drWpList = mutableListOf<DirectionWaypointData>()
+                var sb:StringBuilder? = StringBuilder()
+                var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null)
+                for (i in waypoints.indices) {
+                    when {
+                        i%10 == 0 -> {
+                            drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null)
+                            sb = StringBuilder()
+                        }
+                        i%10 == 9 || i == waypoints.size-1 -> {
+                            drwp!!.destination = waypoints[i].latitude.toString()+comma+waypoints[i].longitude
+                            drwp.waypoints = sb.toString()
+                            drWpList.add(drwp)
+                        }
+                        else -> {
+                            sb!!.append(via).append(waypoints[i].latitude).append(p2c).append(waypoints[i].longitude).append(p7c)
+                        }
+                    }
+                }
+                val list = mutableListOf<LatLng>()
+                //hitting google direction hits with each drWpList list item and adding
+                //latLngs, which we got from the api, in main list for concenated route
+                for(drwpObj in drWpList){
+                    log("gapi hitting", "drwp=$drwpObj")
+                    val response = if (!TextUtils.isEmpty(drwpObj.waypoints)) {
+                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!)
+                    } else {
+                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false)
+                    }
+                    val result = String((response.body as TypedByteArray).bytes)
+                    val json = JSONObject(result)
+
+                    list.addAll(MapUtils.getLatLngListFromPath(result))
+
+                    log("gapi", "status="+json.getString("status")+", list="+list.size)
+                }
+
+                Log.d(TAG, "total google direction list size list="+list.size)
                 if (list.size > 0) {
                     val segments: MutableList<Segment> = arrayListOf()
                     for (i in list.indices) {
@@ -565,6 +590,12 @@ class AltMeteringService : Service() {
                 } catch (e: Exception) {
                 }
             }
+        }
+    }
+
+    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?){
+        override fun toString(): String {
+            return "$source<>$destination<>$waypoints"
         }
     }
 }
