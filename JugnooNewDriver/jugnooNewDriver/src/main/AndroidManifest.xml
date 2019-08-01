@@ -420,16 +420,6 @@
                 <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".PathUploadReceiver">
-            <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".UploadInRideDataReceiver">
-            <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA"/>
-            </intent-filter>
-        </receiver>
         <receiver android:name=".TimeOutAlarmReceiver">
             <intent-filter>
                 <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH"/>
