@@ -297,23 +297,31 @@ class AltMeteringService : Service() {
                 //because to restrict google directions advanced api usage
                 val drWpList = mutableListOf<DirectionWaypointData>()
                 var sb:StringBuilder? = StringBuilder()
+                var sbPos = StringBuilder()
                 var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null)
                 for (i in waypoints.indices) {
                     when {
-                        i%10 == 0 -> {
+                        i == 0 -> {
                             drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null)
-                            sb = StringBuilder()
+                            sbPos.append(i).append("-")
                         }
-                        i%10 == 9 || i == waypoints.size-1 -> {
+                        (i > 0 && i%10 == 0) || i == waypoints.size-1 -> {
                             drwp!!.destination = waypoints[i].latitude.toString()+comma+waypoints[i].longitude
                             drwp.waypoints = sb.toString()
                             drWpList.add(drwp)
+                            sbPos.append("-").append(i).append("\n")
+
+                            drwp = DirectionWaypointData(drwp.destination, null, null)
+                            sb = StringBuilder()
+                            sbPos.append(i).append("-")
                         }
                         else -> {
                             sb!!.append(via).append(waypoints[i].latitude).append(p2c).append(waypoints[i].longitude).append(p7c)
+                            sbPos.append(i).append(",")
                         }
                     }
                 }
+                Log.e(TAG, "sbPos = $sbPos")
                 val list = mutableListOf<LatLng>()
                 //hitting google direction hits with each drWpList list item and adding
                 //latLngs, which we got from the api, in main list for concenated route
@@ -352,7 +360,7 @@ class AltMeteringService : Service() {
                 }
 
                 launch(Dispatchers.Main){
-                    onPost(list, waypoints)
+                    onPost(list, if(waypoints.size > 1)waypoints.subList(1, waypoints.size-1) else waypoints)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
