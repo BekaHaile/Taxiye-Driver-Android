@@ -1754,7 +1754,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				int isForce = jupdatePopupInfo.getInt("is_force");
 				String link = jupdatePopupInfo.optString(Constants.KEY_LINK, "");
 				
-				if(Data.appVersion >= currentVersion){
+				if(Data.appVersion == currentVersion){
 					return false;
 				}
 				else{

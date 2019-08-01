@@ -287,6 +287,7 @@ class SplashFragment : Fragment() {
                 }
 
 
+                DialogPopup.showLoadingDialog(mActivity, getString(R.string.loading))
 
                 RestClient.getApiServices().accessTokenLoginRetro(params, object : Callback<RegisterScreenResponse> {
                     override fun success(registerScreenResponse: RegisterScreenResponse, response: Response) {
@@ -340,7 +341,7 @@ class SplashFragment : Fragment() {
                             exception.printStackTrace()
                             DialogPopup.alertPopup(mActivity, "", Data.SERVER_ERROR_MSG)
                         }
-
+                        DialogPopup.dismissLoadingDialog()
                     }
 
                     override fun failure(error: RetrofitError) {

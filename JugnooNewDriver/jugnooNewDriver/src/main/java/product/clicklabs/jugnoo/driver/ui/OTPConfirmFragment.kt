@@ -316,10 +316,7 @@ class OTPConfirmFragment : Fragment(){
                                 if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())) {
                                     JSONParser().parseAccessTokenLoginData(requireActivity(), jsonString)
                                     requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
-                                    startActivity(Intent(requireActivity(), HomeActivity::class.java)
-                                            .putExtra(Constants.FUGU_CHAT_BUNDLE, mListener!!.getMainIntent().extras))
-                                    requireActivity().finish()
-                                    requireActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out)
+                                    mListener?.goToHomeScreen()
                                 }
                             }
 //                            else if () {

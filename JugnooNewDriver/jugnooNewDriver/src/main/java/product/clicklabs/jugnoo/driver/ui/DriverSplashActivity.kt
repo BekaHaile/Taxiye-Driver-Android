@@ -257,8 +257,12 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
        return otpDetectedViaSms;
     }
 
-
+    var goToHomeScreenCalled = false
     override fun goToHomeScreen() {
+        if(!hasWindowFocus()){
+            goToHomeScreenCalled = true
+            return
+        }
         val intent = Intent(this, HomeActivity::class.java)
         if (getIntent().extras != null) {
             intent.putExtras(getIntent().extras)
@@ -274,6 +278,14 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
 
         overridePendingTransition(R.anim.right_in, R.anim.right_out)
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if(hasFocus && goToHomeScreenCalled){
+            goToHomeScreen()
+            goToHomeScreenCalled = false
+        }
     }
 
     override fun toggleDisplayFlags(remove:Boolean) {
