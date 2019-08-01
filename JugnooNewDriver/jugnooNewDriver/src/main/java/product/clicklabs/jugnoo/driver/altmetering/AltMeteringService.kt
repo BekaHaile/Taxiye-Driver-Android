@@ -322,16 +322,22 @@ class AltMeteringService : Service() {
                     Log.e("$TAG FetchPathAsync", "segments2 = $segments2")
                     Log.e("$TAG FetchPathAsync", "segments2size = "+segments2.size)
                     meteringDB.getMeteringDao().deleteScanningPointer(engagementId)
+                } else {
+                    delay(60000)
+                }
+
+                launch(Dispatchers.Main){
+                    onPost(list, waypoints)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 log("gapi", "error=$e")
-                delay(5000)
+                delay(60000)
+                launch(Dispatchers.Main){
+                    readPathAsync(meteringDB, engagementId, onPost)
+                }
             }
 
-            launch(Dispatchers.Main){
-                onPost(list, waypoints)
-            }
         }
 
     }

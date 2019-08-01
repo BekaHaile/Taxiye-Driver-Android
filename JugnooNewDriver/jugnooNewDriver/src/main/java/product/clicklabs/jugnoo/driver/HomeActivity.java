@@ -6738,7 +6738,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 if (rowId != -1) {
                                     Database2.getInstance(activity).updateCurrentPathItemSectionIncomplete(rowId, 0);
                                 }
-                                PathUploadReceiver.uploadInRidePath(activity, false);
+                                GpsDistanceRideDataUpload.INSTANCE.uploadInRidePath(activity, null);
                                 customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                 Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "m", "GAPI 2 distanceOfPath=" + distanceOfPath + " and totalDistance=" + customerRideDataGlobal.getDistance(HomeActivity.this));
                             } else {

@@ -822,11 +822,7 @@ public class GpsDistanceCalculator {
 		@Override
 		public void run() {
 			if(uploadRunnablesRunning) {
-				Intent intent = new Intent(context, PathUploadReceiver.class);
-				intent.setAction(MeteringService.UPOLOAD_PATH);
-				context.sendBroadcast(intent);
-
-				handler.postDelayed(this, PATH_UPLOAD_INTERVAL);
+				GpsDistanceRideDataUpload.INSTANCE.uploadInRidePath(context, () -> handler.postDelayed(pathUploadRunnable, PATH_UPLOAD_INTERVAL));
 			}
 		}
 	};
@@ -834,11 +830,7 @@ public class GpsDistanceCalculator {
 		@Override
 		public void run() {
 			if(uploadRunnablesRunning){
-				Intent intent = new Intent(context, UploadInRideDataReceiver.class);
-				intent.setAction(MeteringService.UPLOAD_IN_RIDE_DATA);
-				context.sendBroadcast(intent);
-
-				handler.postDelayed(this, UPLOAD_IN_RIDE_DATA_INTERVAL);
+				GpsDistanceRideDataUpload.INSTANCE.updateInRideData(context, lastGPSLocation, () -> handler.postDelayed(inRideDataUploadRunnable, UPLOAD_IN_RIDE_DATA_INTERVAL));
 			}
 		}
 	};
