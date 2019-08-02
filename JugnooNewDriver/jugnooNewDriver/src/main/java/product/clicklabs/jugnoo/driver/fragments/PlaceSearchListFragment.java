@@ -120,7 +120,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 		});
 
 
-		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78), mGoogleApiClient,
+		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78),
 				new SearchListAdapter.SearchListActionsHandler() {
 
 					@Override

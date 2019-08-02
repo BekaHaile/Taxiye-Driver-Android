@@ -474,5 +474,13 @@ public interface Constants {
 	String KEY_FLEET_ID = "fleet_id";
 	String KEY_DRIVER_TAG = "driver_tag";
 	String KEY_DROP_UPDATED = "drop_updated";
+	String KEY_DRIVER_GOOGLE_CACHING_ENABLED = "driver_google_caching_enabled";
+	String KEY_LAT = "lat";
+	String KEY_LONG = "long";
+	String KEY_LNG = "lng";
+	String KEY_PLACEID = "placeId";
+	String KEY_PRODUCT_ID = "product_id";
+	String KEY_JSONDATA = "jsonData";
+	String KEY_TYPE = "type";
 }
 

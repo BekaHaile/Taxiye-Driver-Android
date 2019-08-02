@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils
 
 import android.util.Base64
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.BuildConfig.MAPS_BROWSER_KEY
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt
 import retrofit.Callback
@@ -13,6 +14,10 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 object GoogleRestApis {
+
+    private fun CHANNEL(): String {
+        return BuildConfig.FLAVOR + "-android-driver"
+    }
 
     fun getDirections(originLatLng: String, destLatLng: String, sensor: Boolean?,
                       mode: String, alternatives: Boolean?): Response {
@@ -26,7 +31,7 @@ object GoogleRestApis {
                     + "&mode=" + mode
                     + "&alternatives=" + alternatives
                     + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
+                    + "&channel=" + CHANNEL())
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -57,7 +62,7 @@ object GoogleRestApis {
                     + "&sensor=" + sensor
                     + "&alternatives=" + alternatives
                     + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
+                    + "&channel=" + CHANNEL())
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -85,7 +90,7 @@ object GoogleRestApis {
                     + "&language=" + language
                     + "&sensor=" + false
                     + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
+                    + "&channel=" + CHANNEL())
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -112,7 +117,7 @@ object GoogleRestApis {
                     + "&destination=" + strDestination
                     + "&waypoints=" + strWaypoints
                     + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
+                    + "&channel=" + CHANNEL())
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -139,7 +144,7 @@ object GoogleRestApis {
             val urlToSign = ("/v1/snapToRoads?" +
                     "path=" + path
                     + "&client=" + BuildConfig.MAPS_CLIENT
-                    + "&channel=" + BuildConfig.FLAVOR + "-android-driver")
+                    + "&channel=" + CHANNEL())
             var googleSignature: String? = null
             try {
                 googleSignature = generateGoogleSignature(urlToSign)
@@ -219,6 +224,35 @@ object GoogleRestApis {
                 }
             })
         }
+    }
+
+    fun getAutoCompletePredictions(input:String, sessiontoken:String, components:String, location:String, radius:String): Response {
+        val response:Response = RestClient.getGoogleApiServices().autocompletePredictions(input, sessiontoken, components, location, radius, BuildConfig.MAPS_BROWSER_KEY)
+        logGoogleRestAPI("0", "0", API_NAME_AUTOCOMPLETE)
+        return response
+    }
+
+    fun getPlaceDetails(placeId:String): Response {
+        val response:Response
+        if (BuildConfig.MAPS_APIS_SIGN) {
+            val urlToSign = ("/maps/api/geocode/json?" +
+                    "place_id=" + placeId
+                    + "&client=" + BuildConfig.MAPS_CLIENT
+                    + "&channel=" + CHANNEL())
+            var googleSignature: String? = null
+            try {
+                googleSignature = generateGoogleSignature(urlToSign)
+            } catch (ignored: Exception) {
+            }
+
+
+            response = RestClient.getGoogleApiServices().placeDetails(placeId, BuildConfig.MAPS_CLIENT, CHANNEL(), googleSignature)
+        } else {
+            response = RestClient.getGoogleApiServices().placeDetails(placeId, BuildConfig.MAPS_BROWSER_KEY)
+        }
+
+        logGoogleRestAPI("0", "0", API_NAME_PLACES)
+        return response
     }
 
     const val API_NAME_DIRECTIONS = "directions"
