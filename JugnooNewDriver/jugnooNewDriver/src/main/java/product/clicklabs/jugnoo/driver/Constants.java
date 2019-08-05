@@ -483,5 +483,6 @@ public interface Constants {
 	String KEY_JSONDATA = "jsonData";
 	String KEY_TYPE = "type";
 	String KEY_SPECIFIED_COUNTRY_PLACES_SEARCH = "specified_country_places_search";
+	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 }
 

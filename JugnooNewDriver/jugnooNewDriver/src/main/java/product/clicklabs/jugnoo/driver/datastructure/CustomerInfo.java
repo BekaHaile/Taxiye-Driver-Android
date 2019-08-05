@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -514,13 +515,37 @@ public class CustomerInfo {
 		totalDistanceRecovered = distance;
 	}
 
-	public double getTotalDistance(double distance, Context context){
+	public double getTotalDistance(double distance, Context context, boolean onEndRide){
 		if(distanceRecover){return totalDistanceRecovered;}
+
+		double meteringDistance = getSPSavedDistance(distance, context);
+
+		//if Waypoint estimation logic is enabled then waypoint_distance would be in customer map values db
 		if(Data.userData != null && Data.userData.getDriverTag().equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())){
 			try {
 				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE);
 				Log.e("CustomerInfo getTotalDistance", "wpDistance = "+wpDistance);
-				return Double.parseDouble(wpDistance);
+
+				//check if waypoint distance is in specified range of metering distance
+				// if yes then use waypoint distance else use metering distance for fare calculation
+				double wpDist = Double.parseDouble(wpDistance);
+				String range = Prefs.with(context).getString(Constants.KEY_DRIVER_WAYPOINT_DISTANCE_RANGE, "");
+				Log.e("CustomerInfo getTotalDistance", "range = "+range+", meteringDistance="+meteringDistance);
+				if(onEndRide && !TextUtils.isEmpty(range)){
+					try {
+						double rangeVal = Double.parseDouble(range) * meteringDistance / 100D;
+						double lowerBound = meteringDistance - rangeVal;
+						double upperBound = meteringDistance + rangeVal;
+						Log.e("CustomerInfo getTotalDistance", "lowerBound="+lowerBound+", upperBound="+upperBound+", wpDist="+wpDist);
+						if(lowerBound <= wpDist && wpDist <= upperBound){
+							return wpDist;
+						} else {
+							return meteringDistance;
+						}
+					} catch (Exception ignored) {}
+				}
+
+				return wpDist;
 			} catch (Exception ignored) {}
 		}
 //		if(getIsPooled() == 1 && getPoolFare() != null){
@@ -529,7 +554,7 @@ public class CustomerInfo {
 		if(waypointDistance > 0 && Prefs.with(context).getInt(Constants.KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, 0) == 1){
 			return waypointDistance;
 		}
-		return getSPSavedDistance(distance, context);
+		return meteringDistance;
 	}
 
 	public double getSPSavedDistance(double distance, Context context) {
