@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,31 +17,30 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.UUID;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.apis.GoogleAPICoroutine;
+import product.clicklabs.jugnoo.driver.apis.PlaceDetailCallback;
+import product.clicklabs.jugnoo.driver.apis.PlacesCallback;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
+import product.clicklabs.jugnoo.driver.retrofit.model.PlaceDetailsResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.Prediction;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
@@ -67,8 +67,7 @@ public class SearchListAdapter extends BaseAdapter {
 
     ArrayList<SearchResultNew> searchResultsForSearch;
     ArrayList<SearchResultNew> searchResults;
-
-	private PlacesClient mGoogleApiClient;
+    String uuidVal = "";
 
 	long delay = 700; // 1 seconds after user stops typing
 	long last_text_edit = 0;
@@ -102,7 +101,7 @@ public class SearchListAdapter extends BaseAdapter {
      * @throws IllegalStateException
      */
     public SearchListAdapter(final Context context, EditText editTextForSearch, LatLng searchPivotLatLng,
-                             PlacesClient mGoogleApiClient, SearchListActionsHandler searchListActionsHandler)
+                             SearchListActionsHandler searchListActionsHandler)
             throws IllegalStateException {
         if(context instanceof Activity) {
 			handler = new Handler();
@@ -113,7 +112,6 @@ public class SearchListAdapter extends BaseAdapter {
             this.editTextForSearch = editTextForSearch;
             this.defaultSearchPivotLatLng = searchPivotLatLng;
             this.searchListActionsHandler = searchListActionsHandler;
-			this.mGoogleApiClient = mGoogleApiClient;
             this.editTextForSearch.addTextChangedListener(new TextWatcher() {
 
                 @Override
@@ -152,7 +150,7 @@ public class SearchListAdapter extends BaseAdapter {
                     return true;
                 }
             });
-
+            uuidVal = UUID.randomUUID().toString();
         }
         else{
             throw new IllegalStateException("context passed is not of Activity type");
@@ -298,52 +296,45 @@ public class SearchListAdapter extends BaseAdapter {
 			if (!refreshingAutoComplete) {
 				searchListActionsHandler.onSearchPre();
 
-                // Create a RectangularBounds object.
-                RectangularBounds bounds = RectangularBounds.newInstance(
-                        latLng,
-                        latLng);
-                // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
-                // and once again when the user makes a selection (for example when calling fetchPlace()).
-                AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+				String specifiedCountry = Prefs.with(context).getString(Constants.KEY_SPECIFIED_COUNTRY_PLACES_SEARCH, "");
+                String components = !TextUtils.isEmpty(specifiedCountry)? "country:"+specifiedCountry:"";
+                String radius = searchText.length() <= 3 ? "50" : (searchText.length() <= 5 ? "100": (searchText.length() <= 8 ? "1000" : "10000"));
+                String location = latLng.latitude+","+latLng.longitude;
 
-                // Use the builder to create a FindAutocompletePredictionsRequest.
-                FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                        // Call either setLocationBias() OR setLocationRestriction().
-                        .setLocationBias( bounds)
-                        //.setLocationRestriction(bounds)
-                        .setCountry(this.context.getResources().getBoolean(R.bool.specified_country_search_result_enabled)? "TT" : null)
-                        .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                        .setSessionToken(token)
-                        .setQuery(searchText)
-                        .build();
+                GoogleAPICoroutine.INSTANCE.getAutoCompletePredictions(searchText, uuidVal, components, location, radius, new PlacesCallback() {
+                    @Override
+                    public void onAutocompletePredictionsReceived(@NotNull List<Prediction> predictions) {
+                        try {
+                            refreshingAutoComplete = true;
+                            searchResultsForSearch.clear();
+                            for (Prediction autocompletePrediction : predictions) {
+                                String name = autocompletePrediction.getDescription().split(",")[0];
+                                searchResultsForSearch.add(new SearchResultNew(name,
+                                        autocompletePrediction.getDescription(),
+                                        autocompletePrediction.getPlaceId(), 0, 0));
+                            }
 
-                mGoogleApiClient.findAutocompletePredictions(request).addOnSuccessListener(response -> {
-                    try {
-                        refreshingAutoComplete = true;
-                        searchResultsForSearch.clear();
-                        for (AutocompletePrediction autocompletePrediction : response.getAutocompletePredictions()) {
-                            String name = autocompletePrediction.getFullText(null).toString().split(",")[0];
-                            searchResultsForSearch.add(new SearchResultNew(name,
-                                    autocompletePrediction.getFullText(null).toString(),
-                                    autocompletePrediction.getPlaceId(), 0, 0));
+                            setSearchResultsToList();
+                            refreshingAutoComplete = false;
+
+                            if (!editTextForSearch.getText().toString().trim().equalsIgnoreCase(searchText)) {
+                                recallSearch(editTextForSearch.getText().toString().trim());
+                            }
+                            GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+							refreshingAutoComplete = false;
                         }
-
-                        setSearchResultsToList();
-                        refreshingAutoComplete = false;
-
-                        if (!editTextForSearch.getText().toString().trim().equalsIgnoreCase(searchText)) {
-                            recallSearch(editTextForSearch.getText().toString().trim());
-                        }
-                        GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }).addOnFailureListener(e -> {
-                    if (e instanceof ApiException) {
-                        ApiException apiException = (ApiException) e;
-                        Log.e("Error", "Place not found: " + apiException.getStatusCode());
+
+                    @Override
+                    public void onAutocompleteError() {
+                        refreshingAutoComplete = false;
                     }
                 });
+
 			}
         } catch (Exception e) {
             e.printStackTrace();
@@ -386,35 +377,36 @@ public class SearchListAdapter extends BaseAdapter {
         searchListActionsHandler.onPlaceSearchPre();
         Log.e("SearchListAdapter", "getPlaceById placeId=" + placeId);
 
-        // Specify the fields to return.
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID,
-                Place.Field.NAME,
-                Place.Field.ADDRESS,
-                Place.Field.LAT_LNG);
-        // Construct a request object, passing the place ID and fields array.
-        FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields)
-                .build();
-        mGoogleApiClient.fetchPlace(request)
-                .addOnSuccessListener(fetchPlaceResponse -> {
-                    try {
-                        final Place myPlace = fetchPlaceResponse.getPlace();
-                        final List<String> thirdPartyAttributions = fetchPlaceResponse.getPlace().getAttributions();
-                        SearchResultNew searchResult = new SearchResultNew(placeName, placeAddress, placeId,
-                                Objects.requireNonNull(myPlace.getLatLng()).latitude, myPlace.getLatLng().longitude);
-                        if (thirdPartyAttributions != null && !thirdPartyAttributions.isEmpty()) {
-                            searchResult.setThirdPartyAttributions(thirdPartyAttributions.get(0));
-                        }
-                        setSearchResult(searchResult);
-                        if(myPlace.getLatLng() != null) {
-                            GoogleRestApis.INSTANCE.logGoogleRestAPIC(String.valueOf(myPlace.getLatLng().latitude), String.valueOf(myPlace.getLatLng().longitude), GoogleRestApis.API_NAME_PLACES);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                })
-                .addOnFailureListener(e -> {
+        GoogleAPICoroutine.INSTANCE.getPlaceById(placeId, placeAddress, new PlaceDetailCallback() {
+            @Override
+            public void onPlaceDetailReceived(@NotNull PlaceDetailsResponse placeDetailsResponse) {
+                try {
+                    final List<String> thirdPartyAttributions = placeDetailsResponse.getResults().get(0).getTypes();
+                    SearchResultNew searchResult = new SearchResultNew(placeName, placeAddress, placeId,
+                            placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLat(),
+                            placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLng());
 
-                });
+//                    if (thirdPartyAttributions != null && !thirdPartyAttributions.isEmpty()) {
+//                        searchResult.setThirdPartyAttributions(thirdPartyAttributions.get(0));
+//                    }
+                    setSearchResult(searchResult);
+
+
+                    if(placeDetailsResponse.getResults().get(0).getGeometry().getLocation() != null) {
+                        GoogleRestApis.INSTANCE.logGoogleRestAPIC(String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLat()),
+                                String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLng()), GoogleRestApis.API_NAME_PLACES);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPlaceDetailError() {
+            }
+        });
+
         Log.v("after call back", "after call back");
     }
 

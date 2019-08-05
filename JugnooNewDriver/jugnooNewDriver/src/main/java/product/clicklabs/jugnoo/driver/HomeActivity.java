@@ -4254,7 +4254,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             try {
                 showChatButton();
-                if (customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1) {
+                if (customerInfo != null && (customerInfo.getIsDelivery() == 1 || customerInfo.getIsDeliveryPool() == 1)) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -5004,6 +5004,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private void showChatButton() {
         try {
+        	if(TextUtils.isEmpty(Data.getCurrentEngagementId())){
+        		return;
+			}
             final CustomerInfo customerInfoCheck = Data.getCurrentCustomerInfo();
             runOnUiThread(new Runnable() {
                 @Override

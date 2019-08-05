@@ -28,6 +28,7 @@ public class RestClient {
 	private static RoadApiService ROADS_API_SERVICE;
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
 	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
+	private static MapsCachingApiService MAPS_CACHING_API_SERVICE;
 
 	static {
 		setupRestClient();
@@ -37,6 +38,7 @@ public class RestClient {
 		setupPushAckAPIRestClient();
 		setupChatAPIRestClient();
 		setupHereMapApiServices();
+		setupMapsCachingRestClient();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -236,5 +238,29 @@ public class RestClient {
 
 	public static ChatAckAPIService getChatAckApiServices() {
 		return CHAT_ACK_API_SERVICE;
+	}
+
+	public static void setupMapsCachingRestClient() {
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		if(MAPS_CACHING_API_SERVICE == null) {
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(BuildConfig.MAPS_CACHING_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient()))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			MAPS_CACHING_API_SERVICE = restAdapter.create(MapsCachingApiService.class);
+		}
+	}
+
+	public static MapsCachingApiService getMapsCachingService() {
+		return MAPS_CACHING_API_SERVICE;
 	}
 }

@@ -1,0 +1,164 @@
+package product.clicklabs.jugnoo.driver.apis
+
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.*
+import org.json.JSONObject
+import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.MyApplication
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
+import product.clicklabs.jugnoo.driver.retrofit.model.PlaceDetailsResponse
+import product.clicklabs.jugnoo.driver.retrofit.model.PlacesAutocompleteResponse
+import product.clicklabs.jugnoo.driver.retrofit.model.Prediction
+import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
+import product.clicklabs.jugnoo.driver.utils.Prefs
+import retrofit.client.Response
+import retrofit.mime.TypedByteArray
+
+object GoogleAPICoroutine {
+
+    private val gson = Gson()
+
+    private fun isGoogleCachingEnabled():Boolean{
+        return Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_DRIVER_GOOGLE_CACHING_ENABLED, 1) == 1
+    }
+
+    //Api for text input autocomplete Place search
+    fun getAutoCompletePredictions(input:String, sessiontoken:String, components:String, location:String, radius:String, callback:PlacesCallback): Job{
+        return GlobalScope.launch(Dispatchers.Main){
+            var predictions: MutableList<Prediction>? = null
+            val arr = location.split(",")
+            try{
+                try {
+                    if (!isGoogleCachingEnabled()) {
+                        throw Exception()
+                    }
+                    val response = withContext(Dispatchers.IO) {
+                        try { RestClient.getMapsCachingService().getAutocompleteData(input, arr[0].toDouble(), arr[1].toDouble(),
+                                    JUNGOO_APP_PRODUCT_ID, Data.userData.userId) } catch (e: Exception) { null }
+                    }
+                    val responseStr = String((response!!.body as TypedByteArray).bytes)
+                    val jsonObject = JSONObject(responseStr)
+                    val responseCached = jsonObject.getJSONArray("data").toString()
+                    predictions = gson.fromJson(responseCached, object : TypeToken<MutableList<Prediction>>() {}.type)
+                } catch (e: Exception) {
+                    val response: Response? = withContext(Dispatchers.IO) {
+                        try { GoogleRestApis.getAutoCompletePredictions(input, sessiontoken, components, location, radius) } catch (e: Exception) { null }
+                    }
+                    val responseStr = String((response!!.body as TypedByteArray).bytes)
+                    val placesResponse = gson.fromJson(responseStr, PlacesAutocompleteResponse::class.java)
+                    predictions = placesResponse.predictions
+
+                    if(isGoogleCachingEnabled()
+                            && placesResponse.predictions != null && placesResponse.predictions!!.size > 0) {
+                        val param = InsertAutocomplete(JUNGOO_APP_PRODUCT_ID, TYPE_AUTO_COMPLETE, input, Data.userData.userId,
+                                arr[0].toDouble(), arr[1].toDouble(), placesResponse)
+                        insertPlaceAutocompleteCache(param)
+                    }
+
+                }
+                callback.onAutocompletePredictionsReceived(predictions!!)
+            } catch (e: Exception) {
+                callback.onAutocompleteError()
+            }
+
+        }
+    }
+
+
+    //Ai for finding place details by place Id
+    fun getPlaceById(placeId:String, placeAddress:String, callback: PlaceDetailCallback): Job{
+        return GlobalScope.launch(Dispatchers.Main){
+            var placesResponse: PlaceDetailsResponse? = null
+            try {
+                try{
+                    if (!isGoogleCachingEnabled()) {
+                        throw Exception()
+                    }
+                    val response = withContext(Dispatchers.IO) {
+                        try { RestClient.getMapsCachingService().getGeocodingData(placeId, JUNGOO_APP_PRODUCT_ID, Data.userData.userId) } catch (e: Exception) { null }
+                    }
+                    val responseStr = String((response!!.body as TypedByteArray).bytes)
+                    val jsonObject = JSONObject(responseStr)
+                    val responseCached = jsonObject.getJSONArray("data").getJSONObject(0).toString()
+                    val results: PlaceDetailsResponse = gson.fromJson(responseCached, PlaceDetailsResponse::class.java)
+                    placesResponse = results
+                } catch(e:Exception){
+                    val response:Response? = withContext(Dispatchers.IO){
+                        try { GoogleRestApis.getPlaceDetails(placeId) } catch (e: Exception) { null }
+                    }
+                    val responseStr = String((response!!.body as TypedByteArray).bytes)
+                    placesResponse = gson.fromJson(responseStr, PlaceDetailsResponse::class.java)
+
+                    if(isGoogleCachingEnabled()
+                            && placesResponse.results != null && placesResponse.results!!.size > 0) {
+                        val param = InsertPlaceDetail(JUNGOO_APP_PRODUCT_ID, TYPE_GEOCODING, placeAddress, Data.userData.userId,
+                                placeId, placesResponse)
+                        insertPlaceDetailCache(param)
+                    }
+                }
+                callback.onPlaceDetailReceived(placesResponse!!)
+            } catch (e: Exception) {
+                callback.onPlaceDetailError()
+            }
+        }
+    }
+
+    private const val JUNGOO_APP_PRODUCT_ID = 2
+    private const val TYPE_AUTO_COMPLETE = "auto_complete"
+    private const val TYPE_GEOCODING = "geocoding"
+
+
+    private fun insertPlaceAutocompleteCache(params: InsertAutocomplete){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {RestClient.getMapsCachingService().insertAutoComplete(params)} catch (ignored: Exception) {}
+        }
+    }
+    private fun insertPlaceDetailCache(params: InsertPlaceDetail){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {RestClient.getMapsCachingService().insertPlaceDetail(params)} catch (ignored: Exception) {}
+        }
+    }
+}
+
+interface PlacesCallback{
+    fun onAutocompletePredictionsReceived(predictions:MutableList<Prediction>)
+    fun onAutocompleteError()
+}
+interface PlaceDetailCallback{
+    fun onPlaceDetailReceived(placeDetailsResponse: PlaceDetailsResponse)
+    fun onPlaceDetailError()
+}
+
+class InsertAutocomplete(
+        @SerializedName(Constants.KEY_PRODUCT_ID)
+        val productId:Int,
+        @SerializedName(Constants.KEY_TYPE)
+        val type:String,
+        @SerializedName(Constants.KEY_ADDRESS)
+        val address:String,
+        @SerializedName(Constants.KEY_USER_ID)
+        val userId:String,
+        @SerializedName(Constants.KEY_LAT)
+        val lat:Double,
+        @SerializedName(Constants.KEY_LNG)
+        val lng:Double,
+        @SerializedName(Constants.KEY_JSONDATA)
+        val jsonData: PlacesAutocompleteResponse
+)
+class InsertPlaceDetail(
+        @SerializedName(Constants.KEY_PRODUCT_ID)
+        val productId:Int,
+        @SerializedName(Constants.KEY_TYPE)
+        val type:String,
+        @SerializedName(Constants.KEY_ADDRESS)
+        val address:String,
+        @SerializedName(Constants.KEY_USER_ID)
+        val userId:String,
+        @SerializedName(Constants.KEY_PLACEID)
+        val placeId:String,
+        @SerializedName(Constants.KEY_JSONDATA)
+        val jsonData:PlaceDetailsResponse
+)
