@@ -57,16 +57,7 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 
 				String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
 				if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
-					String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
-					long interval = 120000;
-					if(fast.equalsIgnoreCase(Database2.NO)){
-						interval = Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
-					} else{
-						interval = Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
-					}
-					Log.i(TAG, "onStartCommand interval="+interval);
-					locationFetcherDriver = new FusedLocationFetcherBackground(this, interval, LocationRequest.PRIORITY_HIGH_ACCURACY, this);
-					locationFetcherDriver.connect();
+					connectLocationFetcher();
 					setupLocationUpdateAlarm();
 				}
 				else{
@@ -84,6 +75,18 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 		return Service.START_STICKY;
     }
 
+	private void connectLocationFetcher() {
+		String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
+		long interval;
+		if(fast.equalsIgnoreCase(Database2.NO)){
+			interval = Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
+		} else{
+			interval = Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
+		}
+		Log.i(TAG, "onStartCommand interval="+interval);
+		locationFetcherDriver = new FusedLocationFetcherBackground(this, interval, LocationRequest.PRIORITY_HIGH_ACCURACY, this);
+		locationFetcherDriver.connect();
+	}
 
 
 	@Override
@@ -206,58 +209,46 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 						Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_SPEED_20PLUS_RESTART);
 					} else {
 
-						if (location.getAccuracy() > FREE_MAX_ACCURACY) {
-							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
-						}
+						try {
+							if (location.getAccuracy() > FREE_MAX_ACCURACY) {
+								Log.i(TAG, "onReceive DriverLocationUpdateService bad accuracy="+location.getAccuracy());
+								Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
+							}
 
-						long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
-						if (timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))) {
-							if (5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
+							long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
+							Log.i(TAG, "onReceive DriverLocationUpdateService timeLapse="+timeLapse);
+							if (timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))) {
+								if (5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
 
-								location.setAccuracy(3000.001f);
-								Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_5_LOC_BAD_ACCURACY);
+									location.setAccuracy(3000.001f);
+									Database2.getInstance(context).insertUSLLog(Constants.EVENT_LR_5_LOC_BAD_ACCURACY);
 
+									Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
+									Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
+								}
+							} else if (timeLapse > MAX_TIME_WINDOW) {
+								Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
 								Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
-								Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
+								Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
 							}
-						} else if (timeLapse > MAX_TIME_WINDOW) {
-							Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
-							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
-							Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
+						} catch (Exception ignored) {
 						}
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
-								new DriverLocationDispatcher().sendLocationToServer(context);
-							}
-						}).start();
+						DLDKotlin.INSTANCE.hitDLD(context, location);
 
 
-						int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
 
+						Log.i(TAG, "onReceive DriverLocationUpdateService IS_OFFLINE="+Prefs.with(context).getInt(Constants.IS_OFFLINE, 0));
 						if(Prefs.with(context).getInt(Constants.IS_OFFLINE, 0) == 1){
 							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
 									Prefs.with(context).getLong(Constants.OFFLINE_UPDATE_TIME_PERIOD, 180000l));
 						} else {
 							if (Utils.isBatteryCharging(context)) {
-								if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-									// Do something for lollipop and above versions
-									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
-											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l)) {
-										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
-												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
-										setAlarm();
-									}
-								} else {
-									// do something for phones running an SDK before lollipop
-									if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
-											!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l)) {
-										Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
-												Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
-										setAlarm();
-									}
+								if (Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000l)
+										!= Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l)) {
+									Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+											Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, 10000l));
+									setAlarm();
 								}
 							} else {
 								if (location.getAccuracy() > 200) {
@@ -292,6 +283,7 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 	private void setAlarm(){
 		if(locationFetcherDriver != null) {
 			locationFetcherDriver.disconnect();
+			locationFetcherDriver = null;
 		}
 
 		if(handler == null){
@@ -299,9 +291,7 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 		}
 		if(runnableReconnectLocation == null){
 			runnableReconnectLocation = () -> {
-				if(locationFetcherDriver != null){
-					locationFetcherDriver.connect();
-				}
+				connectLocationFetcher();
 			};
 		}
 		handler.postDelayed(runnableReconnectLocation, 5000);
