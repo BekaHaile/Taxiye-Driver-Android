@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:layout_marginTop="10dp"
+    android:background="#e1e2e1"
+    android:layout_marginEnd="13.9dp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="14.4dp"
+    android:paddingStart="13.9dp"
+    android:paddingEnd="13.9dp"
+    android:paddingBottom="14.5dp"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Mohit"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_below="@+id/ivImage"/>
+
+    <TextView
+        android:id="@+id/tvAddressHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:text="Alchemist Hospital Panchkula"
+        android:textSize="16sp"
+        android:layout_toEndOf="@+id/ivImage"/>
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAddressHeading"
+        android:layout_toEndOf="@+id/ivImage"
+        android:layout_marginStart="13dp"
+        android:textSize="12sp"
+        android:text="M S Enclave (Panchkula, Dhakoli)"/>
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:gravity="center"
+        android:textSize="9sp"
+        android:text="10 min"/>
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5.7dp"
+        android:layout_marginTop="15.8dp"
+        android:layout_toEndOf="@+id/tvPrice"
+        android:layout_below="@+id/tvAddress"
+        android:textSize="12sp"
+        android:text="2.7km"/>
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13.3dp"
+        android:layout_marginStart="9.6dp"
+        android:textColor="@color/themeColor"
+        android:layout_below="@+id/tvAddress"
+        android:layout_toEndOf="@+id/ivImage"
+        android:textSize="16sp"
+        android:text="143"/>
+</RelativeLayout>
+
+</RelativeLayout>
