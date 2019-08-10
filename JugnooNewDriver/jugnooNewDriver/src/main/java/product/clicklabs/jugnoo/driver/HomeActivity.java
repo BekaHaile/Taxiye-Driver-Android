@@ -3413,7 +3413,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     AGPSRefresh.softRefreshGpsData(HomeActivity.this);
                                     if(customerInfo!=null){
                                         if(customerInfo.isReverseBid()){
-                                        driverRequestListAdapter.notifyDataSetChanged();
+                                        callAndHandleStateRestoreAPI();
                                         }
                                         else{
                                             acceptRequestFunc(customerInfo);
@@ -4374,7 +4374,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                     }, 2000);
 
-                    getTractionRides(true);
                     driverInitialLayout.setVisibility(View.VISIBLE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
@@ -11923,7 +11922,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 final int position = viewHolder.getAdapterPosition();
 
-                offlineRequestsAdapter.removeItem(position);
                 if (myLocation != null) {
                     switchJugnooOnThroughServer(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                             false, false,offlineRequests.get(position));

@@ -57,7 +57,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 //		if (refresh) {
 //			this.requestsList.clear();
 //		}
-		this.requestsList.addAll(requestsList);
+		this.requestsList=requestsList;
 		this.notifyDataSetChanged();
 	}
 

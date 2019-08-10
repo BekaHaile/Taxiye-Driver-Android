@@ -86,7 +86,7 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
         mClearPaint.setTextSize(40);
         int xPos = (c.getWidth() / 2);
         int yPos = (int) ((c.getHeight() / 2) - ((mClearPaint.descent() + mClearPaint.ascent()) / 2)) ;
-        c.drawText("Some Text", xPos, yPos, mClearPaint);
+        c.drawText("Accept this ride", xPos, yPos, mClearPaint);
 
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
