@@ -558,7 +558,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								}
-
+								if(HomeActivity.appInterruptHandler != null){
+									HomeActivity.appInterruptHandler.refreshTractionScreen();
+								}
 								if (entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");

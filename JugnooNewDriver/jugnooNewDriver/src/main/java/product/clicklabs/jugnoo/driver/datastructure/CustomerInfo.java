@@ -167,7 +167,7 @@ public class CustomerInfo {
 	/**
 	 * For finding offline requests from array
 	 */
-	public CustomerInfo(String name,String address,String dropAddress,String time,String driverFare,double distance,String image,int canAcceptRequest){
+	public CustomerInfo(String name,String address,String dropAddress,String time,String driverFare,double distance,String image,int canAcceptRequest,int userId,int engagementId,int reverseBid){
 		this.name = name;
 		this.pickupAddressEng =address;
 		this.dropAddress=dropAddress;
@@ -176,6 +176,20 @@ public class CustomerInfo {
 		this.dryDistance =distance;
 		this.image = image;
 		this.canAcceptRequest = canAcceptRequest;
+		this.userId=userId;
+		this.engagementId=engagementId;
+		this.reverseBid=reverseBid;
+
+
+//		@SerializedName("request_latitude")
+//		@Expose
+//		private Double requestLatitude;
+//		@SerializedName("request_longitude")
+//		@Expose
+//		private Double requestLongitude;
+//		@SerializedName("ride_type")
+//		@Expose
+//		private String rideType;
 	}
 
 
@@ -409,6 +423,14 @@ public class CustomerInfo {
 			this.dropAddress = "";
 			this.dropAddressEng = dropAddress;
 		}
+	}
+
+	public int getCanAcceptRequest() {
+		return canAcceptRequest;
+	}
+
+	public void setCanAcceptRequest(int canAcceptRequest) {
+		this.canAcceptRequest = canAcceptRequest;
 	}
 
 	public int getMeterFareApplicable() {

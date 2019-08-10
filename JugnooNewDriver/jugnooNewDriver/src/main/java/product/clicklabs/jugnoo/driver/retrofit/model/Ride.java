@@ -5,13 +5,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Ride {
-
     @SerializedName("user_name")
     @Expose
     private String userName;
-    @SerializedName("user_image")
+    @SerializedName("user_id")
     @Expose
-    private String userImage;
+    private Integer userId;
     @SerializedName("request_latitude")
     @Expose
     private Double requestLatitude;
@@ -21,12 +20,24 @@ public class Ride {
     @SerializedName("request_address")
     @Expose
     private String requestAddress;
+    @SerializedName("engagement_id")
+    @Expose
+    private String engagementId;
+    @SerializedName("ride_type")
+    @Expose
+    private String rideType;
     @SerializedName("drop_location_address")
     @Expose
     private String dropLocationAddress;
     @SerializedName("date")
     @Expose
     private String date;
+    @SerializedName("user_image")
+    @Expose
+    private String userImage;
+    @SerializedName("reverse_bid")
+    @Expose
+    private Integer reverseBid;
     @SerializedName("can_accept_request")
     @Expose
     private Integer canAcceptRequest;
@@ -39,12 +50,12 @@ public class Ride {
         this.userName = userName;
     }
 
-    public String getUserImage() {
-        return userImage;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserImage(String userImage) {
-        this.userImage = userImage;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Double getRequestLatitude() {
@@ -71,6 +82,22 @@ public class Ride {
         this.requestAddress = requestAddress;
     }
 
+    public String getEngagementId() {
+        return engagementId;
+    }
+
+    public void setEngagementId(String engagementId) {
+        this.engagementId = engagementId;
+    }
+
+    public String getRideType() {
+        return rideType;
+    }
+
+    public void setRideType(String rideType) {
+        this.rideType = rideType;
+    }
+
     public String getDropLocationAddress() {
         return dropLocationAddress;
     }
@@ -85,6 +112,22 @@ public class Ride {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Integer getReverseBid() {
+        return reverseBid;
+    }
+
+    public void setReverseBid(Integer reverseBid) {
+        this.reverseBid = reverseBid;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 
     public Integer getCanAcceptRequest() {

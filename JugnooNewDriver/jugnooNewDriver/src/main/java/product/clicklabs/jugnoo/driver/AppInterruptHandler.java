@@ -63,4 +63,6 @@ public interface AppInterruptHandler {
 
 	void polylineAlt(LatLng start, LatLng end);
 
+	void refreshTractionScreen();
+
 }

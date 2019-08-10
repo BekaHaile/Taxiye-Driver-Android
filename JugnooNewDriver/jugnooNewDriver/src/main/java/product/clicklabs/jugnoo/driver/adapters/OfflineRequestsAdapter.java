@@ -54,9 +54,9 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 	public void notifyList(int totalRequests, ArrayList<CustomerInfo> requestsList, boolean refresh) {
 		this.totalRequests = totalRequests;
-		if (refresh) {
-			this.requestsList.clear();
-		}
+//		if (refresh) {
+//			this.requestsList.clear();
+//		}
 		this.requestsList.addAll(requestsList);
 		this.notifyDataSetChanged();
 	}
@@ -108,7 +108,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 			holder.tvName.setText(customerInfo.getName());
 			holder.tvPickup.setText(customerInfo.getPickupAddressEng());
 			holder.tvDrop.setText(customerInfo.getDropAddress());
-			holder.tvTime.setText(customerInfo.getPickupTime());
+			holder.tvTime.setText(DateOperations.convertTimeViaFormat(DateOperations.utcToLocalWithTZFallback(customerInfo.getPickupTime())));
 			holder.tvPrice.setText(customerInfo.getEstimatedDriverFare());
 
 			RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.relative.getLayoutParams();
@@ -136,6 +136,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 					+ " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)));
 
 			holder.relative.setTag(position);
+			holder.rlAcceptView.setTag(position);
 
 			try {
 				if (customerInfo.getImage().equalsIgnoreCase("")) {
@@ -155,6 +156,14 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			if(customerInfo.getCanAcceptRequest()==1){
+				holder.rlAcceptView.setVisibility(View.VISIBLE);
+				holder.relative.setEnabled(true);
+			}
+			else {
+				holder.rlAcceptView.setVisibility(View.GONE);
+				holder.relative.setEnabled(false);
 			}
 
 			holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +217,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
-		public RelativeLayout relative;
+		public RelativeLayout relative,rlAcceptView;
 		public ImageView ivImage;
 		public TextView tvName, tvPickup, tvDrop,tvTime,tvDistance,tvPrice;
 
@@ -216,6 +225,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 			super(itemView);
 			ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
 			relative = (RelativeLayout) itemView.findViewById(R.id.relative);
+			rlAcceptView = (RelativeLayout) itemView.findViewById(R.id.rlAcceptView);
 
 			tvName = (TextView) itemView.findViewById(R.id.tvName);
 			tvName.setTypeface(Fonts.mavenMedium(activity));

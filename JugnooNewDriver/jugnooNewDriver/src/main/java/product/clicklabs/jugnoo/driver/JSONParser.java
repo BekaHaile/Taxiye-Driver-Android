@@ -485,6 +485,7 @@ public class JSONParser implements Constants {
 		int showVehicleSetSettings = context.getResources().getBoolean(R.bool.show_vehicle_set_settings) ? 1 : 0;
 		int showEditVehicleSettings = context.getResources().getBoolean(R.bool.show_edit_vehicle_settings) ? 1 : 0;
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_SETS, userData.optInt(KEY_ENABLE_VEHICLE_SETS, showVehicleSetSettings));
+		Prefs.with(context).save(KEY_REQ_INACTIVE_DRIVER, userData.optInt(KEY_REQ_INACTIVE_DRIVER, 0));
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_EDIT_SETTING, userData.optInt(KEY_ENABLE_VEHICLE_EDIT_SETTING, showEditVehicleSettings));
 		Prefs.with(context).save(KEY_MAX_SPEED_THRESHOLD, (float) userData.optDouble(KEY_MAX_SPEED_THRESHOLD,
 				context.getResources().getInteger(R.integer.max_speed_threshold)));

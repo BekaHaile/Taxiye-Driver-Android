@@ -16,7 +16,7 @@ import android.view.View;
 
 import product.clicklabs.jugnoo.driver.R;
 
-abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
+abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 
     Context mContext;
     private Paint mClearPaint;
@@ -27,7 +27,7 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private int intrinsicHeight;
 
 
-    public SwipeToDeleteCallback(Context context) {
+    public SwipeCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
         backgroundColor = Color.parseColor("#ff5b29");
