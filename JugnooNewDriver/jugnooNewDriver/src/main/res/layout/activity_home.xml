@@ -207,6 +207,12 @@
                 android:descendantFocusability="afterDescendants"
                 />
 
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vpBidRequestPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutContainerEarnings"
                 android:layout_width="match_parent"

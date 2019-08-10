@@ -34,6 +34,7 @@ public class CustomerInfo {
 	public LatLng requestlLatLng;
 	public LatLng currentLatLng;
 	private int cachedApiEnabled;
+	private int canAcceptRequest;
 
 	public String image, rating;
 	public CouponInfo couponInfo;
@@ -164,6 +165,21 @@ public class CustomerInfo {
 	}
 
 	/**
+	 * For finding offline requests from array
+	 */
+	public CustomerInfo(String name,String address,String dropAddress,String time,String driverFare,double distance,String image,int canAcceptRequest){
+		this.name = name;
+		this.pickupAddressEng =address;
+		this.dropAddress=dropAddress;
+		this.pickupTime = time;
+		this.estimatedDriverFare=driverFare;
+		this.dryDistance =distance;
+		this.image = image;
+		this.canAcceptRequest = canAcceptRequest;
+	}
+
+
+	/**
 	 * For customer requests
 	 */
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
@@ -201,6 +217,7 @@ public class CustomerInfo {
 		this.pickupTime = pickupTime;
 		this.rentalInfo = rentalInfo;
 	}
+
 
 	public double getDryDistance() {
 		return dryDistance;

@@ -31,16 +31,22 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -118,6 +124,8 @@ import java.util.concurrent.TimeUnit;
 import product.clicklabs.jugnoo.driver.adapters.FareDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
+import product.clicklabs.jugnoo.driver.adapters.NotificationAdapter;
+import product.clicklabs.jugnoo.driver.adapters.OfflineRequestsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.altmetering.AltMeteringService;
 import product.clicklabs.jugnoo.driver.altmetering.GenerateCSVForUploadRideData;
@@ -167,6 +175,7 @@ import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyDialog;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyDisableDialog;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
+import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsActivity;
@@ -184,6 +193,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -199,9 +209,12 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommon;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AddLuggageInteractor;
@@ -228,7 +241,9 @@ import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
+import product.clicklabs.jugnoo.driver.utils.SwipeToDeleteCallback;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.utils.ZoomOutPageTransformer;
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -307,13 +322,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     //slider menu
 
-    RecyclerView recyclerViewInfo;
+    RecyclerView recyclerViewInfo,rvOfflineRequests;
     InfoTilesAdapter infoTilesAdapter;
     LinearLayoutManager linearLayoutManagerScrollControl;
 
 
     //Driver initial layout
-    RelativeLayout driverInitialLayout;
+    RelativeLayout driverInitialLayout,driverInitialLayoutRequests;
     ListView driverRideRequestsList;
     Button driverInitialMyLocationBtn, driverInformationBtn, buttonUploadOnInitial, bEditProfile, bEditRateCard;
     TextView jugnooOffText, tvTitle, textViewDocText, textViewDocDayText;
@@ -412,8 +427,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     boolean sortCustomerState = true;
 
 
-    DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+    public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
@@ -483,6 +498,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private String cancelationMessage = "";
     private static final int REQUEST_CODE_TERMS_ACCEPT = 0x234;
     private boolean homeClicked;
+    private ArrayList<CustomerInfo> offlineRequests;
 
 
     private CustomerInfo getOpenedCustomerInfo() {
@@ -531,6 +547,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private RelativeLayout containerSwitch;
     private RelativeLayout switchContainer;
 
+    OfflineRequestsAdapter offlineRequestsAdapter;
+
+    private static final int NUM_PAGES = 5;
+
+    private ViewPager vpBidRequestPager;
+
+    private PagerAdapter pagerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -800,6 +823,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             //Driver initial layout
             driverInitialLayout = (RelativeLayout) findViewById(R.id.driverInitialLayout);
+            driverInitialLayoutRequests = (RelativeLayout) findViewById(R.id.driverInitialLayoutRequests);
             driverRideRequestsList = (ListView) findViewById(R.id.driverRideRequestsList);
             driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
             driverInformationBtn = (Button) findViewById(R.id.driverInformationBtn);
@@ -825,6 +849,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             driverRequestListAdapter = new DriverRequestListAdapter();
             driverRideRequestsList.setAdapter(driverRequestListAdapter);
 
+
+            vpBidRequestPager = (ViewPager) findViewById(R.id.vpBidRequestPager);
+            pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+            vpBidRequestPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            vpBidRequestPager.setAdapter(pagerAdapter);
 
             // Driver Request Accept layout
             driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
@@ -1051,6 +1080,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
             slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.slidingLayout);
+
+            rvOfflineRequests = (RecyclerView) findViewById(R.id.rvOfflineRequests);
+
             recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
             recyclerViewInfo.setHasFixedSize(true);
             linearLayoutManagerScrollControl = new LinearLayoutManager(this);
@@ -2555,6 +2587,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         int width = displayMetrics.widthPixels;
         Log.e("device_height", height + "");
         Log.e("device_width", width + "");
+        setOfflineRequestsAdapter();
+        enableSwipeToDeleteAndUndo();
+    }
+
+    public void setOfflineRequestsAdapter(){
+        offlineRequests = new ArrayList<>();
+
+        offlineRequestsAdapter = new OfflineRequestsAdapter(offlineRequests, activity,
+                R.layout.list_item_requests, 0, new OfflineRequestsAdapter.Callback() {
+            @Override
+            public void onShowMoreClick() {
+//                getNotificationInboxApi(false);
+            }
+        },this);
+        rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 
     private AddLuggageInteractor addLuggageInteractor;
@@ -4318,7 +4365,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                     }, 2000);
 
-                    driverInitialLayout.setVisibility(View.VISIBLE);
+                    getTractionRides(true);
+//                    driverInitialLayout.setVisibility(View.VISIBLE);
+                    driverInitialLayoutRequests.setVisibility(View.VISIBLE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     driverInformationBtn.setVisibility(View.GONE);
@@ -4405,7 +4454,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
 
                     topRlOuter.setVisibility(View.GONE);
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.VISIBLE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -4456,7 +4506,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     topRlOuter.setVisibility(View.GONE);
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -4528,7 +4579,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
                     topRlOuter.setVisibility(View.GONE);
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     etaTimerRLayout.setVisibility(View.GONE);
@@ -4720,7 +4772,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         deliveryListHorizontal.setVisibility(View.GONE);
                     }
 
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     etaTimerRLayout.setVisibility(View.GONE);
@@ -4799,7 +4852,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     updateDriverServiceFast("no");
                     topRlOuter.setVisibility(View.GONE);
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     setPannelVisibility(false);
@@ -4822,7 +4876,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     GCMIntentService.clearNotifications(getApplicationContext());
                     GCMIntentService.stopRing(true, HomeActivity.this);
                     topRlOuter.setVisibility(View.GONE);
-                    driverInitialLayout.setVisibility(View.GONE);
+//                    driverInitialLayout.setVisibility(View.GONE);
+                    driverInitialLayoutRequests.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -4848,7 +4903,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     break;
 
                 default:
-                    driverInitialLayout.setVisibility(View.VISIBLE);
+//                    driverInitialLayout.setVisibility(View.VISIBLE);
+                    driverInitialLayoutRequests.setVisibility(View.VISIBLE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
 
@@ -11864,5 +11920,81 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
         FlurryEventLogger.event(END_RIDE_CONFIRMED);
+    }
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+                final int position = viewHolder.getAdapterPosition();
+
+                offlineRequestsAdapter.removeItem(position);
+
+
+                Snackbar snackbar = Snackbar
+                        .make(rvOfflineRequests, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(rvOfflineRequests);
+    }
+
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return new BidRequestFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+    }
+    private void getTractionRides(boolean refresh) {
+        final HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+
+        new ApiCommonKt<TractionResponse>(this, true, true, true).execute(params, ApiName.FETCH_DRIVER_TRACTION_RIDES,
+                new APICommonCallbackKotlin<TractionResponse>() {
+                    @Override
+                    public void onSuccess(TractionResponse response, String message, int flag) {
+                        DialogPopup.dismissLoadingDialog();
+                        for (int i = 0; i < response.getRides().size(); i++) {
+                            CustomerInfo customerInfo = new CustomerInfo(response.getRides().get(i).getUserName(),response.getRides().get(i).getRequestAddress(),response.getRides().get(i).getDropLocationAddress(),response.getRides().get(i).getDate(),"",0.0,response.getRides().get(i).getUserImage(),response.getRides().get(i).getCanAcceptRequest());
+                            offlineRequests.add(customerInfo);
+                        }
+                        offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
+                        if(response.getRides().size()>0&&!checkIfDriverOnline()){
+                            driverInitialLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            driverInitialLayout.setVisibility(View.GONE);
+                        }
+
+                    }
+
+                    @Override
+                    public boolean onError(TractionResponse response, String message, int flag) {
+                        DialogPopup.dismissLoadingDialog();
+                        return true;
+                    }
+                });
+
     }
 }

@@ -8,6 +8,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.ReferralsInfoResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse
+import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.models.*
@@ -187,6 +188,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.GET_TOLL_DATA ->  RestClient.getApiServices().getTollData(params, callback as Callback<TollDataResponse> )
             ApiName.UPDATE_TOLL_DATA ->  RestClient.getApiServices().updateTollData(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.FETCH_DRIVER_REFERRAL_INFO -> RestClient.getApiServices().fetchDriverReferral(params, callback as Callback<ReferralsInfoResponse>)
+            ApiName.FETCH_DRIVER_TRACTION_RIDES-> RestClient.getApiServices().fetchDriverTractionRides(params, callback as Callback<TractionResponse>)
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }
