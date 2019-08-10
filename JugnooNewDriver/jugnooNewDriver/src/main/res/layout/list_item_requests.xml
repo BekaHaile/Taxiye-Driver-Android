@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative"
     android:layout_width="match_parent"
-    android:layout_height="105dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:background="#e1e2e1">
 
@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:ellipsize="end"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/ivImage"
             android:text="Alchemist Hospital Panchkula"
             android:textSize="16sp" />

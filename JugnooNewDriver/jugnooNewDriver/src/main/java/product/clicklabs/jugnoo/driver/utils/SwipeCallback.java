@@ -6,19 +6,22 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextPaint;
 import android.view.View;
 
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 
 abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 
-    Context mContext;
+    HomeActivity homeActivity;
     private Paint mClearPaint;
     private ColorDrawable mBackground;
     private int backgroundColor;
@@ -27,13 +30,13 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
     private int intrinsicHeight;
 
 
-    public SwipeCallback(Context context) {
-        mContext = context;
+    public SwipeCallback(HomeActivity context) {
+        homeActivity = context;
         mBackground = new ColorDrawable();
         backgroundColor = Color.parseColor("#ff5b29");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        deleteDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_ride_accept_taxi);
+        deleteDrawable = ContextCompat.getDrawable(homeActivity, R.drawable.ic_ride_accept_taxi);
         intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();
 
@@ -43,7 +46,8 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        return makeMovementFlags(0, ItemTouchHelper.LEFT);
+        return homeActivity.offlineRequests.get(viewHolder.getAdapterPosition()).getCanAcceptRequest()==1?makeMovementFlags(0, ItemTouchHelper.LEFT):0;
+
     }
 
     @Override
@@ -82,11 +86,27 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 
 
 
-        mClearPaint.setColor(Color.WHITE);
-        mClearPaint.setTextSize(40);
-        int xPos = (c.getWidth() / 2);
-        int yPos = (int) ((c.getHeight() / 2) - ((mClearPaint.descent() + mClearPaint.ascent()) / 2)) ;
-        c.drawText("Accept this ride", xPos, yPos, mClearPaint);
+//        mClearPaint.setColor(Color.WHITE);
+//        mClearPaint.setTextSize(40);
+//        int xPos = (c.getWidth() / 2);
+//        int yPos = (int) ((c.getHeight() / 2) - ((mClearPaint.descent() + mClearPaint.ascent()) / 2)) ;
+//        c.drawText("Accept this ride", xPos, yPos, mClearPaint);
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTypeface(Fonts.mavenBold(homeActivity));
+        textPaint.setTextSize(60);
+        textPaint.setTextAlign(Paint.Align.RIGHT);
+        float textHeight = textPaint.descent() - textPaint.ascent();
+        float textOffset = (textHeight / 2) - textPaint.descent();
+
+        RectF bounds = new RectF(0, 0, c.getWidth(), c.getHeight());
+//        c.drawOval(bounds, paint);
+        c.drawText("Accept this ride", bounds.centerX(), bounds.centerY() + textOffset, textPaint);
 
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

@@ -494,7 +494,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private String cancelationMessage = "";
     private static final int REQUEST_CODE_TERMS_ACCEPT = 0x234;
     private boolean homeClicked;
-    private ArrayList<CustomerInfo> offlineRequests;
+    public ArrayList<CustomerInfo> offlineRequests;
 
 
     private CustomerInfo getOpenedCustomerInfo() {
@@ -2584,7 +2584,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         Log.e("device_height", height + "");
         Log.e("device_width", width + "");
         setOfflineRequestsAdapter();
-        enableSwipeToDeleteAndUndo();
     }
 
     public void setOfflineRequestsAdapter(){
@@ -11981,6 +11980,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
                         if(response.getRides().size()>0){
                             driverInitialLayoutRequests.setVisibility(View.VISIBLE);
+                            enableSwipeToDeleteAndUndo();
                         }
                         else {
                             driverInitialLayoutRequests.setVisibility(View.GONE);

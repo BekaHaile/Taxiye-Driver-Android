@@ -229,7 +229,6 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 			tvName = (TextView) itemView.findViewById(R.id.tvName);
 			tvName.setTypeface(Fonts.mavenMedium(activity));
-			tvName.setSingleLine(true);
 
 			tvPickup = (TextView) itemView.findViewById(R.id.tvPickup);
 			tvPickup.setTypeface(Fonts.mavenMedium(activity));
