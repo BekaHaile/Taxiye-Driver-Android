@@ -1282,4 +1282,6 @@
     <string name="fleet">Fleet</string>
     <string name="error_no_fleets_in_this_city_format">No fleets in %s</string>
     <string name="none">None</string>
+    <string name="offer_your_fare_for_trip">Offer your fare for trip</string>
+    <string name="accept_for_format">Accept for %s</string>
 </resources>

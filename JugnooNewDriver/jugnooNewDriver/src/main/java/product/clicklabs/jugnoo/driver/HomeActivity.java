@@ -121,6 +121,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import product.clicklabs.jugnoo.driver.adapters.BidIncrementAdapter;
+import product.clicklabs.jugnoo.driver.adapters.BidIncrementVal;
 import product.clicklabs.jugnoo.driver.adapters.FareDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
@@ -5657,10 +5659,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare,
                 textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare, textViewEstimatedDist, textViewDropPoint,
                 textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount, tvRentalRideInfo;
-        Button buttonAcceptRide, buttonCancelRide;
+        Button buttonAcceptRide;
+        TextView tvCancelRide;
         ImageView imageViewDeliveryList;
         LinearLayout relative, linearLayoutDeliveryParams, llRentalRequest;
-        RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD, rlAcceptCancel;
+        RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD;
         ProgressBar progressBarRequest;
         int id;
         LinearLayout linearLayoutRideValues, llPlaceBid;
@@ -5670,6 +5673,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         LinearLayout llMinus, llPlus;
         TextView tvDecrease, tvIncrease;
         TextView textViewEstimatedTripDistance, tvRequestType, tvPickupTime;
+        RecyclerView rvBidValues;
+        BidIncrementAdapter bidIncrementAdapter;
     }
 
     public void firebaseScreenEvent(String event) {
@@ -5806,10 +5811,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewRequestDistance.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
                 holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
                 holder.buttonAcceptRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-                holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
-                holder.buttonCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+                holder.tvCancelRide = convertView.findViewById(R.id.tvCancelRide);
+                holder.tvCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
-                holder.rlAcceptCancel = (RelativeLayout) convertView.findViewById(R.id.rlAcceptCancel);
 
                 holder.linearLayoutRideValues = (LinearLayout) convertView.findViewById(R.id.linearLayoutRideValues);
                 holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
@@ -5823,7 +5827,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.tvRentalRideInfo.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.relative.setTag(holder);
                 holder.buttonAcceptRide.setTag(holder);
-                holder.buttonCancelRide.setTag(holder);
+                holder.tvCancelRide.setTag(holder);
 
                 holder.textViewDropPoint = (TextView) convertView.findViewById(R.id.textViewDropPoint);
                 holder.textViewDropPoint.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
@@ -5837,6 +5841,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewDropPointCount = (TextView) convertView.findViewById(R.id.textViewDropPointCount);
                 holder.textViewDropPointCount.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.textViewDropPointCount.setVisibility(View.GONE);
+
+                holder.rvBidValues = convertView.findViewById(R.id.rvBidValues);
+                holder.rvBidValues.setLayoutManager(new LinearLayoutManager(HomeActivity.this, LinearLayoutManager.HORIZONTAL, false));
 
                 holder.progressBarRequest = (ProgressBar) convertView.findViewById(R.id.progressBarRequest);
 
@@ -6030,25 +6037,42 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.llPlaceBid.setVisibility(View.VISIBLE);
                 holder.buttonAcceptRide.setText(R.string.bid);
                 if (customerInfo.isBidPlaced()) {
-                    holder.rlAcceptCancel.setVisibility(View.GONE);
-                    holder.tvPlaceBid.setText(R.string.bid_placed);
+					holder.buttonAcceptRide.setVisibility(View.GONE);
+					holder.tvCancelRide.setVisibility(View.GONE);
+                    holder.tvPlaceBid.setText(getString(R.string.bid_placed)+": "+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
                     holder.etPlaceBid.setEnabled(false);
                     holder.etPlaceBid.setCompoundDrawables(null, null, null, null);
                     holder.etPlaceBid.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
+					holder.rvBidValues.setVisibility(View.GONE);
                     holder.llMinus.setVisibility(View.GONE);
                     holder.llPlus.setVisibility(View.GONE);
                 } else {
-                    holder.rlAcceptCancel.setVisibility(View.VISIBLE);
-                    holder.tvPlaceBid.setText(R.string.place_bid);
+					holder.buttonAcceptRide.setVisibility(View.VISIBLE);
+					holder.tvCancelRide.setVisibility(View.VISIBLE);
+                    holder.tvPlaceBid.setText(R.string.offer_your_fare_for_trip);
                     holder.etPlaceBid.setPrefix(Utils.getCurrencySymbol(customerInfo.getCurrencyUnit()));
                     holder.etPlaceBid.setEnabled(true);
                     holder.llMinus.setVisibility(View.VISIBLE);
                     holder.llPlus.setVisibility(View.VISIBLE);
                     try {
                         holder.etPlaceBid.setText(String.valueOf(Utils.currencyPrecision(Double.parseDouble(bidValues.get(position)))));
+						holder.buttonAcceptRide.setText(getString(R.string.accept_for_format, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position)))));
                     } catch (Exception e) {
                         holder.etPlaceBid.setText("");
                     }
+					if(holder.bidIncrementAdapter == null){
+						holder.bidIncrementAdapter = new BidIncrementAdapter(HomeActivity.this, holder.rvBidValues, new BidIncrementAdapter.Callback() {
+							@Override
+							public void onClick(@NotNull BidIncrementVal incrementVal, int parentId) {
+								bidValues.set(parentId, String.valueOf(Utils.getDecimalFormatForMoney().format(incrementVal.getValue())));
+								DriverRequestListAdapter.this.notifyDataSetChanged();
+							}
+						});
+					}
+					holder.rvBidValues.setVisibility(View.VISIBLE);
+					holder.rvBidValues.setAdapter(holder.bidIncrementAdapter);
+					holder.bidIncrementAdapter.setList(holder.id, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),
+							percent, Double.parseDouble(bidValues.get(position)), holder.rvBidValues);
                 }
                 holder.etPlaceBid.setSelection(holder.etPlaceBid.getText().length());
                 holder.tvDecrease.setText(getString(R.string.reduce_by_format, Utils.getDecimalFormat().format((double) percent) + "%"));
@@ -6056,7 +6080,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 holder.llPlaceBid.setVisibility(View.GONE);
                 holder.buttonAcceptRide.setText(R.string.accept);
-                holder.rlAcceptCancel.setVisibility(View.VISIBLE);
+                holder.buttonAcceptRide.setVisibility(View.VISIBLE);
+                holder.tvCancelRide.setVisibility(View.VISIBLE);
             }
 
             if (customerInfo.getEstimatedTripDistance() > 0.0) {
@@ -6122,7 +6147,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-            holder.buttonCancelRide.setOnClickListener(new OnClickListener() {
+            holder.tvCancelRide.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
