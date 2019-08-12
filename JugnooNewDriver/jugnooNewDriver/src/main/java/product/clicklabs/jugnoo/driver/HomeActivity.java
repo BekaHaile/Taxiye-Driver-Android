@@ -3858,7 +3858,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 getTractionRides(true);
                 if(handler != null) {
-                    handler.postDelayed(this, 30000);
+                    handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 30000));
                 }
             }
         }
