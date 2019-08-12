@@ -5710,7 +5710,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare,
                 textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare, textViewEstimatedDist, textViewDropPoint,
                 textViewDropPoint1, textViewDropPoint2, textViewDropPoint3, textViewDropPointCount, tvRentalRideInfo;
-        Button buttonAcceptRide;
+        TextView buttonAcceptRide;
         TextView tvCancelRide;
         ImageView imageViewDeliveryList;
         LinearLayout relative, linearLayoutDeliveryParams, llRentalRequest;
@@ -5860,8 +5860,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //				holder.textViewEstimatedFare.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
                 holder.textViewRequestDistance.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
-                holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
-                holder.buttonAcceptRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+                holder.buttonAcceptRide = convertView.findViewById(R.id.buttonAcceptRide);
+                holder.buttonAcceptRide.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
                 holder.tvCancelRide = convertView.findViewById(R.id.tvCancelRide);
                 holder.tvCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
@@ -6090,7 +6090,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 if (customerInfo.isBidPlaced()) {
 					holder.buttonAcceptRide.setVisibility(View.GONE);
 					holder.tvCancelRide.setVisibility(View.GONE);
-                    holder.tvPlaceBid.setText(getString(R.string.bid_placed)+": "+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
+                    holder.tvPlaceBid.setText(getString(R.string.bid_placed)+": "+Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue())+"\n"+getString(R.string.waiting_for_customer));
                     holder.etPlaceBid.setEnabled(false);
                     holder.etPlaceBid.setCompoundDrawables(null, null, null, null);
                     holder.etPlaceBid.setText(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), customerInfo.getBidValue()));
@@ -6108,11 +6108,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     try {
                         holder.etPlaceBid.setText(String.valueOf(Utils.currencyPrecision(Double.parseDouble(bidValues.get(position)))));
 
-                        holder.buttonAcceptRide.setText(getString(R.string.accept_for));// Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position)))));
-//                        SpannableStringBuilder ssb = new SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position))));
-//                        ssb.setSpan(new RelativeSizeSpan(1.4f), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                        holder.buttonAcceptRide.append(ssb);
+                        holder.buttonAcceptRide.setText(getString(R.string.accept_for)+" ");// + " " + Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position))));
+                        SpannableStringBuilder ssb = new SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position))));
+                        ssb.setSpan(new RelativeSizeSpan(1.4f), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        holder.buttonAcceptRide.append(ssb);
 
                     } catch (Exception e) {
                         holder.etPlaceBid.setText("");

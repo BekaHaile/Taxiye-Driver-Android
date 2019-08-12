@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.app.Activity
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +30,7 @@ class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callba
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BidValViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(product.clicklabs.jugnoo.driver.R.layout.list_item_bid_increment, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_bid_increment, parent, false)
 
         val dp10 = Utils.dpToPx(parent.context, 10f)
         val params = itemView.layoutParams as ViewGroup.MarginLayoutParams
@@ -49,10 +48,6 @@ class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callba
 
     override fun onBindViewHolder(holder: BidValViewHolder, position: Int) {
         holder.tvBidVal.text = Utils.formatCurrencyValue(currency, bidVals!![position].value!!)
-        holder.tvBidVal.setTextColor(ContextCompat.getColor(holder.tvBidVal.context,
-                if(bidVals!![position].selected) R.color.themeColor else R.color.textColor))
-        holder.tvBidVal.setBackgroundResource(if(bidVals!![position].selected) product.clicklabs.jugnoo.driver.R.drawable.button_white_theme_border
-            else product.clicklabs.jugnoo.driver.R.drawable.background_white_rounded_bordered)
     }
 
 

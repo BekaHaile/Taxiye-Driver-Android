@@ -8,7 +8,10 @@
         android:layout_height="wrap_content"
         android:minWidth="80dp"
         android:gravity="center"
-        style="@style/ButtonTheme"
+        android:background="@drawable/orange_btn_selector"
+        android:textColor="@color/white"
+        android:fontFamily="@font/maven_pro_medium"
+        android:textSize="14sp"
         android:padding="8dp"
         tools:text="Rs. 100"
         />

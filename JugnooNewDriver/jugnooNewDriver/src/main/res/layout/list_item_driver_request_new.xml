@@ -376,13 +376,18 @@
             android:tag="@string/dont_touch_me"
             >
 
-        <Button
+        <TextView
             android:id="@+id/buttonAcceptRide"
-            style="@style/ButtonTheme"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:gravity="center"
             android:layout_marginEnd="10dp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             android:text="@string/accept"
+            android:background="@drawable/orange_btn_selector"
             android:tag="@string/dont_touch_me"/>
 
         <LinearLayout
@@ -401,6 +406,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/offer_your_fare_for_trip"
                 android:textSize="14sp"
+                android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/textColor"
                 />
