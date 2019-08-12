@@ -496,7 +496,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private String cancelationMessage = "";
     private static final int REQUEST_CODE_TERMS_ACCEPT = 0x234;
     private boolean homeClicked;
-    private ArrayList<CustomerInfo> offlineRequests;
+    public ArrayList<CustomerInfo> offlineRequests;
 
 
     private CustomerInfo getOpenedCustomerInfo() {
@@ -2586,7 +2586,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         Log.e("device_height", height + "");
         Log.e("device_width", width + "");
         setOfflineRequestsAdapter();
-        enableSwipeToDeleteAndUndo();
     }
 
     public void setOfflineRequestsAdapter(){
@@ -3415,7 +3414,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     AGPSRefresh.softRefreshGpsData(HomeActivity.this);
                                     if(customerInfo!=null){
                                         if(customerInfo.isReverseBid()){
-                                        driverRequestListAdapter.notifyDataSetChanged();
+                                        callAndHandleStateRestoreAPI();
                                         }
                                         else{
                                             acceptRequestFunc(customerInfo);
@@ -4376,7 +4375,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                     }, 2000);
 
-                    getTractionRides(true);
                     driverInitialLayout.setVisibility(View.VISIBLE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
@@ -11948,7 +11946,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 final int position = viewHolder.getAdapterPosition();
 
-                offlineRequestsAdapter.removeItem(position);
                 if (myLocation != null) {
                     switchJugnooOnThroughServer(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
                             false, false,offlineRequests.get(position));
@@ -12008,6 +12005,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
                         if(response.getRides().size()>0){
                             driverInitialLayoutRequests.setVisibility(View.VISIBLE);
+                            enableSwipeToDeleteAndUndo();
                         }
                         else {
                             driverInitialLayoutRequests.setVisibility(View.GONE);
