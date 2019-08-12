@@ -3822,8 +3822,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             }
                             driverInitialLayoutRequests.setVisibility(View.GONE);
 
-                            handler.removeCallbacks(runnableTraction);
-                            handler = null;
+                            if(handler != null) {
+                                handler.removeCallbacks(runnableTraction);
+                                handler = null;
+                            }
                         }
 
 
@@ -3858,7 +3860,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 getTractionRides(true);
                 if(handler != null) {
-                    handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 30000));
+                    handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 20000));
                 }
             }
         }
@@ -5429,6 +5431,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         super.onPause();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if(handler != null) {
+            handler.removeCallbacks(runnableTraction);
+            handler = null;
+        }
     }
 
 
@@ -9223,6 +9229,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             super.onStart();
             LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(serviceBroadcastReceiver, new IntentFilter(INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK));
 
+
+            boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
+            if(!checkIfDriverOnline() && showOfflineRequests){
+                handler = new Handler();
+                handler.removeCallbacks(runnableTraction);
+                handler.post(runnableTraction);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
