@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -105,11 +106,11 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 			ViewHolder holder = (ViewHolder) viewholder;
 			CustomerInfo customerInfo = requestsList.get(position);
 
-			holder.tvName.setText(customerInfo.getName());
-			holder.tvPickup.setText(customerInfo.getPickupAddressEng());
-			holder.tvDrop.setText(customerInfo.getDropAddress());
-			holder.tvTime.setText(DateOperations.convertTimeViaFormat(DateOperations.utcToLocalWithTZFallback(customerInfo.getPickupTime())));
-			holder.tvPrice.setText(customerInfo.getEstimatedDriverFare());
+			holder.tvName.setText(customerInfo.getName()==null||customerInfo.getName().trim().isEmpty()?"-----":customerInfo.getName().trim());
+			holder.tvPickup.setText(customerInfo.getPickupAddressEng()==null||customerInfo.getPickupAddressEng().trim().isEmpty()?"----- -----":customerInfo.getPickupAddressEng().trim());
+			holder.tvDrop.setText(customerInfo.getDropAddress()==null||customerInfo.getDropAddress().trim().isEmpty()?"----- -----":customerInfo.getDropAddress().trim());
+			holder.tvTime.setText(customerInfo.getPickupTime()==null||customerInfo.getPickupTime().trim().isEmpty()?"-- --":DateOperations.convertTimeViaFormat(DateOperations.utcToLocalWithTZFallback(customerInfo.getPickupTime())));
+			holder.tvPrice.setText(customerInfo.getEstimatedDriverFare()==null||customerInfo.getEstimatedDriverFare().isEmpty()?"---":customerInfo.getEstimatedDriverFare());
 
 			RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.relative.getLayoutParams();
 			if(position==0){
@@ -117,14 +118,14 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 				holder.relative.setLayoutParams(params);
 			}
 			else {
-				params.setMargins(0, 10, 0, 0);
+				params.setMargins(0, 5, 0, 0);
 				holder.relative.setLayoutParams(params);
 			}
 
 			double distance = 0;
-			if (customerInfo.getDryDistance() > 0) {
+			if (customerInfo.getDistance() > 0) {
 				holder.tvDistance.setVisibility(View.VISIBLE);
-				distance = customerInfo.getDryDistance();
+				distance = customerInfo.getDistance();
 			} else if (homeActivity.myLocation != null) {
 				holder.tvDistance.setVisibility(View.VISIBLE);
 				distance = MapUtils.distance(new LatLng(homeActivity.myLocation.getLatitude(),homeActivity.myLocation.getLongitude()), customerInfo.getRequestlLatLng());
@@ -137,12 +138,13 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 			holder.relative.setTag(position);
 			holder.rlAcceptView.setTag(position);
+			holder.ivFaded.setTag(position);
 
 			try {
-				if (customerInfo.getImage().equalsIgnoreCase("")) {
-					holder.ivImage.setVisibility(View.GONE);
-
-				} else {
+//				if (customerInfo.getImage().equalsIgnoreCase("")) {
+//					holder.ivImage.setVisibility(View.GONE);
+//
+//				} else {
 					holder.ivImage.setVisibility(View.VISIBLE);
 					//Picasso.with(activity).load(customerInfo.getNotificationImage()).into(holder.notificationImage);
 					//Picasso.with(activity).load(customerInfo.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
@@ -152,17 +154,19 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 							.error(R.drawable.ic_profile_img_placeholder)
 //                        .transform(new RoundedCornersTransformation(10, 0, RoundedCornersTransformation.CornerType.TOP))
 							.into(holder.ivImage);
-				}
+//				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if(customerInfo.getCanAcceptRequest()==1){
-				holder.rlAcceptView.setVisibility(View.VISIBLE);
+//				holder.rlAcceptView.setVisibility(View.VISIBLE);
+				holder.ivFaded.setVisibility(View.GONE);
 				holder.relative.setEnabled(true);
 			}
 			else {
-				holder.rlAcceptView.setVisibility(View.GONE);
+//				holder.rlAcceptView.setVisibility(View.GONE);
+				holder.ivFaded.setVisibility(View.VISIBLE);
 				holder.relative.setEnabled(false);
 			}
 
@@ -217,14 +221,16 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
 	static class ViewHolder extends RecyclerView.ViewHolder {
-		public RelativeLayout relative,rlAcceptView;
-		public ImageView ivImage;
+		public FrameLayout relative;
+		public RelativeLayout rlAcceptView;
+		public ImageView ivImage,ivFaded;
 		public TextView tvName, tvPickup, tvDrop,tvTime,tvDistance,tvPrice;
 
 		public ViewHolder(View itemView, Activity activity) {
 			super(itemView);
 			ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
-			relative = (RelativeLayout) itemView.findViewById(R.id.relative);
+			ivFaded = (ImageView) itemView.findViewById(R.id.ivFaded);
+			relative = (FrameLayout) itemView.findViewById(R.id.relative);
 			rlAcceptView = (RelativeLayout) itemView.findViewById(R.id.rlAcceptView);
 
 			tvName = (TextView) itemView.findViewById(R.id.tvName);

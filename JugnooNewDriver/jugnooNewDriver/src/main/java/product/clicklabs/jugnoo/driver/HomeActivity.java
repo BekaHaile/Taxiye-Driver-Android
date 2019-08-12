@@ -259,7 +259,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private final String TAG = HomeActivity.class.getSimpleName();
 
     DrawerLayout drawerLayout;                                                                        // views declaration
-
+    Timer tractionTimer = new Timer();
 
     //menu bar
     LinearLayout menuLayout;
@@ -3320,8 +3320,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1) {
                 toggleSharingMode(0, true, toggleDelivery);
             } else {
-                switchJugnooOnThroughServer(0, new LatLng(0, 0), false, toggleDelivery,null);
-            }
+                if(myLocation != null) {
+                    switchJugnooOnThroughServer(0, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), false, toggleDelivery, null);
+                }
+                else {
+                    Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
+                    viewSlide.post(()->slidingSwitch.setSlideLeft());
+                }
+                }
         }
     }
 
@@ -3431,7 +3437,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     AGPSRefresh.softRefreshGpsData(HomeActivity.this);
                                     if(customerInfo!=null){
                                         if(customerInfo.isReverseBid()){
-                                        callAndHandleStateRestoreAPI();
+                                            callAndHandleStateRestoreAPI();
                                         }
                                         else{
                                             acceptRequestFunc(customerInfo);
@@ -3443,7 +3449,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     HomeActivity.this.startService(intent1);
                                 }
                                 resetSharedPrefs();
-                                showDialogFromBackground(message,false);
+//                                showDialogFromBackground(message,false);
                             } else if (ApiResponseFlags.TNC_NOT_ACCEPTED.getOrdinal() == flag) {
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -3788,7 +3794,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
                                 boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
                                 if(showOfflineRequests){
-                                getTractionRides(true);
+
+                                    handler = new Handler();
+                                    handler.removeCallbacks(runnableTraction);
+                                    handler.post(runnableTraction);
+
                                 }
                             }
                         } else {
@@ -3805,6 +3815,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 startService(new Intent(getApplicationContext(), DriverLocationUpdateService.class));
                             }
                             driverInitialLayoutRequests.setVisibility(View.GONE);
+
+                            handler.removeCallbacks(runnableTraction);
+                            handler = null;
                         }
 
 
@@ -3827,6 +3840,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         });
 
     }
+
+    private Handler handler = new Handler();
+
+    private Runnable runnableTraction = new Runnable() {
+        @Override
+        public void run() {
+
+            boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
+            if(showOfflineRequests){
+
+                getTractionRides(true);
+                if(handler != null) {
+                    handler.postDelayed(this, 30000);
+                }
+            }
+        }
+    };
 
 
     private boolean checkIfDriverOnline() {
@@ -12021,13 +12051,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         DialogPopup.dismissLoadingDialog();
                         offlineRequests.clear();
                         for (int i = 0; i < response.getRides().size(); i++) {
-                            CustomerInfo customerInfo = new CustomerInfo(response.getRides().get(i).getUserName(),response.getRides().get(i).getRequestAddress(),response.getRides().get(i).getDropLocationAddress(),response.getRides().get(i).getDate(),"",0.0,response.getRides().get(i).getUserImage(),response.getRides().get(i).getCanAcceptRequest(),response.getRides().get(i).getUserId(),Integer.parseInt(response.getRides().get(i).getEngagementId()),response.getRides().get(i).getReverseBid());
+                            CustomerInfo customerInfo = new CustomerInfo(response.getRides().get(i).getUserName(),response.getRides().get(i).getRequestAddress(),response.getRides().get(i).getDropLocationAddress(),response.getRides().get(i).getDate(),response.getRides().get(i).getFare(),response.getRides().get(i).getDistance(),response.getRides().get(i).getUserImage(),response.getRides().get(i).getCanAcceptRequest(),response.getRides().get(i).getUserId(),Integer.parseInt(response.getRides().get(i).getEngagementId()),response.getRides().get(i).getReverseBid());
                             offlineRequests.add(customerInfo);
                         }
                         offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
                         if(response.getRides().size()>0){
                             driverInitialLayoutRequests.setVisibility(View.VISIBLE);
-                            enableSwipeToDeleteAndUndo();
+                            //enableSwipeToDeleteAndUndo();
                         }
                         else {
                             driverInitialLayoutRequests.setVisibility(View.GONE);

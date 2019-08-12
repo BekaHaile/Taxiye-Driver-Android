@@ -41,6 +41,12 @@ public class Ride {
     @SerializedName("can_accept_request")
     @Expose
     private Integer canAcceptRequest;
+    @SerializedName("distance")
+    @Expose
+    private double distance;
+    @SerializedName("fare")
+    @Expose
+    private String fare;
 
     public String getUserName() {
         return userName;
@@ -83,7 +89,7 @@ public class Ride {
     }
 
     public String getEngagementId() {
-        return engagementId;
+        return engagementId.isEmpty()?"0":engagementId;
     }
 
     public void setEngagementId(String engagementId) {
@@ -138,4 +144,19 @@ public class Ride {
         this.canAcceptRequest = canAcceptRequest;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public String getFare() {
+        return fare;
+    }
+
+    public void setFare(String fare) {
+        this.fare = fare;
+    }
 }

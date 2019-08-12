@@ -57,7 +57,7 @@ public class CustomerInfo {
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries, orderId;
-	private double estimatedFare, dryDistance, estimatedDist;
+	private double estimatedFare, dryDistance, estimatedDist,distance;
 	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
@@ -173,7 +173,7 @@ public class CustomerInfo {
 		this.dropAddress=dropAddress;
 		this.pickupTime = time;
 		this.estimatedDriverFare=driverFare;
-		this.dryDistance =distance;
+		this.distance =distance;
 		this.image = image;
 		this.canAcceptRequest = canAcceptRequest;
 		this.userId=userId;
@@ -239,6 +239,14 @@ public class CustomerInfo {
 
 	public void setDryDistance(double dryDistance) {
 		this.dryDistance = dryDistance;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	@Override
