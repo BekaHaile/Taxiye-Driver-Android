@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivImage"
             android:gravity="center"
-            android:text="Mohit"
+            android:text=""
             android:textSize="10sp" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:ellipsize="end"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/ivImage"
-            android:text="Alchemist Hospital Panchkula"
+            android:text=""
             android:textSize="16sp" />
 
         <TextView
@@ -49,8 +49,8 @@
             android:layout_marginStart="13dp"
             android:layout_toEndOf="@+id/ivImage"
             android:ellipsize="end"
-            android:text="M S Enclave (Panchkula, Dhakoli)"
-            android:textSize="12sp" />
+            android:text=""
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvTime"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvName"
             android:gravity="center"
-            android:text="10 min"
+            android:text=""
             android:textSize="9sp" />
 
         <TextView
@@ -69,7 +69,7 @@
             android:layout_marginStart="6dp"
             android:layout_marginTop="16dp"
             android:layout_toEndOf="@+id/tvPrice"
-            android:text="2.7km"
+            android:text=""
             android:textSize="12sp" />
 
         <TextView
@@ -78,9 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDrop"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="14dp"
             android:layout_toEndOf="@+id/ivImage"
-            android:text="143"
+            android:text=""
             android:textColor="@color/themeColor"
             android:textSize="16sp" />
 
@@ -103,5 +103,5 @@
         android:id="@+id/ivFaded"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#70ffffff"/>
+        android:background="#99ffffff"/>
 </FrameLayout>

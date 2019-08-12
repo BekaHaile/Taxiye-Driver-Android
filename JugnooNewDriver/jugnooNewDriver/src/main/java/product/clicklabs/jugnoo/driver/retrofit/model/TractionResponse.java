@@ -16,6 +16,9 @@ public class TractionResponse extends FeedCommonResponseKotlin {
     @SerializedName("rides")
     @Expose
     private ArrayList<Ride> rides = null;
+    @SerializedName("currency")
+    @Expose
+    private String currency ;
 
     public ArrayList<Ride> getRides() {
         return rides;
@@ -25,4 +28,11 @@ public class TractionResponse extends FeedCommonResponseKotlin {
         this.rides = rides;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }

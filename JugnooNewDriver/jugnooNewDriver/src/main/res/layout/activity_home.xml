@@ -95,17 +95,16 @@
                     <!-- initial layout-->
                     <include layout="@layout/layout_driver_initial"/>
 
-                    <!-- initial layout requests-->
-                    <include layout="@layout/layout_driver_initial_requests"/>
 
                 </RelativeLayout>
 
                 <include layout="@layout/layout_home_sliding_menu"/>
 
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <!-- initial layout requests-->
+            <include layout="@layout/layout_driver_initial_requests"/>
 
-
-            <!-- request accept layout-->
+            <!-- offline request accept layout-->
             <include layout="@layout/layout_driver_request_accept"/>
 
             <!-- engaged layout-->

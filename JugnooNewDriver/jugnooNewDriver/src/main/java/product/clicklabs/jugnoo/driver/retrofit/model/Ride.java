@@ -29,9 +29,9 @@ public class Ride {
     @SerializedName("drop_location_address")
     @Expose
     private String dropLocationAddress;
-    @SerializedName("date")
+    @SerializedName("time")
     @Expose
-    private String date;
+    private String time;
     @SerializedName("user_image")
     @Expose
     private String userImage;
@@ -108,16 +108,12 @@ public class Ride {
         return dropLocationAddress;
     }
 
-    public void setDropLocationAddress(String dropLocationAddress) {
-        this.dropLocationAddress = dropLocationAddress;
+    public String getTime() {
+        return time;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Integer getReverseBid() {

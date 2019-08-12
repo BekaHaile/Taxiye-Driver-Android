@@ -57,7 +57,7 @@ class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callba
 
 
     inner class BidValViewHolder(view: View, listener:ItemListener): RecyclerView.ViewHolder(view) {
-        val tvBidVal: TextView = view.findViewById(product.clicklabs.jugnoo.driver.R.id.tvBidVal) as TextView
+        val tvBidVal: TextView = view as TextView
         init{
             tvBidVal.setOnClickListener{v->
                 listener.onClickItem(view, v)

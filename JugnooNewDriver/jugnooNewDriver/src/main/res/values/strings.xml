@@ -735,10 +735,10 @@
     <string name="select_vehicle_type">Select vehicle type</string>
     <string name="continue_text">Continue</string>
     <string name="by_signing_you_agree">By Signing up you agree to our </string>
-    <string name="place_bid">Place Bid</string>
+    <string name="place_bid">Place Offer</string>
     <string name="please_enter_some_value">Please enter some value</string>
-    <string name="bid">Bid</string>
-    <string name="bid_placed">Bid Placed</string>
+    <string name="bid">Offer</string>
+    <string name="bid_placed">Offer Placed</string>
     <string name="reduce_by_10">Reduce\nby 10%</string>
     <string name="increase_by_10">Increase\nby 10%</string>
     <string name="reduce_by_format">Reduce\nby %s</string>
@@ -1160,7 +1160,7 @@
     <string name="not_match">not match</string>
     <string name="please_enter_email">Please enter email</string>
     <string name="error_empty_mandatory_field">%s is a mandatory field.</string>
-    <string name="please_enter_less_value_for_bid">Please enter less value for bid</string>
+    <string name="please_enter_less_value_for_bid">Please enter less value for offer</string>
     <string name="note">Note</string>
 
     <!--Rental-->
@@ -1283,5 +1283,5 @@
     <string name="error_no_fleets_in_this_city_format">No fleets in %s</string>
     <string name="none">None</string>
     <string name="offer_your_fare_for_trip">Offer your fare for trip</string>
-    <string name="accept_for_format">Accept for %s</string>
+    <string name="accept_for">Accept for</string>
 </resources>

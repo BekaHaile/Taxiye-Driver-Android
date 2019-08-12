@@ -74,6 +74,7 @@ public class CustomerInfo {
 	private int luggageCount;
 	private double waypointDistance;
 	private String pickupTime;
+	private String timeDiff;
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
 	private String customerNotes;
@@ -171,7 +172,7 @@ public class CustomerInfo {
 		this.name = name;
 		this.pickupAddressEng =address;
 		this.dropAddress=dropAddress;
-		this.pickupTime = time;
+		this.timeDiff = time;
 		this.estimatedDriverFare=driverFare;
 		this.distance =distance;
 		this.image = image;
@@ -824,6 +825,14 @@ public class CustomerInfo {
 			tollData = new ArrayList<>();
 		}
 		return tollData;
+	}
+
+	public String getTimeDiff() {
+		return timeDiff;
+	}
+
+	public void setTimeDiff(String timeDiff) {
+		this.timeDiff = timeDiff;
 	}
 
 	public void setTollData(ArrayList<TollData> tollData) {

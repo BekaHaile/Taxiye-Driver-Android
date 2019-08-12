@@ -384,6 +384,7 @@ public interface Constants {
 	String SP_LAST_COUNTRY_CODE_SAVED = "last_country_code_saved";
 	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
 	String KEY_REQ_INACTIVE_DRIVER = "req_inactive_drivers";
+	String KEY_DRIVER_TRACTION_API_INTERVAL = "driver_traction_api_interval";
 	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 	String KEY_MAX_SPEED_THRESHOLD = "max_speed_threshold";
 	String KEY_REGION_ID = "region_id";

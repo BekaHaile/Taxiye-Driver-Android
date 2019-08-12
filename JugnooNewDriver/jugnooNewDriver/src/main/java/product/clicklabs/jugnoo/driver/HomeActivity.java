@@ -48,8 +48,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -426,6 +430,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    public DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -560,6 +565,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             setContentView(R.layout.activity_home);
 
             decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+            decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
             decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 
@@ -6101,7 +6107,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     holder.llPlus.setVisibility(View.VISIBLE);
                     try {
                         holder.etPlaceBid.setText(String.valueOf(Utils.currencyPrecision(Double.parseDouble(bidValues.get(position)))));
-						holder.buttonAcceptRide.setText(getString(R.string.accept_for_format, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position)))));
+
+                        holder.buttonAcceptRide.setText(getString(R.string.accept_for));// Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position)))));
+//                        SpannableStringBuilder ssb = new SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position))));
+//                        ssb.setSpan(new RelativeSizeSpan(1.4f), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        ssb.setSpan(new StyleSpan(Typeface.BOLD), 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        holder.buttonAcceptRide.append(ssb);
+
                     } catch (Exception e) {
                         holder.etPlaceBid.setText("");
 						holder.buttonAcceptRide.setText(R.string.accept);
@@ -12051,7 +12063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         DialogPopup.dismissLoadingDialog();
                         offlineRequests.clear();
                         for (int i = 0; i < response.getRides().size(); i++) {
-                            CustomerInfo customerInfo = new CustomerInfo(response.getRides().get(i).getUserName(),response.getRides().get(i).getRequestAddress(),response.getRides().get(i).getDropLocationAddress(),response.getRides().get(i).getDate(),response.getRides().get(i).getFare(),response.getRides().get(i).getDistance(),response.getRides().get(i).getUserImage(),response.getRides().get(i).getCanAcceptRequest(),response.getRides().get(i).getUserId(),Integer.parseInt(response.getRides().get(i).getEngagementId()),response.getRides().get(i).getReverseBid());
+                            CustomerInfo customerInfo = new CustomerInfo(response.getRides().get(i).getUserName(),response.getRides().get(i).getRequestAddress(),response.getRides().get(i).getDropLocationAddress(),response.getRides().get(i).getTime(),response.getRides().get(i).getFare(),response.getRides().get(i).getDistance(),response.getRides().get(i).getUserImage(),response.getRides().get(i).getCanAcceptRequest(),response.getRides().get(i).getUserId(),Integer.parseInt(response.getRides().get(i).getEngagementId()),response.getRides().get(i).getReverseBid());
                             offlineRequests.add(customerInfo);
                         }
                         offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
