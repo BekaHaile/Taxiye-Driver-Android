@@ -287,7 +287,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     TextView fareDetailsText, textViewDestination;
     RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-    RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl,
+    RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
             relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain,
             rlSupportTicket, rlMailSupport;
     TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
@@ -727,6 +727,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
             relativeLayoutRateCard = (RelativeLayout) findViewById(R.id.relativeLayoutRateCard);
+			relativeLayoutRateCardNew = (RelativeLayout) findViewById(R.id.relativeLayoutRateCardNew);
             textViewRateCard = (TextView) findViewById(R.id.textViewRateCard);
             textViewRateCard.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             textViewRateCard.setText(getResources().getText(R.string.rate_card));
@@ -1630,6 +1631,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
+			relativeLayoutRateCardNew.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class)
+							.putExtra(Constants.KEY_HTML_RATE_CARD, true));
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+                }
+            });
+
             auditRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2478,6 +2489,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutRateCard.setVisibility(View.VISIBLE);
             } else {
                 relativeLayoutRateCard.setVisibility(View.GONE);
+            }
+
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_HTML_RATE_CARD, 0) == 1) {
+                relativeLayoutRateCardNew.setVisibility(View.VISIBLE);
+            } else {
+                relativeLayoutRateCardNew.setVisibility(View.GONE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_CALL_US_MENU, 0) == 1) {
@@ -6057,13 +6074,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						holder.buttonAcceptRide.setText(getString(R.string.accept_for_format, Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Double.parseDouble(bidValues.get(position)))));
                     } catch (Exception e) {
                         holder.etPlaceBid.setText("");
+						holder.buttonAcceptRide.setText(R.string.accept);
                     }
 					if(holder.bidIncrementAdapter == null){
 						holder.bidIncrementAdapter = new BidIncrementAdapter(HomeActivity.this, holder.rvBidValues, new BidIncrementAdapter.Callback() {
 							@Override
 							public void onClick(@NotNull BidIncrementVal incrementVal, int parentId) {
 								bidValues.set(parentId, String.valueOf(Utils.getDecimalFormatForMoney().format(incrementVal.getValue())));
-								DriverRequestListAdapter.this.notifyDataSetChanged();
+								acceptRideClick(parentId);
 							}
 						});
 					}
@@ -6114,35 +6132,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    try {
-                        ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
-                        if (isTourFlag) {
-                            setTourOperation(2);
-                        } else {
-                            MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + holder.id + "_" + FirebaseEvents.YES, null);
-                            CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-                            if (customerInfo1.isReverseBid()) {
-                                if (TextUtils.isEmpty(bidValues.get(holder.id))) {
-                                    Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                double bidValue = Double.parseDouble(bidValues.get(holder.id));
-                                double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
-                                if(maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue){
-                                	Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
-                                	return;
-								}
-                                setBidForEngagementAPI(customerInfo1, bidValue);
-                            } else {
-                                acceptRequestFunc(customerInfo1);
-                            }
-                            GCMIntentService.stopRing(true, HomeActivity.this);
-                            FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+					ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
+					acceptRideClick(holder.id);
+				}
             });
 
             holder.tvCancelRide.setOnClickListener(new OnClickListener() {
@@ -6195,7 +6187,37 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             return convertView;
         }
 
-        private void modifyBidValue(View v, boolean plus) {
+		private void acceptRideClick(int position) {
+			try {
+				if (isTourFlag) {
+					setTourOperation(2);
+				} else {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + position + "_" + FirebaseEvents.YES, null);
+					CustomerInfo customerInfo1 = customerInfos.get(position);
+					if (customerInfo1.isReverseBid()) {
+						if (TextUtils.isEmpty(bidValues.get(position))) {
+							Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
+							return;
+						}
+						double bidValue = Double.parseDouble(bidValues.get(position));
+						double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
+						if(maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue){
+							Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
+							return;
+						}
+						setBidForEngagementAPI(customerInfo1, bidValue);
+					} else {
+						acceptRequestFunc(customerInfo1);
+					}
+					GCMIntentService.stopRing(true, HomeActivity.this);
+					FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void modifyBidValue(View v, boolean plus) {
             try {
                 ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
                 CustomerInfo customerInfo1 = customerInfos.get(holder.id);

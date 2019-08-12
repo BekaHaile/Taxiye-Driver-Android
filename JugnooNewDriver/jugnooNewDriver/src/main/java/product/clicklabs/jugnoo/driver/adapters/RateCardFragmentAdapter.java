@@ -4,18 +4,11 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.View;
 
-import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DriverRateCard;
 import product.clicklabs.jugnoo.driver.FragmentDeliveryRateCard;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
-import product.clicklabs.jugnoo.driver.fragments.NotificationTipsFragment;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
-
-import static product.clicklabs.jugnoo.driver.R.id.relativeLayoutDeliveryOn;
 
 
 /**
@@ -27,9 +20,11 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 	Fragment myFragment = null;
 	Boolean count = false;
 	String displayString;
-	public RateCardFragmentAdapter(Context context, FragmentManager fm) {
+	private boolean isHTMLRateCard;
+	public RateCardFragmentAdapter(Context context, FragmentManager fm, boolean isHTMLRateCard) {
 		super(fm);
 		this.context = context;
+		this.isHTMLRateCard = isHTMLRateCard;
 	}
 
 	@Override
@@ -72,7 +67,7 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 
 	public void setFragment(){
 		if (1 == Data.userData.autosEnabled && 1 == Data.userData.getDeliveryEnabled()) {
-			myFragment = new DriverRateCard();
+			myFragment = DriverRateCard.newInstance(isHTMLRateCard);
 			displayString = context.getResources().getString(R.string.Ride);
 			count = true;
 		} else if(1 == Data.userData.getDeliveryEnabled()){
@@ -80,7 +75,7 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 			displayString = context.getResources().getString(R.string.delivery);
 			count = false;
 		} else {
-			myFragment = new DriverRateCard();
+			myFragment = DriverRateCard.newInstance(isHTMLRateCard);
 			displayString = context.getResources().getString(R.string.Ride);
 			count = false;
 		}

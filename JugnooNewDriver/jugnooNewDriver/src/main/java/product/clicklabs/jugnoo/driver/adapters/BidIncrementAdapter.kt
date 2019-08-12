@@ -69,13 +69,13 @@ class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callba
         val pos:Int = rv.getChildLayoutPosition(parentView)
         if(pos != RecyclerView.NO_POSITION){
             when(childView!!.id){
-                product.clicklabs.jugnoo.driver.R.id.tvBidVal->{
+                R.id.tvBidVal->{
                     for(bid in bidVals!!){
                         bid.selected = false
                     }
                     bidVals!![pos].selected = true
-                    callback.onClick(bidVals!![pos], parentId)
                     notifyDataSetChanged()
+                    callback.onClick(bidVals!![pos], parentId)
                 }
             }
         }
