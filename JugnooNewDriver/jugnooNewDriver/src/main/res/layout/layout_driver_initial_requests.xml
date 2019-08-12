@@ -4,9 +4,9 @@
     android:id="@+id/driverInitialLayoutRequests"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e1e2e1"
+    android:background="@color/black_translucent_level_3"
     android:splitMotionEvents="false"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOfflineRequests"
@@ -15,8 +15,4 @@
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_request_offline"/>
 </RelativeLayout>
