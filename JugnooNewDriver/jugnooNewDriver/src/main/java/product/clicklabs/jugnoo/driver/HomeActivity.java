@@ -4517,6 +4517,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
 
                     topRlOuter.setVisibility(View.GONE);
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.VISIBLE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -4567,6 +4568,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     topRlOuter.setVisibility(View.GONE);
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -4638,6 +4640,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
                     topRlOuter.setVisibility(View.GONE);
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     etaTimerRLayout.setVisibility(View.GONE);
@@ -4770,6 +4773,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     setNevigationButtonVisibiltyDelivery(0);
                     if (customerInfo.getIsDelivery() != 1) {
                         relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
+                        if(customerInfo.isReverseBid()){
+                            relativeLayoutEnterDestination.setEnabled(false);
+                        }
+                        else {
+                            relativeLayoutEnterDestination.setEnabled(true);
+                        }
                     }
 
                     if (customerInfo.forceEndDelivery == 1) {
@@ -4829,6 +4838,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         deliveryListHorizontal.setVisibility(View.GONE);
                     }
 
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     etaTimerRLayout.setVisibility(View.GONE);
@@ -4907,6 +4917,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     updateDriverServiceFast("no");
                     topRlOuter.setVisibility(View.GONE);
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     setPannelVisibility(false);
@@ -4929,6 +4940,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     GCMIntentService.clearNotifications(getApplicationContext());
                     GCMIntentService.stopRing(true, HomeActivity.this);
                     topRlOuter.setVisibility(View.GONE);
+                    driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -4954,6 +4966,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     break;
 
                 default:
+                    driverInitialLayout.setVisibility(View.VISIBLE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
 
@@ -5813,7 +5826,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             super.notifyDataSetChanged();
             if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
                     && DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
-                    && customerInfos.size() > 0) {
+                    && customerInfos.size() > 0
+                    && checkIfDriverOnline()) {
                 driverRideRequestsList.setVisibility(View.VISIBLE);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 relativeLayoutLastRideEarning.setVisibility(View.GONE);
@@ -12080,7 +12094,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             offlineRequests.add(customerInfo);
                         }
                         offlineRequestsAdapter.notifyList(response.getRides().size(),offlineRequests,refresh);
-                        if(response.getRides().size()>0){
+                        if(response.getRides().size()>0&&!checkIfDriverOnline()){
                             driverInitialLayoutRequests.setVisibility(View.VISIBLE);
                             //enableSwipeToDeleteAndUndo();
                         }

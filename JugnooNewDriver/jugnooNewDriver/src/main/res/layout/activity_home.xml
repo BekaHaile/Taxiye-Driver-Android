@@ -96,6 +96,7 @@
                     <include layout="@layout/layout_driver_initial"/>
 
 
+
                 </RelativeLayout>
 
                 <include layout="@layout/layout_home_sliding_menu"/>
@@ -103,6 +104,7 @@
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
             <!-- initial layout requests-->
             <include layout="@layout/layout_driver_initial_requests"/>
+
 
             <!-- offline request accept layout-->
             <include layout="@layout/layout_driver_request_accept"/>
