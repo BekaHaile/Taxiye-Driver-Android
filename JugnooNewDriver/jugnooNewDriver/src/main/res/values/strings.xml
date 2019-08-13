@@ -1285,4 +1285,5 @@
     <string name="offer_your_fare_for_trip">Offer your fare for trip</string>
     <string name="accept_for">Accept for</string>
     <string name="waiting_for_customer">(Waiting for customer)</string>
+    <string name="tap_for_tutorial">Tap for Tutorial</string>
 </resources>

@@ -157,6 +157,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
+import product.clicklabs.jugnoo.driver.datastructure.PagerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
@@ -169,6 +170,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dialogs.TutorialInfoDialog;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
@@ -558,6 +560,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PagerAdapter pagerAdapter;
 
+    private TextView tvIntro;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -908,6 +912,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tvPickupTime.setTypeface(Fonts.mavenRegular(this));
             bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
             bDropAddressToggle.setTypeface(Fonts.mavenRegular(this));
+			tvIntro = findViewById(R.id.tvIntro);
 
 
             //In ride layout
@@ -1452,6 +1457,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
+			tvIntro.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ArrayList<PagerInfo> pagerInfos = new ArrayList<>();
+					pagerInfos.add(new PagerInfo("", "", "http://cdn.marketplaceimages.windowsphone.com/v8/images/31450d5e-0036-48f1-ab49-882d5822489a"));
+					pagerInfos.add(new PagerInfo("", "", "https://is1-ssl.mzstatic.com/image/thumb/Purple118/v4/f6/63/be/f663becb-eef8-9fa5-a117-c858120bcd66/mzl.bnetiqsm.jpg/300x0w.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://is3-ssl.mzstatic.com/image/thumb/Purple118/v4/00/9e/d6/009ed619-7553-e6e4-36fb-37b6f7fb77c3/source/392x696bb.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://is3-ssl.mzstatic.com/image/thumb/Purple125/v4/32/ee/03/32ee0313-2c20-8dd8-27db-67001ec2230f/pr_source.jpg/750x750bb.jpeg"));
+					pagerInfos.add(new PagerInfo("", "", "https://i.pinimg.com/originals/c5/8b/33/c58b335ce730b0d3aeb8652c61dcc478.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://www.yorkmix.com/wp-content/uploads/2018/03/uber-surge-pricing-strensall.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/46/58/0a/46580a31-87c1-6a10-d96b-ea7afba8bd08/pr_source.jpg/300x0w.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/ec/8f/98/ec8f9863-abd3-bbfd-9b0c-21610ca90029/mzl.aolphhlg.jpg/696x696bb.jpg"));
+					pagerInfos.add(new PagerInfo("", "", "https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/b9/0e/bb/b90ebb27-d5eb-7f97-a1d5-debe5547479b/mzl.drdcydtl.png/300x0w.jpg"));
+
+					TutorialInfoDialog.INSTANCE.showAddToll(HomeActivity.this, pagerInfos);
+				}
+			});
 
             fareDetailsRl.setVisibility(View.GONE);
             fareDetailsRl.setOnClickListener(new OnClickListener() {
@@ -4414,6 +4436,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     startMarker.remove();
                 }
             }
+			tvIntro.setVisibility(View.GONE);
 
             switch (mode) {
 
@@ -4495,6 +4518,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     disableEmergencyModeIfNeeded(Data.getCurrentEngagementId());
                     containerSwitch.post(this::changeOnOFFStateTop);
+					tvIntro.setVisibility(View.VISIBLE);
 
                     break;
 
