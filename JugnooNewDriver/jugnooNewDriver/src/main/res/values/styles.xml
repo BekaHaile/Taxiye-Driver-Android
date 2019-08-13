@@ -206,4 +206,31 @@
     </style>
 
     <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar"/>
+
+    <style name="TransparentTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">
+            @color/transparent
+        </item>
+        <item name="colorPrimaryDark">
+            @color/black
+        </item>
+        <item name="colorAccent">
+            @color/white_light_dark
+        </item>
+        <item name="colorControlNormal">
+            @color/white_light_dark
+        </item>
+        <item name="colorControlActivated">
+            @color/themeColor
+        </item>
+        <item name="colorControlHighlight">
+            @color/white_light_dark
+        </item>
+        <item name="android:textColorHint">
+            #595968
+        </item>
+        <item name="android:windowContentTransitions">
+            true
+        </item>
+    </style>
 </resources>

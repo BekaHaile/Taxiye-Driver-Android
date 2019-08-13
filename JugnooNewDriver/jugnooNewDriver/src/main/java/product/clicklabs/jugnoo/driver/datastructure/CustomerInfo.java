@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class CustomerInfo {
 	private int tollApplicable;
 	private String rentalInfo;
 	private List<String> customerOrderImagesList;
-
+	private String pickupAddress;
 
 	/**
 	 * For accepted customers
@@ -231,6 +232,44 @@ public class CustomerInfo {
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
 		this.rentalInfo = rentalInfo;
+	}
+
+	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
+						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
+						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
+						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
+						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
+						String pickupTime, String rentalInfo, String pickupAddress, String dropAddress){
+		this.engagementId = engagementId;
+		this.userId = userId;
+		this.requestlLatLng = requestlLatLng;
+		this.currentLatLng = currentLatLng;
+		this.startTime = startTime;
+		this.address = address;
+		this.referenceId = referenceId;
+		this.fareFactor = fareFactor;
+		this.status = status;
+		this.isPooled = isPooled;
+		this.isDelivery = isDelivery;
+		this.isDeliveryPool = isDeliveryPool;
+		this.totalDeliveries = totalDeliveries;
+		this.estimatedFare = estimatedFare;
+		this.name = userName;
+		this.dryDistance =dryDistance;
+		this.cashOnDelivery = cashOnDelivery;
+		this.estimatedDriverFare = estimatedDriverFare;
+		this.deliveryAddress = deliveryAddress;
+		this.estimatedDist = estimatedDist;
+		this.currencyUnit = currency;
+		this.reverseBid = reverseBid;
+		this.bidPlaced = bidPlaced;
+		this.bidValue = bidValue;
+		this.initialBidValue = initialBidValue;
+		this.estimatedTripDistance = estimatedTripDistance;
+		this.pickupTime = pickupTime;
+		this.rentalInfo = rentalInfo;
+		this.pickupAddress = pickupAddress;
+		this.dropAddress = dropAddress;
 	}
 
 
@@ -901,5 +940,17 @@ public class CustomerInfo {
 			e.printStackTrace();
 			return getElapsedRideTime(MyApplication.getInstance());
 		}
+	}
+
+	public void setDropAddress(String dropAddress) {
+		this.dropAddress = dropAddress;
+	}
+
+	public String getPickupAddress() {
+		return pickupAddress;
+	}
+
+	public void setPickupAddress(String pickupAddress) {
+		this.pickupAddress = pickupAddress;
 	}
 }
