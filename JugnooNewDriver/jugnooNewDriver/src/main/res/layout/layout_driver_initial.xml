@@ -15,7 +15,6 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"
-        android:layout_below="@+id/tvTutorialBanner"
         />
 
 
@@ -98,17 +97,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvTutorialBanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/themeColor"
-        android:padding="8dp"
-        android:gravity="center"
-        android:text="@string/tap_for_tutorial"
-        android:textColor="@color/white"
-        android:tag="@string/dont_touch_me"
-        style="@style/TextNormal"
-        android:textStyle="bold"
-        />
 </RelativeLayout>

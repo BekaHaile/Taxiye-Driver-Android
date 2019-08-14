@@ -38,8 +38,8 @@ object TutorialInfoDialog{
                 val layoutParams = dialog.window!!.attributes
                 layoutParams.dimAmount = 0.6f
                 window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-                setCancelable(false)
-                setCanceledOnTouchOutside(false)
+                setCancelable(true)
+                setCanceledOnTouchOutside(true)
 
                 val imageViewClose = findViewById<ImageView>(R.id.imageViewClose)
                 val ivNext = findViewById<ImageView>(R.id.ivNext)

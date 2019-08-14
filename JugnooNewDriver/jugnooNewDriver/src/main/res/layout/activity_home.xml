@@ -106,6 +106,20 @@
             <!-- initial layout requests-->
             <include layout="@layout/layout_driver_initial_requests"/>
 
+            <TextView
+                android:id="@+id/tvTutorialBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/themeColor"
+                android:padding="8dp"
+                android:gravity="center"
+                android:text="@string/tap_for_tutorial"
+                android:textColor="@color/white"
+                android:tag="@string/dont_touch_me"
+                style="@style/TextNormal"
+                android:textStyle="bold"
+                />
+
 
             <!-- offline request accept layout-->
             <include layout="@layout/layout_driver_request_accept"/>
