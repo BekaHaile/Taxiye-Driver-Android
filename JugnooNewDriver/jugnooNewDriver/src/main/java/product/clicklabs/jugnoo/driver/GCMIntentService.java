@@ -562,8 +562,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									HomeActivity.appInterruptHandler.refreshTractionScreen();
 								}
 								boolean isOffline = Prefs.with(this).getInt(Constants.IS_OFFLINE, 0) == 1;
+								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 								if (entertainRequest) {
-									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
 									double latitude = jObj.getDouble(Constants.KEY_LATITUDE);
 									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
@@ -669,15 +669,17 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
+									Data.instantiateAssignedCustomerInfos();
+									CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+											Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+											referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
+											isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+											new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
+											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
+											pickupTime, strRentalInfo,pickupAdress,dropAddress);
+									Data.addCustomerInfo(customerInfo);
+
 									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
-										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
-												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
-												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-												pickupTime, strRentalInfo,pickupAdress,dropAddress);
-										Data.addCustomerInfo(customerInfo);
 
 										if(!isOffline) {
 											startRing(this, engagementId, changeRing);
@@ -727,6 +729,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											startActivity(homeScreen);
 										}
+
+										Intent intentN = new Intent(this,RequestActivity.class);
+										intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intentN.putExtra(Constants.KEY_ENGAGEMENT_ID,Integer.parseInt(engagementId));
+										startActivity(intentN);
 									}
 								} catch (Exception e) {
 									e.printStackTrace();

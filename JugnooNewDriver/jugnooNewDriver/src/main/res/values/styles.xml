@@ -207,7 +207,7 @@
 
     <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar"/>
 
-    <style name="TransparentTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="TransparentTheme" parent="Theme.AppCompat.Translucent">
         <item name="colorPrimary">
             @color/transparent
         </item>

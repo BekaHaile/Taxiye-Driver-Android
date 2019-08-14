@@ -8932,10 +8932,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(HomeActivity.this,RequestActivity.class);
-                    intent.putExtra(Constants.KEY_ENGAGEMENT_ID,Data.getAssignedCustomerInfosListForStatus(
-                            EngagementStatus.REQUESTED.getOrdinal()).get(0).getEngagementId());
-                    HomeActivity.this.startActivity(intent);
                     showAllRideRequestsOnMap();
 
                     try {

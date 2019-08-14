@@ -246,6 +246,11 @@ public class Data {
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfos(){
 		return assignedCustomerInfos;
 	}
+	public static void instantiateAssignedCustomerInfos(){
+		if(assignedCustomerInfos == null){
+			assignedCustomerInfos = new ArrayList<>();
+		}
+	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
 		if(assignedCustomerInfos != null) {

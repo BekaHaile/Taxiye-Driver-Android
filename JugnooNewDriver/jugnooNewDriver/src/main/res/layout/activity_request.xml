@@ -8,12 +8,13 @@
     android:layout_height="match_parent"
     tools:context=".RequestActivity">
 
-    <android.support.v4.view.ViewPager
+    <product.clicklabs.jugnoo.driver.widgets.ViewPagerWithDimen
         android:id="@+id/vpRequests"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

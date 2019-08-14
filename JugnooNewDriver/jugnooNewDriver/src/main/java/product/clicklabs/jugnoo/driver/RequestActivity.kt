@@ -21,6 +21,7 @@ class RequestActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
         if(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,-1) != -1) {
             addRequests(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,0)!!)
         }
@@ -51,8 +52,10 @@ class RequestPagerAdapter(var fragmentManager: FragmentManager) : FragmentStateP
     }
 
     fun addFrag(engagementId: Int) {
-        requestList.add(engagementId)
-        notifyDataSetChanged()
+        if(!requestList.contains(engagementId)) {
+            requestList.add(engagementId)
+            notifyDataSetChanged()
+        }
     }
 
 }

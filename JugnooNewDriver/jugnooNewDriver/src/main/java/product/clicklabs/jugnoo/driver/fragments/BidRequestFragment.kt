@@ -14,6 +14,8 @@ import product.clicklabs.jugnoo.driver.adapters.BidIncrementAdapter
 import product.clicklabs.jugnoo.driver.adapters.BidIncrementVal
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
+import product.clicklabs.jugnoo.driver.utils.Fonts
+import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.gone
 
@@ -31,6 +33,7 @@ class BidRequestFragment : Fragment() {
     }
 
     lateinit var customerInfo :CustomerInfo
+    var percent: Float = 10.0f;
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,31 +44,39 @@ class BidRequestFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        percent = Prefs.with(context).getFloat(Constants.BID_INCREMENT_PERCENT, 10f)
         val engagementId = arguments!!.getInt(Constants.KEY_ENGAGEMENT_ID)
         customerInfo = Data.getCustomerInfo(engagementId.toString())
 
+        tvPickup.typeface = Fonts.mavenRegular(context!!)
+        tvDrop.typeface = Fonts.mavenRegular(context!!)
+        tvDistance.typeface = Fonts.mavenRegular(context!!)
+        tvPrice.typeface = Fonts.mavenRegular(context!!)
+        tvOffer.typeface = Fonts.mavenRegular(context!!)
+        tvSkip.typeface = Fonts.mavenRegular(context!!)
+        btAccept.typeface = Fonts.mavenRegular(context!!)
+
         tvPickup.text = customerInfo.pickupAddress
         tvDrop.text = customerInfo.dropAddress
-        tvDistance.text = getString(R.string.estimated_distance_format,
-                Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
-                        * UserData.getDistanceUnitFactor(requireContext())))
+        tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
+                        * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
         tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.bidValue)
 
         if(customerInfo.isReverseBid && !customerInfo.isBidPlaced) {
             rvBidValues.itemAnimator = DefaultItemAnimator()
             rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            rvBidValues.adapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
+            var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
                 override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
             })
+            rvBidValues.adapter = bidIncrementAdapter
+//            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),
+//                        percent.toDouble(), bidValues.get(position), rvBidValues);
         } else {
             rvBidValues.gone()
+            tvOffer.gone()
         }
-
-
     }
 
 }
