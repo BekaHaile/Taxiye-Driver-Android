@@ -17,12 +17,13 @@ class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callba
     private var currency:String? = "INR"
     private var parentId:Int = 0
 
-    fun setList(parentId:Int, currency:String?, initialBidVal:Double, increment:Double, selectedVal:Double,  rv:RecyclerView){
+    fun setList(parentId:Int, currency:String?, initialBidVal:Double, increment:Double, selectedVal:Double,
+                stepSize:Int, rv:RecyclerView){
         this.rv = rv
         this.parentId = parentId
         this.currency = currency
         bidVals!!.clear()
-        for(i in 1..5){
+        for(i in 1..stepSize){
             val incValue = initialBidVal + (i*increment*initialBidVal/100.toDouble())
             bidVals!!.add(BidIncrementVal(incValue, selectedVal == incValue))
         }

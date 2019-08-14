@@ -7,7 +7,8 @@
     android:background="@color/black_translucent_level_3"
     android:splitMotionEvents="false"
     android:clickable="false"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:layout_below="@+id/tvTutorialBanner">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOfflineRequests"

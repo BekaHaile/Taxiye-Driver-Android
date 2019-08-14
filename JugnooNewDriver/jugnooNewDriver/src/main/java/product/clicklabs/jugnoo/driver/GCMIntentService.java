@@ -637,6 +637,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
 									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
 									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
+									double incrementPercent = jObj.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(this).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+									int stepSize = jObj.optInt(Constants.KEY_STEP_SIZE, 5);
 									long requestTimeOutMillis;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -675,7 +677,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
 												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-												pickupTime, strRentalInfo);
+												pickupTime, strRentalInfo, incrementPercent, stepSize);
 										Data.addCustomerInfo(customerInfo);
 
 										if(!isOffline) {

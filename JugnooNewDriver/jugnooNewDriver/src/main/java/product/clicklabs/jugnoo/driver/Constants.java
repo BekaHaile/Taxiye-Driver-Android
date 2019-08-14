@@ -477,5 +477,10 @@ public interface Constants {
 	String KEY_DRIVER_TAG = "driver_tag";
 	String KEY_DROP_UPDATED = "drop_updated";
 	String KEY_HTML_RATE_CARD = "html_rate_card";
+
+	String KEY_DRIVER_TUTORIAL_BANNER_TEXT = "driver_tutorial_banner_text";
+	String KEY_INCREASE_PERCENTAGE = "increase_percentage";
+	String KEY_STEP_SIZE = "step_size";
+	String KEY_SECTION = "section";
 }
 
