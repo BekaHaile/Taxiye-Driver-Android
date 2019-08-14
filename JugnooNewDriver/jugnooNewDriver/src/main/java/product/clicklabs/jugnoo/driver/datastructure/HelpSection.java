@@ -14,7 +14,8 @@ public enum HelpSection {
 	TERMS(3, R.string.terms_of_use),
 	FARE_DETAILS(4, R.string.fare_details),
 	SCHEDULES_TNC(5, R.string.terms_of_schedule),
-	DRIVER_AGREEMENT(9, R.string.driver_agreement)
+	DRIVER_AGREEMENT(9, R.string.driver_agreement),
+	TUTORIAL(10, R.string.tutorial)
 	;
 
 	private int ordinal;

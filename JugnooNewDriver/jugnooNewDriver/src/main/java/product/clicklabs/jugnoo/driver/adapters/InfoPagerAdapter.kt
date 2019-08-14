@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.text.TextUtils
@@ -8,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import product.clicklabs.jugnoo.driver.R
@@ -26,7 +26,7 @@ class InfoPagerAdapter(private var mContext: Context, private var infoList: List
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object` as LinearLayout
+        return view === `object` as ConstraintLayout
     }
 
     @Synchronized
@@ -65,6 +65,6 @@ class InfoPagerAdapter(private var mContext: Context, private var infoList: List
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as LinearLayout)
+        container.removeView(`object` as ConstraintLayout)
     }
 }

@@ -82,6 +82,9 @@ public class CustomerInfo {
 	private String rentalInfo;
 	private List<String> customerOrderImagesList;
 
+	private double incrementPercent;
+	private int stepSize;
+
 
 	/**
 	 * For accepted customers
@@ -202,7 +205,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -231,6 +234,8 @@ public class CustomerInfo {
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
 		this.rentalInfo = rentalInfo;
+		this.incrementPercent = incrementPercent;
+		this.stepSize = stepSize;
 	}
 
 
@@ -901,5 +906,21 @@ public class CustomerInfo {
 			e.printStackTrace();
 			return getElapsedRideTime(MyApplication.getInstance());
 		}
+	}
+
+	public double getIncrementPercent() {
+		return incrementPercent;
+	}
+
+	public void setIncrementPercent(double incrementPercent) {
+		this.incrementPercent = incrementPercent;
+	}
+
+	public int getStepSize() {
+		return stepSize;
+	}
+
+	public void setStepSize(int stepSize) {
+		this.stepSize = stepSize;
 	}
 }

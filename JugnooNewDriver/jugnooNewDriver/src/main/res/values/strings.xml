@@ -1286,4 +1286,5 @@
     <string name="accept_for">Accept for</string>
     <string name="waiting_for_customer">(Waiting for customer)</string>
     <string name="tap_for_tutorial">Tap for Tutorial</string>
+    <string name="tutorial">Tutorial</string>
 </resources>
