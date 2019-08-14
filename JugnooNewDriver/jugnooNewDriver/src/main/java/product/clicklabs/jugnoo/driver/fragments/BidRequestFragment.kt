@@ -71,11 +71,17 @@ class BidRequestFragment : Fragment() {
                 }
             })
             rvBidValues.adapter = bidIncrementAdapter
-//            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),
-//                        percent.toDouble(), bidValues.get(position), rvBidValues);
+            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),
+                        percent.toDouble(), customerInfo.initialBidValue, rvBidValues);
+
+            btAccept.text = getString(R.string.accept_for) + " " + customerInfo.initialBidValue
         } else {
             rvBidValues.gone()
             tvOffer.gone()
+            btAccept.text = getString(R.string.accept)
+        }
+        btAccept.setOnClickListener {
+            (activity as RequestActivity).driverAcceptRideAsync(activity as RequestActivity,customerInfo)
         }
     }
 
