@@ -36,7 +36,7 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
         backgroundColor = Color.parseColor("#ff5b29");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        deleteDrawable = ContextCompat.getDrawable(homeActivity, R.drawable.ic_ride_accept_taxi);
+        deleteDrawable = ContextCompat.getDrawable(homeActivity, R.drawable.ic_accept_ride);
         intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();
 
@@ -81,8 +81,8 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
         int deleteIconBottom = deleteIconTop + intrinsicHeight;
 
 
-//        deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-//        deleteDrawable.draw(c);
+        deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+        deleteDrawable.draw(c);
 
 
 
@@ -93,21 +93,22 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 //        c.drawText("Accept this ride", xPos, yPos, mClearPaint);
 
 
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-
-        TextPaint textPaint = new TextPaint();
-        textPaint.setColor(Color.WHITE);
-        textPaint.setTypeface(Fonts.mavenBold(homeActivity));
-        textPaint.setTextSize(60);
-        textPaint.setTextAlign(Paint.Align.RIGHT);
-        float textHeight = textPaint.descent() - textPaint.ascent();
-        float textOffset = (textHeight / 2) - textPaint.descent();
-
-        RectF bounds = new RectF(0, 0, c.getWidth(), c.getHeight());
-//        c.drawOval(bounds, paint);
-        c.drawText("Accept this ride", bounds.centerX(), bounds.centerY() + textOffset, textPaint);
-
+//        Paint paint = new Paint();
+//        paint.setColor(Color.WHITE);
+//
+//        TextPaint textPaint = new TextPaint();
+//        textPaint.setColor(Color.WHITE);
+//        textPaint.setTypeface(Fonts.mavenBold(homeActivity));
+//        textPaint.setTextSize(60);
+//        textPaint.setTextAlign(Paint.Align.CENTER);
+//        float textHeight = textPaint.descent() - textPaint.ascent();
+//        float textOffset = (textHeight / 2) - textPaint.descent();
+//
+//        RectF bounds = new RectF(itemView.getX(), itemView.getY(), itemView.getX() + itemView.getWidth(), itemView.getY() + itemView.getHeight());
+////        c.drawOval(bounds, paint);
+//        c.drawText("Accept this ride", bounds.centerX(), bounds.centerY() + textOffset, textPaint);
+//
+//        Log.e("SwipeCallback", "c.getHeight="+c.getHeight()+", bounds h="+bounds.centerY() + textOffset);
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 

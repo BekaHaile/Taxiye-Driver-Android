@@ -3,142 +3,149 @@
     android:id="@+id/relative"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:paddingTop="10dp"
     android:background="#e1e2e1">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:paddingStart="14dp"
-        android:paddingTop="15dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="15dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_profile_img_placeholder" />
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="50dp"
+        <RelativeLayout
+            android:id="@+id/rlMainView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivImage"
-            android:gravity="center"
-            android:text=""
-            android:textSize="10sp" />
-
-        <LinearLayout
-            android:id="@+id/llPickup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/ivImage">
+            android:layout_toStartOf="@+id/rlAcceptView"
+            android:background="@color/white"
+            android:paddingStart="14dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="15dp">
 
             <ImageView
-                android:id="@+id/ivPickup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_pickup" />
+                android:id="@+id/ivImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_profile_img_placeholder" />
 
             <TextView
-                android:id="@+id/tvPickup"
+                android:id="@+id/tvName"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivImage"
+                android:gravity="center"
+                android:text=""
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:id="@+id/llPickup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:ellipsize="end"
-                android:text="fnklnf"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/ivImage">
 
-        <ImageView
-            android:id="@+id/ivDotted"
-            android:layout_width="wrap_content"
-            android:layout_height="5dp"
-            android:layout_below="@+id/llPickup"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/ivImage"
-            android:background="@drawable/ic_dotted_path"
-            android:minHeight="10dp" />
+                <ImageView
+                    android:id="@+id/ivPickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_pickup" />
 
-        <LinearLayout
-            android:id="@+id/llDrop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivDotted"
-            android:layout_marginStart="13dp"
-            android:layout_toEndOf="@+id/ivImage">
+                <TextView
+                    android:id="@+id/tvPickup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:text="fnklnf"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <ImageView
+                android:id="@+id/ivDotted"
+                android:layout_width="wrap_content"
+                android:layout_height="5dp"
+                android:layout_below="@+id/llPickup"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/ivImage"
+                android:background="@drawable/ic_dotted_path"
+                android:minHeight="10dp" />
+
+            <LinearLayout
+                android:id="@+id/llDrop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/ic_drop" />
+                android:layout_below="@+id/ivDotted"
+                android:layout_marginStart="13dp"
+                android:layout_toEndOf="@+id/ivImage">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_drop" />
+
+                <TextView
+                    android:id="@+id/tvDrop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:ellipsize="end"
+                    android:text="bjkfbewbjke"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvDrop"
+                android:id="@+id/tvTime"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvName"
+                android:gravity="center"
+                android:text=""
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/tvDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:ellipsize="end"
-                android:text="bjkfbewbjke"
+                android:layout_below="@+id/llDrop"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/tvPrice"
+                android:text=""
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llDrop"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="14dp"
+                android:layout_toEndOf="@+id/ivImage"
+                android:text=""
+                android:textColor="@color/themeColor"
                 android:textSize="16sp" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvName"
-            android:gravity="center"
-            android:text=""
-            android:textSize="9sp" />
+        <RelativeLayout
+            android:id="@+id/rlAcceptView"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="#ff5b29"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/tvDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llDrop"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="16dp"
-            android:layout_toEndOf="@+id/tvPrice"
-            android:text=""
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/llDrop"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="14dp"
-            android:layout_toEndOf="@+id/ivImage"
-            android:text=""
-            android:textColor="@color/themeColor"
-            android:textSize="16sp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rlAcceptView"
-        android:layout_width="30dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:background="#ff5b29"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="11dp"
-            android:layout_height="18dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_left_swipe_arrow" />
+            <ImageView
+                android:layout_width="11dp"
+                android:layout_height="18dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_left_swipe_arrow" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <ImageView

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/linearLayoutInner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_white_rounded_bordered"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPagerInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="24dp"
+            />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabDots"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginBottom="16dp"
+            android:tag="@string/dont_touch_me"
+            app:paddingEnd="4dp"
+            app:paddingStart="4dp"
+            app:tabBackground="@drawable/tab_selector"
+            android:layout_alignBottom="@+id/viewPagerInfo"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMaxWidth="10dp" />
+
+        <ImageView
+            android:id="@+id/ivNext"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_chevron_right"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/viewPagerInfo"
+            android:background="?attr/selectableItemBackground"
+            android:theme="@style/GreyHighlight"
+            />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/imageViewClose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:paddingStart="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginEnd="-10dp"
+        android:layout_marginTop="-10dp"
+        android:layout_alignEnd="@+id/linearLayoutInner"
+        android:layout_alignTop="@+id/linearLayoutInner"
+        android:src="@drawable/ic_cross_popup_selector"
+
+
+        />
+
+
+</RelativeLayout>

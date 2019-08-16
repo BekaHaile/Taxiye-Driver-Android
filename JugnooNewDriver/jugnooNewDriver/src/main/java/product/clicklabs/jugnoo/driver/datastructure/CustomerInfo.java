@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -17,6 +18,7 @@ import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -43,13 +45,14 @@ public class CustomerInfo {
 	public double jugnooBalance;
 	public LatLng dropLatLng;
 	public String dropAddress;
+	public String pickupAddress;
 	public int meterFareApplicable;
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable, forceEndDelivery;
 
 	private int status;
-	private String address, startTime;
+	private String address, startTime, requestTime;
 	private double fareFactor, cashOnDelivery;
 	private int isPooled;
 
@@ -82,7 +85,10 @@ public class CustomerInfo {
 	private int tollApplicable;
 	private String rentalInfo;
 	private List<String> customerOrderImagesList;
-	private String pickupAddress;
+
+	private double incrementPercent;
+	private int stepSize;
+
 
 	/**
 	 * For accepted customers
@@ -203,7 +209,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -232,44 +238,11 @@ public class CustomerInfo {
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
 		this.rentalInfo = rentalInfo;
-	}
-
-	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
-						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
-						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
-						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo, String pickupAddress, String dropAddress){
-		this.engagementId = engagementId;
-		this.userId = userId;
-		this.requestlLatLng = requestlLatLng;
-		this.currentLatLng = currentLatLng;
-		this.startTime = startTime;
-		this.address = address;
-		this.referenceId = referenceId;
-		this.fareFactor = fareFactor;
-		this.status = status;
-		this.isPooled = isPooled;
-		this.isDelivery = isDelivery;
-		this.isDeliveryPool = isDeliveryPool;
-		this.totalDeliveries = totalDeliveries;
-		this.estimatedFare = estimatedFare;
-		this.name = userName;
-		this.dryDistance =dryDistance;
-		this.cashOnDelivery = cashOnDelivery;
-		this.estimatedDriverFare = estimatedDriverFare;
-		this.deliveryAddress = deliveryAddress;
-		this.estimatedDist = estimatedDist;
-		this.currencyUnit = currency;
-		this.reverseBid = reverseBid;
-		this.bidPlaced = bidPlaced;
-		this.bidValue = bidValue;
-		this.initialBidValue = initialBidValue;
-		this.estimatedTripDistance = estimatedTripDistance;
-		this.pickupTime = pickupTime;
-		this.rentalInfo = rentalInfo;
-		this.pickupAddress = pickupAddress;
+		this.incrementPercent = incrementPercent;
+		this.stepSize = stepSize;
 		this.dropAddress = dropAddress;
+		this.pickupAddress = pickUpAddress;
+		this.requestTime = requestTime;
 	}
 
 
@@ -942,8 +915,20 @@ public class CustomerInfo {
 		}
 	}
 
-	public void setDropAddress(String dropAddress) {
-		this.dropAddress = dropAddress;
+	public double getIncrementPercent() {
+		return incrementPercent;
+	}
+
+	public void setIncrementPercent(double incrementPercent) {
+		this.incrementPercent = incrementPercent;
+	}
+
+	public int getStepSize() {
+		return stepSize;
+	}
+
+	public void setStepSize(int stepSize) {
+		this.stepSize = stepSize;
 	}
 
 	public String getPickupAddress() {
@@ -952,5 +937,13 @@ public class CustomerInfo {
 
 	public void setPickupAddress(String pickupAddress) {
 		this.pickupAddress = pickupAddress;
+	}
+	public int getProgressValue(){
+		if(TextUtils.isEmpty(startTime) || TextUtils.isEmpty(requestTime)){
+			return 0;
+		}
+		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), startTime);
+		double total = DateOperations.getTimeDifference(requestTime, startTime);
+		return (int) (currentDiff/total*100D);
 	}
 }

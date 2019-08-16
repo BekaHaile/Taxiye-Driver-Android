@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -23,7 +22,6 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
@@ -115,64 +113,62 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.tvPickup.setText(customerInfo.getPickupAddressEng() == null || customerInfo.getPickupAddressEng().trim().isEmpty() ? "----- -----" : customerInfo.getPickupAddressEng().trim());
             holder.tvDrop.setText(customerInfo.getDropAddress() == null || customerInfo.getDropAddress().trim().isEmpty() ? "----- -----" : customerInfo.getDropAddress().trim());
             holder.tvTime.setText(customerInfo.getTimeDiff() == null || customerInfo.getTimeDiff().trim().isEmpty() ? "-- --" : customerInfo.getTimeDiff());
-            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() ? "---" : Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()));
+            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()));
 
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.relative.getLayoutParams();
+
+            float scale = activity.getResources().getDisplayMetrics().density;
             if (position == 0) {
-                params.setMargins(0, 0, 0, 0);
-                holder.relative.setLayoutParams(params);
+                int dpAsPixels = (int) (10 * scale + 0.5f);
+                holder.relative.setPadding(0, 0, 0, 0);
             } else {
-                params.setMargins(0, 5, 0, 0);
-                holder.relative.setLayoutParams(params);
+                holder.relative.setPadding(0, (int) (5 * scale + 0.5f), 0, 0);
             }
 
             double distance = 0;
-            if (customerInfo.getDistance() > 0) {
-                holder.tvDistance.setVisibility(View.VISIBLE);
-                distance = customerInfo.getDistance();
-            } else if (homeActivity.myLocation != null) {
-                holder.tvDistance.setVisibility(View.VISIBLE);
-                distance = MapUtils.distance(new LatLng(homeActivity.myLocation.getLatitude(), homeActivity.myLocation.getLongitude()), customerInfo.getRequestlLatLng());
-                distance = distance * 1.5;
-            } else {
-                holder.tvDistance.setVisibility(View.GONE);
-            }
-            holder.tvDistance.setText("" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
-                    + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)));
+
+            holder.tvDistance.setVisibility(View.VISIBLE);
+            distance = customerInfo.getDistance();
+
+            holder.tvDistance.setText(
+                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
+                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
 
             holder.relative.setTag(position);
             holder.rlAcceptView.setTag(position);
+            holder.rlMainView.setTag(position);
             holder.ivFaded.setTag(position);
 
             try {
-				if (customerInfo.getImage().isEmpty()) {
-					Picasso.with(activity).load(R.drawable.ic_profile_img_placeholder).transform(new CircleTransform())
+                if (customerInfo.getImage().isEmpty()) {
+                    Picasso.with(activity).load(R.drawable.ic_profile_img_placeholder).transform(new CircleTransform())
                             .placeholder(R.drawable.ic_profile_img_placeholder)
                             .error(R.drawable.ic_profile_img_placeholder)
 //                        .transform(new RoundedCornersTransformation(10, 0, RoundedCornersTransformation.CornerType.TOP))
                             .into(holder.ivImage);
 
-				} else {
-                holder.ivImage.setVisibility(View.VISIBLE);
-                //Picasso.with(activity).load(customerInfo.getNotificationImage()).into(holder.notificationImage);
-                //Picasso.with(activity).load(customerInfo.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
+                } else {
+                    holder.ivImage.setVisibility(View.VISIBLE);
+                    //Picasso.with(activity).load(customerInfo.getNotificationImage()).into(holder.notificationImage);
+                    //Picasso.with(activity).load(customerInfo.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
 
-                Picasso.with(activity).load(customerInfo.getImage()).transform(new CircleTransform())
-                        .placeholder(R.drawable.ic_profile_img_placeholder)
-                        .error(R.drawable.ic_profile_img_placeholder)
+                    Picasso.with(activity).load(customerInfo.getImage()).transform(new CircleTransform())
+                            .placeholder(R.drawable.ic_profile_img_placeholder)
+                            .error(R.drawable.ic_profile_img_placeholder)
 //                        .transform(new RoundedCornersTransformation(10, 0, RoundedCornersTransformation.CornerType.TOP))
-                        .into(holder.ivImage);
-				}
+                            .into(holder.ivImage);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             if (customerInfo.getCanAcceptRequest() == 1) {
-//				holder.rlAcceptView.setVisibility(View.VISIBLE);
+                holder.rlAcceptView.setVisibility(View.VISIBLE);
                 holder.ivFaded.setVisibility(View.GONE);
                 holder.relative.setEnabled(true);
             } else {
-//				holder.rlAcceptView.setVisibility(View.GONE);
+                holder.rlAcceptView.setVisibility(View.GONE);
                 holder.ivFaded.setVisibility(View.VISIBLE);
                 holder.relative.setEnabled(false);
             }
@@ -188,6 +184,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             });
+            holder.rlAcceptView.setMinimumHeight(holder.rlMainView.getHeight());
         } else if (viewholder instanceof ViewFooterHolder) {
             ViewFooterHolder holder = (ViewFooterHolder) viewholder;
             holder.relativeLayoutShowMore.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +226,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public FrameLayout relative;
-        public RelativeLayout rlAcceptView;
+        public RelativeLayout rlAcceptView, rlMainView;
         public ImageView ivImage, ivFaded;
         public TextView tvName, tvPickup, tvDrop, tvTime, tvDistance, tvPrice;
 
@@ -239,6 +236,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ivFaded = (ImageView) itemView.findViewById(R.id.ivFaded);
             relative = (FrameLayout) itemView.findViewById(R.id.relative);
             rlAcceptView = (RelativeLayout) itemView.findViewById(R.id.rlAcceptView);
+            rlMainView = (RelativeLayout) itemView.findViewById(R.id.rlMainView);
 
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvName.setTypeface(Fonts.mavenMedium(activity));

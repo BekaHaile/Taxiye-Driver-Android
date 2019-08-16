@@ -543,6 +543,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE, userData.optString(KEY_DRIVER_ALT_DROP_DEVIATION_DISTANCE,
 				context.getString(R.string.driver_alt_drop_deviation_distance)));
 
+		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -885,6 +887,8 @@ public class JSONParser implements Constants {
 				Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
+				String pickupAddress = jActiveRequest.getString(Constants.KEY_PICKUP_ADDRESS);
+				String dropAddress = jActiveRequest.getString(Constants.KEY_DROP_ADDRESS);
 				if(Prefs.with(context).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0){
 					requestAddress = jActiveRequest.optString(Constants.KEY_PICKUP_ADDRESS, requestAddress);
 				}
@@ -970,13 +974,17 @@ public class JSONParser implements Constants {
 					isDeliveryPool =1;
 				}
 
+				double incrementPercent = jActiveRequest.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(context).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+				int stepSize = jActiveRequest.optInt(Constants.KEY_STEP_SIZE, 5);
+
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance, pickupTime, strRentalInfo);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
+						pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAddress,dropAddress,startTimeLocal);
 
 				Data.addCustomerInfo(customerInfo);
 

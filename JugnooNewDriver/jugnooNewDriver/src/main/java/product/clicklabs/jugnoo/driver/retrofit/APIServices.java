@@ -774,4 +774,8 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/fetch_driver_traction_rides")
 	void fetchDriverTractionRides(@FieldMap Map<String, String> params, Callback<TractionResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_information")
+	Response fetchTutorialData(@FieldMap Map<String, String> params);
 }

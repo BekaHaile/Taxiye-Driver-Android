@@ -638,6 +638,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
 									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
 									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
+									double incrementPercent = jObj.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(this).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+									int stepSize = jObj.optInt(Constants.KEY_STEP_SIZE, 5);
 									long requestTimeOutMillis;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -669,18 +671,17 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
-									Data.instantiateAssignedCustomerInfos();
-									CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-											Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
-											referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-											isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-											new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
-											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-											pickupTime, strRentalInfo,pickupAdress,dropAddress);
-									Data.addCustomerInfo(customerInfo);
 
 									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
-
+										Data.instantiateAssignedCustomerInfos();
+										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
+												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
+												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
+												pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal);
+										Data.addCustomerInfo(customerInfo);
 										if(!isOffline) {
 											startRing(this, engagementId, changeRing);
 											notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
@@ -731,7 +732,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 										}
 
 										Intent intentN = new Intent(this,RequestActivity.class);
-										intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 										intentN.putExtra(Constants.KEY_ENGAGEMENT_ID,Integer.parseInt(engagementId));
 										startActivity(intentN);
 									}

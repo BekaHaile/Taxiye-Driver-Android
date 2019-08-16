@@ -9,6 +9,17 @@
     app:layout_constraintBottom_toBottomOf="parent"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/pbRequestTime"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginEnd="-10dp"
+        android:progress="50"
+        android:progressTint="#7ed321" />
+
     <RelativeLayout
         android:id="@+id/llPickup"
         android:layout_marginTop="10dp"
@@ -69,7 +80,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
+            android:layout_gravity="start|center_vertical"
             android:background="@drawable/ic_drop" />
 
         <TextView
@@ -132,7 +143,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBidValues"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        />
 
 
     <TextView
@@ -141,6 +154,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:textColor="@color/text_color"
+        android:textColor="@color/themeColor"
         android:text="@string/skip"/>
 </LinearLayout>

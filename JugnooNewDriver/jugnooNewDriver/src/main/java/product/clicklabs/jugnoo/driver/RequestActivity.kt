@@ -2,12 +2,12 @@ package product.clicklabs.jugnoo.driver
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_request.*
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +26,10 @@ import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.HashMap
+import kotlin.collections.ArrayList
+import kotlin.collections.indices
+import kotlin.collections.isNullOrEmpty
+import kotlin.collections.set
 
 class RequestActivity : AppCompatActivity() {
 
@@ -33,28 +37,37 @@ class RequestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
 
-        if(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,-1) != -1) {
-            addRequests(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,0)!!)
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        if(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,-1) != -1) {
-            addRequests(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID,0)!!)
+        if (intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, -1) != -1) {
+            addRequests(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)!!)
         }
     }
 
     fun addRequests(engagementId: Int) {
-        if(vpRequests.adapter == null) {
+        if (vpRequests.adapter == null) {
             vpRequests.adapter = RequestPagerAdapter(supportFragmentManager).apply {
-                addFrag(engagementId)
+                addFrag()
             }
         } else {
-            (vpRequests.adapter as RequestPagerAdapter).addFrag(engagementId = engagementId)
+            (vpRequests.adapter as RequestPagerAdapter).addFrag()
         }
     }
 
+    fun removeFragment(engagementId: Int){
+        (vpRequests.adapter as RequestPagerAdapter).removeFrag(engagementId)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!isFinishing&&intent!=null) {
+            if (intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, -1) != -1) {
+                addRequests(intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, 0)!!)
+            }
+        }
+    }
     fun driverAcceptRideAsync(activity: Activity, customerInfo: CustomerInfo) {
         if (AppStatus.getInstance(applicationContext).isOnline(applicationContext)) {
             DialogPopup.showLoadingDialog(activity, resources.getString(R.string.loading))
@@ -370,14 +383,25 @@ class RequestPagerAdapter(var fragmentManager: FragmentManager) : FragmentStateP
     }
 
     override fun getCount(): Int {
-        return if(requestList.isNullOrEmpty()) 0 else requestList.size
+        return if (requestList.isNullOrEmpty()) 0 else requestList.size
     }
 
-    fun addFrag(engagementId: Int) {
-        if(!requestList.contains(engagementId)) {
-            requestList.add(engagementId)
-            notifyDataSetChanged()
+    fun removeFrag(engagementId: Int){
+        for (i in requestList.indices) {
+            if(requestList[i]==engagementId){
+                requestList.remove(i)
+            }
         }
+        notifyDataSetChanged()
+    }
+
+    fun addFrag() {
+        val customerInfos = Data.getAssignedCustomerInfosListForStatus(
+                EngagementStatus.REQUESTED.getOrdinal())
+        for (i in customerInfos.indices) {
+            requestList.add(customerInfos[i].engagementId)
+        }
+        notifyDataSetChanged()
     }
 
 }

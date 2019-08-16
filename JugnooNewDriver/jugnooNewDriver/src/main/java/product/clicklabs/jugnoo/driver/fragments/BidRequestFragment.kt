@@ -1,10 +1,15 @@
 package product.clicklabs.jugnoo.driver.fragments
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +23,7 @@ import product.clicklabs.jugnoo.driver.utils.Fonts
 import product.clicklabs.jugnoo.driver.utils.Prefs
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.gone
+import java.lang.Double
 
 
 class BidRequestFragment : Fragment() {
@@ -53,7 +59,7 @@ class BidRequestFragment : Fragment() {
         tvDistance.typeface = Fonts.mavenRegular(context!!)
         tvPrice.typeface = Fonts.mavenRegular(context!!)
         tvOffer.typeface = Fonts.mavenRegular(context!!)
-        tvSkip.typeface = Fonts.mavenRegular(context!!)
+        tvSkip.typeface = Fonts.mavenBold(context!!)
         btAccept.typeface = Fonts.mavenRegular(context!!)
 
         tvPickup.text = customerInfo.pickupAddress
@@ -61,20 +67,27 @@ class BidRequestFragment : Fragment() {
         tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
                         * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
-        tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.bidValue)
+        tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
+
+        pbRequestTime.setProgress(customerInfo.progressValue)
 
         if(customerInfo.isReverseBid && !customerInfo.isBidPlaced) {
             rvBidValues.itemAnimator = DefaultItemAnimator()
-            rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
                 override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
+
                 }
             })
             rvBidValues.adapter = bidIncrementAdapter
-            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),
-                        percent.toDouble(), customerInfo.initialBidValue, rvBidValues);
+            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),customerInfo.incrementPercent,
+                        percent.toDouble(), customerInfo.initialBidValue.toInt(), rvBidValues);
 
-            btAccept.text = getString(R.string.accept_for) + " " + customerInfo.initialBidValue
+            btAccept.setText(getString(R.string.accept_for) + " ");
+            val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
+            ssb.setSpan(RelativeSizeSpan(1.4f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(StyleSpan(Typeface.BOLD), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            btAccept.append(ssb)
         } else {
             rvBidValues.gone()
             tvOffer.gone()
@@ -82,6 +95,9 @@ class BidRequestFragment : Fragment() {
         }
         btAccept.setOnClickListener {
             (activity as RequestActivity).driverAcceptRideAsync(activity as RequestActivity,customerInfo)
+        }
+        tvSkip.setOnClickListener(){
+            (activity as RequestActivity).removeFragment(customerInfo.engagementId)
         }
     }
 
