@@ -184,7 +184,6 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             });
-            holder.rlAcceptView.setMinimumHeight(holder.rlMainView.getHeight());
         } else if (viewholder instanceof ViewFooterHolder) {
             ViewFooterHolder holder = (ViewFooterHolder) viewholder;
             holder.relativeLayoutShowMore.setOnClickListener(new View.OnClickListener() {

@@ -46,7 +46,12 @@ abstract public class SwipeCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        return homeActivity.offlineRequests.get(viewHolder.getAdapterPosition()).getCanAcceptRequest()==1?makeMovementFlags(0, ItemTouchHelper.LEFT):0;
+        try {
+            return homeActivity.offlineRequests.get(viewHolder.getAdapterPosition()).getCanAcceptRequest()==1?makeMovementFlags(0, ItemTouchHelper.LEFT):0;
+        }
+        catch (Exception e){
+            return 0;
+        }
 
     }
 
