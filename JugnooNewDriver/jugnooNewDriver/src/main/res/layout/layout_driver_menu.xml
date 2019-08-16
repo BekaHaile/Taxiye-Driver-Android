@@ -1040,6 +1040,37 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/relativeLayoutRateCardNew"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/imageViewRateCardIconN"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/rate_card_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/textViewRateCardNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageViewRateCardIconN"
+                    android:layout_marginStart="8px"
+                    android:text="@string/rate_card"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/maven_pro_medium"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/languagePrefrencesRl"

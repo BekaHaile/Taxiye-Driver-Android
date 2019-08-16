@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -44,7 +43,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			textViewPickupChargesperkm, textViewPKm;
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
-	LinearLayout llBeforeRide, llInRide, llInRideBefore;
+	LinearLayout llBeforeRide, llInRide, llInRideBefore, llReferralInfo;
 	RelativeLayout rlBeforeRide;
 	RecyclerView rvRentalVehicle, rvOutstationVehicle;
 
@@ -54,16 +53,15 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
+	public static DriverRateCard newInstance(boolean isHTMLRateCard){
+		DriverRateCard fragment = new DriverRateCard();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(Constants.KEY_HTML_RATE_CARD, isHTMLRateCard);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
-	
+	private boolean isHTMLRateCard;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +70,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 		relative = (LinearLayout) rootView.findViewById(R.id.relative);
 		new ASSL(activity, relative, 1134, 720, false);
-		
+
+		isHTMLRateCard = getArguments().getBoolean(Constants.KEY_HTML_RATE_CARD, false);
 
 		linearLayoutDriverReferral = (LinearLayout) rootView.findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutDriverReferralHeading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDriverReferralHeading);
@@ -132,6 +131,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
 		llInRideBefore = (LinearLayout) rootView.findViewById(R.id.llInRideBefore);
 		llInRideBefore.setVisibility(View.GONE);
+		llReferralInfo = rootView.findViewById(R.id.llReferralInfo);
 		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
 		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
 
@@ -264,9 +264,18 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
-							if(rateCardResponse.getRegions() != null && !rateCardResponse.getRegions().isEmpty()) {
-								setRentalAndOutstationAdapter(rateCardResponse.getRegions());
+
+							rvRentalVehicle.setVisibility(View.GONE);
+							if(!isHTMLRateCard){
+								llReferralInfo.setVisibility(View.VISIBLE);
+								if(rateCardResponse.getRegions() != null && !rateCardResponse.getRegions().isEmpty()) {
+									rvRentalVehicle.setVisibility(View.VISIBLE);
+									setRentalAndOutstationAdapter(rateCardResponse.getRegions());
+								}
+							} else {
+								llReferralInfo.setVisibility(View.GONE);
 							}
+
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}

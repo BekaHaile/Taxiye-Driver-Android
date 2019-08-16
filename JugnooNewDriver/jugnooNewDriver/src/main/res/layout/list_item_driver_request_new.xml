@@ -368,6 +368,28 @@
             android:textSize="26px"/>
 
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:tag="@string/dont_touch_me"
+            >
+
+        <TextView
+            android:id="@+id/buttonAcceptRide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="@string/accept"
+            android:background="@drawable/orange_btn_selector"
+            android:tag="@string/dont_touch_me"/>
+
         <LinearLayout
             android:id="@+id/llPlaceBid"
             android:layout_width="match_parent"
@@ -382,10 +404,19 @@
                 android:id="@+id/tvPlaceBid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/place_bid"
-                android:textSize="18sp"
-                android:layout_marginTop="5dp"
+                android:text="@string/offer_your_fare_for_trip"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/textColor"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvBidValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 />
 
             <LinearLayout
@@ -395,6 +426,7 @@
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:visibility="gone"
                 >
                 <LinearLayout
                     android:id="@+id/llMinus"
@@ -482,28 +514,20 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlAcceptCancel"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvCancelRide"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
-            android:splitMotionEvents="false"
+            android:text="@string/cancel_ride"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:textColor="@color/red_dark"
+            android:layout_gravity="center"
             android:tag="@string/dont_touch_me"
-            >
+            />
 
-            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                android:id="@+id/buttonCancelRide"
-                style="@style/ButtonThemeAlternate"
-                android:text="@string/cancel"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/buttonAcceptRide"/>
-
-            <Button
-                android:id="@+id/buttonAcceptRide"
-                style="@style/ButtonTheme"
-                android:text="@string/accept"/>
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

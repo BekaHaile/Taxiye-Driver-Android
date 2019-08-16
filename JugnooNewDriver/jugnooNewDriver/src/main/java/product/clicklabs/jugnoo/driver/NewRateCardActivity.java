@@ -65,7 +65,8 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		});
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
+		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager(),
+				getIntent().getBooleanExtra(Constants.KEY_HTML_RATE_CARD, false));
 		viewPager.setAdapter(rateCardFragmentAdapter);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));

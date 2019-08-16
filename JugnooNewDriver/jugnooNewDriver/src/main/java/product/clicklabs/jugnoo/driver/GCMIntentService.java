@@ -558,7 +558,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								}
-
+								if(HomeActivity.appInterruptHandler != null){
+									HomeActivity.appInterruptHandler.refreshTractionScreen();
+								}
+								boolean isOffline = Prefs.with(this).getInt(Constants.IS_OFFLINE, 0) == 1;
 								if (entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
@@ -634,6 +637,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
 									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
 									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
+									double incrementPercent = jObj.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(this).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+									int stepSize = jObj.optInt(Constants.KEY_STEP_SIZE, 5);
 									long requestTimeOutMillis;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -672,10 +677,15 @@ public class GCMIntentService extends FirebaseMessagingService {
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
 												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-												pickupTime, strRentalInfo);
+												pickupTime, strRentalInfo, incrementPercent, stepSize);
 										Data.addCustomerInfo(customerInfo);
 
-										startRing(this, engagementId, changeRing);
+										if(!isOffline) {
+											startRing(this, engagementId, changeRing);
+											notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+													referenceId, userId, perfectRide,
+													isPooled, isDelivery, isDeliveryPool, reverseBid);
+										}
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -683,17 +693,16 @@ public class GCMIntentService extends FirebaseMessagingService {
 										}
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool, reverseBid);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
-										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool, reverseBid);
-										startRing(this, engagementId, changeRing);
+										if(!isOffline) {
+											notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+													referenceId, userId, perfectRide,
+													isPooled, isDelivery, isDeliveryPool, reverseBid);
+											startRing(this, engagementId, changeRing);
+										}
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {

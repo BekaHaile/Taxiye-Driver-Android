@@ -485,6 +485,8 @@ public class JSONParser implements Constants {
 		int showVehicleSetSettings = context.getResources().getBoolean(R.bool.show_vehicle_set_settings) ? 1 : 0;
 		int showEditVehicleSettings = context.getResources().getBoolean(R.bool.show_edit_vehicle_settings) ? 1 : 0;
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_SETS, userData.optInt(KEY_ENABLE_VEHICLE_SETS, showVehicleSetSettings));
+		Prefs.with(context).save(KEY_REQ_INACTIVE_DRIVER, userData.optInt(KEY_REQ_INACTIVE_DRIVER, 0));
+		Prefs.with(context).save(KEY_DRIVER_TRACTION_API_INTERVAL, userData.optInt(KEY_DRIVER_TRACTION_API_INTERVAL, 30000));
 		Prefs.with(context).save(KEY_ENABLE_VEHICLE_EDIT_SETTING, userData.optInt(KEY_ENABLE_VEHICLE_EDIT_SETTING, showEditVehicleSettings));
 		Prefs.with(context).save(KEY_MAX_SPEED_THRESHOLD, (float) userData.optDouble(KEY_MAX_SPEED_THRESHOLD,
 				context.getResources().getInteger(R.integer.max_speed_threshold)));
@@ -542,6 +544,8 @@ public class JSONParser implements Constants {
 				context.getString(R.string.driver_alt_drop_deviation_distance)));
 		Prefs.with(context).save(KEY_SPECIFIED_COUNTRY_PLACES_SEARCH, userData.optString(KEY_SPECIFIED_COUNTRY_PLACES_SEARCH, ""));
 		Prefs.with(context).save(KEY_DRIVER_WAYPOINT_DISTANCE_RANGE, userData.optString(KEY_DRIVER_WAYPOINT_DISTANCE_RANGE, ""));
+
+		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
 
 	}
 
@@ -970,13 +974,17 @@ public class JSONParser implements Constants {
 					isDeliveryPool =1;
 				}
 
+				double incrementPercent = jActiveRequest.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(context).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+				int stepSize = jActiveRequest.optInt(Constants.KEY_STEP_SIZE, 5);
+
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
-						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance, pickupTime, strRentalInfo);
+						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
+						pickupTime, strRentalInfo, incrementPercent, stepSize);
 
 				Data.addCustomerInfo(customerInfo);
 
@@ -1225,7 +1233,8 @@ public class JSONParser implements Constants {
 //				Constants.KEY_SHOW_TOLL_CHARGE,
                 Constants.WALLET,
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
-				Constants.KEY_DRIVER_TASKS
+				Constants.KEY_DRIVER_TASKS,
+				Constants.KEY_HTML_RATE_CARD
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

@@ -383,6 +383,8 @@ public interface Constants {
 	String SP_LAST_PHONE_NUMBER_SAVED = "last_phone_number_saved";
 	String SP_LAST_COUNTRY_CODE_SAVED = "last_country_code_saved";
 	String KEY_ENABLE_VEHICLE_SETS = "enable_vehicle_sets";
+	String KEY_REQ_INACTIVE_DRIVER = "req_inactive_drivers";
+	String KEY_DRIVER_TRACTION_API_INTERVAL = "driver_traction_api_interval";
 	String KEY_ENABLE_VEHICLE_EDIT_SETTING = "enable_vehicle_edit_setting";
 	String KEY_MAX_SPEED_THRESHOLD = "max_speed_threshold";
 	String KEY_REGION_ID = "region_id";
@@ -474,6 +476,12 @@ public interface Constants {
 	String KEY_FLEET_ID = "fleet_id";
 	String KEY_DRIVER_TAG = "driver_tag";
 	String KEY_DROP_UPDATED = "drop_updated";
+	String KEY_HTML_RATE_CARD = "html_rate_card";
+
+	String KEY_DRIVER_TUTORIAL_BANNER_TEXT = "driver_tutorial_banner_text";
+	String KEY_INCREASE_PERCENTAGE = "increase_percentage";
+	String KEY_STEP_SIZE = "step_size";
+	String KEY_SECTION = "section";
 	String KEY_DRIVER_GOOGLE_CACHING_ENABLED = "driver_google_caching_enabled";
 	String KEY_LAT = "lat";
 	String KEY_LONG = "long";

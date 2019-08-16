@@ -98,8 +98,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 				} else {
 					holder.linearLayoutNotificationImage.setVisibility(View.VISIBLE);
-					//Picasso.with(activity).load(notification.getNotificationImage()).into(holder.notificationImage);
-					//Picasso.with(activity).load(notification.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
+					//Picasso.with(activity).load(customerInfo.getNotificationImage()).into(holder.notificationImage);
+					//Picasso.with(activity).load(customerInfo.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
 					Picasso.with(activity).load(notification.getNotificationImage())
 							.placeholder(R.drawable.ic_notification_placeholder_drawable)
 							.error(R.drawable.ic_notification_placeholder_drawable)

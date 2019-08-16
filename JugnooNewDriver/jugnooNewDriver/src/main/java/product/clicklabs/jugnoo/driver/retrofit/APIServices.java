@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.DriverTasks;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
@@ -769,4 +770,12 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/fetch_driver_referral_info")
 	void fetchDriverReferral(@FieldMap Map<String, String> params, Callback<ReferralsInfoResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_traction_rides")
+	void fetchDriverTractionRides(@FieldMap Map<String, String> params, Callback<TractionResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_information")
+	Response fetchTutorialData(@FieldMap Map<String, String> params);
 }

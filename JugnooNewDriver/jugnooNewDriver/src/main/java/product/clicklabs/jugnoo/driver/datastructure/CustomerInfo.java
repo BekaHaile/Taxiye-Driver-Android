@@ -35,6 +35,7 @@ public class CustomerInfo {
 	public LatLng requestlLatLng;
 	public LatLng currentLatLng;
 	private int cachedApiEnabled;
+	private int canAcceptRequest;
 
 	public String image, rating;
 	public CouponInfo couponInfo;
@@ -57,7 +58,7 @@ public class CustomerInfo {
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries, orderId;
-	private double estimatedFare, dryDistance, estimatedDist;
+	private double estimatedFare, dryDistance, estimatedDist,distance;
 	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
@@ -74,12 +75,16 @@ public class CustomerInfo {
 	private int luggageCount;
 	private double waypointDistance;
 	private String pickupTime;
+	private String timeDiff;
 	private String pickupAddressEng, dropAddressEng;
 	private int isCorporateRide;
 	private String customerNotes;
 	private int tollApplicable;
 	private String rentalInfo;
 	private List<String> customerOrderImagesList;
+
+	private double incrementPercent;
+	private int stepSize;
 
 
 	/**
@@ -165,6 +170,35 @@ public class CustomerInfo {
 	}
 
 	/**
+	 * For finding offline requests from array
+	 */
+	public CustomerInfo(String name,String address,String dropAddress,String time,String driverFare,double distance,String image,int canAcceptRequest,int userId,int engagementId,int reverseBid){
+		this.name = name;
+		this.pickupAddressEng =address;
+		this.dropAddress=dropAddress;
+		this.timeDiff = time;
+		this.estimatedDriverFare=driverFare;
+		this.distance =distance;
+		this.image = image;
+		this.canAcceptRequest = canAcceptRequest;
+		this.userId=userId;
+		this.engagementId=engagementId;
+		this.reverseBid=reverseBid;
+
+
+//		@SerializedName("request_latitude")
+//		@Expose
+//		private Double requestLatitude;
+//		@SerializedName("request_longitude")
+//		@Expose
+//		private Double requestLongitude;
+//		@SerializedName("ride_type")
+//		@Expose
+//		private String rideType;
+	}
+
+
+	/**
 	 * For customer requests
 	 */
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
@@ -172,7 +206,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -201,7 +235,10 @@ public class CustomerInfo {
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
 		this.rentalInfo = rentalInfo;
+		this.incrementPercent = incrementPercent;
+		this.stepSize = stepSize;
 	}
+
 
 	public double getDryDistance() {
 		return dryDistance;
@@ -209,6 +246,14 @@ public class CustomerInfo {
 
 	public void setDryDistance(double dryDistance) {
 		this.dryDistance = dryDistance;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	@Override
@@ -393,6 +438,14 @@ public class CustomerInfo {
 			this.dropAddress = "";
 			this.dropAddressEng = dropAddress;
 		}
+	}
+
+	public int getCanAcceptRequest() {
+		return canAcceptRequest;
+	}
+
+	public void setCanAcceptRequest(int canAcceptRequest) {
+		this.canAcceptRequest = canAcceptRequest;
 	}
 
 	public int getMeterFareApplicable() {
@@ -804,6 +857,14 @@ public class CustomerInfo {
 		return tollData;
 	}
 
+	public String getTimeDiff() {
+		return timeDiff;
+	}
+
+	public void setTimeDiff(String timeDiff) {
+		this.timeDiff = timeDiff;
+	}
+
 	public void setTollData(ArrayList<TollData> tollData) {
 		this.tollData = tollData;
 	}
@@ -870,5 +931,21 @@ public class CustomerInfo {
 			e.printStackTrace();
 			return getElapsedRideTime(MyApplication.getInstance());
 		}
+	}
+
+	public double getIncrementPercent() {
+		return incrementPercent;
+	}
+
+	public void setIncrementPercent(double incrementPercent) {
+		this.incrementPercent = incrementPercent;
+	}
+
+	public int getStepSize() {
+		return stepSize;
+	}
+
+	public void setStepSize(int stepSize) {
+		this.stepSize = stepSize;
 	}
 }
