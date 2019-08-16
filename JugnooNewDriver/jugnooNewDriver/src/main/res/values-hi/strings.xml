@@ -706,10 +706,10 @@
     <string name="error_no_countries_found">No Countries Found!</string>
 	<string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
-    <string name="place_bid">बोली लगाओ</string>
+    <string name="place_bid">ऑफर लगाओ</string>
     <string name="please_enter_some_value">कृपया कुछ मूल्य दर्ज करें</string>
-    <string name="bid">बोली</string>
-    <string name="bid_placed">बोली लगाई गई है</string>
+    <string name="bid">ऑफर</string>
+    <string name="bid_placed">ऑफर भेज दिया गया है</string>
     <!--Strings for Subscription plans-->
 
 	<!--login with phone-->
@@ -749,6 +749,15 @@
 	<string name="school">स्कूल</string>
 	<string name="bank">बैंक</string>
 	<string name="atm">एटीएम</string>
+	<string name="drop">ड्राप</string>
+	<string name="offer_your_fare_for_trip">या अपना फेअर चुनिए</string>
+	<string name="accept_for">स्वीकार करे</string>
+	<string name="waiting_for_customer">(कस्टमर के पूर्ति करने की प्रतीक्षा करे)</string>
+	<string name="tutorial">Tutorial</string>
+	<string name="offline_caps">ऑफलाइन</string>
+	<string name="online_caps">ऑनलाइन</string>
+
+
 
 
 </resources>
