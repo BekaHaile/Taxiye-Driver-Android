@@ -417,7 +417,7 @@
     <string name="details">विवरण</string>
 	<string name="success">सफल हुआ </string>
 	<string name="outstanding_amount">पिछला चालान समायोजन </string>
-	<string name="please_drop_customer">कृपया ड्रॉप करें %s</string>
+	<string name="please_drop_customer">कृपया ड्रॉप करें: %s</string>
 	<string name="please_reach_customer_location">कृपया %s के स्थान तक पहुँचे</string>
 	<string name="please_start_customer_ride">कृपया %s की सवारी शुरू करें</string>
 
@@ -768,6 +768,7 @@
 	<string name="edit_toll">टोल बदलें</string>
 	<string name="your_income">आप की आय</string>
 	<string name="send_invoice">चालान भेजें</string>
+	<string name="add">जोड़ें</string>
 
 
 
