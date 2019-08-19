@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 
 public interface AppInterruptHandler {
 	
@@ -64,5 +65,7 @@ public interface AppInterruptHandler {
 	void polylineAlt(LatLng start, LatLng end);
 
 	void refreshTractionScreen();
+
+	void cancelRequest(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback);
 
 }

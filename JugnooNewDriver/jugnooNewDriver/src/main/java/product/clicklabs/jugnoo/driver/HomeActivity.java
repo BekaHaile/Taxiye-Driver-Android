@@ -156,7 +156,6 @@ import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
-import product.clicklabs.jugnoo.driver.datastructure.PagerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
@@ -1837,7 +1836,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    rejectRequestFuncCall(getOpenedCustomerInfo());
+                    rejectRequestFuncCall(getOpenedCustomerInfo(), null);
                     FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
                 }
             });
@@ -3014,7 +3013,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 CustomerInfo customerInfo = driverRequestListAdapter
                         .customerInfos.get(driverRequestListAdapter.customerInfos.indexOf
                                 (new CustomerInfo(Integer.parseInt(intent.getExtras().getString("engagement_id")))));
-                rejectRequestFuncCall(customerInfo);
+                rejectRequestFuncCall(customerInfo, null);
                 FlurryEventLogger.event(RIDE_CANCELLED);
             }
         } catch (Exception e) {
@@ -3215,7 +3214,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    public void rejectRequestFuncCall(CustomerInfo customerInfo) {
+    public void rejectRequestFuncCall(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback) {
         try {
             if (1 != customerInfo.getIsPooled()
                     && 1 != customerInfo.getIsDelivery()
@@ -3235,6 +3234,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                         driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
                                 EngagementStatus.REQUESTED.getOrdinal()));
+                        if(callback != null) {
+                            callback.success();
+                        }
                     }
                 }).rejectRequestAsync(Data.userData.accessToken,
                         String.valueOf(customerInfo.userId),
@@ -3243,7 +3245,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 GCMIntentService.clearNotifications(HomeActivity.this);
                 GCMIntentService.stopRing(true, getApplicationContext());
-                driverRejectRequestAsync(HomeActivity.this, customerInfo);
+                driverRejectRequestAsync(HomeActivity.this, customerInfo, callback);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3274,7 +3276,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //							DialogPopup.alertPopup(activity, "", jObj.getString(Constants.KEY_MESSAGE));
                             customerInfo.setBidPlaced(1);
                             customerInfo.setBidValue(bidValue);
-                            driverRequestListAdapter.notifyDataSetChanged();
+                            driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+                                    EngagementStatus.REQUESTED.getOrdinal()));
                             GCMIntentService.clearNotifications(getApplicationContext());
                             GCMIntentService.stopRing(false, HomeActivity.this);
                         } else {
@@ -5589,6 +5592,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             e.printStackTrace();
         }
 
+        HomeActivity.appInterruptHandler = null;
         super.onDestroy();
     }
 
@@ -5793,6 +5797,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         Handler handlerRefresh;
         Runnable runnableRefresh;
+        private boolean isBidRequest;
 
         public DriverRequestListAdapter() {
             mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -5841,6 +5846,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (this.customerInfos.size() == 0) {
                 Utils.hideSoftKeyboard(HomeActivity.this, textViewAutosOn);
             }
+            if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
+                    && DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
+                    && customerInfos.size() > 0
+                    && checkIfDriverOnline()
+                    && customerInfos.get(0).isReverseBid()) {
+                Intent intentN = new Intent(HomeActivity.this, RequestActivity.class);
+                intentN.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentN.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfos.get(0).getEngagementId());
+                startActivity(intentN);
+            }
             this.notifyDataSetChanged();
         }
 
@@ -5851,7 +5866,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     && DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
                     && customerInfos.size() > 0
                     && checkIfDriverOnline()) {
-                driverRideRequestsList.setVisibility(View.VISIBLE);
+                if (!customerInfos.get(0).isReverseBid()) {
+                    driverRideRequestsList.setVisibility(View.VISIBLE);
+                } else {
+                    driverRideRequestsList.setVisibility(View.GONE);
+                }
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 relativeLayoutLastRideEarning.setVisibility(View.GONE);
                 relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
@@ -6236,7 +6255,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else {
                             MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + holder.id + "_" + FirebaseEvents.NO, null);
                             CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-                            rejectRequestFuncCall(customerInfo1);
+                            rejectRequestFuncCall(customerInfo1, null);
                             FlurryEventLogger.event(RIDE_CANCELLED);
                         }
                     } catch (Exception e) {
@@ -6637,7 +6656,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo) {
+    public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo, final RequestActivity.RejectRequestCallback callback) {
 
         if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
@@ -6671,6 +6690,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                                 reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(), "");
                                 new DriverTimeoutCheck().timeoutBuffer(activity, 0);
+                                if(callback != null) {
+                                    callback.success();
+                                }
+                                return;
                             }
                         }
                     } catch (Exception exception) {
@@ -9418,15 +9441,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         public void run() {
                             DialogPopup.dismissLoadingDialog();
                             switchDriverScreen(driverScreenMode);
-//							try {
-//								if(Data.getCurrentCustomerInfo() != null){
-//									if(Data.getCurrentCustomerInfo().getDeliveryInfos().size()>0){
-//										setDeliveryPos(getDeliveryPos());
-//									}
-//								}
-//							} catch (Exception e) {
-//								e.printStackTrace();
-//							}
+                            LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
+
+
                         }
                     });
                 }
@@ -12143,5 +12160,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if(!checkIfDriverOnline()){
             getTractionRides(true);
         }
+    }
+
+    @Override
+    public void cancelRequest(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback){
+        rejectRequestFuncCall(customerInfo, callback);
     }
 }

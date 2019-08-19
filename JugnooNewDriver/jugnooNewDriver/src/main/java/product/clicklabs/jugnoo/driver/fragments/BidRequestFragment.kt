@@ -19,11 +19,10 @@ import product.clicklabs.jugnoo.driver.adapters.BidIncrementAdapter
 import product.clicklabs.jugnoo.driver.adapters.BidIncrementVal
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
-import product.clicklabs.jugnoo.driver.utils.Fonts
-import product.clicklabs.jugnoo.driver.utils.Prefs
-import product.clicklabs.jugnoo.driver.utils.Utils
-import product.clicklabs.jugnoo.driver.utils.gone
+import product.clicklabs.jugnoo.driver.utils.*
 import java.lang.Double
+import java.util.*
+import kotlin.concurrent.timerTask
 
 
 class BidRequestFragment : Fragment() {
@@ -52,7 +51,6 @@ class BidRequestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         percent = Prefs.with(context).getFloat(Constants.BID_INCREMENT_PERCENT, 10f)
         val engagementId = arguments!!.getInt(Constants.KEY_ENGAGEMENT_ID)
-        customerInfo = Data.getCustomerInfo(engagementId.toString())
 
         tvPickup.typeface = Fonts.mavenRegular(context!!)
         tvDrop.typeface = Fonts.mavenRegular(context!!)
@@ -61,43 +59,66 @@ class BidRequestFragment : Fragment() {
         tvOffer.typeface = Fonts.mavenRegular(context!!)
         tvSkip.typeface = Fonts.mavenBold(context!!)
         btAccept.typeface = Fonts.mavenRegular(context!!)
+        tvCommision.typeface = Fonts.mavenRegular(context!!)
+
+        setValuesToUI(engagementId)
+        btAccept.setOnClickListener {
+            (activity as RequestActivity).acceptRideClick(customerInfo, customerInfo.initialBidValue.toString())
+        }
+        tvSkip.setOnClickListener(){
+            (activity as RequestActivity).rejectRequestFuncCall(customerInfo)
+        }
+    }
+
+    fun setValuesToUI(engagementId: Int) {
+        val ci = Data.getCustomerInfo(engagementId.toString()) ?: return
+        customerInfo = ci
 
         tvPickup.text = customerInfo.pickupAddress
         tvDrop.text = customerInfo.dropAddress
         tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
-                        * UserData.getDistanceUnitFactor(requireContext())) + " km"
+                * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
-        tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
 
         pbRequestTime.setProgress(customerInfo.progressValue)
 
-        if(customerInfo.isReverseBid && !customerInfo.isBidPlaced) {
-            rvBidValues.itemAnimator = DefaultItemAnimator()
-            rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
-                override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
-
-                }
-            })
-            rvBidValues.adapter = bidIncrementAdapter
-            bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(),customerInfo.incrementPercent,
+        if (customerInfo.isReverseBid) {
+            if(customerInfo.isBidPlaced) {
+                rvBidValues.gone()
+                tvOffer.gone()
+                btAccept.gone()
+                tvSkip.gone()
+                tvPrice.text = getString(R.string.bid_placed) + ": " + Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.bidValue) + "\n" + getString(R.string.waiting_for_customer)
+                tvCommision.gone()
+            } else {
+                rvBidValues.visible()
+                tvOffer.visible()
+                btAccept.visible()
+                tvSkip.visible()
+                tvCommision.visible()
+                tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
+                rvBidValues.itemAnimator = DefaultItemAnimator()
+                rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
+                    override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
+                        (activity as RequestActivity).acceptRideClick(customerInfo, incrementVal.value.toString())
+                    }
+                })
+                rvBidValues.adapter = bidIncrementAdapter
+                bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(), customerInfo.incrementPercent,
                         percent.toDouble(), customerInfo.initialBidValue.toInt(), rvBidValues);
 
-            btAccept.setText(getString(R.string.accept_for) + " ");
-            val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
-            ssb.setSpan(RelativeSizeSpan(1.4f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            ssb.setSpan(StyleSpan(Typeface.BOLD), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            btAccept.append(ssb)
+                btAccept.setText(getString(R.string.accept_for) + " ");
+                val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
+                ssb.setSpan(RelativeSizeSpan(1.4f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                ssb.setSpan(StyleSpan(Typeface.BOLD), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                btAccept.append(ssb)
+                tvSkip.text = if(HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
+            }
         } else {
             rvBidValues.gone()
             tvOffer.gone()
             btAccept.text = getString(R.string.accept)
-        }
-        btAccept.setOnClickListener {
-            (activity as RequestActivity).driverAcceptRideAsync(activity as RequestActivity,customerInfo)
-        }
-        tvSkip.setOnClickListener(){
-            (activity as RequestActivity).removeFragment(customerInfo.engagementId)
         }
     }
 

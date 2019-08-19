@@ -319,9 +319,7 @@ public class Data {
 			if(index > -1){
 				return assignedCustomerInfos.get(index);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ignored) {}
 		return null;
 	}
 
