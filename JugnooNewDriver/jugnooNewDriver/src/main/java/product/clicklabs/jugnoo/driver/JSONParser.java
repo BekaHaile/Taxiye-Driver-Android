@@ -544,6 +544,7 @@ public class JSONParser implements Constants {
 				context.getString(R.string.driver_alt_drop_deviation_distance)));
 
 		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
+		Prefs.with(context).save(KEY_BID_TIMEOUT, userData.optLong(KEY_BID_TIMEOUT, 30000L));
 
 	}
 
@@ -976,6 +977,7 @@ public class JSONParser implements Constants {
 
 				double incrementPercent = jActiveRequest.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(context).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
 				int stepSize = jActiveRequest.optInt(Constants.KEY_STEP_SIZE, 5);
+				String bidCreatedAt = DateOperations.utcToLocal(jActiveRequest.optString(Constants.KEY_BID_CREATED_AT, DateOperations.getCurrentTimeInUTC()));
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
@@ -984,7 +986,7 @@ public class JSONParser implements Constants {
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare, dropPoints,
 						estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-						pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAddress,dropAddress,startTimeLocal);
+						pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAddress,dropAddress,startTimeLocal, bidCreatedAt);
 
 				Data.addCustomerInfo(customerInfo);
 

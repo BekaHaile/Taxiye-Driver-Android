@@ -88,6 +88,7 @@ public class CustomerInfo {
 
 	private double incrementPercent;
 	private int stepSize;
+	private String bidCreatedAt;
 
 
 	/**
@@ -209,7 +210,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime, String bidCreatedAt){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -243,6 +244,7 @@ public class CustomerInfo {
 		this.dropAddress = dropAddress;
 		this.pickupAddress = pickUpAddress;
 		this.requestTime = requestTime;
+		this.bidCreatedAt = bidCreatedAt;
 	}
 
 
@@ -938,12 +940,12 @@ public class CustomerInfo {
 	public void setPickupAddress(String pickupAddress) {
 		this.pickupAddress = pickupAddress;
 	}
-	public int getProgressValue(){
-		if(TextUtils.isEmpty(startTime) || TextUtils.isEmpty(requestTime)){
+	public int getProgressValue(Context context){
+		if(TextUtils.isEmpty(bidCreatedAt)){
 			return 0;
 		}
-		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), startTime);
-		double total = DateOperations.getTimeDifference(requestTime, startTime);
+		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(),bidCreatedAt);
+		double total = Prefs.with(context).getLong(Constants.KEY_BID_TIMEOUT, 30000L);
 		return (int) (currentDiff/total*100D);
 	}
 }

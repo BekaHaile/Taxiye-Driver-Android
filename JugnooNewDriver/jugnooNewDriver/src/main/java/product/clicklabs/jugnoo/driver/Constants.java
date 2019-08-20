@@ -482,5 +482,7 @@ public interface Constants {
 	String KEY_INCREASE_PERCENTAGE = "increase_percentage";
 	String KEY_STEP_SIZE = "step_size";
 	String KEY_SECTION = "section";
+	String KEY_BID_CREATED_AT = "bid_created_at";
+	String KEY_BID_TIMEOUT = "bid_timeout";
 }
 

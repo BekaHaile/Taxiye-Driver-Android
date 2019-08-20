@@ -5855,6 +5855,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 intentN.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intentN.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfos.get(0).getEngagementId());
                 startActivity(intentN);
+                overridePendingTransition(0,0);
             }
             this.notifyDataSetChanged();
         }

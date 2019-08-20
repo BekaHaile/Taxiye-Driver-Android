@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_request.*
 import org.json.JSONObject
@@ -41,7 +42,7 @@ class RequestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_request)
-
+        tabDots.setupWithViewPager(vpRequests,true)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -62,7 +63,7 @@ class RequestActivity : AppCompatActivity() {
     }
 
 
-    fun updateFragments(){
+    fun updateFragments() {
         val adapter = (vpRequests.adapter as RequestPagerAdapter)
         for(i in 0..adapter.count-1){
             val myFragment = adapter.instantiateItem(vpRequests, i) as Fragment
@@ -75,7 +76,7 @@ class RequestActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, IntentFilter(INTENT_ACTION_REFRESH_BIDS))
-        if(!isFinishing&&intent!=null) {
+        if(!isFinishing && intent!=null) {
             if (intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, -1) != -1) {
                 addRequests()
             }
@@ -241,6 +242,19 @@ class RequestActivity : AppCompatActivity() {
                 overridePendingTransition(0, 0)
             } else {
                 notifyDataSetChanged()
+            }
+            if(tabDots.tabCount > 1) {
+                tabDots.visible()
+            } else {
+                tabDots.gone()
+            }
+            for (i in 0 until tabDots.tabCount) {
+                val tab = (tabDots.getChildAt(0) as ViewGroup).getChildAt(i)
+                val p = tab.layoutParams as ViewGroup.MarginLayoutParams
+                p.setMargins(20, 0, 0, 0)
+                p.marginStart = 20
+                p.marginEnd = 0
+                tab.requestLayout()
             }
         }
 

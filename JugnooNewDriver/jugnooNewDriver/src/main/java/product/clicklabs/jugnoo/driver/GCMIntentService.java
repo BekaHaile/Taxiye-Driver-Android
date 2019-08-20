@@ -634,6 +634,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 
 									String startTimeLocal = DateOperations.utcToLocal(startTime);
+									String bidCreatedAt = DateOperations.utcToLocal(jObj.optString(Constants.KEY_BID_CREATED_AT, DateOperations.getCurrentTimeInUTC()));
 									String endTime = jObj.optString(Constants.KEY_END_TIME, "");
 									int bidPlaced = jObj.optInt(Constants.KEY_BID_PLACED, 0);
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
@@ -680,7 +681,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 											isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 											new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
 											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal);
+											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt);
 									Data.addCustomerInfo(customerInfo);
 
 									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
@@ -752,8 +753,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 								String engagementId = jObj.getString("engagement_id");
 								clearNotifications(this);
 
+								Data.instantiateAssignedCustomerInfos();
+								Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 									if(PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag){
 										HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 									} else {

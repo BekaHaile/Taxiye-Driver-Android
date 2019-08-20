@@ -75,11 +75,13 @@ class BidRequestFragment : Fragment() {
 
     val runnable = object : Runnable {
         override fun run() {
-            val newProgress = customerInfo.progressValue
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                pbRequestTime.setProgress(newProgress, true)
-            } else {
-                pbRequestTime.setProgress(newProgress)
+            val newProgress = customerInfo.getProgressValue(requireContext())
+            if(pbRequestTime != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    pbRequestTime.setProgress(newProgress, true)
+                } else {
+                    pbRequestTime.setProgress(newProgress)
+                }
             }
             if (newProgress > 0) {
                 handler.postDelayed(this,32)
@@ -102,11 +104,11 @@ class BidRequestFragment : Fragment() {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pbRequestTime.setProgress(customerInfo.progressValue,true)
+            pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()),true)
         } else {
-            pbRequestTime.setProgress(customerInfo.progressValue)
+            pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()))
         }
-        if(customerInfo.progressValue > 1) {
+        if(customerInfo.getProgressValue(requireContext()) > 1) {
             Handler().postDelayed(runnable, 32)
         }
 
@@ -129,12 +131,12 @@ class BidRequestFragment : Fragment() {
                 rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                 var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
                     override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
-                        (activity as RequestActivity).acceptRideClick(customerInfo, incrementVal.value.toString())
+                        (activity as RequestActivity).acceptRideClick(customerInfo, Utils.getDecimalFormatForMoney().format(incrementVal.value).toString())
                     }
                 })
                 rvBidValues.adapter = bidIncrementAdapter
                 bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(), customerInfo.incrementPercent,
-                        percent.toDouble(), customerInfo.initialBidValue.toInt(), rvBidValues);
+                        customerInfo.bidValue, customerInfo.stepSize, rvBidValues);
 
                 btAccept.setText(getString(R.string.accept_for) + " ");
                 val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
