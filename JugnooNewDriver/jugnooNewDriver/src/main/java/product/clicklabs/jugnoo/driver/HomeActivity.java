@@ -434,7 +434,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    public DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -2664,7 +2664,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);
             }
-        },this);
+        });
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 

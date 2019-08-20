@@ -38,15 +38,13 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ArrayList<CustomerInfo> requestsList = new ArrayList<>();
     private Callback callback;
     private int totalRequests;
-    HomeActivity homeActivity;
 
-    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, Callback callback, HomeActivity homeActivity) {
+    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, Callback callback) {
         this.requestsList = requestsList;
         this.activity = activity;
         this.rowLayout = rowLayout;
         this.totalRequests = totalRequests;
         this.callback = callback;
-        this.homeActivity = homeActivity;
     }
 
     public void notifyList(int totalRequests, ArrayList<CustomerInfo> requestsList, boolean refresh) {
@@ -130,8 +128,8 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             distance = customerInfo.getDistance();
 
             holder.tvDistance.setText(
-                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
-                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
+                    (distance > 0) ? "" + HomeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(activity))
+                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(activity)) : "- --");
 
             holder.relative.setTag(position);
             holder.rlAcceptView.setTag(position);
