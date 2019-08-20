@@ -1,7 +1,10 @@
 package product.clicklabs.jugnoo.driver.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -13,6 +16,7 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.fragment_bid_request.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.adapters.BidIncrementAdapter
@@ -20,10 +24,6 @@ import product.clicklabs.jugnoo.driver.adapters.BidIncrementVal
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.utils.*
-import java.lang.Double
-import java.util.*
-import kotlin.concurrent.timerTask
-
 
 class BidRequestFragment : Fragment() {
 
@@ -39,6 +39,7 @@ class BidRequestFragment : Fragment() {
 
     lateinit var customerInfo :CustomerInfo
     var percent: Float = 10.0f;
+    val handler by lazy { Handler() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,6 +61,7 @@ class BidRequestFragment : Fragment() {
         tvSkip.typeface = Fonts.mavenBold(context!!)
         btAccept.typeface = Fonts.mavenRegular(context!!)
         tvCommision.typeface = Fonts.mavenRegular(context!!)
+        pbRequestTime.interpolator = LinearInterpolator()
 
         setValuesToUI(engagementId)
         btAccept.setOnClickListener {
@@ -70,6 +72,25 @@ class BidRequestFragment : Fragment() {
         }
     }
 
+
+    val runnable = object : Runnable {
+        override fun run() {
+            val newProgress = customerInfo.progressValue
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                pbRequestTime.setProgress(newProgress, true)
+            } else {
+                pbRequestTime.setProgress(newProgress)
+            }
+            if (newProgress > 0) {
+                handler.postDelayed(this,32)
+            } else {
+                handler.removeCallbacks(this)
+            }
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
     fun setValuesToUI(engagementId: Int) {
         val ci = Data.getCustomerInfo(engagementId.toString()) ?: return
         customerInfo = ci
@@ -80,7 +101,14 @@ class BidRequestFragment : Fragment() {
                 * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
 
-        pbRequestTime.setProgress(customerInfo.progressValue)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pbRequestTime.setProgress(customerInfo.progressValue,true)
+        } else {
+            pbRequestTime.setProgress(customerInfo.progressValue)
+        }
+        if(customerInfo.progressValue > 1) {
+            Handler().postDelayed(runnable, 32)
+        }
 
         if (customerInfo.isReverseBid) {
             if(customerInfo.isBidPlaced) {
@@ -122,4 +150,8 @@ class BidRequestFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        handler.removeCallbacks(runnable)
+        super.onDestroy()
+    }
 }

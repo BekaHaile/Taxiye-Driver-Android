@@ -80,6 +80,10 @@ class RequestActivity : AppCompatActivity() {
                 addRequests()
             }
         }
+        if(Data.getAssignedCustomerInfosListForStatus(
+                        EngagementStatus.REQUESTED.getOrdinal()).isNullOrEmpty()) {
+            this@RequestActivity.finish()
+        }
     }
 
     fun acceptRideClick(customerInfo:CustomerInfo, bidValue:String) {
@@ -128,11 +132,13 @@ class RequestActivity : AppCompatActivity() {
                             //							DialogPopup.alertPopup(activity, "", jObj.getString(Constants.KEY_MESSAGE));
                             customerInfo.setBidPlaced(1)
                             customerInfo.bidValue = bidValue
-                            updateFragments()
                             GCMIntentService.clearNotifications(applicationContext)
                             GCMIntentService.stopRing(false, this@RequestActivity)
                             if(HomeActivity.appInterruptHandler == null) {
                                 startActivity(Intent(this@RequestActivity, DriverSplashActivity::class.java))
+                                this@RequestActivity.finish()
+                            } else {
+                                updateFragments()
                             }
                         } else {
                             DialogPopup.alertPopup(activity, "", JSONParser.getServerMessage(jObj))
@@ -181,7 +187,10 @@ class RequestActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //NOOOOOOOOO
+        if(HomeActivity.appInterruptHandler == null) {
+            finish()
+            overridePendingTransition(0,0)
+        }
     }
 
     val broadcastReceiver = object: BroadcastReceiver(){
@@ -222,8 +231,10 @@ class RequestActivity : AppCompatActivity() {
             val customerInfos = Data.getAssignedCustomerInfosListForStatus(
                     EngagementStatus.REQUESTED.getOrdinal())
             requestList.clear()
-            for (i in customerInfos.indices) {
-                requestList.add(customerInfos[i].engagementId)
+            if(customerInfos != null) {
+                for (i in customerInfos.indices) {
+                    requestList.add(customerInfos[i].engagementId)
+                }
             }
             if(requestList.size == 0){
                 finish()
