@@ -2458,7 +2458,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Prefs.with(HomeActivity.this).getInt(Constants.INCENTIVE, 1) == 1) {
                 incentivesRL.setVisibility(View.VISIBLE);
             } else {
-                incentivesRL.setVisibility(View.GONE);
+                //incentivesRL.setVisibility(View.GONE);
+                incentivesRL.setVisibility(View.VISIBLE);
             }
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
