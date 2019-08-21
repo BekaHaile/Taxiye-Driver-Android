@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -43,13 +44,14 @@ public class CustomerInfo {
 	public double jugnooBalance;
 	public LatLng dropLatLng;
 	public String dropAddress;
+	public String pickupAddress;
 	public int meterFareApplicable;
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable, forceEndDelivery;
 
 	private int status;
-	private String address, startTime;
+	private String address, startTime, requestTime;
 	private double fareFactor, cashOnDelivery;
 	private int isPooled;
 
@@ -85,6 +87,7 @@ public class CustomerInfo {
 
 	private double incrementPercent;
 	private int stepSize;
+	private String bidCreatedAt;
 
 
 	/**
@@ -206,7 +209,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime, String rentalInfo, double incrementPercent, int stepSize){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime, String bidCreatedAt){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -237,6 +240,10 @@ public class CustomerInfo {
 		this.rentalInfo = rentalInfo;
 		this.incrementPercent = incrementPercent;
 		this.stepSize = stepSize;
+		this.dropAddress = dropAddress;
+		this.pickupAddress = pickUpAddress;
+		this.requestTime = requestTime;
+		this.bidCreatedAt = bidCreatedAt;
 	}
 
 
@@ -947,5 +954,21 @@ public class CustomerInfo {
 
 	public void setStepSize(int stepSize) {
 		this.stepSize = stepSize;
+	}
+
+	public String getPickupAddress() {
+		return pickupAddress;
+	}
+
+	public void setPickupAddress(String pickupAddress) {
+		this.pickupAddress = pickupAddress;
+	}
+	public int getProgressValue(Context context){
+		if(TextUtils.isEmpty(bidCreatedAt)){
+			return 0;
+		}
+		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(),bidCreatedAt);
+		double total = Prefs.with(context).getLong(Constants.KEY_BID_TIMEOUT, 30000L);
+		return (int) (100D - (currentDiff/total*100D));
 	}
 }

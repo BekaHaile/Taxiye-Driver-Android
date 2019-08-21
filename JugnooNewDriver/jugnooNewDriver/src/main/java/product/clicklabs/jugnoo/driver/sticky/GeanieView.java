@@ -21,10 +21,13 @@ import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.RequestActivity;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -294,7 +297,13 @@ public class GeanieView extends Service {
 
 //									showJeaniePopup();
 									if (HomeActivity.appInterruptHandler != null) {
-										Intent newIntent = new Intent(GeanieView.this, HomeActivity.class);
+										Intent newIntent = null;
+										if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
+												&& !Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()).isEmpty()) {
+											newIntent = new Intent(GeanieView.this, RequestActivity.class);
+										} else {
+											newIntent = new Intent(GeanieView.this, HomeActivity.class);
+										}
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(newIntent);

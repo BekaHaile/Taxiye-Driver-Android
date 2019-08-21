@@ -43,11 +43,15 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		setFragment();
-		if(count){
-			return 2;
+		if(Data.userData != null) {
+			setFragment();
+			if (count) {
+				return 2;
+			}
+			return 1;
+		} else {
+			return 0;
 		}
-		return 1;
 	}
 
 	@Override
@@ -66,11 +70,11 @@ public class RateCardFragmentAdapter extends FragmentPagerAdapter {
 	}
 
 	public void setFragment(){
-		if (1 == Data.userData.autosEnabled && 1 == Data.userData.getDeliveryEnabled()) {
+		if (Data.userData != null && 1 == Data.userData.autosEnabled && 1 == Data.userData.getDeliveryEnabled()) {
 			myFragment = DriverRateCard.newInstance(isHTMLRateCard);
 			displayString = context.getResources().getString(R.string.Ride);
 			count = true;
-		} else if(1 == Data.userData.getDeliveryEnabled()){
+		} else if(Data.userData != null && 1 == Data.userData.getDeliveryEnabled()){
 			myFragment = new FragmentDeliveryRateCard();
 			displayString = context.getResources().getString(R.string.delivery);
 			count = false;

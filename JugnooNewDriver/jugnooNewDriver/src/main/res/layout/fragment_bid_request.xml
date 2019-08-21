@@ -2,12 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    android:padding="10dp"
+    android:tag="@string/dont_touch_me"
+    app:layout_constraintBottom_toBottomOf="parent"
     android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/pbRequestTime"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="100"
+        android:layout_marginTop="-6dp"
+        android:progressTint="#7ed321" />
 
     <RelativeLayout
         android:id="@+id/llPickup"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -25,6 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:textSize="14sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/text_color"
             android:layout_toEndOf="@+id/ivPickup"
             android:layout_toStartOf="@+id/tvDistance"
             android:text="fgfsgs dfr" />
@@ -33,10 +50,11 @@
             android:id="@+id/tvDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textSize="12sp"
             android:layout_alignParentEnd="true"
-            android:text="fgfsgs dfr" />
+            android:layout_marginStart="5dp"
+            android:text="fgfsgs dfr"
+            android:textColor="@color/text_color"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
@@ -45,7 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llPickup"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/ic_dotted_path"
         android:minHeight="10dp" />
 
@@ -53,34 +72,45 @@
         android:id="@+id/llDrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivDotted"
+        android:textColor="@color/text_color"
+        android:layout_gravity="start"
+        android:layout_below="@+id/llPickup"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:gravity="center">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
             android:background="@drawable/ic_drop" />
 
         <TextView
             android:id="@+id/tvDrop"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:maxLines="2"
+            android:layout_gravity="start"
             android:layout_marginStart="5dp"
             android:textSize="16sp"
-            android:text="dsfsdfsfs fsdffsd" />
+            android:text="dsfsdfsfs flahflahflhd" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_below="@+id/llDrop">
 
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
             android:textSize="20sp"
             android:layout_marginStart="14dp"
             android:text="$420"/>
@@ -90,8 +120,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:textColor="@color/text_color"
             android:layout_marginStart="10dp"
-            android:text="(0% commision)"/>
+            android:text="@string/zero_commission"/>
     </LinearLayout>
     <Button
         android:id="@+id/btAccept"
@@ -101,7 +132,9 @@
         android:text="Accept this for 500"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="15dp"
         android:textAllCaps="false"
         android:background="@drawable/button_bg_gradient"/>
     <TextView
@@ -109,13 +142,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="Offer you fare for trip"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/text_color"
+        android:text="@string/offer_you_fare_for_trip"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/bidValues"
+        android:id="@+id/rvBidValues"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        />
 
 
     <TextView
@@ -124,5 +164,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="10dp"
-        android:text="Skip"/>
+        android:textColor="@color/themeColor"
+        android:text="@string/skip"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
 </LinearLayout>

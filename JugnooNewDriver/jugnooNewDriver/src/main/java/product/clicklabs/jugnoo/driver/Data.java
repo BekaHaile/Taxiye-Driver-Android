@@ -246,6 +246,11 @@ public class Data {
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfos(){
 		return assignedCustomerInfos;
 	}
+	public static void instantiateAssignedCustomerInfos(){
+		if(assignedCustomerInfos == null){
+			assignedCustomerInfos = new ArrayList<>();
+		}
+	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
 		if(assignedCustomerInfos != null) {
@@ -314,9 +319,7 @@ public class Data {
 			if(index > -1){
 				return assignedCustomerInfos.get(index);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ignored) {}
 		return null;
 	}
 
