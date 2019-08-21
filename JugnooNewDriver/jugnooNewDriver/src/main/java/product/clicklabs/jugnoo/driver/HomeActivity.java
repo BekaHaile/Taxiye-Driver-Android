@@ -9001,6 +9001,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 driverTimeOutPopup(HomeActivity.this, timeoutInterwal);
+                try {
+                    Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+                    LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
