@@ -26,7 +26,7 @@ import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
-import java.util.HashMap
+import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.indices
 import kotlin.collections.isNullOrEmpty
@@ -71,6 +71,7 @@ class RequestActivity : AppCompatActivity() {
                 myFragment.setValuesToUI(adapter.requestList[i])
             }
         }
+        updateTab()
     }
 
     override fun onResume() {
@@ -174,6 +175,7 @@ class RequestActivity : AppCompatActivity() {
             } else {
                 finish()
                 overridePendingTransition(0,0)
+                GCMIntentService.stopRing(true, this@RequestActivity)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -191,6 +193,7 @@ class RequestActivity : AppCompatActivity() {
         if(HomeActivity.appInterruptHandler == null) {
             finish()
             overridePendingTransition(0,0)
+            GCMIntentService.stopRing(true, this@RequestActivity)
         }
     }
 
@@ -234,30 +237,41 @@ class RequestActivity : AppCompatActivity() {
             requestList.clear()
             if(customerInfos != null) {
                 for (i in customerInfos.indices) {
-                    requestList.add(customerInfos[i].engagementId)
+                    if (HomeActivity.appInterruptHandler == null) {
+                        if (!customerInfos[i].isBidPlaced) {
+                            requestList.add(customerInfos[i].engagementId)
+                        }
+                    } else {
+                        requestList.add(customerInfos[i].engagementId)
+                    }
                 }
             }
             if(requestList.size == 0){
                 finish()
                 overridePendingTransition(0, 0)
+                GCMIntentService.stopRing(true, this@RequestActivity)
             } else {
                 notifyDataSetChanged()
             }
-            if(tabDots.tabCount > 1) {
-                tabDots.visible()
-            } else {
-                tabDots.gone()
-            }
-            for (i in 0 until tabDots.tabCount) {
-                val tab = (tabDots.getChildAt(0) as ViewGroup).getChildAt(i)
-                val p = tab.layoutParams as ViewGroup.MarginLayoutParams
-                p.setMargins(20, 0, 0, 0)
-                p.marginStart = 20
-                p.marginEnd = 0
-                tab.requestLayout()
-            }
+            updateTab()
         }
 
+    }
+
+    private fun updateTab() {
+        if (tabDots.tabCount > 1) {
+            tabDots.visible()
+        } else {
+            tabDots.gone()
+        }
+        for (i in 0 until tabDots.tabCount) {
+            val tab = (tabDots.getChildAt(0) as ViewGroup).getChildAt(i)
+            val p = tab.layoutParams as ViewGroup.MarginLayoutParams
+            p.setMargins(20, 0, 0, 0)
+            p.marginStart = 20
+            p.marginEnd = 0
+            tab.requestLayout()
+        }
     }
 
     interface RejectRequestCallback{

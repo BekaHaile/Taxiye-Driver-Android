@@ -101,6 +101,7 @@
         <activity android:name=".RequestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TransparentTheme"
+            android:autoRemoveFromRecents="true"
             android:launchMode="singleTask"
             android:label=""/>
 

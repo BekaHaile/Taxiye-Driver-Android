@@ -75,18 +75,25 @@ class BidRequestFragment : Fragment() {
 
     val runnable = object : Runnable {
         override fun run() {
-            val newProgress = customerInfo.getProgressValue(requireContext())
-            if(pbRequestTime != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    pbRequestTime.setProgress(newProgress, true)
-                } else {
-                    pbRequestTime.setProgress(newProgress)
+            try {
+                val newProgress = customerInfo.getProgressValue(requireContext())
+                if (pbRequestTime != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        pbRequestTime.setProgress(newProgress, true)
+                    } else {
+                        pbRequestTime.setProgress(newProgress)
+                    }
                 }
-            }
-            if (newProgress > 0) {
-                handler.postDelayed(this,32)
-            } else {
-                handler.removeCallbacks(this)
+                if (newProgress > 0) {
+                    handler.postDelayed(this, 32)
+                } else {
+                    handler.removeCallbacks(this)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                if(handler != null) {
+                    handler.removeCallbacks(this)
+                }
             }
         }
     }
@@ -152,8 +159,8 @@ class BidRequestFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         handler.removeCallbacks(runnable)
-        super.onDestroy()
+        super.onDestroyView()
     }
 }
