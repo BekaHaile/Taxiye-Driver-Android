@@ -7,7 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -946,6 +945,6 @@ public class CustomerInfo {
 		}
 		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(),bidCreatedAt);
 		double total = Prefs.with(context).getLong(Constants.KEY_BID_TIMEOUT, 30000L);
-		return (int) (currentDiff/total*100D);
+		return (int) (100D - (currentDiff/total*100D));
 	}
 }

@@ -1287,4 +1287,6 @@
     <string name="waiting_for_customer">(Waiting for customer)</string>
     <string name="tap_for_tutorial">Tap for Tutorial</string>
     <string name="tutorial">Tutorial</string>
+    <string name="zero_commission">(0% commission)</string>
+    <string name="offer_you_fare_for_trip">Offer you fare for trip</string>
 </resources>
