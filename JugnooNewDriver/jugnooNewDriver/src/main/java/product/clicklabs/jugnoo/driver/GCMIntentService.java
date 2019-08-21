@@ -751,6 +751,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									|| PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
 								String engagementId = jObj.getString("engagement_id");
+								String messageInternal = jObj.optString(Constants.KEY_MESSAGE);
 								clearNotifications(this);
 
 								Data.instantiateAssignedCustomerInfos();
@@ -759,7 +760,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									if(PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag){
 										HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 									} else {
-										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag);
+										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag, messageInternal);
 									}
 								}
 								cancelUploadPathAlarm(this);

@@ -9017,7 +9017,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     @Override
-    public void onCancelRideRequest(final String engagementId, final boolean acceptedByOtherDriver) {
+    public void onCancelRideRequest(final String engagementId, final boolean acceptedByOtherDriver, final String message) {
         try {
             runOnUiThread(new Runnable() {
                 @Override
@@ -9029,7 +9029,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             driverScreenMode = DriverScreenMode.D_INITIAL;
                             setPannelVisibility(true);
                             switchDriverScreen(driverScreenMode);
-                            DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
+                            if(!acceptedByOtherDriver) {
+								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
+							}
                         }
                     } else if (driverScreenMode == DriverScreenMode.D_IN_RIDE) {
                         setPannelVisibility(false);
@@ -9037,6 +9039,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     } else if (driverScreenMode == DriverScreenMode.D_INITIAL) {
                         setPannelVisibility(true);
                     }
+                    if(acceptedByOtherDriver && !TextUtils.isEmpty(message)){
+						DialogPopup.alertPopup(HomeActivity.this, "", message);
+					}
                 }
             });
         } catch (Exception e) {
