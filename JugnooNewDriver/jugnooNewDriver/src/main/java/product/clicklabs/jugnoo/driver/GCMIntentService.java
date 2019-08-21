@@ -61,6 +61,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.home.RingtoneTypes;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
@@ -91,7 +92,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static final long REQUEST_TIMEOUT = 120000;
 	private static final long WAKELOCK_TIMEOUT = 5000;
 
-	private static final int RING_TYPE_ONE = 1, RING_TYPE_TWO = 2, RING_TYPE_THREE = 3, RING_TYPE_FOUR = 4, RING_TYPE_FIVE = 5;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
@@ -1106,26 +1106,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			}
-
-			switch (ringType) {
-				case RING_TYPE_ONE:
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
-					break;
-				case RING_TYPE_TWO:
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-					break;
-				case RING_TYPE_THREE:
-					mediaPlayer = MediaPlayer.create(context, R.raw.ring_type_three);
-					break;
-				case RING_TYPE_FOUR:
-					mediaPlayer = MediaPlayer.create(context, R.raw.ring_type_four);
-					break;
-				case RING_TYPE_FIVE:
-					mediaPlayer = MediaPlayer.create(context, R.raw.ring_type_five);
-					break;
-				default:
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-			}
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, ringType, true);
 
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -1216,7 +1197,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, 0, true);
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override

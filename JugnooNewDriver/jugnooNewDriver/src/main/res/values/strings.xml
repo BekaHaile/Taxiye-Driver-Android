@@ -1289,4 +1289,6 @@
     <string name="tutorial">Tutorial</string>
     <string name="zero_commission">(0% commission)</string>
     <string name="offer_you_fare_for_trip">Offer you fare for trip</string>
+    <string name="select_ringtone">Select Ringtone</string>
+    <string name="ringtone1">Ringtone 1</string>
 </resources>
