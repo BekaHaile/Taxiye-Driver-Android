@@ -31,6 +31,8 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -180,6 +182,7 @@ import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyDialog;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyDisableDialog;
 import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
+import product.clicklabs.jugnoo.driver.fragments.BidInteractionListener;
 import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
@@ -257,7 +260,7 @@ import retrofit.mime.TypedByteArray;
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents,
-        ViewPager.OnPageChangeListener, View.OnClickListener, CallbackSlideOnOff {
+        ViewPager.OnPageChangeListener, View.OnClickListener, CallbackSlideOnOff,ActivityStateCallback, BidInteractionListener {
 
 
     private final String TAG = HomeActivity.class.getSimpleName();
@@ -559,6 +562,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private PagerAdapter pagerAdapter;
 
     private TextView tvIntro;
+
+    private TabLayout tabDots;
+    private ViewPager vpRequests;
+    private ConstraintLayout containerRequestBidNew;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -1131,6 +1138,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rvFareDetails.setLayoutManager(new LinearLayoutManagerForResizableRecyclerView(this));
             fareDetailsAdapter = new FareDetailsAdapter();
             rvFareDetails.setAdapter(fareDetailsAdapter);
+
+            vpRequests = findViewById(R.id.vpRequests);
+            tabDots = findViewById(R.id.tabDots);
+            containerRequestBidNew = findViewById(R.id.containerRequestBidNew);
 
             if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY, getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
                 containerSwitch.setVisibility(View.VISIBLE);
@@ -1836,7 +1847,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    rejectRequestFuncCall(getOpenedCustomerInfo(), null);
+                    rejectRequestFuncCall(getOpenedCustomerInfo());
                     FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
                 }
             });
@@ -3013,7 +3024,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 CustomerInfo customerInfo = driverRequestListAdapter
                         .customerInfos.get(driverRequestListAdapter.customerInfos.indexOf
                                 (new CustomerInfo(Integer.parseInt(intent.getExtras().getString("engagement_id")))));
-                rejectRequestFuncCall(customerInfo, null);
+                rejectRequestFuncCall(customerInfo);
                 FlurryEventLogger.event(RIDE_CANCELLED);
             }
         } catch (Exception e) {
@@ -3214,7 +3225,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    public void rejectRequestFuncCall(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback) {
+    public void rejectRequestFuncCall(CustomerInfo customerInfo) {
         try {
             if (1 != customerInfo.getIsPooled()
                     && 1 != customerInfo.getIsDelivery()
@@ -3234,9 +3245,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                         driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
                                 EngagementStatus.REQUESTED.getOrdinal()));
-                        if(callback != null) {
-                            callback.success();
-                        }
                     }
                 }).rejectRequestAsync(Data.userData.accessToken,
                         String.valueOf(customerInfo.userId),
@@ -3245,7 +3253,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 GCMIntentService.clearNotifications(HomeActivity.this);
                 GCMIntentService.stopRing(true, getApplicationContext());
-                driverRejectRequestAsync(HomeActivity.this, customerInfo, callback);
+                driverRejectRequestAsync(HomeActivity.this, customerInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3280,6 +3288,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     EngagementStatus.REQUESTED.getOrdinal()));
                             GCMIntentService.clearNotifications(getApplicationContext());
                             GCMIntentService.stopRing(false, HomeActivity.this);
+                            updateBidRequestFragments();
                         } else {
                             DialogPopup.alertPopup(activity, "", JSONParser.getServerMessage(jObj));
                         }
@@ -5755,7 +5764,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-
     class ViewHolderDriverRequest {
         TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
                 textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare,
@@ -5854,11 +5862,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     && customerInfos.size() > 0
                     && checkIfDriverOnline()
                     && customerInfos.get(0).isReverseBid()) {
-                Intent intentN = new Intent(HomeActivity.this, RequestActivity.class);
-                intentN.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intentN.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfos.get(0).getEngagementId());
-                startActivity(intentN);
-                overridePendingTransition(0,0);
+                containerRequestBidNew.setVisibility(View.VISIBLE);
+                addBidRequests();
             }
             this.notifyDataSetChanged();
         }
@@ -6186,11 +6191,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						holder.buttonAcceptRide.setText(R.string.accept);
                     }
 					if(holder.bidIncrementAdapter == null){
-						holder.bidIncrementAdapter = new BidIncrementAdapter(HomeActivity.this, holder.rvBidValues, new BidIncrementAdapter.Callback() {
+						holder.bidIncrementAdapter = new BidIncrementAdapter(holder.rvBidValues, new BidIncrementAdapter.Callback() {
 							@Override
 							public void onClick(@NotNull BidIncrementVal incrementVal, int parentId) {
 								bidValues.set(parentId, String.valueOf(Utils.getDecimalFormatForMoney().format(incrementVal.getValue())));
-								acceptRideClick(parentId);
+								acceptRideClick(customerInfos.get(parentId), bidValues.get(parentId));
 							}
 						});
 					}
@@ -6242,7 +6247,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
 					ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
-					acceptRideClick(holder.id);
+					acceptRideClick(customerInfos.get(holder.id), bidValues.get(holder.id));
 				}
             });
 
@@ -6259,7 +6264,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else {
                             MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + holder.id + "_" + FirebaseEvents.NO, null);
                             CustomerInfo customerInfo1 = customerInfos.get(holder.id);
-                            rejectRequestFuncCall(customerInfo1, null);
+                            rejectRequestFuncCall(customerInfo1);
                             FlurryEventLogger.event(RIDE_CANCELLED);
                         }
                     } catch (Exception e) {
@@ -6296,35 +6301,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             return convertView;
         }
 
-		private void acceptRideClick(int position) {
-			try {
-				if (isTourFlag) {
-					setTourOperation(2);
-				} else {
-					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + position + "_" + FirebaseEvents.YES, null);
-					CustomerInfo customerInfo1 = customerInfos.get(position);
-					if (customerInfo1.isReverseBid()) {
-						if (TextUtils.isEmpty(bidValues.get(position))) {
-							Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
-							return;
-						}
-						double bidValue = Double.parseDouble(bidValues.get(position));
-						double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
-						if(maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue){
-							Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
-							return;
-						}
-						setBidForEngagementAPI(customerInfo1, bidValue);
-					} else {
-						acceptRequestFunc(customerInfo1);
-					}
-					GCMIntentService.stopRing(true, HomeActivity.this);
-					FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 
 		private void modifyBidValue(View v, boolean plus) {
             try {
@@ -6366,6 +6342,37 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }
 
+    }
+
+
+    private void acceptRideClick(CustomerInfo customerInfo, String bidValueStr) {
+        try {
+            if (isTourFlag) {
+                setTourOperation(2);
+            } else {
+                MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + customerInfo + "_" + FirebaseEvents.YES, null);
+                CustomerInfo customerInfo1 = customerInfo;
+                if (customerInfo1.isReverseBid()) {
+                    if (TextUtils.isEmpty(bidValueStr)) {
+                        Toast.makeText(HomeActivity.this, getString(R.string.please_enter_some_value), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    double bidValue = Double.parseDouble(bidValueStr);
+                    double maxBidMultiplier = Double.parseDouble(Prefs.with(HomeActivity.this).getString(KEY_DRIVER_MAX_BID_MULTIPLIER, "4"));
+                    if(maxBidMultiplier * customerInfo1.getInitialBidValue() < bidValue){
+                        Utils.showToast(HomeActivity.this, getString(R.string.please_enter_less_value_for_bid));
+                        return;
+                    }
+                    setBidForEngagementAPI(customerInfo1, bidValue);
+                } else {
+                    acceptRequestFunc(customerInfo1);
+                }
+                GCMIntentService.stopRing(true, HomeActivity.this);
+                FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -6660,7 +6667,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
-    public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo, final RequestActivity.RejectRequestCallback callback) {
+    public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo) {
 
         if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
@@ -6694,9 +6701,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                                 reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(), "");
                                 new DriverTimeoutCheck().timeoutBuffer(activity, 0);
-                                if(callback != null) {
-                                    callback.success();
-                                }
                                 return;
                             }
                         }
@@ -9006,7 +9010,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 driverTimeOutPopup(HomeActivity.this, timeoutInterwal);
                 try {
                     Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
-                    LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
+                    addBidRequests();
+                    updateBidRequestFragments();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -9456,7 +9461,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         public void run() {
                             DialogPopup.dismissLoadingDialog();
                             switchDriverScreen(driverScreenMode);
-                            LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
+//                            LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
 
 
                         }
@@ -12179,6 +12184,70 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     @Override
     public void cancelRequest(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback){
-        rejectRequestFuncCall(customerInfo, callback);
+        rejectRequestFuncCall(customerInfo);
+    }
+
+    private RequestPagerAdapter requestPagerAdapter = null;
+
+    private void addBidRequests() {
+        if (requestPagerAdapter == null) {
+            requestPagerAdapter = new RequestPagerAdapter(getSupportFragmentManager(),this);
+            requestPagerAdapter.notifyRequests();
+            vpRequests.setAdapter(requestPagerAdapter);
+
+        } else {
+            requestPagerAdapter.notifyRequests();
+        }
+    }
+
+
+    public void updateBidRequestFragments() {
+        if(requestPagerAdapter != null) {
+            for (int i = 0;i < requestPagerAdapter.getCount();i++) {
+                Fragment myFragment = (Fragment) requestPagerAdapter.instantiateItem(vpRequests, i);
+                if (myFragment instanceof BidRequestFragment){
+                    ((BidRequestFragment)myFragment).setValuesToUI(requestPagerAdapter.getRequestList().get(i));
+                }
+            }
+        }
+        updateTab();
+    }
+
+    @Override
+    public void closeRequestView() {
+        containerRequestBidNew.setVisibility(View.GONE);
+        GCMIntentService.stopRing(true,this);
+    }
+
+    @Override
+    public void updateTabs() {
+        updateTab();
+    }
+
+    private void updateTab() {
+        if (tabDots.getTabCount() > 1) {
+            tabDots.setVisibility(View.VISIBLE);
+        } else {
+            tabDots.setVisibility(View.GONE);
+        }
+        for (int i =0; i < tabDots.getTabCount(); i++) {
+            View tab = ((ViewGroup)tabDots.getChildAt(0)).getChildAt(i);
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams()
+            p.setMargins(20, 0, 0, 0);
+            p.setMarginStart(20);
+            p.setMarginEnd(0);
+            tab.requestLayout();
+        }
+    }
+
+    @Override
+    public void acceptClick(@NotNull CustomerInfo customerInfo, @NotNull String bidValue) {
+        acceptRideClick(customerInfo, bidValue);
+
+    }
+
+    @Override
+    public void rejectCLick(@NotNull CustomerInfo customerInfo) {
+        rejectRequestFuncCall(customerInfo);
     }
 }

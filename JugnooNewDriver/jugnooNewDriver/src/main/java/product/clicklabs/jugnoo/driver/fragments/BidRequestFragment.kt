@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -41,6 +42,7 @@ class BidRequestFragment : Fragment() {
     lateinit var customerInfo :CustomerInfo
     var percent: Float = 10.0f;
     val handler by lazy { Handler() }
+    var interactionListener:BidInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,13 +68,20 @@ class BidRequestFragment : Fragment() {
 
         setValuesToUI(engagementId)
         btAccept.setOnClickListener {
-            (activity as RequestActivity).acceptRideClick(customerInfo, customerInfo.initialBidValue.toString())
+            interactionListener?.acceptClick(customerInfo, customerInfo.initialBidValue.toString())
         }
         tvSkip.setOnClickListener(){
-            (activity as RequestActivity).rejectRequestFuncCall(customerInfo)
+            interactionListener?.rejectCLick(customerInfo)
         }
     }
 
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is BidInteractionListener){
+            interactionListener = context
+        }
+    }
 
     val runnable = object : Runnable {
         override fun run() {
@@ -137,9 +146,9 @@ class BidRequestFragment : Fragment() {
                 tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
                 rvBidValues.itemAnimator = DefaultItemAnimator()
                 rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
+                var bidIncrementAdapter = BidIncrementAdapter(rvBidValues, object : BidIncrementAdapter.Callback {
                     override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
-                        (activity as RequestActivity).acceptRideClick(customerInfo, Utils.getDecimalFormatForMoney().format(incrementVal.value).toString())
+                        interactionListener?.acceptClick(customerInfo, Utils.getDecimalFormatForMoney().format(incrementVal.value).toString())
                     }
                 })
                 rvBidValues.adapter = bidIncrementAdapter
@@ -171,4 +180,9 @@ class BidRequestFragment : Fragment() {
         handler.removeCallbacks(runnable)
         super.onDestroyView()
     }
+}
+
+interface BidInteractionListener{
+    fun acceptClick(customerInfo: CustomerInfo, bidValue:String)
+    fun rejectCLick(customerInfo: CustomerInfo)
 }

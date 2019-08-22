@@ -762,10 +762,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 									} else {
 										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag, messageInternal);
 									}
+								} else{
+									LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
 								}
 								cancelUploadPathAlarm(this);
 								stopRing(false, this);
-								LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
