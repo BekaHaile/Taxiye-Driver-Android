@@ -3245,6 +3245,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         }
                         driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
                                 EngagementStatus.REQUESTED.getOrdinal()));
+                        if(requestPagerAdapter != null) {
+                            requestPagerAdapter.notifyRequests();
+                        }
                     }
                 }).rejectRequestAsync(Data.userData.accessToken,
                         String.valueOf(customerInfo.userId),
@@ -4558,6 +4561,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverRequestAcceptLayout.setVisibility(View.VISIBLE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
+                    containerRequestBidNew.setVisibility(View.GONE);
 
 
                     cancelTimerPathRerouting();
@@ -4615,6 +4619,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverStartRideBtn.setVisibility(View.GONE);
                     buttonMarkArrived.setVisibility(View.VISIBLE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
+                    containerRequestBidNew.setVisibility(View.GONE);
 
                     Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LATITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().latitude));
                     Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LONGITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().longitude));
@@ -4681,6 +4686,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.VISIBLE);
                     etaTimerRLayout.setVisibility(View.GONE);
+                    containerRequestBidNew.setVisibility(View.GONE);
                     try {
                         if (timer != null) {
                             etaTimerText.setText(" ");
@@ -4808,6 +4814,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
                     startRideChronometer(customerInfo);
                     setNevigationButtonVisibiltyDelivery(0);
+                    containerRequestBidNew.setVisibility(View.GONE);
                     if (customerInfo.getIsDelivery() != 1) {
                         relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
                         if(customerInfo.isReverseBid()){
@@ -4957,6 +4964,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
+                    containerRequestBidNew.setVisibility(View.GONE);
                     setPannelVisibility(false);
                     cancelTimerPathRerouting();
                     break;
@@ -4979,6 +4987,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     topRlOuter.setVisibility(View.GONE);
                     driverInitialLayout.setVisibility(View.GONE);
                     driverRequestAcceptLayout.setVisibility(View.GONE);
+                    containerRequestBidNew.setVisibility(View.GONE);
                     driverEngagedLayout.setVisibility(View.GONE);
                     perfectRidePassengerInfoRl.setVisibility(View.GONE);
                     driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -6701,6 +6710,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                                 reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(), "");
                                 new DriverTimeoutCheck().timeoutBuffer(activity, 0);
+                                if(requestPagerAdapter != null) {
+                                    requestPagerAdapter.notifyRequests();
+                                }
                                 return;
                             }
                         }
@@ -9046,6 +9058,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         removePRMarkerAndRefreshList();
                     } else if (driverScreenMode == DriverScreenMode.D_INITIAL) {
                         setPannelVisibility(true);
+                        if(requestPagerAdapter != null) {
+                            requestPagerAdapter.notifyRequests();
+                        }
                     }
                     if(acceptedByOtherDriver && !TextUtils.isEmpty(message)){
 						DialogPopup.alertPopup(HomeActivity.this, "", message);
@@ -9072,6 +9087,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 if (isTourFlag) {
                     handleTourView(false, "");
                     tourCompleteApi("2", engagementId);
+                }
+                if(requestPagerAdapter != null) {
+                    requestPagerAdapter.notifyRequests();
                 }
             }
         });
@@ -9462,7 +9480,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             DialogPopup.dismissLoadingDialog();
                             switchDriverScreen(driverScreenMode);
 //                            LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
-
+                            requestPagerAdapter.notifyRequests();
+                            updateBidRequestFragments();
 
                         }
                     });
@@ -12232,7 +12251,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
         for (int i =0; i < tabDots.getTabCount(); i++) {
             View tab = ((ViewGroup)tabDots.getChildAt(0)).getChildAt(i);
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams()
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
             p.setMargins(20, 0, 0, 0);
             p.setMarginStart(20);
             p.setMarginEnd(0);
