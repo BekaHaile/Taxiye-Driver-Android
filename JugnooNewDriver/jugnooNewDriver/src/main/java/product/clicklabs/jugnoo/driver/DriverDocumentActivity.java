@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
+import product.clicklabs.jugnoo.driver.fragments.TractionListFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -98,8 +99,12 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		}
 
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
+				.add(R.id.fragment,TractionListFragment.newInstance(accessToken),TractionListFragment.class.getName())
 				.commit();
+
+//		getSupportFragmentManager().beginTransaction()
+//				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
+//				.commit();
 
 
 

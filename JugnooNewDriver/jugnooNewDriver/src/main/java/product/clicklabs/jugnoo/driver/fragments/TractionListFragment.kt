@@ -3,6 +3,9 @@ package product.clicklabs.jugnoo.driver.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,7 @@ import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
+import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.Prefs
 import java.util.*
 
@@ -24,7 +28,8 @@ import java.util.*
 class TractionListFragment : Fragment() {
 
     companion object{
-        fun newInstance():TractionListFragment{
+        @JvmStatic
+        fun newInstance(accessToken: String):TractionListFragment{
             val fragment = TractionListFragment()
             val bundle = Bundle()
             fragment.arguments = bundle
@@ -38,7 +43,7 @@ class TractionListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(
-                R.layout.fragment_traction_list, container, false) as ViewGroup
+                R.layout.fragment_traction_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,18 +53,21 @@ class TractionListFragment : Fragment() {
 
         offlineRequestsAdapter = OfflineRequestsAdapter(offlineRequests as ArrayList<CustomerInfo>?, requireActivity(),
                 R.layout.list_item_requests, 0, OfflineRequestsAdapter.Callback {
+            Log.e(TractionListFragment::class.java.name,"no-i-will-not")
 
         })
 
+        rvOfflineRequests.layoutManager = LinearLayoutManager(requireContext())
         rvOfflineRequests.adapter = offlineRequestsAdapter
 
     }
 
     private fun getTractionRides(refresh: Boolean) {
-        val params = HashMap<String, String>()
-        params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken
+        val params = hashMapOf(
+                Constants.KEY_ACCESS_TOKEN to Data.userData.accessToken
+        )
 
-        ApiCommonKt<TractionResponse>(requireActivity(), true, true, true).execute(params, ApiName.FETCH_DRIVER_TRACTION_RIDES,
+        ApiCommonKt<TractionResponse>(requireActivity(), showLoader = true, putDefaultParams = true).execute(params, ApiName.FETCH_DRIVER_TRACTION_RIDES,
                 object : APICommonCallbackKotlin<TractionResponse>() {
                     override fun onSuccess(response: TractionResponse, message: String, flag: Int) {
                         DialogPopup.dismissLoadingDialog()
