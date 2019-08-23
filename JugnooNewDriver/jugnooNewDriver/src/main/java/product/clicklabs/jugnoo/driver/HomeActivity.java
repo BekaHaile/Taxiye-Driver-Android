@@ -5768,6 +5768,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     @Override
     public void onClickStandAction(int slideDir) {
+        ArrayList<CustomerInfo> requests = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+        boolean isClearRequestNeeded = false;
+        if(Data.userData.autosAvailable == 1 && requests != null && !requests.isEmpty()) {
+            for(CustomerInfo customerInfo: requests) {
+                if(customerInfo.isReverseBid()) {
+                    isClearRequestNeeded = true;
+                    break;
+                }
+            }
+        }
+        if(isClearRequestNeeded) {
+            Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+            if(requestPagerAdapter != null) {
+                requestPagerAdapter.notifyRequests();
+            }
+        }
         if(slideDir != Data.userData.autosAvailable) {
             relativeLayoutAutosOn.performClick();
         }
