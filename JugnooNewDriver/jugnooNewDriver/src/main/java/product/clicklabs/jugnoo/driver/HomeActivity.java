@@ -12240,8 +12240,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         if(requestPagerAdapter != null) {
             for (int i = 0;i < requestPagerAdapter.getCount();i++) {
                 Fragment myFragment = (Fragment) requestPagerAdapter.instantiateItem(vpRequests, i);
-                if (myFragment instanceof BidRequestFragment){
-                    ((BidRequestFragment)myFragment).setValuesToUI(requestPagerAdapter.getRequestList().get(i));
+                if(myFragment != null) {
+                    if (myFragment instanceof BidRequestFragment) {
+                        ((BidRequestFragment) myFragment).setValuesToUI(requestPagerAdapter.getRequestList().get(i));
+                    }
                 }
             }
         }
