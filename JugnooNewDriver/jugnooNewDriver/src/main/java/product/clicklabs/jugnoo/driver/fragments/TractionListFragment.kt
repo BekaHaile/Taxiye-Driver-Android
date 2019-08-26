@@ -19,10 +19,9 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
-import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.Log
-import product.clicklabs.jugnoo.driver.utils.Prefs
+import product.clicklabs.jugnoo.driver.utils.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class TractionListFragment : Fragment() {
@@ -32,6 +31,7 @@ class TractionListFragment : Fragment() {
         fun newInstance(accessToken: String):TractionListFragment{
             val fragment = TractionListFragment()
             val bundle = Bundle()
+            bundle.putString(Constants.KEY_ACCESS_TOKEN,accessToken)
             fragment.arguments = bundle
             return fragment
         }
@@ -63,11 +63,11 @@ class TractionListFragment : Fragment() {
     }
 
     private fun getTractionRides(refresh: Boolean) {
-        val params = hashMapOf(
-                Constants.KEY_ACCESS_TOKEN to Data.userData.accessToken
-        )
 
-        ApiCommonKt<TractionResponse>(requireActivity(), showLoader = true, putDefaultParams = true).execute(params, ApiName.FETCH_DRIVER_TRACTION_RIDES,
+        val params = HashMap<String, String>()
+        params[Constants.KEY_ACCESS_TOKEN] = if(Data.userData != null && !Data.userData.accessToken.isNullOrEmpty()) Data.userData.accessToken else arguments?.getString(Constants.KEY_ACCESS_TOKEN,"")!!
+
+        ApiCommonKt<TractionResponse>(requireActivity(), showLoader = true, putDefaultParams = true,putAccessToken = true).execute(params, ApiName.FETCH_DRIVER_TRACTION_RIDES,
                 object : APICommonCallbackKotlin<TractionResponse>() {
                     override fun onSuccess(response: TractionResponse, message: String, flag: Int) {
                         DialogPopup.dismissLoadingDialog()
@@ -78,7 +78,11 @@ class TractionListFragment : Fragment() {
                         }
                         offlineRequestsAdapter.notifyList(response.rides.size, offlineRequests as ArrayList<CustomerInfo>?, refresh)
                         if (response.rides.size > 0) {
+                            rvOfflineRequests.visible()
+                            tvNoData.gone()
                         } else {
+                            rvOfflineRequests.gone()
+                            tvNoData.visible()
                         }
 
                     }

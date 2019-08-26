@@ -111,7 +111,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.tvPickup.setText(customerInfo.getPickupAddressEng() == null || customerInfo.getPickupAddressEng().trim().isEmpty() ? "----- -----" : customerInfo.getPickupAddressEng().trim());
             holder.tvDrop.setText(customerInfo.getDropAddress() == null || customerInfo.getDropAddress().trim().isEmpty() ? "----- -----" : customerInfo.getDropAddress().trim());
             holder.tvTime.setText(customerInfo.getTimeDiff() == null || customerInfo.getTimeDiff().trim().isEmpty() ? "-- --" : customerInfo.getTimeDiff());
-            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()));
+            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Data.userData!= null ? Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()):  customerInfo.getEstimatedDriverFare());
 
 
             float scale = activity.getResources().getDisplayMetrics().density;

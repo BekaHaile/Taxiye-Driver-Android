@@ -7,9 +7,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +46,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class DriverDocumentActivity extends BaseFragmentActivity implements DocumentDetailsFragment.InteractionListener {
+public class DriverDocumentActivity extends BaseFragmentActivity implements DocumentDetailsFragment.InteractionListener,CallbackSlideOnOff {
 
 	View backBtn;
 	TextView title;
@@ -56,6 +58,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	DocumentListFragment documentListFragment;
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
+	private SlidingSwitch slidingSwitch;
+	private RelativeLayout containerSwitch, viewSlide;
+	private LinearLayout rlOnOff;
+	private TextView tvOnlineTop,tvOfflineTop;
+	private int slideVal = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,15 +105,42 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 			title.setText(R.string.places);
 		}
 
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment,TractionListFragment.newInstance(accessToken),TractionListFragment.class.getName())
-				.commit();
+		containerSwitch = findViewById(R.id.containerSwitch);
+		slidingSwitch = new SlidingSwitch(containerSwitch, this);
+		tvOnlineTop = findViewById(R.id.tvOnlineTop);
+		tvOfflineTop = findViewById(R.id.tvOfflineTop);
+		viewSlide = findViewById(R.id.viewSlide);
+		rlOnOff = findViewById(R.id.rlOnOff);
 
-//		getSupportFragmentManager().beginTransaction()
-//				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
-//				.commit();
+		slideVal = 0;
+		if(!getIntent().getBooleanExtra("in_side",false) && getResources().getBoolean(R.bool.traction_request_in_documents)) {
+			if (slideVal == 0) {
+				slidingSwitch.setSlideLeft();
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.fragment, TractionListFragment.newInstance(accessToken), TractionListFragment.class.getName())
+						.commit();
+				title.setVisibility(View.GONE);
+				containerSwitch.setVisibility(View.VISIBLE);
+				tvOnlineTop.setSelected(false);
+				tvOfflineTop.setSelected(true);
+				viewSlide.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_theme_rounded));
+				slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+				slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+				viewSlide.post(() -> slidingSwitch.setSlideLeft());
+				rlOnOff.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_stroke_white_theme));
+				submitButton.setVisibility(View.GONE);
+			} else {
+				slidingSwitch.setSlideRight();
+				removeTractionFrag();
+				addDocumentListFragment();
+			}
+		} else {
+			removeTractionFrag();
+			addDocumentListFragment();
+		}
 
 
+//
 
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +182,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 				performbackPressed();
 			}
 		});
+	}
+
+	private void addDocumentListFragment() {
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
+				.commit();
+		containerSwitch.setVisibility(View.GONE);
+		title.setVisibility(View.VISIBLE);
 	}
 
 	public Fragment getDocumentDetailsFragment() {
@@ -473,5 +515,34 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	@Override
 	public void setSubmitButtonVisibility(int visibility) {
 		submitButton.setVisibility(visibility);
+	}
+
+	@Override
+	public void onClickStandAction(int slideDir) {
+		if(slideVal != slideDir && slideDir == 1) {
+			removeTractionFrag();
+		}
+		if (slideDir == 1) {
+			title.setVisibility(View.VISIBLE);
+			containerSwitch.setVisibility(View.GONE);
+			addDocumentListFragment();
+			submitButton.setVisibility(View.VISIBLE);
+		} else {
+			title.setVisibility(View.GONE);
+			containerSwitch.setVisibility(View.VISIBLE);
+		}
+		slideVal = slideDir;
+
+	}
+
+	private void removeTractionFrag() {
+		if(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()) != null) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.remove(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()))
+					.commit();
+		}
+		title.setVisibility(View.VISIBLE);
+		containerSwitch.setVisibility(View.GONE);
 	}
 }
