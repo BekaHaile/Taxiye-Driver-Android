@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.support.annotation.NonNull
 import android.support.annotation.Nullable
+import product.clicklabs.jugnoo.driver.BuildConfig
 import java.io.File
 
 
@@ -40,7 +41,7 @@ class PhotoProvider : ContentProvider() {
 
     companion object {
 
-        val CONTENT_PROVIDER_AUTHORITY = "product.clicklabs.jugnoo.driver.utils.PhotoProvider"
+        val CONTENT_PROVIDER_AUTHORITY = BuildConfig.authorities
 
         fun getPhotoUri(file: File): Uri {
             val outputUri = Uri.fromFile(file)
