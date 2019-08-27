@@ -16,7 +16,7 @@ public interface AppInterruptHandler {
 	
 	public void onNewRideRequest(int perfectRide, int isPooled, int isDelivery);
 	
-	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver);
+	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver, String message);
 	
 	public void onRideRequestTimeout(String engagementId);
 	

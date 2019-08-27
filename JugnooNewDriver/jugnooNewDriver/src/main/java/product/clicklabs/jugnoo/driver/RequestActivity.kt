@@ -235,7 +235,7 @@ class RequestActivity : AppCompatActivity() {
             val customerInfos = Data.getAssignedCustomerInfosListForStatus(
                     EngagementStatus.REQUESTED.getOrdinal())
             requestList.clear()
-            if(customerInfos != null) {
+            if(!customerInfos.isNullOrEmpty()) {
                 for (i in customerInfos.indices) {
                     if (HomeActivity.appInterruptHandler == null) {
                         if (!customerInfos[i].isBidPlaced) {
@@ -246,7 +246,7 @@ class RequestActivity : AppCompatActivity() {
                     }
                 }
             }
-            if(requestList.size == 0){
+            if(requestList.size == 0) {
                 finish()
                 overridePendingTransition(0, 0)
                 GCMIntentService.stopRing(true, this@RequestActivity)

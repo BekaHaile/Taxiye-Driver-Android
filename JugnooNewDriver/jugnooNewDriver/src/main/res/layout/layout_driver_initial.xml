@@ -12,6 +12,7 @@
         android:id="@+id/driverInitialMyLocationBtn"
         android:layout_width="110px"
         android:layout_height="110px"
+        android:layout_marginTop="50px"
         android:layout_alignParentEnd="true"
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"
