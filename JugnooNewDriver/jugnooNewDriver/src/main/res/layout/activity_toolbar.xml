@@ -28,6 +28,14 @@
             android:layout_gravity="center"
             android:textColor="@color/textColorTitle" />
 
+        <include
+            layout="@layout/layout_switch_slide"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+
     </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>

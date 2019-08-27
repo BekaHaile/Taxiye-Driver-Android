@@ -113,31 +113,31 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		rlOnOff = findViewById(R.id.rlOnOff);
 
 		slideVal = 0;
-		if(!getIntent().getBooleanExtra("in_side",false) && getResources().getBoolean(R.bool.traction_request_in_documents)) {
-			if (slideVal == 0) {
-				slidingSwitch.setSlideLeft();
-				getSupportFragmentManager().beginTransaction()
-						.add(R.id.fragment, TractionListFragment.newInstance(accessToken), TractionListFragment.class.getName())
-						.commit();
-				title.setVisibility(View.GONE);
-				containerSwitch.setVisibility(View.VISIBLE);
-				tvOnlineTop.setSelected(false);
-				tvOfflineTop.setSelected(true);
-				viewSlide.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_theme_rounded));
-				slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
-				slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
-				viewSlide.post(() -> slidingSwitch.setSlideLeft());
-				rlOnOff.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_stroke_white_theme));
-				submitButton.setVisibility(View.GONE);
-			} else {
-				slidingSwitch.setSlideRight();
-				removeTractionFrag();
-				addDocumentListFragment();
-			}
-		} else {
-			removeTractionFrag();
+//		if(!getIntent().getBooleanExtra("in_side",false) && getResources().getBoolean(R.bool.traction_request_in_documents)) {
+//			if (slideVal == 0) {
+//				slidingSwitch.setSlideLeft();
+//				getSupportFragmentManager().beginTransaction()
+//						.add(R.id.fragment, TractionListFragment.newInstance(accessToken,true), TractionListFragment.class.getName())
+//						.commit();
+//				title.setVisibility(View.GONE);
+//				containerSwitch.setVisibility(View.VISIBLE);
+//				tvOnlineTop.setSelected(false);
+//				tvOfflineTop.setSelected(true);
+//				viewSlide.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_theme_rounded));
+//				slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+//				slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+//				viewSlide.post(() -> slidingSwitch.setSlideLeft());
+//				rlOnOff.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_stroke_white_theme));
+//				submitButton.setVisibility(View.GONE);
+//			} else {
+//				slidingSwitch.setSlideRight();
+//				removeTractionFrag();
+//				addDocumentListFragment();
+//			}
+//		} else {
+//			removeTractionFrag();
 			addDocumentListFragment();
-		}
+//		}
 
 
 //
@@ -519,30 +519,30 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 	@Override
 	public void onClickStandAction(int slideDir) {
-		if(slideVal != slideDir && slideDir == 1) {
-			removeTractionFrag();
-		}
-		if (slideDir == 1) {
-			title.setVisibility(View.VISIBLE);
-			containerSwitch.setVisibility(View.GONE);
-			addDocumentListFragment();
-			submitButton.setVisibility(View.VISIBLE);
-		} else {
-			title.setVisibility(View.GONE);
-			containerSwitch.setVisibility(View.VISIBLE);
-		}
-		slideVal = slideDir;
+//		if(slideVal != slideDir && slideDir == 1) {
+//			removeTractionFrag();
+//		}
+//		if (slideDir == 1) {
+//			title.setVisibility(View.VISIBLE);
+//			containerSwitch.setVisibility(View.GONE);
+//			addDocumentListFragment();
+//			submitButton.setVisibility(View.VISIBLE);
+//		} else {
+//			title.setVisibility(View.GONE);
+//			containerSwitch.setVisibility(View.VISIBLE);
+//		}
+//		slideVal = slideDir;
 
 	}
-
-	private void removeTractionFrag() {
-		if(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()) != null) {
-			getSupportFragmentManager()
-					.beginTransaction()
-					.remove(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()))
-					.commit();
-		}
-		title.setVisibility(View.VISIBLE);
-		containerSwitch.setVisibility(View.GONE);
-	}
+//
+//	private void removeTractionFrag() {
+//		if(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()) != null) {
+//			getSupportFragmentManager()
+//					.beginTransaction()
+//					.remove(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()))
+//					.commit();
+//		}
+//		title.setVisibility(View.VISIBLE);
+//		containerSwitch.setVisibility(View.GONE);
+//	}
 }

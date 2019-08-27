@@ -335,8 +335,15 @@ class OTPConfirmFragment : Fragment(){
 //                                Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false)
 //                                startActivity(intent)
 
-                                (parentActivity as DriverSplashActivity)
-                                        .openDriverSetupFragment(accessToken)
+                                with(parentActivity as DriverSplashActivity) {
+                                    if (resources.getBoolean(R.bool.traction_request_in_documents)) {
+                                        Prefs.with(context).save(Constants.KEY_ACCESS_TOKEN,accessToken)
+                                        loadTractionFragment(accessToken, true)
+                                        setContainerSwitch()
+                                    } else {
+                                        openDriverSetupFragment(accessToken)
+                                    }
+                                }
                             } else {
                                 DialogPopup.alertPopup(requireActivity(), "", message)
                             }
@@ -477,6 +484,11 @@ class OTPConfirmFragment : Fragment(){
                     }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarChangeListener.setToolbarVisibility(true)
     }
 
 

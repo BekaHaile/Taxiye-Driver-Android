@@ -1,11 +1,10 @@
 package product.clicklabs.jugnoo.driver.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_traction_list.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
+import product.clicklabs.jugnoo.driver.ToolbarChangeListener
 import product.clicklabs.jugnoo.driver.adapters.OfflineRequestsAdapter
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse
@@ -28,10 +28,11 @@ class TractionListFragment : Fragment() {
 
     companion object{
         @JvmStatic
-        fun newInstance(accessToken: String):TractionListFragment{
+        fun newInstance(accessToken: String, showTractions: Boolean):TractionListFragment{
             val fragment = TractionListFragment()
             val bundle = Bundle()
             bundle.putString(Constants.KEY_ACCESS_TOKEN,accessToken)
+            bundle.putBoolean("show_tractions",showTractions)
             fragment.arguments = bundle
             return fragment
         }
@@ -39,6 +40,21 @@ class TractionListFragment : Fragment() {
 
     private lateinit var offlineRequests:MutableList<CustomerInfo>
     private lateinit var offlineRequestsAdapter:OfflineRequestsAdapter
+    private var showTractions = false
+    private var toolbarChangeListener:ToolbarChangeListener? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        showTractions = arguments?.getBoolean("show_tractions")!!
+        toolbarChangeListener?.setToolbarVisibility(true)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is ToolbarChangeListener) {
+            toolbarChangeListener = context
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -101,7 +117,7 @@ class TractionListFragment : Fragment() {
     private val runnableTraction = object : Runnable {
         override fun run() {
 
-            if (showTractionList()) {
+            if (showTractionList() || showTractions) {
 
                 getTractionRides(true)
                 if (handler != null) {
@@ -118,7 +134,7 @@ class TractionListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if (showTractionList()) {
+        if (showTractionList() || showTractions) {
             handler = Handler()
             handler!!.removeCallbacks(runnableTraction)
             handler!!.post(runnableTraction)
@@ -131,6 +147,13 @@ class TractionListFragment : Fragment() {
             handler!!.removeCallbacks(runnableTraction)
             handler = null
         }
+    }
+
+    override fun onDestroyView() {
+        if(handler != null) {
+            handler?.removeCallbacks(runnableTraction)
+        }
+        super.onDestroyView()
     }
 
 }

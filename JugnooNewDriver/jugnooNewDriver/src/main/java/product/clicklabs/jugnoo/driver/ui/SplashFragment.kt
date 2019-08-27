@@ -332,7 +332,16 @@ class SplashFragment : Fragment() {
                                             if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(mActivity, accessToken)
-                                    parentActivity?.let { (it as DriverSplashActivity).addDriverSetupFragment(accessToken) }
+                                    parentActivity?.let { with(it as DriverSplashActivity) {
+                                        if(resources.getBoolean(R.bool.traction_request_in_documents)) {
+                                            Prefs.with(context).save(Constants.KEY_ACCESS_TOKEN,accessToken)
+                                            loadTractionFragment(accessToken, false)
+                                            setContainerSwitch()
+                                        } else {
+                                            addDriverSetupFragment(accessToken)
+                                        }
+
+                                    } }
                                 } else {
                                     DialogPopup.alertPopup(mActivity, "", message)
                                 }
