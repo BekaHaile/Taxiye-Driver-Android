@@ -170,6 +170,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.dialogs.TutorialInfoDialog;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -562,6 +563,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private PagerAdapter pagerAdapter;
 
     private TextView tvIntro;
+    private ImageView ivRingtoneSelection;
 
     private TabLayout tabDots;
     private ViewPager vpRequests;
@@ -868,6 +870,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
             vpBidRequestPager.setPageTransformer(true, new ZoomOutPageTransformer());
             vpBidRequestPager.setAdapter(pagerAdapter);
+			ivRingtoneSelection = findViewById(R.id.ivRingtoneSelection);
 
             // Driver Request Accept layout
             driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
@@ -1819,6 +1822,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
+			ivRingtoneSelection.setOnClickListener(v -> RingtoneSelectionDialog.INSTANCE.show(HomeActivity.this));
 
 
             // driver accept layout events
@@ -4535,6 +4539,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     String tutorialBannerText = Prefs.with(this).getString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, "");
 					tvIntro.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
 					tvIntro.setText(tutorialBannerText);
+
+					ivRingtoneSelection.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
 
                     break;
 

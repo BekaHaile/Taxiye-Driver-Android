@@ -39,11 +39,22 @@ object RingtoneSelectionDialog{
 
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_ONE, "Ringtone 1", selectedRingType == RingtoneTypes.RING_TYPE_ONE))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_TWO, "Ringtone 2", selectedRingType == RingtoneTypes.RING_TYPE_TWO))
-            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_THREE, "Ringtone 3", selectedRingType == RingtoneTypes.RING_TYPE_THREE))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_18, "Ringtone 3", selectedRingType == RingtoneTypes.RING_TYPE_18))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_FOUR, "Ringtone 4", selectedRingType == RingtoneTypes.RING_TYPE_FOUR))
-            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_FIVE, "Ringtone 5", selectedRingType == RingtoneTypes.RING_TYPE_FIVE))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_19, "Ringtone 5", selectedRingType == RingtoneTypes.RING_TYPE_19))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_SIX, "Ringtone 6", selectedRingType == RingtoneTypes.RING_TYPE_SIX))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_SEVEN, "Ringtone 7", selectedRingType == RingtoneTypes.RING_TYPE_SEVEN))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_8, "Ringtone 8", selectedRingType == RingtoneTypes.RING_TYPE_8))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_9, "Ringtone 9", selectedRingType == RingtoneTypes.RING_TYPE_9))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_10, "Ringtone 10", selectedRingType == RingtoneTypes.RING_TYPE_10))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_11, "Ringtone 11", selectedRingType == RingtoneTypes.RING_TYPE_11))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_12, "Ringtone 12", selectedRingType == RingtoneTypes.RING_TYPE_12))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_13, "Ringtone 13", selectedRingType == RingtoneTypes.RING_TYPE_13))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_14, "Ringtone 14", selectedRingType == RingtoneTypes.RING_TYPE_14))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_15, "Ringtone 15", selectedRingType == RingtoneTypes.RING_TYPE_15))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_16, "Ringtone 16", selectedRingType == RingtoneTypes.RING_TYPE_16))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_17, "Ringtone 17", selectedRingType == RingtoneTypes.RING_TYPE_17))
+
 
 
             val ringtoneSelectionAdapter = RingtoneSelectionAdapter(activity, rvRingtones, object:RingtoneSelectionAdapter.Callback{
@@ -54,6 +65,7 @@ object RingtoneSelectionDialog{
                         mediaPlayer!!.release()
                     }
                     mediaPlayer = RingtoneTypes.getMediaPlayerFromRingtone(activity, category.ringType, false)
+                    mediaPlayer!!.isLooping = true
                     mediaPlayer!!.start()
                 }
 
