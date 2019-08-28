@@ -44,7 +44,8 @@ class SlidingSwitch(var view: View, var callbackSlideOnOff: CallbackSlideOnOff) 
                         view.switchContainer.updateViewLayout(view.viewSlide, paramF)
                     }
                 }
-                MotionEvent.ACTION_UP -> kotlin.run {
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> kotlin.run {
+                    Log.e("SlidingSwitch","setOnTouchListener event="+rawX+", view.x=${(rawX) < (view.switchContainer.width)*0.5f}")
                     if((rawX) < (view.switchContainer.width)*0.5f) {
                         setSlideLeft()
                         callbackSlideOnOff.onClickStandAction(SlideDirection.LEFT.i)

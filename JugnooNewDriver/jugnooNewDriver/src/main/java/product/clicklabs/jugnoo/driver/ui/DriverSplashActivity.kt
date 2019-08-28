@@ -329,7 +329,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
-        if(supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.findFragmentByTag(TractionListFragment::class.simpleName) != null) {
+        if(supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name.contains(TractionListFragment::class.simpleName.toString())) {
             containerSwitch.visible()
             tvToolbar.gone()
         } else {
