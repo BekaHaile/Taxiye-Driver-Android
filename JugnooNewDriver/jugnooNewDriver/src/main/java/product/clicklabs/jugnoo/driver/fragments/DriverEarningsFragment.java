@@ -494,7 +494,7 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()),textViewWalletBalance,textViewWalletBalanceAmount,relativeLayoutWallet);
 
-				if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
+				if(getResources().getBoolean(R.bool.show_neft_pending) && driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
 					relativeLayoutNefy.setVisibility(View.VISIBLE);
 					textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
 

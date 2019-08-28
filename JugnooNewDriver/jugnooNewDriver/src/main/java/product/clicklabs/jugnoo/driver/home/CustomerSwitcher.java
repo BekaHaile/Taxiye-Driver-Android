@@ -493,7 +493,8 @@ public class CustomerSwitcher {
 
 	public void setCallButton(){
 		if(Data.getCurrentCustomerInfo() != null){
-			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
+			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
+					&& activity.getResources().getBoolean(R.bool.show_customer_info_in_inride)){
 				relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
 			}else {
 				relativeLayoutCustomerInfo.setVisibility(View.GONE);

@@ -4230,6 +4230,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if (customerInfo.getIsDelivery() == 1) {
                         jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
+                        if(getResources().getBoolean(R.bool.show_feedback_total_fare_text)){
+                            jugnooRideOverText.setVisibility(View.VISIBLE);
+                        } else {
+                            jugnooRideOverText.setVisibility(View.GONE);
+                        }
                         relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
                         linearLayoutEndDelivery.setVisibility(View.VISIBLE);
                         textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -4248,6 +4253,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         textViewOrdersReturnedValue.setText(String.valueOf(totalUndelivered));
                         textViewRateYourCustomer.setText(getResources().getString(R.string.rate_your_vendor));
                     } else if (customerInfo.getIsPooled() == 1) {
+                        jugnooRideOverText.setVisibility(View.VISIBLE);
                         jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
                         relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
                         linearLayoutEndDelivery.setVisibility(View.GONE);
@@ -4257,6 +4263,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                         textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
                     } else {
+                        jugnooRideOverText.setVisibility(View.VISIBLE);
                         jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
                         relativeLayoutDeliveryOver.setVisibility(View.GONE);
                         linearLayoutEndDelivery.setVisibility(View.GONE);
