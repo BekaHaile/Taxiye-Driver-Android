@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/rl1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:background="@drawable/dialog_background_color"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="@string/select_ringtone"
+        android:textColor="@color/black"
+        style="@style/TextLarge"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRingtones"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_margin="10dp"
+        android:scrollbars="vertical"
+        />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="15dp"
+        android:splitMotionEvents="false"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+            android:id="@+id/btnCancel"
+            style="@style/DialogButtonAlternate"
+            android:text="@string/cancel"
+            />
+
+        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+            android:id="@+id/btnOk"
+            style="@style/DialogButton"
+            android:text="@string/ok"
+            android:layout_marginStart="20dp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

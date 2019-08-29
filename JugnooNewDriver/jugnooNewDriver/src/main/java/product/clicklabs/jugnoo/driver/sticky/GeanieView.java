@@ -297,13 +297,7 @@ public class GeanieView extends Service {
 
 //									showJeaniePopup();
 									if (HomeActivity.appInterruptHandler != null) {
-										Intent newIntent = null;
-										if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
-												&& !Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()).isEmpty()) {
-											newIntent = new Intent(GeanieView.this, RequestActivity.class);
-										} else {
-											newIntent = new Intent(GeanieView.this, HomeActivity.class);
-										}
+										Intent newIntent = new Intent(GeanieView.this, HomeActivity.class);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(newIntent);

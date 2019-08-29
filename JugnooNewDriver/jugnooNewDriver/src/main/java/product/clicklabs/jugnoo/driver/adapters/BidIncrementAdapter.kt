@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.adapters
 
-import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils
 
 
 
-class BidIncrementAdapter(val activity:Activity, var rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<BidIncrementAdapter.BidValViewHolder>(),ItemListener {
+class BidIncrementAdapter(var rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<BidIncrementAdapter.BidValViewHolder>(),ItemListener {
 
     private var bidVals:MutableList<BidIncrementVal>? = mutableListOf()
     private var currency:String? = "INR"

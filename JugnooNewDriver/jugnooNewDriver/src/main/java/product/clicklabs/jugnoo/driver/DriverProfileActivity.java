@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -73,7 +74,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
     SwitchCompat switchNavigation, switchMaxSound,enableDelivery;
-    TextView tvDocuments, tvEmergencyContacts;
+    TextView tvDocuments, tvEmergencyContacts, tvSelectRingtone;
     private   RecyclerView rvVehicleTypes;
     private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
 
@@ -170,6 +171,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         textViewRankOverall.setTypeface(Fonts.mavenRegular(this));
         textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue);
         textViewMonthlyValue.setTypeface(Fonts.mavenRegular(this));
+		tvSelectRingtone = findViewById(R.id.tvSelectRingtone);
 
         textViewRidesTakenValue = (TextView) findViewById(R.id.textViewRidesTakenValue);
         textViewRidesTakenValue.setTypeface(Fonts.mavenRegular(this));
@@ -355,6 +357,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 }
             }
         });
+
+		tvSelectRingtone.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
+		findViewById(R.id.ivDivRingtoneSelection).setVisibility(tvSelectRingtone.getVisibility());
+		tvSelectRingtone.setOnClickListener(v -> RingtoneSelectionDialog.INSTANCE.show(DriverProfileActivity.this));
+
 
 
         rvVehicleTypes = findViewById(R.id.rvVehicleDetails);

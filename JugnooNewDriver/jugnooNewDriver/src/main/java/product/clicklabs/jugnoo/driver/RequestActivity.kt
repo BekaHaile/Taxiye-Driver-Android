@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_request.*
 import org.json.JSONObject
-import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest
 import product.clicklabs.jugnoo.driver.datastructure.*
+import product.clicklabs.jugnoo.driver.fragments.BidInteractionListener
 import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt
@@ -32,7 +32,24 @@ import kotlin.collections.indices
 import kotlin.collections.isNullOrEmpty
 import kotlin.collections.set
 
-class RequestActivity : AppCompatActivity() {
+class RequestActivity : AppCompatActivity(), ActivityStateCallback, BidInteractionListener {
+    override fun acceptClick(customerInfo: CustomerInfo, bidValue: String) {
+        acceptRideClick(customerInfo, bidValue)
+    }
+
+    override fun rejectCLick(customerInfo: CustomerInfo) {
+        rejectRequestFuncCall(customerInfo)
+    }
+
+    override fun updateTabs() {
+        updateTab()
+    }
+
+    override fun closeRequestView() {
+        finish()
+        overridePendingTransition(0, 0)
+        GCMIntentService.stopRing(true, this)
+    }
 
     companion object {
         const val INTENT_ACTION_REFRESH_BIDS = "INTENT_ACTION_REFRESH_BIDS"
@@ -52,13 +69,13 @@ class RequestActivity : AppCompatActivity() {
         }
     }
 
-    fun addRequests() {
+    fun updateViewPagerList() {
         if (vpRequests.adapter == null) {
-            vpRequests.adapter = RequestPagerAdapter(supportFragmentManager).apply {
-                addFrag()
+            vpRequests.adapter = RequestPagerAdapter(supportFragmentManager,this).apply {
+                notifyRequests()
             }
         } else {
-            (vpRequests.adapter as RequestPagerAdapter).addFrag()
+            (vpRequests.adapter as RequestPagerAdapter).notifyRequests()
         }
     }
 
@@ -79,7 +96,7 @@ class RequestActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, IntentFilter(INTENT_ACTION_REFRESH_BIDS))
         if(!isFinishing && intent!=null) {
             if (intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, -1) != -1) {
-                addRequests()
+                updateViewPagerList()
             }
         }
         if(Data.getAssignedCustomerInfosListForStatus(
@@ -169,7 +186,7 @@ class RequestActivity : AppCompatActivity() {
             if(HomeActivity.appInterruptHandler != null){
                 HomeActivity.appInterruptHandler.cancelRequest(customerInfo, object: RequestActivity.RejectRequestCallback{
                     override fun success() {
-                        (vpRequests.adapter as RequestPagerAdapter).addFrag()
+                        (vpRequests.adapter as RequestPagerAdapter).notifyRequests()
                     }
                 })
             } else {
@@ -200,62 +217,10 @@ class RequestActivity : AppCompatActivity() {
     val broadcastReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             if(vpRequests.adapter != null) {
-                (vpRequests.adapter as RequestPagerAdapter).addFrag()
+                (vpRequests.adapter as RequestPagerAdapter).notifyRequests()
                 updateFragments()
             }
         }
-    }
-
-    inner class RequestPagerAdapter(var fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
-
-        val requestList by lazy { ArrayList<Int>() }
-
-        override fun getItem(position: Int): Fragment {
-            return BidRequestFragment.newInstance(requestList[position])
-        }
-
-        override fun getItemPosition(`object`: Any): Int {
-            return POSITION_NONE
-        }
-
-        override fun getCount(): Int {
-            return if (requestList.isNullOrEmpty()) 0 else requestList.size
-        }
-
-        fun removeFrag(engagementId: Int){
-            for (i in requestList.indices) {
-                if(requestList[i]==engagementId){
-                    requestList.remove(i)
-                }
-            }
-            notifyDataSetChanged()
-        }
-
-        fun addFrag() {
-            val customerInfos = Data.getAssignedCustomerInfosListForStatus(
-                    EngagementStatus.REQUESTED.getOrdinal())
-            requestList.clear()
-            if(!customerInfos.isNullOrEmpty()) {
-                for (i in customerInfos.indices) {
-                    if (HomeActivity.appInterruptHandler == null) {
-                        if (!customerInfos[i].isBidPlaced) {
-                            requestList.add(customerInfos[i].engagementId)
-                        }
-                    } else {
-                        requestList.add(customerInfos[i].engagementId)
-                    }
-                }
-            }
-            if(requestList.size == 0) {
-                finish()
-                overridePendingTransition(0, 0)
-                GCMIntentService.stopRing(true, this@RequestActivity)
-            } else {
-                notifyDataSetChanged()
-            }
-            updateTab()
-        }
-
     }
 
     private fun updateTab() {
@@ -278,6 +243,50 @@ class RequestActivity : AppCompatActivity() {
         fun success()
     }
 
+}
+
+class RequestPagerAdapter(var fragmentManager: FragmentManager, var activityStateCallback: ActivityStateCallback) : FragmentStatePagerAdapter(fragmentManager) {
+
+    public val requestList by lazy { ArrayList<Int>() }
+
+    override fun getItem(position: Int): Fragment {
+        return BidRequestFragment.newInstance(requestList[position])
+    }
+
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
+
+    override fun getCount(): Int {
+        return if (requestList.isNullOrEmpty()) 0 else requestList.size
+    }
+
+    fun notifyRequests() {
+        val customerInfos = Data.getAssignedCustomerInfosListForStatus(
+                EngagementStatus.REQUESTED.getOrdinal())
+        requestList.clear()
+        if(!customerInfos.isNullOrEmpty()) {
+            for (i in customerInfos.indices) {
+                if (HomeActivity.appInterruptHandler == null) {
+                    if (!customerInfos[i].isBidPlaced) {
+                        requestList.add(customerInfos[i].engagementId)
+                    }
+                } else {
+                    requestList.add(customerInfos[i].engagementId)
+                }
+            }
+        }
+        if(requestList.size == 0) {
+            activityStateCallback.closeRequestView()
+        } else {
+            notifyDataSetChanged()
+        }
+        activityStateCallback.updateTabs()
+    }
 
 }
 
+interface ActivityStateCallback {
+    fun closeRequestView()
+    fun updateTabs()
+}

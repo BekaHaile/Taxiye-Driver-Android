@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -19,7 +20,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.fragment_bid_request.*
-import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.HomeActivity
+import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.BidIncrementAdapter
 import product.clicklabs.jugnoo.driver.adapters.BidIncrementVal
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
@@ -41,6 +45,7 @@ class BidRequestFragment : Fragment() {
     lateinit var customerInfo :CustomerInfo
     var percent: Float = 10.0f;
     val handler by lazy { Handler() }
+    var interactionListener:BidInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,13 +71,20 @@ class BidRequestFragment : Fragment() {
 
         setValuesToUI(engagementId)
         btAccept.setOnClickListener {
-            (activity as RequestActivity).acceptRideClick(customerInfo, customerInfo.initialBidValue.toString())
+            interactionListener?.acceptClick(customerInfo, customerInfo.initialBidValue.toString())
         }
         tvSkip.setOnClickListener(){
-            (activity as RequestActivity).rejectRequestFuncCall(customerInfo)
+            interactionListener?.rejectCLick(customerInfo)
         }
     }
 
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if(context is BidInteractionListener){
+            interactionListener = context
+        }
+    }
 
     val runnable = object : Runnable {
         override fun run() {
@@ -104,71 +116,77 @@ class BidRequestFragment : Fragment() {
     fun setValuesToUI(engagementId: Int) {
         val ci = Data.getCustomerInfo(engagementId.toString()) ?: return
         customerInfo = ci
+        try {
+            tvPickup.text = customerInfo.pickupAddress
+            tvDrop.text = customerInfo.dropAddress
+            tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
+                    * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
-        tvPickup.text = customerInfo.pickupAddress
-        tvDrop.text = customerInfo.dropAddress
-        tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
-                * UserData.getDistanceUnitFactor(requireContext())) + " km"
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()), true)
+            } else {
+                pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()))
+            }
+            if (customerInfo.getProgressValue(requireContext()) > 1) {
+                Handler().postDelayed(runnable, 32)
+            }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()),true)
-        } else {
-            pbRequestTime.setProgress(customerInfo.getProgressValue(requireContext()))
-        }
-        if(customerInfo.getProgressValue(requireContext()) > 1) {
-            Handler().postDelayed(runnable, 32)
-        }
+            if (customerInfo.isReverseBid) {
+                if (customerInfo.isBidPlaced) {
+                    rvBidValues.gone()
+                    tvOffer.gone()
+                    btAccept.gone()
+                    tvSkip.gone()
+                    tvPrice.text = getString(R.string.bid_placed) + ": " + Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.bidValue) + "\n" + getString(R.string.waiting_for_customer)
+                    tvCommision.gone()
+                } else {
+                    rvBidValues.visible()
+                    tvOffer.visible()
+                    btAccept.visible()
+                    tvSkip.visible()
+                    tvCommision.visible()
+                    tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
+                    rvBidValues.itemAnimator = DefaultItemAnimator()
+                    rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                    var bidIncrementAdapter = BidIncrementAdapter(rvBidValues, object : BidIncrementAdapter.Callback {
+                        override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
+                            interactionListener?.acceptClick(customerInfo, Utils.getDecimalFormatForMoney().format(incrementVal.value).toString())
+                        }
+                    })
+                    rvBidValues.adapter = bidIncrementAdapter
+                    bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(), customerInfo.incrementPercent,
+                            customerInfo.bidValue, customerInfo.stepSize, rvBidValues);
 
-        if (customerInfo.isReverseBid) {
-            if(customerInfo.isBidPlaced) {
+                    btAccept.setText(getString(R.string.accept_for) + " ");
+                    val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
+                    ssb.setSpan(RelativeSizeSpan(1.4f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    ssb.setSpan(StyleSpan(Typeface.BOLD), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    btAccept.append(ssb)
+                    tvSkip.text = if (HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
+                }
+            } else {
                 rvBidValues.gone()
                 tvOffer.gone()
-                btAccept.gone()
-                tvSkip.gone()
-                tvPrice.text = getString(R.string.bid_placed) + ": " + Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.bidValue) + "\n" + getString(R.string.waiting_for_customer)
-                tvCommision.gone()
-            } else {
-                rvBidValues.visible()
-                tvOffer.visible()
                 btAccept.visible()
+                btAccept.text = getString(R.string.accept)
                 tvSkip.visible()
-                tvCommision.visible()
-                tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue)
-                rvBidValues.itemAnimator = DefaultItemAnimator()
-                rvBidValues.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                var bidIncrementAdapter = BidIncrementAdapter(activity as RequestActivity, rvBidValues, object : BidIncrementAdapter.Callback {
-                    override fun onClick(incrementVal: BidIncrementVal, parentId: Int) {
-                        (activity as RequestActivity).acceptRideClick(customerInfo, Utils.getDecimalFormatForMoney().format(incrementVal.value).toString())
-                    }
-                })
-                rvBidValues.adapter = bidIncrementAdapter
-                bidIncrementAdapter.setList(0, customerInfo.getCurrencyUnit(), customerInfo.getInitialBidValue(), customerInfo.incrementPercent,
-                        customerInfo.bidValue, customerInfo.stepSize, rvBidValues);
+                tvSkip.text = if (HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
 
-                btAccept.setText(getString(R.string.accept_for) + " ");
-                val ssb = SpannableStringBuilder(Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.initialBidValue))
-                ssb.setSpan(RelativeSizeSpan(1.4f), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                ssb.setSpan(StyleSpan(Typeface.BOLD), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                btAccept.append(ssb)
-                tvSkip.text = if(HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
+                tvCommision.gone()
+                tvPrice.visibility = if (TextUtils.isEmpty(customerInfo.estimatedFare)) View.GONE else View.VISIBLE
+                tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.estimatedFare)
             }
-        } else {
-            rvBidValues.gone()
-            tvOffer.gone()
-            btAccept.visible()
-            btAccept.text = getString(R.string.accept)
-            tvSkip.visible()
-            tvSkip.text = if(HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
-
-            tvCommision.gone()
-            tvPrice.visibility = if(TextUtils.isEmpty(customerInfo.estimatedFare)) View.GONE else View.VISIBLE
-            tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.estimatedFare)
-        }
+        } catch(e:Exception){}
     }
 
     override fun onDestroyView() {
         handler.removeCallbacks(runnable)
         super.onDestroyView()
     }
+}
+
+interface BidInteractionListener{
+    fun acceptClick(customerInfo: CustomerInfo, bidValue:String)
+    fun rejectCLick(customerInfo: CustomerInfo)
 }

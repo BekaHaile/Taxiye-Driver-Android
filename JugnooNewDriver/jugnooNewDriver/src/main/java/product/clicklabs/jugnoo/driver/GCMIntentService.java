@@ -61,6 +61,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.home.RingtoneTypes;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
@@ -90,6 +91,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static int PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	private static final long WAKELOCK_TIMEOUT = 5000;
+
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
@@ -745,6 +747,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
+								Location location = Database2.getInstance(this).getDriverCurrentLocation(this);
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag
 									|| PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag
@@ -762,10 +765,11 @@ public class GCMIntentService extends FirebaseMessagingService {
 									} else {
 										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag, messageInternal);
 									}
+								} else{
+									LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
 								}
 								cancelUploadPathAlarm(this);
 								stopRing(false, this);
-								LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
@@ -1102,18 +1106,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
-				}else {
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-				}
-			}else{
-				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
-				}else {
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-				}
 			}
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, ringType, true);
 
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -1135,7 +1129,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static void startRingCustom(Context context, String file) {
 		try {
@@ -1205,7 +1198,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, 0, true);
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
