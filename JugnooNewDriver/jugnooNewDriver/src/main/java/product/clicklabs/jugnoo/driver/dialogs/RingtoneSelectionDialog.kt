@@ -18,7 +18,7 @@ object RingtoneSelectionDialog{
 
     var mediaPlayer:MediaPlayer? = null
 
-    fun show(activity: Activity) {
+    fun show(activity: Activity) : Dialog {
         val dialog = Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar)
         with(dialog) {
             window!!.attributes.windowAnimations = R.style.Animations_LoadingDialogFade
@@ -37,7 +37,7 @@ object RingtoneSelectionDialog{
             val ringtones = mutableListOf<RingtoneModel>()
             val selectedRingType = Prefs.with(context).getInt(Constants.KEY_RING_TYPE, 0)
 
-            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_2, "Ringtone 1", selectedRingType == RingtoneTypes.RING_TYPE_2))
+            ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_2, "Ringtone 1", (selectedRingType == RingtoneTypes.RING_TYPE_2 || selectedRingType == 0)))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_1, "Ringtone 2", selectedRingType == RingtoneTypes.RING_TYPE_1))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_3, "Ringtone 3", selectedRingType == RingtoneTypes.RING_TYPE_3))
             ringtones.add(RingtoneModel(RingtoneTypes.RING_TYPE_4, "Ringtone 4", selectedRingType == RingtoneTypes.RING_TYPE_4))
@@ -89,6 +89,7 @@ object RingtoneSelectionDialog{
 
             show()
         }
+        return dialog
     }
 
 }

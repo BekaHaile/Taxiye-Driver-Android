@@ -564,6 +564,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private TextView tvIntro;
     private ImageView ivRingtoneSelection;
+    private Dialog ringtoneDialog;
 
     private TabLayout tabDots;
     private ViewPager vpRequests;
@@ -1825,7 +1826,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
-			ivRingtoneSelection.setOnClickListener(v -> RingtoneSelectionDialog.INSTANCE.show(HomeActivity.this));
+			ivRingtoneSelection.setOnClickListener(v -> {
+				if(ringtoneDialog != null){
+					ringtoneDialog.dismiss();
+				}
+				ringtoneDialog = RingtoneSelectionDialog.INSTANCE.show(HomeActivity.this);
+			});
 
 
             // driver accept layout events
@@ -9025,6 +9031,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void run() {
                     showAllRideRequestsOnMap();
+					if(ringtoneDialog != null){
+						ringtoneDialog.dismiss();
+					}
 
                     try {
                         drawerLayout.closeDrawer(GravityCompat.START);
