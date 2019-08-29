@@ -83,6 +83,9 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		@SerializedName("fleets")
 		@Expose
 		private List<Fleet> fleets = new ArrayList<>();
+		@SerializedName("mandatory_fleet_registration")
+		@Expose
+		private int mandatoryFleetRegistration;
 
 		public City(Integer cityId, String cityName) {
 			this.cityId = cityId;
@@ -134,6 +137,13 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		public List<Fleet> getFleets() {
 			return fleets;
+		}
+		public int getMandatoryFleetRegistration() {
+			return mandatoryFleetRegistration;
+		}
+
+		public void setMandatoryFleetRegistration(int mandatoryFleetRegistration) {
+			this.mandatoryFleetRegistration = mandatoryFleetRegistration;
 		}
 	}
 

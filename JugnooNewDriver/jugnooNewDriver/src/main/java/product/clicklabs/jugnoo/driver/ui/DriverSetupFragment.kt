@@ -190,6 +190,13 @@ class DriverSetupFragment : Fragment() {
             return false
         }
 
+        if (citySelected != null
+                && citySelected!!.mandatoryFleetRegistration == 1
+                && (fleetSelected == null || fleetSelected!!.id <= 0)) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_fleet))
+            return false
+        }
+
         return true
     }
 

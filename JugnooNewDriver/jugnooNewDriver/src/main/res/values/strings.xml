@@ -1289,4 +1289,5 @@
     <string name="tutorial">Tutorial</string>
     <string name="zero_commission">(0% commission)</string>
     <string name="offer_you_fare_for_trip">Offer you fare for trip</string>
+    <string name="please_select_fleet">Please select fleet</string>
 </resources>
