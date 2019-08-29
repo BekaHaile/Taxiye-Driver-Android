@@ -112,7 +112,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="100dp"
         android:tag="@string/dont_touch_me"
-        app:elevation="4dp"
 
         />
 

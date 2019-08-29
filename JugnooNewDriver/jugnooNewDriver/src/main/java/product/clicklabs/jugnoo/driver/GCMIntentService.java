@@ -747,6 +747,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
+								Location location = Database2.getInstance(this).getDriverCurrentLocation(this);
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag
 									|| PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag

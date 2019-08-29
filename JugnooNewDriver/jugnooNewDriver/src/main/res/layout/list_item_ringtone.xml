@@ -14,5 +14,6 @@
     tools:text="@string/ringtone1"
     android:clickable="true"
     android:focusable="true"
+    android:textSize="15sp"
     android:theme="@style/Theme.AppCompat.Light"
     />

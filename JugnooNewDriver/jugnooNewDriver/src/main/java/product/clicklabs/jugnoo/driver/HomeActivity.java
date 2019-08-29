@@ -871,6 +871,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             vpBidRequestPager.setPageTransformer(true, new ZoomOutPageTransformer());
             vpBidRequestPager.setAdapter(pagerAdapter);
 			ivRingtoneSelection = findViewById(R.id.ivRingtoneSelection);
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				ivRingtoneSelection.setElevation(Utils.dpToPx(this, 5F));
+			}
 
             // Driver Request Accept layout
             driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
