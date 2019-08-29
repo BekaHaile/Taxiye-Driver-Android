@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -46,6 +47,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 	LinearLayout llBeforeRide, llInRide, llInRideBefore, llReferralInfo;
 	RelativeLayout rlBeforeRide;
 	RecyclerView rvRentalVehicle, rvOutstationVehicle;
+	NestedScrollView nestedScrollView;
 
 	NewRateCardActivity activity;
 	private View rootView;
@@ -77,6 +79,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		relativeLayoutDriverReferralHeading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDriverReferralHeading);
 		relativeLayoutNoData = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNoData);
 		relativeLayoutNoData.setVisibility(View.GONE);
+		nestedScrollView = rootView.findViewById(R.id.nestedScrollView);
 
 		linearLayoutMain = (LinearLayout) rootView.findViewById(R.id.linearLayoutMain);
 		linearLayoutMain.setVisibility(View.INVISIBLE);
@@ -305,6 +308,7 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter = new RentalAndOutstationVehicleAdapter();
 		rentalAndOutstationVehicleAdapter.setList((ArrayList<RentalVehicle>) regions, Data.userData.getCurrency());
 		rvRentalVehicle.setAdapter(rentalAndOutstationVehicleAdapter);
+		nestedScrollView.post(() -> nestedScrollView.scrollTo(0,0));
 
         rvOutstationVehicle.setVisibility(View.GONE);
 

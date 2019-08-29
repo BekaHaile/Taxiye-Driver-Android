@@ -531,7 +531,7 @@ public class CustomerInfo {
 		if(estimatedFare > 0){
 			return Utils.getDecimalFormatForMoney().format(estimatedFare);
 		} else{
-			return "0";
+			return "";
 		}
 	}
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
@@ -155,7 +156,14 @@ class BidRequestFragment : Fragment() {
         } else {
             rvBidValues.gone()
             tvOffer.gone()
+            btAccept.visible()
             btAccept.text = getString(R.string.accept)
+            tvSkip.visible()
+            tvSkip.text = if(HomeActivity.appInterruptHandler != null) getString(R.string.cancel) else getString(R.string.skip)
+
+            tvCommision.gone()
+            tvPrice.visibility = if(TextUtils.isEmpty(customerInfo.estimatedFare)) View.GONE else View.VISIBLE
+            tvPrice.text = Utils.formatCurrencyValue(customerInfo.currencyUnit, customerInfo.estimatedFare)
         }
     }
 
