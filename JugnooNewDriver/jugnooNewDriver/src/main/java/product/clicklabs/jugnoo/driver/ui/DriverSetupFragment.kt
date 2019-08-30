@@ -504,10 +504,12 @@ class DriverSetupFragment : Fragment() {
                 override fun getAllCountries(): MutableList<CityResponse.Fleet> {
                     val fleets = mutableListOf<CityResponse.Fleet>()
                     fleets.addAll(citySelected!!.fleets)
-                    val noneFleet = CityResponse.Fleet()
-                    noneFleet.name = getString(R.string.none)
-                    noneFleet.id = -1
-                    fleets.add(noneFleet)
+                    if(citySelected!!.mandatoryFleetRegistration != 1) {
+                        val noneFleet = CityResponse.Fleet()
+                        noneFleet.name = getString(R.string.none)
+                        noneFleet.id = -1
+                        fleets.add(noneFleet)
+                    }
                     return fleets
                 }
 
