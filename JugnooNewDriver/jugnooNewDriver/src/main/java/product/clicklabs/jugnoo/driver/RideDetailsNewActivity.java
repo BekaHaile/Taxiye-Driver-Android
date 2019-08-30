@@ -451,7 +451,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			deliveryAddressListAdapter.notifyDataSetChanged();
 
 			if(Data.isCaptive()){
-				textViewCustomerPaid.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getPaidUsingCash()));
+				textViewCustomerPaid.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(),
+						extras.getCollectCash() != null && extras.getCollectCash()  > 0 ?  extras.getCollectCash() : extras.getPaidUsingCash()));
 				imageViewSeprator.setVisibility(View.GONE);
 				findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
 				findViewById(R.id.rlIncome).setVisibility(View.GONE);
@@ -467,19 +468,25 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 				textViewActualFare.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getEarning()));
 				textViewActualFareValue.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getEarning()));
-				textViewCustomerPaid.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getPaidUsingCash()));
+				textViewCustomerPaid.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(),
+						extras.getCollectCash() != null && extras.getCollectCash()  > 0 ?  extras.getCollectCash() : extras.getPaidUsingCash()));
 				textViewAccountBalance.setText(Utils.formatCurrencyValue(extras.getCurrencyUnit(), extras.getAccount()));
 				if(Prefs.with(this).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1) {
 					findViewById(R.id.rl_bank_deposit).setVisibility(View.VISIBLE);
-					findViewById(R.id.rlCashCollected).setVisibility(View.VISIBLE);
 					findViewById(R.id.ivDivIncome).setVisibility(View.VISIBLE);
 					fareStructureInfos.addAll(extras.getRideParam());
 					recyclerViewRideInfo.setVisibility(View.VISIBLE);
 				} else {
 					findViewById(R.id.rl_bank_deposit).setVisibility(View.GONE);
-					findViewById(R.id.rlCashCollected).setVisibility(View.GONE);
 					findViewById(R.id.ivDivIncome).setVisibility(View.GONE);
 					recyclerViewRideInfo.setVisibility(View.GONE);
+				}
+
+				if(getResources().getBoolean(R.bool.show_cash_collect_order_history)
+						|| Prefs.with(this).getInt(Constants.KEY_SHOW_BANK_DEPOSIT, 1) == 1) {
+					findViewById(R.id.rlCashCollected).setVisibility(View.VISIBLE);
+				} else {
+					findViewById(R.id.rlCashCollected).setVisibility(View.GONE);
 				}
 				rideInfoTilesAdapter.notifyDataSetChanged();
 

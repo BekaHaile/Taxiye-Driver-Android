@@ -2660,7 +2660,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (intent.getAction().equalsIgnoreCase(Constants.UPDATE_MPESA_PRICE)) {
                 endRideData.toPay = Double.parseDouble(intent.getStringExtra("to_pay"));
                 takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
-                ;
+
             }
             HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
@@ -4276,7 +4276,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 + Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
                     } else {
                         takeFareText.setText(getString(R.string.take_cash) + " "
-                                + Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
+                                + Utils.formatCurrencyValue(endRideData.getCurrency(),
+                                endRideData.getCustomerFare() != null && endRideData.getCustomerFare() > 0 ? endRideData.getCustomerFare() : endRideData.toPay));
                     }
 
                     endRideInfoRl.setVisibility(View.VISIBLE);
@@ -7755,7 +7756,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
                     finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode, customerInfo.getCurrencyUnit(),
-                    fareDetails, Data.fareStructure);
+                    fareDetails, Data.fareStructure, finalToPay);
 
             try {
                 Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);

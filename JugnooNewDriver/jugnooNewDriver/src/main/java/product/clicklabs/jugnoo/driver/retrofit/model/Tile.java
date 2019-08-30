@@ -233,6 +233,9 @@ public class Tile  {
         @SerializedName("ticket_date")
         @Expose
         private String ticketDate;
+        @SerializedName("collect_cash")
+        @Expose
+        private Double collectCash;
         @SerializedName("slots")
         @Expose
         private ArrayList<CaptiveSlots> slots;
@@ -516,6 +519,9 @@ public class Tile  {
             this.ticketDate = ticketDate;
         }
 
+        public Double getCollectCash() {
+            return collectCash;
+        }
         public class DropCoordinate {
 
             @SerializedName("latitude")
