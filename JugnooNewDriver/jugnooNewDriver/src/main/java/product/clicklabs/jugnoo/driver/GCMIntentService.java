@@ -766,7 +766,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag, messageInternal);
 									}
 								} else{
-									LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
+									try{LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));}catch(Exception ignored){}
 								}
 								cancelUploadPathAlarm(this);
 								stopRing(false, this);

@@ -6857,7 +6857,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     public void initializeStartRideVariables() {
         if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
                 || Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
-            Utils.deleteCache(this);
+//            Utils.deleteCache(this);
 
             if (DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode.getOrdinal()
                     || DriverScreenMode.D_ARRIVED.getOrdinal() == driverScreenMode.getOrdinal()
@@ -8551,12 +8551,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 									}
 									DialogPopup.showLoadingDialog(HomeActivity.this, getString(R.string.loading));
-									LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
+									try{LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(
 											new Intent(AltMeteringService.INTENT_ACTION_END_RIDE_TRIGGER)
 													.putExtra(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId())
 													.putExtra(KEY_LATITUDE, latLng.latitude)
 													.putExtra(KEY_LONGITUDE, latLng.longitude)
-									);
+									);}catch(Exception ignored){}
                                 } else {
                                     endRideConfrimedFromPopup(customerInfo);
                                 }
@@ -9360,7 +9360,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     protected void onStart() {
         try {
             super.onStart();
-            LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(serviceBroadcastReceiver, new IntentFilter(INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK));
+			try{LocalBroadcastManager.getInstance(HomeActivity.this).registerReceiver(serviceBroadcastReceiver, new IntentFilter(INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK));}catch(Exception ignored){}
 
 
             boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
@@ -9378,7 +9378,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     protected void onStop() {
         super.onStop();
         try {
-            LocalBroadcastManager.getInstance(HomeActivity.this).unregisterReceiver(serviceBroadcastReceiver);
+			try{LocalBroadcastManager.getInstance(HomeActivity.this).unregisterReceiver(serviceBroadcastReceiver);}catch(Exception ignored){}
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -9514,7 +9514,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             DialogPopup.dismissLoadingDialog();
                             switchDriverScreen(driverScreenMode);
 //                            LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));
-                            requestPagerAdapter.notifyRequests();
+							if(requestPagerAdapter != null) {
+								requestPagerAdapter.notifyRequests();
+							}
                             updateBidRequestFragments();
 
                         }

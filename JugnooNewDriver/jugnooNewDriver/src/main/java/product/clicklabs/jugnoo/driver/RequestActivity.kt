@@ -16,7 +16,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_request.*
 import org.json.JSONObject
-import product.clicklabs.jugnoo.driver.datastructure.*
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus
 import product.clicklabs.jugnoo.driver.fragments.BidInteractionListener
 import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
@@ -28,8 +30,6 @@ import retrofit.client.Response
 import retrofit.mime.TypedByteArray
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.indices
-import kotlin.collections.isNullOrEmpty
 import kotlin.collections.set
 
 class RequestActivity : AppCompatActivity(), ActivityStateCallback, BidInteractionListener {
@@ -93,7 +93,7 @@ class RequestActivity : AppCompatActivity(), ActivityStateCallback, BidInteracti
 
     override fun onResume() {
         super.onResume()
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, IntentFilter(INTENT_ACTION_REFRESH_BIDS))
+        try { LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, IntentFilter(INTENT_ACTION_REFRESH_BIDS)) } catch (ignored: Exception) { }
         if(!isFinishing && intent!=null) {
             if (intent?.getIntExtra(Constants.KEY_ENGAGEMENT_ID, -1) != -1) {
                 updateViewPagerList()
@@ -203,7 +203,8 @@ class RequestActivity : AppCompatActivity(), ActivityStateCallback, BidInteracti
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver)
+        try {LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver) } catch (ignored: Exception) {}
+
     }
 
     override fun onBackPressed() {

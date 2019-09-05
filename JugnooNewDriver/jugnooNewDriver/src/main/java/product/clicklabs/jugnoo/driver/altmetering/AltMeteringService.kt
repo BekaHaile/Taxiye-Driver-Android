@@ -487,18 +487,18 @@ class AltMeteringService : Service() {
 
                     } else {
                         Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
-                        LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK))
+                        try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
                     }
                 }
             }
-            LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER))
+            try {LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
             log("service", "registerReceiver")
         }
     }
 
     private fun unregisterActivityBroadcast(){
         if(activityBroadcastReceiver != null) {
-            LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!)
+            try {LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
             activityBroadcastReceiver = null
             log("service", "unregisterReceiver")
         }
@@ -537,7 +537,7 @@ class AltMeteringService : Service() {
                     putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
                 }
                 Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
-                LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent)
+                try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
                 stopForeground(true)
                 stopSelf()
             }

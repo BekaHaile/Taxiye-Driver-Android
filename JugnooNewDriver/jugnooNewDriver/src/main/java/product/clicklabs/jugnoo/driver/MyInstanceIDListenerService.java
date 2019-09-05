@@ -30,7 +30,7 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
             // Get updated InstanceID token.
             Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "onTokenRefresh: "+ FirebaseInstanceId.getInstance().getToken());
             Intent intent = new Intent(Constants.ACTION_DEVICE_TOKEN_UPDATED);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+			try{LocalBroadcastManager.getInstance(this).sendBroadcast(intent);}catch(Exception ignored){}
 
 
         } catch (Exception e) {

@@ -866,7 +866,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+			try{LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());}catch(Exception ignored){}
 			//give message after waiting for 5 Seconds
 			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
 
@@ -1581,7 +1581,7 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 										}
 
 										Utils.deleteMFile(activity);
-										Utils.clearApplicationData(SplashNewActivity.this);
+//										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 
 										DialogPopup.dismissLoadingDialog();
