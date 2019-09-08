@@ -6287,7 +6287,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
 					ViewHolderDriverRequest holder = (ViewHolderDriverRequest) v.getTag();
-					acceptRideClick(customerInfos.get(holder.id), bidValues.get(holder.id));
+					if(customerInfos != null && customerInfos.size() > holder.id){
+						String bidVal = String.valueOf(customerInfos.get(holder.id).getInitialBidValue());
+						if(bidValues != null && bidValues.size() > holder.id){
+							bidVal = bidValues.get(holder.id);
+						}
+						acceptRideClick(customerInfos.get(holder.id), bidVal);
+					}
 				}
             });
 
