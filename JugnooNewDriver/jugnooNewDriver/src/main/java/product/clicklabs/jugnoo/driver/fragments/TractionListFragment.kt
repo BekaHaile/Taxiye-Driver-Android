@@ -152,6 +152,7 @@ class TractionListFragment : Fragment() {
     override fun onDestroyView() {
         if(handler != null) {
             handler?.removeCallbacks(runnableTraction)
+            handler = null
         }
         super.onDestroyView()
     }

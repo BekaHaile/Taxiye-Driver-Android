@@ -64,7 +64,9 @@
                     android:singleLine="true"
                     android:text="@string/offline_caps"
                     android:textColor="@drawable/selector_dark_white_text_color"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/maven_pro_regular"
+                    />
 
                 <TextView
                     android:id="@+id/tvOnlineTop"
@@ -83,7 +85,8 @@
                     android:singleLine="true"
                     android:text="@string/online_caps"
                     android:textColor="@drawable/selector_dark_white_text_color"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/maven_pro_regular" />
 
             </LinearLayout>
         </RelativeLayout>

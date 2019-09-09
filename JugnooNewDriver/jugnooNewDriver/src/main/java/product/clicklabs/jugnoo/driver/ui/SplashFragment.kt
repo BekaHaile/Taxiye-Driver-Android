@@ -331,9 +331,10 @@ class SplashFragment : Fragment() {
                                     Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                             if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                                     val accessToken = jObj.getString("access_token")
+                                    val reqInactiveDrivers = jObj.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                                     JSONParser.saveAccessToken(mActivity, accessToken)
                                     parentActivity?.let { with(it as DriverSplashActivity) {
-                                        if(resources.getBoolean(R.bool.traction_request_in_documents)) {
+                                        if(reqInactiveDrivers == 1) {
                                             Prefs.with(context).save(Constants.KEY_ACCESS_TOKEN,accessToken)
                                             loadTractionFragment(accessToken, false)
                                             setContainerSwitch()
