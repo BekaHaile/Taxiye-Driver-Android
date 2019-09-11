@@ -386,20 +386,45 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 
 			} else{
+				boolean earningIsNull = true;
+				for(DriverEarningsResponse.Earning earning : driverEarningsResponse.getEarnings()) {
+					if(earning.getEarnings()!=null) {
+						earningIsNull = false;
+					}
+					if(earning.getDeliveryEarnings()==null) {
+						earning.setDeliveryEarnings(0.0);
+					}
+//					if(earning.getEarnings()==null) {
+//						earning.setEarnings(0.0);
+//					}
+				}
+
+
+
+
 				//Graph set up Only required for nonCaptive Users
 				layoutCaptivePlanDetails.setVisibility(View.GONE);
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 					if(Data.userData.getDeliveryEnabled()==1) {
-//						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
-						textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
-						relativeLayoutDeliveryEarnings.setVisibility(View.VISIBLE);
+						if(!earningIsNull) {
+							textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+							textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+							relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						}
+//
 					}
 					else {
-						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
-						relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						if(!earningIsNull) {
+							textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+							relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						}
+
 					}
-					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+					if(!earningIsNull) {
+						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+
+					}
 				} else {
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 				}
@@ -495,7 +520,7 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()),textViewWalletBalance,textViewWalletBalanceAmount,relativeLayoutWallet);
 
 				if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
-					relativeLayoutNefy.setVisibility(View.VISIBLE);
+					relativeLayoutNefy.setVisibility(View.GONE);
 					textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
 
 				} else {
@@ -556,9 +581,9 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				String invoiceId = "0";
 				if(invoice == 0){
 					invoiceId = "0";
-				} else if(invoice == 1 && res != null){
+				} else if(invoice == 1 && res != null && res.getPreviousInvoiceId() != null){
 					invoiceId = String.valueOf(res.getPreviousInvoiceId());
-				}else if(invoice == 2 && res != null) {
+				}else if(invoice == 2 && res != null && res.getNextInvoiceId()!=null) {
 					invoiceId = String.valueOf(res.getNextInvoiceId());
 				}
 
