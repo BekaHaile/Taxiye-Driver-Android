@@ -631,6 +631,30 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 					} else {
 						DialogPopup.dismissLoadingDialog();
+
+						if(driverEarningsResponse.getRechargeOptions()!=null && !driverEarningsResponse.getRechargeOptions().isEmpty()) {
+							List<DriverEarningsResponse.RechargeOption> rechargeOption= driverEarningsResponse.getRechargeOptions();
+
+							if(rechargeOption.size()>0) {
+								for (DriverEarningsResponse.RechargeOption thisRechargeOption : rechargeOption) {
+									List<DriverEarningsResponse.Address> newEmptyAddressList = new ArrayList<>();
+
+									if(thisRechargeOption.getAddresses()!=null && !thisRechargeOption.getAddresses().isEmpty()) {
+										if(thisRechargeOption.getAddresses().size()>0){
+											android.util.Log.d("yyyyyy", "success: " + thisRechargeOption.getAddresses().size());
+											thisRechargeOption.setAddresses(newEmptyAddressList);
+											continue;
+										}
+									}
+									thisRechargeOption.setAddresses(newEmptyAddressList);
+								}
+
+							}
+						}
+
+
+
+
 						res = driverEarningsResponse;
 						updateData(driverEarningsResponse, walletClick);
 					}
