@@ -497,5 +497,6 @@ public interface Constants {
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
 
 	String KEY_LOCATIONS_COORDINATES = "locations_coordinates";
+	String KEY_LOGIN = "login";
 }
 

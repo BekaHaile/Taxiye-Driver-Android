@@ -331,7 +331,7 @@ class SplashFragment : Fragment() {
                                     Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                             if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                                     val accessToken = jObj.getString("access_token")
-                                    val reqInactiveDrivers = jObj.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
+                                    val reqInactiveDrivers = jObj.optJSONObject(Constants.KEY_LOGIN)?.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                                     JSONParser.saveAccessToken(mActivity, accessToken)
                                     parentActivity?.let { with(it as DriverSplashActivity) {
                                         if(reqInactiveDrivers == 1) {

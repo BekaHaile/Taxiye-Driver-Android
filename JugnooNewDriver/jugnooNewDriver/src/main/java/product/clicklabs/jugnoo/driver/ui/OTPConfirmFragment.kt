@@ -197,7 +197,7 @@ class OTPConfirmFragment : Fragment(){
         }
 
 
-        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
+        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000L else 30 * 1000L, 5, object : CustomCountDownTimer.DownTimerOperation {
             override fun updateCounterView(text: String?, width: Double) {
                 otpDialog?.updateCounterView(text, width)
             }
@@ -327,7 +327,7 @@ class OTPConfirmFragment : Fragment(){
                                 Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                         if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                                 val accessToken = jObj.getString("access_token")
-                                val reqInactiveDrivers = jObj.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
+                                val reqInactiveDrivers = jObj.optJSONObject(Constants.KEY_LOGIN)?.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                                 JSONParser.saveAccessToken(requireActivity(), accessToken)
 //                                val intent = Intent(requireActivity(), DriverDocumentActivity::class.java)
 //                                intent.putExtra("access_token", jObj.getString("access_token"))
