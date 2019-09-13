@@ -38,12 +38,14 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ArrayList<CustomerInfo> requestsList = new ArrayList<>();
     private Callback callback;
     private int totalRequests;
+    private boolean dontFade;
 
-    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, Callback callback) {
+    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, boolean dontFade, Callback callback) {
         this.requestsList = requestsList;
         this.activity = activity;
         this.rowLayout = rowLayout;
         this.totalRequests = totalRequests;
+        this.dontFade = dontFade;
         this.callback = callback;
     }
 
@@ -167,7 +169,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.relative.setEnabled(true);
             } else {
                 holder.rlAcceptView.setVisibility(View.GONE);
-                holder.ivFaded.setVisibility(View.VISIBLE);
+                holder.ivFaded.setVisibility(dontFade ? View.GONE : View.VISIBLE);
                 holder.relative.setEnabled(false);
             }
 

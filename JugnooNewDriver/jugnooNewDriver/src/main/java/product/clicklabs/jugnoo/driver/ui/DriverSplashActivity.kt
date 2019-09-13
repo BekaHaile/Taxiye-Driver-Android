@@ -7,7 +7,6 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.transition.TransitionInflater
 import android.view.MenuItem
@@ -435,6 +434,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         viewSlide.background = ContextCompat.getDrawable(this@DriverSplashActivity, R.drawable.selector_red_theme_rounded)
         viewSlide.post { slidingSwitch?.setSlideLeft() }
         rlOnOff.background = ContextCompat.getDrawable(this@DriverSplashActivity, R.drawable.selector_red_stroke_white_theme)
+        tvOfflineTop.text = getString(R.string.offline_caps)
+        tvOnlineTop.text = getString(R.string.online_caps)
     }
 
     private fun removeTractionFragment() {

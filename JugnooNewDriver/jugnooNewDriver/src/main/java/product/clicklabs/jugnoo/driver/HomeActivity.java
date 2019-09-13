@@ -2659,7 +2659,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         offlineRequests = new ArrayList<>();
 
         offlineRequestsAdapter = new OfflineRequestsAdapter(offlineRequests, activity,
-                R.layout.list_item_requests, 0, new OfflineRequestsAdapter.Callback() {
+                R.layout.list_item_requests, 0, false, new OfflineRequestsAdapter.Callback() {
             @Override
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);

@@ -68,7 +68,7 @@ class TractionListFragment : Fragment() {
         offlineRequests = mutableListOf()
 
         offlineRequestsAdapter = OfflineRequestsAdapter(offlineRequests as ArrayList<CustomerInfo>?, requireActivity(),
-                R.layout.list_item_requests, 0, OfflineRequestsAdapter.Callback {
+                R.layout.list_item_requests, 0, true, OfflineRequestsAdapter.Callback {
             Log.e(TractionListFragment::class.java.name,"no-i-will-not")
 
         })
