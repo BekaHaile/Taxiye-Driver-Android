@@ -152,6 +152,18 @@ public class JSONParser implements Constants {
 	}
 
 
+	private static ArrayList<LatLng> parseLocationCoordinates(String locationCoordinates){
+		ArrayList<LatLng> locationsCoordinates = new ArrayList<>();
+		if(!TextUtils.isEmpty(locationCoordinates)){
+			String[] latLngs = locationCoordinates.split(":");
+			for(String latLng:latLngs){
+				String[] arr = latLng.split(",");
+				try{locationsCoordinates.add(new LatLng(Double.parseDouble(arr[0]), Double.parseDouble(arr[1])));} catch(Exception ignored){}
+			}
+		}
+		return locationsCoordinates;
+	}
+
 	public static CouponInfo parseCouponInfo(JSONObject jObj) {
 		try {
 			JSONObject couponObject = jObj.getJSONObject("coupon");
@@ -166,7 +178,8 @@ public class JSONParser implements Constants {
 					couponObject.getInt("benefit_type"),
 					couponObject.getDouble("drop_latitude"),
 					couponObject.getDouble("drop_longitude"),
-					couponObject.getDouble("drop_radius")
+					couponObject.getDouble("drop_radius"),
+					parseLocationCoordinates(couponObject.optString(KEY_LOCATIONS_COORDINATES, ""))
 			);
 			return couponInfo;
 		} catch (Exception e) {
@@ -187,7 +200,8 @@ public class JSONParser implements Constants {
 					jPromoObject.getDouble("cashback_percentage"),
 					jPromoObject.getDouble("drop_latitude"),
 					jPromoObject.getDouble("drop_longitude"),
-					jPromoObject.getDouble("drop_radius"));
+					jPromoObject.getDouble("drop_radius"),
+					parseLocationCoordinates(jPromoObject.optString(KEY_LOCATIONS_COORDINATES, "")));
 
 			return promoInfo;
 		} catch (Exception e) {

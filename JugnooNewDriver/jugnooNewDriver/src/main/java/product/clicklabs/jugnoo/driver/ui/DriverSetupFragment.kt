@@ -538,4 +538,9 @@ class DriverSetupFragment : Fragment() {
             countryPickerDialog.show(supportFragmentManager, FLEET_DIALOG_FRAGMENT_TAG)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarChangeListener?.setToolbarVisibility(true)
+    }
 }

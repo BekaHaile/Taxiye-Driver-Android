@@ -38,15 +38,15 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ArrayList<CustomerInfo> requestsList = new ArrayList<>();
     private Callback callback;
     private int totalRequests;
-    HomeActivity homeActivity;
+    private boolean dontFade;
 
-    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, Callback callback, HomeActivity homeActivity) {
+    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, boolean dontFade, Callback callback) {
         this.requestsList = requestsList;
         this.activity = activity;
         this.rowLayout = rowLayout;
         this.totalRequests = totalRequests;
+        this.dontFade = dontFade;
         this.callback = callback;
-        this.homeActivity = homeActivity;
     }
 
     public void notifyList(int totalRequests, ArrayList<CustomerInfo> requestsList, boolean refresh) {
@@ -113,7 +113,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.tvPickup.setText(customerInfo.getPickupAddressEng() == null || customerInfo.getPickupAddressEng().trim().isEmpty() ? "----- -----" : customerInfo.getPickupAddressEng().trim());
             holder.tvDrop.setText(customerInfo.getDropAddress() == null || customerInfo.getDropAddress().trim().isEmpty() ? "----- -----" : customerInfo.getDropAddress().trim());
             holder.tvTime.setText(customerInfo.getTimeDiff() == null || customerInfo.getTimeDiff().trim().isEmpty() ? "-- --" : customerInfo.getTimeDiff());
-            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()));
+            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Data.userData!= null ? Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()):  customerInfo.getEstimatedDriverFare());
 
 
             float scale = activity.getResources().getDisplayMetrics().density;
@@ -130,8 +130,8 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             distance = customerInfo.getDistance();
 
             holder.tvDistance.setText(
-                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
-                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
+                    (distance > 0) ? "" + HomeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(activity))
+                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(activity)) : "- --");
 
             holder.relative.setTag(position);
             holder.rlAcceptView.setTag(position);
@@ -169,7 +169,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.relative.setEnabled(true);
             } else {
                 holder.rlAcceptView.setVisibility(View.GONE);
-                holder.ivFaded.setVisibility(View.VISIBLE);
+                holder.ivFaded.setVisibility(dontFade ? View.GONE : View.VISIBLE);
                 holder.relative.setEnabled(false);
             }
 

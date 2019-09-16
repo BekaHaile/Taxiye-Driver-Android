@@ -434,7 +434,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    public DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -2659,12 +2659,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         offlineRequests = new ArrayList<>();
 
         offlineRequestsAdapter = new OfflineRequestsAdapter(offlineRequests, activity,
-                R.layout.list_item_requests, 0, new OfflineRequestsAdapter.Callback() {
+                R.layout.list_item_requests, 0, false, new OfflineRequestsAdapter.Callback() {
             @Override
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);
             }
-        },this);
+        });
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 
@@ -5276,6 +5276,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private void updateDropLatngForAltService(CustomerInfo customerInfo){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+				&& customerInfo != null
 				&& customerInfo.getDropLatLng() != null
 				&& Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
 			Intent intent = getAltServiceIntent(customerInfo);
@@ -7710,8 +7711,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (customerInfo.couponInfo != null) {        // coupon
                 if (CouponType.DROP_BASED.getOrdinal() == customerInfo.couponInfo.couponType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.couponInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.couponInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.couponInfo.getLocationsCoordinates(),
+							customerInfo.couponInfo.dropRadius, customerInfo.couponInfo.droplLatLng, dropLatLng);
+					if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7721,8 +7723,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             } else if (customerInfo.promoInfo != null) {        // promotion
                 if (PromotionType.DROP_BASED.getOrdinal() == customerInfo.promoInfo.promoType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.promoInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.promoInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.promoInfo.getLocationsCoordinates(),
+							customerInfo.promoInfo.dropRadius, customerInfo.promoInfo.droplLatLng, dropLatLng);
+                    if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7851,7 +7854,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
+	private boolean isDropDiscountApplicable(ArrayList<LatLng> locationCoordinates, double dropRadius, LatLng discountDropLatLng, LatLng driverDropLatLng) {
+		boolean discountApplicable = false;
+		if(locationCoordinates != null && locationCoordinates.size() > 0) {
+			for (LatLng latLng : locationCoordinates){
+				if(MapUtils.distance(driverDropLatLng, latLng) <= dropRadius){
+					discountApplicable = true;
+					break;
+				}
+			}
+		} else {
+			discountApplicable = MapUtils.distance(driverDropLatLng, discountDropLatLng) <= dropRadius;
+		}
+		return discountApplicable;
+	}
+
+	private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
         try {
             if (customerInfo.getPoolFare() != null && customerInfo.getIsPooled() == 1) {
                 LatLng poolDropLatLng = customerInfo.dropLatLng;

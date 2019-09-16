@@ -348,6 +348,7 @@ class OTPConfirmFragment : Fragment(){
                             Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                     if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
                             val accessToken = jObj.getString("access_token")
+                            val reqInactiveDrivers = jObj.optJSONObject(Constants.KEY_LOGIN)?.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                             JSONParser.saveAccessToken(requireActivity(), accessToken)
     //                                val intent = Intent(requireActivity(), DriverDocumentActivity::class.java)
     //                                intent.putExtra("access_token", jObj.getString("access_token"))
@@ -356,8 +357,15 @@ class OTPConfirmFragment : Fragment(){
     //                                Utils.enableReceiver(requireActivity(), IncomingSmsReceiver::class.java, false)
     //                                startActivity(intent)
 
-                            (parentActivity as DriverSplashActivity)
-                                    .openDriverSetupFragment(accessToken)
+                            with(parentActivity as DriverSplashActivity) {
+                                if (reqInactiveDrivers == 1) {
+                                    Prefs.with(context).save(Constants.KEY_ACCESS_TOKEN,accessToken)
+                                    loadTractionFragment(accessToken, true)
+                                    setContainerSwitch()
+                                } else {
+                                    openDriverSetupFragment(accessToken)
+                                }
+                            }
                         } else {
                             DialogPopup.alertPopup(requireActivity(), "", message)
                         }
@@ -495,6 +503,11 @@ class OTPConfirmFragment : Fragment(){
                     }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarChangeListener.setToolbarVisibility(true)
     }
 
 
