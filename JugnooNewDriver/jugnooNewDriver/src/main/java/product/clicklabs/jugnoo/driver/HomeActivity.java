@@ -3907,7 +3907,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
             if(showOfflineRequests){
 
-                getTractionRides(true);
+                if(Data.userData != null){getTractionRides(true);}
                 if(handler != null) {
                     handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 20000));
                 }

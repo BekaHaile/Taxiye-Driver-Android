@@ -91,7 +91,12 @@ public class DriverLocationDispatcher {
 										Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "Driverlocationdispatcher send location", task.getResult().getToken());
 										nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, task.getResult().getToken());
 									}
-									sendLocationToServer(context, responseTime, pushyToken, location, nameValuePairs);
+									new Thread(new Runnable() {
+										@Override
+										public void run() {
+											sendLocationToServer(context, responseTime, pushyToken, location, nameValuePairs);
+										}
+									}).start();
 								}
 							});
 						} else {
@@ -169,11 +174,12 @@ public class DriverLocationDispatcher {
 
 		Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
-		Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
-		String result = new String(((TypedByteArray) response.getBody()).getBytes());
-		Log.i(TAG, "sendLocationToServer result=" + result);
 
 		try {
+			Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
+			String result = new String(((TypedByteArray) response.getBody()).getBytes());
+			Log.i(TAG, "sendLocationToServer result=" + result);
+
 			//{"log":"Updated"}
 			JSONObject jObj = new JSONObject(result);
 			if (jObj.has("log")) {
