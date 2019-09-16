@@ -43,6 +43,12 @@ public class Log {
 			android.util.Log.w(tag, message);
 		}
 	}
+
+	public static void w(String tag, String message, Throwable throwable) {
+		if(BuildConfig.DEBUG_MODE) {
+			android.util.Log.w(tag, message, throwable);
+		}
+	}
 	
 	
 

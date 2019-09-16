@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Pair;
@@ -14,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -35,6 +39,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -301,150 +306,167 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accessToken);
-				params.put("device_token", FirebaseInstanceId.getInstance().getToken());
-
-				params.put("latitude", ""+Data.latitude);
-				params.put("longitude", ""+Data.longitude);
-
-				params.put("locale", conf.locale.toString());
-				params.put("app_version", ""+Data.appVersion);
-				params.put("device_type", Data.DEVICE_TYPE);
-				params.put("unique_device_id", Data.uniqueDeviceId);
-				params.put("is_access_token_new", "1");
-				params.put("client_id", Data.CLIENT_ID);
-				params.put("login_type", Data.LOGIN_TYPE);
-
-				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
-				HomeUtil.putDefaultParams(params);
-
-				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
-					params.put("auto_n_cab_installed", "1");
-				}
-				else{
-					params.put("auto_n_cab_installed", "0");
-				}
-
-
-				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
-					params.put("uber_installed", "1");
-				}
-				else{
-					params.put("uber_installed", "0");
-				}
-
-				if(Utils.telerickshawInstall(activity)){
-					params.put("telerickshaw_installed", "1");
-				}
-				else{
-					params.put("telerickshaw_installed", "0");
-				}
-
-				if(Utils.olaInstall(activity)){
-					params.put("ola_installed", "1");
-				}
-				else{
-					params.put("ola_installed", "0");
-				}
-
-				if(Utils.isDeviceRooted()){
-					params.put("device_rooted", "1");
-				}
-				else{
-					params.put("device_rooted", "0");
-				}
-
-				DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
-
-				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
+				FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.getInt("flag");
-							String message = JSONParser.getServerMessage(jObj);
-
-							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
-								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-								else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
-										String resp;
-										try {
-											resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
-										} catch (Exception e) {
-											e.printStackTrace();
-											resp = Constants.SERVER_TIMEOUT;
-										}
-
-										DialogPopup.dismissLoadingDialog();
-										if(resp.contains(Constants.SERVER_TIMEOUT)){
-											DialogPopup.alertPopup(activity, "", message);
-										}
-										else{
-											Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
-											if(getIntent() != null && getIntent().getExtras() != null)
-												intent.putExtras(getIntent().getExtras());
-											startActivity(intent);
-											ActivityCompat.finishAffinity(DriverDocumentActivity.this);
-											overridePendingTransition(R.anim.right_in, R.anim.right_out);
-										}
-
-										Utils.deleteMFile(activity);
-//										Utils.clearApplicationData(DriverDocumentActivity.this);
-										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
-
-
-									}
-									else{
-										DialogPopup.dismissLoadingDialog();
-									}
-								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
-									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
-									Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
-									intent.putExtra("access_token",jObj.getString("access_token"));
-									intent.putExtra("in_side", false);
-									intent.putExtra("doc_required", 3);
-									startActivity(intent);
-								}  else{
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-							}
-							else{
-								DialogPopup.dismissLoadingDialog();
-							}
-
-						}  catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-							DialogPopup.dismissLoadingDialog();
+					public void onComplete(@NonNull Task<InstanceIdResult> task) {
+						if(!task.isSuccessful()) {
+							Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+							return;
 						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-
-						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+						if(task.getResult() != null) {
+							Log.e("DEVICE_TOKEN_TAG DRIVER_DOCUMENT_ACTIVITY  -> accessTokenLogin", task.getResult().getToken());
+							params.put("device_token", task.getResult().getToken());
+						}
+						accessTokenLoginFunc(activity, responseTime, params);
 
 					}
 				});
+
 
 			}
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		}
+	}
+
+	private void accessTokenLoginFunc(Activity activity, long responseTime, HashMap<String, String> params) {
+		params.put("latitude", ""+ Data.latitude);
+		params.put("longitude", ""+Data.longitude);
+
+		params.put("locale", conf.locale.toString());
+		params.put("app_version", ""+Data.appVersion);
+		params.put("device_type", Data.DEVICE_TYPE);
+		params.put("unique_device_id", Data.uniqueDeviceId);
+		params.put("is_access_token_new", "1");
+		params.put("client_id", Data.CLIENT_ID);
+		params.put("login_type", Data.LOGIN_TYPE);
+
+		params.put("device_name", Utils.getDeviceName());
+		params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
+		HomeUtil.putDefaultParams(params);
+
+		if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
+			params.put("auto_n_cab_installed", "1");
+		}
+		else{
+			params.put("auto_n_cab_installed", "0");
+		}
+
+
+		if(Utils.isAppInstalled(activity, Data.UBER_APP)){
+			params.put("uber_installed", "1");
+		}
+		else{
+			params.put("uber_installed", "0");
+		}
+
+		if(Utils.telerickshawInstall(activity)){
+			params.put("telerickshaw_installed", "1");
+		}
+		else{
+			params.put("telerickshaw_installed", "0");
+		}
+
+		if(Utils.olaInstall(activity)){
+			params.put("ola_installed", "1");
+		}
+		else{
+			params.put("ola_installed", "0");
+		}
+
+		if(Utils.isDeviceRooted()){
+			params.put("device_rooted", "1");
+		}
+		else{
+			params.put("device_rooted", "0");
+		}
+
+		DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+
+		RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
+			@Override
+			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					int flag = jObj.getInt("flag");
+					String message = JSONParser.getServerMessage(jObj);
+
+					if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
+						if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+						else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+						else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+							if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+								String resp;
+								try {
+									resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+								} catch (Exception e) {
+									e.printStackTrace();
+									resp = Constants.SERVER_TIMEOUT;
+								}
+
+								DialogPopup.dismissLoadingDialog();
+								if(resp.contains(Constants.SERVER_TIMEOUT)){
+									DialogPopup.alertPopup(activity, "", message);
+								}
+								else{
+									Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
+									if(getIntent() != null && getIntent().getExtras() != null)
+										intent.putExtras(getIntent().getExtras());
+									startActivity(intent);
+									ActivityCompat.finishAffinity(DriverDocumentActivity.this);
+									overridePendingTransition(R.anim.right_in, R.anim.right_out);
+								}
+
+								Utils.deleteMFile(activity);
+//										Utils.clearApplicationData(DriverDocumentActivity.this);
+								FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
+
+
+							}
+							else{
+								DialogPopup.dismissLoadingDialog();
+							}
+						} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+							JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
+							Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
+							intent.putExtra("access_token",jObj.getString("access_token"));
+							intent.putExtra("in_side", false);
+							intent.putExtra("doc_required", 3);
+							startActivity(intent);
+						}  else{
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+					}
+					else{
+						DialogPopup.dismissLoadingDialog();
+					}
+
+				}  catch (Exception exception) {
+					exception.printStackTrace();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					DialogPopup.dismissLoadingDialog();
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+				DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
+			}
+		});
 	}
 
 	@Override
