@@ -495,5 +495,6 @@ public interface Constants {
 	String KEY_SPECIFIED_COUNTRY_PLACES_SEARCH = "specified_country_places_search";
 	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
+	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
 }
 

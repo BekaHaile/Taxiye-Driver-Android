@@ -318,7 +318,7 @@ public class SearchListAdapter extends BaseAdapter {
                             refreshingAutoComplete = false;
 
                             if (!editTextForSearch.getText().toString().trim().equalsIgnoreCase(searchText)) {
-                                recallSearch(editTextForSearch.getText().toString().trim());
+								handler.postDelayed(input_finish_checker.setTextToSearch(editTextForSearch.getText().toString().trim()), delay);
                             }
                             GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);
 
