@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="22px"
+                android:visibility="gone"
                 android:gravity="center"
                 android:text="@string/take_cash"
                 android:lineSpacingExtra="10px"
