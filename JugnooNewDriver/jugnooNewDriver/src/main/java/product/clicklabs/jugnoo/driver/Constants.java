@@ -498,5 +498,6 @@ public interface Constants {
 
 	String KEY_LOCATIONS_COORDINATES = "locations_coordinates";
 	String KEY_LOGIN = "login";
+	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
 }
 

@@ -566,6 +566,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
 		Prefs.with(context).save(KEY_BID_TIMEOUT, userData.optLong(KEY_BID_TIMEOUT, 30000L));
 		Prefs.with(context).save(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, userData.optInt(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 1));
+		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 1));
 
 	}
 
