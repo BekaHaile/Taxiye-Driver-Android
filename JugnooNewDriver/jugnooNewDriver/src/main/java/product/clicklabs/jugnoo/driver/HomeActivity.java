@@ -3923,7 +3923,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     && 0 == Data.userData.mealsAvailable
                     && 0 == Data.userData.fatafatAvailable
                     && 0 == Data.userData.sharingAvailable
-                    && 0 == Data.userData.getDeliveryAvailable()) {
+                    && (0 == Data.userData.getDeliveryAvailable() || 0 == Data.userData.getDeliveryEnabled())) {
                 return false;
             } else {
                 return true;
