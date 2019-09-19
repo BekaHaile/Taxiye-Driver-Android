@@ -3483,10 +3483,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (jObj.has(KEY_FLAG)) {
                             int flag = jObj.getInt(KEY_FLAG);
                             if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                                if (toggleDelivery) {
+
+                                int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
+                                if (menuOptionVisibility == 1) {
                                     Data.userData.setDeliveryAvailable(jugnooOnFlag);
-                                } else {
                                     Data.userData.autosAvailable = jugnooOnFlag;
+
+                                }
+                                else {
+                                    if (toggleDelivery) {
+                                        Data.userData.setDeliveryAvailable(jugnooOnFlag);
+                                    } else {
+                                        Data.userData.autosAvailable = jugnooOnFlag;
+                                    }
                                 }
                                 changeJugnooONUIAndInitService(true);
                                 if (jugnooOnFlag == 1) {
