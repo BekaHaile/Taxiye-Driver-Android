@@ -4559,7 +4559,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					tvIntro.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
 					tvIntro.setText(tutorialBannerText);
 
-					ivRingtoneSelection.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
+					ivRingtoneSelection.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.GONE:View.GONE);
 
                     break;
 
