@@ -7028,7 +7028,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
                     try {
                         Response responseR = GoogleRestApis.INSTANCE.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
-                                dropLatitude + "," + dropLongitude, false, "driving", false);
+                                dropLatitude + "," + dropLongitude, false, "driving", false, "end_safety");
                         String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         JSONObject jsonObject = new JSONObject(response);
                         String status = jsonObject.getString("status");
@@ -7122,7 +7122,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                 }
                 try {
-                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString());
+                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString(), "snap_wp");
                     String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
                     JSONObject jsonObject = new JSONObject(responseStr);
                     JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
@@ -7151,9 +7151,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 .append("%7C");
                     }
                 }
-                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString());
+                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString(), "snap_wp");
             } else {
-                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false);
+                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false, "snap_wp");
             }
             String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
             JSONObject jsonObject = new JSONObject(responseStr);
@@ -8760,7 +8760,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					double totalDistance = totalDisp;
 					if(getFlagDistanceTravelled() == -1 && totalDisp > 0 && customerDist < totalDisp){
 						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
-								destination.latitude + "," + destination.longitude, "EN", false, false);
+								destination.latitude + "," + destination.longitude, "EN", false, false, "zero_dist");
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 						JSONObject jsonObject = new JSONObject(response);
 						String status = jsonObject.getString("status");
@@ -8783,7 +8783,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else if (fusedLocationUsed && getFlagDistanceTravelled() == -1) {
 
                         Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
-                                destination.latitude + "," + destination.longitude, "EN", false, false);
+                                destination.latitude + "," + destination.longitude, "EN", false, false, "fused");
                         String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         if (endDisplacementSpeed < maxSpeedThreshold) {
                             try {
@@ -10682,7 +10682,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
                 if (latLngs.size() > 1) {
-                    new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false,
+                    new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false, "delivery_markers",
                             new ApiGoogleDirectionWaypoints.Callback() {
                                 @Override
                                 public void onPre() {
@@ -10947,7 +10947,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (latLngs.size() > 1) {
                 //todo getResources().getColor(R.color.blue_polyline)
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false,
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
@@ -11107,7 +11107,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (latLngs.size() > 1) {
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false, "delivery_pool",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {

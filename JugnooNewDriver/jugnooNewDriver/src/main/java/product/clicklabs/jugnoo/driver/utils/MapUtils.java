@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.MyApplication;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -117,16 +117,16 @@ public class MapUtils {
 	
 	
 	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
-	public static String getGAPIAddress(Context context, LatLng latLng, boolean toLocality) {
+	public static String getGAPIAddress(LatLng latLng, boolean toLocality, String source) {
 		String fullAddress = "Unnamed";
 		try {
 			String language = "";
-			language = context.getResources().getConfiguration().locale.toString();
+			language = LocaleHelper.getLanguage(MyApplication.getInstance());
 			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
 				language = "hi";
             }
 
-			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language);
+			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language, source);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
 

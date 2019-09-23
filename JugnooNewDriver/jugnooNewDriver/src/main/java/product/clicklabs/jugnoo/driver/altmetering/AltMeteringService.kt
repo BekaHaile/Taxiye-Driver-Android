@@ -328,9 +328,9 @@ class AltMeteringService : Service() {
                 for(drwpObj in drWpList){
                     log("gapi hitting", "drwp=$drwpObj")
                     val response = if (!TextUtils.isEmpty(drwpObj.waypoints)) {
-                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!)
+                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
                     } else {
-                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false)
+                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false, "alt_metering")
                     }
                     val result = String((response.body as TypedByteArray).bytes)
                     val json = JSONObject(result)
