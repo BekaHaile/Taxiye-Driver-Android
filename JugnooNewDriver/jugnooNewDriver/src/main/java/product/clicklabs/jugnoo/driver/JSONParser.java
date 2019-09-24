@@ -550,6 +550,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, userData.optInt(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 1));
 		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 1));
 
+		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
+				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
