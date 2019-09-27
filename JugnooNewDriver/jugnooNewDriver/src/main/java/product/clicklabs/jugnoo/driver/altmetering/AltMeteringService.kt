@@ -266,7 +266,7 @@ class AltMeteringService : Service() {
 
     fun getNotificationMessage():String{
         return getString(R.string.estimated_dis) + ": " +
-                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this)) +" "+
+                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this, false)) +" "+
                 Utils.getDistanceUnit(UserData.getDistanceUnit(this))
     }
 

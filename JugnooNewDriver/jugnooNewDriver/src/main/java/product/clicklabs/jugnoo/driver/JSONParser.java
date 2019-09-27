@@ -1185,15 +1185,12 @@ public class JSONParser implements Constants {
 		try {
 			if(jObjCustomer.has(KEY_POOL_FARE)){
 				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
-				double distance = jPoolFare.optDouble(KEY_DISTANCE) * 1000d;
-				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
-				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
 				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
 				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED, 0);
 				double discountPercentage = jPoolFare.optDouble(KEY_DISCOUNT_PERCENTAGE, 0);
 				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
+				customerInfo.setPoolFare(new PoolFare(fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
 			}
 			if(jObjCustomer.has(KEY_REVERSE_BID_FARE)){
 				JSONObject jFare = jObjCustomer.optJSONObject(KEY_REVERSE_BID_FARE);

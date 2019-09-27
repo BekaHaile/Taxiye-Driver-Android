@@ -130,7 +130,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             distance = customerInfo.getDistance();
 
             holder.tvDistance.setText(
-                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
+                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity, true))
                             + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
 
             holder.relative.setTag(position);

@@ -152,6 +152,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -4218,7 +4219,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     scrollViewEndRide.smoothScrollTo(0, 0);
 
                     double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
-                            .getDistance(HomeActivity.this), HomeActivity.this, true) * UserData.getDistanceUnitFactor(this));
+                            .getDistance(HomeActivity.this), HomeActivity.this, true) * UserData.getDistanceUnitFactor(this, false));
                     String kmsStr = "";
 
                     try {
@@ -4239,7 +4240,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
                             && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
-                        totalDistanceInKm = endRideData.getFareStructure().getMandatoryDistance() * UserData.getDistanceUnitFactor(this);
+                        totalDistanceInKm = endRideData.getFareStructure().getMandatoryDistance() * UserData.getDistanceUnitFactor(this, true);
                     }
                     if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
                             && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
@@ -5652,7 +5653,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
         }
 
-        double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this));
+        double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this, false));
 
         double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
         double waitTimeInMin = Math.round(((double) waitTimeInMillis) / 60000.0d);
@@ -5677,7 +5678,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
         try {
-            double totalDistanceInKm = Math.abs(distance * UserData.getDistanceUnitFactor(this));
+            double totalDistanceInKm = Math.abs(distance * UserData.getDistanceUnitFactor(this, false));
 
             driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(this)));
             driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
@@ -6065,12 +6066,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else if (myLocation != null) {
                 holder.textViewRequestDistance.setVisibility(View.VISIBLE);
                 distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
-                distance = distance * 1.5;
+                distance = distance * 1.5 / 1000D;
             } else {
                 holder.textViewRequestDistance.setVisibility(View.GONE);
             }
 
-            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this))
+            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this, true))
                     + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(HomeActivity.this)));
 
 //			holder.textViewDeliveryApprox.setVisibility(View.GONE);
@@ -6268,7 +6269,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
                 holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
                         Utils.getDecimalFormat().format(customerInfo.getEstimatedTripDistance()
-                                * UserData.getDistanceUnitFactor(HomeActivity.this))));
+                                * UserData.getDistanceUnitFactor(HomeActivity.this, false))));
             } else {
                 holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
             }
@@ -7031,7 +7032,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
+                if (!Prefs.with(activity).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())
+						&& getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity, true) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));

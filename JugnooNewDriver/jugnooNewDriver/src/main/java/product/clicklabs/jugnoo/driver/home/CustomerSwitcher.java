@@ -394,12 +394,12 @@ public class CustomerSwitcher {
 														if (finalDistance > 0) {
 															distanceRefreshTime = System.currentTimeMillis();
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(finalDistance * UserData.getDistanceUnitFactor(activity))+" "
+																	.format(finalDistance * UserData.getDistanceUnitFactor(activity, true))+" "
 																	+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														} else {
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
 																	+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														}
 													} catch (Exception e) {
@@ -437,7 +437,7 @@ public class CustomerSwitcher {
 				try {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
 							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 				} catch (Exception e) {
 					e.printStackTrace();
