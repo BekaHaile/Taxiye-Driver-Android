@@ -151,8 +151,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
         enableDelivery = (SwitchCompat)findViewById(R.id.deliveryEnable);
         if(Data.userData.getDeliveryEnabled()==1){
-            enableDelivery.setVisibility(View.VISIBLE);
-            ivDeliveryEnable.setVisibility(View.VISIBLE);
+            enableDelivery.setVisibility(View.GONE);
+            ivDeliveryEnable.setVisibility(View.GONE);
             if(Data.userData.getDeliveryAvailable()==1){
                 enableDelivery.setChecked(true);
             }else{
@@ -358,7 +358,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             }
         });
 
-		tvSelectRingtone.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
+		tvSelectRingtone.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.GONE:View.GONE);
 		findViewById(R.id.ivDivRingtoneSelection).setVisibility(tvSelectRingtone.getVisibility());
 		tvSelectRingtone.setOnClickListener(v -> RingtoneSelectionDialog.INSTANCE.show(DriverProfileActivity.this));
 

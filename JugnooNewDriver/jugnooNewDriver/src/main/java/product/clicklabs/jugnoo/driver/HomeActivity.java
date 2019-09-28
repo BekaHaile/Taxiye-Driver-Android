@@ -1341,10 +1341,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             changeJugnooON(0, false, false);
                             resetSharedPrefs();
                             MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
+                            drawerLayout.closeDrawer(GravityCompat.START);
                         } else {
                             changeJugnooON(1, false, false);
                             MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_on", null);
-                        }
+                            drawerLayout.closeDrawer(GravityCompat.START);                        }
                         FlurryEventLogger.event(JUGNOO_ON_OFF);
                     }
                 }
