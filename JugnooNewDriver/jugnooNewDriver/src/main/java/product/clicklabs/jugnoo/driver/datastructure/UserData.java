@@ -37,7 +37,8 @@ public class UserData {
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
-	private double walletBalance, minDriverBalance;
+	private double walletBalance;
+	private Double minDriverBalance;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -52,7 +53,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, double minDriverBalance) {
+					int resendEmailInvoiceEnabled, Double minDriverBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -293,11 +294,7 @@ public class UserData {
 	 * driver's minimum balance that is required to receive a ride request
 	 * @return double
 	 */
-	public double getMinDriverBalance() {
+	public Double getMinDriverBalance() {
 		return minDriverBalance;
-	}
-
-	public void setMinDriverBalance(double minDriverBalance) {
-		this.minDriverBalance = minDriverBalance;
 	}
 }

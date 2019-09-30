@@ -199,7 +199,7 @@ public class JSONParser implements Constants {
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
-		double minDriverBalance = 0;
+		Double minDriverBalance = null;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
 
 		if (userData.has("free_ride_icon_disable")) {

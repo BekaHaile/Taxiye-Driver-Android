@@ -4832,8 +4832,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     private void checkForLowWalletBalance() {
-        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1) {
-            if (Data.userData != null && Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
+        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
+                && Data.userData != null && Data.userData.getMinDriverBalance() != null) {
+            if (Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
                 rlLowWalletBalance.setVisibility(View.GONE);
             } else {
                 rlLowWalletBalance.setVisibility(View.VISIBLE);
