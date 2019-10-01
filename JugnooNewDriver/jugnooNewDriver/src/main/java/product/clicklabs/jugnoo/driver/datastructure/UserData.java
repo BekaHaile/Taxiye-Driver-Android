@@ -37,7 +37,7 @@ public class UserData {
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
-	private double walletBalance;
+	private Double walletBalance;
 	private Double minDriverBalance;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
@@ -53,7 +53,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
 					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, Double minDriverBalance) {
+					int resendEmailInvoiceEnabled, Double minDriverBalance, Double walletBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -111,6 +111,7 @@ public class UserData {
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		this.minDriverBalance = minDriverBalance;
+		this.walletBalance = walletBalance;
 		setVehicleServicesModel(vehicleServicesModel);
 	}
 
@@ -282,11 +283,11 @@ public class UserData {
 	 * driver's current balance
 	 * @return double
 	 */
-	public double getWalletBalance() {
+	public Double getWalletBalance() {
 		return walletBalance;
 	}
 
-	public void setWalletBalance(double walletBalance) {
+	public void setWalletBalance(Double walletBalance) {
 		this.walletBalance = walletBalance;
 	}
 
