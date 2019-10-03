@@ -257,7 +257,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
        return otpDetectedViaSms;
     }
 
-    var goToHomeScreenCalled = false
+    public var goToHomeScreenCalled = false
     override fun goToHomeScreen() {
         if(!hasWindowFocus()){
             goToHomeScreenCalled = true

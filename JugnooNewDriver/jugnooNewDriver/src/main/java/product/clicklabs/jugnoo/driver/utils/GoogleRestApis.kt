@@ -19,7 +19,7 @@ object GoogleRestApis {
     }
 
     fun getDirections(originLatLng: String, destLatLng: String, sensor: Boolean?,
-                      mode: String, alternatives: Boolean?): Response {
+                      mode: String, alternatives: Boolean?, source: String): Response {
         val response:Response
         Log.e(GoogleRestApis::class.java.simpleName, "getDirections hit")
         if (BuildConfig.MAPS_APIS_SIGN) {
@@ -44,13 +44,13 @@ object GoogleRestApis {
                     sensor, mode, alternatives, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(originLatLng.contains(",")) {
-            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DIRECTIONS)
+            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DIRECTIONS+"_"+source)
         }
         return response
     }
 
     fun getDistanceMatrix(originLatLng: String, destLatLng: String, language: String,
-                          sensor: Boolean?, alternatives: Boolean?): Response {
+                          sensor: Boolean?, alternatives: Boolean?, source: String): Response {
         Log.e(GoogleRestApis::class.java.simpleName, "getDistanceMatrix hit")
         val response:Response
         if (BuildConfig.MAPS_APIS_SIGN) {
@@ -75,12 +75,12 @@ object GoogleRestApis {
                     sensor, alternatives, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(originLatLng.contains(",")) {
-            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DISTANCE_MATRIX)
+            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DISTANCE_MATRIX+"_"+source)
         }
         return response
     }
 
-    fun geocode(latLng: String, language: String): Response {
+    fun geocode(latLng: String, language: String, source: String): Response {
         Log.e(GoogleRestApis::class.java.simpleName, "geocode hit")
         val response:Response
         if (BuildConfig.MAPS_APIS_SIGN) {
@@ -101,13 +101,13 @@ object GoogleRestApis {
             response = RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(latLng.contains(",")) {
-            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_GEOCODE)
+            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_GEOCODE+"_"+source)
         }
         return response
     }
 
 
-    fun getDirectionsWaypoints(strOrigin: String, strDestination: String, strWaypoints: String): Response {
+    fun getDirectionsWaypoints(strOrigin: String, strDestination: String, strWaypoints: String, source:String): Response {
         Log.e(GoogleRestApis::class.java.simpleName, "getDirectionsWaypoints hit")
         val response:Response
         if (BuildConfig.MAPS_APIS_SIGN) {
@@ -131,12 +131,12 @@ object GoogleRestApis {
                     strWaypoints, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(strOrigin.contains(",")) {
-            logGoogleRestAPI(strOrigin.split(",")[0], strOrigin.split(",")[1], API_NAME_DIRECTIONS)
+            logGoogleRestAPI(strOrigin.split(",")[0], strOrigin.split(",")[1], API_NAME_DIRECTIONS+"_wp_"+source)
         }
         return response
     }
 
-    fun snapToRoads(path: String): Response {
+    fun snapToRoads(path: String, source: String): Response {
         Log.e(GoogleRestApis::class.java.simpleName, "snapToRoads hit")
         val response:Response
         if (BuildConfig.MAPS_APIS_SIGN) {
@@ -158,7 +158,7 @@ object GoogleRestApis {
         }
         if(path.contains(",")) {
             val latLng:String = path.split("|")[0]
-            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_SNAP_TO_ROAD)
+            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_SNAP_TO_ROAD+"_"+source)
         }
         return response
     }

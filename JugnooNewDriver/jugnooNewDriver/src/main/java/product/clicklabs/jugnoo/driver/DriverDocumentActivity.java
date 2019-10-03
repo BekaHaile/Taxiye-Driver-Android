@@ -391,12 +391,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 											DialogPopup.alertPopup(activity, "", message);
 										}
 										else{
-											Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
-											if(getIntent() != null && getIntent().getExtras() != null)
-												intent.putExtras(getIntent().getExtras());
-											startActivity(intent);
-											ActivityCompat.finishAffinity(DriverDocumentActivity.this);
-											overridePendingTransition(R.anim.right_in, R.anim.right_out);
+											goToHomeScreen();
 										}
 
 										Utils.deleteMFile(activity);
@@ -447,12 +442,34 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		}
 	}
 
+	private void goToHomeScreen() {
+		if(!hasWindowFocus()){
+			goToHomeScreenCalled = true;
+			return;
+		}
+		Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
+		if(getIntent() != null && getIntent().getExtras() != null)
+			intent.putExtras(getIntent().getExtras());
+		startActivity(intent);
+		ActivityCompat.finishAffinity(DriverDocumentActivity.this);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
 	}
 
+	public boolean goToHomeScreenCalled = false;
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(hasFocus && goToHomeScreenCalled){
+			goToHomeScreen();
+			goToHomeScreenCalled = false;
+		}
+	}
 
 	public DocumentListFragment getDocumentListFragment(){
 		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));

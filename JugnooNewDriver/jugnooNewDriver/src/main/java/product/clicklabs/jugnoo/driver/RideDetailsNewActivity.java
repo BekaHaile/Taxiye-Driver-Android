@@ -258,7 +258,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 							}
 						}
 						if(latLngs.size() > 1){
-							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), true,
+							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), true, "ride_details",
 									new ApiGoogleDirectionWaypoints.Callback() {
 										@Override
 										public void onPre() {

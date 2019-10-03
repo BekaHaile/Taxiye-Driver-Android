@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -81,6 +84,7 @@ import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -1830,14 +1834,19 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				public void onClick(View view) {
 					try {
 						loginDataFetched = false;
-						dialog.dismiss();
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						if("".equalsIgnoreCase(link)) {
-							intent.setData(Uri.parse("market://details?id="+BuildConfig.APPLICATION_ID));
-						} else {
-							intent.setData(Uri.parse(link));
+						if(activity instanceof DriverSplashActivity){
+							((DriverSplashActivity)activity).setGoToHomeScreenCalled(false);
+						} else if(activity instanceof DriverDocumentActivity){
+							((DriverDocumentActivity)activity).goToHomeScreenCalled = false;
 						}
-						activity.startActivity(intent);
+						dialog.dismiss();
+						if("".equalsIgnoreCase(link)) {
+							openAppRating(activity);
+						} else {
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse(link));
+							activity.startActivity(intent);
+						}
 						activity.finish();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -1851,7 +1860,51 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			e.printStackTrace();
 		}
 	}
-	
+
+	private static void openAppRating(Context context) {
+		// you can also use BuildConfig.APPLICATION_ID
+		String appId = context.getPackageName();
+		Intent rateIntent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse("market://details?id=" + appId));
+		boolean marketFound = false;
+
+		// find all applications able to handle our rateIntent
+		final List<ResolveInfo> otherApps = context.getPackageManager()
+				.queryIntentActivities(rateIntent, 0);
+		for (ResolveInfo otherApp: otherApps) {
+			// look for Google Play application
+			if (otherApp.activityInfo.applicationInfo.packageName
+					.equals("com.android.vending")) {
+
+				ActivityInfo otherAppActivity = otherApp.activityInfo;
+				ComponentName componentName = new ComponentName(
+						otherAppActivity.applicationInfo.packageName,
+						otherAppActivity.name
+				);
+				// make sure it does NOT open in the stack of your activity
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// task reparenting if needed
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				// if the Google Play was already open in a search result
+				//  this make sure it still go to the app page you requested
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// this make sure only the Google Play app is allowed to
+				// intercept the intent
+				rateIntent.setComponent(componentName);
+				context.startActivity(rateIntent);
+				marketFound = true;
+				break;
+
+			}
+		}
+
+		// if GP not present on device, open web browser
+		if (!marketFound) {
+			Intent webIntent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://play.google.com/store/apps/details?id="+appId));
+			context.startActivity(webIntent);
+		}
+	}
 	
 	
 	public static void sendToCustomerAppPopup(String title, String message, final Activity activity) {
