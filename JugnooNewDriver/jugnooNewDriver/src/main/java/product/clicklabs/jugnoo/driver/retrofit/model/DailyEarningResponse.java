@@ -297,6 +297,9 @@ public class DailyEarningResponse extends CurrencyModel {
 		@SerializedName("earning")
 		@Expose
 		private Double earning;
+		@SerializedName("collect_cash")
+		@Expose
+		private Double collectCash;
 		@SerializedName("type")
 		@Expose
 		private Integer type;
@@ -402,6 +405,10 @@ public class DailyEarningResponse extends CurrencyModel {
 
 		public void getDistance(){
 
+		}
+
+		public Double getCollectCash() {
+			return collectCash;
 		}
 	}
 

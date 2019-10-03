@@ -1037,11 +1037,12 @@ public class JSONParser implements Constants {
 				}
 			}
 			return new EndRideData(engagementId,
-					jObj.getDouble("fare"),
-					jObj.getDouble("discount"),
-					jObj.getDouble("paid_using_wallet"),
-					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr, fareStructure);
+					jObj.optDouble("fare", 0),
+					jObj.optDouble("discount", 0),
+					jObj.optDouble("paid_using_wallet", 0),
+					jObj.optDouble("to_pay", 0),
+					jObj.optInt("payment_mode",0),jObj.optString(KEY_CURRENCY), fareDetailsArr, fareStructure,
+					jObj.optDouble("customer_fare", 0.0));
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -1050,7 +1051,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"", null, fareStructure);
+					PaymentMode.CASH.getOrdinal(),"", null, fareStructure, 0.0);
 		}
 	}
 
