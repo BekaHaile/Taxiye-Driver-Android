@@ -26,7 +26,7 @@ public class AuthKeySaver {
 	}
 	
 	private static File getAuthFile(Context context) throws IOException {
-		String fileNamePrefix = android.os.Build.SERIAL + "key2";
+		String fileNamePrefix = BuildConfig.FLAVOR + "_auth" + "key2";
 		try {
 			fileNamePrefix = SHA256Convertor.getSHA256String(fileNamePrefix)+".jpg";
 		} catch (NoSuchAlgorithmException e) {
