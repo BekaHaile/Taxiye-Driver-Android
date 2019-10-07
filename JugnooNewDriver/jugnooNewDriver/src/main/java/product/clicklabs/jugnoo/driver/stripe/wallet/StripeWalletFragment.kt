@@ -109,9 +109,9 @@ class StripeWalletFragment:Fragment(){
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
         execute(params = null,apiName = ApiName.FETCH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
-                        if (Data.userData != null) {
+                        /*if (Data.userData != null) {
                             Data.userData.walletBalance = t.getBalance()
-                        }
+                        }*/
                         tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance())
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;

@@ -14,6 +14,5 @@ class WalletModelResponse(
     @Expose @SerializedName("currency") val currencyUnit: String,
     @Expose @SerializedName("stripe_cards") val stripeCards:List<StripeCardData>?,
     @Expose @SerializedName("quick_add_amounts") val quickAddAmounts:List<Double>?): FeedCommonResponseKotlin(){
-
         fun getBalance()=walletBalance-userDebt;
 }

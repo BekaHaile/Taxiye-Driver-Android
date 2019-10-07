@@ -2527,7 +2527,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
                 if(Data.userData != null) {
-                    Data.userData.setWalletBalance(walletModelResponse.getBalance());
+                    //Data.userData.setWalletBalance(walletModelResponse.getBalance());
                     checkForLowWalletBalance();
                 }
             }
@@ -4832,8 +4832,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     private void checkForLowWalletBalance() {
-        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
-                && Data.userData != null && Data.userData.getMinDriverBalance() != null) {
+        if(Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
+                && Data.userData != null
+                && Data.userData.getMinDriverBalance() != null
+                && Data.userData.getWalletBalance()!=null
+        ){
             if (Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
                 rlLowWalletBalance.setVisibility(View.GONE);
             } else {
