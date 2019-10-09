@@ -44,7 +44,7 @@ class RingtoneSelectionAdapter(val activity: Activity, val rv: RecyclerView, val
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
-        val pos: Int = rv.getChildLayoutPosition(parentView)
+        val pos: Int = rv.getChildLayoutPosition(parentView!!)
         if (pos != RecyclerView.NO_POSITION) {
             when (childView!!.id) {
                 R.id.rbRingtone -> {
