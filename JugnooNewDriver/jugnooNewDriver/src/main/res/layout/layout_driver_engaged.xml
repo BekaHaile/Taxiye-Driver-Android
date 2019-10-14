@@ -398,6 +398,8 @@
                         android:layout_marginStart="30px"
                         android:layout_marginEnd="30px"/>
 
+
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -439,7 +441,7 @@
                                 android:id="@+id/textViewCustomerCashRequired"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 android:layout_marginTop="10px"
                                 android:layout_marginBottom="10px"
                                 android:textSize="28px"
@@ -456,6 +458,8 @@
                                 android:paddingBottom="4dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
+                                android:maxLines="3"
+                                android:scrollbars="vertical"
                                 android:background="?attr/selectableItemBackground"
                                 android:theme="@style/GreyHighlight"
                                 android:drawableStart="@drawable/ic_notes_grey"

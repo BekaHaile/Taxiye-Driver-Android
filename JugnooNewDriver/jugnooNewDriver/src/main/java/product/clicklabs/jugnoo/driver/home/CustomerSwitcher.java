@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.TextUtils;
 import android.view.View;
@@ -319,18 +318,13 @@ public class CustomerSwitcher {
 
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
-						if(customerInfo.getDeliveryInfos().size() > 1) {
-							textViewDeliveryCount.setVisibility(View.VISIBLE);
-							textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
-									+ " " + customerInfo.getTotalDeliveries());
-							textViewCustomerCashRequired.setVisibility(View.VISIBLE);
-							textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
-									+ ": " + activity.getResources().getString(R.string.rupee)
-									+ "" + customerInfo.getCashOnDelivery());
-						}else {
-							textViewDeliveryCount.setVisibility(View.GONE);
-							textViewCustomerCashRequired.setVisibility(View.GONE);
-						}
+						textViewDeliveryCount.setVisibility(View.VISIBLE);
+						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
+								+ " " + customerInfo.getTotalDeliveries());
+						textViewCustomerCashRequired.setVisibility(View.VISIBLE);
+						textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
+								+ ": " + activity.getResources().getString(R.string.rupee)
+								+ "" + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
