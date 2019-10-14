@@ -4,6 +4,11 @@ import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
+import android.text.style.StyleSpan;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kotlin.text.Regex;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DialogReviewImagesFragment;
@@ -54,9 +60,10 @@ public class CustomerSwitcher {
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
 			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
+	private RecyclerView rvPickupFeedImages;
+	private TextView tvFeedInstructions;
 
 	private LinearLayout llRentalRequest;
-	private RecyclerView rvPickupFeedImages;
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
 	String dropAddress;
@@ -98,9 +105,12 @@ public class CustomerSwitcher {
 		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
 		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
 		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
+        tvFeedInstructions = rootView.findViewById(R.id.tvFeedInstructions);
+        tvFeedInstructions.setTypeface(Fonts.mavenRegular(activity));
 
 
-		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
+
+        customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
 			@Override
 			public void onClick(int position, CustomerInfo customerInfo) {
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
@@ -213,6 +223,19 @@ public class CustomerSwitcher {
 				} else {
 					rvPickupFeedImages.setVisibility(View.GONE);
 				}
+
+
+                if (customerInfo.getVendorMessage() != null && !TextUtils.isEmpty(customerInfo.getVendorMessage())) {
+                    tvFeedInstructions.setVisibility(View.GONE);
+
+                    tvFeedInstructions.setText(activity.getString(R.string.instructions_colon) + customerInfo.getVendorMessage());
+
+                }
+                else {
+                    tvFeedInstructions.setVisibility(View.GONE);
+                }
+
+
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
@@ -271,9 +294,16 @@ public class CustomerSwitcher {
 					}
 					if(!TextUtils.isEmpty(customerInfo.getVendorMessage())) {
 						tvCustomerNotes.setVisibility(View.VISIBLE);
-						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
+						if(customerInfo.getVendorMessage().length() > 20) {
+							tvCustomerNotes.setText(R.string.click_to_view_notes);
+							tvCustomerNotes.setEnabled(true);
+						} else {
+							tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
+							tvCustomerNotes.setEnabled(false);
+						}
 					} else {
 						tvCustomerNotes.setVisibility(View.GONE);
+						tvCustomerNotes.setText("");
 					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
@@ -289,13 +319,18 @@ public class CustomerSwitcher {
 
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
-						textViewDeliveryCount.setVisibility(View.VISIBLE);
-						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
-								+ " " + customerInfo.getTotalDeliveries());
-						textViewCustomerCashRequired.setVisibility(View.VISIBLE);
-						textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
-								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ "" + customerInfo.getCashOnDelivery());
+						if(customerInfo.getDeliveryInfos().size() > 1) {
+							textViewDeliveryCount.setVisibility(View.VISIBLE);
+							textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
+									+ " " + customerInfo.getTotalDeliveries());
+							textViewCustomerCashRequired.setVisibility(View.VISIBLE);
+							textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
+									+ ": " + activity.getResources().getString(R.string.rupee)
+									+ "" + customerInfo.getCashOnDelivery());
+						}else {
+							textViewDeliveryCount.setVisibility(View.GONE);
+							textViewCustomerCashRequired.setVisibility(View.GONE);
+						}
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
@@ -344,8 +379,7 @@ public class CustomerSwitcher {
 			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
 				textViewShowDistance.setText("");
 			}
-
-			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(customerInfo.getCustomerNotes()));
+			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(TextUtils.isEmpty(customerInfo.getVendorMessage())?customerInfo.getCustomerNotes():customerInfo.getVendorMessage()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1292,4 +1292,12 @@
     <string name="please_select_fleet">Please select fleet</string>
     <string name="select_ringtone">Select Ringtone</string>
     <string name="ringtone1">Ringtone 1</string>
+    <string name="title_history">History</string>
+    <string name="order_taken">Rides Taken</string>
+    <string name="order_missed">Rides Missed</string>
+    <string name="order_delivered">Rides Delivered</string>
+    <string name="order_cancelled">Rides Cancelled</string>
+    <string name="instructions_colon"><b>Instructions :</b></string>
+    <string name="follow_us_on_instagram">Follow us on Instagram</string>
+    <string name="instagram">Instagram</string>
 </resources>

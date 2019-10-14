@@ -87,7 +87,9 @@
                     android:visibility="gone">
                 </android.support.v7.widget.RecyclerView>
 
-                <include layout="@layout/layout_customer_info"/>
+                <include
+                    android:visibility="gone"
+                    layout="@layout/layout_customer_info"/>
 
             </LinearLayout>
 
@@ -464,6 +466,19 @@
                             />
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvFeedInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="35px"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@id/linearLayoutContent"
+                            android:padding="5dp"
+                            android:textColor="@color/black_text_v2"
+                            android:text="@string/Message_from_vendor"
+                            android:layout_marginStart="15dp"
+                            android:layout_toStartOf="@id/textViewShowDistance"/>
 
                         <TextView
                             android:id="@+id/textViewShowDistance"
