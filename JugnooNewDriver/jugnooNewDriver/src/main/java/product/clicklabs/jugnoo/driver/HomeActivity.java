@@ -7031,7 +7031,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (getFlagDistanceTravelled() == -1 && currentPathItemPair != null
+                if (getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity, true) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
@@ -7094,15 +7094,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     @Override
                     public void run() {
                         DialogPopup.dismissLoadingDialog();
-                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, getFlagDistanceTravelled(), customerInfo);
+                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, getFlagDistanceTravelled(customerInfo), customerInfo);
                     }
                 });
             }
         }).start();
     }
 
-    private int getFlagDistanceTravelled(){
-        return Prefs.with(this).getInt(Constants.KEY_FLAG_DISTANCE_TRAVELLED, -1);
+    private int getFlagDistanceTravelled(CustomerInfo customerInfo){
+        return customerInfo.getIsDelivery() == 1 ? -1 : Prefs.with(this).getInt(Constants.KEY_FLAG_DISTANCE_TRAVELLED, -1);
     }
     private void setFlagDistanceTravelled(int flag){
         Prefs.with(this).save(Constants.KEY_FLAG_DISTANCE_TRAVELLED, flag);
@@ -8767,7 +8767,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.e("calculateFusedLocationDistance directions customerDist ", "=" + customerDist);
                     Log.e("calculateFusedLocationDistance directions destination ", "=" + destination);
 					double totalDistance = totalDisp;
-					if(getFlagDistanceTravelled() == -1 && totalDisp > 0 && customerDist < totalDisp){
+					if(getFlagDistanceTravelled(customerInfo) == -1 && totalDisp > 0 && customerDist < totalDisp){
 						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
 								destination.latitude + "," + destination.longitude, "EN", false, false, "zero_dist");
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
@@ -8782,14 +8782,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
 
                             Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
-                            if(getFlagDistanceTravelled() == -1 && speedDirections < maxSpeedThreshold) {
+                            if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
                                 Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
                                 customerInfo.setTotalDistance(totalDistance);
                                 setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
                             }
 						}
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
-					} else if (fusedLocationUsed && getFlagDistanceTravelled() == -1) {
+					} else if (fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1) {
 
                         Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
                                 destination.latitude + "," + destination.longitude, "EN", false, false, "fused");
@@ -8808,7 +8808,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
 
                                 if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
-                                    if(getFlagDistanceTravelled() == -1) {
+                                    if(getFlagDistanceTravelled(customerInfo) == -1) {
                                         customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                         setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal());
                                         Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
@@ -8819,7 +8819,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                if(getFlagDistanceTravelled() == -1) {
+                                if(getFlagDistanceTravelled(customerInfo) == -1) {
                                     customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
                                     setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal());
                                     Log.e("calculateFusedLocationDistance displacement ", "=" + displacement);
@@ -8830,7 +8830,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else {
                             double complimentaryDistance = 4.5 * lastTimeDiff;
                             Log.v("distComp", "" + complimentaryDistance);
-                            if(getFlagDistanceTravelled() == -1) {
+                            if(getFlagDistanceTravelled(customerInfo) == -1) {
                                 customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + complimentaryDistance);
                                 setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal());
                                 Log.e("calculateFusedLocationDistance complimentaryDistance ", "=" + complimentaryDistance);
@@ -8840,7 +8840,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         Log.e("calculateFusedLocationDistance totalDistance ", "=" + customerRideDataGlobal.getDistance(HomeActivity.this));
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
                     }
-					else if(!fusedLocationUsed && getFlagDistanceTravelled() == -1){
+					else if(!fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1){
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
                     }
                 } catch (Exception ignored) {}
