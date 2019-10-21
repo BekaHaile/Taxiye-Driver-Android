@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;

@@ -1,9 +1,11 @@
-package product.clicklabs.jugnoo.driver.utils
+package product.clicklabs.jugnoo.driver.google
 
 import android.util.Base64
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt
+import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.utils.Prefs
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
@@ -44,7 +46,7 @@ object GoogleRestApis {
                     sensor, mode, alternatives, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(originLatLng.contains(",")) {
-            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DIRECTIONS+"_"+source)
+            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DIRECTIONS + "_" + source)
         }
         return response
     }
@@ -75,7 +77,7 @@ object GoogleRestApis {
                     sensor, alternatives, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(originLatLng.contains(",")) {
-            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DISTANCE_MATRIX+"_"+source)
+            logGoogleRestAPI(originLatLng.split(",")[0], originLatLng.split(",")[1], API_NAME_DISTANCE_MATRIX + "_" + source)
         }
         return response
     }
@@ -101,7 +103,7 @@ object GoogleRestApis {
             response = RestClient.getGoogleApiServices().geocode(latLng, language, false, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(latLng.contains(",")) {
-            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_GEOCODE+"_"+source)
+            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_GEOCODE + "_" + source)
         }
         return response
     }
@@ -131,7 +133,7 @@ object GoogleRestApis {
                     strWaypoints, BuildConfig.MAPS_BROWSER_KEY)
         }
         if(strOrigin.contains(",")) {
-            logGoogleRestAPI(strOrigin.split(",")[0], strOrigin.split(",")[1], API_NAME_DIRECTIONS+"_wp_"+source)
+            logGoogleRestAPI(strOrigin.split(",")[0], strOrigin.split(",")[1], API_NAME_DIRECTIONS + "_wp_" + source)
         }
         return response
     }
@@ -158,7 +160,7 @@ object GoogleRestApis {
         }
         if(path.contains(",")) {
             val latLng:String = path.split("|")[0]
-            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_SNAP_TO_ROAD+"_"+source)
+            logGoogleRestAPI(latLng.split(",")[0], latLng.split(",")[1], API_NAME_SNAP_TO_ROAD + "_" + source)
         }
         return response
     }

@@ -432,6 +432,8 @@ public class JSONParser implements Constants {
 		String driverTag = userData.optString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType());
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
+		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
