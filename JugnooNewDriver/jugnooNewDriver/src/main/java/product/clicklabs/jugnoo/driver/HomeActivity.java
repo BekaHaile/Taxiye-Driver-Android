@@ -2028,7 +2028,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutEnterDestination.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_INRIDE_DROP_EDITABLE, 1) == 1 &&
+                    if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_INRIDE_DROP_EDITABLE, 0) == 1 &&
                     		!isTourFlag && Data.getCurrentCustomerInfo() != null && Data.getCurrentCustomerInfo().getIsPooled() != 1) {
                         relativeLayoutContainer.setVisibility(View.VISIBLE);
                         getSupportFragmentManager().beginTransaction()
