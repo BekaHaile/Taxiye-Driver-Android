@@ -6066,12 +6066,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else if (myLocation != null) {
                 holder.textViewRequestDistance.setVisibility(View.VISIBLE);
                 distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
-                distance = distance * 1.5 / 1000D;
+                distance = distance * 1.5;
             } else {
                 holder.textViewRequestDistance.setVisibility(View.GONE);
             }
 
-            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this, true))
+            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this, false))
                     + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(HomeActivity.this)));
 
 //			holder.textViewDeliveryApprox.setVisibility(View.GONE);
