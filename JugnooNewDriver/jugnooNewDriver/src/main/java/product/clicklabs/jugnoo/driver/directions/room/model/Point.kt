@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "tb_point")
 data class Point(
         @ColumnInfo(name = "pathId")
-        val pathId:Int,
+        val pathId:Long,
         @ColumnInfo(name = "lat")
         val lat:Double,
         @ColumnInfo(name = "lng")
@@ -15,12 +15,12 @@ data class Point(
 
 ){
     @PrimaryKey(autoGenerate = true)
-    var id:Int = 0
+    var id:Long = 0
 }
 @Entity(tableName = "tb_path")
 data class Path(
         @ColumnInfo(name = "engagementId")
-        val engagementId:Int,
+        val engagementId:Long,
         @ColumnInfo(name = "pLat")
         val plat:Double,
         @ColumnInfo(name = "pLng")
@@ -32,9 +32,12 @@ data class Path(
         @ColumnInfo(name = "distance")
         val distance:Double,
         @ColumnInfo(name = "time")
-        val time:Double
+        val time:Double,
+        @ColumnInfo(name = "timeStamp")
+        val timeStamp:Long
+
 
 ){
     @PrimaryKey(autoGenerate = true)
-    var id:Int = 0
+    var id:Long = 0
 }

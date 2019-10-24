@@ -9,29 +9,37 @@ interface DirectionsPathDao {
 
     //Segment queries------
     @Query("SELECT * FROM tb_point WHERE pathId = :pathId")
-    suspend fun getPathPoints(pathId:Int) : List<Point>?
+    fun getPathPoints(pathId:Long) : List<Point>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPathPoints(points:List<Point>) : List<Long>
+    fun insertPathPoints(points:List<Point>)
 
     @Query("DELETE FROM tb_point WHERE pathId = :pathId")
-    fun deletePathPoints(pathId:Int)
+    fun deletePathPoints(pathId:Long)
 
 
     //Path queries------
-    @Query("SELECT * FROM tb_path WHERE engagementId = :engagementId AND pLat = :pLat AND pLng = :pLng AND dLat = :dLat AND dLng = :dLng")
-    suspend fun getPath(engagementId:Int, pLat:Double, pLng:Double, dLat:Double, dLng:Double) : List<Path>?
+    @Query("SELECT * FROM tb_path WHERE engagementId = :engagementId AND pLat = :pLat AND pLng = :pLng AND dLat = :dLat AND dLng = :dLng AND timeStamp > :timeStamp")
+    fun getPath(engagementId:Long, pLat:Double, pLng:Double, dLat:Double, dLng:Double, timeStamp:Long) : List<Path>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPath(path:Path) : Long
+    fun insertPath(path:Path)
 
     @Query("DELETE FROM tb_path WHERE engagementId = :engagementId")
-    fun deletePath(engagementId:Int)
+    fun deletePath(engagementId:Long)
+
+    @Query("SELECT * FROM tb_path WHERE engagementId = :engagementId")
+    fun getPath(engagementId:Long) : List<Path>?
 
     @Transaction
-    suspend fun deleteAllPath(engagementId:Int){
+    fun deleteAllPath(engagementId:Long){
+        val paths = getPath(engagementId)
+        if(paths != null){
+            for(path in paths){
+                deletePathPoints(path.timeStamp)
+            }
+        }
         deletePath(engagementId)
-        deletePathPoints(engagementId)
     }
 
 }

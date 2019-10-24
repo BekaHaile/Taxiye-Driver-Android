@@ -174,6 +174,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.dialogs.TutorialInfoDialog;
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
@@ -10877,7 +10878,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (latLngs.size() > 1) {
                 //todo getResources().getColor(R.color.blue_polyline)
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if(customerInfo != null && customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+					GAPIDirections.INSTANCE.getDirectionsPath(customerInfo.getEngagementId(), customerInfo.requestlLatLng, customerInfo.dropLatLng,
+							"ride_markers", new GAPIDirections.Callback() {
+						@Override
+						public void onSuccess(@NotNull List<LatLng> latLngs, double distance, double time) {
+							PolylineOptions polylineOptions = new PolylineOptions();
+							polylineOptions.width(ASSL.Xscale() * 8)
+									.color(ContextCompat.getColor(HomeActivity.this, R.color.blue_polyline))
+									.geodesic(true);
+							for (int z = 0; z < latLngs.size(); z++) {
+								polylineOptions.add(latLngs.get(z));
+							}
+							polylineOptionsCustomersPath = polylineOptions;
+
+							if (polylineCustomersPath != null) {
+								polylineCustomersPath.remove();
+							}
+							polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
+							arrivedOrStartStateZoom();
+						}
+
+						@Override
+						public void onFailure() {
+
+						}
+					});
+				}
+
+                /*new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
@@ -10906,7 +10936,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     arrivedOrStartStateZoom();
                                 }
                             }
-                        }).execute();
+                        }).execute();*/
 
             }
         } catch (Exception e) {

@@ -9,14 +9,14 @@ import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.directions.room.database.DirectionsPathDatabase
 import product.clicklabs.jugnoo.driver.directions.room.model.Path
 import product.clicklabs.jugnoo.driver.directions.room.model.Point
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.utils.MapUtils
 import retrofit.mime.TypedByteArray
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
 
-class GAPIDirections {
+object GAPIDirections {
 
     private var db: DirectionsPathDatabase? = null
         get() {
@@ -38,20 +38,25 @@ class GAPIDirections {
             return field
         }
 
-    fun getDirectionsPath(engagementId:Int, source:LatLng, destination:LatLng, apiSource:String, callback:Callback?){
+    fun getDirectionsPath(engagementId:Long, source:LatLng, destination:LatLng, apiSource:String, callback:Callback?){
 
         GlobalScope.launch(Dispatchers.IO){
 
             try {
 
+                val timeStamp = System.currentTimeMillis()
                 val paths = db!!.getDao().getPath(engagementId,
                         numberFormat!!.format(source.latitude).toDouble(),
                         numberFormat!!.format(source.longitude).toDouble(),
                         numberFormat!!.format(destination.latitude).toDouble(),
-                        numberFormat!!.format(destination.longitude).toDouble())
+                        numberFormat!!.format(destination.longitude).toDouble(),
+                        timeStamp)
 
+                //path is not found
                 if(paths == null || paths.isEmpty()){
                     val list = mutableListOf<LatLng>()
+
+                    //google directions hit
                     val response = GoogleRestApis.getDirections(source.latitude.toString() + "," + source.longitude,
                             destination.latitude.toString() + "," + destination.longitude,
                             false, "driving", false, apiSource)
@@ -62,23 +67,28 @@ class GAPIDirections {
                     val distanceValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getDouble("value")
                     val timeValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getDouble("value")
 
-                    val points = mutableListOf<Point>()
-                    for(latlng in list){
-                        points.add(Point(engagementId, latlng.latitude, latlng.longitude))
-                    }
+                    //inserting path
                     val path = Path(engagementId,
                             numberFormat!!.format(source.latitude).toDouble(),
                             numberFormat!!.format(source.longitude).toDouble(),
                             numberFormat!!.format(destination.latitude).toDouble(),
                             numberFormat!!.format(destination.longitude).toDouble(),
-                            distanceValue, timeValue)
+                            distanceValue, timeValue, timeStamp)
 
                     db!!.getDao().deleteAllPath(engagementId)
                     db!!.getDao().insertPath(path)
+
+                    //inserting path points
+                    val points = mutableListOf<Point>()
+                    for(latlng in list){
+                        points.add(Point(timeStamp, latlng.latitude, latlng.longitude))
+                    }
                     db!!.getDao().insertPathPoints(points)
 
+                    callback?.onSuccess(list, distanceValue, timeValue)
+
                 } else {
-                    val segments = db!!.getDao().getPathPoints(engagementId)
+                    val segments = db!!.getDao().getPathPoints(paths[0].id)
                     if (segments != null) {
                         val list = mutableListOf<LatLng>()
                         for(segment in segments){
@@ -97,7 +107,7 @@ class GAPIDirections {
 
     }
 
-    fun deleteDirectionsPath(engagementId:Int){
+    fun deleteDirectionsPath(engagementId:Long){
         GlobalScope.launch(Dispatchers.IO){
             db!!.getDao().deleteAllPath(engagementId)
         }
