@@ -30,7 +30,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
-import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -50,15 +49,12 @@ public class CustomerSwitcher {
 
 	private HomeActivity activity;
 
-	private RecyclerView recyclerViewCustomersLinked;
-
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
 			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private LinearLayout llRentalRequest;
 	private RecyclerView rvPickupFeedImages;
-	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
 	String dropAddress;
 
@@ -92,32 +88,14 @@ public class CustomerSwitcher {
 		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
-		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
-		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-		recyclerViewCustomersLinked.setItemAnimator(new DefaultItemAnimator());
-		recyclerViewCustomersLinked.setHasFixedSize(false);
 		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
 		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
 		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
 
 
-		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
-			@Override
-			public void onClick(int position, CustomerInfo customerInfo) {
-				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
-				activity.switchDriverScreen(HomeActivity.driverScreenMode);
-			}
-
-			@Override
-			public void onCancelClick(int position, CustomerInfo customerInfo) {
-
-			}
-
-		});
 
 
 
-		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
@@ -333,15 +311,8 @@ public class CustomerSwitcher {
 					}
 				}
 			}
-			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
-				recyclerViewCustomersLinked.setVisibility(View.GONE);
-				textViewCustomerName1.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.VISIBLE);
-			} else {
-				recyclerViewCustomersLinked.setVisibility(View.GONE);
-				textViewCustomerName1.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.VISIBLE);
-			}
+			textViewCustomerName1.setVisibility(View.VISIBLE);
+			textViewCustomerName.setVisibility(View.VISIBLE);
 			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
 				textViewShowDistance.setText("");
 			}
@@ -486,6 +457,5 @@ public class CustomerSwitcher {
 	}
 
 	public void updateList() {
-		customerInfoAdapter.notifyList();
 	}
 }
