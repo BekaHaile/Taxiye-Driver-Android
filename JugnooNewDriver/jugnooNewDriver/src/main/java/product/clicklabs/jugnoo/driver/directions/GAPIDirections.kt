@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.room.database.DirectionsPathDatabase
@@ -50,7 +51,7 @@ object GAPIDirections {
                         numberFormat!!.format(source.longitude).toDouble(),
                         numberFormat!!.format(destination.latitude).toDouble(),
                         numberFormat!!.format(destination.longitude).toDouble(),
-                        timeStamp)
+                        timeStamp - Constants.DAY_MILLIS*30)
 
                 //path is not found
                 if(paths == null || paths.isEmpty()){
