@@ -111,6 +111,7 @@ object GAPIDirections {
     fun deleteDirectionsPath(engagementId:Long){
         GlobalScope.launch(Dispatchers.IO){
             db!!.getDao().deleteAllPath(engagementId)
+            db!!.getDao().deleteOldPaths()
         }
     }
 

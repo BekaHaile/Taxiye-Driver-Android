@@ -6675,6 +6675,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private void deleteAcceptLatLngs(int engagementId){
     	AcceptLatLngCoroutine.INSTANCE.deleteAcceptLatLng(engagementId);
+    	GAPIDirections.INSTANCE.deleteDirectionsPath(engagementId);
 	}
 
 
