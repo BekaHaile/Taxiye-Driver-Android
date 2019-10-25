@@ -207,6 +207,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
 import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse;
+import product.clicklabs.jugnoo.driver.room.model.AcceptLatLng;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -4220,6 +4221,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     endRideReviewRl.setVisibility(View.VISIBLE);
                     scrollViewEndRide.smoothScrollTo(0, 0);
 
+					deleteAcceptLatLngs((long) customerInfo.getEngagementId());
+
                     double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
                             .getDistance(HomeActivity.this), HomeActivity.this, true) * UserData.getDistanceUnitFactor(this, false));
                     String kmsStr = "";
@@ -6589,6 +6592,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     JSONParser.parsePoolOrReverseBidFare(jObj, customerInfo);
 
                     Data.addCustomerInfo(customerInfo);
+                    MyApplication.getInstance().getCommonRoomDatabase().getDao()
+							.insertAcceptLatLng(new AcceptLatLng(customerInfo.getEngagementId(),
+									LocationFetcher.getSavedLatFromSP(this), LocationFetcher.getSavedLngFromSP(this), System.currentTimeMillis()));
 
                     driverScreenMode = DriverScreenMode.D_ARRIVED;
                     switchDriverScreen(driverScreenMode);
@@ -6648,13 +6654,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public void reduceRideRequest(String engagementId, int status, String message) {
-        Data.removeCustomerInfo(Integer.parseInt(engagementId), status);
+    	int engId = Integer.parseInt(engagementId);
+        Data.removeCustomerInfo(engId, status);
+		deleteAcceptLatLngs((long)engId);
         driverScreenMode = DriverScreenMode.D_INITIAL;
         switchDriverScreen(driverScreenMode);
         if (!message.equalsIgnoreCase("")) {
             DialogPopup.alertPopup(HomeActivity.this, "", message);
         }
     }
+
+    private void deleteAcceptLatLngs(Long engagementId){
+		MyApplication.getInstance().getCommonRoomDatabase().getDao().deleteAcceptLatLng(engagementId);
+		MyApplication.getInstance().getCommonRoomDatabase().getDao().deleteAcceptLatLngOld(System.currentTimeMillis() - Constants.DAY_MILLIS);
+	}
 
 
     public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo) {
@@ -10877,34 +10890,46 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (latLngs.size() > 1) {
-                //todo getResources().getColor(R.color.blue_polyline)
 				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-				if(customerInfo != null && customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-					GAPIDirections.INSTANCE.getDirectionsPath(customerInfo.getEngagementId(), customerInfo.requestlLatLng, customerInfo.dropLatLng,
-							"ride_markers", new GAPIDirections.Callback() {
-						@Override
-						public void onSuccess(@NotNull List<LatLng> latLngs, double distance, double time) {
-							PolylineOptions polylineOptions = new PolylineOptions();
-							polylineOptions.width(ASSL.Xscale() * 8)
-									.color(ContextCompat.getColor(HomeActivity.this, R.color.blue_polyline))
-									.geodesic(true);
-							for (int z = 0; z < latLngs.size(); z++) {
-								polylineOptions.add(latLngs.get(z));
-							}
-							polylineOptionsCustomersPath = polylineOptions;
-
-							if (polylineCustomersPath != null) {
-								polylineCustomersPath.remove();
-							}
-							polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
-							arrivedOrStartStateZoom();
+				if(customerInfo != null) {
+					LatLng source = null, destination = null;
+					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+						source = customerInfo.requestlLatLng;
+						destination = customerInfo.dropLatLng;
+					} else {
+						ArrayList<AcceptLatLng> acceptLatLngs = (ArrayList<AcceptLatLng>) MyApplication.getInstance().getCommonRoomDatabase().getDao().getAcceptLatLng(customerInfo.getEngagementId());
+						if(acceptLatLngs != null && !acceptLatLngs.isEmpty()){
+							source = new LatLng(acceptLatLngs.get(0).getLat(), acceptLatLngs.get(0).getLng());
+							destination = customerInfo.requestlLatLng;
 						}
+					}
+					if(source != null && destination != null) {
+						GAPIDirections.INSTANCE.getDirectionsPath(customerInfo.getEngagementId(), source, destination,
+								"ride_markers", new GAPIDirections.Callback() {
+									@Override
+									public void onSuccess(@NotNull List<LatLng> latLngs, double distance, double time) {
+										PolylineOptions polylineOptions = new PolylineOptions();
+										polylineOptions.width(ASSL.Xscale() * 8)
+												.color(ContextCompat.getColor(HomeActivity.this, R.color.blue_polyline))
+												.geodesic(true);
+										for (int z = 0; z < latLngs.size(); z++) {
+											polylineOptions.add(latLngs.get(z));
+										}
+										polylineOptionsCustomersPath = polylineOptions;
 
-						@Override
-						public void onFailure() {
+										if (polylineCustomersPath != null) {
+											polylineCustomersPath.remove();
+										}
+										polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
+										arrivedOrStartStateZoom();
+									}
 
-						}
-					});
+									@Override
+									public void onFailure() {
+
+									}
+								});
+					}
 				}
 
                 /*new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",

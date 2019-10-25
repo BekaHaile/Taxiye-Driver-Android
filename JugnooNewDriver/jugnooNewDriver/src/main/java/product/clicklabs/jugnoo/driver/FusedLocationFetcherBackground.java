@@ -64,6 +64,9 @@ public class FusedLocationFetcherBackground extends LocationCallback {
 			if(location != null && gpsLocationUpdate != null && !Utils.mockLocationEnabled(location)) {
 				Log.w("FusedLocationFetcherBackground", "onReceive location="+location);
 				gpsLocationUpdate.onGPSLocationChanged(location);
+				if(fusedLocationClient != null) {
+					LocationFetcher.saveLatLngToSP(fusedLocationClient.getApplicationContext(), location);
+				}
 			}
 		}
 

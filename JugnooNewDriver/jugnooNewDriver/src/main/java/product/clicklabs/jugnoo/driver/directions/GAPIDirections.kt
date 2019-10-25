@@ -6,10 +6,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.MyApplication
-import product.clicklabs.jugnoo.driver.directions.room.database.DirectionsPathDatabase
-import product.clicklabs.jugnoo.driver.directions.room.model.Path
-import product.clicklabs.jugnoo.driver.directions.room.model.Point
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
+import product.clicklabs.jugnoo.driver.room.database.DirectionsPathDatabase
+import product.clicklabs.jugnoo.driver.room.model.Path
+import product.clicklabs.jugnoo.driver.room.model.Point
 import product.clicklabs.jugnoo.driver.utils.MapUtils
 import retrofit.mime.TypedByteArray
 import java.math.RoundingMode

@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.room.database.CommonRoomDatabase;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -317,4 +318,12 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         }
         return false;
     }
+
+    private CommonRoomDatabase commonRoomDatabase;
+    public CommonRoomDatabase getCommonRoomDatabase(){
+    	if(commonRoomDatabase == null){
+    		commonRoomDatabase = CommonRoomDatabase.Companion.getInstance(this);
+		}
+    	return commonRoomDatabase;
+	}
 }

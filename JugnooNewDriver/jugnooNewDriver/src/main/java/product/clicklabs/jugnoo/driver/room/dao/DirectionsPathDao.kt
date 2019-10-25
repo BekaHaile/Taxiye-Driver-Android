@@ -1,8 +1,8 @@
-package product.clicklabs.jugnoo.driver.directions.room.dao
+package product.clicklabs.jugnoo.driver.room.dao
 
 import android.arch.persistence.room.*
-import product.clicklabs.jugnoo.driver.directions.room.model.Path
-import product.clicklabs.jugnoo.driver.directions.room.model.Point
+import product.clicklabs.jugnoo.driver.room.model.Path
+import product.clicklabs.jugnoo.driver.room.model.Point
 
 @Dao
 interface DirectionsPathDao {
