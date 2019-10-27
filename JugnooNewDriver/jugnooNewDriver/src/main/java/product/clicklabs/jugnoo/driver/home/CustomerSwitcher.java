@@ -26,11 +26,9 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -39,8 +37,6 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 /**
  * Created by aneeshbansal on 28/05/16.
@@ -340,59 +336,7 @@ public class CustomerSwitcher {
 				textViewShowDistance.setVisibility(View.VISIBLE);
 				if (System.currentTimeMillis() - distanceRefreshTime > 60000
 						&& HomeActivity.myLocation != null) {
-					if (Prefs.with(activity).getInt(SPLabels.OSRM_ENABLED, 0) == 1) {
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									Response responseR = RestClient.getDistanceApiServices().getDistance(HomeActivity.myLocation.getLongitude()
-											+ "," + HomeActivity.myLocation.getLatitude() + ";" + Data.getCurrentCustomerInfo().getRequestlLatLng().longitude
-											+ "," + Data.getCurrentCustomerInfo().getRequestlLatLng().latitude);
-
-									String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-
-									try {
-										JSONObject jsonObject = new JSONObject(response);
-										String status = jsonObject.getString("code");
-										if ("OK".equalsIgnoreCase(status)) {
-											JSONObject element0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-											double distance = element0.optDouble("distance", 0);
-											final double finalDistance = distance;
-
-											activity.runOnUiThread(new Runnable() {
-												@Override
-												public void run() {
-													try {
-														if (finalDistance > 0) {
-															distanceRefreshTime = System.currentTimeMillis();
-															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(finalDistance * UserData.getDistanceUnitFactor(activity, true))+" "
-																	+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
-														} else {
-															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
-																	+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
-														}
-													} catch (Exception e) {
-														e.printStackTrace();
-													}
-												}
-											});
-										}
-									} catch (Exception e) {
-										e.printStackTrace();
-										setCustomerDistance();
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-									setCustomerDistance();
-								}
-							}
-						}).start();
-					} else {
-						setCustomerDistance();
-					}
+					setCustomerDistance();
 				}
 			}
 		} catch (Exception e) {

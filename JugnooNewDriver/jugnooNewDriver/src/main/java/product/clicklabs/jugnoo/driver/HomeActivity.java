@@ -107,10 +107,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
-import com.stripe.android.model.Customer;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -5208,7 +5206,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			if(DriverScreenMode.D_IN_RIDE == driverScreenMode
                     && customerInfo.getDropLatLng() != null
-                    && Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+                    && isAltMeteringEnabledForDriver(HomeActivity.this)) {
                 startService(getAltServiceIntent(customerInfo));
 			}
             startService(new Intent(this, MeteringService.class));
@@ -5224,7 +5222,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    private Intent getAltServiceIntent(CustomerInfo customerInfo){
+	public static boolean isAltMeteringEnabledForDriver(Context context) {
+		return Prefs.with(context).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1
+		&& Prefs.with(context).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType());
+	}
+
+	private Intent getAltServiceIntent(CustomerInfo customerInfo){
 		Intent intent = new Intent(this, AltMeteringService.class);
 		intent.putExtra(Constants.KEY_ENGAGEMENT_ID, customerInfo.engagementId);
 		intent.putExtra(Constants.KEY_PICKUP_LATITUDE, customerInfo.getRequestlLatLng().latitude);
@@ -5237,7 +5240,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private void updateDropLatngForAltService(CustomerInfo customerInfo){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
 				&& customerInfo.getDropLatLng() != null
-				&& Prefs.with(this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+				&& isAltMeteringEnabledForDriver(HomeActivity.this)) {
 			Intent intent = getAltServiceIntent(customerInfo);
 			intent.putExtra(Constants.KEY_DROP_UPDATED, true);
 			startService(intent);
@@ -6987,7 +6990,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (!Prefs.with(activity).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())
+                if (!isAltMeteringEnabledForDriver(activity)
 						&& getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity, true) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
@@ -8516,7 +8519,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (AppStatus.getInstance(activity).isOnline(activity)) {
                             if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 
-                                if(customerInfo.getDropLatLng() != null && Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+                                if(customerInfo.getDropLatLng() != null
+										&& isAltMeteringEnabledForDriver(HomeActivity.this)) {
                                 	LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
                                 	if(lastGPSLocation != null){
 										latLng = new LatLng(lastGPSLocation.getLatitude(), lastGPSLocation.getLongitude());
@@ -10898,10 +10902,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             }
 
-            if (latLngs.size() > 1) {
 				if (Prefs.with(this).getInt(KEY_DRIVER_DIRECTIONS_CACHING, 0) == 1) {
 					getDirectionsPathCached();
-				} else {
+				} else if(latLngs.size() > 1){
 					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
@@ -10933,7 +10936,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 							}).execute();
 				}
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -10950,8 +10952,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					LatLng source = null, destination = null;
 					CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(acceptLatLng.getEngagementId()));
 					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
-						source = customerInfo.requestlLatLng;
-						destination = customerInfo.dropLatLng;
+						if(!isAltMeteringEnabledForDriver(HomeActivity.this)) {
+							source = customerInfo.requestlLatLng;
+							destination = customerInfo.dropLatLng;
+						}
 					} else {
 						source = new LatLng(acceptLatLng.getLat(), acceptLatLng.getLng());
 						destination = customerInfo.requestlLatLng;
@@ -12080,12 +12084,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     ArrayList<Marker> markersWaypointsAlt = null;
     @Override
     public void pathAlt(List<LatLng> list, List<LatLng> waypoints) {
-        if(BuildConfig.DEBUG && map != null){
+        if(map != null){
             if(polylineAlt != null){
                 polylineAlt.remove();
             }
             PolylineOptions polylineOptions = new PolylineOptions();
-            polylineOptions.color(Color.CYAN).width(4);
+            polylineOptions.color(ContextCompat.getColor(HomeActivity.this, R.color.blue_polyline))
+					.width(Utils.dpToPx(this, 3));
             polylineOptions.addAll(list);
             polylineOptions.zIndex(0);
             polylineAlt = map.addPolyline(polylineOptions);

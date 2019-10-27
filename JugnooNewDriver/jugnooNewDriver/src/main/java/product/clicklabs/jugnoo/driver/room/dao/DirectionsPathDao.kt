@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.room.dao
 
 import android.arch.persistence.room.*
-import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.room.model.Path
 import product.clicklabs.jugnoo.driver.room.model.Point
 
@@ -50,8 +49,7 @@ interface DirectionsPathDao {
     }
 
     @Transaction
-    fun deleteOldPaths(){
-        val timeStamp = System.currentTimeMillis() - Constants.DAY_MILLIS*30
+    fun deleteOldPaths(timeStamp:Long){
         val paths = getOldPaths(timeStamp)
         if(paths != null){
             for(path in paths){

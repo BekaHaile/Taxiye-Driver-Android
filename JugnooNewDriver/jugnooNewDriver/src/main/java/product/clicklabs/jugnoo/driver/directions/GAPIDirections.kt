@@ -31,8 +31,8 @@ object GAPIDirections {
         get() {
             if(field == null){
                 field = NumberFormat.getInstance(Locale.ENGLISH)
-                field!!.minimumFractionDigits = 4
-                field!!.maximumFractionDigits = 4
+                field!!.minimumFractionDigits = 3
+                field!!.maximumFractionDigits = 3
                 field!!.roundingMode = RoundingMode.HALF_UP
                 field!!.isGroupingUsed = false
             }
@@ -86,22 +86,22 @@ object GAPIDirections {
                     }
                     db!!.getDao().insertPathPoints(points)
 
-                    callback?.onSuccess(list, distanceValue, timeValue)
+                    launch(Dispatchers.Main){callback?.onSuccess(list, distanceValue, timeValue)}
 
                 } else {
-                    val segments = db!!.getDao().getPathPoints(paths[0].id)
+                    val segments = db!!.getDao().getPathPoints(paths[0].timeStamp)
                     if (segments != null) {
                         val list = mutableListOf<LatLng>()
                         for(segment in segments){
                             list.add(LatLng(segment.lat, segment.lng))
                         }
-                        callback?.onSuccess(list, paths[0].distance, paths[0].time)
+                        launch(Dispatchers.Main){callback?.onSuccess(list, paths[0].distance, paths[0].time)}
                     } else {
-                        callback?.onFailure()
+                        launch(Dispatchers.Main){callback?.onFailure()}
                     }
                 }
             } catch (e: Exception) {
-                callback?.onFailure()
+                launch(Dispatchers.Main){callback?.onFailure()}
             }
         }
 
@@ -111,7 +111,7 @@ object GAPIDirections {
     fun deleteDirectionsPath(engagementId:Long){
         GlobalScope.launch(Dispatchers.IO){
             db!!.getDao().deleteAllPath(engagementId)
-            db!!.getDao().deleteOldPaths()
+            db!!.getDao().deleteOldPaths(System.currentTimeMillis() - Constants.DAY_MILLIS*30)
         }
     }
 
