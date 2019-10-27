@@ -496,5 +496,11 @@ public interface Constants {
 	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
+	String KEY_DRIVER_DIRECTIONS_CACHING = "driver_directions_caching";
+
+	long SECOND_MILLIS = 1000l;
+	long MINUTE_MILLIS = 60l * SECOND_MILLIS;
+	long HOUR_MILLIS = 60l * MINUTE_MILLIS;
+	long DAY_MILLIS = 24l * HOUR_MILLIS;
 }
 

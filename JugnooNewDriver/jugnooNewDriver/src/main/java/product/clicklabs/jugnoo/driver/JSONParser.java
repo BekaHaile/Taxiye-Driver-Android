@@ -554,6 +554,8 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
 				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_DIRECTIONS_CACHING, userData.optInt(KEY_DRIVER_DIRECTIONS_CACHING,
+				1));
 
 	}
 

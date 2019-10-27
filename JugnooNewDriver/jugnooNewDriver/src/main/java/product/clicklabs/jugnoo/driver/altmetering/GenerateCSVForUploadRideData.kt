@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.altmetering
 
 import android.os.AsyncTask
 import com.google.android.gms.maps.model.LatLng
-import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.HomeActivity
 import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.altmetering.db.MeteringDatabase
 import product.clicklabs.jugnoo.driver.altmetering.model.LogItem
@@ -10,7 +10,6 @@ import product.clicklabs.jugnoo.driver.altmetering.model.Segment
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.utils.Log
 import product.clicklabs.jugnoo.driver.utils.MapUtils
-import product.clicklabs.jugnoo.driver.utils.Prefs
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,7 +19,8 @@ abstract class GenerateCSVForUploadRideData(val customerInfo: CustomerInfo) : As
     private var csvWaypointsStr:String = ""
     private var numWaypoints:Int = 0
     override fun doInBackground(vararg params: Int?):Int {
-        if (customerInfo.getDropLatLng() != null && Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_DRIVER_ALT_DISTANCE_LOGIC, 0) == 1) {
+        if (customerInfo.getDropLatLng() != null
+                && HomeActivity.isAltMeteringEnabledForDriver(MyApplication.getInstance())) {
             val engagementId = customerInfo.getEngagementId()
             val meteringDB = MeteringDatabase.getInstance(MyApplication.getInstance())
 

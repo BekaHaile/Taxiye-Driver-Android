@@ -23,11 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -809,7 +808,7 @@ public class GpsDistanceCalculator {
 
 
 	private boolean useDirectionsApi(){
-		return !Prefs.with(context).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())
+		return !HomeActivity.isAltMeteringEnabledForDriver(context)
 				&& Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
 	}
 

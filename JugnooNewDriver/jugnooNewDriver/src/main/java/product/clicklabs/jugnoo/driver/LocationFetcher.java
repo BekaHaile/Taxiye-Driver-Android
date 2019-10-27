@@ -75,7 +75,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}, 2000);
 	}
 
-	private  void saveLatLngToSP(Location location){
+	public static void saveLatLngToSP(Context context, Location location){
 		Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 	}
 
@@ -277,7 +277,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
 					this.location = location;
 					locationUpdate.onLocationChanged(location, priority);
-					saveLatLngToSP(location);
+					saveLatLngToSP(context, location);
 				}
             }
 			locationUnchecked = location;

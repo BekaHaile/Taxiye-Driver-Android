@@ -237,6 +237,7 @@ class AltMeteringService : Service() {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.lastLocation
+                LocationFetcher.saveLatLngToSP(this@AltMeteringService, location)
                 if(location != null && !Utils.mockLocationEnabled(location)) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     val time = System.currentTimeMillis()
