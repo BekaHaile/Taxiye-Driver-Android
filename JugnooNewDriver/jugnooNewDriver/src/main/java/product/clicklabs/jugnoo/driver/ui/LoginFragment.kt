@@ -8,10 +8,10 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.RequiresApi
-import android.support.annotation.StringRes
-import android.support.transition.TransitionManager
-import android.support.v4.app.Fragment
+import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
+import androidx.transition.TransitionManager
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils

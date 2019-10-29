@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.content.Context;
 import android.location.Location;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.MyApplication;
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.google.AddressComponent;
+import product.clicklabs.jugnoo.driver.google.GAPIAddress;
+import product.clicklabs.jugnoo.driver.google.GoogleGeocodeResponse;
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -117,16 +123,16 @@ public class MapUtils {
 	
 	
 	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
-	public static String getGAPIAddress(Context context, LatLng latLng, boolean toLocality) {
+	public static String getGAPIAddress(LatLng latLng, boolean toLocality, String source) {
 		String fullAddress = "Unnamed";
 		try {
 			String language = "";
-			language = context.getResources().getConfiguration().locale.toString();
+			language = LocaleHelper.getLanguage(MyApplication.getInstance());
 			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
 				language = "hi";
             }
 
-			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language);
+			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language, source);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
 
@@ -232,6 +238,61 @@ public class MapUtils {
 				} else {
 					fullAddress = zero.getString("formatted_address");
 				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return fullAddress;
+	}
+
+
+	public static GAPIAddress parseGAPIIAddress(GoogleGeocodeResponse googleGeocodeResponse){
+		GAPIAddress fullAddress = new GAPIAddress("Unnamed");
+		try {
+			String formatStr = MyApplication.getInstance().getString(R.string.geocode_address_format);
+			StringBuilder addressSB = new StringBuilder();
+			if((googleGeocodeResponse.getStatus() != null && googleGeocodeResponse.getStatus().equalsIgnoreCase("OK"))
+					|| (googleGeocodeResponse.getResults() != null && googleGeocodeResponse.getResults().size() > 0)) {
+				String addressComparator = "";
+				for (int i = googleGeocodeResponse.getResults().get(0).getAddressComponents().size()-1; i >= 0; i--) {
+					AddressComponent addressComponent = googleGeocodeResponse.getResults().get(0).getAddressComponents().get(i);
+					if(addressComparator.contains(addressComponent.getLongName())){
+						addressComponent.setRedundant(true);
+					} else {
+						addressComparator = addressComparator + addressComponent.getLongName() + ",";
+					}
+				}
+
+				String address = "";
+				Log.e("MapUtils", "getPlaceById from poi response="+googleGeocodeResponse.getResults().get(0).getPlaceName());
+				if(!TextUtils.isEmpty(googleGeocodeResponse.getResults().get(0).getPlaceName())){
+					addressSB.append(googleGeocodeResponse.getResults().get(0).getPlaceName()).append(", ");
+				}
+				if(!TextUtils.isEmpty(formatStr) && formatStr.contains(",")) {
+					String format[] = formatStr.split(",");
+					for (String formatI : format) {
+						for (AddressComponent addressComponent : googleGeocodeResponse.getResults().get(0).getAddressComponents()) {
+							if(addressComponent.getRedundant()){
+								continue;
+							}
+							for(String type : addressComponent.getTypes()){
+								if (type.contains(formatI) && !addressSB.toString().contains(addressComponent.getLongName())) {
+									addressSB.append(addressComponent.getLongName()).append(", ");
+									break;
+								}
+							}
+						}
+					}
+					if(addressSB.length() > 2 && googleGeocodeResponse.getResults().get(0).getAddressComponents().size() > 4) {
+						address = addressSB.toString().substring(0, addressSB.length() - 2);
+					}
+				}
+				if(TextUtils.isEmpty(address)){
+					address = googleGeocodeResponse.getResults().get(0).getFormatted_address();
+				}
+				Log.e("addressSB", "===="+address);
+
+				fullAddress = new GAPIAddress(address);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

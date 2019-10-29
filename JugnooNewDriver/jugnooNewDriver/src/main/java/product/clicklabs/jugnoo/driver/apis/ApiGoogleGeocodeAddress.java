@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.apis;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -12,14 +11,14 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
  */
 public class ApiGoogleGeocodeAddress extends AsyncTask<String, Integer, String> {
 
-	private Context context;
 	private LatLng latLng;
+	private String source;
 	private boolean toLocality;
 	private Callback callback;
 
-	public ApiGoogleGeocodeAddress(Context context, LatLng latLng, boolean toLocality, Callback callback){
-		this.context = context;
+	public ApiGoogleGeocodeAddress(LatLng latLng, boolean toLocality, String source, Callback callback){
 		this.latLng = latLng;
+		this.source = source;
 		this.toLocality = toLocality;
 		this.callback = callback;
 	}
@@ -33,7 +32,7 @@ public class ApiGoogleGeocodeAddress extends AsyncTask<String, Integer, String> 
 
 	@Override
 	protected String doInBackground(String... params) {
-		return MapUtils.getGAPIAddress(context, latLng, toLocality);
+		return MapUtils.getGAPIAddress(latLng, toLocality, source);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -22,12 +22,13 @@ import retrofit.mime.TypedByteArray;
  */
 public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, String>{
 
-	private String strOrigin = "", strDestination = "", strWaypoints = "";
+	private String strOrigin = "", strDestination = "", strWaypoints = "", source;
 	private LatLng latLngInit;
 	private int pathColor;
 	private Callback callback;
 
-	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, boolean sortArray,  Callback callback){
+	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, boolean sortArray, String source, Callback callback){
+		this.source = source;
 		latLngInit = latLngs.get(0);
 		if(sortArray) {
 			Collections.sort(latLngs, new Comparator<LatLng>() {
@@ -74,9 +75,9 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 		try {
 			Response response;
 			if(!TextUtils.isEmpty(strWaypoints)) {
-				response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+				response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, strWaypoints, source);
 			} else {
-				response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false);
+				response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false, source);
 			}
 			return new String(((TypedByteArray)response.getBody()).getBytes());
 		} catch (Exception e) {

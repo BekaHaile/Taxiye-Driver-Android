@@ -1,9 +1,9 @@
 package product.clicklabs.jugnoo.driver.home;
 
 import android.graphics.Typeface;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,11 +24,12 @@ import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
-import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.google.GAPIAddress;
+import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -231,9 +232,9 @@ public class CustomerSwitcher {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
-							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-											activity.getTextViewEnterDestination(), null, true)).execute();
+							getAddress(customerInfo.getDropLatLng(), "inride_d",
+									customerInfo.getEngagementId(),
+											activity.getTextViewEnterDestination(), null, true);
 							activity.getTextViewEnterDestination().setText(customerInfo.getDropAddressEng());
 						}else {
 							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
@@ -279,9 +280,9 @@ public class CustomerSwitcher {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					}
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
-						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
-								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-										textViewCustomerPickupAddress, null, false)).execute();
+						getAddress(customerInfo.getRequestlLatLng(), "sride_p",
+								customerInfo.getEngagementId(),
+								textViewCustomerPickupAddress, null, false);
 						textViewCustomerPickupAddress.setText(customerInfo.getPickupAddressEng());
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
@@ -318,9 +319,9 @@ public class CustomerSwitcher {
 						if(activity.bDropAddressToggle.getVisibility() == View.VISIBLE) {
 							activity.tvDropAddressToggleView.setText(R.string.loading);
 							if (customerInfo.getDropAddress().equalsIgnoreCase("")) {
-								new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-										new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-												activity.tvDropAddressToggleView, null, true)).execute();
+								getAddress(customerInfo.getDropLatLng(), "sride_d",
+										customerInfo.getEngagementId(),
+										activity.tvDropAddressToggleView, null, true);
 								activity.tvDropAddressToggleView.setText(customerInfo.getDropAddressEng());
 							} else {
 								activity.tvDropAddressToggleView.setText(customerInfo.getDropAddress());
@@ -394,12 +395,12 @@ public class CustomerSwitcher {
 														if (finalDistance > 0) {
 															distanceRefreshTime = System.currentTimeMillis();
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(finalDistance * UserData.getDistanceUnitFactor(activity))+" "
+																	.format(finalDistance * UserData.getDistanceUnitFactor(activity, true))+" "
 																	+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														} else {
 															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
 																	+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 														}
 													} catch (Exception e) {
@@ -437,7 +438,7 @@ public class CustomerSwitcher {
 				try {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity))
+									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
 							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -448,47 +449,30 @@ public class CustomerSwitcher {
 	}
 
 
-
-	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback {
-
-		private int engagementId;
-		private TextView textView, textView1;
-		private boolean isDrop;
-
-		public CustomGoogleGeocodeCallback(int engagementId, TextView textView, TextView textView1, boolean isDrop) {
-			this.engagementId = engagementId;
-			this.textView = textView;
-			this.isDrop = isDrop;
-			if(textView1 !=null) {
-				this.textView1 = textView1;
-			}
-		}
-
-		@Override
-		public void onPre() {
-			textView.setText("");
-			if(textView1 !=null) {
-				textView1.setText("");
-			}
-		}
-
-		@Override
-		public void onPost(String address) {
+	void getAddress(LatLng currentLatLng, String source, int engagementId, TextView textView, TextView textView1, boolean isDrop){
+		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, settleUserDebt -> {
 			try {
-				if(isDrop){
-					Data.getCustomerInfo(String.valueOf(engagementId)).setDropAddress(activity, address, true);
-				} else {
-					Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
-				}
-				textView.setText(address);
-				if(textView1 !=null) {
-					textView1.setText(address);
+				GAPIAddress gapiAddress = MapUtils.parseGAPIIAddress(settleUserDebt);
+				String address = gapiAddress.getSearchableAddress();
+				try {
+					if(isDrop){
+						Data.getCustomerInfo(String.valueOf(engagementId)).setDropAddress(activity, address, true);
+					} else {
+						Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
+					}
+					textView.setText(address);
+					if(textView1 !=null) {
+						textView1.setText(address);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		});
 	}
+
 
 
 	public void setCallButton(){

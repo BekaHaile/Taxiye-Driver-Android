@@ -3,8 +3,8 @@ package product.clicklabs.jugnoo.driver.fragments
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +71,7 @@ class TractionListFragment : Fragment() {
                 R.layout.list_item_requests, 0, true, OfflineRequestsAdapter.Callback {
             Log.e(TractionListFragment::class.java.name,"no-i-will-not")
 
-        })
+        }, activity)
 
         rvOfflineRequests.layoutManager = LinearLayoutManager(requireContext())
         rvOfflineRequests.adapter = offlineRequestsAdapter

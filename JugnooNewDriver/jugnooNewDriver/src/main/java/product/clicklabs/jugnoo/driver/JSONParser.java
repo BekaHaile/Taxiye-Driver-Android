@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -450,6 +450,8 @@ public class JSONParser implements Constants {
 		String driverTag = userData.optString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType());
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
+		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -566,7 +568,10 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
 		Prefs.with(context).save(KEY_BID_TIMEOUT, userData.optLong(KEY_BID_TIMEOUT, 30000L));
 		Prefs.with(context).save(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, userData.optInt(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 1));
-		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 1));
+		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 0));
+
+		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
+				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
 
 	}
 
@@ -1216,15 +1221,12 @@ public class JSONParser implements Constants {
 		try {
 			if(jObjCustomer.has(KEY_POOL_FARE)){
 				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
-				double distance = jPoolFare.optDouble(KEY_DISTANCE) * 1000d;
-				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
-				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
 				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
 				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED, 0);
 				double discountPercentage = jPoolFare.optDouble(KEY_DISCOUNT_PERCENTAGE, 0);
 				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
+				customerInfo.setPoolFare(new PoolFare(fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
 			}
 			if(jObjCustomer.has(KEY_REVERSE_BID_FARE)){
 				JSONObject jFare = jObjCustomer.optJSONObject(KEY_REVERSE_BID_FARE);

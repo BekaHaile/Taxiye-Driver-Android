@@ -5,10 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +31,6 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
-import product.clicklabs.jugnoo.driver.fragments.TractionListFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -461,18 +460,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 									resp = Constants.SERVER_TIMEOUT;
 								}
 
-								DialogPopup.dismissLoadingDialog();
-								if(resp.contains(Constants.SERVER_TIMEOUT)){
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								else{
-									Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
-									if(getIntent() != null && getIntent().getExtras() != null)
-										intent.putExtras(getIntent().getExtras());
-									startActivity(intent);
-									ActivityCompat.finishAffinity(DriverDocumentActivity.this);
-									overridePendingTransition(R.anim.right_in, R.anim.right_out);
-								}
+										DialogPopup.dismissLoadingDialog();
+										if(resp.contains(Constants.SERVER_TIMEOUT)){
+											DialogPopup.alertPopup(activity, "", message);
+										}
+										else{
+											goToHomeScreen();
+										}
 
 								Utils.deleteMFile(activity);
 //										Utils.clearApplicationData(DriverDocumentActivity.this);
@@ -516,12 +510,34 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		});
 	}
 
+	private void goToHomeScreen() {
+		if(!hasWindowFocus()){
+			goToHomeScreenCalled = true;
+			return;
+		}
+		Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
+		if(getIntent() != null && getIntent().getExtras() != null)
+			intent.putExtras(getIntent().getExtras());
+		startActivity(intent);
+		ActivityCompat.finishAffinity(DriverDocumentActivity.this);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
 	}
 
+	public boolean goToHomeScreenCalled = false;
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(hasFocus && goToHomeScreenCalled){
+			goToHomeScreen();
+			goToHomeScreenCalled = false;
+		}
+	}
 
 	public DocumentListFragment getDocumentListFragment(){
 		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));

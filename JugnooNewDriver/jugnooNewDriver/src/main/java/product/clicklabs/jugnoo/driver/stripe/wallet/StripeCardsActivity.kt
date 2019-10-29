@@ -28,7 +28,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
             add(container.id, WalletTransactionFragment.newInstance(true), WalletTransactionFragment::class.simpleName).
                     addToBackStack(WalletTransactionFragment::class.simpleName).
-                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)!!})
 
 
         }
@@ -48,7 +48,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
 
             add(container.id, StripeAddCardFragment(), StripeAddCardFragment::class.simpleName).
                     addToBackStack(StripeAddCardFragment::class.simpleName).
-                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)!!})
 
 
         }
@@ -65,7 +65,7 @@ class StripeCardsActivity : BaseFragmentActivity(), StripeCardsStateListener,Str
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, StripeViewCardFragment.newInstance( stripeCardData), StripeViewCardFragment::class.simpleName)
             addToBackStack(StripeViewCardFragment::class.simpleName).
-                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)})
+                    hide(supportFragmentManager.run { findFragmentByTag(frag_wallet.tag)!!})
 
         }
 

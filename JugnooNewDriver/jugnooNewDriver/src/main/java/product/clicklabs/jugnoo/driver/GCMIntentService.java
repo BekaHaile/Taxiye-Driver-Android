@@ -26,8 +26,8 @@ import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
@@ -661,7 +661,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String distanceDry = "";
 									try {
 										DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this))
+										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this, false))
 												+" "+ Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 									} catch (Resources.NotFoundException e) {
 										e.printStackTrace();

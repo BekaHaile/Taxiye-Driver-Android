@@ -6,8 +6,9 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
@@ -228,7 +229,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         supportFragmentManager.inTransactionWithAnimation {
             add(container.id, OTPConfirmFragment.newInstance(phone, countryCode, missedCallNumber), OTPConfirmFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
+                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
                     .addToBackStack(OTPConfirmFragment::class.simpleName)
         }
     }
@@ -236,9 +237,9 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     fun openDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransactionWithAnimation {
             if(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName) != null
-                    && !supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName).isHidden){
+                    && !(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName) as Fragment).isHidden){
                 add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
-                        .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName))
+                        .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
                         .addToBackStack(DriverSetupFragment::class.simpleName)
             } else {
                 add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
@@ -256,7 +257,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         if(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName) != null) {
             supportFragmentManager.beginTransaction()
-                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
                     .commit()
         }
     }
@@ -270,7 +271,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
        return otpDetectedViaSms;
     }
 
-    var goToHomeScreenCalled = false
+    public var goToHomeScreenCalled = false
     override fun goToHomeScreen() {
         if(!hasWindowFocus()){
             goToHomeScreenCalled = true
@@ -328,7 +329,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
-        if(supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name.contains(TractionListFragment::class.simpleName.toString())) {
+        if(supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name!!.contains(TractionListFragment::class.simpleName.toString())) {
             containerSwitch.visible()
             tvToolbar.gone()
         } else {
@@ -387,7 +388,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
        supportFragmentManager.inTransactionWithAnimation {
 
             add(container.id, VehicleDetailsFragment.newInstance(accessToken, cityId, vehicleType,userName), VehicleDetailsFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName))
+                    .hide(supportFragmentManager.findFragmentByTag(DriverSetupFragment::class.simpleName)!!)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
 
@@ -409,7 +410,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         if (fragfromOtp) {
             supportFragmentManager.inTransactionWithAnimation {
                 add(container.id, TractionListFragment.newInstance(accessToken,true), TractionListFragment::class.simpleName)
-                        .hide(supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName))
+                        .hide(supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName)!!)
                         .addToBackStack(TractionListFragment::class.simpleName)
             }
         } else {
@@ -419,7 +420,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
                     .commitAllowingStateLoss()
 
             supportFragmentManager.beginTransaction()
-                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName))
+                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
                     .commit()
         }
 
@@ -440,13 +441,13 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     private fun removeTractionFragment() {
         if (supportFragmentManager.backStackEntryCount > 0
-                && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name.contains(TractionListFragment::class.simpleName.toString())) {
+                && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name!!.contains(TractionListFragment::class.simpleName.toString())) {
             supportFragmentManager.popBackStack()
 
         }
         if(supportFragmentManager.findFragmentByTag(TractionListFragment::class.java.name) != null) {
             supportFragmentManager.beginTransaction()
-                    .remove(supportFragmentManager.findFragmentByTag(TractionListFragment::class.java.name))
+                    .remove(supportFragmentManager.findFragmentByTag(TractionListFragment::class.java.name) as Fragment)
                     .commit()
         }
         containerSwitch.gone()

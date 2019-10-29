@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +13,12 @@ import android.widget.TextView;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -30,6 +32,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     private static final int TYPE_FOOTER = 2;
     private static final int TYPE_ITEM = 1;
     private Activity activity;
@@ -39,14 +42,16 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private Callback callback;
     private int totalRequests;
     private boolean dontFade;
+    Activity homeActivity;
 
-    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, boolean dontFade, Callback callback) {
+    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, boolean dontFade, Callback callback, Activity homeActivity) {
         this.requestsList = requestsList;
         this.activity = activity;
         this.rowLayout = rowLayout;
         this.totalRequests = totalRequests;
         this.dontFade = dontFade;
         this.callback = callback;
+        this.homeActivity = homeActivity;
     }
 
     public void notifyList(int totalRequests, ArrayList<CustomerInfo> requestsList, boolean refresh) {
@@ -130,8 +135,8 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             distance = customerInfo.getDistance();
 
             holder.tvDistance.setText(
-                    (distance > 0) ? "" + HomeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(activity))
-                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(activity)) : "- --");
+                    (distance > 0) ? "" + decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity, true))
+                            + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
 
             holder.relative.setTag(position);
             holder.rlAcceptView.setTag(position);

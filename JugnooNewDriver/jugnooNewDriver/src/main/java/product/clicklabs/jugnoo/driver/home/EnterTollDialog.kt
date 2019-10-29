@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.home
 
 import android.app.Activity
 import android.app.Dialog
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.WindowManager
 import android.widget.*

@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content">
 
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewEmergencyContacts"
                     android:layout_width="match_parent"
                     android:layout_height="256px"
@@ -141,7 +141,7 @@
                 wheel:matProg_progressIndeterminate="true"
                 />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPhoneContacts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

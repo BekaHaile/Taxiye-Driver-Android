@@ -27,7 +27,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -524,7 +524,7 @@ public class GpsDistanceCalculator {
 		protected String doInBackground(Void... params) {
 			try {
 				Response response = GoogleRestApis.INSTANCE.getDirections(source.latitude + "," + source.longitude,
-						destination.latitude + "," + destination.longitude, false, "driving", false);
+						destination.latitude + "," + destination.longitude, false, "driving", false, "metering");
 				return new String(((TypedByteArray) response.getBody()).getBytes());
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -11,8 +11,8 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.LocalBroadcastManager
+import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
@@ -266,7 +267,7 @@ class AltMeteringService : Service() {
 
     fun getNotificationMessage():String{
         return getString(R.string.estimated_dis) + ": " +
-                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this)) +" "+
+                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this, false)) +" "+
                 Utils.getDistanceUnit(UserData.getDistanceUnit(this))
     }
 
@@ -328,9 +329,9 @@ class AltMeteringService : Service() {
                 for(drwpObj in drWpList){
                     log("gapi hitting", "drwp=$drwpObj")
                     val response = if (!TextUtils.isEmpty(drwpObj.waypoints)) {
-                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!)
+                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
                     } else {
-                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false)
+                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false, "alt_metering")
                     }
                     val result = String((response.body as TypedByteArray).bytes)
                     val json = JSONObject(result)
@@ -487,18 +488,21 @@ class AltMeteringService : Service() {
 
                     } else {
                         Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
-                        try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
+                        try {
+                            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
                     }
                 }
             }
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
             log("service", "registerReceiver")
         }
     }
 
     private fun unregisterActivityBroadcast(){
         if(activityBroadcastReceiver != null) {
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
             activityBroadcastReceiver = null
             log("service", "unregisterReceiver")
         }
@@ -537,7 +541,8 @@ class AltMeteringService : Service() {
                     putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
                 }
                 Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
-                try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
+                try {
+                    LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
                 stopForeground(true)
                 stopSelf()
             }

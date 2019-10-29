@@ -6,10 +6,10 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -120,7 +120,7 @@ class BidRequestFragment : Fragment() {
             tvPickup.text = customerInfo.pickupAddress
             tvDrop.text = customerInfo.dropAddress
             tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
-                    * UserData.getDistanceUnitFactor(requireContext())) + " km"
+                    * UserData.getDistanceUnitFactor(requireContext(), false)) + " km"
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

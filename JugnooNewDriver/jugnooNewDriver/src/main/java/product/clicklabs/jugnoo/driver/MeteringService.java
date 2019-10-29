@@ -11,7 +11,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -142,7 +142,7 @@ public class MeteringService extends Service {
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
 							String message = context.getResources().getString(R.string.total_distance)
-									+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context)) +" "
+									+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context, false)) +" "
 									+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
 									+ "\n" + context.getResources().getString(R.string.ride_time)
 									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);

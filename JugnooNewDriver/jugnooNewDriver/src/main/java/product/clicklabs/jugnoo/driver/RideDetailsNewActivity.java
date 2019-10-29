@@ -7,10 +7,10 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -258,7 +258,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 							}
 						}
 						if(latLngs.size() > 1){
-							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), true,
+							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), true, "ride_details",
 									new ApiGoogleDirectionWaypoints.Callback() {
 										@Override
 										public void onPre() {

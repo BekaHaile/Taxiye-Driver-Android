@@ -30,24 +30,24 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Pair;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.util.Pair;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -152,6 +152,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -236,7 +237,7 @@ import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
@@ -2027,7 +2028,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutEnterDestination.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_INRIDE_DROP_EDITABLE, 1) == 1 &&
+                    if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_INRIDE_DROP_EDITABLE, 0) == 1 &&
                     		!isTourFlag && Data.getCurrentCustomerInfo() != null && Data.getCurrentCustomerInfo().getIsPooled() != 1) {
                         relativeLayoutContainer.setVisibility(View.VISIBLE);
                         getSupportFragmentManager().beginTransaction()
@@ -2665,7 +2666,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);
             }
-        });
+        }, HomeActivity.this);
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 
@@ -3483,10 +3484,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         if (jObj.has(KEY_FLAG)) {
                             int flag = jObj.getInt(KEY_FLAG);
                             if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                                if (toggleDelivery) {
+
+                                int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
+                                if (menuOptionVisibility == 1) {
                                     Data.userData.setDeliveryAvailable(jugnooOnFlag);
-                                } else {
                                     Data.userData.autosAvailable = jugnooOnFlag;
+
+                                }
+                                else {
+                                    if (toggleDelivery) {
+                                        Data.userData.setDeliveryAvailable(jugnooOnFlag);
+                                    } else {
+                                        Data.userData.autosAvailable = jugnooOnFlag;
+                                    }
                                 }
                                 changeJugnooONUIAndInitService(true);
                                 if (jugnooOnFlag == 1) {
@@ -3923,7 +3933,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     && 0 == Data.userData.mealsAvailable
                     && 0 == Data.userData.fatafatAvailable
                     && 0 == Data.userData.sharingAvailable
-                    && 0 == Data.userData.getDeliveryAvailable()) {
+                    && (0 == Data.userData.getDeliveryAvailable() || 0 == Data.userData.getDeliveryEnabled())) {
                 return false;
             } else {
                 return true;
@@ -4209,7 +4219,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     scrollViewEndRide.smoothScrollTo(0, 0);
 
                     double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
-                            .getDistance(HomeActivity.this), HomeActivity.this, true) * UserData.getDistanceUnitFactor(this));
+                            .getDistance(HomeActivity.this), HomeActivity.this, true) * UserData.getDistanceUnitFactor(this, false));
                     String kmsStr = "";
 
                     try {
@@ -4230,7 +4240,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
                             && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
-                        totalDistanceInKm = endRideData.getFareStructure().getMandatoryDistance() * UserData.getDistanceUnitFactor(this);
+                        totalDistanceInKm = endRideData.getFareStructure().getMandatoryDistance() * UserData.getDistanceUnitFactor(this, true);
                     }
                     if(endRideData.getFareStructure() != null && endRideData.getFareStructure().mandatoryFareApplicable == 1
                             && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1){
@@ -5644,7 +5654,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
         }
 
-        double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this));
+        double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this, false));
 
         double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
         double waitTimeInMin = Math.round(((double) waitTimeInMillis) / 60000.0d);
@@ -5669,7 +5679,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public synchronized void updateDistanceFareTexts(CustomerInfo customerInfo, double distance, long elapsedTime, long waitTime) {
         try {
-            double totalDistanceInKm = Math.abs(distance * UserData.getDistanceUnitFactor(this));
+            double totalDistanceInKm = Math.abs(distance * UserData.getDistanceUnitFactor(this, false));
 
             driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(this)));
             driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
@@ -6062,7 +6072,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewRequestDistance.setVisibility(View.GONE);
             }
 
-            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this))
+            holder.textViewRequestDistance.setText("" + decimalFormat.format(distance * UserData.getDistanceUnitFactor(HomeActivity.this, false))
                     + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(HomeActivity.this)));
 
 //			holder.textViewDeliveryApprox.setVisibility(View.GONE);
@@ -6260,7 +6270,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.textViewEstimatedTripDistance.setVisibility(View.VISIBLE);
                 holder.textViewEstimatedTripDistance.setText(getString(R.string.estimated_distance_format,
                         Utils.getDecimalFormat().format(customerInfo.getEstimatedTripDistance()
-                                * UserData.getDistanceUnitFactor(HomeActivity.this))));
+                                * UserData.getDistanceUnitFactor(HomeActivity.this, false))));
             } else {
                 holder.textViewEstimatedTripDistance.setVisibility(View.GONE);
             }
@@ -7023,13 +7033,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
-                if (getFlagDistanceTravelled() == -1 && currentPathItemPair != null
+                if (!Prefs.with(activity).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())
+						&& getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity, true) - currentPathItemPair.first) > 500
                         || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
                     double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
                     try {
                         Response responseR = GoogleRestApis.INSTANCE.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
-                                dropLatitude + "," + dropLongitude, false, "driving", false);
+                                dropLatitude + "," + dropLongitude, false, "driving", false, "end_safety");
                         String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         JSONObject jsonObject = new JSONObject(response);
                         String status = jsonObject.getString("status");
@@ -7086,15 +7097,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     @Override
                     public void run() {
                         DialogPopup.dismissLoadingDialog();
-                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, getFlagDistanceTravelled(), customerInfo);
+                        driverEndRideAsync1(activity, lastAccurateLatLng, dropLatitude, dropLongitude, getFlagDistanceTravelled(customerInfo), customerInfo);
                     }
                 });
             }
         }).start();
     }
 
-    private int getFlagDistanceTravelled(){
-        return Prefs.with(this).getInt(Constants.KEY_FLAG_DISTANCE_TRAVELLED, -1);
+    private int getFlagDistanceTravelled(CustomerInfo customerInfo){
+        return customerInfo.getIsDelivery() == 1 ? -1 : Prefs.with(this).getInt(Constants.KEY_FLAG_DISTANCE_TRAVELLED, -1);
     }
     private void setFlagDistanceTravelled(int flag){
         Prefs.with(this).save(Constants.KEY_FLAG_DISTANCE_TRAVELLED, flag);
@@ -7123,7 +7134,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                 }
                 try {
-                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString());
+                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString(), "snap_wp");
                     String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
                     JSONObject jsonObject = new JSONObject(responseStr);
                     JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
@@ -7152,9 +7163,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 .append("%7C");
                     }
                 }
-                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString());
+                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString(), "snap_wp");
             } else {
-                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false);
+                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false, "snap_wp");
             }
             String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
             JSONObject jsonObject = new JSONObject(responseStr);
@@ -8776,9 +8787,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.e("calculateFusedLocationDistance directions customerDist ", "=" + customerDist);
                     Log.e("calculateFusedLocationDistance directions destination ", "=" + destination);
 					double totalDistance = totalDisp;
-					if(getFlagDistanceTravelled() == -1 && totalDisp > 0 && customerDist < totalDisp){
+					if(getFlagDistanceTravelled(customerInfo) == -1 && totalDisp > 0 && customerDist < totalDisp){
 						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
-								destination.latitude + "," + destination.longitude, "EN", false, false);
+								destination.latitude + "," + destination.longitude, "EN", false, false, "zero_dist");
 						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
 						JSONObject jsonObject = new JSONObject(response);
 						String status = jsonObject.getString("status");
@@ -8791,17 +8802,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
 
                             Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
-                            if(getFlagDistanceTravelled() == -1 && speedDirections < maxSpeedThreshold) {
+                            if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
                                 Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
                                 customerInfo.setTotalDistance(totalDistance);
                                 setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
                             }
 						}
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
-					} else if (fusedLocationUsed && getFlagDistanceTravelled() == -1) {
+					} else if (fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1) {
 
                         Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
-                                destination.latitude + "," + destination.longitude, "EN", false, false);
+                                destination.latitude + "," + destination.longitude, "EN", false, false, "fused");
                         String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         if (endDisplacementSpeed < maxSpeedThreshold) {
                             try {
@@ -8817,7 +8828,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
 
                                 if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
-                                    if(getFlagDistanceTravelled() == -1) {
+                                    if(getFlagDistanceTravelled(customerInfo) == -1) {
                                         customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                         setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal());
                                         Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
@@ -8828,7 +8839,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                if(getFlagDistanceTravelled() == -1) {
+                                if(getFlagDistanceTravelled(customerInfo) == -1) {
                                     customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
                                     setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal());
                                     Log.e("calculateFusedLocationDistance displacement ", "=" + displacement);
@@ -8839,7 +8850,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         } else {
                             double complimentaryDistance = 4.5 * lastTimeDiff;
                             Log.v("distComp", "" + complimentaryDistance);
-                            if(getFlagDistanceTravelled() == -1) {
+                            if(getFlagDistanceTravelled(customerInfo) == -1) {
                                 customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + complimentaryDistance);
                                 setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal());
                                 Log.e("calculateFusedLocationDistance complimentaryDistance ", "=" + complimentaryDistance);
@@ -8849,7 +8860,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         Log.e("calculateFusedLocationDistance totalDistance ", "=" + customerRideDataGlobal.getDistance(HomeActivity.this));
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
                     }
-					else if(!fusedLocationUsed && getFlagDistanceTravelled() == -1){
+					else if(!fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1){
                         afterFusedDistanceEstimation(activity, source, destination, customerInfo);
                     }
                 } catch (Exception ignored) {}
@@ -10700,7 +10711,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
                 if (latLngs.size() > 1) {
-                    new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false,
+                    new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false, "delivery_markers",
                             new ApiGoogleDirectionWaypoints.Callback() {
                                 @Override
                                 public void onPre() {
@@ -10965,7 +10976,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (latLngs.size() > 1) {
                 //todo getResources().getColor(R.color.blue_polyline)
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false,
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
@@ -11125,7 +11136,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (latLngs.size() > 1) {
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
+                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false, "delivery_pool",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {
