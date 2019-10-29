@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.room.model
+package product.clicklabs.jugnoo.driver.directions.room.model
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

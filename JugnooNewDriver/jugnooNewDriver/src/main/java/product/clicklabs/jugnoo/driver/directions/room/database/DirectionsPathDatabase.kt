@@ -1,13 +1,13 @@
-package product.clicklabs.jugnoo.driver.room.database
+package product.clicklabs.jugnoo.driver.directions.room.database
 
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import product.clicklabs.jugnoo.driver.room.dao.DirectionsPathDao
-import product.clicklabs.jugnoo.driver.room.model.Path
-import product.clicklabs.jugnoo.driver.room.model.Point
+import product.clicklabs.jugnoo.driver.directions.room.dao.DirectionsPathDao
+import product.clicklabs.jugnoo.driver.directions.room.model.Path
+import product.clicklabs.jugnoo.driver.directions.room.model.Point
 
 @Database(entities = [
     Point::class,

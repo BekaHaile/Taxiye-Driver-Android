@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.directions
+package product.clicklabs.jugnoo.driver.acceptpoints
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

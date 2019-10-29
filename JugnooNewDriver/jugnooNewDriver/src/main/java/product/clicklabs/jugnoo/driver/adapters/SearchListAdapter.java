@@ -68,7 +68,7 @@ public class SearchListAdapter extends BaseAdapter {
     ArrayList<SearchResultNew> searchResults;
     String uuidVal = "";
 
-	long delay = 700; // 1 seconds after user stops typing
+	long delay = 1000; // 1 seconds after user stops typing
 	long last_text_edit = 0;
 	private Handler handler;
 	private class CustomRunnable implements Runnable {
@@ -317,6 +317,7 @@ public class SearchListAdapter extends BaseAdapter {
                             refreshingAutoComplete = false;
 
                             if (!editTextForSearch.getText().toString().trim().equalsIgnoreCase(searchText)) {
+								handler.removeCallbacks(input_finish_checker);
 								handler.postDelayed(input_finish_checker.setTextToSearch(editTextForSearch.getText().toString().trim()), delay);
                             }
 //                            GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);

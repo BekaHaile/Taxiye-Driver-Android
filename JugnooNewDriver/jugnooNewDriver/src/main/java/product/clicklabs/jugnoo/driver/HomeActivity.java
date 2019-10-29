@@ -173,7 +173,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.dialogs.TutorialInfoDialog;
-import product.clicklabs.jugnoo.driver.directions.AcceptLatLngCoroutine;
+import product.clicklabs.jugnoo.driver.acceptpoints.AcceptLatLngCoroutine;
 import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
