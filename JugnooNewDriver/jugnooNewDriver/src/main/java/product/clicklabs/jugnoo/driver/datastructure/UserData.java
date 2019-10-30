@@ -38,6 +38,7 @@ public class UserData {
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
+	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -283,5 +284,9 @@ public class UserData {
 
 	public void setDriverTag(String driverTag) {
 		this.driverTag = driverTag;
+	}
+
+	public ArrayList<SearchResultNew> getSavedAddressList(){
+		return savedAddressList;
 	}
 }

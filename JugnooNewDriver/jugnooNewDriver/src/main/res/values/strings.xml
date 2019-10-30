@@ -1292,4 +1292,5 @@
     <string name="please_select_fleet">Please select fleet</string>
     <string name="select_ringtone">Select Ringtone</string>
     <string name="ringtone1">Ringtone 1</string>
+    <string name="title_activity_destination_ride">DestinationRideActivity</string>
 </resources>

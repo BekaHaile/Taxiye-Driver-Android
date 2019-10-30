@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DestinationRideActivity">
+
+    <RelativeLayout android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:splitMotionEvents="false"
+        android:tag="@string/dont_touch_me"
+        >
+
+
+        <ImageView
+            android:id="@+id/backBtn"
+            style="@style/BackArrow"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:maxHeight="45dp"
+            style="@style/TextTitle"
+            app:autoSizeTextType="uniform"
+            android:layout_toEndOf="@+id/backBtn"
+            android:layout_marginEnd="38dp"
+            android:layout_toStartOf="@id/ivAddDestRide"
+            />
+        <ImageView
+            android:id="@+id/ivAddDestRide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_plus_theme"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/grey_alpha_66"
+            android:layout_alignParentBottom="true"
+            />
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvSavedDest"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topRl"
+        android:layout_marginTop="20dp"
+        tools:listitem="@layout/content_destination_ride"
+        tools:itemCount="4"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/tvSetDestRide"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/rvSavedDest"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/themeColor"
+        android:gravity="center"
+        android:text="Set Destination"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
+
+</RelativeLayout>
