@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.directions
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.directions.room.database.DirectionsPathDatabase
 import product.clicklabs.jugnoo.driver.directions.room.model.Path
 import product.clicklabs.jugnoo.driver.directions.room.model.Point
+import product.clicklabs.jugnoo.driver.google.GoogleGeocodeResponse
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.utils.MapUtils
@@ -19,8 +21,11 @@ import retrofit.mime.TypedByteArray
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 object GAPIDirections {
+
+    private val gson = Gson()
 
     private var db: DirectionsPathDatabase? = null
         get() {
@@ -34,8 +39,8 @@ object GAPIDirections {
         get() {
             if(field == null){
                 field = NumberFormat.getInstance(Locale.ENGLISH)
-                field!!.minimumFractionDigits = 3
-                field!!.maximumFractionDigits = 3
+                field!!.minimumFractionDigits = 4
+                field!!.maximumFractionDigits = 4
                 field!!.roundingMode = RoundingMode.HALF_UP
                 field!!.isGroupingUsed = false
             }
@@ -59,6 +64,24 @@ object GAPIDirections {
 
     }
 
+    fun putJungleOptionsParams(params:HashMap<String, String>, jungleObj:JSONObject){
+        val option = jungleObj.optInt(Constants.KEY_JUNGLE_OPTIONS, 0)
+        params[Constants.KEY_JUNGLE_OPTIONS] = option.toString()
+
+        when(option){
+            1 -> { //here map
+                params[Constants.KEY_JUNGLE_APP_ID] = jungleObj.optString(Constants.KEY_JUNGLE_APP_ID)
+                params[Constants.KEY_JUNGLE_APP_CODE] = jungleObj.optString(Constants.KEY_JUNGLE_APP_CODE)
+            }
+            2 -> { //google
+                params[Constants.KEY_JUNGLE_API_KEY] = jungleObj.optString(Constants.KEY_JUNGLE_API_KEY)
+            }
+            3 -> { //map box
+                params[Constants.KEY_JUNGLE_ACCESS_TOKEN] = jungleObj.optString(Constants.KEY_JUNGLE_ACCESS_TOKEN)
+            }
+        }
+    }
+
     fun getDirectionsPathSync(engagementId:Long, source:LatLng, destination:LatLng, apiSource:String) : DirectionsResult? {
         var directionsResult:DirectionsResult? = null
         val timeStamp = System.currentTimeMillis()
@@ -80,10 +103,8 @@ object GAPIDirections {
         if(!cachingEnabled || paths == null || paths.isEmpty()){
 
             try {
-                val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_MAPS_OBJ, Constants.EMPTY_JSON_OBJECT))
+                val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_DIRECTIONS_OBJ, Constants.EMPTY_JSON_OBJECT))
                 if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
-
-                    val option = jungleObj.optInt(Constants.KEY_JUNGLE_OPTIONS, 0)
 
                     val pointsJ = JSONArray()
                     val startJ = JSONObject()
@@ -94,20 +115,9 @@ object GAPIDirections {
 
                     val params = HashMap<String, String>()
                     params[Constants.KEY_JUNGLE_POINTS] = pointsJ.toString()
-                    params[Constants.KEY_JUNGLE_OPTIONS] = option.toString()
 
-                    when(option){
-                        1 -> { //here map
-                            params[Constants.KEY_JUNGLE_APP_ID] = jungleObj.optString(Constants.KEY_JUNGLE_APP_ID)
-                            params[Constants.KEY_JUNGLE_APP_CODE] = jungleObj.optString(Constants.KEY_JUNGLE_APP_CODE)
-                        }
-                        2 -> { //google
-                            params[Constants.KEY_JUNGLE_API_KEY] = jungleObj.optString(Constants.KEY_JUNGLE_API_KEY)
-                        }
-                        3 -> { //map box
-                            params[Constants.KEY_JUNGLE_ACCESS_TOKEN] = jungleObj.optString(Constants.KEY_JUNGLE_ACCESS_TOKEN)
-                        }
-                    }
+                    putJungleOptionsParams(params, jungleObj)
+
                     val response = RestClient.getJungleMapsApi().directions(params)
 
 
@@ -134,26 +144,28 @@ object GAPIDirections {
                 }
 
             } catch (e: Exception) {
-                //google directions hit
-                val response = GoogleRestApis.getDirections("$sourceLat,$sourceLng", "$destinationLat,$destinationLng",
-                        false, "driving", false, apiSource)
-                val result = String((response.body as TypedByteArray).bytes)
-                val jObj = JSONObject(result)
+                try {//google directions hit
+                    val response = GoogleRestApis.getDirections("$sourceLat,$sourceLng", "$destinationLat,$destinationLng",
+                            false, "driving", false, apiSource)
+                    val result = String((response.body as TypedByteArray).bytes)
+                    val jObj = JSONObject(result)
 
-                val list = mutableListOf<LatLng>()
-                list.addAll(MapUtils.getLatLngListFromPath(result))
-                val distanceValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getDouble("value")
-                val timeValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getDouble("value")
+                    val list = mutableListOf<LatLng>()
+                    list.addAll(MapUtils.getLatLngListFromPath(result))
+                    val distanceValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getDouble("value")
+                    val timeValue = jObj.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").getDouble("value")
 
-                val path = Path(engagementId,
-                        sourceLat,
-                        sourceLng,
-                        destinationLat,
-                        destinationLng,
-                        distanceValue, timeValue,
-                        timeStamp)
+                    val path = Path(engagementId,
+                            sourceLat,
+                            sourceLng,
+                            destinationLat,
+                            destinationLng,
+                            distanceValue, timeValue,
+                            timeStamp)
 
-                directionsResult = DirectionsResult(list, path)
+                    directionsResult = DirectionsResult(list, path)
+                } catch (e: Exception) {
+                }
             }
 
 
@@ -182,6 +194,104 @@ object GAPIDirections {
         return directionsResult
     }
 
+    fun getDistanceMatrix(sourceLatLng: LatLng, destLatLng: LatLng, apiSource:String) : DistanceMatrixResult? {
+        var distanceMatrixResult:DistanceMatrixResult? = null
+        try {
+            val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_DISTANCE_MATRIX_OBJ, Constants.EMPTY_JSON_OBJECT))
+            if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+
+                val params = HashMap<String, String>()
+                params[Constants.KEY_JUNGLE_ORIGIN_LAT] = sourceLatLng.latitude.toString()
+                params[Constants.KEY_JUNGLE_ORIGIN_LNG] = sourceLatLng.longitude.toString()
+                params[Constants.KEY_JUNGLE_DEST_LAT] = destLatLng.latitude.toString()
+                params[Constants.KEY_JUNGLE_DEST_LNG] = destLatLng.longitude.toString()
+
+                putJungleOptionsParams(params, jungleObj)
+
+                val response = RestClient.getJungleMapsApi().distancematrix(params)
+
+                val result = String((response.body as TypedByteArray).bytes)
+                val jObj = JSONObject(result)
+
+                val distStr = jObj.getJSONObject("data").getString("distance")
+                val timeStr = jObj.getJSONObject("data").getString("Time")
+
+                val distance = if(jObj.getJSONObject("data").has("distance_in_meter")){
+                    jObj.getJSONObject("data").getDouble("distance_in_meter")
+                } else if(distStr.contains(' ')){
+                    distStr.split(' ')[0].toDouble() * 1000.0
+                } else {
+                    distStr.toDouble()
+                }
+
+                val time = if(jObj.getJSONObject("data").has("time_in_second")){
+                    jObj.getJSONObject("data").getDouble("time_in_second")
+                } else if(timeStr.contains(' ')){
+                    timeStr.split(' ')[0].toDouble()
+                } else {
+                    timeStr.toDouble()
+                }
+
+                distanceMatrixResult = DistanceMatrixResult(distance, time)
+            } else {
+                throw Exception()
+            }
+
+        } catch (e: Exception) {
+            try {//google distance matrix hit
+                val response = GoogleRestApis.getDistanceMatrix("${sourceLatLng.latitude},${sourceLatLng.longitude}", "${destLatLng.latitude},${destLatLng.longitude}",
+                        "EN", false, false, apiSource)
+                val result = String((response.body as TypedByteArray).bytes)
+                val jObj = JSONObject(result)
+
+                val distanceValue = jObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("distance").getDouble("value")
+                val timeValue = jObj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getDouble("value")
+                distanceMatrixResult = DistanceMatrixResult(distanceValue, timeValue)
+            } catch (e: Exception) {
+            }
+        }
+        return distanceMatrixResult
+    }
+
+    fun getGeocodeAddress(sourceLatLng: LatLng, language:String, apiSource:String) : GeocodeResult? {
+        var geocodeResult:GeocodeResult? = null
+        try {
+            val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_GEOCODE_OBJ, Constants.EMPTY_JSON_OBJECT))
+            if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+
+                val params = HashMap<String, String>()
+                params[Constants.KEY_JUNGLE_LAT] = sourceLatLng.latitude.toString()
+                params[Constants.KEY_JUNGLE_LNG] = sourceLatLng.longitude.toString()
+
+                putJungleOptionsParams(params, jungleObj)
+
+                val response = RestClient.getJungleMapsApi().searchReverse(params)
+
+                val result = String((response.body as TypedByteArray).bytes)
+                val jObj = JSONObject(result)
+
+                val address = jObj.getJSONObject("data").getString("address")
+
+                geocodeResult = GeocodeResult(null, address)
+            } else {
+                throw Exception()
+            }
+
+        } catch (e: Exception) {
+            try {//google reverse geocode hit
+                val response = GoogleRestApis.geocode("${sourceLatLng.latitude},${sourceLatLng.longitude}", language, apiSource)
+                val result = String((response.body as TypedByteArray).bytes)
+                val googleGeocodeResponse = gson.fromJson(result, GoogleGeocodeResponse::class.java)
+                if (googleGeocodeResponse.results != null && googleGeocodeResponse.results!!.isNotEmpty()) {
+                    geocodeResult = GeocodeResult(googleGeocodeResponse, null)
+                }
+            } catch (e: Exception) {
+            }
+        }
+        return geocodeResult
+    }
+
+
     fun deleteDirectionsPath(engagementId:Long){
         GlobalScope.launch(Dispatchers.IO){
             db!!.getDao().deleteAllPath(engagementId)
@@ -195,5 +305,7 @@ object GAPIDirections {
     }
 
     data class DirectionsResult(val latLngs:MutableList<LatLng>, val path:Path)
+    data class DistanceMatrixResult(val distanceValue:Double, val timeValue:Double)
+    data class GeocodeResult(val googleGeocodeResponse: GoogleGeocodeResponse?, val singleAddress:String?)
 
 }

@@ -365,10 +365,15 @@ public class CustomerSwitcher {
 
 
 	void getAddress(LatLng currentLatLng, String source, int engagementId, TextView textView, TextView textView1, boolean isDrop){
-		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, settleUserDebt -> {
+		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, (googleGeocodeResponse, singleAddress)  -> {
 			try {
-				GAPIAddress gapiAddress = MapUtils.parseGAPIIAddress(settleUserDebt);
-				String address = gapiAddress.getSearchableAddress();
+				String address = null;
+				if(googleGeocodeResponse != null){
+					GAPIAddress gapiAddress = MapUtils.parseGAPIIAddress(googleGeocodeResponse);
+					address = gapiAddress.getSearchableAddress();
+				} else if(singleAddress != null){
+					address = singleAddress;
+				}
 				try {
 					if(isDrop){
 						Data.getCustomerInfo(String.valueOf(engagementId)).setDropAddress(activity, address, true);

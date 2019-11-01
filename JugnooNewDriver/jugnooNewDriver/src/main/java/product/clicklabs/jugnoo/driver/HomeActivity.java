@@ -8721,46 +8721,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.e("calculateFusedLocationDistance directions destination ", "=" + destination);
 					double totalDistance = totalDisp;
 					if(getFlagDistanceTravelled(customerInfo) == -1 && totalDisp > 0 && customerDist < totalDisp){
-						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
-								destination.latitude + "," + destination.longitude, "EN", false, false, "zero_dist");
-						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-						JSONObject jsonObject = new JSONObject(response);
-						String status = jsonObject.getString("status");
-						if ("OK".equalsIgnoreCase(status)) {
-							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-							totalDistance = element0.getJSONObject("distance").getDouble("value");
+						try {
+							GAPIDirections.DistanceMatrixResult distanceMatrixResult = GAPIDirections.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng(), destination, "zero_dist");
+							totalDistance = distanceMatrixResult.getDistanceValue();
 
-                            double speedDirections = totalDistance / (customerInfo.getElapsedTime()/1000);
+							double speedDirections = totalDistance / (customerInfo.getElapsedTime()/1000);
 
 							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
 
-                            Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
-                            if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
-                                Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
-                                customerInfo.setTotalDistance(totalDistance);
-                                setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
-                            }
-						}
-                        afterFusedDistanceEstimation(activity, source, destination, customerInfo);
+							Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
+							if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
+								Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
+								customerInfo.setTotalDistance(totalDistance);
+								setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
+							}
+						} catch (Exception e) {}
+						afterFusedDistanceEstimation(activity, source, destination, customerInfo);
 					} else if (fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1) {
-
-                        Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
-                                destination.latitude + "," + destination.longitude, "EN", false, false, "fused");
-                        String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         if (endDisplacementSpeed < maxSpeedThreshold) {
                             try {
-                                double distanceOfPath = -1;
-                                JSONObject jsonObject = new JSONObject(response);
-                                String status = jsonObject.getString("status");
-                                if ("OK".equalsIgnoreCase(status)) {
-                                    JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-                                    distanceOfPath = element0.getJSONObject("distance").getDouble("value");
-                                    endDistanceSpeed = distanceOfPath / lastTimeDiff;
-                                    Log.v("dist", "" + distanceOfPath);
-                                    Log.v("displacement speed", "" + endDistanceSpeed);
-                                }
+								double distanceOfPath = -1;
+								try {
+									GAPIDirections.DistanceMatrixResult distanceMatrixResult = GAPIDirections.INSTANCE.getDistanceMatrix(source, destination, "fused");
+									distanceOfPath = distanceMatrixResult.getDistanceValue();
+									endDistanceSpeed = distanceOfPath / lastTimeDiff;
+									Log.v("dist", "" + distanceOfPath);
+									Log.v("displacement speed", "" + endDistanceSpeed);
+								} catch (Exception e) {}
 
-                                if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
+								if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
                                     if(getFlagDistanceTravelled(customerInfo) == -1) {
                                         customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                         setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal());

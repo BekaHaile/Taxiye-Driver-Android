@@ -21,18 +21,5 @@ class Prediction {
     @SerializedName("place_id")
     @Expose
     var placeId: String? = null
-    @SerializedName("structured_formatting")
-    @Expose
-    var structuredFormatting: StructuredFormatting? = null
-
-}
-class StructuredFormatting {
-
-    @SerializedName("main_text")
-    @Expose
-    var mainText: String? = null
-    @SerializedName("secondary_text")
-    @Expose
-    var secondaryText: String? = null
 
 }
