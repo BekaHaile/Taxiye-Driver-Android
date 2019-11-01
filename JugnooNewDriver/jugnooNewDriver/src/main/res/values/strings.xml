@@ -1293,4 +1293,11 @@
     <string name="select_ringtone">Select Ringtone</string>
     <string name="ringtone1">Ringtone 1</string>
     <string name="title_activity_destination_ride">DestinationRideActivity</string>
+    <string name="dest_ride">Destination Ride</string>
+    <string name="set_destination">Set Destination</string>
+    <string name="disable">Disable</string>
+    <string name="dest_trip">Destination Trip</string>
+
+
+
 </resources>

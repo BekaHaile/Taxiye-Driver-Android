@@ -282,7 +282,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
     ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
     TextView inviteFriendText, notificationCenterText;
 
@@ -655,6 +655,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+            destRidesRl = (RelativeLayout) findViewById(R.id.destRidesRl);
             driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
             manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
             driverRatingRl = findViewById(R.id.driverRatingRl);
@@ -1392,6 +1393,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                     FlurryEventLogger.event(INVITE_OPENED);
 
+                }
+            });
+            destRidesRl.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this,DestinationRideActivity.class));
+                    overridePendingTransition(R.anim.right_in,R.anim.right_out);
                 }
             });
 
@@ -2617,6 +2626,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				rlHereMaps.setVisibility(View.GONE);
 			}
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_DESTINATION, 1) == 1) {
+                destRidesRl.setVisibility(View.VISIBLE);
+            } else {
+                destRidesRl.setVisibility(View.GONE);
+            }
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
                 textViewSuperDrivers.setText(R.string.leaderboard);

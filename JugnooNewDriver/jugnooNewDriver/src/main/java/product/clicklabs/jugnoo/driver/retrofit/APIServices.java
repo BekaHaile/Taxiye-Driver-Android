@@ -778,4 +778,12 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	Response fetchTutorialData(@FieldMap Map<String, String> params);
+	@FormUrlEncoded
+	@POST("/v2/add_home_and_work_address")
+	void addHomeAndWorkAddress(@FieldMap Map<String, String> params,
+							   Callback<Object> callback);
+	@FormUrlEncoded
+	@POST("/toggle_driver_destination")
+	void toggleDriverDest(@FieldMap Map<String, String> params,
+							   Callback<Object> callback);
 }

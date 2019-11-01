@@ -299,6 +299,34 @@
                     android:textSize="36px"/>
 
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/destRidesRl"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewdestRide"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/home_v2"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/destRidesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageViewdestRide"
+                    android:layout_marginStart="8px"
+                    android:text="@string/dest_ride"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/driverCreditsRl"
@@ -327,7 +355,6 @@
                     android:text="@string/menu_label_credits"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
-\
 
             </RelativeLayout>
             <RelativeLayout

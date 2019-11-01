@@ -15,7 +15,9 @@ public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
-	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled, destinationOptionEnable;
+	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled;
+	public int destinationOptionEnable;
+	public CurrDestRide currDestRideObj;
 	public double showDriverRating;
 	public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
@@ -288,5 +290,44 @@ public class UserData {
 
 	public ArrayList<SearchResultNew> getSavedAddressList(){
 		return savedAddressList;
+	}
+
+	public class CurrDestRide{
+		String address,type;
+		Double latitude,longitude;
+		int destinationRideTimeRem;
+		long createdAt;
+		public CurrDestRide(String address,double latitude,double longitude,int destinationRideTimeRem,long createdAt,String type){
+			this.address=address;
+			this.destinationRideTimeRem=destinationRideTimeRem;
+			this.latitude=latitude;
+			this.longitude=longitude;
+			this.createdAt=createdAt;
+			this.type=type;
+		}
+
+		public Double getLatitude() {
+			return latitude;
+		}
+
+		public Double getLongitude() {
+			return longitude;
+		}
+
+		public int getDestinationRideTimeRem() {
+			int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
+			if(timeRemaining>0)
+			return timeRemaining;
+			else
+				return 0;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public String getType() {
+			return type;
+		}
 	}
 }

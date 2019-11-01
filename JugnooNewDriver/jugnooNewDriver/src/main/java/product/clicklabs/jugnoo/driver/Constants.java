@@ -51,6 +51,10 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+	String KEY_IS_CONFIRMED = "is_confirmed";
+	String KEY_KEEP_DUPLICATE = "keep_duplicate";
+	String KEY_DELETE_FLAG = "delete_flag";
+	String KEY_ADDRESS_ID = "address_id";
 
     String KEY_CURRENT_LATITUDE= "current_latitude";
     String KEY_CURRENT_LONGITUDE= "current_longitude";
@@ -496,5 +500,6 @@ public interface Constants {
 	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
+	String KEY_DRIVER_DESTINATION="driver_destination";
 }
 
