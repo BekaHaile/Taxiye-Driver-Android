@@ -29,6 +29,7 @@ public class RestClient {
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
 	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
 	private static MapsCachingApiService MAPS_CACHING_API_SERVICE;
+	private static JungleMapsApi JUNGLE_MAPS_API = null;
 
 	static {
 		setupRestClient();
@@ -39,6 +40,7 @@ public class RestClient {
 		setupChatAPIRestClient();
 		setupHereMapApiServices();
 		setupMapsCachingRestClient();
+		setupJungleMapsApi();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -263,4 +265,28 @@ public class RestClient {
 	public static MapsCachingApiService getMapsCachingService() {
 		return MAPS_CACHING_API_SERVICE;
 	}
+
+	public static void setupJungleMapsApi() {
+		if(JUNGLE_MAPS_API == null) {
+			RestAdapter.Log fooLog = new RestAdapter.Log() {
+				@Override public void log(String message) {
+				}
+			};
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(Data.JUNGLE_MAPS_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient()))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			JUNGLE_MAPS_API = restAdapter.create(JungleMapsApi.class);
+		}
+	}
+
+	public static JungleMapsApi getJungleMapsApi() {
+		return JUNGLE_MAPS_API;
+	}
+
 }

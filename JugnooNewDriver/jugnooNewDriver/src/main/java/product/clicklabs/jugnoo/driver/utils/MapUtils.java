@@ -118,6 +118,21 @@ public class MapUtils {
 	    	return new ArrayList<LatLng>();
 	    }
 	}
+
+	public static List<LatLng> getLatLngListFromPathJungle(String result){
+		try {
+			final JSONObject json = new JSONObject(result);
+			JSONArray routeArray = json.getJSONObject("data").getJSONArray("paths");
+			JSONObject routes = routeArray.getJSONObject(0);
+			String encodedString = routes.getString("points");
+			List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+			return list;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
 	
 	
 	

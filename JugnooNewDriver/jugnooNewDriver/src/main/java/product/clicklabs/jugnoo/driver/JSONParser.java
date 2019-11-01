@@ -557,6 +557,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_DIRECTIONS_CACHING, userData.optInt(KEY_DRIVER_DIRECTIONS_CACHING,
 				1));
 
+		JSONObject jungleObj = userData.optJSONObject(KEY_JUNGLE_MAPS_OBJ);
+		Prefs.with(context).save(KEY_JUNGLE_MAPS_OBJ, jungleObj!=null ? jungleObj.toString(): EMPTY_JSON_OBJECT);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

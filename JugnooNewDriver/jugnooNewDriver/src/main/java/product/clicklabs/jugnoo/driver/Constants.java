@@ -502,5 +502,14 @@ public interface Constants {
 	long MINUTE_MILLIS = 60l * SECOND_MILLIS;
 	long HOUR_MILLIS = 60l * MINUTE_MILLIS;
 	long DAY_MILLIS = 24l * HOUR_MILLIS;
+
+	String KEY_JUNGLE_MAPS_OBJ = "jungle_maps_obj";
+	String KEY_JUNGLE_POINTS = "points";
+	String KEY_JUNGLE_OPTIONS = "options";
+	String KEY_JUNGLE_APP_ID = "app_id";
+	String KEY_JUNGLE_APP_CODE = "app_code";
+	String KEY_JUNGLE_API_KEY = "api_key";
+	String KEY_JUNGLE_ACCESS_TOKEN = "access_token";
+	String EMPTY_JSON_OBJECT = "{}";
 }
 
