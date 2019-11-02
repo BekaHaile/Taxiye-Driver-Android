@@ -104,7 +104,7 @@ object GAPIDirections {
 
             try {
                 val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_DIRECTIONS_OBJ, Constants.EMPTY_JSON_OBJECT))
-                if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+                if(checkIfJungleApiEnabled(jungleObj)){
 
                     val pointsJ = JSONArray()
                     val startJ = JSONObject()
@@ -198,7 +198,7 @@ object GAPIDirections {
         var distanceMatrixResult:DistanceMatrixResult? = null
         try {
             val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_DISTANCE_MATRIX_OBJ, Constants.EMPTY_JSON_OBJECT))
-            if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+            if(checkIfJungleApiEnabled(jungleObj)){
 
                 val params = HashMap<String, String>()
                 params[Constants.KEY_JUNGLE_ORIGIN_LAT] = sourceLatLng.latitude.toString()
@@ -257,7 +257,7 @@ object GAPIDirections {
         var geocodeResult:GeocodeResult? = null
         try {
             val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_GEOCODE_OBJ, Constants.EMPTY_JSON_OBJECT))
-            if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+            if(checkIfJungleApiEnabled(jungleObj)){
 
                 val params = HashMap<String, String>()
                 params[Constants.KEY_JUNGLE_LAT] = sourceLatLng.latitude.toString()
@@ -291,6 +291,9 @@ object GAPIDirections {
         return geocodeResult
     }
 
+    fun checkIfJungleApiEnabled(jungleObj:JSONObject) : Boolean{
+        return jungleObj.optInt(Constants.KEY_JUNGLE_OPTIONS, -1) != -1
+    }
 
     fun deleteDirectionsPath(engagementId:Long){
         GlobalScope.launch(Dispatchers.IO){

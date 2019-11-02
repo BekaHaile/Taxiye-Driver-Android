@@ -119,7 +119,7 @@ object GoogleAPICoroutine {
             var singleAddress: String? = null
             try {
                 val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_GEOCODE_OBJ, Constants.EMPTY_JSON_OBJECT))
-                if(jungleObj.has(Constants.KEY_JUNGLE_OPTIONS)){
+                if(GAPIDirections.checkIfJungleApiEnabled(jungleObj)){
                     throw Exception()
                 }
                 if(!isGoogleCachingEnabled()){
