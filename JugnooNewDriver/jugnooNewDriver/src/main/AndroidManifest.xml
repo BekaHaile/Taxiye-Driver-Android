@@ -70,7 +70,9 @@
         android:resizeableActivity="false"
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        android:networkSecurityConfig="@xml/network_security_config"
+        >
         <provider
             android:name="product.clicklabs.jugnoo.driver.utils.PhotoProvider"
             android:authorities="${authorities}"

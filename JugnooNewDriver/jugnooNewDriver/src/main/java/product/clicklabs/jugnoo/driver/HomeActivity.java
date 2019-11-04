@@ -175,6 +175,7 @@ import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
 import product.clicklabs.jugnoo.driver.dialogs.TutorialInfoDialog;
 import product.clicklabs.jugnoo.driver.acceptpoints.AcceptLatLngCoroutine;
 import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.room.model.Path;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
@@ -6990,25 +6991,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             @Override
             public void run() {
                 final Pair<Double, CurrentPathItem> currentPathItemPair = Database2.getInstance(HomeActivity.this).getCurrentPathItemsAllComplete();
+                LatLng dropLatLng = new LatLng(dropLatitude, dropLongitude);
                 if (!isAltMeteringEnabledForDriver(activity)
 						&& getFlagDistanceTravelled(customerInfo) == -1 && currentPathItemPair != null
                         && (Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(activity), activity, true) - currentPathItemPair.first) > 500
-                        || MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude)) > 500)) {
-                    double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, new LatLng(dropLatitude, dropLongitude));
+                        || MapUtils.distance(currentPathItemPair.second.dLatLng, dropLatLng) > 500)) {
+                    double displacement = MapUtils.distance(currentPathItemPair.second.dLatLng, dropLatLng);
                     try {
-                        Response responseR = GoogleRestApis.INSTANCE.getDirections(currentPathItemPair.second.dLatLng.latitude + "," + currentPathItemPair.second.dLatLng.longitude,
-                                dropLatitude + "," + dropLongitude, false, "driving", false, "end_safety");
-                        String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-                        JSONObject jsonObject = new JSONObject(response);
-                        String status = jsonObject.getString("status");
-                        if ("OK".equalsIgnoreCase(status)) {
-                            JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-                            double distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
+                        GAPIDirections.DirectionsResult directionsResult = GAPIDirections.INSTANCE.getDirectionsPathSync(customerInfo.getEngagementId(), currentPathItemPair.second.dLatLng, dropLatLng, "end_safety");
+                            double distanceOfPath = directionsResult.getPath().getDistance();
                             if (Utils.compareDouble(distanceOfPath, (displacement * 1.6)) <= 0) {
                                 long rowId = Database2.getInstance(activity).insertCurrentPathItem(-1, currentPathItemPair.second.dLatLng.latitude, currentPathItemPair.second.dLatLng.longitude,
                                         dropLatitude, dropLongitude, 1, 1);
-                                String encodedString = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONObject("overview_polyline").getString("points");
-                                List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+                                List<LatLng> list = directionsResult.getLatLngs();
                                 for (int z = 0; z < list.size() - 1; z++) {
                                     LatLng src = list.get(z);
                                     LatLng dest = list.get(z + 1);
@@ -7026,9 +7021,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             } else {
                                 throw new Exception();
                             }
-                        } else {
-                            throw new Exception();
-                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + displacement);
@@ -7042,11 +7034,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                 }
 
-                if(Prefs.with(activity).getInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
-                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
-                    waypointsRetryCount = 0;
-                    hitWaypoints(activity, customerInfo, dropLatitude, dropLongitude, rideDatas);
-                }
+//                if(Prefs.with(activity).getInt(KEY_ENABLE_WAYPOINTS_DISTANCE_CALCULATION, 0) == 1) {
+//                    ArrayList<RideData> rideDatas = Database2.getInstance(activity).getRideDataWaypoints(customerInfo.getEngagementId());
+//                    waypointsRetryCount = 0;
+//                    hitWaypoints(activity, customerInfo, dropLatitude, dropLongitude, rideDatas);
+//                }
 
 
                 runOnUiThread(new Runnable() {
@@ -7068,97 +7060,97 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         Prefs.with(this).save(Constants.KEY_FLAG_DISTANCE_TRAVELLED, flag);
     }
 
-    private int waypointsRetryCount = 0;
-    private void hitWaypoints(Context context, CustomerInfo customerInfo, double dropLatitude, double dropLongitude, ArrayList<RideData> rideDatas) {
-        try {
-            waypointsRetryCount++;
-            if(waypointsRetryCount > Prefs.with(context).getInt(KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE, 3)){
-                return;
-            }
-            Response response;
-            String strOrigin = customerInfo.requestlLatLng.latitude+","+customerInfo.requestlLatLng.longitude;
-            String strDestination = dropLatitude+","+dropLongitude;
-            if(rideDatas.size() > 0){
-                StringBuilder sbWaypoints = new StringBuilder();
-
-                //first passing logged latlngs to Snap to road api to smoothen route
-                StringBuilder sbRoads = new StringBuilder();
-                for(int i=0; i<rideDatas.size(); i++){
-                    RideData rideData = rideDatas.get(i);
-                    sbRoads.append(rideData.lat).append(',').append(rideData.lng);
-                    if(i < rideDatas.size()-1){
-                        sbRoads.append('|');
-                    }
-                }
-                try {
-                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString(), "snap_wp");
-                    String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
-                    JSONObject jsonObject = new JSONObject(responseStr);
-                    JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
-
-                    //if response has snappedPoints, then adding latLngs
-                    if(snappedPoints != null && snappedPoints.length() > 0){
-                        for(int i=0; i<snappedPoints.length(); i++){
-                            JSONObject location = snappedPoints.getJSONObject(i).optJSONObject("location");
-                            if(location != null) {
-                                sbWaypoints.append(location.getDouble("latitude"))
-                                        .append("%2C")
-                                        .append(location.getDouble("longitude"))
-                                        .append("%7C");
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                //if no points in snap to roads api use logged points directly
-                if(sbWaypoints.length() == 0) {
-                    for (RideData rideData : rideDatas) {
-                        sbWaypoints.append(rideData.lat)
-                                .append("%2C")
-                                .append(rideData.lng)
-                                .append("%7C");
-                    }
-                }
-                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString(), "snap_wp");
-            } else {
-                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false, "snap_wp");
-            }
-            String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
-            JSONObject jsonObject = new JSONObject(responseStr);
-            String status = jsonObject.getString("status");
-            double distanceOfPath = 0;
-            if ("OK".equalsIgnoreCase(status)) {
-                JSONArray legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
-                for(int i=0; i<legs.length(); i++){
-                    JSONObject leg = legs.getJSONObject(i);
-                    distanceOfPath = distanceOfPath + leg.getJSONObject("distance").getDouble("value");
-                }
-                if(BuildConfig.DEBUG) {
-                    List<LatLng> list = MapUtils.getLatLngListFromPath(responseStr);
-                    if (list.size() > 0) {
-                        polylineOptionsWaypoints = new PolylineOptions();
-                        polylineOptionsWaypoints.width(ASSL.Xscale() * 8).color(Color.BLUE).geodesic(true);
-                        for (int z = 0; z < list.size(); z++) {
-                            polylineOptionsWaypoints.add(list.get(z));
-                        }
-                        markerOptionsWaypoints.clear();
-                        for (RideData rideData : rideDatas) {
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(new LatLng(rideData.lat, rideData.lng));
-                            markerOptions.title("distance=" + (distanceOfPath / 1000D));
-                            markerOptionsWaypoints.add(markerOptions);
-                        }
-                    }
-                }
-            }
-            customerInfo.setWaypointDistance(distanceOfPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            customerInfo.setWaypointDistance(0);
-            hitWaypoints(context, customerInfo, dropLatitude, dropLongitude, rideDatas);
-        }
-    }
+//    private int waypointsRetryCount = 0;
+//    private void hitWaypoints(Context context, CustomerInfo customerInfo, double dropLatitude, double dropLongitude, ArrayList<RideData> rideDatas) {
+//        try {
+//            waypointsRetryCount++;
+//            if(waypointsRetryCount > Prefs.with(context).getInt(KEY_WAYPOINTS_RETRY_COUNT_AT_ENDRIDE, 3)){
+//                return;
+//            }
+//            Response response;
+//            String strOrigin = customerInfo.requestlLatLng.latitude+","+customerInfo.requestlLatLng.longitude;
+//            String strDestination = dropLatitude+","+dropLongitude;
+//            if(rideDatas.size() > 0){
+//                StringBuilder sbWaypoints = new StringBuilder();
+//
+//                //first passing logged latlngs to Snap to road api to smoothen route
+//                StringBuilder sbRoads = new StringBuilder();
+//                for(int i=0; i<rideDatas.size(); i++){
+//                    RideData rideData = rideDatas.get(i);
+//                    sbRoads.append(rideData.lat).append(',').append(rideData.lng);
+//                    if(i < rideDatas.size()-1){
+//                        sbRoads.append('|');
+//                    }
+//                }
+//                try {
+//                    Response responseRoads = GoogleRestApis.INSTANCE.snapToRoads(sbRoads.toString(), "snap_wp");
+//                    String responseStr = new String(((TypedByteArray)responseRoads.getBody()).getBytes());
+//                    JSONObject jsonObject = new JSONObject(responseStr);
+//                    JSONArray snappedPoints = jsonObject.optJSONArray("snappedPoints");
+//
+//                    //if response has snappedPoints, then adding latLngs
+//                    if(snappedPoints != null && snappedPoints.length() > 0){
+//                        for(int i=0; i<snappedPoints.length(); i++){
+//                            JSONObject location = snappedPoints.getJSONObject(i).optJSONObject("location");
+//                            if(location != null) {
+//                                sbWaypoints.append(location.getDouble("latitude"))
+//                                        .append("%2C")
+//                                        .append(location.getDouble("longitude"))
+//                                        .append("%7C");
+//                            }
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                //if no points in snap to roads api use logged points directly
+//                if(sbWaypoints.length() == 0) {
+//                    for (RideData rideData : rideDatas) {
+//                        sbWaypoints.append(rideData.lat)
+//                                .append("%2C")
+//                                .append(rideData.lng)
+//                                .append("%7C");
+//                    }
+//                }
+//                response = GoogleRestApis.INSTANCE.getDirectionsWaypoints(strOrigin, strDestination, sbWaypoints.toString(), "snap_wp");
+//            } else {
+//                response = GoogleRestApis.INSTANCE.getDirections(strOrigin, strDestination, false, "driving", false, "snap_wp");
+//            }
+//            String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
+//            JSONObject jsonObject = new JSONObject(responseStr);
+//            String status = jsonObject.getString("status");
+//            double distanceOfPath = 0;
+//            if ("OK".equalsIgnoreCase(status)) {
+//                JSONArray legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+//                for(int i=0; i<legs.length(); i++){
+//                    JSONObject leg = legs.getJSONObject(i);
+//                    distanceOfPath = distanceOfPath + leg.getJSONObject("distance").getDouble("value");
+//                }
+//                if(BuildConfig.DEBUG) {
+//                    List<LatLng> list = MapUtils.getLatLngListFromPath(responseStr);
+//                    if (list.size() > 0) {
+//                        polylineOptionsWaypoints = new PolylineOptions();
+//                        polylineOptionsWaypoints.width(ASSL.Xscale() * 8).color(Color.BLUE).geodesic(true);
+//                        for (int z = 0; z < list.size(); z++) {
+//                            polylineOptionsWaypoints.add(list.get(z));
+//                        }
+//                        markerOptionsWaypoints.clear();
+//                        for (RideData rideData : rideDatas) {
+//                            MarkerOptions markerOptions = new MarkerOptions();
+//                            markerOptions.position(new LatLng(rideData.lat, rideData.lng));
+//                            markerOptions.title("distance=" + (distanceOfPath / 1000D));
+//                            markerOptionsWaypoints.add(markerOptions);
+//                        }
+//                    }
+//                }
+//            }
+//            customerInfo.setWaypointDistance(distanceOfPath);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            customerInfo.setWaypointDistance(0);
+//            hitWaypoints(context, customerInfo, dropLatitude, dropLongitude, rideDatas);
+//        }
+//    }
 
     /**
      * ASync for start ride in  driver mode from server
@@ -8729,46 +8721,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Log.e("calculateFusedLocationDistance directions destination ", "=" + destination);
 					double totalDistance = totalDisp;
 					if(getFlagDistanceTravelled(customerInfo) == -1 && totalDisp > 0 && customerDist < totalDisp){
-						Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng().latitude + "," + customerInfo.getRequestlLatLng().longitude,
-								destination.latitude + "," + destination.longitude, "EN", false, false, "zero_dist");
-						String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-						JSONObject jsonObject = new JSONObject(response);
-						String status = jsonObject.getString("status");
-						if ("OK".equalsIgnoreCase(status)) {
-							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-							totalDistance = element0.getJSONObject("distance").getDouble("value");
+						try {
+							GAPIDirections.DistanceMatrixResult distanceMatrixResult = GAPIDirections.INSTANCE.getDistanceMatrix(customerInfo.getRequestlLatLng(), destination, "zero_dist");
+							totalDistance = distanceMatrixResult.getDistanceValue();
 
-                            double speedDirections = totalDistance / (customerInfo.getElapsedTime()/1000);
+							double speedDirections = totalDistance / (customerInfo.getElapsedTime()/1000);
 
 							Log.e("calculateFusedLocationDistance directions customerGlobal ", "=" + customerRideDataGlobal.getDistance(activity));
 
-                            Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
-                            if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
-                                Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
-                                customerInfo.setTotalDistance(totalDistance);
-                                setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
-                            }
-						}
-                        afterFusedDistanceEstimation(activity, source, destination, customerInfo);
+							Log.e("calculateFusedLocationDistance directions speedDirections ", "=" + speedDirections);
+							if(getFlagDistanceTravelled(customerInfo) == -1 && speedDirections < maxSpeedThreshold) {
+								Log.e("calculateFusedLocationDistance directions totalDistance ", "=" + totalDistance);
+								customerInfo.setTotalDistance(totalDistance);
+								setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_GOOGLE_DISTANCE.getOrdinal());
+							}
+						} catch (Exception e) {}
+						afterFusedDistanceEstimation(activity, source, destination, customerInfo);
 					} else if (fusedLocationUsed && getFlagDistanceTravelled(customerInfo) == -1) {
-
-                        Response responseR = GoogleRestApis.INSTANCE.getDistanceMatrix(source.latitude + "," + source.longitude,
-                                destination.latitude + "," + destination.longitude, "EN", false, false, "fused");
-                        String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
                         if (endDisplacementSpeed < maxSpeedThreshold) {
                             try {
-                                double distanceOfPath = -1;
-                                JSONObject jsonObject = new JSONObject(response);
-                                String status = jsonObject.getString("status");
-                                if ("OK".equalsIgnoreCase(status)) {
-                                    JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-                                    distanceOfPath = element0.getJSONObject("distance").getDouble("value");
-                                    endDistanceSpeed = distanceOfPath / lastTimeDiff;
-                                    Log.v("dist", "" + distanceOfPath);
-                                    Log.v("displacement speed", "" + endDistanceSpeed);
-                                }
+								double distanceOfPath = -1;
+								try {
+									GAPIDirections.DistanceMatrixResult distanceMatrixResult = GAPIDirections.INSTANCE.getDistanceMatrix(source, destination, "fused");
+									distanceOfPath = distanceMatrixResult.getDistanceValue();
+									endDistanceSpeed = distanceOfPath / lastTimeDiff;
+									Log.v("dist", "" + distanceOfPath);
+									Log.v("displacement speed", "" + endDistanceSpeed);
+								} catch (Exception e) {}
 
-                                if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
+								if (distanceOfPath > 0.0001 && endDistanceSpeed < maxSpeedThreshold) {
                                     if(getFlagDistanceTravelled(customerInfo) == -1) {
                                         customerRideDataGlobal.setDistance(customerRideDataGlobal.getDistance(HomeActivity.this) + distanceOfPath);
                                         setFlagDistanceTravelled(FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal());
@@ -10642,7 +10623,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
                 if (latLngs.size() > 1) {
-                    new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), false, "delivery_markers",
+                    new ApiGoogleDirectionWaypoints(customerInfo.getEngagementId(), latLngs, getResources().getColor(R.color.themeColorLight), false, "delivery_markers",
                             new ApiGoogleDirectionWaypoints.Callback() {
                                 @Override
                                 public void onPre() {
@@ -10905,7 +10886,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (Prefs.with(this).getInt(KEY_DRIVER_DIRECTIONS_CACHING, 0) == 1) {
 					getDirectionsPathCached();
 				} else if(latLngs.size() > 1){
-					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
+					new ApiGoogleDirectionWaypoints(Data.getCurrentCustomerInfo().getEngagementId(), latLngs, getResources().getColor(BuildConfig.DEBUG ? R.color.transparent : R.color.blue_polyline), false, "ride_markers",
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
 								public void onPre() {
@@ -10964,7 +10945,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						GAPIDirections.INSTANCE.getDirectionsPath(customerInfo.getEngagementId(), source, destination,
 								"ride_markers", new GAPIDirections.Callback() {
 									@Override
-									public void onSuccess(@NotNull List<LatLng> latLngs, double distance, double time) {
+									public void onSuccess(@NotNull List<LatLng> latLngs, Path path) {
 										PolylineOptions polylineOptions = new PolylineOptions();
 										polylineOptions.width(ASSL.Xscale() * 8)
 												.color(ContextCompat.getColor(HomeActivity.this, R.color.blue_polyline))
@@ -11114,7 +11095,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
 
             if (latLngs.size() > 1) {
-                new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false, "delivery_pool",
+                new ApiGoogleDirectionWaypoints(Data.getCurrentCustomerInfo().getEngagementId(), latLngs, getResources().getColor(R.color.blue_polyline), false, "delivery_pool",
                         new ApiGoogleDirectionWaypoints.Callback() {
                             @Override
                             public void onPre() {

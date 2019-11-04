@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.MyApplication;
@@ -17,9 +16,6 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.google.AddressComponent;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleGeocodeResponse;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class MapUtils {
 
@@ -118,132 +114,24 @@ public class MapUtils {
 	    	return new ArrayList<LatLng>();
 	    }
 	}
-	
-	
-	
-	
-	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
-	public static String getGAPIAddress(LatLng latLng, boolean toLocality, String source) {
-		String fullAddress = "Unnamed";
+
+	public static List<LatLng> getLatLngListFromPathJungle(String result){
 		try {
-			String language = "";
-			language = LocaleHelper.getLanguage(MyApplication.getInstance());
-			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
-				language = "hi";
-            }
-
-			Response response = GoogleRestApis.INSTANCE.geocode(latLng.latitude + "," + latLng.longitude, language, source);
-			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
-			JSONObject jsonObj = new JSONObject(responseStr);
-
-			
-			String status = jsonObj.getString("status");
-			if (status.equalsIgnoreCase("OK")) {
-				JSONArray Results = jsonObj.getJSONArray("results");
-				JSONObject zero = Results.getJSONObject(0);
-
-				String streetNumber = "", route = "", subLocality2 = "", subLocality1 = "", locality = "", administrativeArea2 = "", administrativeArea1 = "", country = "", postalCode = "";
-
-				if (zero.has("address_components")) {
-					try {
-						ArrayList<String> selectedAddressComponentsArr = new ArrayList<String>();
-						JSONArray addressComponents = zero.getJSONArray("address_components");
-
-						for (int i = addressComponents.length()-1; i >= 0; i--) {
-
-							JSONObject iObj = addressComponents.getJSONObject(i);
-							JSONArray jArr = iObj.getJSONArray("types");
-
-							ArrayList<String> addressTypes = new ArrayList<String>();
-							for (int j = 0; j < jArr.length(); j++) {
-								addressTypes.add(jArr.getString(j));
-							}
-
-							if ("".equalsIgnoreCase(streetNumber) && addressTypes.contains("street_number")) {
-								streetNumber = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(streetNumber) && !selectedAddressComponentsArr.toString().contains(streetNumber)) {
-									selectedAddressComponentsArr.add(streetNumber);
-								}
-							}
-							if ("".equalsIgnoreCase(route) && addressTypes.contains("route")) {
-								route = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(route) && !selectedAddressComponentsArr.toString().contains(route)) {
-									selectedAddressComponentsArr.add(route);
-								}
-							}
-							if ("".equalsIgnoreCase(subLocality2) && addressTypes.contains("sublocality_level_2")) {
-								subLocality2 = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(subLocality2) && !selectedAddressComponentsArr.toString().contains(subLocality2)) {
-									selectedAddressComponentsArr.add(subLocality2);
-								}
-							}
-							if ("".equalsIgnoreCase(subLocality1) && addressTypes.contains("sublocality_level_1")) {
-								subLocality1 = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(subLocality1) && !selectedAddressComponentsArr.toString().contains(subLocality1)) {
-									selectedAddressComponentsArr.add(subLocality1);
-								}
-							}
-							if ("".equalsIgnoreCase(locality) && addressTypes.contains("locality")) {
-								locality = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(locality) && !selectedAddressComponentsArr.toString().contains(locality)) {
-									selectedAddressComponentsArr.add(locality);
-								}
-							}
-							if ("".equalsIgnoreCase(administrativeArea2) && addressTypes.contains("administrative_area_level_2")) {
-								administrativeArea2 = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(administrativeArea2) && !selectedAddressComponentsArr.toString().contains(administrativeArea2)) {
-									selectedAddressComponentsArr.add(administrativeArea2);
-								}
-							}
-							if ("".equalsIgnoreCase(administrativeArea1) && addressTypes.contains("administrative_area_level_1")) {
-								administrativeArea1 = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(administrativeArea1) && !selectedAddressComponentsArr.toString().contains(administrativeArea1)) {
-									selectedAddressComponentsArr.add(administrativeArea1);
-								}
-							}
-							if(!toLocality) {
-								if ("".equalsIgnoreCase(country) && addressTypes.contains("country")) {
-									country = iObj.getString("long_name");
-									if (!"".equalsIgnoreCase(country) && !selectedAddressComponentsArr.toString().contains(country)) {
-										selectedAddressComponentsArr.add(country);
-									}
-								}
-								if ("".equalsIgnoreCase(postalCode) && addressTypes.contains("postal_code")) {
-									postalCode = iObj.getString("long_name");
-									if (!"".equalsIgnoreCase(postalCode) && !selectedAddressComponentsArr.toString().contains(postalCode)) {
-										selectedAddressComponentsArr.add(postalCode);
-									}
-								}
-							}
-						}
-
-						Collections.reverse(selectedAddressComponentsArr);
-						fullAddress = "";
-						if (selectedAddressComponentsArr.size() >= 2) {
-							for (int i = 0; i < selectedAddressComponentsArr.size(); i++) {
-								if (i < selectedAddressComponentsArr.size() - 1) {
-									fullAddress = fullAddress + selectedAddressComponentsArr.get(i) + ", ";
-								} else {
-									fullAddress = fullAddress + selectedAddressComponentsArr.get(i);
-								}
-							}
-						} else {
-							fullAddress = zero.getString("formatted_address");
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-						fullAddress = zero.getString("formatted_address");
-					}
-				} else {
-					fullAddress = zero.getString("formatted_address");
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			final JSONObject json = new JSONObject(result);
+			JSONArray routeArray = json.getJSONObject("data").getJSONArray("paths");
+			JSONObject routes = routeArray.getJSONObject(0);
+			String encodedString = routes.getString("points");
+			List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+			return list;
 		}
-		return fullAddress;
+		catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
+	
+	
+	
 
 
 	public static GAPIAddress parseGAPIIAddress(GoogleGeocodeResponse googleGeocodeResponse){

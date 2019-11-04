@@ -129,6 +129,7 @@ public class SearchListAdapter extends BaseAdapter {
 						SearchListAdapter.this.searchListActionsHandler.onTextChange(s.toString());
 						if (s.length() > 0) {
 							last_text_edit = System.currentTimeMillis();
+                            handler.removeCallbacks(input_finish_checker);
 							handler.postDelayed(input_finish_checker.setTextToSearch(s.toString().trim()), delay);
 						}
 						else{

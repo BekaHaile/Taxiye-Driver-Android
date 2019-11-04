@@ -25,7 +25,10 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.room.model.Path;
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -499,7 +502,7 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	private class DirectionsAsyncTask extends AsyncTask<Void, Void, String> {
+	private class DirectionsAsyncTask extends AsyncTask<Void, Void, GAPIDirections.DirectionsResult> {
 		double displacementToCompare;
 		LatLng source, destination;
 		Location currentLocation;
@@ -520,22 +523,23 @@ public class GpsDistanceCalculator {
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected GAPIDirections.DirectionsResult doInBackground(Void... params) {
 			try {
-				Response response = GoogleRestApis.INSTANCE.getDirections(source.latitude + "," + source.longitude,
-						destination.latitude + "," + destination.longitude, false, "driving", false, "metering");
-				return new String(((TypedByteArray) response.getBody()).getBytes());
+				List<EngagementSPData> list = MyApplication.getInstance().getEngagementSP().getEngagementSPDatasArray();
+				long engagementId = list.size() > 0 ? list.get(0).getEngagementId() : System.currentTimeMillis();
+
+				return GAPIDirections.INSTANCE.getDirectionsPathSync(engagementId, source, destination, "metering");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "";
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(GAPIDirections.DirectionsResult result) {
 			super.onPostExecute(result);
 			if (result != null) {
-				updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
+				updateGAPIDistance(result.getLatLngs(), result.getPath(), displacementToCompare, source, destination, currentLocation, rowId);
 			}
 			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 			directionsAsyncTasks.remove(this);
@@ -562,15 +566,9 @@ public class GpsDistanceCalculator {
 	}
 
 
-	private synchronized void updateGAPIDistance(String result, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
+	private synchronized void updateGAPIDistance(List<LatLng> latLngs, Path path, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
 		try {
-			double distanceOfPath = Double.MAX_VALUE;
-			JSONObject jsonObject = new JSONObject(result);
-			String status = jsonObject.getString("status");
-			if ("OK".equalsIgnoreCase(status)) {
-				JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-				distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
-			}
+			double distanceOfPath = path.getDistance();
 			if (Utils.compareDouble(distanceOfPath, (displacementToCompare * 1.5)) <= 0) {                                                        // distance would be approximately correct
 				boolean validDistance = updateTotalDistance(source, destination, distanceOfPath, currentLocation);
 				if (validDistance) {
@@ -578,11 +576,7 @@ public class GpsDistanceCalculator {
 							getWaitTimeFromSP(context), lastGPSLocation,
 							lastFusedLocation, totalHaversineDistance, true);
 
-					JSONArray routeArray = jsonObject.getJSONArray("routes");
-					JSONObject routes = routeArray.getJSONObject(0);
-					JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
-					String encodedString = overviewPolylines.getString("points");
-					List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+					List<LatLng> list = latLngs;
 
 					PolylineOptions polylineOptions = new PolylineOptions();
 
