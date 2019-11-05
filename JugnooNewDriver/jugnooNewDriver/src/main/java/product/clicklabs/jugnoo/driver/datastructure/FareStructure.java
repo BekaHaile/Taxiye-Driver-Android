@@ -61,7 +61,6 @@ public class FareStructure {
 		if(totalWaitTimeInMin < 0){
 			totalWaitTimeInMin = 0;
 		}
-		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
 
 		double fareOfDistance =0;
 		double fare = 0;
@@ -77,10 +76,10 @@ public class FareStructure {
 						+ ((totalDistanceInKm - farePerKmThresholdDistance) * farePerKmAfterThreshold);
 			}
 
-			fare = fareOfRideTime + fareOfWaitTime + fixedFare + fareOfDistance;
+			fare = fareOfRideTime + fixedFare + fareOfDistance;
 
 		} else {
-			fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
+			fare = fareOfRideTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
 		}
 		fare = fare * fareFactor;
 
@@ -103,6 +102,12 @@ public class FareStructure {
 			}
 		}
 
+
+		//congestion fare
+		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
+		fare = fare + fareOfWaitTime;
+
+
 		fare = fare + computeLuggageChargesCharges(luggageCount);
 
 		return Utils.currencyPrecision(fare);
@@ -116,7 +121,7 @@ public class FareStructure {
 		return  mandatoryFareApplicable;
 	}
 
-	private double computeLuggageChargesCharges(int luggageCount) {
+	public double computeLuggageChargesCharges(int luggageCount) {
 		return Utils.currencyPrecision(((double)luggageCount) * baggageCharges);
 	}
 

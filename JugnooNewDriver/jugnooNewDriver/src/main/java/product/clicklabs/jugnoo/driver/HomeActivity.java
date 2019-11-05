@@ -5600,11 +5600,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis,
                                 int invalidPool, boolean ignoreTollChargeTipAmount) {
+    	int luggageCount = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0;
         if (customerInfo.getReverseBidFare() != null) {
-            return customerInfo.getReverseBidFare().getFare();
+            return customerInfo.getReverseBidFare().getFare() + Data.fareStructure.computeLuggageChargesCharges(luggageCount);
         }
         if (customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null && invalidPool == 0) {
-            return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
+            return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId()) + Data.fareStructure.computeLuggageChargesCharges(luggageCount);
         }
 
         double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this, false));
@@ -5618,8 +5619,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             waitTimeInMin = 0d;
         }
 
-        double fare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-                JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0);
+        double fare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin, luggageCount);
 
         if (!ignoreTollChargeTipAmount) {
             double taxAmount = Utils.currencyPrecision(fare * Data.fareStructure.getTaxPercent()/100D);
@@ -7712,6 +7712,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             //adding toll fare, taxAmount and tip amount again in totalFare after discount computation
             totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare + taxAmount);
+			Log.i("totalFare again == endride offline ", "=" + totalFare);
+			Log.i("tipAmount again == endride offline ", "=" + tipAmount);
+			Log.i("tollFare again == endride offline ", "=" + tollFare);
+			Log.i("taxAmount again == endride offline ", "=" + taxAmount);
 
             if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
                 finalToPay = totalFare - finalDiscount;
