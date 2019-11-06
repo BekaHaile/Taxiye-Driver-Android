@@ -62,7 +62,7 @@
     <string name="end_ride">రైడ్ ముగించు</string>
     <string name="reached_destination">గమ్యం చేరుకుంది</string>
     <string name="distance">దూరం</string>
-    <string name="wait_time">వేచి సమయం</string>
+    <string name="wait_time">రద్దీ సమయం</string>
     <string name="fare">ఛార్జీల</string>
     <string name="accept_ride">రైడ్ అంగీకరించు</string>
     <string name="cancel_ride">రైడ్ రద్దు</string>

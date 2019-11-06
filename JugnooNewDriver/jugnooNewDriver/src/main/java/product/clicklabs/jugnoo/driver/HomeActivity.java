@@ -5623,8 +5623,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         if (!ignoreTollChargeTipAmount) {
             double taxAmount = Utils.currencyPrecision(fare * Data.fareStructure.getTaxPercent()/100D);
-            fare = fare + (customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D)
-                    + customerInfo.getTipAmount() + taxAmount;
+            fare = Utils.currencyPrecision(fare + (customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D)
+                    + customerInfo.getTipAmount() + taxAmount);
         }
 
         return fare;

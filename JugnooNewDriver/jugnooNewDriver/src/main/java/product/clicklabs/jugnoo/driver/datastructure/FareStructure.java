@@ -110,7 +110,7 @@ public class FareStructure {
 
 		fare = fare + computeLuggageChargesCharges(luggageCount);
 
-		return Utils.currencyPrecision(fare);
+		return fare;
 	}
 
 	private double getEffectiveConvenienceCharge(){

@@ -34,7 +34,7 @@
     <string name="end_ride">انهاء الرحلة</string>
     <string name="reached_destination">الوجهة التي تم التوصل إليها</string>
     <string name="distance">مسافه: بعد</string>
-    <string name="wait_time">وقت الانتظار</string>
+    <string name="wait_time">وقت الازدحام</string>
     <string name="fare">أجرة</string>
     <string name="accept_ride">استعرض ركوب</string>
     <string name="cancel_ride">إلغاء جولة</string>
