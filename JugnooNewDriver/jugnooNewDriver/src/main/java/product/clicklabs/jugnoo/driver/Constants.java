@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
+import java.util.List;
+
 /**
  * Created by Shankar on 12/1/2015.
  */
@@ -331,7 +333,9 @@ public interface Constants {
 	String KEY_DEFAULT_LANG = "default_lang";
 	String KEY_LOCALE = "locale";
 	String KEY_TOLL_CHARGE = "toll_charge";
+	String KEY_SHOW_TOLL_CHARGE = "show_toll_charge";
 	String KEY_SHOW_TOLL_CHARGE1 = "show_toll_charge";
+
 	String KEY_DEVICE_TYPE = "device_type";
 	String WALLET = "wallet";
 	String SP_OVERLAY_PERMISSION_ASKED = "sp_overlay_permission_asked";
@@ -524,5 +528,6 @@ public interface Constants {
 	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
 	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
+	String KEY_FROM_CHAT_PUSH = "from_chat_push";
 }
 
