@@ -386,8 +386,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     LinearLayout linearLayoutMeterFare;
     TextView textViewRateYourCustomer,
             tvRideEndID, reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
-            reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
-            reviewFareText, reviewFareValue;
+            reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue;
     RelativeLayout reviewWaitTimeRl;
 
     LinearLayout linearLayoutMeterFareEditText;
@@ -999,10 +998,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             reviewRideTimeText.setText(getStringText(R.string.ride_time));
             reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
             reviewRideTimeValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-            reviewFareText = (TextView) findViewById(R.id.reviewFareText);
-            reviewFareText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
-            reviewFareValue = (TextView) findViewById(R.id.reviewFareValue);
-            reviewFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
             reviewWaitTimeRl.setVisibility(View.GONE);
@@ -4259,7 +4254,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
                     reviewWaitValue.setText(waitTime + " " + getResources().getString(R.string.min));
                     reviewRideTimeValue.setText(rideTime + " " + getResources().getString(R.string.min));
-                    reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
                     if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1) {
                         rvFareDetails.setVisibility(endRideData.getFareDetails() == null
@@ -5532,19 +5526,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
                 super.onBackPressed();
                 setMakeDeliveryButtonVisibility();
-            } else if (userMode == UserMode.DRIVER) {
-                if (driverScreenMode == DriverScreenMode.D_IN_RIDE
-                        || driverScreenMode == DriverScreenMode.D_START_RIDE
-                        || driverScreenMode == DriverScreenMode.D_ARRIVED) {
-                    Intent startMain = new Intent(Intent.ACTION_MAIN);
-                    startMain.addCategory(Intent.CATEGORY_HOME);
-                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(startMain);
-                } else {
-                    ActivityCompat.finishAffinity(this);
-                }
             } else {
-                ActivityCompat.finishAffinity(this);
+				Intent startMain = new Intent(Intent.ACTION_MAIN);
+				startMain.addCategory(Intent.CATEGORY_HOME);
+				startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(startMain);
             }
         } catch (Exception e) {
             e.printStackTrace();

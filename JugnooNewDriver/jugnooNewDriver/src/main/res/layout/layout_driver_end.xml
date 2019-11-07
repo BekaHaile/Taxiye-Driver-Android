@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/endRideReviewRl"
+<RelativeLayout android:id="@+id/endRideReviewRl"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:animateLayoutChanges="true"
     android:splitMotionEvents="false"
-    android:visibility="visible">
+    android:visibility="visible"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/end_ride_custom_text"
@@ -30,13 +30,14 @@
         <LinearLayout
             android:id="@+id/linearLayoutEndRideMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="96px"
+                android:layout_height="48dp"
+                android:tag="@string/dont_touch_me"
                 android:background="@color/colorPrimary">
 
                 <TextView
@@ -45,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/Invoice"
                     android:textColor="@color/textColorTitle"
-                    android:textSize="36px"
+                    android:textSize="20sp"
                     android:layout_centerInParent="true"
                     />
 
@@ -54,7 +55,6 @@
                     android:layout_height="2dp"
                     android:background="@color/grey_alpha_66"
                     android:layout_alignParentBottom="true"
-                    android:tag="@string/dont_touch_me"
                     />
 
             </RelativeLayout>
@@ -63,29 +63,32 @@
             <LinearLayout
                 android:id="@+id/reviewReachedDistanceRl"
                 android:layout_width="match_parent"
-                android:layout_height="140px"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:tag="@string/dont_touch_me"
+                android:baselineAligned="false"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 >
 
                 <RelativeLayout
                     android:id="@+id/reviewDistanceRl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:splitMotionEvents="false">
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/reviewDistanceText"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:gravity="center"
                         android:text="@string/distance"
                         android:textColor="@color/textColor"
-                        android:textSize="38px"/>
+                        android:textSize="16sp"/>
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewDistanceValue"
@@ -93,25 +96,26 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/reviewDistanceText"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5px"
+                        android:layout_marginTop="2dp"
                         android:gravity="center"
                         android:textColor="@color/textColorMedium"
-                        android:textSize="38px"/>
+                        android:textSize="19sp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/reviewWaitTimeRl"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:splitMotionEvents="false"
+                    android:gravity="center_vertical"
                     android:visibility="visible">
 
-                    <ImageView
-                        android:layout_width="2px"
-                        android:layout_height="90px"
-                        android:background="@color/menu_black"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="45dp"
+                        android:background="@color/grey_alpha_66"
+                        android:layout_centerVertical="true"
+                        />
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewWaitText"
@@ -120,33 +124,35 @@
                         android:gravity="center"
                         android:text="@string/wait_time"
                         android:textColor="@color/textColor"
-                        android:textSize="38px"/>
+                        android:textSize="15sp"/>
 
                     <TextView
                         android:id="@+id/reviewWaitValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/reviewWaitText"
-                        android:layout_marginTop="5px"
+                        android:layout_marginTop="2dp"
                         android:gravity="center"
-                        android:text="4 min"
+                        tools:text="4 min"
                         android:textColor="@color/textColorMedium"
-                        android:textSize="38px"/>
+                        android:textSize="19sp"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/reviewRideTimeRl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:splitMotionEvents="false">
+                    android:gravity="center_vertical">
 
-                    <ImageView
-                        android:layout_width="2px"
-                        android:layout_height="90px"
-                        android:background="@color/menu_black"/>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="45dp"
+                        android:background="@color/grey_alpha_66"
+                        android:layout_centerVertical="true"
+                        />
 
                     <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/reviewRideTimeText"
@@ -156,7 +162,7 @@
                         android:gravity="center"
                         android:text="@string/ride_time"
                         android:textColor="@color/textColor"
-                        android:textSize="38px"/>
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/reviewRideTimeValue"
@@ -164,49 +170,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/reviewRideTimeText"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5px"
+                        android:layout_marginTop="2dp"
                         android:gravity="center"
-                        android:text="4 min"
+                        tools:text="4 min"
                         android:textColor="@color/textColorMedium"
-                        android:textSize="38px"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/reviewFareRl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:splitMotionEvents="false"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="2px"
-                        android:layout_height="90px"
-                        android:background="@color/menu_black"/>
-
-                    <TextView
-                        android:id="@+id/reviewFareText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center"
-                        android:text="@string/fare"
-                        android:textColor="@color/textColor"
-                        android:textSize="38px"/>
-
-                    <TextView
-                        android:id="@+id/reviewFareValue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/reviewFareText"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5px"
-                        android:gravity="center"
-                        android:singleLine="true"
-                        android:text="Rs 10.00"
-                        android:textColor="@color/textColorMedium"
-                        android:textSize="38px"/>
+                        android:textSize="19sp"/>
                 </RelativeLayout>
 
             </LinearLayout>

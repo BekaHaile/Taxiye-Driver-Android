@@ -559,6 +559,8 @@ public class JSONParser implements Constants {
 				1));
 
 		parseJungleApiObjects(context, userData);
+
+		Prefs.with(context).save(KEY_DRIVER_WAIT_SPEED, userData.optString(KEY_DRIVER_WAIT_SPEED, "2"));
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {
