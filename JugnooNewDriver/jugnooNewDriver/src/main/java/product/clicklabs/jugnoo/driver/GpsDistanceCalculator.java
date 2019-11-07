@@ -16,9 +16,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +24,12 @@ import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
 import product.clicklabs.jugnoo.driver.directions.room.model.Path;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class GpsDistanceCalculator {
 
@@ -47,7 +41,7 @@ public class GpsDistanceCalculator {
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 20; //in meters per second
 	public static final double MAX_ACCURACY = 200;
-	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
+	public static final long WAITING_WINDOW_TIME_MILLIS = 10000;
 	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
 	public final double WAIT_TIME_RESET_TOLERANCE = 10000; // in milliseconds
 	public static final int TOTAL_DISTANCE_MAX = 200000;
@@ -385,15 +379,22 @@ public class GpsDistanceCalculator {
 			accumulativeSpeed = accumulativeSpeed + speedMPS;
 			speedCounter++;
 		} else{
-			double speedAvg = accumulativeSpeed / speedCounter;
-
-			if(speedAvg < 1.4){
-				long waitTime = getWaitTimeFromSP(context) + WAITING_WINDOW_TIME_MILLIS;
+			if(speedCounter == 0 || (accumulativeSpeed / speedCounter) <= waitSpeed()){
+				long waitTime = getWaitTimeFromSP(context) + millisTillWaitWindow;
 				saveWaitTimeToSP(context, waitTime);
+				Log.e(TAG, "calculateWaitTime waitTime="+(waitTime/60000.0));
 			}
 			this.accumulativeSpeed = 0;
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
+		}
+	}
+
+	private double waitSpeed(){
+		try {
+			return Double.parseDouble(Prefs.with(context).getString(Constants.KEY_DRIVER_WAIT_SPEED, "2"));
+		} catch (Exception e) {
+			return 2;
 		}
 	}
 

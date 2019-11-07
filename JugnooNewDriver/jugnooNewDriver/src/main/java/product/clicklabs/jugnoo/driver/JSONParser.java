@@ -107,6 +107,7 @@ public class JSONParser implements Constants {
 	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
 			JSONObject fareDetails = jObj.getJSONObject("fare_details");
+			Log.e("JSONParser parseFareObject", "fareDetails json="+fareDetails);
 			if(fareDetails.has("mandatory_fare_details")){
 				JSONObject mandatoryFareDetails = fareDetails.getJSONObject("mandatory_fare_details");
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
@@ -558,6 +559,8 @@ public class JSONParser implements Constants {
 				1));
 
 		parseJungleApiObjects(context, userData);
+
+		Prefs.with(context).save(KEY_DRIVER_WAIT_SPEED, userData.optString(KEY_DRIVER_WAIT_SPEED, "2"));
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {

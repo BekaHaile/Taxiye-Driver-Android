@@ -521,5 +521,6 @@ public interface Constants {
 	String KEY_JUNGLE_LNG = "lng";
 
 	String JUNGLE_JSON_OBJECT = "{\""+KEY_JUNGLE_OPTIONS+"\":0}";
+	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
 }
 

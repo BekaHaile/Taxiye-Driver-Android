@@ -68,7 +68,7 @@
     <string name="end_ride">સવારી પૂર્ણ કરો </string>
     <string name="reached_destination">સ્થળ પર પહોચી ગયા </string>
     <string name="distance">અંતર </string>
-    <string name="wait_time">રાહ જોવાનો સમય </string>
+    <string name="wait_time">ભીડ સમય</string>
     <string name="fare">ભાડું </string>
     <string name="accept_ride">સવારી સ્વીકાર કરો </string>
     <string name="cancel_ride">સવારી રદ્દ </string>

@@ -386,8 +386,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     LinearLayout linearLayoutMeterFare;
     TextView textViewRateYourCustomer,
             tvRideEndID, reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
-            reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
-            reviewFareText, reviewFareValue;
+            reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue;
     RelativeLayout reviewWaitTimeRl;
 
     LinearLayout linearLayoutMeterFareEditText;
@@ -999,10 +998,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             reviewRideTimeText.setText(getStringText(R.string.ride_time));
             reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
             reviewRideTimeValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-            reviewFareText = (TextView) findViewById(R.id.reviewFareText);
-            reviewFareText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
-            reviewFareValue = (TextView) findViewById(R.id.reviewFareValue);
-            reviewFareValue.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
             reviewWaitTimeRl.setVisibility(View.GONE);
@@ -4259,7 +4254,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
                     reviewWaitValue.setText(waitTime + " " + getResources().getString(R.string.min));
                     reviewRideTimeValue.setText(rideTime + " " + getResources().getString(R.string.min));
-                    reviewFareValue.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), totalFare));
 
                     if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_SHOW_DETAILS_IN_TAKE_CASH, 0) == 1) {
                         rvFareDetails.setVisibility(endRideData.getFareDetails() == null
@@ -5532,19 +5526,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
                 super.onBackPressed();
                 setMakeDeliveryButtonVisibility();
-            } else if (userMode == UserMode.DRIVER) {
-                if (driverScreenMode == DriverScreenMode.D_IN_RIDE
-                        || driverScreenMode == DriverScreenMode.D_START_RIDE
-                        || driverScreenMode == DriverScreenMode.D_ARRIVED) {
-                    Intent startMain = new Intent(Intent.ACTION_MAIN);
-                    startMain.addCategory(Intent.CATEGORY_HOME);
-                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(startMain);
-                } else {
-                    ActivityCompat.finishAffinity(this);
-                }
             } else {
-                ActivityCompat.finishAffinity(this);
+				Intent startMain = new Intent(Intent.ACTION_MAIN);
+				startMain.addCategory(Intent.CATEGORY_HOME);
+				startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(startMain);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -5600,11 +5586,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis,
                                 int invalidPool, boolean ignoreTollChargeTipAmount) {
+    	int luggageCount = JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0;
         if (customerInfo.getReverseBidFare() != null) {
-            return customerInfo.getReverseBidFare().getFare();
+            return customerInfo.getReverseBidFare().getFare() + Data.fareStructure.computeLuggageChargesCharges(luggageCount);
         }
         if (customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null && invalidPool == 0) {
-            return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
+            return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId()) + Data.fareStructure.computeLuggageChargesCharges(luggageCount);
         }
 
         double totalDistanceInKm = Math.abs(totalDistance * UserData.getDistanceUnitFactor(this, false));
@@ -5618,13 +5605,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             waitTimeInMin = 0d;
         }
 
-        double fare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin,
-                JSONParser.isTagEnabled(activity, Constants.KEY_SHOW_LUGGAGE_CHARGE) ? customerInfo.getLuggageCount() : 0);
+        double fare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin, luggageCount);
 
         if (!ignoreTollChargeTipAmount) {
             double taxAmount = Utils.currencyPrecision(fare * Data.fareStructure.getTaxPercent()/100D);
-            fare = fare + (customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D)
-                    + customerInfo.getTipAmount() + taxAmount;
+            fare = Utils.currencyPrecision(fare + (customerInfo.getTollApplicable() == 1 ? customerInfo.getTollFare() : 0D)
+                    + customerInfo.getTipAmount() + taxAmount);
         }
 
         return fare;
@@ -7712,6 +7698,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             //adding toll fare, taxAmount and tip amount again in totalFare after discount computation
             totalFare = Utils.currencyPrecision(totalFare + tipAmount + tollFare + taxAmount);
+			Log.i("totalFare again == endride offline ", "=" + totalFare);
+			Log.i("tipAmount again == endride offline ", "=" + tipAmount);
+			Log.i("tollFare again == endride offline ", "=" + tollFare);
+			Log.i("taxAmount again == endride offline ", "=" + taxAmount);
 
             if (totalFare > finalDiscount) {                                    // final toPay (totalFare - discount)
                 finalToPay = totalFare - finalDiscount;
