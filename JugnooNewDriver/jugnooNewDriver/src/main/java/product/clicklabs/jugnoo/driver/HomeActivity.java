@@ -280,7 +280,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
-    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
+    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle,ivDestRideToggle;
 
     RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
@@ -652,6 +652,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
             textViewDeliveryOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
+            ivDestRideToggle = (ImageView) findViewById(R.id.ivDestRideToggle);
 
 
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
@@ -3779,6 +3780,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
+    private void toggleDestinationRide(){
+        if(Data.userData.currDestRideObj!=null){
+            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+        } else {
+            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
+        }
+    }
     public void changeJugnooONUIAndInitService(final boolean fromApi) {
 
         runOnUiThread(new Runnable() {
@@ -3829,6 +3837,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewDeliveryOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             textViewDeliveryOn.setText(getResources().getString(R.string.delivery_off));
 
+                        }
+                        if(Data.userData.currDestRideObj!=null){
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+                        } else {
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
                         }
 
                         if (!checkIfDriverOnline()) {
@@ -5509,6 +5522,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
+        toggleDestinationRide();
     }
 
 

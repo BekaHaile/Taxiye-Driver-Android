@@ -136,7 +136,7 @@ public class HomeUtil {
 		params.put(Constants.KEY_KEEP_DUPLICATE,"0");
 		if(deleteFlag) {
 			params.put(Constants.KEY_DELETE_FLAG, "1");
-			params.put(Constants.KEY_ADDRESS_ID,"" + searchResult.getId());
+			params.put(Constants.KEY_ADDRESS_ID,"" + searchResult.getPlaceId());
 		}
 
 		RestClient.getApiServices().addHomeAndWorkAddress(params, new Callback<Object>() {

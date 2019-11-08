@@ -1297,6 +1297,10 @@
     <string name="set_destination">Set Destination</string>
     <string name="disable">Disable</string>
     <string name="dest_trip">Destination Trip</string>
+    <string name="dest_trip_disabled">Destination Ride Disabled</string>
+    <string name="add_destination">Add Destination</string>
+
+
 
 
 

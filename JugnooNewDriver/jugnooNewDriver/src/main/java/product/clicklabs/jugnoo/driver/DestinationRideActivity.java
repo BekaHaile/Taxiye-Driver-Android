@@ -2,42 +2,36 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fugu.agent.Util.DialogPop;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -50,9 +44,9 @@ import static com.crashlytics.android.beta.Beta.TAG;
 
 public class DestinationRideActivity extends AppCompatActivity implements SearchListAdapter.SearchListActionsHandler {
 
-    TextView title, tvSetDestRide,tvTimer,tvAddressType,tvAddress;
+    TextView title, tvSetDestRide, tvTimer, tvAddressType, tvAddress;
     RecyclerView rvSavedDest;
-    ImageView ivAddDestRide;
+    ImageView ivAddDestRide, backBtn;
     Dialog addtypeDialog;
     ImageView radioSelected;
     SearchResultNew searchResult;
@@ -60,6 +54,10 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     RelativeLayout relative;
     LinearLayout destRideEnabledView;
     int addressSelected = -1;
+    CountDownTimer countDownTimer;
+    EditText etOther;
+    private static final int START = 1;
+    private static final int STOP = 0;
 
 
     @Override
@@ -68,10 +66,9 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         setContentView(R.layout.activity_destination_ride);
         initViews();
         setListeners();
-        if(Data.userData.currDestRideObj!=null){
+        if (Data.userData.currDestRideObj != null) {
             showDestRideEnabledView();
-        }
-        else {
+        } else {
             hideDestRideEnabledView();
         }
     }
@@ -103,6 +100,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
     @Override
     public void onPlaceSearchPost(SearchResultNew searchResult) {
+        tvSetDestRide.setText(getString(R.string.set_destination));
         this.searchResult = searchResult;
         createDestTypeDialog();
         addtypeDialog.show();
@@ -126,83 +124,103 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         rvSavedDest.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvSavedDest.setAdapter(new SavedAddressAdapter(this, Data.userData.getSavedAddressList()));
         ivAddDestRide = findViewById(R.id.ivAddDestRide);
-        tvAddressType=findViewById(R.id.textViewSearchName);
-        tvSetDestRide = findViewById(R.id.tvSetDestRide);
+        tvAddressType = findViewById(R.id.textViewSearchName);
         tvTimer = findViewById(R.id.tvTimer);
-        tvAddress=findViewById(R.id.textViewSearchAddress);
-        destRideEnabledView=findViewById(R.id.destRideEnabledView);
+        tvAddress = findViewById(R.id.textViewSearchAddress);
+        destRideEnabledView = findViewById(R.id.destRideEnabledView);
+        backBtn = findViewById(R.id.backBtn);
+        tvSetDestRide = findViewById(R.id.tvSetDestRide);
+        if (Data.userData.getSavedAddressList().isEmpty())
+            tvSetDestRide.setText(R.string.add_destination);
+        else
+            tvSetDestRide.setText(R.string.set_destination);
+
     }
+
+    private void setListeners() {
+        backBtn.setOnClickListener(view -> DestinationRideActivity.this.onBackPressed());
+
+        ivAddDestRide.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
+                .add(R.id.relativeLayoutContainer, PlaceSearchListFragment.newInstance(), PlaceSearchListFragment.class.getName())
+                .addToBackStack(PlaceSearchListFragment.class.getName())
+                .commit());
+
+        tvSetDestRide.setOnClickListener(view -> {
+            if (tvSetDestRide.getText().toString().equalsIgnoreCase(getString(R.string.add_destination))) {
+                ivAddDestRide.performClick();
+            } else {
+                if (Data.userData.currDestRideObj == null)
+                    startDestinationRide(START);
+                else
+                    startDestinationRide(STOP);
+            }
+        });
+
+    }
+
 
     public void createDestTypeDialog() {
         addtypeDialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         addtypeDialog.setContentView(R.layout.dialog_destinstion_ride);
-        WindowManager.LayoutParams layoutParams = addtypeDialog.getWindow().getAttributes();
+        WindowManager.LayoutParams layoutParams = Objects.requireNonNull(addtypeDialog.getWindow()).getAttributes();
         layoutParams.dimAmount = 0.6f;
         addtypeDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         addtypeDialog.setCancelable(true);
         addtypeDialog.setCanceledOnTouchOutside(true);
         addtypeDialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
         addtypeDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        addtypeDialog.findViewById(R.id.llHome).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedAddType = "Home";
-                selectRadio((ImageView) view.findViewById(R.id.ivRadioHome));
-                addtypeDialog.findViewById(R.id.etOther).setVisibility(View.GONE);
-            }
+        addtypeDialog.findViewById(R.id.llHome).setOnClickListener(view -> {
+            selectedAddType = "Home";
+            selectRadio(view.findViewById(R.id.ivRadioHome));
+            addtypeDialog.findViewById(R.id.etOther).setVisibility(View.GONE);
         });
-        addtypeDialog.findViewById(R.id.llWork).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedAddType = "Work";
-                selectRadio((ImageView) view.findViewById(R.id.ivRadioWork));
-                addtypeDialog.findViewById(R.id.etOther).setVisibility(View.GONE);
-            }
+        addtypeDialog.findViewById(R.id.llWork).setOnClickListener(view -> {
+            selectedAddType = "Work";
+            selectRadio(view.findViewById(R.id.ivRadioWork));
+            addtypeDialog.findViewById(R.id.etOther).setVisibility(View.GONE);
         });
         addtypeDialog.findViewById(R.id.llOther).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedAddType = ((EditText) addtypeDialog.findViewById(R.id.etOther)).getText().toString();
-                selectRadio((ImageView) view.findViewById(R.id.ivRadioOther));
+                selectedAddType = "Other";
+                selectRadio(view.findViewById(R.id.ivRadioOther));
                 addtypeDialog.findViewById(R.id.etOther).setVisibility(View.VISIBLE);
             }
         });
 
-        addtypeDialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addtypeDialog.dismiss();
-            }
-        });
-        addtypeDialog.findViewById(R.id.btnOk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (searchResult != null) {
+        addtypeDialog.findViewById(R.id.btnCancel).setOnClickListener(view -> addtypeDialog.dismiss());
+        addtypeDialog.findViewById(R.id.btnOk).setOnClickListener(view -> {
+            if (searchResult != null) {
 
-                    String othr = ((EditText) addtypeDialog.findViewById(R.id.etOther)).getText().toString();
-                    if (!othr.equals(""))
-                        selectedAddType = othr;
-                    searchResult.setName(selectedAddType);
-                    DialogPopup.showLoadingDialog(DestinationRideActivity.this, "Loading");
-                    addtypeDialog.dismiss();
-                    Data.userData.getSavedAddressList().add(searchResult);
-                    rvSavedDest.getAdapter().notifyDataSetChanged();
-                    HomeUtil.saveAddress(DestinationRideActivity.this, searchResult, false);
+                String othr = ((EditText) addtypeDialog.findViewById(R.id.etOther)).getText().toString();
+                if (selectedAddType.equalsIgnoreCase("Other")) {
+                    if (othr.equalsIgnoreCase("")) {
+                        ((EditText) addtypeDialog.findViewById(R.id.etOther)).setError("Please enter a name");
+                        return;
+                    }
+                    selectedAddType = othr;
 
                 }
+                searchResult.setName(selectedAddType);
+                DialogPopup.showLoadingDialog(DestinationRideActivity.this, getString(R.string.loading));
+                addtypeDialog.dismiss();
+                Data.userData.getSavedAddressList().add(searchResult);
+                rvSavedDest.getAdapter().notifyDataSetChanged();
+                HomeUtil.saveAddress(DestinationRideActivity.this, searchResult, false);
+
             }
         });
 
     }
 
     public void addressSaved() {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(PlaceSearchListFragment.class.getName());
-        if (fragment != null) {
-            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-        }
-        rvSavedDest.getAdapter().notifyDataSetChanged();
+//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(PlaceSearchListFragment.class.getName());
+//        if (fragment != null) {
+//            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+//        }
+        getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
+        rvSavedDest.getAdapter().notifyDataSetChanged();
 
     }
 
@@ -215,38 +233,23 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
     }
 
-    private void setListeners() {
-        ivAddDestRide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.relativeLayoutContainer, PlaceSearchListFragment.newInstance(), PlaceSearchListFragment.class.getName())
-                        .addToBackStack(PlaceSearchListFragment.class.getName())
-                        .commit();
-            }
-        });
-        tvSetDestRide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(Data.userData.currDestRideObj==null)
-                startDestinationRide(1);
-                else
-                    startDestinationRide(0);
-            }
-        });
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void startDestinationRide(int status) {
-        if (addressSelected == 1) {
-            Utils.showToast(this, "Please select an address");
-            return;
-        }
+
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.KEY_FLAG, "" + status);
         params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
-        if (status == 1) {
-            params.put(Constants.KEY_ADDRESS_ID, "" + addressSelected);
+        if (status == START) {
+            if (addressSelected < 0) {
+                Utils.showToast(this, "Please select an address");
+                return;
+            }
+            params.put(Constants.KEY_ADDRESS_ID, "" + Data.userData.getSavedAddressList().get(addressSelected).getPlaceId());
         }
 
 
@@ -262,14 +265,17 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                     String message = JSONParser.getServerMessage(jObj);
                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                         if (jObj.has("time")) {
-                            Data.userData.currDestRideObj = Data.userData.new CurrDestRide(searchResult.getAddress(), searchResult.getLatitude(), searchResult.getLongitude(), jObj.getInt("time"),System.currentTimeMillis(),searchResult.getName());
-                            showDestRideEnabledView();
-                        }
-                        else
-                        {
-                            Data.userData.currDestRideObj=null;
+                            if (addressSelected > -1) {
+                                SearchResultNew searchResultSelected = Data.userData.getSavedAddressList().get(addressSelected);
+                                Data.userData.currDestRideObj = Data.userData.new CurrDestRide(searchResultSelected.getAddress(), searchResultSelected.getLatitude(), searchResultSelected.getLongitude(), jObj.getInt("time"), System.currentTimeMillis(), searchResultSelected.getName());
+                                showDestRideEnabledView();
+                            }
+
+                        } else {
+                            Data.userData.currDestRideObj = null;
                             hideDestRideEnabledView();
                         }
+                        DialogPopup.alertPopup(DestinationRideActivity.this, "", message);
 
                     } else {
                         DialogPopup.alertPopup(DestinationRideActivity.this, "", message);
@@ -292,28 +298,34 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         });
     }
 
-    public void hideDestRideEnabledView(){
+    public void hideDestRideEnabledView() {
         tvSetDestRide.setText(R.string.set_destination);
         destRideEnabledView.setVisibility(View.GONE);
         rvSavedDest.setVisibility(View.VISIBLE);
     }
+
     public void showDestRideEnabledView() {
         destRideEnabledView.setVisibility(View.VISIBLE);
         rvSavedDest.setVisibility(View.GONE);
         tvAddressType.setText(Data.userData.currDestRideObj.getType());
         tvAddress.setText(Data.userData.currDestRideObj.getAddress());
         tvSetDestRide.setText(R.string.disable);
-        new CountDownTimer(Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000, 1000) {
+        if (countDownTimer != null)
+            countDownTimer.cancel();
+        countDownTimer = new CountDownTimer(Data.userData.currDestRideObj.getDestinationRideTimeRem() * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
 
-                tvTimer.setText(millisUntilFinished/(1000*60)+" : "+(millisUntilFinished/1000)%60);
+                String time = millisUntilFinished / (1000 * 60 * 60) + " : " + millisUntilFinished / (1000 * 60) % 60 + " : " + (millisUntilFinished / 1000) % 60;
+                tvTimer.setText(time);
             }
 
             public void onFinish() {
-                tvTimer.setText("done!");
+                DialogPopup.alertPopup(DestinationRideActivity.this, "", DestinationRideActivity.this.getString(R.string.dest_trip_disabled));
+                hideDestRideEnabledView();
             }
-        }.start();
+        };
+        countDownTimer.start();
     }
 
 
@@ -359,12 +371,12 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                 textViewSearchName = root.findViewById(R.id.textViewSearchName);
                 textViewSearchAddress = root.findViewById(R.id.textViewSearchAddress);
                 ivDeleteAddress = root.findViewById(R.id.ivDeleteAddress);
-                relative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        addressSelected = Integer.parseInt(savedAddlist.get(getAdapterPosition()).getPlaceId());
-                        selectRadio(imageViewType);
-                    }
+                relative.setOnClickListener(view -> {
+                    addressSelected = getAdapterPosition();
+                    selectRadio(imageViewType);
+                });
+                ivDeleteAddress.setOnClickListener(view -> {
+                    HomeUtil.saveAddress(activity, Data.userData.getSavedAddressList().get(getAdapterPosition()), true);
                 });
             }
         }
