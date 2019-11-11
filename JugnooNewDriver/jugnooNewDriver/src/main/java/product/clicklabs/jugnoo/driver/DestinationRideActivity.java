@@ -322,6 +322,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
             public void onFinish() {
                 DialogPopup.alertPopup(DestinationRideActivity.this, "", DestinationRideActivity.this.getString(R.string.dest_trip_disabled));
+                Data.userData.currDestRideObj=null;
                 hideDestRideEnabledView();
             }
         };
