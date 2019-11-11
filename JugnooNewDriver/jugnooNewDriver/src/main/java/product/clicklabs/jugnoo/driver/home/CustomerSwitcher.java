@@ -26,12 +26,9 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
-import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -40,8 +37,6 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 /**
  * Created by aneeshbansal on 28/05/16.
@@ -50,15 +45,12 @@ public class CustomerSwitcher {
 
 	private HomeActivity activity;
 
-	private RecyclerView recyclerViewCustomersLinked;
-
 	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
 			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
 	private LinearLayout llRentalRequest;
 	private RecyclerView rvPickupFeedImages;
-	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
 	String dropAddress;
 
@@ -92,32 +84,14 @@ public class CustomerSwitcher {
 		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
-		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
-		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
-		recyclerViewCustomersLinked.setItemAnimator(new DefaultItemAnimator());
-		recyclerViewCustomersLinked.setHasFixedSize(false);
 		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
 		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
 		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
 
 
-		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
-			@Override
-			public void onClick(int position, CustomerInfo customerInfo) {
-				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
-				activity.switchDriverScreen(HomeActivity.driverScreenMode);
-			}
-
-			@Override
-			public void onCancelClick(int position, CustomerInfo customerInfo) {
-
-			}
-
-		});
 
 
 
-		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
@@ -333,15 +307,8 @@ public class CustomerSwitcher {
 					}
 				}
 			}
-			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
-				recyclerViewCustomersLinked.setVisibility(View.GONE);
-				textViewCustomerName1.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.VISIBLE);
-			} else {
-				recyclerViewCustomersLinked.setVisibility(View.GONE);
-				textViewCustomerName1.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.VISIBLE);
-			}
+			textViewCustomerName1.setVisibility(View.VISIBLE);
+			textViewCustomerName.setVisibility(View.VISIBLE);
 			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
 				textViewShowDistance.setText("");
 			}
@@ -369,59 +336,7 @@ public class CustomerSwitcher {
 				textViewShowDistance.setVisibility(View.VISIBLE);
 				if (System.currentTimeMillis() - distanceRefreshTime > 60000
 						&& HomeActivity.myLocation != null) {
-					if (Prefs.with(activity).getInt(SPLabels.OSRM_ENABLED, 0) == 1) {
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									Response responseR = RestClient.getDistanceApiServices().getDistance(HomeActivity.myLocation.getLongitude()
-											+ "," + HomeActivity.myLocation.getLatitude() + ";" + Data.getCurrentCustomerInfo().getRequestlLatLng().longitude
-											+ "," + Data.getCurrentCustomerInfo().getRequestlLatLng().latitude);
-
-									String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-
-									try {
-										JSONObject jsonObject = new JSONObject(response);
-										String status = jsonObject.getString("code");
-										if ("OK".equalsIgnoreCase(status)) {
-											JSONObject element0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-											double distance = element0.optDouble("distance", 0);
-											final double finalDistance = distance;
-
-											activity.runOnUiThread(new Runnable() {
-												@Override
-												public void run() {
-													try {
-														if (finalDistance > 0) {
-															distanceRefreshTime = System.currentTimeMillis();
-															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(finalDistance * UserData.getDistanceUnitFactor(activity, true))+" "
-																	+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
-														} else {
-															textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																	.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																			new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
-																	+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
-														}
-													} catch (Exception e) {
-														e.printStackTrace();
-													}
-												}
-											});
-										}
-									} catch (Exception e) {
-										e.printStackTrace();
-										setCustomerDistance();
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-									setCustomerDistance();
-								}
-							}
-						}).start();
-					} else {
-						setCustomerDistance();
-					}
+					setCustomerDistance();
 				}
 			}
 		} catch (Exception e) {
@@ -450,10 +365,15 @@ public class CustomerSwitcher {
 
 
 	void getAddress(LatLng currentLatLng, String source, int engagementId, TextView textView, TextView textView1, boolean isDrop){
-		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, settleUserDebt -> {
+		GoogleAPICoroutine.INSTANCE.hitGeocode(currentLatLng, source, (googleGeocodeResponse, singleAddress)  -> {
 			try {
-				GAPIAddress gapiAddress = MapUtils.parseGAPIIAddress(settleUserDebt);
-				String address = gapiAddress.getSearchableAddress();
+				String address = null;
+				if(googleGeocodeResponse != null){
+					GAPIAddress gapiAddress = MapUtils.parseGAPIIAddress(googleGeocodeResponse);
+					address = gapiAddress.getSearchableAddress();
+				} else if(singleAddress != null){
+					address = singleAddress;
+				}
 				try {
 					if(isDrop){
 						Data.getCustomerInfo(String.valueOf(engagementId)).setDropAddress(activity, address, true);
@@ -486,6 +406,5 @@ public class CustomerSwitcher {
 	}
 
 	public void updateList() {
-		customerInfoAdapter.notifyList();
 	}
 }

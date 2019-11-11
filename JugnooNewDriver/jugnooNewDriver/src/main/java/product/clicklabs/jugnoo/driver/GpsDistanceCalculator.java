@@ -16,24 +16,20 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.room.model.Path;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class GpsDistanceCalculator {
 
@@ -45,7 +41,7 @@ public class GpsDistanceCalculator {
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 20; //in meters per second
 	public static final double MAX_ACCURACY = 200;
-	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
+	public static final long WAITING_WINDOW_TIME_MILLIS = 10000;
 	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
 	public final double WAIT_TIME_RESET_TOLERANCE = 10000; // in milliseconds
 	public static final int TOTAL_DISTANCE_MAX = 200000;
@@ -383,15 +379,22 @@ public class GpsDistanceCalculator {
 			accumulativeSpeed = accumulativeSpeed + speedMPS;
 			speedCounter++;
 		} else{
-			double speedAvg = accumulativeSpeed / speedCounter;
-
-			if(speedAvg < 1.4){
-				long waitTime = getWaitTimeFromSP(context) + WAITING_WINDOW_TIME_MILLIS;
+			if(speedCounter == 0 || (accumulativeSpeed / speedCounter) <= waitSpeed()){
+				long waitTime = getWaitTimeFromSP(context) + millisTillWaitWindow;
 				saveWaitTimeToSP(context, waitTime);
+				Log.e(TAG, "calculateWaitTime waitTime="+(waitTime/60000.0));
 			}
 			this.accumulativeSpeed = 0;
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
+		}
+	}
+
+	private double waitSpeed(){
+		try {
+			return Double.parseDouble(Prefs.with(context).getString(Constants.KEY_DRIVER_WAIT_SPEED, "2"));
+		} catch (Exception e) {
+			return 2;
 		}
 	}
 
@@ -500,7 +503,7 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	private class DirectionsAsyncTask extends AsyncTask<Void, Void, String> {
+	private class DirectionsAsyncTask extends AsyncTask<Void, Void, GAPIDirections.DirectionsResult> {
 		double displacementToCompare;
 		LatLng source, destination;
 		Location currentLocation;
@@ -521,22 +524,23 @@ public class GpsDistanceCalculator {
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected GAPIDirections.DirectionsResult doInBackground(Void... params) {
 			try {
-				Response response = GoogleRestApis.INSTANCE.getDirections(source.latitude + "," + source.longitude,
-						destination.latitude + "," + destination.longitude, false, "driving", false, "metering");
-				return new String(((TypedByteArray) response.getBody()).getBytes());
+				List<EngagementSPData> list = MyApplication.getInstance().getEngagementSP().getEngagementSPDatasArray();
+				long engagementId = list.size() > 0 ? list.get(0).getEngagementId() : System.currentTimeMillis();
+
+				return GAPIDirections.INSTANCE.getDirectionsPathSync(engagementId, source, destination, "metering");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "";
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(GAPIDirections.DirectionsResult result) {
 			super.onPostExecute(result);
 			if (result != null) {
-				updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
+				updateGAPIDistance(result.getLatLngs(), result.getPath(), displacementToCompare, source, destination, currentLocation, rowId);
 			}
 			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 			directionsAsyncTasks.remove(this);
@@ -563,15 +567,9 @@ public class GpsDistanceCalculator {
 	}
 
 
-	private synchronized void updateGAPIDistance(String result, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
+	private synchronized void updateGAPIDistance(List<LatLng> latLngs, Path path, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
 		try {
-			double distanceOfPath = Double.MAX_VALUE;
-			JSONObject jsonObject = new JSONObject(result);
-			String status = jsonObject.getString("status");
-			if ("OK".equalsIgnoreCase(status)) {
-				JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-				distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
-			}
+			double distanceOfPath = path.getDistance();
 			if (Utils.compareDouble(distanceOfPath, (displacementToCompare * 1.5)) <= 0) {                                                        // distance would be approximately correct
 				boolean validDistance = updateTotalDistance(source, destination, distanceOfPath, currentLocation);
 				if (validDistance) {
@@ -579,11 +577,7 @@ public class GpsDistanceCalculator {
 							getWaitTimeFromSP(context), lastGPSLocation,
 							lastFusedLocation, totalHaversineDistance, true);
 
-					JSONArray routeArray = jsonObject.getJSONArray("routes");
-					JSONObject routes = routeArray.getJSONObject(0);
-					JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
-					String encodedString = overviewPolylines.getString("points");
-					List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+					List<LatLng> list = latLngs;
 
 					PolylineOptions polylineOptions = new PolylineOptions();
 
@@ -809,7 +803,7 @@ public class GpsDistanceCalculator {
 
 
 	private boolean useDirectionsApi(){
-		return !Prefs.with(context).getString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType()).equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())
+		return !HomeActivity.isAltMeteringEnabledForDriver(context)
 				&& Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
 	}
 

@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
 import product.clicklabs.jugnoo.driver.utils.*
@@ -237,6 +238,7 @@ class AltMeteringService : Service() {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.lastLocation
+                LocationFetcher.saveLatLngToSP(this@AltMeteringService, location)
                 if(location != null && !Utils.mockLocationEnabled(location)) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     val time = System.currentTimeMillis()
@@ -299,20 +301,21 @@ class AltMeteringService : Service() {
                 val drWpList = mutableListOf<DirectionWaypointData>()
                 var sb:StringBuilder? = StringBuilder()
                 var sbPos = StringBuilder()
-                var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null)
+                var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null, null, null)
                 for (i in waypoints.indices) {
                     when {
                         i == 0 -> {
-                            drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null)
+                            drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null, waypoints[i], null)
                             sbPos.append(i).append("-")
                         }
                         (i > 0 && i%10 == 0) || i == waypoints.size-1 -> {
                             drwp!!.destination = waypoints[i].latitude.toString()+comma+waypoints[i].longitude
+                            drwp.destLatLng = waypoints[i]
                             drwp.waypoints = sb.toString()
                             drWpList.add(drwp)
                             sbPos.append("-").append(i).append("\n")
 
-                            drwp = DirectionWaypointData(drwp.destination, null, null)
+                            drwp = DirectionWaypointData(drwp.destination, null, null, drwp.sourceLatLng, null)
                             sb = StringBuilder()
                             sbPos.append(i).append("-")
                         }
@@ -328,17 +331,18 @@ class AltMeteringService : Service() {
                 //latLngs, which we got from the api, in main list for concenated route
                 for(drwpObj in drWpList){
                     log("gapi hitting", "drwp=$drwpObj")
-                    val response = if (!TextUtils.isEmpty(drwpObj.waypoints)) {
-                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
+                    if (!TextUtils.isEmpty(drwpObj.waypoints)) {
+                        val response = GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
+                        val result = String((response.body as TypedByteArray).bytes)
+
+                        list.addAll(MapUtils.getLatLngListFromPath(result))
                     } else {
-                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false, "alt_metering")
+                        val directionsResult = GAPIDirections.getDirectionsPathSync(engagementId.toLong(), drwpObj.sourceLatLng!!, drwpObj.destLatLng!!, "alt_metering")
+
+                        list.addAll(directionsResult!!.latLngs)
                     }
-                    val result = String((response.body as TypedByteArray).bytes)
-                    val json = JSONObject(result)
 
-                    list.addAll(MapUtils.getLatLngListFromPath(result))
-
-                    log("gapi", "status="+json.getString("status")+", list="+list.size)
+                    log("gapi", "list="+list.size)
                 }
 
                 Log.d(TAG, "total google direction list size list="+list.size)
@@ -606,7 +610,7 @@ class AltMeteringService : Service() {
         }
     }
 
-    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?){
+    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?, var sourceLatLng: LatLng?, var destLatLng: LatLng?){
         override fun toString(): String {
             return "$source<>$destination<>$waypoints"
         }

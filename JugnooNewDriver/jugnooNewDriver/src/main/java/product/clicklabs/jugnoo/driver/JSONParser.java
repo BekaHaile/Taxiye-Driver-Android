@@ -111,6 +111,7 @@ public class JSONParser implements Constants {
 	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
 			JSONObject fareDetails = jObj.getJSONObject("fare_details");
+			Log.e("JSONParser parseFareObject", "fareDetails json="+fareDetails);
 			if(fareDetails.has("mandatory_fare_details")){
 				JSONObject mandatoryFareDetails = fareDetails.getJSONObject("mandatory_fare_details");
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
@@ -572,7 +573,33 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
 				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_DIRECTIONS_CACHING, userData.optInt(KEY_DRIVER_DIRECTIONS_CACHING,
+				1));
 
+		parseJungleApiObjects(context, userData);
+
+		Prefs.with(context).save(KEY_DRIVER_WAIT_SPEED, userData.optString(KEY_DRIVER_WAIT_SPEED, "2"));
+	}
+
+	private void parseJungleApiObjects(Context context, JSONObject userData) {
+		try {
+			//todo null case to block apis
+			String jungleObjStr = BuildConfig.DEBUG ? JUNGLE_JSON_OBJECT : EMPTY_JSON_OBJECT;
+			JSONObject jungleObj = userData.optJSONObject(KEY_JUNGLE_DIRECTIONS_OBJ);
+			if(jungleObj != null){
+				jungleObjStr = jungleObj.toString();
+			}
+
+			Prefs.with(context).save(KEY_JUNGLE_DIRECTIONS_OBJ, jungleObjStr);
+
+			JSONObject jungleDMObj = userData.optJSONObject(KEY_JUNGLE_DISTANCE_MATRIX_OBJ);
+			Prefs.with(context).save(KEY_JUNGLE_DISTANCE_MATRIX_OBJ, jungleDMObj!=null ? jungleDMObj.toString(): jungleObjStr);
+
+			JSONObject jungleGObj = userData.optJSONObject(KEY_JUNGLE_GEOCODE_OBJ);
+			Prefs.with(context).save(KEY_JUNGLE_GEOCODE_OBJ, jungleGObj!=null ? jungleGObj.toString(): jungleObjStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

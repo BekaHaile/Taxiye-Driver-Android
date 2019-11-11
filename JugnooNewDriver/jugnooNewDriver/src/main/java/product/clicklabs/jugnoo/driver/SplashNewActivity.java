@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -2435,110 +2434,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	}
 	
 	
-	public static boolean isLastLocationUpdateFine(Activity activity){
-		try {
-			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
-			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
-			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
-			
-			long currentTime = System.currentTimeMillis();
-			
-			if(lastLocationUpdateTime == 0){
-				lastLocationUpdateTime = System.currentTimeMillis();
-			}
-			
-			long systemUpTime = SystemClock.uptimeMillis();
-			
-			
-			
-			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
-						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
-					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
-						showRestartPhonePopup(activity);
-						return false;
-					}
-					else{
-						dismissRestartPhonePopup();
-						return true;
-					}
-				}
-				else{
-					dismissRestartPhonePopup();
-					return true;
-				}
-			}
-			else{
-				dismissRestartPhonePopup();
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			dismissRestartPhonePopup();
-			return true;
-		}
-	}
+
 	
+
 	
-	public static Dialog restartPhoneDialog;
-	public static void showRestartPhonePopup(final Activity activity){
-		try {
-			if(restartPhoneDialog == null || !restartPhoneDialog.isShowing()){
-				restartPhoneDialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-				restartPhoneDialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-				restartPhoneDialog.setContentView(R.layout.dialog_custom_one_button);
-	
-				RelativeLayout frameLayout = (RelativeLayout) restartPhoneDialog.findViewById(R.id.rv);
-				new ASSL(activity, frameLayout, 1134, 720, true);
-	
-				WindowManager.LayoutParams layoutParams = restartPhoneDialog.getWindow().getAttributes();
-				layoutParams.dimAmount = 0.6f;
-				restartPhoneDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-				restartPhoneDialog.setCancelable(false);
-				restartPhoneDialog.setCanceledOnTouchOutside(false);
-	
-				TextView textHead = (TextView) restartPhoneDialog.findViewById(R.id.textHead);
-				textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-				textHead.setVisibility(View.GONE);
-				TextView textMessage = (TextView) restartPhoneDialog.findViewById(R.id.textMessage);
-				textMessage.setTypeface(Fonts.mavenRegular(activity));
-	
-				textMessage.setMovementMethod(new ScrollingMovementMethod());
-				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
-				
-				textMessage.setText(activity.getString(R.string.network_problem, activity.getString(R.string.appname)));
-				
-	
-				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);
-				btnOk.setTypeface(Fonts.mavenRegular(activity));
-	
-				btnOk.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						restartPhoneDialog.dismiss();
-						activity.finish();
-					}
-				});
-	
-				restartPhoneDialog.show();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
-	public static void dismissRestartPhonePopup(){
-		try{
-			if(restartPhoneDialog != null && restartPhoneDialog.isShowing()){
-				restartPhoneDialog.dismiss();
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
+
 	public static boolean checkIfTrivialAPIErrors(Activity activity, JSONObject jObj, int flag, LogoutCallback callback){
 		try {
 			if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
