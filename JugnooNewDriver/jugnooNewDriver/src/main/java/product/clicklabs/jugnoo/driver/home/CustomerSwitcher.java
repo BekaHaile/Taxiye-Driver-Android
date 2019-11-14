@@ -38,6 +38,9 @@ import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
+import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_DROP_LOCATION_BELOW_PICKUP;
+import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_FARE_BEFORE_RIDE_START;
+
 /**
  * Created by aneeshbansal on 28/05/16.
  */
@@ -45,7 +48,7 @@ public class CustomerSwitcher {
 
 	private HomeActivity activity;
 
-	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
+	private TextView textViewCustomerName1, textViewCustomerName, textViewCustomerPickupAddress, textViewCustomerDropAddress, textViewDeliveryCount,
 			textViewShowDistance, textViewCustomerCashRequired, textViewPickupFrm, tvCustomerNotes, tvRentalRideInfo;
 	private RelativeLayout relativeLayoutCall, relativeLayoutCustomerInfo, relativeLayoutCall1;
 
@@ -70,6 +73,8 @@ public class CustomerSwitcher {
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		textViewCustomerDropAddress = (TextView) rootView.findViewById(R.id.textViewCustomerDropAddress);
+		textViewCustomerDropAddress.setTypeface(Fonts.mavenRegular(activity));
 		tvRentalRideInfo = (TextView) rootView.findViewById(R.id.tvRentalRideInfo);
 		tvRentalRideInfo.setTypeface(Fonts.mavenRegular(activity));
 		llRentalRequest = rootView.findViewById(R.id.llRentalRequest);
@@ -225,7 +230,6 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
 					}
-					updateDistanceOnLocationChanged();
 					textViewDeliveryCount.setVisibility(View.GONE);
 
 				} else {
@@ -262,7 +266,6 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 
-					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
@@ -288,30 +291,39 @@ public class CustomerSwitcher {
 						}
 					}
 					if(customerInfo.getDropLatLng() != null) {
-						activity.bDropAddressToggle.setVisibility(Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
-								? View.GONE : View.VISIBLE);
-						if(activity.bDropAddressToggle.getVisibility() == View.VISIBLE) {
+
+						if(Prefs.with(activity).getInt(KEY_SHOW_DROP_LOCATION_BELOW_PICKUP, 0) == 1) {
+							textViewCustomerDropAddress.setVisibility(Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
+									? View.GONE : View.VISIBLE);
+							activity.bDropAddressToggle.setVisibility(View.GONE);
+						} else {
+							activity.bDropAddressToggle.setVisibility(Prefs.with(activity).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0
+									? View.GONE : View.VISIBLE);
+							textViewCustomerDropAddress.setVisibility(View.GONE);
+						}
+						if(activity.bDropAddressToggle.getVisibility() == View.VISIBLE || textViewCustomerDropAddress.getVisibility() == View.VISIBLE) {
 							activity.tvDropAddressToggleView.setText(R.string.loading);
 							if (customerInfo.getDropAddress().equalsIgnoreCase("")) {
 								getAddress(customerInfo.getDropLatLng(), "sride_d",
 										customerInfo.getEngagementId(),
 										activity.tvDropAddressToggleView, null, true);
 								activity.tvDropAddressToggleView.setText(customerInfo.getDropAddressEng());
+								textViewCustomerDropAddress.setText(customerInfo.getDropAddressEng());
 							} else {
 								activity.tvDropAddressToggleView.setText(customerInfo.getDropAddress());
+								textViewCustomerDropAddress.setText(customerInfo.getDropAddress());
 							}
 						}
 					} else {
 						activity.bDropAddressToggle.setVisibility(View.GONE);
+						textViewCustomerDropAddress.setVisibility(View.GONE);
 						activity.tvDropAddressToggleView.setVisibility(View.GONE);
 					}
 				}
 			}
 			textViewCustomerName1.setVisibility(View.VISIBLE);
 			textViewCustomerName.setVisibility(View.VISIBLE);
-			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
-				textViewShowDistance.setText("");
-			}
+			updateDistanceOnLocationChanged(customerInfo);
 
 			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(customerInfo.getCustomerNotes()));
 		} catch (Exception e) {
@@ -329,38 +341,31 @@ public class CustomerSwitcher {
 		}
 	}
 
-	public void updateDistanceOnLocationChanged() {
+	public void updateDistanceOnLocationChanged(CustomerInfo customerInfo) {
 		try {
-			textViewShowDistance.setVisibility(View.GONE);
+			String fareAndDistance = "";
+			if(Data.fareStructure.mandatoryFare > 0 && Prefs.with(activity).getInt(KEY_SHOW_FARE_BEFORE_RIDE_START, 0) == 1) {
+				fareAndDistance = fareAndDistance.concat(activity.getString(R.string.fare)).concat(": ")
+						.concat(Utils.formatCurrencyValue(customerInfo.getCurrencyUnit(), Data.fareStructure.mandatoryFare));
+			}
+
 			if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
-				textViewShowDistance.setVisibility(View.VISIBLE);
-				if (System.currentTimeMillis() - distanceRefreshTime > 60000
-						&& HomeActivity.myLocation != null) {
-					setCustomerDistance();
+				if (HomeActivity.myLocation != null) {
+					fareAndDistance = fareAndDistance.concat("\n").concat(Utils.getDecimalFormatForMoney()
+							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * 1.4F * UserData.getDistanceUnitFactor(activity, false))
+							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 				}
+			}
+			if(!TextUtils.isEmpty(fareAndDistance)){
+				textViewShowDistance.setText(fareAndDistance);
+				textViewShowDistance.setVisibility(View.VISIBLE);
+			} else {
+				textViewShowDistance.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-
-	public void setCustomerDistance() {
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * UserData.getDistanceUnitFactor(activity, false))
-							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
 	}
 
 
@@ -381,6 +386,9 @@ public class CustomerSwitcher {
 						Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
 					}
 					textView.setText(address);
+					if(isDrop) {
+						textViewCustomerDropAddress.setText(address);
+					}
 					if(textView1 !=null) {
 						textView1.setText(address);
 					}

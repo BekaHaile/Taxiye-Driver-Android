@@ -522,5 +522,7 @@ public interface Constants {
 
 	String JUNGLE_JSON_OBJECT = "{\""+KEY_JUNGLE_OPTIONS+"\":0}";
 	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
+	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
+	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 }
 

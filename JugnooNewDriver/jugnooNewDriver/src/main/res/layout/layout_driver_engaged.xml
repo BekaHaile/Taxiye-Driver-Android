@@ -412,8 +412,22 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:maxLines="4"
+                                android:drawableStart="@drawable/ic_circle_green"
+                                android:drawablePadding="15px"
                                 android:textSize="28px"
-                                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                                tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                                android:textColor="@color/black_text_v2"
+                            />
+                            <TextView
+                                android:id="@+id/textViewCustomerDropAddress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="18px"
+                                android:maxLines="4"
+                                android:drawablePadding="15px"
+                                android:drawableStart="@drawable/ic_circle_red"
+                                android:textSize="28px"
+                                tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                                 android:textColor="@color/black_text_v2"
                             />
                             <TextView
