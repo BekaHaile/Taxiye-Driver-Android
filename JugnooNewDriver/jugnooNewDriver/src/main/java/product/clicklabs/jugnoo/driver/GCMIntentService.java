@@ -26,6 +26,8 @@ import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
+
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
@@ -686,38 +688,23 @@ public class GCMIntentService extends FirebaseMessagingService {
 											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt);
 									Data.addCustomerInfo(customerInfo);
 
+									if(!isOffline) {
+										startRing(this, engagementId, changeRing);
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+												referenceId, userId, perfectRide,
+												isPooled, isDelivery, isDeliveryPool, reverseBid);
+									}
+									flurryEventForRequestPush(engagementId, driverScreenMode);
+
+									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+										startTimeoutAlarm(this);
+									}
+									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+
 									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
-										if(!isOffline) {
-											startRing(this, engagementId, changeRing);
-											notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-													referenceId, userId, perfectRide,
-													isPooled, isDelivery, isDeliveryPool, reverseBid);
-										}
-										flurryEventForRequestPush(engagementId, driverScreenMode);
-
-										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-											startTimeoutAlarm(this);
-										}
-										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
-
 										Log.e("referenceId", "=" + referenceId);
-									} else {
-										if(!isOffline) {
-											notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-													referenceId, userId, perfectRide,
-													isPooled, isDelivery, isDeliveryPool, reverseBid);
-											startRing(this, engagementId, changeRing);
-										}
-										flurryEventForRequestPush(engagementId, driverScreenMode);
-
-										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-											startTimeoutAlarm(this);
-										}
-
-										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 									}
 								}
 

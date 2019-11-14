@@ -284,7 +284,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
         }
         if (HomeActivity.activity != null) {
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         } else {
             startActivity(intent)
