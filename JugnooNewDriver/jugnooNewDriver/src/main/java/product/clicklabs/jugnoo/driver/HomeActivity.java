@@ -5430,7 +5430,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
         if (!currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
             currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
-            ActivityCompat.finishAffinity(this);
             sendToSplash();
         }
 
@@ -5540,6 +5539,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     @Override
     public void onDestroy() {
+    	if(driverRequestListAdapter != null){
+    		driverRequestListAdapter.clearHandler();
+		}
         try {
             if (isTourFlag && tourResponseModel != null) {
                 Intent intent = new Intent(HomeActivity.this, UpdateTutStatusService.class);
@@ -5579,7 +5581,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             e.printStackTrace();
         }
 
-        HomeActivity.appInterruptHandler = null;
+		Log.e("onNewRideRequest", "onDestroy");
+		Log.e("onNewRideRequest", "HomeActivity.appInterruptHandler="+HomeActivity.appInterruptHandler);
+		Log.e("onNewRideRequest", "this="+this);
+		if(this == appInterruptHandler) {
+			HomeActivity.appInterruptHandler = null;
+		}
         super.onDestroy();
     }
 
@@ -5767,7 +5774,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         RelativeLayout relativeLayoutDropPoints, driverRideTimeRl, driverFareFactor, relativeLayoutDriverCOD;
         ProgressBar progressBarRequest;
         int id;
-        LinearLayout linearLayoutRideValues, llPlaceBid;
+        LinearLayout llPlaceBid;
+        RelativeLayout linearLayoutRideValues;
         PrefixedEditText etPlaceBid;
         TextView tvPlaceBid;
         DriverRequestListAdapter.MyCustomEditTextListener myCustomEditTextListener;
@@ -5790,6 +5798,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
+    private void requestListVisibility(ArrayList<CustomerInfo> customerInfos){
+		if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
+				&& DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
+				&& customerInfos.size() > 0
+				&& checkIfDriverOnline()) {
+			if (!customerInfos.get(0).isReverseBid()) {
+				driverRideRequestsList.setVisibility(View.VISIBLE);
+			} else {
+				driverRideRequestsList.setVisibility(View.GONE);
+			}
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+			relativeLayoutLastRideEarning.setVisibility(View.GONE);
+			relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+			relativeLayoutBatteryLow.setVisibility(View.GONE);
+		} else {
+			driverRideRequestsList.setVisibility(View.GONE);
+			if (DriverScreenMode.D_INITIAL == driverScreenMode) {
+//					setPannelVisibility(true);
+			}
+			showDriverEarning();
+			showRefreshUSLBar();
+			showLowBatteryAlert(true);
+		}
+	}
 
     class DriverRequestListAdapter extends BaseAdapter {
         LayoutInflater mInflater;
@@ -5809,16 +5841,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void run() {
                     DriverRequestListAdapter.this.notifyDataSetChanged();
-                    if (driverRideRequestsList.getVisibility() == View.VISIBLE) {
-                        handlerRefresh.postDelayed(runnableRefresh, 10000);
-                    } else {
-                        handlerRefresh.postDelayed(runnableRefresh, 10000);
-                    }
+                    if(handlerRefresh != null) {
+						if (driverRideRequestsList.getVisibility() == View.VISIBLE) {
+							handlerRefresh.postDelayed(runnableRefresh, 10000);
+						} else {
+							handlerRefresh.postDelayed(runnableRefresh, 10000);
+						}
+					}
                 }
             };
             handlerRefresh.postDelayed(runnableRefresh, 10000);
             bidValues = new ArrayList<>();
         }
+
+        public void clearHandler(){
+        	if(handlerRefresh != null && runnableRefresh != null) {
+				handlerRefresh.removeCallbacks(runnableRefresh);
+				handlerRefresh = null;
+			}
+		}
 
         @Override
         public int getCount() {
@@ -5862,28 +5903,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         @Override
         public void notifyDataSetChanged() {
             super.notifyDataSetChanged();
-            if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
-                    && DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
-                    && customerInfos.size() > 0
-                    && checkIfDriverOnline()) {
-                if (!customerInfos.get(0).isReverseBid()) {
-                    driverRideRequestsList.setVisibility(View.VISIBLE);
-                } else {
-                    driverRideRequestsList.setVisibility(View.GONE);
-                }
-                slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                relativeLayoutLastRideEarning.setVisibility(View.GONE);
-                relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
-                relativeLayoutBatteryLow.setVisibility(View.GONE);
-            } else {
-                driverRideRequestsList.setVisibility(View.GONE);
-                if (DriverScreenMode.D_INITIAL == driverScreenMode) {
-//					setPannelVisibility(true);
-                }
-                showDriverEarning();
-                showRefreshUSLBar();
-                showLowBatteryAlert(true);
-            }
+			requestListVisibility(customerInfos);
         }
 
         @Override
@@ -5928,7 +5948,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.tvCancelRide.setTypeface(Fonts.mavenRegular(getApplicationContext()));
                 holder.imageViewDeliveryList = (ImageView) convertView.findViewById(R.id.imageViewDeliveryList);
 
-                holder.linearLayoutRideValues = (LinearLayout) convertView.findViewById(R.id.linearLayoutRideValues);
+                holder.linearLayoutRideValues = convertView.findViewById(R.id.linearLayoutRideValues);
                 holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 //				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
                 holder.linearLayoutDeliveryParams = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryParams);
@@ -5973,8 +5993,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 holder.tvDecrease = (TextView) convertView.findViewById(R.id.tvDecrease);
                 holder.tvIncrease = (TextView) convertView.findViewById(R.id.tvIncrease);
 
-                holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
-                ASSL.DoMagic(holder.relative);
+//                holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
+//                ASSL.DoMagic(holder.relative);
 
                 convertView.setTag(holder);
             } else {

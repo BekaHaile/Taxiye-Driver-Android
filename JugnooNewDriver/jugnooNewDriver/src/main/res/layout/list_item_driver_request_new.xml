@@ -2,12 +2,11 @@
 <LinearLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="720px"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
     android:orientation="vertical"
-    android:padding="30px"
+    android:padding="15dp"
     android:splitMotionEvents="false"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -16,52 +15,54 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_white_rounded_bordered"
         android:orientation="vertical"
-        android:padding="20px"
+        android:padding="10dp"
         android:splitMotionEvents="false">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="442px"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_toStartOf="@+id/llRequestProgress"
+                android:layout_marginEnd="10dp"
+                >
 
                 <TextView
                     android:id="@+id/textViewRequestName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6px"
-                    android:text="Sankar"
+                    android:layout_marginBottom="3dp"
+                    tools:text="Sankar"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_32"
-                    android:layout_marginStart="10px"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
                     />
 
                 <TextView
                     android:id="@+id/textViewRequestAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6px"
-                    android:text="Sector 28, Chandigarh"
+                    android:layout_marginBottom="3dp"
+                    tools:text="Sector 28, Chandigarh"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_30"
+                    android:textSize="15sp"
                     android:drawablePadding="5dp"
-                    android:layout_marginStart="20px"
+                    android:layout_marginStart="5dp"
                     />
                 <TextView
                     android:id="@+id/textViewEstimatedTripDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text=""
+                    tools:text="dasd"
                     android:textColor="@color/textColorLight"
-                    android:textSize="28px"
-                    android:layout_marginBottom="6px"
-                    android:layout_marginStart="20px"
-                    android:visibility="gone"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="5dp"
+                    android:visibility="visible"
                     />
                 <TextView
                     android:id="@+id/tvPickupTime"
@@ -70,19 +71,22 @@
                     android:gravity="start"
                     tools:text="Pickup time"
                     android:textColor="@color/textColorLight"
-                    android:textSize="28px"
-                    android:layout_marginBottom="6px"
-                    android:layout_marginStart="20px"
-                    android:visibility="gone"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginStart="5dp"
+                    android:visibility="visible"
                     />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/llRequestProgress"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -90,8 +94,8 @@
 
                     <ProgressBar
                         android:id="@+id/progressBarRequest"
-                        android:layout_width="105px"
-                        android:layout_height="105px"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:visibility="visible"
@@ -106,9 +110,9 @@
                         android:gravity="center"
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"
-                        android:text="30"
+                        tools:text="30"
                         android:textColor="@color/black_text"
-                        android:textSize="@dimen/text_size_30"/>
+                        android:textSize="15sp"/>
 
                 </RelativeLayout>
 
@@ -116,123 +120,141 @@
                     android:id="@+id/textViewRequestDistance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4px"
+                    android:layout_marginTop="2dp"
                     android:gravity="center"
+                    tools:text="hello"
                     android:textColor="@color/text_color"
-                    android:textSize="32px"/>
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/llRentalRequest"
             android:layout_width="match_parent"
-            android:layout_height="70px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:splitMotionEvents="false"
             android:visibility="visible"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/tvRentalRideInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:maxLines="3"
                 tools:text="4 hour | Max. 80 km | Rs. 1500"
                 android:gravity="center"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_32"/>
+                android:textSize="16sp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_light"/>
 
         </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/grey_light"
-            android:layout_marginTop="8px"
-            android:layout_marginBottom="8px"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayoutRideValues"
             android:layout_width="match_parent"
-            android:layout_height="117px"
-            android:layout_marginBottom="-14px"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:splitMotionEvents="false"
-            android:visibility="visible">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
 
-            <TextView
-                android:id="@+id/tvRequestType"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Ride"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="@dimen/text_size_36"/>
+            >
 
-
-
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutDriverCOD"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:splitMotionEvents="false">
-
-                <ImageView
-                    android:layout_width="2px"
-                    android:layout_height="72px"
-                    android:layout_centerVertical="true"
-                    android:background="@color/grey_light"/>
-
-                <TextView
-                    android:id="@+id/textViewDeliveryFare"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="18px"
-                    android:gravity="center"
-                    android:text="Rs. 0"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_36"/>
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/driverFareFactor"
-                android:layout_width="0px"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/llRideValues"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:splitMotionEvents="false"
                 android:visibility="visible">
 
-                <ImageView
-                    android:layout_width="2px"
-                    android:layout_height="72px"
-                    android:layout_centerVertical="true"
-                    android:background="@color/grey_light"/>
-
                 <TextView
-                    android:id="@+id/textViewRequestFareFactor"
-                    android:layout_width="match_parent"
-                    android:layout_height="178px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="18px"
+                    android:id="@+id/tvRequestType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Rate: 1.42x"
+                    tools:text="Ride"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="@dimen/text_size_36"
-                    android:visibility="visible"/>
-
-            </RelativeLayout>
+                    android:textSize="18sp"/>
 
 
-        </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutDriverCOD"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:splitMotionEvents="false">
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="36dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/grey_light"/>
+
+                    <TextView
+                        android:id="@+id/textViewDeliveryFare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        tools:text="Rs. 0"
+                        android:textColor="@color/text_color"
+                        android:textSize="18sp"/>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/driverFareFactor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:splitMotionEvents="false"
+                    android:visibility="visible">
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="36dp"
+                        android:layout_centerVertical="true"
+                        android:background="@color/grey_light"/>
+
+                    <TextView
+                        android:id="@+id/textViewRequestFareFactor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        tools:text="Rate: 1.42x"
+                        android:textColor="@color/bg_grey_opaque"
+                        android:textSize="18sp"
+                        android:visibility="visible"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_light"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/llRideValues"
+                />
+
+        </RelativeLayout>
+
 
 
 
@@ -242,53 +264,46 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="visible"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:background="@color/grey_light"
-                android:layout_marginTop="8px"
-                android:layout_marginBottom="8px"/>
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            >
 
             <TextView
                 android:id="@+id/textViewEstimatedFareValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rs. 000 - 000"
-                android:layout_centerHorizontal="true"
+                tools:text="Rs. 000 - 000"
                 android:gravity="center"
-                android:layout_marginBottom="8px"
-                android:layout_marginTop="8px"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_32"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/textViewEstimatedDist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8px"
-                android:layout_marginTop="8px"
-                android:text="Estimated Distance: NA"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                tools:text="Estimated Distance: NA"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_32"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/textViewRequestDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8px"
-                android:layout_marginTop="8px"
-                android:text="No. of deliveries: NA"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                tools:text="No. of deliveries: NA"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_32"/>
+                android:textSize="16sp"/>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="2px"
+                android:layout_height="1dp"
                 android:background="@color/grey_light"
-                android:layout_marginTop="8px"
-                android:layout_marginBottom="8px"/>
+                android:layout_marginTop="10dp"/>
 
         </LinearLayout>
 
@@ -297,23 +312,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20px"
-            android:layout_marginBottom="20px">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:id="@+id/imageViewDeliveryList"
-                android:layout_width="33px"
-                android:layout_height="81px"
-                android:layout_marginTop="12px"
+                android:layout_width="16dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/dropoff_1"
-                android:layout_marginStart="70px"/>
+                android:layout_marginStart="30dp"/>
 
             <LinearLayout
                 android:id="@+id/imageViewDeliveryAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40px"
-                android:layout_marginTop="9px"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/imageViewDeliveryList"
                 android:orientation="vertical">
 
@@ -322,36 +337,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/drop_points"
-                    android:textSize="26px"/>
+                    android:textSize="13sp"/>
 
                 <TextView
                     android:id="@+id/textViewDropPoint1"
                     android:layout_width="match_parent"
-                    android:layout_height="64px"
-                    android:layout_marginTop="21px"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                    android:textSize="26px"/>
+                    tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                    android:textSize="13sp"/>
 
                 <TextView
                     android:id="@+id/textViewDropPoint2"
                     android:layout_width="match_parent"
-                    android:layout_height="64px"
-                    android:layout_marginTop="21px"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:visibility="gone"
-                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                    android:textSize="26px"/>
+                    android:visibility="visible"
+                    tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                    android:textSize="13sp"/>
 
                 <TextView
                     android:id="@+id/textViewDropPoint3"
                     android:layout_width="match_parent"
-                    android:layout_height="64px"
-                    android:layout_marginTop="21px"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:visibility="gone"
-                    android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
-                    android:textSize="26px"/>
+                    android:visibility="visible"
+                    tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                    android:textSize="13sp"/>
 
             </LinearLayout>
 
@@ -361,11 +376,11 @@
             android:id="@+id/textViewDropPointCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10px"
-            android:layout_marginStart="360px"
-            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:visibility="visible"
             android:text="@string/drop_points"
-            android:textSize="26px"/>
+            android:textSize="13sp"/>
 
 
 
@@ -374,6 +389,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:tag="@string/dont_touch_me"
+            android:layout_marginTop="10dp"
             >
 
         <TextView
@@ -426,7 +442,7 @@
                 android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
                 <LinearLayout
                     android:id="@+id/llMinus"
