@@ -379,15 +379,15 @@ class DriverSetupFragment : Fragment() {
     private fun setPromoLayout(show:Boolean,promoText:String? = null) {
         if (show) {
             promoGroupView.visible()
-            if (promoText != null && !promoText.isBlank()) {
-                edtPromo.setText(promoText)
-                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
-                edtPromo.isEnabled = false
-            } else {
+//            if (promoText != null && !promoText.isBlank()) {
+//                edtPromo.setText(promoText)
+//                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
+//                edtPromo.isEnabled = false
+//            } else {
                 edtPromo.isEnabled = true
-                edtPromo.setText(null)
+                edtPromo.setText(promoText)
                 edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,0,0)
-            }
+//            }
         } else {
             promoGroupView.gone()
         }
