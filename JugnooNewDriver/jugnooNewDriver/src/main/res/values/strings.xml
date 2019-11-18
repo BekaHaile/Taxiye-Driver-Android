@@ -1299,6 +1299,7 @@
     <string name="dest_trip">Destination Trip</string>
     <string name="dest_trip_disabled">Destination Ride Disabled</string>
     <string name="add_destination">Add Destination</string>
+    <string name="destination_ride_end">Destination Rides feature has been disabled. Rides will be sent to you in normal mode.</string>
 
 
 

@@ -315,6 +315,7 @@ public class UserData {
 		}
 
 		public int getDestinationRideTimeRem() {
+			//returns time in seconds
 			int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
 			if(timeRemaining>0)
 			return timeRemaining;

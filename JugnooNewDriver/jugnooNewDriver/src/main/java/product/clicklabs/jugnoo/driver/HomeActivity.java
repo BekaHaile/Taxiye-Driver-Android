@@ -119,6 +119,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -5462,6 +5463,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
 
         try {
+            if(Data.userData.currDestRideObj!=null){
+                final Handler updateHandler = new Handler();
+
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        Data.userData.currDestRideObj=null;
+                        toggleDestinationRide();
+                        DialogPopup.alertPopup(HomeActivity.this,"Attention !!",getString(R.string.destination_ride_end));
+                    }
+                };
+                updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
+            }
             if (driverRequestListAdapter.customerInfos.size() > 0) {
                 setPannelVisibility(false);
             } else {

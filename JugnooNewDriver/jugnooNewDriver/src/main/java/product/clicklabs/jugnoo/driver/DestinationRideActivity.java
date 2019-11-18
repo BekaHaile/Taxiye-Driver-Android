@@ -71,6 +71,9 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         } else {
             hideDestRideEnabledView();
         }
+        if(Data.userData.getSavedAddressList().isEmpty()){
+            tvSetDestRide.setText(R.string.add_destination);
+        }
     }
 
     @Override
@@ -146,7 +149,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                 .commit());
 
         tvSetDestRide.setOnClickListener(view -> {
-            if (tvSetDestRide.getText().toString().equalsIgnoreCase(getString(R.string.add_destination))) {
+            if (Data.userData.getSavedAddressList().isEmpty()) {
                 ivAddDestRide.performClick();
             } else {
                 if (Data.userData.currDestRideObj == null)
