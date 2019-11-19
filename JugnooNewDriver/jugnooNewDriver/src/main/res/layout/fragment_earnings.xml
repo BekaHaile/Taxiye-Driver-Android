@@ -131,7 +131,7 @@
 
                 <TextView
                     android:id="@+id/textViewWalletBalance"
-                    android:layout_width="wrap_content"
+                    android:layout_width="145dp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/imageViewWalletBalance"
                     android:gravity="center_vertical"
