@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30px"
+                    android:visibility="gone"
                     android:layout_marginTop="6px"
                     android:text="@string/NA"
                     android:textColor="@color/black_text_v2"

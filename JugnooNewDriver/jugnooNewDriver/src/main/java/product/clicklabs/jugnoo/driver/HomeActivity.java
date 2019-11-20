@@ -10672,13 +10672,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && customerInfo.getFalseDeliveries() != 1) {
 
                                 if (deliveryInfo.getIndex() == Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, 0)) {
-                                    addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 2));
+                                    addDeliveryMarker(addDropPinMarker(map, latLng,"D", 2));
                                 } else {
-                                    addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 1));
+                                    addDeliveryMarker(addDropPinMarker(map, latLng,"D", 1));
                                 }
                             } else if ((deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
                                     deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) && customerInfo.getFalseDeliveries() != 1) {
-                                addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 3));
+                                addDeliveryMarker(addDropPinMarker(map, latLng,"D", 3));
                             }
                         }
                     }
