@@ -50,7 +50,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    public Activity mActivity;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -81,6 +81,14 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         }
         return mFirebaseAnalytics;
+    }
+
+    public Activity getmActivity() {
+        return mActivity;
+    }
+
+    public void setmActivity(Activity mActivity) {
+        this.mActivity = mActivity;
     }
 
     public void logEvent(String eventText, Bundle bundle) {

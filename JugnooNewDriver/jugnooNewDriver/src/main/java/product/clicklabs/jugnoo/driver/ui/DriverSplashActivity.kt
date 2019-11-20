@@ -90,6 +90,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private var firstTime: Boolean = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MyApplication.getInstance().setmActivity(this)
+
         setTheme(R.style.AppTheme)
         setContentView(R.layout.driver_splash_activity)
         setSupportActionBar(toolbar)

@@ -692,6 +692,8 @@
     <string name="edit">تصحيح</string>
     <string name="configure_your_emergency_contacts">جهة اتصال للطوارئ
 تكوين الخاص بك</string>
+    <string name = "app_needs_overlay_permission"> يحتاج التطبيق إلى إذن تراكب لعرض زر المساعد على الشاش</string>
+
     <!--login with phone-->
 
 </resources>

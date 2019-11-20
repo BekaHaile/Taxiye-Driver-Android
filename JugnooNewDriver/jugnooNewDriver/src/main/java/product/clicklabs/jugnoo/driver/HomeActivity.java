@@ -4322,8 +4322,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     reviewReachedDistanceRl.setVisibility(View.VISIBLE);
                     linearLayoutMeterFare.setVisibility(View.GONE);
-                    relativeLayoutRateCustomer.setVisibility(View.VISIBLE);
-                    ratingBarFeedback.setVisibility(View.VISIBLE);
+                    relativeLayoutRateCustomer.setVisibility(View.GONE);
+                    ratingBarFeedback.setVisibility(View.GONE);
                     reviewSkipBtn.setVisibility(View.GONE);
                     ratingBarFeedback.setRating(0);
 
