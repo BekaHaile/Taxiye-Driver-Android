@@ -26,17 +26,10 @@ public class CityResponse extends FeedCommonResponseKotlin {
 	@Expose
 	private String promoCode;
 
-	@SerializedName("show_referral")
-	@Expose
-	private int showPromo;
-
 	public String getPromoCode() {
 		return promoCode;
 	}
 
-	public boolean getShowPromo() {
-		return showPromo==1;
-	}
 
 	/**
 	 * @return The currentCity
@@ -86,6 +79,9 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		@SerializedName("mandatory_fleet_registration")
 		@Expose
 		private int mandatoryFleetRegistration;
+		@SerializedName("show_referral")
+		@Expose
+		private int showPromo;
 
 		public City(Integer cityId, String cityName) {
 			this.cityId = cityId;
@@ -144,6 +140,10 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		public void setMandatoryFleetRegistration(int mandatoryFleetRegistration) {
 			this.mandatoryFleetRegistration = mandatoryFleetRegistration;
+		}
+
+		public int getShowPromo() {
+			return showPromo;
 		}
 	}
 

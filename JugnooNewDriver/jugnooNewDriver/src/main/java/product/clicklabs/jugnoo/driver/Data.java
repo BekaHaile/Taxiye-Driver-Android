@@ -99,6 +99,8 @@ public class Data {
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
+	public static final String JUNGLE_MAPS_SERVER_URL = "http://nominatim-api-live.jungleworks.com";
+
 
 
 

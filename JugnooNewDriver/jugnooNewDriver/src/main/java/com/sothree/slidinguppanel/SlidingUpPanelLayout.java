@@ -1183,7 +1183,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         boolean result;
-        final int save = canvas.save(Canvas.CLIP_SAVE_FLAG);
+        final int save = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
 
         if (mSlideableView != child) { // if main view
             // Clip against the slider; no sense drawing what will immediately be covered,

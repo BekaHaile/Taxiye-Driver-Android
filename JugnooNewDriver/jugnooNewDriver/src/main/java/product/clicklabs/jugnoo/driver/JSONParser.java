@@ -107,6 +107,7 @@ public class JSONParser implements Constants {
 	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
 			JSONObject fareDetails = jObj.getJSONObject("fare_details");
+			Log.e("JSONParser parseFareObject", "fareDetails json="+fareDetails);
 			if(fareDetails.has("mandatory_fare_details")){
 				JSONObject mandatoryFareDetails = fareDetails.getJSONObject("mandatory_fare_details");
 				return new FareStructure(fareDetails.getDouble("fare_fixed"),
@@ -432,6 +433,8 @@ public class JSONParser implements Constants {
 		String driverTag = userData.optString(Constants.KEY_DRIVER_TAG, DriverTagValues.DISTANCE_TRAVELLED.getType());
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
+		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -548,11 +551,39 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_TUTORIAL_BANNER_TEXT, userData.optString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, ""));
 		Prefs.with(context).save(KEY_BID_TIMEOUT, userData.optLong(KEY_BID_TIMEOUT, 30000L));
 		Prefs.with(context).save(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, userData.optInt(KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 1));
-		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 1));
+		Prefs.with(context).save(KEY_DRIVER_INRIDE_DROP_EDITABLE, userData.optInt(KEY_DRIVER_INRIDE_DROP_EDITABLE, 0));
 
 		Prefs.with(context).save(KEY_DRIVER_GOOGLE_CACHING_ENABLED, userData.optInt(KEY_DRIVER_GOOGLE_CACHING_ENABLED,
 				context.getResources().getInteger(R.integer.driver_google_caching_enabled)));
+		Prefs.with(context).save(KEY_DRIVER_DIRECTIONS_CACHING, userData.optInt(KEY_DRIVER_DIRECTIONS_CACHING,
+				1));
 
+		parseJungleApiObjects(context, userData);
+
+		Prefs.with(context).save(KEY_DRIVER_WAIT_SPEED, userData.optString(KEY_DRIVER_WAIT_SPEED, "2"));
+		Prefs.with(context).save(KEY_SHOW_DROP_LOCATION_BELOW_PICKUP, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_drop_location_below_pickup)));
+		Prefs.with(context).save(KEY_SHOW_FARE_BEFORE_RIDE_START, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_fare_before_ride_start)));
+	}
+
+	private void parseJungleApiObjects(Context context, JSONObject userData) {
+		try {
+			//todo null case to block apis
+			String jungleObjStr = BuildConfig.DEBUG ? JUNGLE_JSON_OBJECT : EMPTY_JSON_OBJECT;
+			JSONObject jungleObj = userData.optJSONObject(KEY_JUNGLE_DIRECTIONS_OBJ);
+			if(jungleObj != null){
+				jungleObjStr = jungleObj.toString();
+			}
+
+			Prefs.with(context).save(KEY_JUNGLE_DIRECTIONS_OBJ, jungleObjStr);
+
+			JSONObject jungleDMObj = userData.optJSONObject(KEY_JUNGLE_DISTANCE_MATRIX_OBJ);
+			Prefs.with(context).save(KEY_JUNGLE_DISTANCE_MATRIX_OBJ, jungleDMObj!=null ? jungleDMObj.toString(): jungleObjStr);
+
+			JSONObject jungleGObj = userData.optJSONObject(KEY_JUNGLE_GEOCODE_OBJ);
+			Prefs.with(context).save(KEY_JUNGLE_GEOCODE_OBJ, jungleGObj!=null ? jungleGObj.toString(): jungleObjStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -1186,15 +1217,12 @@ public class JSONParser implements Constants {
 		try {
 			if(jObjCustomer.has(KEY_POOL_FARE)){
 				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
-				double distance = jPoolFare.optDouble(KEY_DISTANCE) * 1000d;
-				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
-				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
 				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
 				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED, 0);
 				double discountPercentage = jPoolFare.optDouble(KEY_DISCOUNT_PERCENTAGE, 0);
 				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
+				customerInfo.setPoolFare(new PoolFare(fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
 			}
 			if(jObjCustomer.has(KEY_REVERSE_BID_FARE)){
 				JSONObject jFare = jObjCustomer.optJSONObject(KEY_REVERSE_BID_FARE);

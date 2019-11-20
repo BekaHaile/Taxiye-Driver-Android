@@ -39,7 +39,6 @@ import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
-import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
@@ -94,7 +93,6 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	Shader textShader;
 	GoogleMap mapLite;
 	private ArrayList<LatLng> latLngs = new ArrayList<>();
-	private SearchResult searchResultGlobal;
 	Tile.Extras extras;
 	CustomerInfo customerInfo;
 	String accessToken;
@@ -258,7 +256,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 							}
 						}
 						if(latLngs.size() > 1){
-							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.themeColorLight), true, "ride_details",
+							new ApiGoogleDirectionWaypoints(extras.getEngagementId(), latLngs, getResources().getColor(R.color.themeColorLight), true, "ride_details",
 									new ApiGoogleDirectionWaypoints.Callback() {
 										@Override
 										public void onPre() {

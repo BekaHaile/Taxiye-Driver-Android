@@ -64,7 +64,7 @@
     <string name="end_ride">சவாரி-ஐ நிறுத்தவும்</string>
     <string name="reached_destination">இலக்கை அடைந்தது</string>
     <string name="distance">தூரம்</string>
-    <string name="wait_time">காத்திருக்கும் நேரம்</string>
+    <string name="wait_time">நெரிசல் நேரம்</string>
     <string name="fare">கட்டணம்</string>
     <string name="accept_ride">சவாரியை ஏற்கிறேன்</string>
     <string name="cancel_ride">சவாரியை ரத்து செய்ய</string>

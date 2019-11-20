@@ -46,6 +46,7 @@ class DriverSetupFragment : Fragment() {
     private var fleetSelected: CityResponse.Fleet? = null
     private var toolbarChangeListener: ToolbarChangeListener? = null
     private var citiesList:MutableList<CityResponse.City>? = null
+    private var promoCodeFromServer:String? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
     private val FLEET_DIALOG_FRAGMENT_TAG = "fleet_fragment_dialog";
 
@@ -337,10 +338,10 @@ class DriverSetupFragment : Fragment() {
                     onError(t, t.serverMessage(), t.flag)
                     return
                 }
-                setCityData(t!!.currentCity)
-                citiesList = t.cities;
+                promoCodeFromServer = if(t != null) t.promoCode else ""
+                citiesList = t!!.cities
+                setCityData(t.currentCity)
                 groupView.visible()
-                setPromoLayout(t.getShowPromo(),t.promoCode)
                 setupTermsAndConditionsTextView()
                 if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
                         || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1){
@@ -378,15 +379,15 @@ class DriverSetupFragment : Fragment() {
     private fun setPromoLayout(show:Boolean,promoText:String? = null) {
         if (show) {
             promoGroupView.visible()
-            if (promoText != null && !promoText.isBlank()) {
-                edtPromo.setText(promoText)
-                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
-                edtPromo.isEnabled = false
-            } else {
+//            if (promoText != null && !promoText.isBlank()) {
+//                edtPromo.setText(promoText)
+//                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
+//                edtPromo.isEnabled = false
+//            } else {
                 edtPromo.isEnabled = true
-                edtPromo.setText(null)
+                edtPromo.setText(promoText)
                 edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,0,0)
-            }
+//            }
         } else {
             promoGroupView.gone()
         }
@@ -437,6 +438,8 @@ class DriverSetupFragment : Fragment() {
                 fleetGroupView.visibility = View.GONE
                 fleetSelected = null
             }
+
+            setPromoLayout(city.showPromo == 1, promoCodeFromServer)
         }else{
             rvVehicleTypes.gone()
             tvCities.text = getString(R.string.label_select_city)

@@ -173,9 +173,9 @@ public class UserData {
 	public static String getDistanceUnit(Context context){
 		return Prefs.with(context).getString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km));
 	}
-	public static double getDistanceUnitFactor(Context context){
+	public static double getDistanceUnitFactor(Context context, boolean forKm){
 		double factor = (double) Prefs.with(context).getFloat(Constants.KEY_DISTANCE_UNIT_FACTOR, 1F);
-		return factor/1000.0D;
+		return factor/(forKm ? 1D : 1000.0D);
 	}
 
 	public String getCurrency() {

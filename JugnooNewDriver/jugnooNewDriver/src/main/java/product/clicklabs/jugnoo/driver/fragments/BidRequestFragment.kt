@@ -120,7 +120,7 @@ class BidRequestFragment : Fragment() {
             tvPickup.text = customerInfo.pickupAddress
             tvDrop.text = customerInfo.dropAddress
             tvDistance.text = Utils.getDecimalFormat().format(customerInfo.estimatedTripDistance
-                    * UserData.getDistanceUnitFactor(requireContext())) + " km"
+                    * UserData.getDistanceUnitFactor(requireContext(), false)) + " km"
 
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

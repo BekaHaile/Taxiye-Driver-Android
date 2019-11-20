@@ -496,5 +496,33 @@ public interface Constants {
 	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
+	String KEY_DRIVER_DIRECTIONS_CACHING = "driver_directions_caching";
+
+	long SECOND_MILLIS = 1000l;
+	long MINUTE_MILLIS = 60l * SECOND_MILLIS;
+	long HOUR_MILLIS = 60l * MINUTE_MILLIS;
+	long DAY_MILLIS = 24l * HOUR_MILLIS;
+
+	String KEY_JUNGLE_DIRECTIONS_OBJ = "jungle_directions_obj";
+	String KEY_JUNGLE_DISTANCE_MATRIX_OBJ = "jungle_distance_matrix_obj";
+	String KEY_JUNGLE_GEOCODE_OBJ = "jungle_geocode_obj";
+	String KEY_JUNGLE_POINTS = "points";
+	String KEY_JUNGLE_OPTIONS = "options";
+	String KEY_JUNGLE_APP_ID = "app_id";
+	String KEY_JUNGLE_APP_CODE = "app_code";
+	String KEY_JUNGLE_API_KEY = "api_key";
+	String KEY_JUNGLE_ACCESS_TOKEN = "access_token";
+	String EMPTY_JSON_OBJECT = "{}";
+	String KEY_JUNGLE_ORIGIN_LAT = "originlatitude";
+	String KEY_JUNGLE_ORIGIN_LNG = "originlongitude";
+	String KEY_JUNGLE_DEST_LAT = "destinationlatitude";
+	String KEY_JUNGLE_DEST_LNG = "destinationlongitude";
+	String KEY_JUNGLE_LAT = "lat";
+	String KEY_JUNGLE_LNG = "lng";
+
+	String JUNGLE_JSON_OBJECT = "{\""+KEY_JUNGLE_OPTIONS+"\":0}";
+	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
+	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
+	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 }
 

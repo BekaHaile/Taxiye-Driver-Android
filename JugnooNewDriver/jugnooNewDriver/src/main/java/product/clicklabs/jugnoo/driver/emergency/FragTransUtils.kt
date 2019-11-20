@@ -21,7 +21,7 @@ class FragTransUtils {
                 .add(container.id, AddEmergencyContactsFragment.newInstance(), AddEmergencyContactsFragment::class.java.name)
                 .addToBackStack(AddEmergencyContactsFragment::class.java.name)
                 .hide(activity.supportFragmentManager.findFragmentByTag(activity.supportFragmentManager
-                        .getBackStackEntryAt(activity.supportFragmentManager.backStackEntryCount - 1).name))
+                        .getBackStackEntryAt(activity.supportFragmentManager.backStackEntryCount - 1).name)!!)
                 .commit()
     }
 
@@ -42,7 +42,7 @@ class FragTransUtils {
                             EmergencyContactOperationsFragment::class.java.name)
                     .addToBackStack(EmergencyContactOperationsFragment::class.java.name)
                     .hide(activity.supportFragmentManager.findFragmentByTag(activity.supportFragmentManager
-                            .getBackStackEntryAt(activity.supportFragmentManager.backStackEntryCount - 1).name))
+                            .getBackStackEntryAt(activity.supportFragmentManager.backStackEntryCount - 1).name)!!)
                     .commitAllowingStateLoss()
         }
 

@@ -99,7 +99,7 @@ class VehicleTypeSelectionAdapter(private val context: Context,
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
-        val pos = recyclerView.getChildAdapterPosition(parentView);
+        val pos = recyclerView.getChildAdapterPosition(parentView!!);
         if (pos != RecyclerView.NO_POSITION) {
 
             setNewPosition(pos)

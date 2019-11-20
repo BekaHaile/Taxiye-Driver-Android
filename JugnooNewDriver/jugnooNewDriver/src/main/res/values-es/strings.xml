@@ -1,0 +1,1161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <!--<string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>-->
+
+    <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
+    <string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
+
+
+    <!-- <string name="fb_app_id">782131025144439</string> -->
+
+
+    <string name="rupee">\u20B9</string>
+    <string name="rupee_zero">\u20B9 0.0</string>
+    <string name="rupee_100">\u20B9 100</string>
+    <string name="rupee_200">\u20B9 200</string>
+    <string name="rupee_500">\u20B9 500</string>
+
+    <string name="rupee_zero_zero">\u20B9 0000.00</string>
+
+
+    <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
+
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
+
+
+    <string name="email_id">Direccion de correo electronico</string>
+    <string name="confirm_email_id">Confirma la dirección de correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_password">Olvidaste tu contraseña?</string>
+    <string name="sign_up">Registrate</string>
+    <string name="or">O</string>
+
+    <string name="ok">BUENO</string>
+
+    <string name="phone_number">Numero de telefono</string>
+    <string name="confirm_password">Confirma tu contraseña</string>
+
+    <string name="confirmation_code">Código de confirmación</string>
+    <string name="check_your_registered_email_phone_number_for_otp"> Comprueba tu correo electrónico registrado / número de teléfono por OTP</string>
+    <string name="enter_code">Ingresa tu codigo</string>
+    <string name="done">Listo</string>
+
+    <string name="logout">Cerrar Sesión</string>
+    <string name="cancel">Cancelar</string>
+    <string name="retry">Reintentar</string>
+
+    <string name="select_language">Selecciona el idioma</string>
+    <string name="enter_phone_number">Ingresa tu número de teléfono </string>
+
+    <string name="from">Desde: </string>
+    <string name="to">Para: </string>
+    <string name="rides">Trayectos</string>
+    <string name="ride">Trayecto</string>
+    <string name="no_rides_currently">No hay trayectos actualmente</string>
+
+    <string name="missed">Perdido</string>
+    <string name="no_missed_rides_currently">No hay trayectos perdidos actualmente. </string>
+    <string name="update">Actualizar</string>
+
+    <string name="driver_mode">Modo conductor</string>
+    <string name="jugnoo_on">%s ON</string>
+    <string name="driver_type">Tipo de conductor</string>
+    <string name="ride_type">Tipo de trayecto</string>
+    <string name="support">Soporte</string>
+    <string name="language_preferences">Preferencias de idioma</string>
+
+    <string name="start_ride">Iniciar trayecto</string>
+    <string name="end_ride">Finalizar trayecto</string>
+
+    <string name="reached_destination">Destino alcanzado</string>
+    <string name="distance">Distancia</string>
+    <string name="wait_time">Tiempo de espera</string>
+    <string name="fare">Tarifo</string>
+
+    <string name="accept_ride">Aceptar trayecto</string>
+    <string name="cancel_ride">Cancelar trayecto</string>
+
+
+    <string name="call">Llamar</string>
+    <string name="ride_time">Tiempo de viaje</string>
+
+    <string name="submit">ENVIAR</string>
+    <string name="search">Buscar</string>
+
+    <string name="your_login_session_expired">
+Su sesión ha expirado. Por favor, inicie sesión de nuevo.</string>
+    <string name="alert">Alert</string>
+
+
+    <string name="server_error"> Error del Servidor. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="server_not_responding">Oops!! Servidor no responde. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="check_internet_message">Verifica tu conexión de internet.</string>
+
+
+    <string name="driver_id">Identificación del conductor:</string>
+    <string name="rank_city">Rango de la ciudad:</string>
+    <string name="rank_overall">Rango general:</string>
+    <string name="monthly">Puntaje mensual</string>
+    <string name="earnings">Ganancias</string>
+    <string name="rides_taken">Trayectos tomados</string>
+    <string name="rides_missed">Trayectos perdidos</string>
+    <string name="rides_cancelled">Trayectos Cancelados</string>
+    <string name="online_hours">Horas conectadas</string>
+
+    <string name="Auto_not_working">Vehículo no está funcionando</string>
+    <string name="Traffic">Trafico</string>
+    <string name="accepted_by_mistake">Trayecto aceptado por error</string>
+    <string name="Customer_asked_to_cancel"> El cliente pidió cancelar el viaje </string>
+    <string name="Not_able_to_contact_customer">No puedo contactar al cliente</string>
+    <string name="Customer_behavior">Mal comportamiento del cliente</string>
+    <string name="profile">PERFIL</string>
+    <string name="call_us">Contáctanos</string>
+    <string name="auto_number">Numero automático</string>
+
+    <string name="Document_type">Tipo de documento</string>
+    <string name="Requirement">Requerimientos</string>
+    <string name="add_image">AÑADIR IMAGEN</string>
+    <string name="Submit">Enviar</string>
+
+
+    <string name="arrived">Llegado</string>
+    <string name="accept_subsidy">Aceptar subsidio</string>
+    <string name="account">Cuenta</string>
+    <string name="accept">Aceptar</string>
+    <string name="away_from_you">Lejos de ti:</string>
+    <string name="end_ride_text">Estas seguro de que quieres terminar el viaje?</string>
+    <string name="logout_text">Estas seguro de que quieres cerrar sesión?</string>
+    <string name="customer_pickup_text">
+Se le ha asignado una recogida. Por favor, elija el cliente.</string>
+    <string name="start_ride_text"> Por favor confirme que ha recogido al cliente : %s</string>
+
+    <string name="battery_level_text">El nivel de la batería debe ser superior al 20% para aceptar el viaje. Por favor, conecte a una fuente de alimentación para continuar.</string>
+    <string name="battery_level_start_text">El nivel de la batería debe ser superior al 10% para iniciar el viaje. Por favor, conecte a una fuente de alimentación para continuar.</string>
+
+    <string name="battery_level_arrived_text">El nivel de la batería debe ser superior al 10% para marcar el recorrido que llegó. Por favor, conecte a una fuente de alimentación para continuar.</string>
+    <string name="back">Atras</string>
+
+    <string name="change_phone_no_text">El número de teléfono cambiado es el mismo que el anterior.</string>
+    <string name="code_empty">El código no puede estar vacio</string>
+    <string name="confirm_email_text"> Confirmar que la ID del correo electrónico no coincide </string>
+    <string name="choose_email_client"> Elige un cliente de correo electrónico:</string>
+    <string name="select_time_error_text"> No se puede seleccionar la hora antes de la hora actual </string>
+    <string name="call_me">LLAMAME</string>
+    <string name="change_phone_no">CAMBIAR EL NUMERO DE TELEFONO</string>
+    <string name="creating_game">Creando Juego ...</string>
+    <string name="completed">Completado</string>
+    <string name="customer_name">Nombre del cliente: </string>
+    <string name="change">CAMBIAR</string>
+
+    <string name="km">Km</string>
+    <string name="disable_mock_location">Deshabilitar la ubicación simulada primero</string>
+    <string name="daily">Diario</string>
+
+    <string name="enter_new_phone_no">Ingresa tu nuevo número de telefono</string>
+    <string name="enter_fare">INGRESA LA TARIFA</string>
+    <string name="enter_otp">INGRESA codigo OTP</string>
+    <string name="email">Email:</string>
+
+    <string name="forgot_password_cap">OLVIDASTE TU CONTRASEÑA</string>
+    <string name="fare_details">Detalle de la tarifa</string>
+
+    <string name="go_to_setting">Ir a la configuración</string>
+    <string name="google_pay_service_error">Error del servicio de Google Play</string>
+    <string name="google_pay_service_error_message"> Servicios de Google Play no encontrados o desactualizados. Instale los servicios de Google Play?</string>
+    <string name="go_to_playstore">Ve al Play Store:</string>
+
+    <string name="have_arrived">Llegaste?</string>
+
+    <string name="invite_earn">Invita &amp; Ganar</string>
+    <string name="create_new_account_msg"> Si aún desea crear una nueva cuenta</string>
+    <string name="not_recived_otp">No recibí el OTP</string>
+
+    <string name="jugnoo_off">%s OFF</string>
+    <string name="jugnoo_cut">%s Cortar</string>
+
+    <string name="loading">Cargando ...</string>
+    <string name="location_setting">Configuración de ubicación</string>
+    <string name="location_setting_enable_message"> La ubicación no está habilitada. ¿Quieres habilitarlo desde el menú de configuración?</string>
+    <string name="luggage_charge">Cargo de equipaje</string>
+    <string name="login">Iniciar Sesión</string>
+
+    <string name="restart_phone">La ubicación de su dispositivo no se está actualizando, reinicie su teléfono</string>
+    <string name="min_fare">Tarifa por minuto</string>
+    <string name="meals_on">Meals ON</string>
+    <string name="mail_us">Escríbenos</string>
+    <string name="message">MENSAJE</string>
+
+    <string name="no">No</string>
+    <string name="yes">Si</string>
+    <string name="no_luggage">Sin equipaje añadido</string>
+    <string name="luggage_added">artículos de equipajes añadidos</string>
+    <string name="no_lugage">SIN EQUIPAJE</string>
+    <string name="network_problem">Problema de red. Apague y encienda su teléfono y espere 5 minutos para continuar usando %s.</string>
+    <string name="no_data_to_show">No data to show</string>
+    <string name="no_of_rides">Numeros de viajes</string>
+    <string name="name">Nombre</string>
+    <string name="name_colon">Nombre:</string>
+
+    <string name="Phone_number_not_empty">Numero de teléfono no puede estar vacío</string>
+    <string name="valid_phone_number">Por favor ingresa un numero de teléfono valido</string>
+    <string name="please_wait">Por favor espera ...</string>
+    <string name="enter_some_fare">Por favor ingresa alguna tarifa</string>
+    <string name="enter_name">Por favor ingresa tu nombre</string>
+    <string name="Pls_enter_email_or_phn">Por favor ingresa tu cuenta de correo electrónico o número de teléfono.</string>
+    <string name="Pls_enter_email">Por favor ingresa tu correo electrónico</string>
+
+    <string name="enter_valid_phone_number">Por favor ingresa un numero de teléfono valido</string>
+    <string name="enter_password">Por favor ingresa tu correo electrónico</string>
+    <string name="password_atleast_6"> La contraseña debe tener al menos seis caracteres.</string>
+    <string name="valid_email"> Por favor ingrese una identificación de correo electrónico válida</string>
+    <string name="password_not_match"> Las contraseñas no coinciden</string>
+    <string name="password_to_continue">Por favor ingrese la contraseña para continuar.</string>
+    <string name="enter_new_phone_number">Por favor ingrese su nuevo número de teléfono </string>
+    <string name="position">POSITION</string>
+    <string name="please_login_from_these_accounts">Por favor ingrese a través de una de estas cuentas</string>
+    <string name="please_contact_customer_care">Por favor, póngase en contacto con nuestro servicio de atención al cliente.</string>
+    <string name="paid_cash">Pagado en efectivo</string>
+
+    <string name="ride_id">Identificación del trayecto</string>
+    <string name="rate">Tarifa: </string>
+    <string name="ride_in_progress_cant_logout">Paseo en progreso. Puedes cerrar sesión solo después de que termine el viaje.</string>
+    <string name="rate_applied">Tarifa aplicada</string>
+    <string name="register">Registro</string>
+    <string name="request_registration">SOLICITAR REGISTRO</string>
+    <string name="reg_info">Informacion del registro</string>
+    <string name="ride_details">DETALLES DEL TRAYECTO</string>
+    <string name="ride_fare">Tarifa del trayecto</string>
+
+    <string name="SUBMIT">ENVIAR</string>
+    <string name="super_driver">Super Conductores</string>
+    <string name="sharing_rides">Compartir trayectos</string>
+    <string name="sharing_on">Compartiendo</string>
+    <string name="SIGN_UP">REGISTRATE</string>
+    <string name="submit_request">ENVIAR SOLICITUD</string>
+    <string name="status">Estado</string>
+
+    <string name="total_time">Tiempo Total</string>
+    <string name="min">min</string>
+    <string name="app_need_active_gps">La aplicación necesita conexión GPS activa. Habilitarlo desde Configuración.</string>
+    <string name="app_needs_network_time">La aplicación necesita tiempo proporcionado por la red para ser habilitada. Habilitarlo desde Configuración.</string>
+    <string name="amount_entered">La cantidad introducida</string>
+    <string name="time">Tiempo</string>
+    <string name="jugnoo_ride_over">%s ride over</string>
+    <string name="today">Hoy</string>
+    <string name="this_month">Este mes</string>
+    <string name="title">Titulo</string>
+    <string name="two_account_on_device">Ya se han creado dos cuentas en este dispositivo.</string>
+    <string name="total_fare">Tarifa total</string>
+
+    <string name="updating">Actualizando ...</string>
+    <string name="user_cancel_request">El usuario ha cancelado la solicitud.</string>
+    <string name="verification">Verificación</string>
+    <string name="verify_me">Verificame</string>
+
+    <string name="waiting_for_location">Esperando por la ubicación...</string>
+    <string name="wait">Espera</string>
+    <string name="weekly">Semanal</string>
+    <string name="will_revert_you"> Volveremos a usted pronto</string>
+    <string name="present_near_customer_location"> Debe estar presente cerca del lugar de recogida del cliente para marcar el viaje que llegó.</string>
+    <string name="present_near_customer_location_to_start">Debe estar presente cerca del lugar de recogida del cliente para comenzar a viajar.</string>
+    <string name="You_have_already_created"> Ya ha creado% 1 $ d cuentas desde este dispositivo. Por favor explique la razón para crear una nueva cuenta..</string>
+    <string name="your_referral_code">`$_`$*`$_`$> `$0`% `$+`$`$0`$2 `$_`%
+`$! `$9`%_</string>
+
+    <string name="tap_to_retry">Toque para volver a intentarlo</string>
+    <string name="error_occured_tap_to_retry">Ocurrió algún error. Toque para volver a intentarlo</string>
+    <string name="no_internet_tap_to_retry">Sin conexión a Internet. Toque para volver a intentarlo</string>
+    <string name="no_rides">No hay trayectos actualmente</string>
+    <string name="pickup_location">Su lugar de recogida</string>
+    <string name="money_to">Dinero para %s</string>
+    <string name="start_ride_loc">Lugar de inicio del trayecto</string>
+
+    <string name="km_away">km de distancia</string>
+    <string name="m_away">m de distancia</string>
+    <string name="some_error_occured">Ha ocurrido algún error</string>
+    <string name="take_cash">Toma efectivo </string>
+
+    <string name="no_of_account">Las cuentas ya se han creado en este dispositivo.</string>
+    <string name="enter_otp_received">Por favor ingrese la contraseña de One Time que acaba de recibir por SMS en</string>
+    <string name="select_reason">Por favor selecciona una razón</string>
+    <string name="referral_money">Dinero referido</string>
+    <string name="send">`$-`% `$_`% `$_</string>
+
+    <string name="hint_created_multiple_account">Ya has creado 2 cuentas desde este dispositivo. Por favor explique la razón para crear una nueva cuenta.</string>
+    <string name="convenience_charge">Cargo de conveniencia</string>
+    <string name="cancel_subsidy">Cancelar subsidio</string>
+
+    <string name="inc_subsidy">(inc. Subsidio)</string>
+    <string name="Edit_profile"><u>Editar perfil</u></string>
+    <string name="info">Información Personal</string>
+    <string name="local_leaderboard">LOCAL</string>
+    <string name="global_leaderboard">GLOBAL</string>
+    <string name="daily_leaderboard">Diario</string>
+    <string name="weekly_leaderboard">Semanal</string>
+    <string name="lb_rank">Rango</string>
+    <string name="lb_name">Nombre</string>
+    <string name="lb_no_downloads">Numero de descargas</string>
+    <string name="number_of_downloads">Numero de descargas</string>
+    <string name="number_of_first_rides">Números de primeros viajes tomados</string>
+    <string name="money_earned">Dinero obtenido de referencias</string>
+    <string name="data_effective_format">*Datos efectivos desde</string>
+    <string name="time_left">Tiempo restante:</string>
+    <string name="enter_phone_no_to_reset_password">Ingrese su número de teléfono registrado para restablecer su contraseña.</string>
+    <string name="enter_amount">Ingresa el monto</string>
+    <string name="paytm_recharge">Paytm Recharge</string>
+    <string name="Confirm">Confirmar</string>
+    <string name="Paytm_recharge">Paytm Recarga</string>
+    <string name="phone_number_or_email">Numero de teléfono o Correo electrónico </string>
+    <string name="battery_low_message"> El nivel de la batería debe ser superior al 20% para aceptar el viaje. Conectalo a una fuente de poder para continuar.</string>
+    <string name="destination">LOS DESTINOS</string>
+    <string name="destination_selection">Por favor seleccione el destino donde puede ir ahora mismo</string>
+    <string name="Rate_Your_Customer">Califique a su cliente</string>
+    <string name="skip">Saltar</string>
+    <string name="destination_menu">Destino</string>
+    <string name="no_current_notification"> No hay notificaciones actuales</string>
+    <string name="phone">Telefono :</string>
+    <string name="GENERATE_OTP"> Generar clave de acceso única OTP</string>
+    <string name="signin_via_otp">Ingresa a VIA </string>
+    <string name="Neutral">Neutral</string>
+    <string name="terms">Condiciones</string>
+    <string name="Today">Hoy</string>
+    <string name="Last_week">Semana Pasada</string>
+    <string name="Last_month">Mes Pasado</string>
+    <string name="Outstanding_amnt"> Ajustes de factura anteriores</string>
+    <string name="jugnoo_cmsn">%s Comisión</string>
+    <string name="Manual_adjustment"> Ajuste manual</string>
+    <string name="referral_amount"> Cantidad de referencia</string>
+    <string name="phone_deduction"> Deducción telefónica</string>
+    <string name="paid_by_jugnoo">Pagado por %s</string>
+    <string name="paid_by_customer">Pagado en efectivo</string>
+    <string name="paid_using_wallet"> Pagado con monedero</string>
+    <string name="acc_credited"> Cuenta acreditada</string>
+    <string name="bank_details">Detalles bancarios</string>
+    <string name="acc_no">Acc No. :</string>
+    <string name="ifsc_code">IFSC :</string>
+    <string name="bank_name">Nombre del banco:</string>
+    <string name="bank_loc">Ubicación del banco:</string>
+    <string name="customer_waiting"> Tu próximo cliente está esperando</string>
+    <string name="show_more">Mostrar más</string>
+
+
+    <string name="Transactions">Transacciones</string>
+    <string name="Invoices">Facturas</string>
+    <string name="Earnings">Ganancias</string>
+    <string name="Earn">Ganar</string>
+    <string name="Activity">Actividad</string>
+    <string name="referral">Remisión</string>
+    <string name="NA">NA</string>
+    <string name="Invoice">Factura</string>
+    <string name="phone_no_cnt_be_empty"> Número de teléfono no puede estar vacío</string>
+    <string name="enter_some_amount">Por favor ingrese alguna cantidad</string>
+    <string name="enter_less_amount"> Por favor ingrese menos cantidad</string>
+    <string name="enter_valid_amount"> Por favor ingrese una cantidad válida</string>
+    <string name="recharge_amount_for_customer"> Está recargando \ u20B9% 1 $ s para el cliente con cuenta paytm en% 2 $ s</string>
+    <string name="Ride">Viaje</string>
+    <string name="Ride_id">Identificación del trayecto</string>
+    <string name="customer_id">Identificación del cliente</string>
+    <string name="paytm_transaction"> Transacción Paytm</string>
+    <string name="phone_no">Numero de telefono.</string>
+    <string name="changed_no_same_as_previous"> El número de teléfono cambiado es el mismo que el anterior</string>
+    <string name="sharing_payment_recieved"> Compartiendo el pago recibido por teléfono</string>
+    <string name="start_loc"> Ubicación de inicio</string>
+    <string name="driver_loc"> Ubicación del conductor</string>
+    <string name="customer_2">Cliente 2</string>
+    <string name="kms">Kms</string>
+    <string name="mark_delivered"> Marca entregada</string>
+    <string name="order_id">Identificación de orden</string>
+    <string name="thanks_for_feedback"> Gracias por sus valiosos comentarios.</string>
+    <string name="total_amnt_till_now"> Cantidad total hasta ahora</string>
+    <string name="amnt_credited"> Para pagar en cuenta</string>
+    <string name="invoice_date"> Fecha de la factura</string>
+    <string name="invoice_id">Identificación de factura</string>
+    <string name="total_distance">DISTANCIA TOTAL</string>
+    <string name="valid_email_phone_no"> Ingrese un correo electrónico o teléfono válido</string>
+    <string name="select_destination"> Por favor seleccione al menos un destino</string>
+    <string name="Notifications">Notificaciones</string>
+    <string name="enter_customer_phone_no"> Ingrese el número de teléfono del cliente</string>
+    <string name="invoice_detail">DETALLES DE LA FACTURA</string>
+    <string name="generated_on"> Generado en:</string>
+    <string name="share">Compartir</string>
+    <string name="no_language_to_select"> Opción de idioma no disponible</string>
+    <string name="ride_complete"> Paseo completado</string>
+    <string name="no_not_verified"> Número de teléfono no verificado</string>
+    <string name="resend_OTP">Reenviar Codigo OTP</string>
+    <string name="resend_OTP_ul"><u>Reenviar Codigo OTP </u></string>
+    <string name="return_reasons"> Razones de retorno</string>
+
+    <string name="accepted">Aceptado</string>
+    <string name="arrive_at_pickup_location"> Llegó al lugar de recogida</string>
+    <string name="make_delivery">Hacer entrega</string>
+
+    <string name="Returned"> Devuelto</string>
+    <string name="please_confirm_cash_taken"> Por favor confirme que ha tomado efectivo</string>
+    <string name="confirm">Confirmar</string>
+    <string name="start_delivery"> Comenzar la entrega</string>
+    <string name="deliveries">Entregas</string>
+    <string name="pending">Pendiente</string>
+    <string name="cancelled">Cancelado</string>
+    <string name="current">Corriente</string>
+    <string name="get_directions"> Obtener las direcciones</string>
+    <string name="delivered"> Entregado</string>
+    <string name="delivery_is_over"> La entrega ha terminado</string>
+    <string name="orders_delivered"> Pedidos entregados</string>
+    <string name="orders_returned"> Pedidos devueltos</string>
+    <string name="rate_your_vendor"> Califica a tu comerciante</string>
+    <string name="view_orders"> Ver pedidos</string>
+    <string name="delivery_numbers"> Número de entregas:</string>
+    <string name="start_the_delivery"> Iniciar la entrega</string>
+    <string name="returned"> Devuelto</string>
+    <string name="start_delivery_text"> ¿Estás seguro de que deseas iniciar la entrega?</string>
+    <string name="delivery_id">Numero de orden</string>
+    <string name="deliver"> Entregar</string>
+    <string name="Return"> Regreso</string>
+    <string name="delivery"> Entrega</string>
+    <string name="delivery_caps">ENTREGA</string>
+
+    <string name="delivery_completed">Entrega completada</string>
+    <string name="delivery_cancelled">Entrega Cancelada</string>
+
+    <string name="give_missed_call_dialog_text"> Danos una llamada perdida y verificaremos tu identidad.</string>
+    <string name="give_misscall_to_verify"> Dar llamada perdida para verificar</string>
+    <string name="cash_collected"> Efectivo cobrado</string>
+    <string name="details">Detalles</string>
+    <string name="success">EXITO</string>
+    <string name="vehicle_status"> Estado del vehículo</string>
+    <string name="rented">Alquilado</string>
+    <string name="no_doc_available"> No hay documentos disponibles</string>
+    <string name="upload">Subir</string>
+    <string name="mandatory">Obligatorio</string>
+    <string name="optional">Opcional</string>
+    <string name="uploaded">Cargado</string>
+    <string name="rejected">Rechazado</string>
+    <string name="verified">Verificado</string>
+    <string name="approval_pending"> Aprobación pendiente</string>
+    <string name="owned"> De propiedad</string>
+    <string name="rejection_reason"> Razón de rechazo</string>
+    <string name="outstanding_amount"> Ajustes de factura anteriores</string>
+    <string name="delivery_fare">Tarifa de entrega</string>
+    <string name="return_subsidy"> Subsidio de retorno</string>
+    <string name="return_distance"> Distancia de retorno</string>
+    <string name="delivery_details"> DETALLES DE LA ENTREGA</string>
+    <string name="please_reach_customer_location">Recoger %s</string>
+    <string name="uploading">CARGANDO</string>
+    <string name="before_ride">ANTES DE VIAJAR</string>
+    <string name="in_ride_rate">EN TRAYECTO</string>
+    <string name="referral_rate">REMISIÓN</string>
+    <string name="pickup_charges"> Cargos de recogida</string>
+    <string name="base_fare">Tarifa Base</string>
+    <string name="distance_per_km">Distancia\n(Per Km)</string>
+    <string name="time_per_min">Tiempo (por min)</string>
+    <string name="per_min">(por min)</string>
+    <string name="driver_to_customer"> Conductor al cliente</string>
+    <string name="driver_to_driver"> Conductor a conductor</string>
+    <string name="rate_card">Tarifario</string>
+    <string name="applicable_after"> Aplicable después %1$s</string>
+    <string name="per_format">(por %s)</string>
+    <string name="delivery_off"> Entrega OFF</string>
+    <string name="Yesterday">Ayer</string>
+    <string name="ride_money"> Cantidad total de viaje</string>
+    <string name="total_amount"> Importe de la factura final</string>
+    <string name="this_week">ESTA SEMANA</string>
+    <string name="outstanding_amount1"> Sobresaliente ajustado</string>
+    <string name="upload_again">Subir otra vez</string>
+    <string name="register_via_agent"> Registrarse a través de agente</string>
+    <string name="upload_Documents"> subir documentos</string>
+    <string name="payment_sent"> Pago enviado</string>
+    <string name="this_week_cap">ESTA SEMANA</string>
+    <string name="ride_history_cap"> HISTORIA DEL PASEO</string>
+    <string name="referral_code">Codigo de referido</string>
+    <string name="select_tandc"> Por favor seleccione Términos y Condiciones</string>
+    <string name="select_valid_vehicle_type"> Por favor seleccione un tipo de vehículo válido</string>
+    <string name="select_valid_vehicle_status"> Por favor seleccione un estado de vehículo válido</string>
+    <string name="select_valid_city"> Por favor seleccione una ciudad válida</string>
+    <string name="self_audit"> AUTO AUDITORÍA</string>
+    <string name="front">Frente</string>
+    <string name="left">Izquierda</string>
+    <string name="right">Derecho</string>
+    <string name="Audit">AUDITORÍA</string>
+
+    <string name="auto_from_front"> Auto desde el frente</string>
+    <string name="auto_from_back"> Auto desde atras</string>
+    <string name="auto_from_left"> Auto desde la izquierda</string>
+    <string name="auto_from_right"> Auto desde la derecha</string>
+    <string name="mobile_stand"> Soporte móvil(Opcional)</string>
+    <string name="vehicle_number"> Número de vehículo</string>
+    <string name="mobile_stand_non"> Soporte móvil</string>
+    <string name="next">Siguiente</string>
+    <string name="tap_to_capturing_photos"> Toque en SIGUIENTE para comenzar a capturar fotos automáticas</string>
+    <string name="has_smart_phone"> El conductor tiene un teléfono inteligente.</string>
+    <string name="optional_brack">(Optional)</string>
+    <string name="name_cant_empty"> Name can\'t be empty</string>
+    <string name="self_audit_caps"> AUTO AUDITORÍA</string>
+    <string name="audit_required"> Se requiere auditoria</string>
+    <string name="in_progress">En Progreso</string>
+    <string name="request_pending">Pedido pendiente</string>
+
+    <string name="please_submit"> Por favor envíe</string>
+    <string name="cancel_audit"> ¿Estás seguro de que quieres cancelar el proceso?</string>
+    <string name="image_upload_failed"> Error al subir la imagen, por favor intente de nuevo</string>
+    <string name="audit_lower"> Auditoría</string>
+    <string name="deletion_confirmation"> ¿Estás seguro de que quieres borrar la imagen?</string>
+    <string name="bank_deposite"> Deposito bancario</string>
+    <string name="commission_to_be_deposited"> Comisión a depositar</string>
+    <string name="trips"> EXCURSIONES</string>
+    <string name="home">Inicio</string>
+    <string name="duration">DURACIÓN</string>
+    <string name="daily_earnings">GANANCIAS DIARIAS</string>
+    <string name="Invoices_cap">FACTURAS</string>
+    <string name="Today_earning"> LA GANANCIA DE HOY</string>
+    <string name="trip_earning"> GANANCIAS DE VIAJE</string>
+    <string name="earnings_caps">GANANCIAS</string>
+    <string name="trip_details"> DETALLES DE VIAJE</string>
+    <string name="fare_issues"> CUESTIONES DE TARIFA</string>
+    <string name="req_text">Si hubo un problema con la tarifa de viaje, háganoslo saber.</string>
+    <string name="type_issue">Escriba su problema aquí</string>
+    <string name="report_issue">REPORTAR PROBLEMAS DE TARIFA</string>
+    <string name="id">IDENTIFICACIÓN</string>
+    <string name="fair_complaint"> Quejarse</string>
+    <string name="in_review"> EN REVISIÓN</string>
+    <string name="no_invoice_currently"> Sin factura actualmente</string>
+    <string name="no_data">Sin Datos</string>
+    <string name="connection_lost"> Tu no estas conectado. Por favor, toque para volver a intentarlo.</string>
+    <string name="pls_enter_some_msg"> Tu no estas conectado. Por favor, toque para volver a intentarlo</string>
+    <string name="enter_destination">Ingresar Destino</string>
+    <string name="no_results_found"> No se han encontrado resultados</string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message"> La solicitud del cliente ha sido aceptada automáticamente</string>
+    <string name="start_ride_alert"> Si el Cliente está con usted, entonces comience a viajar</string>
+    <string name="failed">Ha fallado</string>
+    <string name="cash_deposite_conf"> Has depositado efectivo?</string>
+    <string name="total">Total</string>
+    <string name="order_summary">Resumen de la orden</string>
+    <string name="return_to_merchant"> Regresa al mercader</string>
+    <string name="deposite_cash"> Has depositado efectivo?</string>
+    <string name="deposite_cash_1"> Depositar efectivo</string>
+    <string name="return_reasons_confirmation"> Seleccione una razón para la entrega fallida</string>
+    <string name="submit_small">Enviar</string>
+    <string name="fail">Fallido</string>
+    <string name="chat">CHAT</string>
+    <string name="required">Necesario</string>
+    <string name="login_here"> Ya tienes una cuenta de conductor? <u>Login Here</u></string>
+    <string name="nl_otp_please_enter_otp"> Por favor ingresa tu Codigo OTP</string>
+    <string name="register_text"> No tengo una cuenta de conductor? <u>Register Here</u></string>
+    <string name="select">Seleccionar</string>
+    <string name="select_customer"> Seleccionar cliente</string>
+    <string name="collect_cash"> Recoger cantidad</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
+    <string name="battery_low"> El nivel de batería es bajo. Por favor, conecte a una fuente de alimentación.</string>
+    <string name="alter_phone_number"> Número de teléfono alternativo</string>
+    <string name="reset">Reiniciar</string>
+    <string name="unable_to_capture_signature"> incapaz de capturar la firma</string>
+    <string name="clear">Limpio</string>
+    <string name="type_your_name">Escribe tu nombre</string>
+    <string name="i_accept_abv">ACEPTAR T&amp;C</string>
+    <string name="your_sig_here">TU FIRMA AQUI</string>
+    <string name="delivery_start">Inicio de la entrega</string>
+    <string name="delivery_end">Fin de la entrega</string>
+    <string name="select_delivery">Seleccione el envio</string>
+    <string name="driver_app">APLICACIÓN DE CONDUCTOR</string>
+    <string name="register_as_driver"> Registrarse como conductor</string>
+    <string name="distance_lower">Distancia</string>
+    <string name="please_drop_customer_delivery">Fin %s\'s Envio</string>
+    <string name="please_start_customer_delivery">Iniciar %s\'s Envio</string>
+    <string name="please_reach_customer_delivery">Recoger %s\'s Envio</string>
+    <string name="estimated_fare">Tarifa estimada</string>
+    <string name="provide_sign_msg"> Por favor proporcione la firma antes de enviar</string>
+    <string name="pls_type_name"> Por favor escriba su nombre antes de enviar</string>
+    <string name="looking_for_customer_app"><u> Buscando la aplicación del cliente?</u></string>
+    <string name="image">imagen</string>
+    <string name="tutorial_accept_ride"> Activar para comenzar a aceptar trayectos</string>
+    <string name="tutorial_tap_ok">Pulsa \'OK\'</string>
+    <string name="tutorial_wait_for_customer"> Esperar al cliente...</string>
+    <string name="tutorial_your_location"> El punto azul muestra tu ubicación actual</string>
+    <string name="start_training"> Empezar a entrenar</string>
+    <string name="tutorial_customer_requesting_ride"> El cliente está solicitando un viaje...\Pulsa\'Aaceptar\'.</string>
+    <string name="tutorial_tap_to_start_ride">Pulsa \' Empezar a andar\' cuando estés listo para comenzar el viaje</string>
+    <string name="tutorial_tap_end_ride">Tap \'End Ride\' solo despues de dejar caer al cliente</string>
+    <string name="tutorial_tap_ok_endride">Pulsa \'OK\' si has dejado caer el cliente</string>
+    <string name="tutorial_tap_done_finish">Pulsa \'Hecho\' para terminar</string>
+    <string name="tutorial_tap_arrived_if_at_pickup">Pulsa \'Llegado\' si usted está en el lugar de recogida</string>
+    <string name="tutorial_driver_to_pickup_point"> Conducir hasta el punto de recogida.</string>
+    <string name="tutorial_tap_yes">Pulsa \'SI\'</string>
+    <string name="arrivingdot">Llegando...</string>
+    <string name="training_confirmation_text"> No recibirás solicitudes de clientes durante el entrenamiento. ¿Estás seguro de que quieres empezar?</string>
+    <string name="request_autos"> Solicitud de reserva le será enviada ahora.</string>
+    <string name="later">Despues</string>
+    <string name="upload_now"> Cargar ahora </string>
+    <string name="driver_resources"> Recursos del conductor</string>
+    <string name="delivery_conf_new"> ¿Está seguro de que desea marcar esto como entregado?</string>
+    <string name="drop_points"> Puntos de entrega:</string>
+    <string name="more">mas</string>
+    <string name="estimated_dis"> Distancia estimada</string>
+    <string name="cash_to_collected"> Dinero a cobrar</string>
+    <string name="pick_up">RECOGER</string>
+    <string name="you_have_arrived"> Has llegado</string>
+    <string name="switchText"> Cambiar</string>
+    <string name="away_cap">lejos</string>
+    <string name="pool_only">Pool</string>
+    <string name="pickup_from"> Recógelo de:</string>
+    <string name="switch_confiramtion"> ¿Estás seguro de que quieres cambiar a %s?</string>
+    <string name="delivery_route"> Ruta de entrega</string>
+    <string name="turn_jugnooo_for_training"> Por favor, activa %s en</string>
+    <string name="delivery_1"> Entrega 1</string>
+    <string name="complainId">Identificacion de la queja:</string>
+    <string name="createdOn">Creado en:</string>
+    <string name="registered"> Registrado</string>
+    <string name="updated_on"> Actualizado en</string>
+    <string name="settled">colocado</string>
+    <string name="no_tickets"> No hay quejas todavía</string>
+    <string name="closed_on"> Cerrado en</string>
+    <string name="complaint"> Queja</string>
+    <string name="raisedOn">Elevado</string>
+    <string name="range_in_km">Rango (En km)</string>
+    <string name="return_fare_aplicable"> Devolver la tarifa si corresponde</string>
+    <string name="per_km_wo_brack">POR Km</string>
+    <string name="per_km_wo_brack_format">POR %s</string>
+    <string name="per_delivery">Por entrega</string>
+    <string name="per_km_fare">Tarifa por km</string>
+    <string name="return_fare"> Tarifa de retorno</string>
+    <string name="pick_up_wait_time"> Tiempo de espera de recogida</string>
+    <string name="loading_fare"> tarifa de carga</string>
+    <string name="range">Rango</string>
+    <string name="value">Valor</string>
+    <string name="no_rate_card_available"> Tarjeta Sin Tarifa Disponible</string>
+    <string name="unloading_req"> Descarga requerida</string>
+    <string name="loading_req"> Carga requerida</string>
+    <string name="unloading_fare">Unloading Fare</string>
+    <string name="super_biker"> Super Conductores</string>
+    <string name="your_income"> Tu ingreso</string>
+    <string name="did_you_know">Sabias?</string>
+    <string name="keep_jugnoo_on"> Mantenga su %s ENCENDIDO para ganar más</string>
+    <string name="average_days_text"> En los últimos %s días los conductores en su área han ganado:</string>
+    <string name="day">día</string>
+    <string name="update_webview"> Por favor actualice su WebView a la última versión.</string>
+    <string name="max_earning_ins">Hurray! Estás a% s de distancia para alcanzar tu ganancia máxima	</string>
+    <string name="max_earning">Ganancia maxima</string>
+    <string name="select_valid_offering"> Por favor seleccione una oferta válida</string>
+    <string name="wallet_title">Saldo en la cartera</string>
+    <string name="how_to_recharge"> Como recargar</string>
+    <string name="wallet_balance"> Saldo de la cartera</string>
+    <string name="low_balance">\n(Bajo balance)</string>
+    <string name="rupees_value_format">\u20B9%s</string>
+    <string name="rupees_value_format_negtive">-\u20B9%s</string>
+    <string name="wallet_transactions"> Transacciones Monedero</string>
+    <string name="no_transactions"> No hay transacciones actualmente</string>
+    <string name="added">Adicional</string>
+    <string name="deducted">Deducido</string>
+    <string name="view_wallet_transactions"> Ver transacciones de billetera</string>
+    <string name="dont_touch_me">DontTouchMe</string>
+    <string name="schedule_call_message"> Presione el botón de abajo para obtener soporte de% s. Nuestro ejecutivo le llamará en breve.</string>
+    <string name="get_call"> Obtener llamada</string>
+    <string name="get_support_call"> Obtener llamada de soporte</string>
+
+
+    <!--Strings for Subscription plans-->
+    <string name="pay_now">Pague ahora</string>
+    <string name="plans_drawer_title">Planes</string>
+    <string name="days">Día</string>
+    <string name="plan_amount"> Cantidad del plan</string>
+    <string name="label_outstanding_amount"> Cantidad Sobresaliente</string>
+    <string name="label_total_amount"> Cantidad total</string>
+    <string name="transaction_failed"> Transacción fallida</string>
+    <string name="transaction_successful"> Transacción exitosa</string>
+    <string name="cancel_transaction_warning"> ¿De verdad quieres cancelar la transacción?</string>
+    <string name="label_total_savings"> Ahorro total hasta ahora:</string>
+    <string name="label_current_savings"> Ahorro actual hasta ahora:</string>
+    <string name="label_active_plan"> Plan activo</string>
+    <string name="label_available_plans"> Planes disponibles</string>
+    <string name="title_plans_screen"> Paseo sin comisión</string>
+    <!--Strings for Subscription plans-->
+
+
+    <string name="amount_collected"> Cantidad recaudada</string>
+    <string name="days_left"> Días restantes</string>
+    <string name="distance_covered"> Distancia recorrida</string>
+    <string name="slots"> HORAS EN LINEA</string>
+    <string name="hour">hora</string>
+    <string name="hours">horas</string>
+    <string name="day_wise_breakup"> GANANCIAS DEL VIAJE DIARIO</string>
+    <string name="target_distance"> Distancia del blanco</string>
+    <string name="cash_collected_from_user"> Dinero cobrado del usuario</string>
+    <string name="adjusted_distance"> Distancia ajustada</string>
+
+    <string name="type_message_here"> Escribe tu mensaje aquí</string>
+    <string name="gallery">Galeria</string>
+    <string name="camera">Camera</string>
+    <string name="Message_from_vendor"> mensaje del vendedor</string>
+    <string name="message_from_merchant"> Mensaje del comerciante</string>
+    <string name="driver_is_late"> El conductor llega tarde</string>
+    <string name="english">Ingles</string>
+    <string name="unable_to_fetch_wallet"> No se pueden obtener detalles de la billetera. Inténtalo de nuevo.</string>
+    <string name="money_to_jugnoo">Dinero a VIA</string>
+    <string name="no_internet"> Sin conexión a Internet. Toque para volver a intentarlo.</string>
+
+
+    <string name="visit_office_in_city"> Visita la oficina de %s en tu ciudad.</string>
+    <string name="support_subject">%s Soporte</string>
+    <string name="device_token_not_found_message"> Hubo un problema con su dispositivo, reinicie su aplicación una vez para continuar.</string>
+    <string name="no_country_found"> Ningún país encontrado</string>
+    <string name="error_no_countries_found"> No se encontraron países!</string>
+    <string name="country_picker_header"> Seleccionar país</string>
+    <string name="error_listener_not_set"> La escucha no está configurada, no recibirá ninguna devolución de llamada para el país seleccionado!</string>
+    <string name="code">Codigo</string>
+    <string name="please_select_country_code"> Por favor seleccione el código de país</string>
+
+    <string name="metering_service_notif_label"> Paseo en progreso</string>
+    <string name="update_location_notif_label"> Estás en línea</string>
+    <string name="cd_jugnoo_logo">VIA LOGO</string>
+    <string name="label_edt_phone"> Por favor, introduzca su número de teléfono</string>
+    <string name="hint_edt_phone"> Número de teléfono</string>
+    <string name="btn_text_OTP">GENERAR CODIGO OTP</string>
+    <string name="enter_one_time_pwd">Introduzca una contraseña de tiempo</string>
+    <string name="please_enter_your_name">Por favor, escriba su nombre</string>
+    <string name="select_vehicle_type">Seleccione el tipo de vehículo</string>
+    <string name="continue_text"> Continuar</string>
+    <string name="by_signing_you_agree"> Al registrarte estás de acuerdo con nuestra</string>
+    <string name="place_bid"> Hacer una oferta</string>
+    <string name="please_enter_some_value"> Por favor, introduzca algún valor</string>
+    <string name="bid">Oferta</string>
+    <string name="bid_placed"> Oferta colocada</string>
+    <string name="reduce_by_10"> Reducir\nby 10%</string>
+    <string name="increase_by_10">Incrementar\nby 10%</string>
+    <string name="reduce_by_format"> Reducir\nby %s</string>
+    <string name="increase_by_format"> Incrementar\nby %s</string>
+    <string name="documents_authentication">Acepto que los documentos cargados por mí son verdaderos y correctos. Entiendo que cualquier intento de proporcionar información incorrecta, engañosa o documentos falsos llevará a mi lista negra inmediata desde la plataforma% 1 $ s. La plataforma% 2 $ s se reserva el derecho de llevar el asunto a las autoridades policiales en caso de documentos falsificados.</string>
+    <string name="i_agree"> Estoy de acuerdo</string>
+    <string name="dont_agree">Estoy en desacuerdo</string>
+    <string name="chat_support"> Soporte de chat</string>
+    <string name="t_and_c_login"> Al enviar OTP aquí e iniciar sesión en la aplicación, usted acepta la<a href="https://jugnoo.in/sg/terms/driver/">Terminos y condiciones</a> de VIA. Por favor, no vaya más lejos, si esto no estas deacuerdo con esto.</string>
+
+    <string name="estimated_distance_format">Distancia Estimada: %s</string>
+    <string name="action_not_supported"> Acción no soportada</string>
+    <string name="send_us_a_mail"> Envíenos un correo</string>
+    <string name="issue_description"> Descripcion del problema</string>
+    <string name="please_enter_something"> Por favor ingrese algo </string>
+    <string name="support_tickets">Support Tickets</string>
+    <string name="please_press_submit_button"> Por favor presione el botón de enviar</string>
+    <string name="drop">Soltar</string>
+    <string name="hide">Ocultar</string>
+    <string name="branding_images">Imágenes de marca</string>
+    <string name="current_details">Detalles actuales</string>
+    <string name="credit_history">Historial de crédito</string>
+    <string name="title_credits_activity"> CREDITOS &amp; REWARDS</string>
+    <string name="earn_more_credits">`$_`$0 Creditos `$_`$.`$>`$_`$_</string>
+    <string name="title_earn_more_credits">`$_`$0 Creditos `$_`$.`$>`$_`$_</string>
+    <string name="share_your_credits">Credits `$6`% `$/`$0 `$_`$0`% `$_</string>
+    <string name="total_credits_earned">`$_`%_`$2 Creditos `$_`$.`$>`$_</string>
+    <string name="commission_saved"> comisión `$,`$_`$>`$/`$></string>
+    <string name="refer_a_driver"> Consulte a un conductor</string>
+    <string name="refer_a_customer"> Referir a un cliente</string>
+    <string name="advertise_for_us"> Anuncia para nosotros</string>
+    <string name="menu_label_credits"> Créditos del conductor</string>
+    <string name="send_to_a_friend">Conductor `$_`%
+ credits `$-`% `$_`% `$_</string>
+    <string name="credits">Creditos</string>
+    <string name="enter_credits">Creditos `$&amp;`$0`%
+`$_ `$_`$0`% `$_</string>
+    <string name="please_enter_valid_phone"> Por favor ingrese un número de teléfono válido</string>
+    <string name="get_credits"> Recibe créditos de un amigo</string>
+    <string name="get_credits_from_drivers">`$8`$>`$%`%_ Driver `$8`%  credits `$2`% `$_</string>
+    <string name="earn_credits_format">(%s creditos `$_`$.`$>`$_`$_)</string>
+    <string name="hash_format">#%s</string>
+    <string name="credits_left_format">`$_`$>`$$`%  `$.`% `$_ `$_`%_`$2 creditos %s</string>
+    <string name="please_enter_less_value"> Por favor ingrese menos valor</string>
+    <string name="enter_phone_number_hinglish">Phone no `$&amp;`$0`%
+`$_ `$_`$0`% `$_</string>
+
+    <string name="languages">Idiomas</string>
+
+    <string name="stripe_connect_title"> Raya</string>
+    <string name="stripe_success_message"> Su cuenta de banda se ha configurado correctamente.</string>
+    <string name="stripe_error_message">Oops! Hubo un problema al configurar su cuenta de banda.</string>
+    <string name="account_details"> Detalles de la cuenta</string>
+    <string name="connect_with_stripe"> Conectar con banda</string>
+    <string name="login_with_stripe"> Ver cuenta de Stripe</string>
+    <string name="city_unavailable"> ¡Lo siento! Actualmente nuestros servicios no están disponibles en tu ciudad.</string>
+
+    <string name="title_manual_ride"> Viaje manual</string>
+    <string name="label_edt_manual_ride"> Por favor ingrese el número de teléfono del cliente.</string>
+    <string name="action_request_manual_ride"> Solicitud de viaje</string>
+    <string name="descrption_manual_ride"> Iniciar manualmente un viaje para un cliente ingresando su número de teléfono.</string>
+    <string name="menu_label_manual_ride"> Viaje manual</string>
+    <string name="ride_assigned_success"> Viaje asignado con éxito</string>
+
+    <string-array name="CountryCodes">
+        <item>+93,AF</item>
+        <item>+355,AL</item>
+        <item>+213,DZ</item>
+        <item>+376,AD</item>
+        <item>+244,AO</item>
+        <item>+672,AQ</item>
+        <item>+54,AR</item>
+        <item>+374,AM</item>
+        <item>+297,AW</item>
+        <item>+61,AU</item>
+        <item>+43,AT</item>
+        <item>+994,AZ</item>
+        <item>+973,BH</item>
+        <item>+880,BD</item>
+        <item>+375,BY</item>
+        <item>+32,BE</item>
+        <item>+501,BZ</item>
+        <item>+229,BJ</item>
+        <item>+975,BT</item>
+        <item>+591,BO</item>
+        <item>+387,BA</item>
+        <item>+267,BW</item>
+        <item>+55,BR</item>
+        <item>+673,BN</item>
+        <item>+359,BG</item>
+        <item>+226,BF</item>
+        <item>+95,MM</item>
+        <item>+257,BI</item>
+        <item>+855,KH</item>
+        <item>+237,CM</item>
+        <item>+1,CA</item>
+        <item>+238,CV</item>
+        <item>+236,CF</item>
+        <item>+235,TD</item>
+        <item>+56,CL</item>
+        <item>+86,CN</item>
+        <item>+61,CX</item>
+        <item>+61,CC</item>
+        <item>+57,CO</item>
+        <item>+269,KM</item>
+        <item>+242,CG</item>
+        <item>+243,CD</item>
+        <item>+682,CK</item>
+        <item>+506,CR</item>
+        <item>+385,HR</item>
+        <item>+53,CU</item>
+        <item>+357,CY</item>
+        <item>+420,CZ</item>
+        <item>+45,DK</item>
+        <item>+253,DJ</item>
+        <item>+670,TL</item>
+        <item>+593,EC</item>
+        <item>+20,EG</item>
+        <item>+503,SV</item>
+        <item>+240,GQ</item>
+        <item>+291,ER</item>
+        <item>+372,EE</item>
+        <item>+251,ET</item>
+        <item>+500,FK</item>
+        <item>+298,FO</item>
+        <item>+679,FJ</item>
+        <item>+358,FI</item>
+        <item>+33,FR</item>
+        <item>+689,PF</item>
+        <item>+241,GA</item>
+        <item>+220,GM</item>
+        <item>+995,GE</item>
+        <item>+49,DE</item>
+        <item>+233,GH</item>
+        <item>+350,GI</item>
+        <item>+30,GR</item>
+        <item>+299,GL</item>
+        <item>+502,GT</item>
+        <item>+224,GN</item>
+        <item>+245,GW</item>
+        <item>+592,GY</item>
+        <item>+509,HT</item>
+        <item>+504,HN</item>
+        <item>+852,HK</item>
+        <item>+36,HU</item>
+        <item>+91,IN</item>
+        <item>+62,ID</item>
+        <item>+98,IR</item>
+        <item>+964,IQ</item>
+        <item>+353,IE</item>
+        <item>+44,IM</item>
+        <item>+972,IL</item>
+        <item>+39,IT</item>
+        <item>+225,CI</item>
+        <item>+81,JP</item>
+        <item>+962,JO</item>
+        <item>+7,KZ</item>
+        <item>+254,KE</item>
+        <item>+686,KI</item>
+        <item>+965,KW</item>
+        <item>+996,KG</item>
+        <item>+856,LA</item>
+        <item>+371,LV</item>
+        <item>+961,LB</item>
+        <item>+266,LS</item>
+        <item>+231,LR</item>
+        <item>+218,LY</item>
+        <item>+423,LI</item>
+        <item>+370,LT</item>
+        <item>+352,LU</item>
+        <item>+853,MO</item>
+        <item>+389,MK</item>
+        <item>+261,MG</item>
+        <item>+265,MW</item>
+        <item>+60,MY</item>
+        <item>+960,MV</item>
+        <item>+223,ML</item>
+        <item>+356,MT</item>
+        <item>+692,MH</item>
+        <item>+222,MR</item>
+        <item>+230,MU</item>
+        <item>+262,YT</item>
+        <item>+52,MX</item>
+        <item>+691,FM</item>
+        <item>+373,MD</item>
+        <item>+377,MC</item>
+        <item>+976,MN</item>
+        <item>+382,ME</item>
+        <item>+212,MA</item>
+        <item>+258,MZ</item>
+        <item>+264,NA</item>
+        <item>+674,NR</item>
+        <item>+977,NP</item>
+        <item>+31,NL</item>
+        <item>+599,AN</item>
+        <item>+687,NC</item>
+        <item>+64,NZ</item>
+        <item>+505,NI</item>
+        <item>+227,NE</item>
+        <item>+234,NG</item>
+        <item>+683,NU</item>
+        <item>+850,KP</item>
+        <item>+47,NO</item>
+        <item>+968,OM</item>
+        <item>+92,PK</item>
+        <item>+680,PW</item>
+        <item>+507,PA</item>
+        <item>+675,PG</item>
+        <item>+595,PY</item>
+        <item>+51,PE</item>
+        <item>+63,PH</item>
+        <item>+870,PN</item>
+        <item>+48,PL</item>
+        <item>+351,PT</item>
+        <item>+1,PR</item>
+        <item>+974,QA</item>
+        <item>+40,RO</item>
+        <item>+7,RU</item>
+        <item>+250,RW</item>
+        <item>+590,BL</item>
+        <item>+685,WS</item>
+        <item>+378,SM</item>
+        <item>+239,ST</item>
+        <item>+966,SA</item>
+        <item>+221,SN</item>
+        <item>+381,RS</item>
+        <item>+248,SC</item>
+        <item>+232,SL</item>
+        <item>+65,SG</item>
+        <item>+421,SK</item>
+        <item>+386,SI</item>
+        <item>+677,SB</item>
+        <item>+252,SO</item>
+        <item>+27,ZA</item>
+        <item>+82,KR</item>
+        <item>+34,ES</item>
+        <item>+94,LK</item>
+        <item>+290,SH</item>
+        <item>+508,PM</item>
+        <item>+249,SD</item>
+        <item>+597,SR</item>
+        <item>+268,SZ</item>
+        <item>+46,SE</item>
+        <item>+41,CH</item>
+        <item>+963,SY</item>
+        <item>+886,TW</item>
+        <item>+992,TJ</item>
+        <item>+255,TZ</item>
+        <item>+66,TH</item>
+        <item>+228,TG</item>
+        <item>+690,TK</item>
+        <item>+676,TO</item>
+        <item>+216,TN</item>
+        <item>+90,TR</item>
+        <item>+993,TM</item>
+        <item>+1,TT</item>
+        <item>+688,TV</item>
+        <item>+971,AE</item>
+        <item>+256,UG</item>
+        <item>+44,GB</item>
+        <item>+380,UA</item>
+        <item>+598,UY</item>
+        <item>+1,US</item>
+        <item>+998,UZ</item>
+        <item>+678,VU</item>
+        <item>+39,VA</item>
+        <item>+58,VE</item>
+        <item>+84,VN</item>
+        <item>+681,WF</item>
+        <item>+967,YE</item>
+        <item>+260,ZM</item>
+        <item>+263,ZW</item>
+    </string-array>
+
+    <string name="rate_us_on_play_store"> Califícanos en Play Store</string>
+    <string name="like_us_on_facebook"> Al igual que nosotros en Facebook</string>
+    <string name="terms_and_conditions"> Términos y Condiciones</string>
+    <string name="terms_of_use"> Términos de Uso</string>
+    <string name="privacy_policy">Política de privacidad</string>
+    <string name="who_are_we"> Quienes somos?</string>
+    <string name="facebook_not_installed"> Aplicación de Facebook no habilitada</string>
+    <string name="about"> Acerca de</string>
+    <string name="number_should_not_start_with_zero"> El número de teléfono no debe comenzar con 0</string>
+    <string name="please_enter_promo_code"> Introduzca el código de referencia (Opcional)</string>
+    <string name="hint_promo_code">Codigo de refererido</string>
+    <string name="history">Historial</string>
+    <string name="label_select_city"> Ciudad selecta</string>
+    <string name="no_vehicles_available"> No hay vehículos disponibles para la ciudad seleccionada.</string>
+    <string name="error_no_cities_found"> No se encontraron ciudades!</string>
+    <string name="title_dialog_select_city"> Ciudad selecta</string>
+    <string name="title_search_dialog_default"> Seleccionar</string>
+    <string name="cached_api_error"> Estamos ante un problema de conexión con el servidor. Por favor intente de nuevo en algún momento.</string>
+    <string name="neft_pending"> Neft Pendiente</string>
+    <string name="terms_of_schedule"> Términos del horario</string>
+    <string name="faqs"> Preguntas frecuentes</string>
+    <string name="waze_navigation"> Navegación Waze</string>
+    <string name="enter_toll"> Ingresar Toll</string>
+    <string name="enter_toll_fare_during_ride"> Introduzca la tarifa de peaje durante el viaje</string>
+    <string name="toll_value">Tarifa de peaje: %s</string>
+    <string name="please_enter_valid_fare"> Por favor ingrese una tarifa válida</string>
+    <string name="are_you_sure"> Estas seguro que deseas continuar?</string>
+    <string name="i_am_sure">Estoy seguro</string>
+    <string name="app_needs_overlay_permission"> La aplicación necesita permiso de superposición para mostrar el botón de ayuda en la pantalla</string>
+    <string name="grant"> Conceder</string>
+    <string name="ignore"> Ignorar</string>
+    <string name="app_needs_location_permission"> La aplicación necesita permiso de ubicación para continuar</string>
+    <string name="app_needs_phone_state_permission"> La aplicación necesita el permiso del estado del teléfono para continuar</string>
+
+    <string name="notification_channel_default"> Notificaciones</string>
+    <string name="notification_channel_description_default"> Últimas actualizaciones</string>
+    <string name="driver_agreement"> Acuerdo de conductor</string>
+
+
+    <string name="hint_card_number"> NÚMERO DE TARJETA</string>
+    <string name="hint_date">MM/AA</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="add_card_title"> AGREGAR TARJETA</string>
+    <string name="edit_card_title">EDITAR TARJETA</string>
+    <string name="stripe_delete_card"> ¿Está seguro de que desea eliminar su tarjeta que termina con %s?</string>
+    <string name="stripe_add_card_error">%s no es valido.</string>
+    <string name="card_number"> Número de tarjeta</string>
+    <string name="expiry_date">Fecha de expiración</string>
+    <string name="cvc">CVC</string>
+    <string name="save">Guardar</string>
+    <string name="title_view_card">VER TARJETA</string>
+    <string name="label_add_card" >Agregar tarjeta</string>
+    <string name="delete">Borrar</string>
+    <string name="bullet">\u2022</string>
+    <string name="card_details"> Detalles de tarjeta</string>
+    <string name="view_cards">Ver tarjetas</string>
+    <string name="wallet_details"> Detalles de la cartera</string>
+    <string name="current_balance"> Saldo actual</string>
+    <string name="add_cash"> Agregar dinero</string>
+    <string name="no_cards_linked"> No tienes ninguna tarjeta vinculada. Por favor agregue una tarjeta para agregar para agregar dinero a su billetera</string>
+    <string name="wallet"> Billetera</string>
+    <string name="add_cash_stripe_confirmation"> Agrega %s a tu billetera usando la tarjeta que termina con %s?</string>
+    <string name="add">Agregar</string>
+    <string name="permissions_message"> These permissions will be required to login into the app</string>
+    <string name="permissions_title"> Otorgar permiso para acceder %s</string>
+    <string name="permissions_location_phone"> Ubicación y identidad del teléfono.</string>
+    <string name="permissions_location">Ubicación</string>
+    <string name="permissions_phone">Identidad del telefono</string>
+    <string name="grant_permission">Conceder permiso</string>
+    <string name="no_payment_methods_available"> Aún no hay métodos de pago disponibles.</string>
+    <string name="debt"> Deuda</string>
+    <string name="ringtone_full_volume"> Tono completo de volumen en la solicitud entrante</string>
+    <string name="settings"> Ajustes</string>
+    <string name="year">Año</string>
+    <string name="hint_year">Enter Year</string>
+    <string name="make">Marca</string>
+    <string name="hint_make">Seleccione marca</string>
+    <string name="model">Modeol</string>
+    <string name="number_of_doors">Numero de puertas</string>
+    <string name="color">Color</string>
+    <string name="no_of_seat_belts">NNumero de cinturones de seguridad</string>
+    <string name="select_make">Seleccione marca</string>
+    <string name="select_model">Seleccione modelo</string>
+    <string name="select_color">Seleccione color</string>
+    <string name="invalid_year_error"> El año debe estar entre %d y %d</string>
+    <string name="invalid_vehicle_number"> Por favor ingrese un número de vehículo válido.</string>
+    <string name="invalid_make"> Por favor seleccione una marca de vehículo para proceder.</string>
+    <string name="invalid_model"> Por favor seleccione un modelo de vehículo para proceder.</string>
+    <string name="invalid_color"> Por favor elija un color.</string>
+    <string name="invalid_doors"> Por favor, seleccione el número de puertas.</string>
+    <string name="invalid_seat_belts"> Por favor, seleccione el número de cinturones de seguridad.</string>
+    <string name="title_vehicle_details"> Información del vehículo</string>
+    <string name="select_doors"> Puertas seleccionadas</string>
+    <string name="select_seatbelts"> Seleccione cinturones de seguridad</string>
+    <string name="enter_vehicle_number"> Ingrese el número de vehículo</string>
+    <string name="ride_is_complete"> El paseo esta completo</string>
+    <string name="add_luaggage"> Añadir equipaje</string>
+    <string name="luggage_count"> Recuento de equipaje</string>
+    <string name="text_luggage_charges"> Hacer por equipaje: %s</string>
+    <string name="add_luggage"> Añadir equipaje</string>
+    <string name="luggage_info_home_screen"> Cargos de equipaje (%d): %s</string>
+    <string name="change_u"><u> CAMBIO</u></string>
+    <string name="tip">Propina</string>
+    <string name="toll_charges">Cargos de peajes</string>
+    <string name="discount">Descuento</string>
+    <string name="vehicle_make"> Marca del vehículo</string>
+    <string name="edit_vehicle_details"> Editar detalles del vehículo</string>
+    <string name="service_type"> Tipo de servicio</string>
+    <string name="cd_cross_service_type"> Cierra el tipo de servicio emergente</string>
+    <string name="documents">Documentos</string>
+    <string name="drop_location_updated"> Colocar la ubicación actualizada</string>
+
+    <string name="monthly_text_tips"> Consejos</string>
+    <string name="document_details"> Detalles del documento</string>
+    <string name="add_images_label">Añadir imagenes</string>
+    <string name="my_rates"> Mis tarifas</string>
+    <string name="edit_profile"> Editar perfil</string>
+    <string name="edit_rate_card"> Editar tarjeta de tarifa</string>
+    <string name="wait_time_per_min">Tiempo de espera (por min)</string>
+    <string name="number_00">00</string>
+    <string name="please_complete_your_profile"> Complete su perfil y configure su tarjeta de tarifas para comenzar a conducir con %s</string>
+    <string name="upload_documents">Upload Documents</string>
+    <string name="upload_images_error"> Por favor, cargue las imágenes antes de enviar.</string>
+    <string name="drop_location_updated_by_customer"> Colocar la ubicación actualizada por el cliente</string>
+
+    <string name="btn_text_continue">Continuar</string>
+    <string name="leaderboard"> Tabla de líderes</string>
+    <string name="call_driver"> Conductor de llamadas</string>
+    <string name="email_optional">Email (opcional)</string>
+    <string name="please_enter_valid_email"> Por favor ingrese una identificación de correo electrónico válida</string>
+    <string name="nothing_changed">nada ha cambiado</string>
+    <string name="first_name">Primer nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="first_name_required"> El nombre es obligatorio</string>
+    <string name="last_name_required"> El apellido es obligatorio</string>
+    <string name="pickup_time_format"> Hora de recogida: %s</string>
+    <string name="tolls_incurred_during_ride"> Se incurren los siguientes peajes durante el viaje, confírmelos una vez</string>
+    <string name="add_toll"> Añadir peaje</string>
+    <string name="toll_fare">Tarifa de peaje</string>
+    <string name="toll_name">Nombre de peaje</string>
+    <string name="invalid_fare">Tarifa invalida</string>
+    <string name="are_you_sure_you_want_to_delete_this_toll"> ¿Estás seguro de que quieres eliminar este peaje?</string>
+    <string name="edit_toll">Editar peaje</string>
+    <string name="other">Otro</string>
+    <string name="please_specify_the_reason"> Por favor especifique la razón</string>
+    <string name="customer_live_location"> Ubicación en vivo del cliente</string>
+    <string name="not_match"> no coincide</string>
+    <string name="please_enter_email"> Por favor ingrese su email</string>
+    <string name="error_empty_mandatory_field">%s es un campo obligatorio.</string>
+    <string name="please_enter_less_value_for_bid"> Por favor, introduzca menos valor para la oferta</string>
+    <string name="note">Nota</string>
+    <string name="enable_emergency_mode">Habilitar modo de emergencia</string>
+    <string name="send_ride_status">Enviar estado de viaje</string>
+    <string name="chat_with_us">Habla con nosotros</string>
+    <string name="everything_is_alright_caps">TODO ESTÁ BIEN</string>
+    <string name="you_have_disabled_jugnoo_emergency">Ha deshabilitado el modo %s\n Emergency</string>
+    <string name="click_to_view_notes">Haga clic para ver notas</string>
+    <string name="notes">Notas</string>
+
+
+
+
+</resources>
