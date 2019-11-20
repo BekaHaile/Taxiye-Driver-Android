@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -38,17 +39,18 @@ import retrofit.RetrofitError
 
 
 class DriverSetupFragment : Fragment() {
-    private var parentActivity: DriverSplashActivity? = null
+    private var parentActivity: Activity? = null
 
     private lateinit var accessToken: String
     private var cityId: String? = null
     private var citySelected: CityResponse.City? = null
     private var fleetSelected: CityResponse.Fleet? = null
     private var toolbarChangeListener: ToolbarChangeListener? = null
-    private var citiesList:MutableList<CityResponse.City>? = null
-    private var promoCodeFromServer:String? = null
+    private var citiesList: MutableList<CityResponse.City>? = null
+    private var promoCodeFromServer: String? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
     private val FLEET_DIALOG_FRAGMENT_TAG = "fleet_fragment_dialog";
+    private var fromVehicleDetailScreen: Boolean = false
 
     private val adapter by lazy { VehicleTypeSelectionAdapter(requireActivity(), rvVehicleTypes, null) }
 
@@ -65,7 +67,10 @@ class DriverSetupFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)
+            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)!!
+            if (it.containsKey(Constants.FROM_VEHICLE_DETAILS_SCREEN)) {
+                fromVehicleDetailScreen = it.getBoolean(Constants.FROM_VEHICLE_DETAILS_SCREEN)
+            }
         }
     }
 
@@ -82,16 +87,16 @@ class DriverSetupFragment : Fragment() {
 
 
 
-            tvEnterName.typeface = Fonts.mavenMedium(parentActivity!!)
-            editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
-            edtLastName.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
-            bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
-            bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
-            edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
-            tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
+        tvEnterName.typeface = Fonts.mavenMedium(parentActivity!!)
+        editTextName.typeface = Fonts.mavenRegular(parentActivity!!)
+        edtLastName.typeface = Fonts.mavenRegular(parentActivity!!)
+        tvSelectVehicle.typeface = Fonts.mavenMedium(parentActivity!!)
+        bContinue.typeface = Fonts.mavenRegular(parentActivity!!)
+        bCancel.typeface = Fonts.mavenRegular(parentActivity!!)
+        tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
+        tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
+        edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
+        tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
 
@@ -100,12 +105,13 @@ class DriverSetupFragment : Fragment() {
         editTextName.setOnEditorActionListener { _, _, _ ->
             editTextEmail.requestFocus()
             editTextEmail.setSelection(editTextEmail.text.length)
-            true }
+            true
+        }
 
         bCancel.typeface = Fonts.mavenMedium(requireActivity())
         bCancel.setOnClickListener { parentActivity?.onBackPressed() }
-        tvCities.setOnClickListener{showCountriesDialog(requireActivity().supportFragmentManager)}
-        tvFleetSelected.setOnClickListener{showFleetDialog(requireActivity().supportFragmentManager)}
+        tvCities.setOnClickListener { showCountriesDialog(requireActivity().supportFragmentManager) }
+        tvFleetSelected.setOnClickListener { showFleetDialog(requireActivity().supportFragmentManager) }
         tvCities.paintFlags = tvCities.paintFlags with (Paint.UNDERLINE_TEXT_FLAG)
         with(rvVehicleTypes) {
             layoutManager = GridLayoutManager(requireActivity(), 3)
@@ -113,17 +119,23 @@ class DriverSetupFragment : Fragment() {
             adapter = this@DriverSetupFragment.adapter
         }
 
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0) {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0) {
             tvEnterEmail.text = getString(R.string.email)
         }
         getCitiesAPI()
+        if (fromVehicleDetailScreen)
+            showVehicleDetailsView()
 
+    }
+
+    private fun showVehicleDetailsView() {
+        groupDetails.visibility=View.GONE
     }
 
     private fun setupTermsAndConditionsTextView() {
         val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
                 == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1){
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_SHOW_TERMS, showTerms) == 1) {
             val termsText = getString(R.string.terms_and_conditions);
             val ss = SpannableString(getString(R.string.by_signing_you_agree) + " " + termsText)
             val clickableSpan = object : ClickableSpan() {
@@ -131,12 +143,12 @@ class DriverSetupFragment : Fragment() {
                     startActivity(Intent(parentActivity, HelpActivity::class.java))
                 }
 
-               /* override fun updateDrawState(ds: TextPaint) {
-                    super.updateDrawState(ds)
-                    ds.isUnderlineText = false
-                }*/
+                /* override fun updateDrawState(ds: TextPaint) {
+                     super.updateDrawState(ds)
+                     ds.isUnderlineText = false
+                 }*/
             }
-            val start = ss.length-termsText.length
+            val start = ss.length - termsText.length
             val end = ss.length
             ss.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             ss.setSpan(ForegroundColorSpan(ContextCompat.getColor(requireActivity(), R.color.themeColor)), start, end, 0);
@@ -146,7 +158,7 @@ class DriverSetupFragment : Fragment() {
             tvTermsOfUse.typeface = Fonts.mavenRegular(requireActivity())
 
             tvTermsOfUse.visible()
-        }else{
+        } else {
             tvTermsOfUse.gone()
         }
 
@@ -161,25 +173,33 @@ class DriverSetupFragment : Fragment() {
     }
 
     private fun validateData(): Boolean {
-        if (editTextName.text.trim().toString().isBlank()) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.first_name_required))
-            return false
-        }
+        if (!fromVehicleDetailScreen) {
+            if (editTextName.text.trim().toString().isBlank()) {
 
-        if (resources.getBoolean(R.bool.last_name_mandatory) && edtLastName.text.trim().toString().isBlank()) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.last_name_required))
-            return false
-        }
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.first_name_required))
+                return false
+            }
 
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0 && editTextEmail.text.trim().toString().isBlank()) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
-            return false
-        }
-        if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_valid_email))
-            return false
-        }
+            if (resources.getBoolean(R.bool.last_name_mandatory) && edtLastName.text.trim().toString().isBlank()) {
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.last_name_required))
+                return false
+            }
 
+            if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0 && editTextEmail.text.trim().toString().isBlank()) {
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
+                return false
+            }
+            if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_valid_email))
+                return false
+            }
+            if (citySelected != null
+                    && citySelected!!.mandatoryFleetRegistration == 1
+                    && (fleetSelected == null || fleetSelected!!.id <= 0)) {
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_fleet))
+                return false
+            }
+        }
         if (adapter.getCurrentSelectedVehicle() == null) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
             return false
@@ -191,21 +211,16 @@ class DriverSetupFragment : Fragment() {
             return false
         }
 
-        if (citySelected != null
-                && citySelected!!.mandatoryFleetRegistration == 1
-                && (fleetSelected == null || fleetSelected!!.id <= 0)) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_fleet))
-            return false
-        }
+
 
         return true
     }
 
-    private fun checkForPromoCode(){
+    private fun checkForPromoCode() {
 
-        var promoText:String? = null
-        if(promoGroupView.visibility==View.VISIBLE && edtPromo.isEnabled && edtPromo.text.toString().trim().isNotEmpty()){
-             promoText = edtPromo.text.toString().trim()
+        var promoText: String? = null
+        if (promoGroupView.visibility == View.VISIBLE && edtPromo.isEnabled && edtPromo.text.toString().trim().isNotEmpty()) {
+            promoText = edtPromo.text.toString().trim()
         }
 
         registerDriver(promoText)
@@ -217,14 +232,14 @@ class DriverSetupFragment : Fragment() {
         val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
         var userName = editTextName.text.trim().toString()
         val lastName = edtLastName.text.trim().toString()
-        if(lastName.isNotEmpty()){
+        if (lastName.isNotEmpty()) {
             userName += " $lastName"
         }
 
         val userEmail = editTextEmail.text.trim().toString();
         val params = hashMapOf<String, String>(
                 KEY_ACCESS_TOKEN to accessToken,
-                "user_name" to userName ,
+                "user_name" to userName,
                 "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
                 "city" to cityId!!,
@@ -244,83 +259,96 @@ class DriverSetupFragment : Fragment() {
                 "referral_code" to "",
                 "device_token" to FirebaseInstanceId.getInstance().getToken()!!,
                 "unique_device_id" to Data.uniqueDeviceId,
-                "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
+                "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0",
+                "vehicle_ownership_status" to ownershipSpinner.selectedItem.toString()
         )
-        if(referralCode!=null){
+        if (referralCode != null) {
             params["referral_code"] = referralCode;
         }
-        if(fleetSelected != null && fleetSelected!!.id > 0){
+        if (fleetSelected != null && fleetSelected!!.id > 0) {
             params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
-    HomeUtil.putDefaultParams(params)
-    ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        HomeUtil.putDefaultParams(params)
 
-            override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
-                if (t != null) {
-                    Log.d("", t.serverMessage())
-                    when (t.flag) {
-                        ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1||fromVehicleDetailScreen) {
+            if(activity is VehicleDetailsActivity)
+            (activity as VehicleDetailsActivity).openVehicleDetails(accessToken, cityId!!,
+                    vehicleType, userName, params)
+            else
+                (activity as DriverSplashActivity).openVehicleDetails(accessToken, cityId!!,
+                        vehicleType, userName, params)
+        } else {
+            ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
-                            if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
-                                (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
-                                        vehicleType, userName)
-                            }else{
+                override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
+                    if (t != null) {
+                        Log.d("", t.serverMessage())
+                        when (t.flag) {
+                            ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
+
+//                                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
+//                                    (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
+//                                            vehicleType, userName)
+//                                }else{
+//                                    openDocumentUploadActivity()
+//
+//                                }
                                 openDocumentUploadActivity()
-
                             }
 
-                        }
+                            ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {
+                                DialogPopup.alertPopup(activity, "", message)
+                            }
 
-                        ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() -> {
-                            DialogPopup.alertPopup(activity, "", message)
-                        }
+                            ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
+                                DialogPopup.alertPopupWithListener(activity, "", message) {
+                                    (parentActivity as DriverSplashActivity)?.openPhoneLoginScreen()
+                                    (parentActivity as DriverSplashActivity)?.setToolbarVisibility(false)
+                                }
 
-                        ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
-                            DialogPopup.alertPopupWithListener(activity, "", message, {
-                                parentActivity?.openPhoneLoginScreen()
-                                parentActivity?.setToolbarVisibility(false)
-                            })
-
+                            }
+                            else -> DialogPopup.alertPopup(activity, "", message)
                         }
-                        else -> DialogPopup.alertPopup(activity, "", message)
                     }
                 }
-            }
 
-            override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-                if(flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal()){
-                    DialogPopup.alertPopupWithListener(activity, "", message, {
-                        setPromoLayout(true,referralCode)
-                        openDocumentUploadActivity()
-                    })
-                    return true
-                }else{
-                    return false
+                override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
+                    if (flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal()) {
+                        DialogPopup.alertPopupWithListener(activity, "", message, {
+                            setPromoLayout(true, referralCode)
+                            openDocumentUploadActivity()
+                        })
+                        return true
+                    } else {
+                        return false
+
+                    }
 
                 }
+            })
 
-            }
-        })
+        }
+
     }
 
-    private fun applyPromoCodeApi(){
+    private fun applyPromoCodeApi() {
 
-        val promoCode =  edtPromo.text.toString().trim()
-        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity(),successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
-                .execute( hashMapOf(Constants.CODE to promoCode,Constants.KEY_ACCESS_TOKEN to accessToken),ApiName.APPLY_PROMO,
-                object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
+        val promoCode = edtPromo.text.toString().trim()
+        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity(), successFlag = ApiResponseFlags.SHOW_MESSAGE.getOrdinal())
+                .execute(hashMapOf(Constants.CODE to promoCode, Constants.KEY_ACCESS_TOKEN to accessToken), ApiName.APPLY_PROMO,
+                        object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
 
-                    override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
-                        setPromoLayout(true,promoCode)
-                       // registerDriver(nu)
-                    }
+                            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+                                setPromoLayout(true, promoCode)
+                                // registerDriver(nu)
+                            }
 
-                    override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
-                        return false
-                    }
+                            override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                                return false
+                            }
 
 
-                })
+                        })
 
     }
 
@@ -338,13 +366,14 @@ class DriverSetupFragment : Fragment() {
                     onError(t, t.serverMessage(), t.flag)
                     return
                 }
-                promoCodeFromServer = if(t != null) t.promoCode else ""
+                promoCodeFromServer = if (t != null) t.promoCode else ""
                 citiesList = t!!.cities
                 setCityData(t.currentCity)
+               if(!fromVehicleDetailScreen)
                 groupView.visible()
                 setupTermsAndConditionsTextView()
-                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
-                        || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1){
+                if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
+                        || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1&&!fromVehicleDetailScreen) {
                     tvEnterEmail.visible()
                     editTextEmail.visible()
                 } else {
@@ -360,33 +389,33 @@ class DriverSetupFragment : Fragment() {
             }
 
             override fun onNotConnected(): Boolean {
-                onError(null,parentActivity?.getString(R.string.check_internet_message),0)
+                onError(null, parentActivity?.getString(R.string.check_internet_message), 0)
                 return true
             }
 
             override fun onFailure(error: RetrofitError?): Boolean {
-                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                onError(null, parentActivity?.getString(R.string.some_error_occured), 0)
                 return true
             }
 
             override fun onException(e: Exception?): Boolean {
-                onError(null,parentActivity?.getString(R.string.some_error_occured),0)
+                onError(null, parentActivity?.getString(R.string.some_error_occured), 0)
                 return true
             }
         })
     }
 
-    private fun setPromoLayout(show:Boolean,promoText:String? = null) {
-        if (show) {
+    private fun setPromoLayout(show: Boolean, promoText: String? = null) {
+        if (show&&!fromVehicleDetailScreen) {
             promoGroupView.visible()
 //            if (promoText != null && !promoText.isBlank()) {
 //                edtPromo.setText(promoText)
 //                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,R.drawable.ic_tick_green_20,0)
 //                edtPromo.isEnabled = false
 //            } else {
-                edtPromo.isEnabled = true
-                edtPromo.setText(promoText)
-                edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code,0,0,0)
+            edtPromo.isEnabled = true
+            edtPromo.setText(promoText)
+            edtPromo.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ref_code, 0, 0, 0)
 //            }
         } else {
             promoGroupView.gone()
@@ -404,7 +433,8 @@ class DriverSetupFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        parentActivity = context as DriverSplashActivity
+        parentActivity = context as Activity
+
         toolbarChangeListener = context as ToolbarChangeListener
     }
 
@@ -414,21 +444,21 @@ class DriverSetupFragment : Fragment() {
         super.onDetach()
     }
 
-    private fun setCityData(city: CityResponse.City?){
-        if(city!=null){
+    private fun setCityData(city: CityResponse.City?) {
+        if (city != null) {
             tvCities.text = city.cityName
             cityId = city.cityId.toString()
             citySelected = city
-            adapter.setList(city.vehicleTypes,0)
-            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+            adapter.setList(city.vehicleTypes, 0)
+            if (city.vehicleTypes == null || city.vehicleTypes.size == 0) {
                 rvVehicleTypes.gone()
-                Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
-            }else{
+                Snackbar.make(view!!, getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
+            } else {
                 rvVehicleTypes.visible()
             }
-            if(city.fleets != null && city.fleets.size > 0) {
+            if (city.fleets != null && city.fleets.size > 0&&!fromVehicleDetailScreen) {
                 fleetGroupView.visibility = View.VISIBLE
-                if (fleetSelected != null && city.fleets.contains(fleetSelected)){
+                if (fleetSelected != null && city.fleets.contains(fleetSelected)) {
                     tvFleetSelected.text = fleetSelected!!.name
                 } else {
                     fleetSelected = null
@@ -440,7 +470,7 @@ class DriverSetupFragment : Fragment() {
             }
 
             setPromoLayout(city.showPromo == 1, promoCodeFromServer)
-        }else{
+        } else {
             rvVehicleTypes.gone()
             tvCities.text = getString(R.string.label_select_city)
             cityId = null
@@ -455,8 +485,6 @@ class DriverSetupFragment : Fragment() {
     }
 
 
-
-
     fun showCountriesDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty()) {
             throw IllegalArgumentException(requireActivity().getString(R.string.error_no_cities_found))
@@ -467,8 +495,9 @@ class DriverSetupFragment : Fragment() {
             countryPickerDialog.show(supportFragmentManager, CITIES_DIALOG_FRAGMENT_TAG)
         }
     }
+
     private val onCountryPickerListener = OnCountryPickerListener<CityResponse.City> { country ->
-        if(country!=null){
+        if (country != null) {
             setCityData(country)
         }
     };
@@ -483,7 +512,7 @@ class DriverSetupFragment : Fragment() {
         }
 
         override fun canSearch(): Boolean {
-           return citiesList!=null && citiesList!!.size>7
+            return citiesList != null && citiesList!!.size > 7
         }
 
 
@@ -492,22 +521,22 @@ class DriverSetupFragment : Fragment() {
     private fun showFleetDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty() || citySelected == null) {
             Utils.showToast(requireActivity(), getString(R.string.error_no_cities_found))
-        } else if(citySelected!!.fleets == null || citySelected!!.fleets.size == 0){
+        } else if (citySelected!!.fleets == null || citySelected!!.fleets.size == 0) {
             Utils.showToast(requireActivity(), getString(R.string.error_no_fleets_in_this_city_format, citySelected!!.cityName))
         } else {
             val countryPickerDialog = CountryPickerDialog.newInstance(getString(R.string.select_fleet), false)
-            countryPickerDialog.setCountryPickerListener(object:OnCountryPickerListener<CityResponse.Fleet>{
+            countryPickerDialog.setCountryPickerListener(object : OnCountryPickerListener<CityResponse.Fleet> {
                 override fun onSelectCountry(country: CityResponse.Fleet?) {
                     fleetSelected = country
                     tvFleetSelected.text = fleetSelected!!.name
                 }
 
             });
-            countryPickerDialog.setDialogInteractionListener(object:CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet>{
+            countryPickerDialog.setDialogInteractionListener(object : CountryPickerDialog.CountryPickerDialogInteractionListener<CityResponse.Fleet> {
                 override fun getAllCountries(): MutableList<CityResponse.Fleet> {
                     val fleets = mutableListOf<CityResponse.Fleet>()
                     fleets.addAll(citySelected!!.fleets)
-                    if(citySelected!!.mandatoryFleetRegistration != 1) {
+                    if (citySelected!!.mandatoryFleetRegistration != 1) {
                         val noneFleet = CityResponse.Fleet()
                         noneFleet.name = getString(R.string.none)
                         noneFleet.id = -1
@@ -520,7 +549,7 @@ class DriverSetupFragment : Fragment() {
                 }
 
                 override fun canSearch(): Boolean {
-                    return citySelected!!.fleets.size>7
+                    return citySelected!!.fleets.size > 7
                 }
 
             })

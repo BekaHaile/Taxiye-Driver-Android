@@ -55,6 +55,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	DocumentListFragment documentListFragment;
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
+	int driverVehicleMappingId=-1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 			return;
 		}
 		setContentView(R.layout.activity_driver_documents);
-
+		if(getIntent().hasExtra(Constants.DRIVER_VEHICLE_MAPPING_ID))
+			driverVehicleMappingId=getIntent().getIntExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,-1);
 		submitButton = (Button) findViewById(R.id.submitButton);
 		backBtn = findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.mavenMedium(this));
@@ -72,6 +74,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		documentListFragment = new DocumentListFragment();
+
 
 		Bundle bundle = new Bundle();
 		accessToken = getIntent().getExtras().getString("access_token");
@@ -91,6 +94,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		bundle.putInt(Constants.KEY_TASK_TYPE, taskType);
 		bundle.putDouble(Constants.KEY_LATITUDE, latitude);
 		bundle.putDouble(Constants.KEY_LONGITUDE, longitude);
+		bundle.putInt(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId);
 		documentListFragment.setArguments(bundle);
 
 		if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()){

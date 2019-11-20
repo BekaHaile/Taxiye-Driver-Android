@@ -302,7 +302,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
             relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain,
-            rlSupportTicket, rlMailSupport;
+            rlSupportTicket, rlMailSupport,vehiclesDetailRL;
     TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
 
@@ -713,6 +713,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
             relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
             rlMailSupport = (RelativeLayout) findViewById(R.id.rlMailSupport);
+            vehiclesDetailRL = (RelativeLayout) findViewById(R.id.vehiclesDetailRL);
+
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
@@ -1575,6 +1577,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(HomeActivity.this, SupportMailActivity.class));
+                }
+            });
+            vehiclesDetailRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(HomeActivity.this,VehicleDetailsActivity.class));
+
                 }
             });
             rlSupportTicket.setOnClickListener(new OnClickListener() {
@@ -2528,6 +2537,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 rlMailSupport.setVisibility(View.VISIBLE);
             } else {
                 rlMailSupport.setVisibility(View.GONE);
+            }
+            if (Prefs.with(HomeActivity.this).getInt(Constants.VEHICLE_DETAILS, 0) == 1) {
+                vehiclesDetailRL.setVisibility(View.VISIBLE);
+            } else {
+                vehiclesDetailRL.setVisibility(View.VISIBLE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU, 0) == 1) {

@@ -31,8 +31,7 @@
     </style>
 
 
-
-    <style name="Animations"/>
+    <style name="Animations" />
 
     <style name="Animations.LoadingDialogFade">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
@@ -40,18 +39,15 @@
     </style>
 
 
-
     <style name="SplashThemeNormal" parent="AppBaseTheme">
         <item name="android:windowBackground">@drawable/windowBackgroundColor</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">false</item>
     </style>
-   <!-- <style name="SplashThemeWithoutFlags" parent="SplashThemeNormal">
+    <!-- <style name="SplashThemeWithoutFlags" parent="SplashThemeNormal">
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">false</item>
         <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">false</item>
     </style>-->
-
-
 
 
     <style name="DialogButton" parent="@android:style/Widget.Button">
@@ -101,6 +97,7 @@
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
+
     <style name="ButtonThemeAlternate" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -135,6 +132,7 @@
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
+
     <style name="TextLarge">
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:textColor">@color/textColor</item>
@@ -142,6 +140,7 @@
         <item name="android:textSize">19sp</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
+
     <style name="TextNormal">
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:textColor">@color/textColor</item>
@@ -150,6 +149,7 @@
         <item name="android:fontFamily">@font/maven_pro_regular</item>
         <item name="colorControlHighlight">@color/grey_light_more</item>
     </style>
+
     <style name="TextMedium">
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:textColor">@color/textColorMedium</item>
@@ -157,6 +157,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
+
     <style name="TextSmall">
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:textColor">@color/textColorLight</item>
@@ -164,6 +165,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/maven_pro_regular</item>
     </style>
+
     <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
         <item name="colorAccent">@color/themeColor</item>
         <item name="android:popupBackground">@drawable/menu_black_btn_selector</item>
@@ -205,7 +207,7 @@
         <item name="colorControlHighlight">@color/grey_light_more</item>
     </style>
 
-    <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar"/>
+    <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar" />
 
     <style name="TransparentTheme" parent="Theme.AppCompat.Translucent">
         <item name="colorPrimary">
@@ -233,4 +235,13 @@
             true
         </item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

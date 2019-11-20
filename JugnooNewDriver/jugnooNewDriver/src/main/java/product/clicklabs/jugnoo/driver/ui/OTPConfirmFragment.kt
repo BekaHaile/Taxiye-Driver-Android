@@ -88,8 +88,8 @@ class OTPConfirmFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        phoneNumber = arguments!!.getString(KEY_PHONE_NUMBER)
-        countryCode = arguments!!.getString(KEY_COUNTRY_CODE)
+        phoneNumber = arguments!!.getString(KEY_PHONE_NUMBER).toString()
+        countryCode = arguments!!.getString(KEY_COUNTRY_CODE).toString()
         if (arguments!!.containsKey(MISSED_CALL_NUMBER)) missedCallNumber = arguments!!.getString(MISSED_CALL_NUMBER)
     }
 
@@ -197,7 +197,7 @@ class OTPConfirmFragment : Fragment(){
         }
 
 
-        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) 3 * 1000 else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
+        countDownTimer = CustomCountDownTimer(if (BuildConfig.DEBUG_MODE) (3 * 1000).toLong() else 30 * 1000, 5, object : CustomCountDownTimer.DownTimerOperation {
             override fun updateCounterView(text: String?, width: Double) {
                 otpDialog?.updateCounterView(text, width)
             }

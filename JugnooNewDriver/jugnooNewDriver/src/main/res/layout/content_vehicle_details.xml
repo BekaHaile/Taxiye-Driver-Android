@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="20dp"
+    app:cardElevation="7dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_alignParentStart="true"
+            android:id="@+id/profileRl"
+            android:layout_width="140px"
+            android:layout_height="140px"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:splitMotionEvents="false"
+            android:tag="mwar">
+
+            <ImageView
+                android:id="@+id/profileBack"
+                android:layout_width="140px"
+                android:layout_height="140px"
+                android:background="@drawable/circle_orange"
+                android:tag="mwar"/>
+
+            <ImageView
+                android:id="@+id/profileImg"
+                android:layout_width="134px"
+                android:layout_height="134px"
+                android:src="@drawable/auto_icon_front_new"
+                android:layout_centerInParent="true"
+                android:tag="mwar"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_delete"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            />
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/profileRl"
+            android:layout_toStartOf="@id/ivDelete"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hyundai, i10"
+                android:fontFamily="@font/maven_pro_medium"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+
+                />
+            <TextView
+                android:layout_marginBottom="8dp"
+                android:id="@+id/tvVehicleDetails"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_grey"
+                android:textSize="14sp"
+                android:fontFamily="@font/maven_pro_medium"
+                android:text="HRO3L1231"
+
+                />
+            <TextView
+                android:textSize="14sp"
+                android:id="@+id/tvVehicleStatus"
+                android:textColor="@color/red_dark"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rejected"
+                android:fontFamily="@font/maven_pro_medium"
+
+                />
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

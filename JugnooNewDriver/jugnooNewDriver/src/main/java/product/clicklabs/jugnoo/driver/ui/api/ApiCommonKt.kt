@@ -178,11 +178,9 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
             ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
             ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetailsResponse> )
-            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
-                    Callback<VehicleModelCustomisationsResponse> )
+            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as Callback<VehicleModelCustomisationsResponse> )
             ApiName.UPDATE_LUGGAGE_COUNT ->  RestClient.getApiServices().updateLuggageCount(params, callback as Callback<FeedCommonResponseKotlin> )
-            ApiName.UPDATE_DRIVER_SERVICES ->  RestClient.getApiServices().updateDriverVehicleServices(bodyParams as DriverVehicleServiceTypePopup.ServiceDetailModel,
-                    callback as Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> )
+            ApiName.UPDATE_DRIVER_SERVICES ->  RestClient.getApiServices().updateDriverVehicleServices(bodyParams as DriverVehicleServiceTypePopup.ServiceDetailModel, callback as Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> )
             ApiName.UPDATE_DOC_FIELDS ->  RestClient.getApiServices().uploadFields(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.UPDATE_FARES ->  RestClient.getApiServices().updateDriverFares(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.GET_TOLL_DATA ->  RestClient.getApiServices().getTollData(params, callback as Callback<TollDataResponse> )

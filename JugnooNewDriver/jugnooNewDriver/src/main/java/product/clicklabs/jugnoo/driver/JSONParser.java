@@ -1271,7 +1271,8 @@ public class JSONParser implements Constants {
                 Constants.WALLET,
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
-				Constants.KEY_HTML_RATE_CARD
+				Constants.KEY_HTML_RATE_CARD,
+				Constants.VEHICLE_DETAILS
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

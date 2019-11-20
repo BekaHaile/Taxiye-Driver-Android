@@ -274,6 +274,8 @@ public interface Constants {
 	String CHAT_SUPPORT = "chat_support";
 	String TICKET_SUPPORT = "ticket_support";
 	String MAIL_SUPPORT = "mail_support";
+	String VEHICLE_DETAILS = "vehicle_details";
+
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
 	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
@@ -524,5 +526,17 @@ public interface Constants {
 	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
 	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
+	String KEY_DATA = "data";
+	String DRIVER_VEHICLE_MAPPING_ID = "driver_vehicle_mapping_id";
+	String DRIVER_VEHICLE_MAPPING_STATUS = "driver_vehicle_mapping_status";
+	String VEHICLE_NO = "vehicle_no";
+	String BRAND = "brand";
+	String MODEL_NAME = "model_name";
+	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
+
+
+
+
+
 }
 
