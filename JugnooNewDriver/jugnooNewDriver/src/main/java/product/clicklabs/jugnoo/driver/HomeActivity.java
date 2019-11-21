@@ -5468,9 +5468,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 Runnable runnable = new Runnable() {
                     public void run() {
-                        Data.userData.currDestRideObj=null;
-                        toggleDestinationRide();
-                        DialogPopup.alertPopup(HomeActivity.this,"Attention !!",getString(R.string.destination_ride_end));
+                        if(Data.userData.currDestRideObj!=null) {
+                            Data.userData.currDestRideObj = null;
+                            toggleDestinationRide();
+                            DialogPopup.alertPopup(HomeActivity.this, "Attention !!", getString(R.string.destination_ride_end));
+                        }
                     }
                 };
                 updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
