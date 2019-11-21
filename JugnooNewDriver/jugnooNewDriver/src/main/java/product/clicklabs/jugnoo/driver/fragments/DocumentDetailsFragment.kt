@@ -94,7 +94,7 @@ class DocumentDetailsFragment:Fragment(){
         super.onCreate(savedInstanceState)
         val gson = Gson()
         docInfo = gson.fromJson(arguments!!.getString(ARGS_DOC_INFO), DocInfo::class.java)
-        accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN)
+        accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN).toString()
         pos = arguments!!.getInt(ARGS_POS)
     }
 

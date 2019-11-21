@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
@@ -156,11 +157,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	public  void  openDocumentDetails(DocInfo docInfo,Integer pos){
 
 		title.setText(docInfo.docType);
-		getSupportFragmentManager().beginTransaction()
+		if(accessToken==null&&Data.userData!=null){
+			accessToken=Data.userData.accessToken;
+			getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
-				.hide(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()))
+				.hide(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())))
 				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
+		}
 	}
 
 	@Override

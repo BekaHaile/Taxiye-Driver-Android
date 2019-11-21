@@ -169,7 +169,9 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         });
     }
 
-    public void hitRemoveDriverVehicles(HashMap<String,String> params) {
+    public void hitRemoveDriverVehicles(int positionInList,int mappingId) {
+        HashMap<String,String> params=new HashMap<>();
+        params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,""+mappingId);
         DialogPopup.showLoadingDialog(this, getString(R.string.loading));
         params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
         RestClient.getApiServices().removeVehicle(params, new Callback<Object>() {
@@ -183,6 +185,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
                     int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
                     String message = JSONParser.getServerMessage(jObj);
                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                        Data.userData.getDriverVehicleDetailsList().get(positionInList).setDriverVehicleMappingStatus(2);
                         updateVehicleList();
                     }
                         DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
@@ -298,8 +301,8 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
                 @Override
                 public void onClick(View v) {
                 HashMap<String,String> params=new HashMap<>();
-                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,""+vehicleDetails.get(getAdapterPosition()).getDriverVehicleMappingId());
-                    ((VehicleDetailsActivity)activity).hitRemoveDriverVehicles(params);
+
+                    ((VehicleDetailsActivity)activity).hitRemoveDriverVehicles(getAdapterPosition(),vehicleDetails.get(getAdapterPosition()).getDriverVehicleMappingId());
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {

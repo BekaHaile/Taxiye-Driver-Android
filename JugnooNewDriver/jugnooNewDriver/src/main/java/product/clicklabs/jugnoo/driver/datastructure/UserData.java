@@ -309,6 +309,10 @@ public class UserData {
             this.driverVehicleMappingStatus = driverVehicleMappingStatus;
         }
 
+        public void setDriverVehicleMappingStatus(int driverVehicleMappingStatus) {
+            this.driverVehicleMappingStatus = driverVehicleMappingStatus;
+        }
+
         public int getDriverVehicleMappingId() {
             return driverVehicleMappingId;
         }
