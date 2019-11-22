@@ -546,7 +546,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 						parseDocumentResponse(o,response);
 					}
-					DialogPopup.alertPopup(getActivity(), "", message);
+//					DialogPopup.alertPopup(getActivity(), "", message);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -891,6 +891,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 				params.put(Constants.KEY_IMG_POSITION, String.valueOf(column));
 				params.put(Constants.KEY_DOC_TYPE_NUM, String.valueOf(docInfo.docTypeNum));
+				if(driverVehicleMappingId!=-1)
+				params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
 				HomeUtil.putDefaultParams(params);
 
 				if(placeType != -1){

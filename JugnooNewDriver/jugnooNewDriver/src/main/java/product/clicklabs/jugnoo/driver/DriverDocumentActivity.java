@@ -157,14 +157,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	public  void  openDocumentDetails(DocInfo docInfo,Integer pos){
 
 		title.setText(docInfo.docType);
-		if(accessToken==null&&Data.userData!=null){
-			accessToken=Data.userData.accessToken;
+//		if(accessToken==null&&Data.userData!=null){
 			getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
 				.hide(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())))
 				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
-		}
+//		}
 	}
 
 	@Override

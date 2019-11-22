@@ -110,6 +110,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         params.put(Constants.DRIVER_VEHICLE_MAPPING_ID, driverVehicleDetails.getDriverVehicleMappingId()+"");
         Intent intent =new Intent(this,DriverDocumentActivity.class);
         intent.putExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleDetails.getDriverVehicleMappingId());
+        intent.putExtra(Constants.KEY_ACCESS_TOKEN,Data.userData.accessToken);
         startActivity(intent);
     }
 
