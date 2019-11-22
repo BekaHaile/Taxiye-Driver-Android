@@ -36,6 +36,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	TextView textViewInfo;
 	WebView webview;
 	String url;
+	String driverId;
 	Shader textShader;
 
 	@Override
@@ -80,6 +81,9 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		try {
 			Intent intent = getIntent();
 			url = intent.getStringExtra("extras");
+			if(intent.getStringExtra("driverId") != null) {
+				driverId = intent.getStringExtra("driverId");
+			}
 			title.setText(intent.getStringExtra("title"));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,7 +98,30 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.setWebViewClient(new MyWebViewClient1());
 
 		String accessToken = JSONParser.getAccessTokenPair(this).first;
-		if(accessToken != null) {
+		if(driverId != null) {
+			String finalUrl = url; // + "/" + Data.userData.userId;
+			webview.loadUrl(finalUrl);
+
+			PackageManager pm = getPackageManager();
+			try {
+				PackageInfo pi = pm.getPackageInfo("com.google.android.webview", 0);
+				Log.d("version name: ", pi.versionName);
+				Log.d("version code: " , String.valueOf(pi.versionCode));
+
+
+
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M && pi.versionCode < 302908300){
+					// Do something for lollipop and above versions
+					redirectToApp();
+				} else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP && pi.versionCode < 298713200) {
+					// Do something for lollipop and above versions
+					redirectToApp();
+				}
+
+			} catch (PackageManager.NameNotFoundException e) {
+				Log.e("notFound","Android System WebView is not found");
+			}
+		} else if(accessToken != null) {
 			Log.e("URL", url + "?access_token=" + accessToken);
 			String finalUrl = url+"?access_token="+accessToken;
 			webview.loadUrl(finalUrl);
