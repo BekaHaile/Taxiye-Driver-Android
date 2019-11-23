@@ -1272,7 +1272,7 @@ public class JSONParser implements Constants {
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
-				Constants.SHOW_PLANS_IN_MENU
+				Constants.DRIVER_PLANS_COMMISSION
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

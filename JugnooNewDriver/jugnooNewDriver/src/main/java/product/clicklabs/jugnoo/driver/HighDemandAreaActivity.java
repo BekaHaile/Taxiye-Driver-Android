@@ -99,7 +99,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 
 		String accessToken = JSONParser.getAccessTokenPair(this).first;
 		if(driverId != null) {
-			String finalUrl = url; // + "/" + Data.userData.userId;
+			String finalUrl = url + "/" + driverId;
 			webview.loadUrl(finalUrl);
 
 			PackageManager pm = getPackageManager();

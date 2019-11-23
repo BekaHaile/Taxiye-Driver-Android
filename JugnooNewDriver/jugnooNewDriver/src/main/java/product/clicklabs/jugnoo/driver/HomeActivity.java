@@ -1610,7 +1610,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 if(Data.userData != null && Data.userData.userId != null) {
                     Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
                     intent.putExtra("title", getString(R.string.plans_drawer_title));
-                    intent.putExtra("extras", "https://webpanels.jugnoo.in/superadmin-test/#/page/plans");
+                    intent.putExtra("extras", "https://jugnootaxi.com/operator/#/page/plans");
                     intent.putExtra("driverId", Data.userData.userId);
                     HomeActivity.this.startActivity(intent);
                     HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2547,10 +2547,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 relativeLayoutPlans.setVisibility(View.GONE);
             }
-            if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_NEW_IN_MENU, 0) == 1) {
+            if (Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_PLANS_COMMISSION, 0) == 1) {
                 rlPlansNew.setVisibility(View.VISIBLE);
             } else {
-                rlPlansNew.setVisibility(View.VISIBLE); //todo **set GONE**
+                rlPlansNew.setVisibility(View.GONE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_RATE_CARD_IN_MENU, 0) == 1) {
