@@ -1006,6 +1006,9 @@ public class JSONParser implements Constants {
 				double initialBidValue = jActiveRequest.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10);
 				double estimatedTripDistance = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
 				String pickupTime = jActiveRequest.optString(Constants.KEY_PICKUP_TIME);
+				if(TextUtils.isEmpty(pickupTime)){
+					pickupTime = jActiveRequest.optString(Constants.KEY_SCHEDULED_RIDE_PICKUP_TIME);
+				}
 				int isDeliveryPool = 0;
 				ArrayList<String> dropPoints = new ArrayList<>();
 				if(jActiveRequest.has(Constants.KEY_DROP_POINTS)) {
