@@ -263,6 +263,7 @@ public interface Constants {
 	String EARNINGS_IN_MENU = "earnings_in_menu";
 	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
 	String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
+	String DRIVER_PLANS_COMMISSION = "driver_plans_commission";
 	String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
 	String SELF_AUDIT_BUTTON_STATUS = "self_audit_button_status";
 	String SHOW_CALL_US_MENU = "show_call_us_menu";
@@ -524,5 +525,7 @@ public interface Constants {
 	String KEY_DRIVER_WAIT_SPEED = "driver_wait_speed";
 	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
+
+	String KEY_DRIVER_PLANS_URL = "driver_plans_url";
 }
 

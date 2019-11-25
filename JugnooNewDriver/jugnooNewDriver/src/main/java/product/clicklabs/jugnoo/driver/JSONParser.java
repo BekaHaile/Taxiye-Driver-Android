@@ -563,6 +563,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_DRIVER_WAIT_SPEED, userData.optString(KEY_DRIVER_WAIT_SPEED, "2"));
 		Prefs.with(context).save(KEY_SHOW_DROP_LOCATION_BELOW_PICKUP, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_drop_location_below_pickup)));
 		Prefs.with(context).save(KEY_SHOW_FARE_BEFORE_RIDE_START, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_fare_before_ride_start)));
+
+		Prefs.with(context).save(KEY_DRIVER_PLANS_URL, userData.optString(KEY_DRIVER_PLANS_URL, context.getString(R.string.driver_plans_url)));
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {
@@ -1271,7 +1273,8 @@ public class JSONParser implements Constants {
                 Constants.WALLET,
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
-				Constants.KEY_HTML_RATE_CARD
+				Constants.KEY_HTML_RATE_CARD,
+				Constants.DRIVER_PLANS_COMMISSION
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
