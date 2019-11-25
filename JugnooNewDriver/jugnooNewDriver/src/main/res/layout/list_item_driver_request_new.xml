@@ -536,11 +536,13 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel_ride"
             android:textSize="14sp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:padding="5dp"
             android:textColor="@color/red_dark"
             android:layout_gravity="center"
             android:tag="@string/dont_touch_me"
+            android:background="?attr/selectableItemBackground"
+            android:theme="@style/GreyHighlight"
             />
 
         </LinearLayout>
