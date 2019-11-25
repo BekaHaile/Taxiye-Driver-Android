@@ -414,6 +414,7 @@
                     android:layout_marginStart="8px"
                     android:text="@string/plans_drawer_title"
                     android:textColor="@color/white"
+                    android:fontFamily="@font/maven_pro_regular"
                     android:textSize="36px"/>
 
             </RelativeLayout>
