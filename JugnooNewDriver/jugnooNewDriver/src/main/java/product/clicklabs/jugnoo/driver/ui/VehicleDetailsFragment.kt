@@ -214,9 +214,8 @@ class VehicleDetailsFragment : Fragment() {
             }
 
         }
-
-
-        getVehicleDetails();
+                viewVehicleNo()
+                getVehicleDetails();
     }
 
     private fun showModelDialogIfPossible() {
@@ -270,6 +269,16 @@ class VehicleDetailsFragment : Fragment() {
                 })
 
 
+    }
+    fun viewVehicleNo(){
+        if(driverDetails!!.containsKey("vehicle_no")){
+            edtVehicleNumber.visibility=View.GONE
+            labelVehicleNumber.visibility=View.GONE
+        }
+        else {
+            edtVehicleNumber.visibility = View.VISIBLE
+            labelVehicleNumber.visibility = View.VISIBLE
+        }
     }
 
     fun getModelDetails(modelRequested: VehicleModelDetails) {
@@ -334,9 +343,8 @@ class VehicleDetailsFragment : Fragment() {
                             edtSeatBelt.setText(value)
                         }
 
-
-
                         vehicleDetailsGroup.visible()
+                        viewVehicleNo()
                         btn_continue.isEnabled = true
 
                         edtYear.requestFocus();
@@ -466,7 +474,7 @@ class VehicleDetailsFragment : Fragment() {
         RestClient.getApiServices().addNewVehicle(params, object : Callback<Any> {
             override fun success(o: Any, response: retrofit.client.Response) {
                 val responseStr = String((response.body as TypedByteArray).bytes)
-                Log.i(Beta.TAG, "addHomeAndWorkAddress response = $responseStr")
+                Log.i(Beta.TAG, "AddNewVehicle response = $responseStr")
                 DialogPopup.dismissLoadingDialog()
                 try {
                     val jObj = JSONObject(responseStr)
@@ -604,6 +612,9 @@ class VehicleDetailsFragment : Fragment() {
                     if (t != null) {
                         when (t.flag) {
                             ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
+                                if(t.driverVehicleMappinId!=-1){
+                                    Data.setDriverMappingId(t.driverVehicleMappinId)
+                                }
                                 if (isEditMode) {
                                     val vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber, year,
                                             currentModelSelected!!.make, currentModelSelected!!.modelName, currentModelSelected!!.id,

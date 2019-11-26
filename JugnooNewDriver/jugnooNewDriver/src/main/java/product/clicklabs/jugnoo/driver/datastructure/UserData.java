@@ -63,7 +63,6 @@ public class UserData {
         this.referralCode = referralCode;
         this.phoneNo = phoneNo;
         this.freeRideIconDisable = freeRideIconDisable;
-
         this.autosEnabled = autosEnabled;
         this.mealsEnabled = mealsEnabled;
         this.fatafatEnabled = fatafatEnabled;

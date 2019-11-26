@@ -57,6 +57,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
 	int driverVehicleMappingId=-1;
+	boolean fromVehicleDetailsScreen=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		accessToken = getIntent().getExtras().getString("access_token");
 		if(getIntent().getExtras().getBoolean("in_side")){
 			inSideApp = true;
+		}
+		if(getIntent().getExtras().getBoolean(Constants.FROM_VEHICLE_DETAILS_SCREEN)){
+			fromVehicleDetailsScreen = true;
 		}
 		requirement  = getIntent().getExtras().getInt("doc_required");
 		brandingImagesOnly  = getIntent().getIntExtra(Constants.BRANDING_IMAGES_ONLY, 0);
@@ -223,6 +227,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag, null)) {
                                 DialogPopup.dismissLoadingDialog();
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									if(fromVehicleDetailsScreen)
+									{
+										setResult(Activity.RESULT_OK);
+										finish();
+//										startActivity(new Intent(DriverDocumentActivity.this,VehicleDetailsActivity.class));
+										return;
+									}
+
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);
 									} else {
@@ -411,6 +423,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 										DialogPopup.dismissLoadingDialog();
 									}
 								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+										Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED,0));
+									}
 									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 									Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
 									intent.putExtra("access_token",jObj.getString("access_token"));

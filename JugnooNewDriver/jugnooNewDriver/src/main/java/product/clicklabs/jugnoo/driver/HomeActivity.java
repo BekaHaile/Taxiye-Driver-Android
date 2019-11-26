@@ -2538,7 +2538,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } else {
                 rlMailSupport.setVisibility(View.GONE);
             }
-            if (Prefs.with(HomeActivity.this).getInt(Constants.VEHICLE_DETAILS, 0) == 1) {
+
+            if (Prefs.with(HomeActivity.this).getInt(Constants.VEHICLE_DETAILS, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
                 vehiclesDetailRL.setVisibility(View.VISIBLE);
             } else {
                 vehiclesDetailRL.setVisibility(View.VISIBLE);

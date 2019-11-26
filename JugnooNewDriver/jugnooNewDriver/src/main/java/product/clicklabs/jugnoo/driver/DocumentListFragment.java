@@ -902,6 +902,9 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 					params.put(Constants.KEY_FEEDBACK, feedback);
 				}
+				if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingId()!=-1){
+					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingId()+"");
+				}
 
 				TypedFile typedFile;
 				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);

@@ -83,7 +83,11 @@
         <activity
             android:name=".VehicleDetailsActivity"
             android:label="@string/title_activity_vehicle_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"
+            >
+
+        </activity>
 
         <provider
             android:name=".utils.PhotoProvider"

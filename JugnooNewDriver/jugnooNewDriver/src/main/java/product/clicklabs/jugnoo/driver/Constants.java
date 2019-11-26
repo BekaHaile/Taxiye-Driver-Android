@@ -533,6 +533,7 @@ public interface Constants {
 	String BRAND = "brand";
 	String MODEL_NAME = "model_name";
 	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
+	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
 
 
 

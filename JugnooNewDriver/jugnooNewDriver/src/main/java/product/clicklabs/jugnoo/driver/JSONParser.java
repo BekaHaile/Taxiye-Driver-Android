@@ -200,7 +200,7 @@ public class JSONParser implements Constants {
 		int freeRideIconDisable = 1;
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
-		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
+		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
 
 		if (userData.has("free_ride_icon_disable")) {
@@ -236,6 +236,9 @@ public class JSONParser implements Constants {
 		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
 		}
+		if (userData.has("multiple_vehicles_enabled")) {
+			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
+        }
 
 		if (1 != autosEnabled) {
 			autosAvailable = 0;

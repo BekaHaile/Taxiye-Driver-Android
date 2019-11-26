@@ -328,8 +328,14 @@ class SplashFragment : Fragment() {
 
                                     }
                                 } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-                                    Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
-                                            if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+                                    if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
+
+                                        Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                                if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+
+                                        Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
+
+                                    }
                                     val accessToken = jObj.getString("access_token")
                                     JSONParser.saveAccessToken(mActivity, accessToken)
                                     parentActivity?.let { (it as DriverSplashActivity).addDriverSetupFragment(accessToken) }

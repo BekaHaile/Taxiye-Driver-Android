@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +22,16 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.zip.Inflater;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.ui.DriverSetupFragment;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -49,7 +45,8 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
 
     RecyclerView rvVehicles;
     VehicleDetailsAdapter vehicleDetailsAdapter;
-    ImageView ivAddDestRide;
+    ImageView ivAddDestRide,backBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +57,20 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         setListeners();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==Activity.RESULT_OK){
+            if(requestCode==1){
+                getSupportFragmentManager().popBackStackImmediate(DriverSetupFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        }
+    }
+
+    public Fragment getDriverSetupFragment() {
+        return getSupportFragmentManager().findFragmentByTag(DriverSetupFragment.class.getName());
+    }
+
     private void initViews() {
         ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
         rvVehicles = findViewById(R.id.rvVehicles);
@@ -67,6 +78,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         rvVehicles.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvVehicles.setAdapter(vehicleDetailsAdapter);
         ivAddDestRide = findViewById(R.id.ivAddDestRide);
+        backBtn=findViewById(R.id.backBtn);
 
     }
 
@@ -82,6 +94,12 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
                 getSupportFragmentManager().beginTransaction().add(R.id.container, frag, DriverSetupFragment.class.getName())
                         .addToBackStack(DriverSetupFragment.class.getName()).commit();
 
+            }
+        });
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -106,12 +124,11 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     }
 
     public void vehicleAdded(UserData.DriverVehicleDetails driverVehicleDetails){
-        HashMap<String,String> params =new HashMap<>() ;
-        params.put(Constants.DRIVER_VEHICLE_MAPPING_ID, driverVehicleDetails.getDriverVehicleMappingId()+"");
         Intent intent =new Intent(this,DriverDocumentActivity.class);
+        intent.putExtra(Constants.FROM_VEHICLE_DETAILS_SCREEN,true);
         intent.putExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleDetails.getDriverVehicleMappingId());
         intent.putExtra(Constants.KEY_ACCESS_TOKEN,Data.userData.accessToken);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     public void hitFetchDriverVehicles() {

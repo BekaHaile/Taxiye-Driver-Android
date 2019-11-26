@@ -24,6 +24,7 @@ import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.document_details.*
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
@@ -33,10 +34,7 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel
-import product.clicklabs.jugnoo.driver.utils.DialogPopup
-import product.clicklabs.jugnoo.driver.utils.Utils
-import product.clicklabs.jugnoo.driver.utils.inflate
-import product.clicklabs.jugnoo.driver.utils.pxValue
+import product.clicklabs.jugnoo.driver.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -226,6 +224,9 @@ class DocumentDetailsFragment:Fragment(){
                 "doc_values" to fieldsInput.toString()
 
         )
+        if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingId()!=-1){
+            map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingId().toString()
+        }
         ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(map,ApiName.UPDATE_DOC_FIELDS
                 ,object: APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
             override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
@@ -238,6 +239,7 @@ class DocumentDetailsFragment:Fragment(){
                     listener?.updateDocInfo(pos, docInfo);
                     requireActivity().onBackPressed()
                 }
+                Data.setDriverMappingId(-1)
             }
 
             override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {

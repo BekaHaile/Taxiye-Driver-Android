@@ -125,6 +125,10 @@ class DriverSetupFragment : Fragment() {
         getCitiesAPI()
         if (fromVehicleDetailScreen)
             showVehicleDetailsView()
+        if(Data.getMultipleVehiclesEnabled()==1)
+            multipleVehicleEnabledGroup.visibility=View.VISIBLE
+        else
+            multipleVehicleEnabledGroup.visibility=View.GONE
 
     }
 
@@ -259,9 +263,13 @@ class DriverSetupFragment : Fragment() {
                 "referral_code" to "",
                 "device_token" to FirebaseInstanceId.getInstance().getToken()!!,
                 "unique_device_id" to Data.uniqueDeviceId,
-                "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0",
-                "vehicle_ownership_status" to ownershipSpinner.selectedItem.toString()
+                "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
+
+        if(Data.getMultipleVehiclesEnabled()==1){
+            params["vehicle_no"] = edtVehicleNo.text.toString()
+            params["vehicle_ownership_status"] = ownershipSpinner.selectedItem.toString()
+        }
         if (referralCode != null) {
             params["referral_code"] = referralCode;
         }
@@ -285,7 +293,9 @@ class DriverSetupFragment : Fragment() {
                         Log.d("", t.serverMessage())
                         when (t.flag) {
                             ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-
+                                if(t.driverVehicleMappinId!=-1){
+                                    Data.setDriverMappingId(t.driverVehicleMappinId)
+                                }
 //                                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
 //                                    (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
 //                                            vehicleType, userName)
