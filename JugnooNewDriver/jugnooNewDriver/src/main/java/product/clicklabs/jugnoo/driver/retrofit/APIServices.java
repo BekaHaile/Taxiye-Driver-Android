@@ -778,4 +778,8 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	Response fetchTutorialData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/update_driver_preferences")
+	void updateDriverPreferences(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 }

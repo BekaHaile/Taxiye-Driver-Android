@@ -36,6 +36,7 @@ public class UserData {
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
+	private int onlyCashRides, onlyLongRides;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -251,5 +252,21 @@ public class UserData {
 
 	public void setDriverTag(String driverTag) {
 		this.driverTag = driverTag;
+	}
+
+	public int getOnlyCashRides() {
+		return onlyCashRides;
+	}
+
+	public void setOnlyCashRides(int onlyCashRides) {
+		this.onlyCashRides = onlyCashRides;
+	}
+
+	public int getOnlyLongRides() {
+		return onlyLongRides;
+	}
+
+	public void setOnlyLongRides(int onlyLongRides) {
+		this.onlyLongRides = onlyLongRides;
 	}
 }

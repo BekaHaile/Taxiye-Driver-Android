@@ -41,6 +41,10 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
+import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -85,19 +89,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     int delivery_available = 0;
     boolean checked = false;
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
+	private SwitchCompat switchOnlyCashRides;
+	private SwitchCompat switchOnlyLongRides;
 
     @Override
     protected void onResume() {
@@ -375,6 +368,34 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         dividerVehicleServiceDetails  =    findViewById(R.id.ivDivVehicleServiceDetails);
         setVehicleSetsData();
 
+
+		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
+		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+
+		if(Data.userData != null && JSONParser.isTagEnabled(this, Constants.DRIVER_PLANS_COMMISSION)){
+			switchOnlyCashRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
+			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
+
+			switchOnlyLongRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
+			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
+
+			switchOnlyCashRides.setOnCheckedChangeListener((buttonView, isChecked) -> {
+				updateDriverPreferences(Constants.KEY_ONLY_CASH_RIDES, isChecked ? 1 : 0, switchOnlyCashRides);
+			});
+			switchOnlyLongRides.setOnCheckedChangeListener((buttonView, isChecked) -> {
+				updateDriverPreferences(Constants.KEY_ONLY_LONG_RIDES, isChecked ? 1 : 0, switchOnlyLongRides);
+			});
+
+		}
+		else {
+			switchOnlyCashRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.GONE);
+
+			switchOnlyLongRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
+		}
 
     }
 
@@ -707,4 +728,29 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
         onBackPressed();
     }
+
+    private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
+    	HashMap<String, String> params = new HashMap<>();
+    	params.put(key, String.valueOf(value));
+		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
+				.execute(params, ApiName.UPDATE_DRIVER_PREFERENCES, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+			@Override
+			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				if(key.equalsIgnoreCase(Constants.KEY_ONLY_CASH_RIDES)){
+					Data.userData.setOnlyCashRides(value);
+				}
+				else if(key.equalsIgnoreCase(Constants.KEY_ONLY_LONG_RIDES)){
+					Data.userData.setOnlyLongRides(value);
+				}
+				switchCompat.setChecked(value == 1);
+			}
+
+			@Override
+			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				switchCompat.setChecked(value != 1);
+				return false;
+			}
+		});
+	}
+
 }

@@ -188,7 +188,6 @@
             android:tag="@string/dont_touch_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cvDriverInfo"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
@@ -245,7 +244,6 @@
             android:tag="@string/dont_touch_me"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cvVehicleDetails"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
@@ -300,7 +298,7 @@
                         style="@style/TextNormal"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="0000"
+                        tools:text="0000"
                         android:textColor="@color/textColor" />
 
                 </RelativeLayout>
@@ -337,7 +335,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         style="@style/TextNormal"
-                        android:text="0000"
+                        tools:text="0000"
                         android:textColor="@color/textColor" />
 
                 </RelativeLayout>
@@ -346,7 +344,6 @@
                     android:id="@+id/imageViewHorizontal3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:background="@color/dividerColor"/>
@@ -374,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="0000"
+                        tools:text="0000"
                         style="@style/TextNormal"
                         android:textColor="@color/textColor"/>
 
@@ -384,7 +381,6 @@
                     android:id="@+id/imageViewHorizontal2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_centerHorizontal="true"
                     android:background="@color/dividerColor"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"/>
@@ -413,7 +409,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         style="@style/TextNormal"
-                        android:text="0000"
+                        tools:text="0000"
                         android:textColor="@color/textColor" />
 
                 </RelativeLayout>
@@ -428,7 +424,6 @@
             android:id="@+id/cvSwitchNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cvScore"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -616,6 +611,46 @@
                     style="@style/TextNormal"
                     android:text="@string/select_ringtone"
                     android:background="?attr/selectableItemBackground"
+                    />
+
+                <View
+                    android:id="@+id/ivDivOnlyCashRides"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchOnlyCashRides"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/only_cash_rides"
+                    android:theme="@style/ThemeSwitch"
+                    />
+
+                <View
+                    android:id="@+id/ivDivOnlyLongRides"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/dividerColor"/>
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/switchOnlyLongRides"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/only_long_rides"
+                    android:theme="@style/ThemeSwitch"
                     />
             </LinearLayout>
 
