@@ -30,6 +30,7 @@ public class RestClient {
 	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
 	private static MapsCachingApiService MAPS_CACHING_API_SERVICE;
 	private static JungleMapsApi JUNGLE_MAPS_API = null;
+	private static BranchApi BRANCH_API = null;
 
 	static {
 		setupRestClient();
@@ -41,6 +42,7 @@ public class RestClient {
 		setupHereMapApiServices();
 		setupMapsCachingRestClient();
 		setupJungleMapsApi();
+		setupBranchApi();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -292,6 +294,29 @@ public class RestClient {
 
 	public static JungleMapsApi getJungleMapsApi() {
 		return JUNGLE_MAPS_API;
+	}
+
+	private static void setupBranchApi() {
+		if(BRANCH_API == null) {
+			RestAdapter.Log fooLog = new RestAdapter.Log() {
+				@Override public void log(String message) {
+				}
+			};
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(Data.BRANCH_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient(true, 5)))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			BRANCH_API = restAdapter.create(BranchApi.class);
+		}
+	}
+
+	public static BranchApi getBranchApi() {
+		return BRANCH_API;
 	}
 
 }

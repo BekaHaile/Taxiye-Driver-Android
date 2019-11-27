@@ -565,6 +565,19 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_FARE_BEFORE_RIDE_START, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_fare_before_ride_start)));
 
 		Prefs.with(context).save(KEY_DRIVER_PLANS_URL, userData.optString(KEY_DRIVER_PLANS_URL, context.getString(R.string.driver_plans_url)));
+
+		Prefs.with(context).save(KEY_D2C_WHATSAPP_SHARE, userData.optInt(KEY_D2C_WHATSAPP_SHARE, 1));
+		Prefs.with(context).save(KEY_D2C_SHARE_CONTENT, userData.optString(KEY_D2C_SHARE_CONTENT, context.getString(R.string.d2c_share_content)));
+		Prefs.with(context).save(KEY_D2C_BRANCH_KEY, userData.optString(KEY_D2C_BRANCH_KEY, ""));
+		Prefs.with(context).save(KEY_D2C_BRANCH_SECRET, userData.optString(KEY_D2C_BRANCH_SECRET, ""));
+		Prefs.with(context).save(KEY_D2C_DEFAULT_SHARE_URL, userData.optString(KEY_D2C_DEFAULT_SHARE_URL, "http://share.jugnoo.in/dcrefer"));
+
+		Prefs.with(context).save(KEY_D2D_WHATSAPP_SHARE, userData.optInt(KEY_D2D_WHATSAPP_SHARE, 1));
+		Prefs.with(context).save(KEY_D2D_SHARE_CONTENT, userData.optString(KEY_D2D_SHARE_CONTENT, context.getString(R.string.d2d_share_content)));
+		Prefs.with(context).save(KEY_D2D_BRANCH_KEY, userData.optString(KEY_D2D_BRANCH_KEY, ""));
+		Prefs.with(context).save(KEY_D2D_BRANCH_SECRET, userData.optString(KEY_D2D_BRANCH_SECRET, ""));
+		Prefs.with(context).save(KEY_D2D_DEFAULT_SHARE_URL, userData.optString(KEY_D2D_DEFAULT_SHARE_URL, "https://driver.jugnoo.in/ddrefer"));
+
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {

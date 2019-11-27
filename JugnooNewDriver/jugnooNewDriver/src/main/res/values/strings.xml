@@ -1292,4 +1292,8 @@
     <string name="please_select_fleet">Please select fleet</string>
     <string name="select_ringtone">Select Ringtone</string>
     <string name="ringtone1">Ringtone 1</string>
+    <string name="send_via">Send via</string>
+    <string name="whatsapp_not_installed">Whatsapp not installed</string>
+    <string name="download_jugnoo_app">Download Jugnoo App</string>
+    <string name="download_jugnoo_driver_app">Download Jugnoo Driver App</string>
 </resources>

@@ -528,5 +528,18 @@ public interface Constants {
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 
 	String KEY_DRIVER_PLANS_URL = "driver_plans_url";
+
+	String KEY_D2C_WHATSAPP_SHARE = "d2c_whatsapp_share";
+	String KEY_D2C_SHARE_CONTENT = "d2c_share_content";
+	String KEY_D2C_BRANCH_KEY = "d2c_branch_key";
+	String KEY_D2C_BRANCH_SECRET = "d2c_branch_secret";
+	String KEY_D2C_DEFAULT_SHARE_URL = "d2c_default_share_url";
+
+	String KEY_D2D_WHATSAPP_SHARE = "d2d_whatsapp_share";
+	String KEY_D2D_SHARE_CONTENT = "d2d_share_content";
+	String KEY_D2D_BRANCH_KEY = "d2d_branch_key";
+	String KEY_D2D_BRANCH_SECRET = "d2d_branch_secret";
+	String KEY_D2D_DEFAULT_SHARE_URL = "d2d_default_share_url";
+
 }
 
