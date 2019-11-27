@@ -265,7 +265,7 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
         }
         val intent = Intent(this, HomeActivity::class.java)
         if (getIntent().extras != null) {
-            intent.putExtras(getIntent().extras)
+            intent.putExtras(getIntent().extras!!)
             intent.putExtra(Constants.FUGU_CHAT_BUNDLE, getIntent().extras)
 
         }

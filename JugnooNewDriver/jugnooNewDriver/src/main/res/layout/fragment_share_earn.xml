@@ -33,7 +33,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/graphic_refer"
                     android:visibility="visible"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitCenter"
                     />
 
                 <LinearLayout
@@ -85,22 +85,31 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp">
-                    <Button
+                    <TextView
                         android:id="@+id/buttonShare"
+                        android:layout_width="wrap_content"
+                        android:minWidth="200dp"
                         style="@style/ButtonTheme"
-                        android:layout_width="300dp"
                         android:text="@string/share"
                         android:textSize="20sp"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/ic_share"
                         />
-                    <ImageView
-                        android:id="@+id/imageShareLogo"
-                        android:layout_width="27dp"
-                        android:layout_height="27dp"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/share_button_icon"
-                        android:visibility="visible"/>
                 </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tvMoreSharingOptions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_more_sharing_options"
+                    android:padding="7dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:alpha="0.8"
+                    style="@style/TextMedium"
+                    android:textColor="@color/text_color_light_selector"
+                    />
 
                 <TextView
                     android:id="@+id/textViewShareReferral"
@@ -112,8 +121,9 @@
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:lineSpacingExtra="5dp"
-                    android:text="Share your referral code 12345678"
+                    tools:text="Share your referral code 12345678"
                     style="@style/TextNormal"
+                    android:textSize="18sp"
                     />
 
             </LinearLayout>

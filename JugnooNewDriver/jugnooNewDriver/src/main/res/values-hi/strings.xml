@@ -770,7 +770,8 @@
 	<string name="send_invoice">चालान भेजें</string>
 	<string name="add">जोड़ें</string>
     <string name="select_ringtone">रिंगटोन का चयन करें</string>
-
+    <string name="share_via_whatsapp">व्हाट्सएप के जरिए शेयर करें</string>
+    <string name="view_more_sharing_options">शेयर करने के लिए और विकल्प देखें</string>
 
 
 
