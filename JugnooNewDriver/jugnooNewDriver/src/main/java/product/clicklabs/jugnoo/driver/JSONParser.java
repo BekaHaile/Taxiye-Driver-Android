@@ -269,7 +269,6 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 		}
 
-		String customerReferralBonus = userData.optString("customer_referral_bonus", "30");
 
 		String deiValue = userData.optString("driver_dei", "-1");
 
@@ -279,10 +278,9 @@ public class JSONParser implements Constants {
 		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
 		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.hippo_support_faq_name_default));
 		String referralCode = userData.getString("referral_code");
+		int cityId = userData.optInt(Constants.KEY_CITY, 0);
 
 
-		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-		context.getResources().getString(R.string.referal_sms_message,referralCode, context.getString(R.string.appname), context.getString(R.string.appname),context.getString(R.string.customer_app_download_link)));
 		String referralMessage = userData.optString(Constants.KEY_REFERRAL_MESSAGE);
 		String referralMessageDriver = userData.optString(Constants.KEY_REFERRAL_MESSAGE_DRIVER);
 		String referralButtonText = userData.optString("referral_button_text", "Share");
@@ -293,6 +291,12 @@ public class JSONParser implements Constants {
 		String getCreditsInfo = userData.optString(Constants.KEY_GET_CREDITS_INFO);
 		String getCreditsImage = userData.optString(Constants.KEY_GET_CREDITS_IMAGE);
 		int sendCreditsEnabled = userData.optInt(Constants.KEY_SEND_CREDITS_ENABLED, 0);
+
+
+		Prefs.with(context).save(Constants.KEY_D2C_DISPLAY_MESSAGE, referralMessage);
+		Prefs.with(context).save(Constants.KEY_D2C_REFERRAL_IMAGE, referralImageD2C);
+		Prefs.with(context).save(Constants.KEY_D2D_DISPLAY_MESSAGE, referralMessageDriver);
+		Prefs.with(context).save(Constants.KEY_D2D_REFERRAL_IMAGE, referralImageD2D);
 
 		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
@@ -311,7 +315,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
 		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
-		Prefs.with(context).save(SPLabels.CITY_ID, userData.optInt("city", 0));
+		Prefs.with(context).save(SPLabels.CITY_ID, cityId);
 
 		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
@@ -401,7 +405,7 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
 		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
-		parseConfigVariables(context, userData);
+		parseConfigVariables(context, userData, cityId);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 
@@ -438,18 +442,18 @@ public class JSONParser implements Constants {
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
-				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
+				deiValue, sharingEnabled, sharingAvailable, driverSupportNumber,
+				showDriverRating, driverArrivalDistance,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
-				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
+				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
+				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
 				serviceDetailList, resendEmailInvoiceEnabled, driverTag);
 	}
 
-	private void parseConfigVariables(Context context, JSONObject userData) {
+	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
 		Prefs.with(context).save(KEY_FACEBOOK_PAGE_ID, userData.optString(KEY_FACEBOOK_PAGE_ID, context.getString(R.string.facebook_page_id)));
 		Prefs.with(context).save(KEY_FACEBOOK_PAGE_URL, userData.optString(KEY_FACEBOOK_PAGE_URL, context.getString(R.string.facebook_page_url)));
 		Prefs.with(context).save(DRIVER_SUPPORT_EMAIL, userData.optString(DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email)));
@@ -578,6 +582,37 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_D2D_BRANCH_SECRET, userData.optString(KEY_D2D_BRANCH_SECRET, ""));
 		Prefs.with(context).save(KEY_D2D_DEFAULT_SHARE_URL, userData.optString(KEY_D2D_DEFAULT_SHARE_URL, "https://driver.jugnoo.in/ddrefer"));
 
+
+		parseCityConfigVariables(context, userData, cityId);
+
+	}
+
+	private void parseCityConfigVariables(Context context, JSONObject userData, int cityId){
+		try{
+			JSONObject cityMainObj = userData.optJSONObject(Constants.KEY_CITY_OBJ);
+			JSONObject cityObj = cityMainObj.has(String.valueOf(cityId)) ?
+					cityMainObj.optJSONObject(String.valueOf(cityId)) : cityMainObj.optJSONObject(String.valueOf(0));
+
+			saveCityLevelParam(context, cityObj, KEY_D2C_SHARE_CONTENT);
+			saveCityLevelParam(context, cityObj, KEY_D2C_DISPLAY_MESSAGE);
+			saveCityLevelParam(context, cityObj, KEY_D2C_REFERRAL_IMAGE);
+			saveCityLevelParam(context, cityObj, KEY_D2C_WHATSAPP_SHARE);
+
+			saveCityLevelParam(context, cityObj, KEY_D2D_SHARE_CONTENT);
+			saveCityLevelParam(context, cityObj, KEY_D2D_DISPLAY_MESSAGE);
+			saveCityLevelParam(context, cityObj, KEY_D2D_REFERRAL_IMAGE);
+			saveCityLevelParam(context, cityObj, KEY_D2D_WHATSAPP_SHARE);
+
+
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	private void saveCityLevelParam(Context context, JSONObject cityObj, String key) {
+		if(cityObj.has(key)) {
+			Prefs.with(context).save(key, cityObj.optString(key));
+		}
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {

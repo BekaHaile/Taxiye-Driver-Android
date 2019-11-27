@@ -7,8 +7,10 @@ import android.os.Handler
 import android.support.v4.app.FragmentActivity
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,24 +71,27 @@ class ShareEarnFragment : BaseFragment() {
             textViewReferralCodeDisplay.append(resources.getString(R.string.your_referral_code))
             textViewReferralCodeValue.text = sstr
 
-            if (Data.userData != null) {
-                textViewShareReferral.text = if (isCustomerSharing) Data.userData.referralMessage else Data.userData.referralMessageDriver
-                if (TextUtils.isEmpty(Data.userData.referralImageD2C) && TextUtils.isEmpty(Data.userData.referralImageD2C)) {
-                    imageViewJugnooLogo.setImageResource(if (isCustomerSharing) R.drawable.graphic_refer else R.drawable.iv_driver_to_driver_referral)
+                textViewShareReferral.text = if (isCustomerSharing) {
+                    Prefs.with(requireContext()).getString(Constants.KEY_D2C_DISPLAY_MESSAGE, "")
                 } else {
-                    if (isCustomerSharing) {
-                        Picasso.with(activity).load(Data.userData.referralImageD2C)
-                                .placeholder(R.drawable.graphic_refer)
-                                .error(R.drawable.graphic_refer)
-                                .into(imageViewJugnooLogo)
-                    } else {
-                        Picasso.with(activity).load(Data.userData.referralImageD2D)
-                                .placeholder(R.drawable.iv_driver_to_driver_referral)
-                                .error(R.drawable.iv_driver_to_driver_referral)
-                                .into(imageViewJugnooLogo)
-                    }
+                    Prefs.with(requireContext()).getString(Constants.KEY_D2D_DISPLAY_MESSAGE, "")
                 }
+
+            val imageUrl = if (isCustomerSharing) {
+                Prefs.with(requireContext()).getString(Constants.KEY_D2C_REFERRAL_IMAGE, "")
+            } else {
+                Prefs.with(requireContext()).getString(Constants.KEY_D2D_REFERRAL_IMAGE, "")
             }
+            val fallbackDrawableId = if (isCustomerSharing) R.drawable.graphic_refer else R.drawable.iv_driver_to_driver_referral
+
+                if (TextUtils.isEmpty(imageUrl)) {
+                    imageViewJugnooLogo.setImageResource(fallbackDrawableId)
+                } else {
+                    Picasso.with(activity).load(imageUrl)
+                            .placeholder(fallbackDrawableId)
+                            .error(fallbackDrawableId)
+                            .into(imageViewJugnooLogo)
+                }
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -97,16 +102,34 @@ class ShareEarnFragment : BaseFragment() {
         buttonShare.setOnClickListener {
             MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN + "_" + FirebaseEvents.SHARE, null)
 
-            val whatsappShareEnabled = if(isCustomerSharing){
-                Prefs.with(requireContext()).getInt(Constants.KEY_D2C_WHATSAPP_SHARE, 0)
-            } else {
-                Prefs.with(requireContext()).getInt(Constants.KEY_D2D_WHATSAPP_SHARE, 0)
-            }
-            if(whatsappShareEnabled == 1){
+            if(isWhatsappShareEnabled() && Utils.appInstalledOrNot(activity, "com.whatsapp")){
                 generateBranchUrl()
             } else {
                 confirmCustomerNumberPopup(activity)
             }
+        }
+        tvMoreSharingOptions.setOnClickListener{
+            if(isWhatsappShareEnabled()){
+                generateBranchUrl(true)
+            }
+        }
+
+        val whatsappEnabled = isWhatsappShareEnabled()
+        buttonShare.text = if(whatsappEnabled) getString(R.string.share_via_whatsapp) else getString(R.string.share)
+        buttonShare.setCompoundDrawablesRelativeWithIntrinsicBounds(if(whatsappEnabled) R.drawable.ic_whatsapp else R.drawable.ic_share, 0, 0, 0)
+        tvMoreSharingOptions.visibility = if(whatsappEnabled) View.VISIBLE else View.GONE
+        if(whatsappEnabled){
+            val ssb = SpannableStringBuilder(tvMoreSharingOptions.text)
+            ssb.setSpan(UnderlineSpan(), 0, ssb.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            tvMoreSharingOptions.text = ssb
+        }
+    }
+
+    private fun isWhatsappShareEnabled(): Boolean {
+        return if (isCustomerSharing) {
+            Prefs.with(requireContext()).getInt(Constants.KEY_D2C_WHATSAPP_SHARE, 0) == 1
+        } else {
+            Prefs.with(requireContext()).getInt(Constants.KEY_D2D_WHATSAPP_SHARE, 0) == 1
         }
     }
 
@@ -244,7 +267,7 @@ class ShareEarnFragment : BaseFragment() {
         return if (isCustomerSharing) getString(R.string.refer_a_customer) else getString(R.string.refer_a_driver)
     }
 
-    private fun generateBranchUrl() {
+    private fun generateBranchUrl(defaultIntentShare:Boolean = false) {
         if(Data.userData == null){
             return
         }
@@ -271,7 +294,7 @@ class ShareEarnFragment : BaseFragment() {
                     } else {
                         Prefs.with(requireContext()).getString(Constants.KEY_D2D_DEFAULT_SHARE_URL, "")
                     }
-            )
+            , defaultIntentShare)
         } else {
             val branchUrlRequest = BranchUrlRequest(metaData, branchKey, branchSecret)
 
@@ -279,7 +302,7 @@ class ShareEarnFragment : BaseFragment() {
                     object : APICommonCallbackKotlin<BranchUrlResponse>() {
                         override fun onSuccess(t: BranchUrlResponse?, message: String?, flag: Int) {
                             if (t != null) {
-                                shareToWhatsapp(t.url!!)
+                                shareToWhatsapp(t.url!!, defaultIntentShare)
                             }
                         }
 
@@ -291,7 +314,7 @@ class ShareEarnFragment : BaseFragment() {
         }
     }
 
-    private fun shareToWhatsapp(url:String){
+    private fun shareToWhatsapp(url:String, defaultIntentShare:Boolean){
 
         val content = if(isCustomerSharing){
             Prefs.with(requireContext()).getString(Constants.KEY_D2C_SHARE_CONTENT, "")
@@ -303,8 +326,13 @@ class ShareEarnFragment : BaseFragment() {
         } else {
             getString(R.string.download_jugnoo_driver_app)
         }
+        val finalContent = content.plus(" ").plus(url).replace("{{{referral_code}}}", Data.userData.referralCode);
 
-        UtilsKt.whatsappIntent(requireActivity(), content.plus(" ").plus(url).replace("{{{referral_code}}}", Data.userData.referralCode), subject)
+        if(defaultIntentShare){
+            UtilsKt.defaultShareIntent(requireActivity(), finalContent, subject)
+        } else {
+            UtilsKt.whatsappIntent(requireActivity(), finalContent, subject)
+        }
     }
 
     companion object {

@@ -541,5 +541,12 @@ public interface Constants {
 	String KEY_D2D_BRANCH_SECRET = "d2d_branch_secret";
 	String KEY_D2D_DEFAULT_SHARE_URL = "d2d_default_share_url";
 
+	String KEY_D2C_DISPLAY_MESSAGE = "d2c_display_message";
+	String KEY_D2C_REFERRAL_IMAGE = "d2c_referral_image";
+	String KEY_D2D_DISPLAY_MESSAGE = "d2d_display_message";
+	String KEY_D2D_REFERRAL_IMAGE = "d2d_referral_image";
+
+	String KEY_CITY = "city";
+	String KEY_CITY_OBJ = "city_obj";
 }
 

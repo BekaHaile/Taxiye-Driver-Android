@@ -1296,4 +1296,6 @@
     <string name="whatsapp_not_installed">Whatsapp not installed</string>
     <string name="download_jugnoo_app">Download Jugnoo App</string>
     <string name="download_jugnoo_driver_app">Download Jugnoo Driver App</string>
+    <string name="share_via_whatsapp">Share via Whatsapp</string>
+    <string name="view_more_sharing_options">View more sharing options</string>
 </resources>
