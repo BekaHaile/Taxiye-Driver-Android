@@ -381,11 +381,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
 			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
 
-			switchOnlyCashRides.setOnCheckedChangeListener((buttonView, isChecked) -> {
-				updateDriverPreferences(Constants.KEY_ONLY_CASH_RIDES, isChecked ? 1 : 0, switchOnlyCashRides);
+			switchOnlyCashRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_ONLY_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
 			});
-			switchOnlyLongRides.setOnCheckedChangeListener((buttonView, isChecked) -> {
-				updateDriverPreferences(Constants.KEY_ONLY_LONG_RIDES, isChecked ? 1 : 0, switchOnlyLongRides);
+			switchOnlyLongRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_ONLY_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
 			});
 
 		}
@@ -749,6 +749,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
 				switchCompat.setChecked(value != 1);
 				return false;
+			}
+
+			@Override
+			public boolean onFailure(RetrofitError error) {
+				switchCompat.setChecked(value != 1);
+				return super.onFailure(error);
 			}
 		});
 	}
