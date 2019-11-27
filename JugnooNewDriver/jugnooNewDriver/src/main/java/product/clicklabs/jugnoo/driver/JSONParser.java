@@ -590,18 +590,20 @@ public class JSONParser implements Constants {
 	private void parseCityConfigVariables(Context context, JSONObject userData, int cityId){
 		try{
 			JSONObject cityMainObj = userData.optJSONObject(Constants.KEY_CITY_OBJ);
-			JSONObject cityObj = cityMainObj.has(String.valueOf(cityId)) ?
-					cityMainObj.optJSONObject(String.valueOf(cityId)) : cityMainObj.optJSONObject(String.valueOf(0));
 
-			saveCityLevelParam(context, cityObj, KEY_D2C_SHARE_CONTENT);
-			saveCityLevelParam(context, cityObj, KEY_D2C_DISPLAY_MESSAGE);
-			saveCityLevelParam(context, cityObj, KEY_D2C_REFERRAL_IMAGE);
-			saveCityLevelParam(context, cityObj, KEY_D2C_WHATSAPP_SHARE);
+			JSONObject cityDefaultObj = cityMainObj.has(String.valueOf(0)) ? cityMainObj.optJSONObject(String.valueOf(0)) : new JSONObject();
 
-			saveCityLevelParam(context, cityObj, KEY_D2D_SHARE_CONTENT);
-			saveCityLevelParam(context, cityObj, KEY_D2D_DISPLAY_MESSAGE);
-			saveCityLevelParam(context, cityObj, KEY_D2D_REFERRAL_IMAGE);
-			saveCityLevelParam(context, cityObj, KEY_D2D_WHATSAPP_SHARE);
+			JSONObject cityObj = cityMainObj.has(String.valueOf(cityId)) ? cityMainObj.optJSONObject(String.valueOf(cityId)) : new JSONObject();
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_SHARE_CONTENT);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_DISPLAY_MESSAGE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_REFERRAL_IMAGE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE);
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_SHARE_CONTENT);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_DISPLAY_MESSAGE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_REFERRAL_IMAGE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE);
 
 
 		} catch(Exception e){
@@ -609,9 +611,11 @@ public class JSONParser implements Constants {
 		}
 	}
 
-	private void saveCityLevelParam(Context context, JSONObject cityObj, String key) {
+	private void saveCityLevelParam(Context context, JSONObject cityDefaultObj, JSONObject cityObj, String key) {
 		if(cityObj.has(key)) {
 			Prefs.with(context).save(key, cityObj.optString(key));
+		} else if(cityDefaultObj.has(key)) {
+			Prefs.with(context).save(key, cityDefaultObj.optString(key));
 		}
 	}
 
