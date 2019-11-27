@@ -33,7 +33,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/graphic_refer"
                     android:visibility="visible"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitCenter"
                     />
 
                 <LinearLayout
