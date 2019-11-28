@@ -7,6 +7,7 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
@@ -40,7 +41,7 @@ public class UserData {
     private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
     private String driverTag;
     private ArrayList<DriverVehicleDetails> driverVehicleDetailsList = new ArrayList<>();
-
+    private DriverVehicleDetails activeVehicle=null;
     public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
                     int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
                     int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus,
@@ -54,7 +55,7 @@ public class UserData {
                     Double creditsEarned, Double commissionSaved, String referralMessageDriver,
                     String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
                     int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-                    int resendEmailInvoiceEnabled, String driverTag) {
+                    int resendEmailInvoiceEnabled, String driverTag,DriverVehicleDetails activeVehicle) {
 
         this.userIdentifier = userIdentifier;
         this.accessToken = accessToken;
@@ -112,6 +113,11 @@ public class UserData {
         this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
         setVehicleServicesModel(vehicleServicesModel);
         this.driverTag = driverTag;
+        this.activeVehicle=activeVehicle;
+    }
+
+    public DriverVehicleDetails getActiveVehicle() {
+        return activeVehicle;
     }
 
     public String getUserId() {
@@ -291,57 +297,7 @@ public class UserData {
         return driverVehicleDetailsList;
     }
 
-    public class DriverVehicleDetails {
-        String vehicleName,vehicleNo, image;
-
-        int driverVehicleMappingId;
-        int driverVehicleMappingStatus;
-
-        public DriverVehicleDetails(String vehicleName,
-                                    String vehicleNo,
-                                    int driverVehicleMappingId,
-                                    int driverVehicleMappingStatus,String image) {
-            this.image=image;
-            this.vehicleName = vehicleName;
-            this.vehicleNo = vehicleNo;
-            this.driverVehicleMappingId = driverVehicleMappingId;
-            this.driverVehicleMappingStatus = driverVehicleMappingStatus;
-        }
-
-        public void setDriverVehicleMappingStatus(int driverVehicleMappingStatus) {
-            this.driverVehicleMappingStatus = driverVehicleMappingStatus;
-        }
-
-        public int getDriverVehicleMappingId() {
-            return driverVehicleMappingId;
-        }
-
-        public String getDriverVehicleMappingStatus() {
-            switch (driverVehicleMappingStatus) {
-                case 0:
-                    return "Pending";
-                case 1:
-                    return "Approved";
-                case -1:
-                    return "Rejected";
-                case 2:
-                    return "Removed By Driver";
-                default:
-                    return "";
-            }
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public String getVehicleName() {
-            return vehicleName;
-        }
-
-        public String getVehicleNo() {
-            return vehicleNo;
-        }
-
+    public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
+        this.activeVehicle = activeVehicle;
     }
 }

@@ -32,6 +32,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -202,7 +203,7 @@ public class JSONParser implements Constants {
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
-
+		DriverVehicleDetails activeVehicle=null;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
@@ -239,6 +240,12 @@ public class JSONParser implements Constants {
 		if (userData.has("multiple_vehicles_enabled")) {
 			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
         }
+		if(userData.has(Constants.ACTIVE_VEHICLE)){
+			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
+			if(vehObj!=null) {
+				activeVehicle=DriverVehicleDetails.parseDocumentVehicleDetails(vehObj);
+			}
+		}
 
 		if (1 != autosEnabled) {
 			autosAvailable = 0;
@@ -449,7 +456,7 @@ public class JSONParser implements Constants {
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
 				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag);
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag,activeVehicle);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData) {

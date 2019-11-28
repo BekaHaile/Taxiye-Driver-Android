@@ -51,12 +51,13 @@ class DocumentDetailsFragment:Fragment(){
 
     companion object {
         @JvmStatic
-        fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int) =
+        fun newInstance(accessToken: String,docInfo: DocInfo,pos:Int,driverVehicleMappingId:Int) =
                 DocumentDetailsFragment().apply {
                     arguments = Bundle().apply {
                         val gson = Gson()
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                         putInt(ARGS_POS, pos)
+                        putInt(Constants.DRIVER_VEHICLE_MAPPING_ID, driverVehicleMappingId)
                         putString(ARGS_DOC_INFO, gson.toJson(docInfo))
                     }
                 }
@@ -70,6 +71,7 @@ class DocumentDetailsFragment:Fragment(){
     private  var pos: Int = 0
     private  var viewHolder :View?=null
     private var listener:InteractionListener? = null
+    private var driverVehicleMappingId = -1
 
     val documentInputFields = hashMapOf<String,DocumentInputField>()
 
@@ -94,6 +96,7 @@ class DocumentDetailsFragment:Fragment(){
         docInfo = gson.fromJson(arguments!!.getString(ARGS_DOC_INFO), DocInfo::class.java)
         accessToken = arguments!!.getString(Constants.KEY_ACCESS_TOKEN).toString()
         pos = arguments!!.getInt(ARGS_POS)
+        driverVehicleMappingId=arguments!!.getInt(Constants.DRIVER_VEHICLE_MAPPING_ID)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -224,8 +227,15 @@ class DocumentDetailsFragment:Fragment(){
                 "doc_values" to fieldsInput.toString()
 
         )
-        if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingId()!=-1){
-            map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingId().toString()
+        if (docInfo.docCategory == 1&&Data.getMultipleVehiclesEnabled() == 1) {
+            if (driverVehicleMappingId != -1)
+                map[Constants.DRIVER_VEHICLE_MAPPING_ID] =driverVehicleMappingId.toString()
+            if ( Data.getDriverMappingIdOnBoarding() != -1) {
+                map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingIdOnBoarding().toString()
+            }
+        }
+        if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingIdOnBoarding()!=-1&&docInfo.docCategory==1){
+            map[Constants.DRIVER_VEHICLE_MAPPING_ID] = Data.getDriverMappingIdOnBoarding().toString()
         }
         ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(map,ApiName.UPDATE_DOC_FIELDS
                 ,object: APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
@@ -239,7 +249,7 @@ class DocumentDetailsFragment:Fragment(){
                     listener?.updateDocInfo(pos, docInfo);
                     requireActivity().onBackPressed()
                 }
-                Data.setDriverMappingId(-1)
+                Data.setDriverMappingIdOnBoarding(-1)
             }
 
             override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {

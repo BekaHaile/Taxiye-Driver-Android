@@ -528,12 +528,16 @@ public interface Constants {
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 	String KEY_DATA = "data";
 	String DRIVER_VEHICLE_MAPPING_ID = "driver_vehicle_mapping_id";
+	String DRIVER_VEHICLE_MAPPING_ID_ONBOARDING = "driver_vehicle_mapping_id_onboarding";
+
 	String DRIVER_VEHICLE_MAPPING_STATUS = "driver_vehicle_mapping_status";
 	String VEHICLE_NO = "vehicle_no";
 	String BRAND = "brand";
 	String MODEL_NAME = "model_name";
 	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
 	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
+	String OPEN_ACTIVITY_TO_SELECT_VEHICLE="open_activity_to_select_vehicle";
+	String ACTIVE_VEHICLE = "active_vehicle";
 
 
 

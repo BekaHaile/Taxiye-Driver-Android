@@ -622,7 +622,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 							data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
 							data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
-							data.getIsDocInfoEditable());
+							data.getIsDocInfoEditable(),data.getDocCategory());
 					if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
 						if(taskType == DriverTaskTypes.OTHER_BRANDING.getType()
 								&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
@@ -891,8 +891,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 				params.put(Constants.KEY_IMG_POSITION, String.valueOf(column));
 				params.put(Constants.KEY_DOC_TYPE_NUM, String.valueOf(docInfo.docTypeNum));
-				if(driverVehicleMappingId!=-1)
-				params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
+
 				HomeUtil.putDefaultParams(params);
 
 				if(placeType != -1){
@@ -902,8 +901,12 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 
 					params.put(Constants.KEY_FEEDBACK, feedback);
 				}
-				if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingId()!=-1){
-					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingId()+"");
+				if (docInfo.docCategory == 1&&Data.getMultipleVehiclesEnabled() == 1) {
+					if(driverVehicleMappingId!=-1)
+					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
+					if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingIdOnBoarding()!=-1){
+					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+					}
 				}
 
 				TypedFile typedFile;

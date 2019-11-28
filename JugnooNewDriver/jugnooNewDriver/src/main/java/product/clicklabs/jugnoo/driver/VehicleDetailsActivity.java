@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.ui.DriverSetupFragment;
@@ -43,6 +44,8 @@ import static com.crashlytics.android.beta.Beta.TAG;
 
 public class VehicleDetailsActivity extends AppCompatActivity implements ToolbarChangeListener{
 
+    private boolean openSelectVehicle = false;
+
     RecyclerView rvVehicles;
     VehicleDetailsAdapter vehicleDetailsAdapter;
     ImageView ivAddDestRide,backBtn;
@@ -53,6 +56,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_details);
         hitFetchDriverVehicles();
+        openSelectVehicle = getIntent().getBooleanExtra(Constants.OPEN_ACTIVITY_TO_SELECT_VEHICLE, false);
         initViews();
         setListeners();
     }
@@ -71,14 +75,28 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         return getSupportFragmentManager().findFragmentByTag(DriverSetupFragment.class.getName());
     }
 
+    public void vehicleSelected() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
     private void initViews() {
         ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
         rvVehicles = findViewById(R.id.rvVehicles);
-        vehicleDetailsAdapter = new VehicleDetailsAdapter(this, Data.userData.getDriverVehicleDetailsList());
+        ivAddDestRide = findViewById(R.id.ivAddDestRide);
+        backBtn = findViewById(R.id.backBtn);
+
+        if (openSelectVehicle) {
+            vehicleDetailsAdapter = new VehicleDetailsAdapter(this, Data.userData.getDriverVehicleDetailsList(), true);
+            backBtn.setVisibility(View.GONE);
+            ivAddDestRide.setVisibility(View.GONE);
+            ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.select_vehicle);
+        } else
+            vehicleDetailsAdapter = new VehicleDetailsAdapter(this, Data.userData.getDriverVehicleDetailsList(), false);
+
         rvVehicles.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvVehicles.setAdapter(vehicleDetailsAdapter);
-        ivAddDestRide = findViewById(R.id.ivAddDestRide);
-        backBtn=findViewById(R.id.backBtn);
+
 
     }
 
@@ -123,11 +141,13 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
                 .commit();
     }
 
-    public void vehicleAdded(UserData.DriverVehicleDetails driverVehicleDetails){
+    public void vehicleAdded(DriverVehicleDetails driverVehicleDetails){
+        hitFetchDriverVehicles();
         Intent intent =new Intent(this,DriverDocumentActivity.class);
         intent.putExtra(Constants.FROM_VEHICLE_DETAILS_SCREEN,true);
         intent.putExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleDetails.getDriverVehicleMappingId());
         intent.putExtra(Constants.KEY_ACCESS_TOKEN,Data.userData.accessToken);
+        intent.putExtra("doc_required", 3);
         startActivityForResult(intent,1);
     }
 
@@ -153,19 +173,13 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
                                 for (int i = 0; i < dataArr.length(); i++) {
 
                                     JSONObject vehObj = dataArr.getJSONObject(i);
-                                    int driverMappingId = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_ID);
-                                    int driverMappingStatus = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_STATUS);
-                                    String vehicleNo = vehObj.optString(Constants.VEHICLE_NO, "-----");
-                                    String vehicleName = vehObj.optString(Constants.BRAND, " ") + ", " + vehObj.optString(Constants.MODEL_NAME, "");
-                                    String vehicleImage = vehObj.optString(Constants.BRAND, " ") + ", " + vehObj.optString(Constants.KEY_IMAGE, "");
-                                    UserData.DriverVehicleDetails driverVehicleDetail = Data.userData.new DriverVehicleDetails(vehicleName, vehicleNo, driverMappingId, driverMappingStatus, vehicleImage);
-                                    Data.userData.getDriverVehicleDetailsList().add(driverVehicleDetail);
+                                    Data.userData.getDriverVehicleDetailsList().add(DriverVehicleDetails.parseDocumentVehicleDetails(vehObj));
                                 }
                             }
                         }
                         updateVehicleList();
                     }
-                        DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
+//                    DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -206,7 +220,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
                         Data.userData.getDriverVehicleDetailsList().get(positionInList).setDriverVehicleMappingStatus(2);
                         updateVehicleList();
                     }
-                        DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
+                    DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -263,15 +277,17 @@ enum VehicleMappingStatusEnum {
 
 class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.CustomerVh> {
 
-    Activity activity;
-    ArrayList<UserData.DriverVehicleDetails> vehicleDetails = new ArrayList();
+    private Activity activity;
+    private boolean selectVehicleView ;
+    private ArrayList<DriverVehicleDetails> vehicleDetails;
 
-    VehicleDetailsAdapter(Activity activity, ArrayList<UserData.DriverVehicleDetails> vehicleDetails) {
+    VehicleDetailsAdapter(Activity activity, ArrayList<DriverVehicleDetails> vehicleDetails, boolean selectVehicleView) {
+        this.selectVehicleView = selectVehicleView;
         this.activity = activity;
         this.vehicleDetails = vehicleDetails;
     }
 
-    @NonNull
+
     @Override
     public CustomerVh onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.content_vehicle_details, viewGroup, false);
@@ -283,6 +299,8 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
         customerVh.tvVehicleName.setText(vehicleDetails.get(i).getVehicleName());
         customerVh.tvVehicleDetails.setText(vehicleDetails.get(i).getVehicleNo());
         String status = vehicleDetails.get(i).getDriverVehicleMappingStatus();
+        //show only approved vehicles for selection
+
         if (status.equalsIgnoreCase("approved")) {
             customerVh.tvVehicleStatus.setTextColor(activity.getResources().getColor(R.color.green_btn));
         } else
@@ -295,6 +313,9 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
                     .placeholder(R.drawable.auto_icon_front_new)
                     .transform(new CircleTransform())
                     .into(customerVh.profileImg);
+        if (selectVehicleView) {
+            customerVh.ivDelete.setVisibility(View.GONE);
+        }
 
 
     }
@@ -307,27 +328,43 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
     class CustomerVh extends RecyclerView.ViewHolder {
         TextView tvVehicleDetails, tvVehicleStatus, tvVehicleName;
         ImageView profileImg, ivDelete;
+        View border;
 
-        public CustomerVh(@NonNull View itemView) {
+        private CustomerVh(@NonNull View itemView) {
             super(itemView);
             tvVehicleDetails = itemView.findViewById(R.id.tvVehicleDetails);
             tvVehicleStatus = itemView.findViewById(R.id.tvVehicleStatus);
             tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
             profileImg = itemView.findViewById(R.id.profileImg);
             ivDelete = itemView.findViewById(R.id.ivDelete);
+            border = itemView.findViewById(R.id.border);
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                HashMap<String,String> params=new HashMap<>();
-
-                    ((VehicleDetailsActivity)activity).hitRemoveDriverVehicles(getAdapterPosition(),vehicleDetails.get(getAdapterPosition()).getDriverVehicleMappingId());
+                    ((VehicleDetailsActivity) activity).hitRemoveDriverVehicles(getAdapterPosition(), vehicleDetails.get(getAdapterPosition()).getDriverVehicleMappingId());
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(activity instanceof VehicleDetailsActivity)
-                        ((VehicleDetailsActivity)activity).vehicleAdded(vehicleDetails.get(getAdapterPosition()));
+                    if (activity instanceof VehicleDetailsActivity) {
+                        if (selectVehicleView) {
+//                        if(v.getTag()==null){
+//                            v.setTag("Clicked");
+//                            border.setBackground(((Activity)activity).getResources().getDrawable(R.drawable.circle_border_autos));
+//                        }
+//                        else if(v.getTag().equals("Clicked"))
+//                        {
+//                            v.setTag(null);
+//                            border.setBackground(((Activity)activity).getResources().getDrawable(R.drawable.background_transparent));
+//                        }
+                            Data.userData.setActiveVehicle(vehicleDetails.get(getAdapterPosition()));
+                            ((VehicleDetailsActivity) activity).vehicleSelected();
+                            border.setBackground(activity.getResources().getDrawable(R.drawable.background_white_rounded_orange_bordered));
+
+                        } else
+                            ((VehicleDetailsActivity) activity).vehicleAdded(vehicleDetails.get(getAdapterPosition()));
+                    }
                 }
             });
         }

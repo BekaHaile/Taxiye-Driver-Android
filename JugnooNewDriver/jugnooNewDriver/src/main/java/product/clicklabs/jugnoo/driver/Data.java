@@ -58,18 +58,18 @@ public class Data {
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
 	private static int multipleVehiclesEnabled=0;
-	private static int driverMappingId=-1;
+	private static int driverMappingIdOnBoarding=-1;
 
 	public static int getMultipleVehiclesEnabled() {
 		return multipleVehiclesEnabled;
 	}
 
-	public static int getDriverMappingId() {
-		return driverMappingId;
+	public static int getDriverMappingIdOnBoarding() {
+		return driverMappingIdOnBoarding;
 	}
 
-	public static void setDriverMappingId(int driverMappingId) {
-		Data.driverMappingId = driverMappingId;
+	public static void setDriverMappingIdOnBoarding(int driverMappingId) {
+		Data.driverMappingIdOnBoarding = driverMappingId;
 	}
 
 	public static void setMultipleVehiclesEnabled(int multipleVehiclesEnabled) {

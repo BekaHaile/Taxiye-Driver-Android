@@ -163,7 +163,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		title.setText(docInfo.docType);
 //		if(accessToken==null&&Data.userData!=null){
 			getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos), DocumentDetailsFragment.class.getName())
+				.add(R.id.fragment,  DocumentDetailsFragment.newInstance(accessToken,docInfo,pos,driverVehicleMappingId), DocumentDetailsFragment.class.getName())
 				.hide(Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())))
 				.addToBackStack(DocumentDetailsFragment.class.getName())
 				.commit();
@@ -230,7 +230,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 									if(fromVehicleDetailsScreen)
 									{
 										setResult(Activity.RESULT_OK);
-										finish();
+										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												performbackPressed();
+												finish();
+											}
+										});
 //										startActivity(new Intent(DriverDocumentActivity.this,VehicleDetailsActivity.class));
 										return;
 									}

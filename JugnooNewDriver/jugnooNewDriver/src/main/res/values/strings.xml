@@ -1299,5 +1299,7 @@
     <string name="ownership_status">Ownership status</string>
     <string name="your_vehicles">Your Vehicles</string>
     <string name="title_activity_vehicle_details">VehicleDetailsActivity</string>
+    <string name="select_vehicle">Select a Vehicle</string>
+
 
 </resources>

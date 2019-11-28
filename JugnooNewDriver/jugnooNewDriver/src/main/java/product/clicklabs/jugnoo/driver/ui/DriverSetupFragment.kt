@@ -20,10 +20,12 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
+import kotlinx.android.synthetic.main.fragment_vehicle_model.*
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
@@ -208,6 +210,11 @@ class DriverSetupFragment : Fragment() {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
             return false
         }
+        val vehicleNumber = edtVehicleNo.text.toString().trim()
+        if (vehicleNumber.isEmpty()&&Data.getMultipleVehiclesEnabled()==1) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.invalid_vehicle_number))
+            return false
+        }
 
 
         if (cityId == null || cityId == "0") {
@@ -294,7 +301,7 @@ class DriverSetupFragment : Fragment() {
                         when (t.flag) {
                             ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
                                 if(t.driverVehicleMappinId!=-1){
-                                    Data.setDriverMappingId(t.driverVehicleMappinId)
+                                    Data.setDriverMappingIdOnBoarding(t.driverVehicleMappinId)
                                 }
 //                                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
 //                                    (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,

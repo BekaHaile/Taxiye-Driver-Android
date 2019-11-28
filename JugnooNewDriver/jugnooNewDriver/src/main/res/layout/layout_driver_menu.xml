@@ -132,6 +132,19 @@
                             android:textColor="@color/white"
                             android:textSize="28px"/>
 
+                        <TextView
+                            android:id="@+id/tvVehicleName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="INNOVA PB02 HO3224"
+                            android:visibility="visible"
+                            android:singleLine="true"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/white"
+                            android:ellipsize="marquee"
+                            android:textSize="28px"
+                            />
+
                     </LinearLayout>
                 </LinearLayout>
 

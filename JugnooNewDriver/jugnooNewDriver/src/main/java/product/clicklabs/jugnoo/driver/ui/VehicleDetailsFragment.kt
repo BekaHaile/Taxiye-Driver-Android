@@ -20,6 +20,7 @@ import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails
 import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
@@ -272,6 +273,7 @@ class VehicleDetailsFragment : Fragment() {
     }
     fun viewVehicleNo(){
         if(driverDetails!!.containsKey("vehicle_no")){
+            edtVehicleNumber.setText(driverDetails!!.get("vehicle_no"))
             edtVehicleNumber.visibility=View.GONE
             labelVehicleNumber.visibility=View.GONE
         }
@@ -482,23 +484,13 @@ class VehicleDetailsFragment : Fragment() {
                     val message = JSONParser.getServerMessage(jObj)
                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                         if (jObj.has(Constants.KEY_DATA)) {
-                            Data.userData.driverVehicleDetailsList.clear()
-                            val dataArr = jObj.getJSONArray(Constants.KEY_DATA)
-                            if (dataArr.length() > 0) {
-                                var driverVehicleDetail:UserData.DriverVehicleDetails?=null
-                                for (i in 0 until dataArr.length()) {
+                            val dataObj = jObj.getJSONObject(Constants.KEY_DATA)
+                            if (dataObj!= null) {
+                                var driverVehicleDetail: DriverVehicleDetails?=null
 
-                                    val vehObj = dataArr.getJSONObject(i)
-                                    val driverMappingId = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_ID)
-                                    val driverMappingStatus = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_STATUS)
-                                    val vehicleNo = vehObj.optString(Constants.VEHICLE_NO, "-----")
-                                    val vehicleName = vehObj.optString(Constants.BRAND, " ") + ", " + vehObj.optString(Constants.MODEL_NAME, "")
-                                    val vehicleImage = vehObj.optString(Constants.BRAND, " ") + ", " + vehObj.optString(Constants.KEY_IMAGE, "")
-                                    driverVehicleDetail= Data.userData.DriverVehicleDetails(vehicleName, vehicleNo, driverMappingId, driverMappingStatus, vehicleImage)
+                                    driverVehicleDetail= DriverVehicleDetails.parseDocumentVehicleDetails(dataObj)
                                     Data.userData.driverVehicleDetailsList.add(driverVehicleDetail)
-                                }
-                                Data.userData.driverVehicleDetailsList.add(driverVehicleDetail)
-                                (activity as VehicleDetailsActivity).vehicleAdded(driverVehicleDetail)
+                                    (activity as VehicleDetailsActivity).vehicleAdded(driverVehicleDetail)
                             }
 
                         }
@@ -613,7 +605,7 @@ class VehicleDetailsFragment : Fragment() {
                         when (t.flag) {
                             ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
                                 if(t.driverVehicleMappinId!=-1){
-                                    Data.setDriverMappingId(t.driverVehicleMappinId)
+                                    Data.setDriverMappingIdOnBoarding(t.driverVehicleMappinId)
                                 }
                                 if (isEditMode) {
                                     val vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber, year,

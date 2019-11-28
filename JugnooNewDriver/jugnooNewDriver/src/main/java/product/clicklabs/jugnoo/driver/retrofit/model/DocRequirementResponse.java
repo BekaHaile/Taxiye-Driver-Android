@@ -109,6 +109,9 @@ public class DocRequirementResponse {
 		@SerializedName("gallery_restricted")
 		@Expose
 		private Integer galleryRestricted;
+		@SerializedName("document_category")
+		@Expose
+		private int docCategory;
 
 		public String getInstructions() {
 			return instructions;
@@ -269,6 +272,10 @@ public class DocRequirementResponse {
 
 		public boolean getIsDocInfoEditable() {
 			return isDocInfoEditable==1;
+		}
+
+		public int getDocCategory() {
+			return docCategory;
 		}
 	}
 
