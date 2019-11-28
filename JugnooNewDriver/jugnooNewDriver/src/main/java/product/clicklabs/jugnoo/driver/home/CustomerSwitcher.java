@@ -343,6 +343,9 @@ public class CustomerSwitcher {
 
 	public void updateDistanceOnLocationChanged(CustomerInfo customerInfo) {
 		try {
+			if(Data.fareStructure == null || customerInfo == null){
+				return;
+			}
 			String fareAndDistance = "";
 			if(Data.fareStructure.mandatoryFare > 0 && Prefs.with(activity).getInt(KEY_SHOW_FARE_BEFORE_RIDE_START, 0) == 1) {
 				fareAndDistance = fareAndDistance.concat(activity.getString(R.string.fare)).concat(": ")
@@ -352,7 +355,7 @@ public class CustomerSwitcher {
 			if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
 				if (HomeActivity.myLocation != null) {
 					fareAndDistance = fareAndDistance.concat("\n").concat(Utils.getDecimalFormatForMoney()
-							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+							.format(MapUtils.distance(customerInfo.getRequestlLatLng(),
 									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) * 1.4F * UserData.getDistanceUnitFactor(activity, false))
 							+" "+Utils.getDistanceUnit(UserData.getDistanceUnit(activity))+ "\n" + activity.getResources().getString(R.string.away_cap));
 				}
