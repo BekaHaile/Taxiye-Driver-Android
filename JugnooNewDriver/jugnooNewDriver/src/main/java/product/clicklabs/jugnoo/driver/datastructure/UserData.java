@@ -51,7 +51,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag) {
+					int resendEmailInvoiceEnabled, String driverTag, int onlyCashRides, int onlyLongRides) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -104,6 +104,8 @@ public class UserData {
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
+		this.onlyCashRides = onlyCashRides;
+		this.onlyLongRides = onlyLongRides;
 	}
 
 	public String getUserId() {
