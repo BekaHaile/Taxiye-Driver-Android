@@ -191,12 +191,12 @@ import product.clicklabs.jugnoo.driver.fragments.BidInteractionListener;
 import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsActivity;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
+import product.clicklabs.jugnoo.driver.home.HomeBannerAction;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
@@ -566,7 +566,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PagerAdapter pagerAdapter;
 
-    private TextView tvIntro;
+    private TextView tvTutorialBanner;
     private ImageView ivRingtoneSelection;
     private Dialog ringtoneDialog;
 
@@ -929,7 +929,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tvPickupTime.setTypeface(Fonts.mavenRegular(this));
             bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
             bDropAddressToggle.setTypeface(Fonts.mavenRegular(this));
-			tvIntro = findViewById(R.id.tvTutorialBanner);
+			tvTutorialBanner = findViewById(R.id.tvTutorialBanner);
 
 
             //In ride layout
@@ -1426,7 +1426,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, DriverCreditsActivity.class));
+                    startActivity(DriverCreditsActivity.createIntent(HomeActivity.this, 0));
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
                 }
@@ -1474,21 +1474,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-			tvIntro.setOnClickListener(new OnClickListener() {
+			tvTutorialBanner.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					ArrayList<PagerInfo> pagerInfos = new ArrayList<>();
-//					pagerInfos.add(new PagerInfo("", ",We will be having Town hall in the conference room, Ground floor @ 6:00 PM , Monday 19th Aug. \n" +
-//							"Please do post your queries in the Town hall Query Form", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_MiwK8FuWxhk2"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_4HcN7r2cyPz1"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_4VrRAIUP0IhM"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_ubBqYiGfE9BP"));
-
-					LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
-					if(myLocation != null){
-						latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+					int homeBannerIndex = Prefs.with(HomeActivity.this).getInt(KEY_HOME_BANNER_INDEX, 0);
+					if(homeBannerIndex > 0){
+						HomeBannerAction.performBannerClick(HomeActivity.this, homeBannerIndex);
+					} else {
+						TutorialInfoDialog.INSTANCE.showAddToll(HomeActivity.this, getCurrentLatLng());
 					}
-					TutorialInfoDialog.INSTANCE.showAddToll(HomeActivity.this, latLng);
 				}
 			});
 
@@ -4475,7 +4469,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     startMarker.remove();
                 }
             }
-			tvIntro.setVisibility(View.GONE);
+			tvTutorialBanner.setVisibility(View.GONE);
 
             switch (mode) {
 
@@ -4557,9 +4551,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     disableEmergencyModeIfNeeded(Data.getCurrentEngagementId());
                     containerSwitch.post(this::changeOnOFFStateTop);
-                    String tutorialBannerText = Prefs.with(this).getString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, "");
-					tvIntro.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
-					tvIntro.setText(tutorialBannerText);
+					bannerDisplay();
 
 					ivRingtoneSelection.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
 
@@ -12331,4 +12323,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     public void rejectCLick(@NotNull CustomerInfo customerInfo) {
         rejectRequestFuncCall(customerInfo);
     }
+
+	private void bannerDisplay() {
+    	String homeBannerText = Prefs.with(this).getString(KEY_HOME_BANNER_TEXT, "");
+    	if(!TextUtils.isEmpty(homeBannerText)){
+			tvTutorialBanner.setVisibility(View.VISIBLE);
+			tvTutorialBanner.setText(homeBannerText);
+		} else {
+			String tutorialBannerText = Prefs.with(this).getString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, "");
+			tvTutorialBanner.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
+			tvTutorialBanner.setText(tutorialBannerText);
+		}
+	}
+
+	public LatLng getCurrentLatLng(){
+		LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
+		if(myLocation != null){
+			latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+		}
+		return latLng;
+	}
+
 }

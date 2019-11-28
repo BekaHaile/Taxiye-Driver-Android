@@ -582,6 +582,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_D2D_BRANCH_SECRET, userData.optString(KEY_D2D_BRANCH_SECRET, ""));
 		Prefs.with(context).save(KEY_D2D_DEFAULT_SHARE_URL, userData.optString(KEY_D2D_DEFAULT_SHARE_URL, "https://driver.jugnoo.in/ddrefer"));
 
+		Prefs.with(context).save(KEY_HOME_BANNER_TEXT, userData.optString(KEY_HOME_BANNER_TEXT, ""));
+		Prefs.with(context).save(KEY_HOME_BANNER_INDEX, userData.optInt(KEY_HOME_BANNER_INDEX, 0));
+
 
 		parseCityConfigVariables(context, userData, cityId);
 
@@ -595,15 +598,18 @@ public class JSONParser implements Constants {
 
 			JSONObject cityObj = cityMainObj.has(String.valueOf(cityId)) ? cityMainObj.optJSONObject(String.valueOf(cityId)) : new JSONObject();
 
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_SHARE_CONTENT);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_DISPLAY_MESSAGE);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_REFERRAL_IMAGE);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_SHARE_CONTENT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_DISPLAY_MESSAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_REFERRAL_IMAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE, true);
 
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_SHARE_CONTENT);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_DISPLAY_MESSAGE);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_REFERRAL_IMAGE);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_SHARE_CONTENT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_DISPLAY_MESSAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_REFERRAL_IMAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE, true);
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_TEXT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_INDEX, false);
 
 
 		} catch(Exception e){
@@ -611,11 +617,19 @@ public class JSONParser implements Constants {
 		}
 	}
 
-	private void saveCityLevelParam(Context context, JSONObject cityDefaultObj, JSONObject cityObj, String key) {
+	private void saveCityLevelParam(Context context, JSONObject cityDefaultObj, JSONObject cityObj, String key, boolean isString) {
 		if(cityObj.has(key)) {
-			Prefs.with(context).save(key, cityObj.optString(key));
+			if(!isString) {
+				Prefs.with(context).save(key, cityObj.optInt(key));
+			} else {
+				Prefs.with(context).save(key, cityObj.optString(key));
+			}
 		} else if(cityDefaultObj.has(key)) {
-			Prefs.with(context).save(key, cityDefaultObj.optString(key));
+			if(!isString) {
+				Prefs.with(context).save(key, cityDefaultObj.optInt(key));
+			} else {
+				Prefs.with(context).save(key, cityDefaultObj.optString(key));
+			}
 		}
 	}
 

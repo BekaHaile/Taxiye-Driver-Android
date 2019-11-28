@@ -548,5 +548,8 @@ public interface Constants {
 
 	String KEY_CITY = "city";
 	String KEY_CITY_OBJ = "city_obj";
+
+	String KEY_HOME_BANNER_TEXT = "home_banner_text";
+	String KEY_HOME_BANNER_INDEX = "home_banner_index";
 }
 
