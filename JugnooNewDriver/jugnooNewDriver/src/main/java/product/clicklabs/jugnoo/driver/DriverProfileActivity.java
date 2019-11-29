@@ -731,7 +731,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
     	HashMap<String, String> params = new HashMap<>();
-    	params.put(key, String.valueOf(value));
+    	params.put(key, String.valueOf(1));
 		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
 				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
 			@Override
