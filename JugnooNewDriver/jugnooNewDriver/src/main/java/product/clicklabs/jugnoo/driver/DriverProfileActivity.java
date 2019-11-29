@@ -41,6 +41,10 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
+import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -85,19 +89,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     int delivery_available = 0;
     boolean checked = false;
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
+	private SwitchCompat switchOnlyCashRides;
+	private SwitchCompat switchOnlyLongRides;
 
     @Override
     protected void onResume() {
@@ -375,6 +368,34 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         dividerVehicleServiceDetails  =    findViewById(R.id.ivDivVehicleServiceDetails);
         setVehicleSetsData();
 
+
+		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
+		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+
+		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
+			switchOnlyCashRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
+			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
+
+			switchOnlyLongRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
+			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
+
+			switchOnlyCashRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_TOGGLE_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
+			});
+			switchOnlyLongRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_TOGGLE_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
+			});
+
+		}
+		else {
+			switchOnlyCashRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.GONE);
+
+			switchOnlyLongRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
+		}
 
     }
 
@@ -707,4 +728,36 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
         onBackPressed();
     }
+
+    private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
+    	HashMap<String, String> params = new HashMap<>();
+    	params.put(key, String.valueOf(1));
+		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
+				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+			@Override
+			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+					if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_CASH_RIDES)) {
+						Data.userData.setOnlyCashRides(value);
+					} else if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_LONG_RIDES)) {
+						Data.userData.setOnlyLongRides(value);
+					}
+					switchCompat.setChecked(value == 1);
+				}
+			}
+
+			@Override
+			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				switchCompat.setChecked(value != 1);
+				return false;
+			}
+
+			@Override
+			public boolean onFailure(RetrofitError error) {
+				switchCompat.setChecked(value != 1);
+				return super.onFailure(error);
+			}
+		});
+	}
+
 }

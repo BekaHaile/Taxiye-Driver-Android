@@ -1298,4 +1298,6 @@
     <string name="download_jugnoo_driver_app">Download Jugnoo Driver App</string>
     <string name="share_via_whatsapp">Share via Whatsapp</string>
     <string name="view_more_sharing_options">View more sharing options</string>
+    <string name="only_cash_rides">Only Cash Rides</string>
+    <string name="only_long_rides">Only Long Rides</string>
 </resources>
