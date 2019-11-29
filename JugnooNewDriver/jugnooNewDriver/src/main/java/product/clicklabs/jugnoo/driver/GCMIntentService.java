@@ -590,6 +590,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
 									String currency = jObj.optString(Constants.KEY_CURRENCY, "");
 									String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
+									if(TextUtils.isEmpty(pickupTime)){
+										pickupTime = jObj.optString(Constants.KEY_SCHEDULED_RIDE_PICKUP_TIME);
+									}
 									JSONObject joRentalInfo = jObj.optJSONObject(Constants.KEY_RENTAL_INFO);
 									String strRentalInfo = "";
 									if(joRentalInfo != null) {

@@ -301,7 +301,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
     RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
-            relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain,
+            relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain, rlPlansNew,
             rlSupportTicket, rlMailSupport;
     TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
@@ -716,6 +716,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
+            rlPlansNew = findViewById(R.id.rlPlansNew);
 
             ((TextView) findViewById(R.id.textViewPlans)).setTypeface(Fonts.mavenRegular(this));
             ((TextView) findViewById(R.id.textViewSupportMain)).setTypeface(Fonts.mavenRegular(this));
@@ -1603,6 +1604,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     Intent intent = new Intent(HomeActivity.this, JugnooSubscriptionActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+            });
+
+            rlPlansNew.setOnClickListener(v -> {
+            	String url = Prefs.with(HomeActivity.this).getString(KEY_DRIVER_PLANS_URL, getString(R.string.driver_plans_url));
+                if(Data.userData != null && Data.userData.userId != null) {
+                    Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+                    intent.putExtra("title", getString(R.string.plans_drawer_title));
+                    intent.putExtra("extras", url);
+                    intent.putExtra("driverId", Data.userData.userId);
+                    HomeActivity.this.startActivity(intent);
+                    HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
 
@@ -2535,6 +2548,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutPlans.setVisibility(View.VISIBLE);
             } else {
                 relativeLayoutPlans.setVisibility(View.GONE);
+            }
+            if (Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_PLANS_COMMISSION, 0) == 1) {
+                rlPlansNew.setVisibility(View.VISIBLE);
+            } else {
+                rlPlansNew.setVisibility(View.GONE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_RATE_CARD_IN_MENU, 0) == 1) {
