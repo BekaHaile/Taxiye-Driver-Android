@@ -551,7 +551,7 @@ public interface Constants {
 
 	String KEY_HOME_BANNER_TEXT = "home_banner_text";
 	String KEY_HOME_BANNER_INDEX = "home_banner_index";
-	String KEY_SUBSCRIPTION_ENABLED = "subscription_enabled";
+	String KEY_DRIVER_SUBSCRIPTION = "driver_subscription";
 	String KEY_ONLY_CASH_RIDES = "only_cash_rides";
 	String KEY_ONLY_LONG_RIDES = "only_long_rides";
 	String KEY_TOGGLE_CASH_RIDES = "toggle_cash_rides";
