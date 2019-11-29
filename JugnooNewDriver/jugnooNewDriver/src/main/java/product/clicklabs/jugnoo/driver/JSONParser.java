@@ -438,6 +438,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
 		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
+		int subscriptionEnabled = userData.optInt(KEY_SUBSCRIPTION_ENABLED, 0);
 		int onlyCashRides = userData.optInt(KEY_ONLY_CASH_RIDES, 0);
 		int onlyLongRides = userData.optInt(KEY_ONLY_LONG_RIDES, 0);
 
@@ -452,7 +453,7 @@ public class JSONParser implements Constants {
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag, onlyCashRides, onlyLongRides);
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {

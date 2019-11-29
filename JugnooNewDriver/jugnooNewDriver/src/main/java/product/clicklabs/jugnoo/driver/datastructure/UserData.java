@@ -36,6 +36,7 @@ public class UserData {
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
+	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
@@ -51,7 +52,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int onlyCashRides, int onlyLongRides) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -104,6 +105,7 @@ public class UserData {
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
+		this.subscriptionEnabled = subscriptionEnabled;
 		this.onlyCashRides = onlyCashRides;
 		this.onlyLongRides = onlyLongRides;
 	}
@@ -270,5 +272,13 @@ public class UserData {
 
 	public void setOnlyLongRides(int onlyLongRides) {
 		this.onlyLongRides = onlyLongRides;
+	}
+
+	public int getSubscriptionEnabled() {
+		return subscriptionEnabled;
+	}
+
+	public void setSubscriptionEnabled(int subscriptionEnabled) {
+		this.subscriptionEnabled = subscriptionEnabled;
 	}
 }

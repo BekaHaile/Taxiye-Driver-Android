@@ -372,7 +372,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
 		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
 
-		if(Data.userData != null && JSONParser.isTagEnabled(this, Constants.DRIVER_PLANS_COMMISSION)){
+		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
 			switchOnlyCashRides.setVisibility(View.VISIBLE);
 			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
 			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
@@ -382,10 +382,10 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
 
 			switchOnlyCashRides.setOnClickListener((view) -> {
-				updateDriverPreferences(Constants.KEY_ONLY_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
+				updateDriverPreferences(Constants.KEY_TOGGLE_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
 			});
 			switchOnlyLongRides.setOnClickListener((view) -> {
-				updateDriverPreferences(Constants.KEY_ONLY_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
+				updateDriverPreferences(Constants.KEY_TOGGLE_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
 			});
 
 		}
@@ -733,16 +733,17 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     	HashMap<String, String> params = new HashMap<>();
     	params.put(key, String.valueOf(value));
 		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
-				.execute(params, ApiName.UPDATE_DRIVER_PREFERENCES, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
 			@Override
 			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
-				if(key.equalsIgnoreCase(Constants.KEY_ONLY_CASH_RIDES)){
-					Data.userData.setOnlyCashRides(value);
+				if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+					if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_CASH_RIDES)) {
+						Data.userData.setOnlyCashRides(value);
+					} else if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_LONG_RIDES)) {
+						Data.userData.setOnlyLongRides(value);
+					}
+					switchCompat.setChecked(value == 1);
 				}
-				else if(key.equalsIgnoreCase(Constants.KEY_ONLY_LONG_RIDES)){
-					Data.userData.setOnlyLongRides(value);
-				}
-				switchCompat.setChecked(value == 1);
 			}
 
 			@Override
