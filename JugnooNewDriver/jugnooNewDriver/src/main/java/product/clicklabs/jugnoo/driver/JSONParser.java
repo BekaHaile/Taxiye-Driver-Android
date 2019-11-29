@@ -601,12 +601,12 @@ public class JSONParser implements Constants {
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_SHARE_CONTENT, true);
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_DISPLAY_MESSAGE, true);
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_REFERRAL_IMAGE, true);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE, false);
 
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_SHARE_CONTENT, true);
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_DISPLAY_MESSAGE, true);
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_REFERRAL_IMAGE, true);
-			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE, false);
 
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_TEXT, true);
 			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_INDEX, false);
