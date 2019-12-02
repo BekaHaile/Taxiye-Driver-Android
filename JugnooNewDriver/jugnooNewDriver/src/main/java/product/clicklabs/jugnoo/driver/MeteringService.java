@@ -207,7 +207,7 @@ public class MeteringService extends Service {
 	public static Notification generateNotification(Context context, String message,int notificationId) {
 		try {
 			long when = System.currentTimeMillis();
-			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
+			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_METERING);
 			
 			Intent notificationIntent = new Intent(context, DriverSplashActivity.class);
 			
@@ -215,13 +215,13 @@ public class MeteringService extends Service {
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_METERING);
 			builder.setAutoCancel(false);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
-			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
+			builder.setChannelId(Constants.NOTIF_CHANNEL_METERING);
 
 			builder.setWhen(when);
 			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), GCMIntentService.NOTIFICATION_BIG_ICON));
