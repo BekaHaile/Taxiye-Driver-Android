@@ -1,13 +1,12 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ReferalsFragment;
-import product.clicklabs.jugnoo.driver.fragments.ShareActivityFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 
 

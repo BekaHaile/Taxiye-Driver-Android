@@ -1,6 +1,6 @@
 package com.fugu.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Bhavya Rattan on 29/05/17

@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
 import com.fugu.CaptureUserData;
 import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -149,6 +153,18 @@ public class JSONParser implements Constants {
 	}
 
 
+	private static ArrayList<LatLng> parseLocationCoordinates(String locationCoordinates){
+		ArrayList<LatLng> locationsCoordinates = new ArrayList<>();
+		if(!TextUtils.isEmpty(locationCoordinates)){
+			String[] latLngs = locationCoordinates.split(":");
+			for(String latLng:latLngs){
+				String[] arr = latLng.split(",");
+				try{locationsCoordinates.add(new LatLng(Double.parseDouble(arr[0]), Double.parseDouble(arr[1])));} catch(Exception ignored){}
+			}
+		}
+		return locationsCoordinates;
+	}
+
 	public static CouponInfo parseCouponInfo(JSONObject jObj) {
 		try {
 			JSONObject couponObject = jObj.getJSONObject("coupon");
@@ -163,7 +179,8 @@ public class JSONParser implements Constants {
 					couponObject.getInt("benefit_type"),
 					couponObject.getDouble("drop_latitude"),
 					couponObject.getDouble("drop_longitude"),
-					couponObject.getDouble("drop_radius")
+					couponObject.getDouble("drop_radius"),
+					parseLocationCoordinates(couponObject.optString(KEY_LOCATIONS_COORDINATES, ""))
 			);
 			return couponInfo;
 		} catch (Exception e) {
@@ -184,7 +201,8 @@ public class JSONParser implements Constants {
 					jPromoObject.getDouble("cashback_percentage"),
 					jPromoObject.getDouble("drop_latitude"),
 					jPromoObject.getDouble("drop_longitude"),
-					jPromoObject.getDouble("drop_radius"));
+					jPromoObject.getDouble("drop_radius"),
+					parseLocationCoordinates(jPromoObject.optString(KEY_LOCATIONS_COORDINATES, "")));
 
 			return promoInfo;
 		} catch (Exception e) {
@@ -686,10 +704,26 @@ public class JSONParser implements Constants {
 
 				CaptureUserData captureUserData = Data.getFuguUserData(context);
 				if(captureUserData!=null){
-					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
-					Data.initFugu((Activity) context, captureUserData,
-							jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
-							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));
+//					Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "json parser", FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken());
+					FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+						@Override
+						public void onComplete(@NonNull Task<InstanceIdResult> task) {
+							if(!task.isSuccessful()) {
+								Log.w("JSON_PARSER","device_token_unsuccessful - onReceive",task.getException());
+								return;
+							}
+							if(task.getResult() != null) {
+								Log.e("DEVICE_TOKEN_TAG JSON_PARSER  -> parseAccessTokenLoginData", task.getResult().getToken());
+								FuguNotificationConfig.updateFcmRegistrationToken(task.getResult().getToken());
+							}
+
+							Data.initFugu((Activity) context, captureUserData,
+									jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
+									jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));
+						}
+					});
+
+
 				}
 
 			}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
@@ -176,14 +176,14 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextName"
             />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierCityLabel"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="tvSelectVehicle,tvCities"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVehicleTypes"
             android:layout_width="match_parent"
             android:clipToPadding="false"
@@ -266,26 +266,26 @@
             app:layout_constraintTop_toBottomOf="@+id/bContinue"
             />
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/groupView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectVehicle,bContinue,bCancel,tvCities,tvTermsOfUse"/>
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/promoGroupView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="tvPromo,edtPromo"/>
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/fleetGroupView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="tvSelectFleet,tvFleetSelected"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

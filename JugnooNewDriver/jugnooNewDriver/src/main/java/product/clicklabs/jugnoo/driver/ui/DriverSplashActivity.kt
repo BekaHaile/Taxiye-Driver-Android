@@ -6,7 +6,9 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.transition.TransitionInflater
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +18,9 @@ import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
 import kotlinx.android.synthetic.main.driver_splash_activity.*
+import kotlinx.android.synthetic.main.layout_switch_slide.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.fragments.TractionListFragment
 import product.clicklabs.jugnoo.driver.utils.*
 import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_LOCATION
 
@@ -25,7 +29,7 @@ import product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_FINE_
  */
 
 class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragment.InteractionListener, ToolbarChangeListener,
-        PermissionCommon.PermissionListener {
+        PermissionCommon.PermissionListener, CallbackSlideOnOff {
 
     private val TAG = DriverSplashActivity::class.simpleName
     private val container by bind<FrameLayout>(R.id.container)
@@ -38,6 +42,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     private val REQUEST_CODE_FINE_LOCATION_FOR_BUTTON = 12201;
 
     private var grantedCalled = false;
+    private var slidingSwitch: SlidingSwitch? = null
+
     @SuppressLint("MissingPermission")
     override fun permissionGranted(requestCode: Int) {
         if (requestCode == REQUEST_CODE_FINE_LOCATION || requestCode == REQUEST_CODE_FINE_LOCATION_FOR_BUTTON) {
@@ -129,7 +135,8 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
             // restart activityO to check complete flow of permissions and prevent fragments to reattach without permissions check
             restartApp()
         }
-
+        slidingSwitch = SlidingSwitch(containerSwitch, this)
+        slidingSwitch?.setSlideLeft()
 
     }
 
@@ -229,23 +236,30 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     fun openDriverSetupFragment(accessToken: String) {
         supportFragmentManager.inTransactionWithAnimation {
-            add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
-                    .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
-                    .addToBackStack(DriverSetupFragment::class.simpleName)
+            if(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName) != null
+                    && !(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName) as Fragment).isHidden){
+                add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+                        .hide(supportFragmentManager.findFragmentByTag(LoginFragment::class.simpleName)!!)
+                        .addToBackStack(DriverSetupFragment::class.simpleName)
+            } else {
+                add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
+                        .addToBackStack(DriverSetupFragment::class.simpleName)
+            }
         }
     }
 
     fun addDriverSetupFragment(accessToken: String) {
-
         supportFragmentManager.inTransaction {
 //            setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left).
                     add(container.id, DriverSetupFragment.newInstance(accessToken), DriverSetupFragment::class.simpleName)
                     .addToBackStack(DriverSetupFragment::class.simpleName)
         }
 
-        supportFragmentManager.beginTransaction()
-                .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
-                .commit()
+        if(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName) != null) {
+            supportFragmentManager.beginTransaction()
+                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
+                    .commit()
+        }
     }
 
     override fun openPhoneLoginScreen(enableSharedTransition: Boolean, sharedView: View?) {
@@ -315,6 +329,13 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
 
     override fun setToolbarVisibility(isVisible: Boolean) {
         if (isVisible) toolbar.visible() else toolbar.gone()
+        if(supportFragmentManager.backStackEntryCount > 0 && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name!!.contains(TractionListFragment::class.simpleName.toString())) {
+            containerSwitch.visible()
+            tvToolbar.gone()
+        } else {
+            containerSwitch.gone()
+            tvToolbar.visible()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -381,6 +402,70 @@ class DriverSplashActivity : BaseFragmentActivity(), LocationUpdate, SplashFragm
     override fun getMainIntent(): Intent {
         return getIntent()
     }
+
+    var fragFromOtp = false
+
+    fun loadTractionFragment(accessToken: String, fragfromOtp: Boolean) {
+        this.fragFromOtp = fragfromOtp
+        if (fragfromOtp) {
+            supportFragmentManager.inTransactionWithAnimation {
+                add(container.id, TractionListFragment.newInstance(accessToken,true), TractionListFragment::class.simpleName)
+                        .hide(supportFragmentManager.findFragmentByTag(OTPConfirmFragment::class.simpleName)!!)
+                        .addToBackStack(TractionListFragment::class.simpleName)
+            }
+        } else {
+            supportFragmentManager.beginTransaction()
+                    .add(container.id, TractionListFragment.newInstance(accessToken,true), TractionListFragment::class.simpleName)
+                    .addToBackStack(TractionListFragment::class.simpleName)
+                    .commitAllowingStateLoss()
+
+            supportFragmentManager.beginTransaction()
+                    .remove(supportFragmentManager.findFragmentByTag(SplashFragment::class.simpleName)!!)
+                    .commit()
+        }
+
+        containerSwitch.visible()
+        tvToolbar.gone()
+    }
+
+    fun setContainerSwitch() {
+        slidingSwitch?.setSlideLeft()
+        tvOnlineTop.isSelected = false
+        tvOfflineTop.isSelected = true
+        viewSlide.background = ContextCompat.getDrawable(this@DriverSplashActivity, R.drawable.selector_red_theme_rounded)
+        viewSlide.post { slidingSwitch?.setSlideLeft() }
+        rlOnOff.background = ContextCompat.getDrawable(this@DriverSplashActivity, R.drawable.selector_red_stroke_white_theme)
+        tvOfflineTop.text = getString(R.string.offline_caps)
+        tvOnlineTop.text = getString(R.string.online_caps)
+    }
+
+    private fun removeTractionFragment() {
+        if (supportFragmentManager.backStackEntryCount > 0
+                && supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name!!.contains(TractionListFragment::class.simpleName.toString())) {
+            supportFragmentManager.popBackStack()
+
+        }
+        if(supportFragmentManager.findFragmentByTag(TractionListFragment::class.java.name) != null) {
+            supportFragmentManager.beginTransaction()
+                    .remove(supportFragmentManager.findFragmentByTag(TractionListFragment::class.java.name) as Fragment)
+                    .commit()
+        }
+        containerSwitch.gone()
+        tvToolbar.visible()
+    }
+
+    override fun onClickStandAction(slideDir: Int) {
+        if(slideDir == 1) {
+            removeTractionFragment()
+            if(fragFromOtp) {
+                openDriverSetupFragment(Prefs.with(this).getString(Constants.KEY_ACCESS_TOKEN,""))
+            } else {
+                addDriverSetupFragment(Prefs.with(this).getString(Constants.KEY_ACCESS_TOKEN, ""))
+            }
+            Prefs.with(this).remove(Constants.KEY_ACCESS_TOKEN)
+        }
+    }
+
 }
 
 

@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters
 
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.RecyclerView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.retrofit.model.ReferInfo
 import product.clicklabs.jugnoo.driver.utils.*
 
-class ReferTaskAdapter(var list: List<ReferInfo>):RecyclerView.Adapter<ReferTaskAdapter.ViewHolder>() {
+class ReferTaskAdapter(var list: List<ReferInfo>): RecyclerView.Adapter<ReferTaskAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_refer_task,parent,false)

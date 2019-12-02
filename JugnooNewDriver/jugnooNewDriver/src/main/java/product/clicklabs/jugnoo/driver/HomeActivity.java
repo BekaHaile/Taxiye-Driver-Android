@@ -30,24 +30,24 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Pair;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.util.Pair;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -437,7 +437,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    public DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -2592,12 +2592,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         offlineRequests = new ArrayList<>();
 
         offlineRequestsAdapter = new OfflineRequestsAdapter(offlineRequests, activity,
-                R.layout.list_item_requests, 0, new OfflineRequestsAdapter.Callback() {
+                R.layout.list_item_requests, 0, false, new OfflineRequestsAdapter.Callback() {
             @Override
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);
             }
-        },this);
+        }, HomeActivity.this);
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 
@@ -3848,7 +3848,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
             if(showOfflineRequests){
 
-                getTractionRides(true);
+                if(Data.userData != null){getTractionRides(true);}
                 if(handler != null) {
                     handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 20000));
                 }
@@ -5163,6 +5163,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private void updateDropLatngForAltService(CustomerInfo customerInfo){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+				&& customerInfo != null
 				&& customerInfo.getDropLatLng() != null
 				&& isAltMeteringEnabledForDriver(HomeActivity.this)) {
 			Intent intent = getAltServiceIntent(customerInfo);
@@ -7607,8 +7608,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (customerInfo.couponInfo != null) {        // coupon
                 if (CouponType.DROP_BASED.getOrdinal() == customerInfo.couponInfo.couponType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.couponInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.couponInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.couponInfo.getLocationsCoordinates(),
+							customerInfo.couponInfo.dropRadius, customerInfo.couponInfo.droplLatLng, dropLatLng);
+					if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7618,8 +7620,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             } else if (customerInfo.promoInfo != null) {        // promotion
                 if (PromotionType.DROP_BASED.getOrdinal() == customerInfo.promoInfo.promoType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.promoInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.promoInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.promoInfo.getLocationsCoordinates(),
+							customerInfo.promoInfo.dropRadius, customerInfo.promoInfo.droplLatLng, dropLatLng);
+                    if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7752,7 +7755,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
+	private boolean isDropDiscountApplicable(ArrayList<LatLng> locationCoordinates, double dropRadius, LatLng discountDropLatLng, LatLng driverDropLatLng) {
+		boolean discountApplicable = false;
+		if(locationCoordinates != null && locationCoordinates.size() > 0) {
+			for (LatLng latLng : locationCoordinates){
+				if(MapUtils.distance(driverDropLatLng, latLng) <= dropRadius){
+					discountApplicable = true;
+					break;
+				}
+			}
+		} else {
+			discountApplicable = MapUtils.distance(driverDropLatLng, discountDropLatLng) <= dropRadius;
+		}
+		return discountApplicable;
+	}
+
+	private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
         try {
             if (customerInfo.getPoolFare() != null && customerInfo.getIsPooled() == 1) {
                 LatLng poolDropLatLng = customerInfo.dropLatLng;

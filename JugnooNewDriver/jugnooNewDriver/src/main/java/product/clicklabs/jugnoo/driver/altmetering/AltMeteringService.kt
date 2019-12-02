@@ -11,8 +11,8 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.LocalBroadcastManager
+import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
@@ -492,18 +492,21 @@ class AltMeteringService : Service() {
 
                     } else {
                         Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
-                        try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
+                        try {
+                            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
                     }
                 }
             }
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
             log("service", "registerReceiver")
         }
     }
 
     private fun unregisterActivityBroadcast(){
         if(activityBroadcastReceiver != null) {
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
             activityBroadcastReceiver = null
             log("service", "unregisterReceiver")
         }
@@ -542,7 +545,8 @@ class AltMeteringService : Service() {
                     putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
                 }
                 Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
-                try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
+                try {
+                    LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
                 stopForeground(true)
                 stopSelf()
             }

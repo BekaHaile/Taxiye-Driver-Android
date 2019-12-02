@@ -8,10 +8,10 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.RequiresApi
-import android.support.annotation.StringRes
-import android.support.transition.TransitionManager
-import android.support.v4.app.Fragment
+import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
+import androidx.transition.TransitionManager
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -172,7 +172,21 @@ class LoginFragment : Fragment() {
         params[Constants.KEY_COUNTRY_CODE] = countryCode
         params[Constants.LOGIN_TYPE] = "1"
         params[Constants.KEY_COUNTRY_CODE] = countryCode
-        params["device_token"] = FirebaseInstanceId.getInstance().getToken()!!
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
+            if(!it.isSuccessful) {
+                Log.w(TAG,"device_token_unsuccessful - Login -> generateOtpApi",it.exception)
+                return@addOnCompleteListener
+            }
+            if(it.result?.token != null) {
+                Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + onReceive", it.result?.token)
+                params["device_token"] = it.result?.getToken()!!
+            }
+
+            generateOTPFunc(params, phoneNo, countryCode)
+        }
+    }
+
+    private fun generateOTPFunc(params: HashMap<String, String>, phoneNo: String, countryCode: String) {
         params["unique_device_id"] = Data.uniqueDeviceId
         params["device_name"] = Data.deviceName
         params["device_type"] = Data.DEVICE_TYPE

@@ -3,7 +3,7 @@ package product.clicklabs.jugnoo.driver.stripe.wallet
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -33,7 +33,7 @@ import kotlin.math.roundToInt
 /**
  * Created by Parminder Saini on 16/07/18.
  */
-class StripeWalletFragment:Fragment(){
+class StripeWalletFragment: Fragment(){
 
     interface StripeWalletInteractor{
         fun openAddCard();
