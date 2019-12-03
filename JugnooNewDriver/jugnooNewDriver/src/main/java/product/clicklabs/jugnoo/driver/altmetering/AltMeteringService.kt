@@ -11,16 +11,15 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.IBinder
+import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import android.text.TextUtils
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_SPEED_THRESHOLD
@@ -33,7 +32,10 @@ import product.clicklabs.jugnoo.driver.datastructure.UserData
 import product.clicklabs.jugnoo.driver.directions.GAPIDirections
 import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
-import product.clicklabs.jugnoo.driver.utils.*
+import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.utils.MapUtils
+import product.clicklabs.jugnoo.driver.utils.Prefs
+import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
 
@@ -267,10 +269,14 @@ class AltMeteringService : Service() {
         }
     }
 
-    fun getNotificationMessage():String{
-        return getString(R.string.estimated_dis) + ": " +
-                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this, false)) +" "+
-                Utils.getDistanceUnit(UserData.getDistanceUnit(this))
+    private fun getNotificationMessage():String{
+        return if(Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 0) {
+            getString(R.string.estimated_dis) + ": " +
+                    getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this, false)) + " " +
+                    Utils.getDistanceUnit(UserData.getDistanceUnit(this))
+        } else {
+            getString(R.string.metering_service_notif_label);
+        }
     }
 
 
