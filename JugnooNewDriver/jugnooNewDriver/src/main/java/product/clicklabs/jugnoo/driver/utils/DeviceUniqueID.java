@@ -9,7 +9,6 @@ import android.telephony.TelephonyManager;
 
 import org.jetbrains.annotations.NotNull;
 
-import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
 
 public class DeviceUniqueID {
@@ -34,7 +33,7 @@ public class DeviceUniqueID {
                 imei = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             }
 
-            imei += (BuildConfig.DEBUG ? BuildConfig.FLAVOR : "");
+//            imei += (BuildConfig.DEBUG ? BuildConfig.FLAVOR : "");
 
             DeviceUniqueID.saveUniqueId(context, imei);
 
