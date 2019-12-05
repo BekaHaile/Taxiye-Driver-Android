@@ -67,7 +67,7 @@ class SplashFragment : Fragment() {
     }
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as Activity
         if(context is InteractionListener){

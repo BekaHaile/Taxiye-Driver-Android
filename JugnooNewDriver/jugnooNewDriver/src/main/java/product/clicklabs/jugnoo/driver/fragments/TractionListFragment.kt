@@ -49,7 +49,7 @@ class TractionListFragment : Fragment() {
         toolbarChangeListener?.setToolbarVisibility(true)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is ToolbarChangeListener) {
             toolbarChangeListener = context

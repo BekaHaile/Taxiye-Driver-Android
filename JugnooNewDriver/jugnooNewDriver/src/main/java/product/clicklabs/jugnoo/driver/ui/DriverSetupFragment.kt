@@ -416,7 +416,7 @@ class DriverSetupFragment : Fragment() {
         startActivity(intent)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
         toolbarChangeListener = context as ToolbarChangeListener

@@ -75,7 +75,7 @@ class OTPConfirmFragment : Fragment(){
 
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as Activity
         toolbarChangeListener = context as ToolbarChangeListener
@@ -90,8 +90,8 @@ class OTPConfirmFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        phoneNumber = arguments!!.getString(KEY_PHONE_NUMBER)
-        countryCode = arguments!!.getString(KEY_COUNTRY_CODE)
+        phoneNumber = arguments!!.getString(KEY_PHONE_NUMBER)!!
+        countryCode = arguments!!.getString(KEY_COUNTRY_CODE)!!
         if (arguments!!.containsKey(MISSED_CALL_NUMBER)) missedCallNumber = arguments!!.getString(MISSED_CALL_NUMBER)
     }
 

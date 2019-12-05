@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.driver
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_incentive.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
 import kotlinx.android.synthetic.main.layout_top_bar.view.*

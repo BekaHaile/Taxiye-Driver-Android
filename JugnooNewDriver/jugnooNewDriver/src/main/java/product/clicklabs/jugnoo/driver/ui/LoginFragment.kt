@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
     private val permissionCommon by lazy { PermissionCommon(this) }
 
 
-    override fun onAttach(mActivity: Activity?) {
+    override fun onAttach(mActivity: Activity) {
         super.onAttach(mActivity)
         if(mActivity is SplashFragment.InteractionListener){
             mListener = mActivity;
@@ -431,7 +431,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as Activity
         toolbarChangeListener = context as ToolbarChangeListener
@@ -450,7 +450,7 @@ class LoginFragment : Fragment() {
     }
 
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
         try {
@@ -535,9 +535,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context, resource, objects) {
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context!!, resource, objects!!) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view: View = super.getView(position, convertView, parent)
             if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)
