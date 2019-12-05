@@ -12,6 +12,7 @@ import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.HomeUtil;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.SharingRidesActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -38,7 +39,7 @@ public class ApiAcceptRideServices extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		try {
 			Location location = Database2.getInstance(ApiAcceptRideServices.this).getDriverCurrentLocation(ApiAcceptRideServices.this);
-			String accessToken = Database2.getInstance(ApiAcceptRideServices.this).getDLDAccessToken();
+			String accessToken = JSONParser.getAccessTokenPair(this).first;
 
 			String engagementId = intent.getStringExtra("engagement_id");
 			String customerId = intent.getStringExtra("user_id");

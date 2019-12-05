@@ -62,7 +62,7 @@
     <string name="end_ride">రైడ్ ముగించు</string>
     <string name="reached_destination">గమ్యం చేరుకుంది</string>
     <string name="distance">దూరం</string>
-    <string name="wait_time">వేచి సమయం</string>
+    <string name="wait_time">రద్దీ సమయం</string>
     <string name="fare">ఛార్జీల</string>
     <string name="accept_ride">రైడ్ అంగీకరించు</string>
     <string name="cancel_ride">రైడ్ రద్దు</string>
@@ -615,7 +615,6 @@
     <string name="away_cap">Away</string>
     <string name="pool_only">Pool</string>
     <string name="pickup_from">Pickup From:</string>
-    <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>
@@ -669,7 +668,7 @@
     <string name="error_no_countries_found">No Countries Found!</string>
     <string name="country_picker_header">Select country</string>
     <string name="error_listener_not_set">Listener is not set you will not receive any callback for country picked!</string>
-    <string name="place_bid">Place Bid</string>
+    <string name="place_bid">Place Offer</string>
     <string name="please_enter_some_value">Please enter some value</string>
     <string name="bid">Bid</string>
     <string name="bid_placed">Bid Placed</string>

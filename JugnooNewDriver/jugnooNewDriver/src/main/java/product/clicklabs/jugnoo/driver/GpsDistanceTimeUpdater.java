@@ -9,4 +9,6 @@ public interface GpsDistanceTimeUpdater {
 								   double totalHaversineDistance, boolean fromGPS);
 	public void drawOldPath();
 	public void addPathToMap(PolylineOptions polylineOptions);
+	public void googleApiHitStart();
+	public void googleApiHitStop();
 }

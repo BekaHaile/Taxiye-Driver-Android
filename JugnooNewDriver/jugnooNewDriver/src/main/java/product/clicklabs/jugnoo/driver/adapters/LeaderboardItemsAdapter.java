@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.adapters;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,37 +51,7 @@ public class LeaderboardItemsAdapter extends RecyclerView.Adapter<LeaderboardIte
         holder.textViewRank.setText(String.valueOf(leaderboardItem.getCityRank()));
         holder.textViewName.setText(leaderboardItem.getDriverName());
         holder.textViewNoOfDownloads.setText(String.valueOf(leaderboardItem.getCustomColumnValue()));
-
-        switch(position){
-            case 0:
-                holder.textViewRank.setBackgroundResource(R.drawable.circle_white);
-                break;
-            case 1:
-                holder.textViewRank.setBackgroundResource(R.drawable.circle_white_60);
-                break;
-            case 2:
-                holder.textViewRank.setBackgroundResource(R.drawable.circle_white_40);
-                break;
-            case 3:
-                holder.textViewRank.setBackgroundResource(R.drawable.circle_white_20);
-                break;
-            default:
-                holder.textViewRank.setBackgroundResource(R.drawable.background_transparent);
-                break;
-        }
-
-        if(leaderboardItem.getIsUser()){
-            holder.textViewRank.setTextColor(activity.getResources().getColor(R.color.grey_black));
-            holder.textViewName.setTextColor(activity.getResources().getColor(R.color.grey_black));
-            holder.textViewRank.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-            holder.textViewName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-        }
-        else{
-            holder.textViewRank.setTextColor(activity.getResources().getColor(R.color.grey_dark_more));
-            holder.textViewName.setTextColor(activity.getResources().getColor(R.color.grey_dark_more));
-            holder.textViewRank.setTypeface(Fonts.mavenRegular(activity));
-            holder.textViewName.setTypeface(Fonts.mavenRegular(activity));
-        }
+        holder.textViewRank.setBackgroundResource(R.drawable.circle_white);
 
 	}
 

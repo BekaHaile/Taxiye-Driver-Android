@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <!--<string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>-->
 
     <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
@@ -72,7 +71,7 @@
 
     <string name="reached_destination">Reached Destination</string>
     <string name="distance">Distance</string>
-    <string name="wait_time">Wait Time</string>
+    <string name="wait_time">Congestion Time</string>
     <string name="fare">Fare</string>
 
     <string name="accept_ride">Accept Ride</string>
@@ -280,7 +279,7 @@
     <string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
     <string name="select_reason">Please select one reason</string>
     <string name="referral_money">Referral Money</string>
-    <string name="send">भेजें</string>
+    <string name="send">Send</string>
 
     <string name="hint_created_multiple_account">You have already created 2 accounts from this device. Please explain the reason for creating a new account.</string>
     <string name="convenience_charge">Convenience Charge</string>
@@ -516,7 +515,7 @@
     <string name="commission_to_be_deposited">Commission to be deposited</string>
     <string name="trips">TRIPS</string>
     <string name="home">Home</string>
-    <string name="duration">DURATION</string>
+    <string name="duration">Duration</string>
     <string name="daily_earnings">DAILY EARNINGS</string>
     <string name="Invoices_cap">INVOICES</string>
     <string name="Today_earning">TODAY\'S EARNING</string>
@@ -541,7 +540,7 @@
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
-    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="start_ride_alert">If Customer is with you, then please start ride</string>
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
@@ -617,7 +616,7 @@
     <string name="away_cap">away</string>
     <string name="pool_only">Pool</string>
     <string name="pickup_from">Pickup From:</string>
-    <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
+    <string name="switch_confiramtion">Are you sure you want to switch to %s?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>
@@ -736,10 +735,10 @@
     <string name="select_vehicle_type">Select vehicle type</string>
     <string name="continue_text">Continue</string>
     <string name="by_signing_you_agree">By Signing up you agree to our </string>
-    <string name="place_bid">Place Bid</string>
+    <string name="place_bid">Place Offer</string>
     <string name="please_enter_some_value">Please enter some value</string>
-    <string name="bid">Bid</string>
-    <string name="bid_placed">Bid Placed</string>
+    <string name="bid">Offer</string>
+    <string name="bid_placed">Offer Placed</string>
     <string name="reduce_by_10">Reduce\nby 10%</string>
     <string name="increase_by_10">Increase\nby 10%</string>
     <string name="reduce_by_format">Reduce\nby %s</string>
@@ -768,7 +767,7 @@
     <string name="title_earn_more_credits">और Credits कमाऐं</string>
     <string name="share_your_credits">Credits शेयर करें</string>
     <string name="total_credits_earned">कुल Credits कमाए</string>
-    <string name="commission_saved">commission बचाया</string>
+    <string name="commission_saved">Commission बचाया</string>
     <string name="refer_a_driver">Refer a Driver</string>
     <string name="refer_a_customer">Refer a Customer</string>
     <string name="advertise_for_us">Advertise for us</string>
@@ -1034,6 +1033,7 @@
     <string name="terms_of_schedule">Terms of Schedule</string>
     <string name="faqs">FAQs</string>
     <string name="waze_navigation">Waze Navigation</string>
+    <string name="delivery_enable">Delivery Enable</string>
     <string name="enter_toll">Enter Toll</string>
     <string name="enter_toll_fare_during_ride">Enter Toll fare during ride</string>
     <string name="toll_value">Toll fare: %s</string>
@@ -1063,7 +1063,7 @@
     <string name="cvc">CVC</string>
     <string name="save">Save</string>
     <string name="title_view_card">VIEW CARD</string>
-    <string name="label_add_card" >Add Card</string>
+    <string name="label_add_card">Add Card</string>
     <string name="delete">Delete</string>
     <string name="bullet">\u2022</string>
     <string name="card_details">Card Details</string>
@@ -1130,7 +1130,7 @@
     <string name="my_rates">My Rates</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="edit_rate_card">Edit Rate Card</string>
-    <string name="wait_time_per_min">Wait Time (per min)</string>
+    <string name="wait_time_per_min">Congestion Time (per min)</string>
     <string name="number_00">00</string>
     <string name="please_complete_your_profile">Please complete your profile and setup your Rate Card to start driving with %s</string>
     <string name="upload_documents">Upload Documents</string>
@@ -1146,7 +1146,78 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="first_name_required">First name is mandatory</string>
+    <string name="last_name_required">Last name is mandatory</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="tolls_incurred_during_ride">Following tolls are incurred during ride, Confirm them once</string>
+    <string name="add_toll">Add Toll</string>
+    <string name="toll_fare">Toll Fare</string>
+    <string name="toll_name">Toll Name</string>
+    <string name="invalid_fare">Invalid fare</string>
+    <string name="are_you_sure_you_want_to_delete_this_toll">Are you sure you want to delete this toll?</string>
+    <string name="edit_toll">Edit Toll</string>
+    <string name="please_specify_the_reason">Please specify the reason</string>
+    <string name="customer_live_location">Customer Live Location</string>
+    <string name="not_match">not match</string>
+    <string name="please_enter_email">Please enter email</string>
+    <string name="error_empty_mandatory_field">%s is a mandatory field.</string>
+    <string name="please_enter_less_value_for_bid">Please enter less value for offer</string>
+    <string name="note">Note</string>
+
+    <!--Rental-->
+    <string name="rate_card_title_rental_packages">Rental Packages</string>
+    <string name="rate_card_title_outstation_packages">Outstation Packages</string>
+    <string name="additional_per_min">Additional Per Min Fare</string>
+    <string name="additional_per_km_fare">Additional Per %s Fare</string>
+    <string name="package_rate_format">Package Rate: %s</string>
+    <string name="rental_hour">hour </string>
+    <string name="rental_hours">hours </string>
+    <string name="rental_min">min </string>
+    <string name="rental_mins">mins </string>
+    <string name="rental_max">Max.</string>
+    <string name="base_fare_format">BASE FARE: <b>%s</b></string>
+    <string name="nl_per_km">Per Km</string>
+    <string name="nl_per_min">Per Min</string>
+    <string name="you_can_add_only_three_contacts">You can add only three contacts.</string>
+    <string name="emergency_contacts">Add Emergency Contacts</string>
+    <string name="add_contacts">Add Contacts</string>
+    <string name="please_select_some_contacts_first">Please select some contacts first</string>
+    <string name="mobile">Mobile</string>
+    <string name="work">Work</string>
+    <string name="other">Other</string>
+    <string name="are_you_sure_want_to_disable_emergency">Are you sure you want to disable Emergency mode?</string>
+    <string name="edit">Edit</string>
+    <string name="configure_your_emergency_contacts">Configure your\nemergency contacts</string>
+    <string name="inform_your_friends">Inform your friends and family\nabout your current location everytime\nyou drive with %s</string>
+    <string name="or_call_directly">or Call directly</string>
+    <string name="or_send_directly">or Send directly</string>
+    <string name="type_a_name_or_mobile_number">Type a name or a mobile number</string>
+    <string name="contacts">Contacts</string>
+    <string name="grant_contact_permission">You will have to grant contacts permission to view your contacts here. Please Press the button below to proceed.</string>
+    <string name="emergency_mode_enabled_title">You have enabled emergency.</string>
+    <string name="emergency_mode_enabled_message">We have sent your location to your\nemergency contacts and %s support.</string>
+    <string name="call_police">Call Police</string>
+    <string name="call_emergency_contact">Call Emergency Contact</string>
+    <string name="disable_emergency_mode">Disable Emergency Mode</string>
+    <string name="send_ride_status">Send Ride Status</string>
+    <string name="call_your_contacts">Call Your Contacts</string>
+    <string name="send_ride_status_no_contacts_message">Please select some contacts first</string>
+    <string name="send_ride_status_more_contacts_message_format">You have selected more than %1$s contacts, we will send ride status to only %2$s contacts at once.</string>
+    <string name="delete_emergency_contact_message">Are you sure you want to delete this contact from your emergency list?</string>
+    <string name="enable_emergency_mode">Enable Emergency Mode</string>
+    <string name="in_app_customer_support">In App Customer Support</string>
+    <string name="chat_with_us">Chat with us</string>
+    <string name="everything_is_alright_caps">EVERYTHING IS ALRIGHT</string>
+    <string name="you_have_disabled_jugnoo_emergency">You have disabled the %s\nEmergency mode</string>
+    <string name="emergency_contacts_only">Emergency Contacts</string>
+    <string name="emergency_mode_enabled">Emergency Mode Enabled</string>
+    <string name="call_support">Call Support</string>
+    <string name="included">included</string>
+    <string name="here_maps_feedback">Here Maps Feedback</string>
+    <string name="add_a_place">Add a place</string>
+    <string name="are_you_sure_you_want_to_delete_this_image">Are you sure you want to delete this image?</string>
+    <string name="choose_image_from">Choose Image from</string>
+    <string name="send_invoice">Send Invoice</string>
+    <string name="delivery_earnings">DELIVERY EARNINGS</string>
     <string name="expired">Expired</string>
     <string name="threshold">Threshold</string>
     <string name="price">Price</string>
@@ -1155,4 +1226,85 @@
     <string name="expired_programs">Expired Programs</string>
     <string name="incentive">Incentives</string>
 
+    <!--Branding-->
+    <string name="branding_msg">Earn money upto %s by Self branding</string>
+    <string name="branding_msg_autos">Earn money upto %s by Other Autos branding</string>
+    <string name="branding_msg_here_maps">Earn money upto %s by Adding places/landmarks</string>
+    <string name="valid_till">Valid till %s</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="driver_tasks">Driver Tasks</string>
+    <string name="add_place">Add Place</string>
+    <string name="retake">Retake</string>
+    <string name="use_photo">Use Photo</string>
+    <string name="add_category">Add Category</string>
+    <string name="please_capture_an_image_first">Please capture an image first</string>
+    <string name="image_not_captured">Image not captured successfully</string>
+    <string name="please_select_a_category">Please select a category</string>
+    <string name="place_added_successfully">Place added successfully</string>
+    <string name="search_a_category">Search a category</string>
+    <string name="hotel">Hotel</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="hospital">Hospital</string>
+    <string name="business_facility">Business Facility</string>
+    <string name="petrol_gasoline_station">Petrol/Gasoline Station</string>
+    <string name="government_office">Government Office</string>
+    <string name="place_of_worship">Place of Worship</string>
+    <string name="residential_area_building">Residential Area Building</string>
+    <string name="higher_education">Higher Education</string>
+    <string name="school">School</string>
+    <string name="bank">Bank</string>
+    <string name="atm">ATM</string>
+    <string name="places">Places</string>
+    <string name="view_notes">View Notes</string>
+
+    <!--Notes-->
+    <string name="notes">Notes</string>
+    <string name="write_notes_here">Write notes here...</string>
+    <string name="save_notes">Save notes</string>
+    <string name="alert_provide_some_notes">Please add some notes</string>
+    <string name="click_to_view_notes">Click to View Notes</string>
+    <string name="income_details">Income Details</string>
+    <string name="online_caps">ONLINE</string>
+    <string name="offline_caps">OFFLINE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="driver_name">Driver Name:</string>
+    <string name="driver_no">Driver No:</string>
+    <string name="credits_processed">Credits Processed:</string>
+    <string name="money_processed">Money Processed:</string>
+    <string name="no_data_available">No Data Available</string>
+    <string name="documents_pending">Documents Pending</string>
+    <string name="documents_rejected">Documents Rejected</string>
+    <string name="total_money">Total Money:</string>
+    <string name="total_credits">Total Credits:</string>
+    <string name="processed_money">Money Processed:</string>
+    <string name="processed_credits">Credits Processed:</string>
+    <string name="credits_next_target">Next Target Credits</string>
+    <string name="money_next_target">Next Target Money</string>
+    <string name="num_of_rides_next_targer">No of rides in next target</string>
+
+
+    <string name="select_fleet">Select Fleet</string>
+    <string name="fleet">Fleet</string>
+    <string name="error_no_fleets_in_this_city_format">No fleets in %s</string>
+    <string name="none">None</string>
+    <string name="offer_your_fare_for_trip">Offer your fare for trip</string>
+    <string name="accept_for">Accept for</string>
+    <string name="waiting_for_customer">(Waiting for customer)</string>
+    <string name="tap_for_tutorial">Tap for Tutorial</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="zero_commission">(0% commission)</string>
+    <string name="offer_you_fare_for_trip">Offer you fare for trip</string>
+    <string name="please_select_fleet">Please select fleet</string>
+    <string name="select_ringtone">Select Ringtone</string>
+    <string name="ringtone1">Ringtone 1</string>
+    <string name="send_via">Send via</string>
+    <string name="whatsapp_not_installed">Whatsapp not installed</string>
+    <string name="download_jugnoo_app">Download Jugnoo App</string>
+    <string name="download_jugnoo_driver_app">Download Jugnoo Driver App</string>
+    <string name="share_via_whatsapp">Share via Whatsapp</string>
+    <string name="view_more_sharing_options">View more sharing options</string>
+    <string name="only_cash_rides">Only Cash Rides</string>
+    <string name="only_long_rides">Only Long Rides</string>
 </resources>

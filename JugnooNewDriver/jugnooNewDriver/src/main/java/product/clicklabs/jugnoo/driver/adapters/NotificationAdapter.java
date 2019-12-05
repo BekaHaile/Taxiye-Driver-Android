@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.adapters;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,8 +98,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 				} else {
 					holder.linearLayoutNotificationImage.setVisibility(View.VISIBLE);
-					//Picasso.with(activity).load(notification.getNotificationImage()).into(holder.notificationImage);
-					//Picasso.with(activity).load(notification.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
+					//Picasso.with(activity).load(customerInfo.getNotificationImage()).into(holder.notificationImage);
+					//Picasso.with(activity).load(customerInfo.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
 					Picasso.with(activity).load(notification.getNotificationImage())
 							.placeholder(R.drawable.ic_notification_placeholder_drawable)
 							.error(R.drawable.ic_notification_placeholder_drawable)

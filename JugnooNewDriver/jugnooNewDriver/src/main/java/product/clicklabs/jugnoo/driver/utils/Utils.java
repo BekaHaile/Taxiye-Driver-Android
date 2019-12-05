@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
@@ -11,7 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+import android.database.CursorWindow;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,13 +26,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.CallLog;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -49,8 +47,6 @@ import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -60,6 +56,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLDecoder;
@@ -250,19 +247,13 @@ public class Utils {
 
 
     public static void openCallIntent(Activity activity, String phoneNumber) {
-        Intent callIntent = new Intent(Intent.ACTION_VIEW);
+        Intent callIntent = new Intent(Intent.ACTION_DIAL);
         callIntent.setData(Uri.parse("tel:" + phoneNumber));
         activity.startActivity(callIntent);
     }
 
 	public static void makeCallIntent(Activity activity, String phoneNumber) {
-		try {
-			Intent callIntent = new Intent(Intent.ACTION_CALL);
-			callIntent.setData(Uri.parse("tel:" + phoneNumber));
-			activity.startActivity(callIntent);
-		} catch (Exception e) {
-			openCallIntent(activity, phoneNumber);
-		}
+        openCallIntent(activity, phoneNumber);
 	}
 
     public static String hidePhoneNoString(String phoneNo) {
@@ -428,7 +419,6 @@ public class Utils {
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
         for (ApplicationInfo appInfo : applications) {
-            Log.i("app_List", appInfo.packageName);
             if (!appInfo.packageName.contains("com.gcs.telerickshaw")) {
                 telerickshawDriver = (appInfo.packageName.contains("com.telerickshaw") || appInfo.packageName.contains("telerickshaw"));
                 if (telerickshawDriver) {
@@ -631,67 +621,6 @@ public class Utils {
         }
     }
 
-	public static String getCallDetails(Context context, String phone) {
-		JSONArray callLogs = new JSONArray();
-		try {
-			Uri contacts = CallLog.Calls.CONTENT_URI;
-			if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-				return String.valueOf(callLogs);
-			}
-			Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
-			int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-			int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-			int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-			int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-			while (managedCursor.moveToNext()) {
-
-                if ((managedCursor.getString(number).equalsIgnoreCase(phone))
-                        || (("+91" + managedCursor.getString(number)).equalsIgnoreCase(phone))) {
-
-                    if ((Long.valueOf(managedCursor.getString(date))) > (Long.valueOf(Prefs.with(context).getString(SPLabels.ACCEPT_RIDE_TIME,
-                            String.valueOf(System.currentTimeMillis() - 18000l))))) {
-                        String phNumber = managedCursor.getString(number);
-                        String callType = managedCursor.getString(type);
-                        String callDate = managedCursor.getString(date);
-                        String callDayTime = (Long.valueOf(callDate)).toString();
-                        Log.i("CallLogTime", callDate);
-                        String callDuration = managedCursor.getString(duration);
-                        String dir = null;
-                        int dircode = Integer.parseInt(callType);
-                        switch (dircode) {
-                            case CallLog.Calls.OUTGOING_TYPE:
-                                dir = "OUTGOING";
-                                break;
-
-                            case CallLog.Calls.INCOMING_TYPE:
-                                dir = "INCOMING";
-                                break;
-
-                            case CallLog.Calls.MISSED_TYPE:
-                                dir = "MISSED";
-                                break;
-                        }
-
-                        JSONObject callObj = new JSONObject();
-                        callObj.put("phone_number", phNumber);
-                        callObj.put("call_type", dir);
-                        callObj.put("call_date", callDayTime);
-                        callObj.put("call_duration", callDuration);
-                        callLogs.put(callObj);
-
-                    }
-                }
-
-            }
-            managedCursor.close();
-            Log.i("CallLogs", String.valueOf(callLogs));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return String.valueOf(callLogs);
-
-    }
 
     public static void deleteGpsData(Context context) {
         /* Cold start */
@@ -882,19 +811,20 @@ public class Utils {
 
 
     public static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
-                                      int quality, int index) {
+                                       int quality) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         src.compress(format, quality, os);
-        File f = new File(context.getFilesDir(), "temp" + index + ".jpg");
+        long index2 = System.currentTimeMillis();
+        File f = new File(context.getFilesDir(), "temp" + index2 + ".jpg");
         try {
             f.createNewFile();
-            byte[] bitmapdata = os.toByteArray();
+            byte[] bitmapData = os.toByteArray();
 
             FileOutputStream fos = new FileOutputStream(f);
-            fos.write(bitmapdata);
+            fos.write(bitmapData);
             fos.flush();
             fos.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return f;
@@ -902,16 +832,21 @@ public class Utils {
 
 
     public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-                matrix, false);
+        try {
+            int width = bm.getWidth();
+            int height = bm.getHeight();
+            float scaleWidth = ((float) newWidth) / width;
+            float scaleHeight = ((float) newHeight) / height;
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+                    matrix, false);
 
-        return resizedBitmap;
+            return resizedBitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return bm;
+        }
     }
 
     public static int dpToPx(Context context, float dp) {
@@ -1023,25 +958,30 @@ public class Utils {
 
     private static NumberFormat currencyNumberFormat = null;
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency, boolean setPrecision) {
-        if(currencyNumberFormat == null){
-            currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
-            currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
-            currencyNumberFormat.setGroupingUsed(false);
-        }
-		int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-		currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
-		currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
-        if (TextUtils.isEmpty(currency)) {
-            currency = fallbackCurrency;
-        }
-        currencyNumberFormat.setCurrency(Currency.getInstance(currency));
-        String result = currencyNumberFormat.format(value);
+        try {
+            if(currencyNumberFormat == null){
+                currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
+                currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
+                currencyNumberFormat.setGroupingUsed(false);
+            }
+            int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
+            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
+            if (TextUtils.isEmpty(currency)) {
+                currency = fallbackCurrency;
+            }
+            currencyNumberFormat.setCurrency(Currency.getInstance(currency));
+            String result = currencyNumberFormat.format(value);
 
-        result = result.replaceFirst("\\s", "");
-        result = result.replace("BMD", "$");
-        result = result.replace("TTD", "$");
+            result = result.replaceFirst("\\s", "");
+            result = result.replace("BMD", "$");
+            result = result.replace("TTD", "$");
 
-        return result;
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return currency+Utils.getDecimalFormat().format(value);
+        }
     }
 
     public static String formatCurrencyValue(String currency, String value) {
@@ -1250,4 +1190,73 @@ public class Utils {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static String retrieveOTPFromSMS(String message){
+        String[] arr = message.split("\\ ");
+        for(String iarr : arr){
+            iarr = iarr.replace(".", "");
+            if(iarr.length() >= 3 && checkIfOnlyDigits(iarr)){
+                return iarr;
+            }
+        }
+        return "";
+    }
+
+    public static String readFileFromAssets(Activity activity, String fileName){
+        String mLine;
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(activity.getAssets().open(fileName), "UTF-8"))) {
+
+            // do reading, usually loop until end of file reading
+            String slashN = "\n";
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                sb.append(mLine).append(slashN);
+            }
+        } catch (IOException e) {
+            //log the exception
+        }
+        //log the exception
+        return sb.toString();
+    }
+
+    public static int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+            Log.i("RotateImage", "Exif orientation: " + orientation);
+            Log.i("RotateImage", "Rotate value: " + rotate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
+    }
+
+	public static void cursorWindowFix() {
+		try {
+			Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+			field.setAccessible(true);
+			field.set(null, 102400 * 1024); //the 102400 is the new size added
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

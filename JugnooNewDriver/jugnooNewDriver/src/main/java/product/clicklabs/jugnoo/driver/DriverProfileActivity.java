@@ -7,11 +7,11 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -35,11 +35,19 @@ import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.dialogs.RingtoneSelectionDialog;
+import product.clicklabs.jugnoo.driver.emergency.EmergencyActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
+import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
@@ -60,7 +68,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     RelativeLayout relative;
     RelativeLayout driverDetailsRL;
     LinearLayout driverDetailsRLL;
-    View backBtn;
+    View backBtn,ivDeliveryEnable;
     TextView title;
 
     TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
@@ -69,8 +77,8 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
-    SwitchCompat switchNavigation, switchMaxSound;
-    TextView tvDocuments;
+    SwitchCompat switchNavigation, switchMaxSound,enableDelivery;
+    TextView tvDocuments, tvEmergencyContacts, tvSelectRingtone;
     private   RecyclerView rvVehicleTypes;
     private   View vehicleDetails,layoutVehicleServiceDetails, dividerVehicleServiceDetails,ivEditVehicle;
 
@@ -78,19 +86,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     public static ProfileInfo openedProfileInfo;
     private DriverVehicleServiceTypePopup driverVehicleServiceTypePopup;
     private VehicleDetailsProfileAdapter vehicleDetailsProfileAdapter;
+    int delivery_available = 0;
+    boolean checked = false;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
+	private SwitchCompat switchOnlyCashRides;
+	private SwitchCompat switchOnlyLongRides;
 
     @Override
     protected void onResume() {
@@ -133,6 +133,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
         backBtn = findViewById(R.id.backBtn);
+        ivDeliveryEnable = findViewById(R.id.ivDeliveryEnable);
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(Fonts.mavenRegular(this));
         title.setText(R.string.profile);
@@ -141,6 +142,16 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         ivEditIcon.getDrawable().mutate().setColorFilter(ContextCompat.getColor(this, R.color.themeColor), PorterDuff.Mode.SRC_ATOP);
         cvSwitchNavigation = (CardView) findViewById(R.id.cvSwitchNavigation);
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
+        enableDelivery = (SwitchCompat)findViewById(R.id.deliveryEnable);
+        if(Data.userData.getDeliveryEnabled()==1){
+            enableDelivery.setVisibility(View.VISIBLE);
+            ivDeliveryEnable.setVisibility(View.VISIBLE);
+            if(Data.userData.getDeliveryAvailable()==1){
+                enableDelivery.setChecked(true);
+            }else{
+                enableDelivery.setChecked(false);
+            }
+        }
         switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
         textViewDriverName.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
@@ -153,6 +164,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         textViewRankOverall.setTypeface(Fonts.mavenRegular(this));
         textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue);
         textViewMonthlyValue.setTypeface(Fonts.mavenRegular(this));
+		tvSelectRingtone = findViewById(R.id.tvSelectRingtone);
 
         textViewRidesTakenValue = (TextView) findViewById(R.id.textViewRidesTakenValue);
         textViewRidesTakenValue.setTypeface(Fonts.mavenRegular(this));
@@ -178,6 +190,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         tvServiceType =  (TextView)findViewById(R.id.tvServiceType);
 
         tvDocuments = findViewById(R.id.tvDocuments);
+        tvEmergencyContacts = findViewById(R.id.tvEmergencyContacts);
 
         terms = (TextView) findViewById(R.id.terms);
         terms.setTypeface(Fonts.mavenRegular(this));
@@ -245,6 +258,86 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 overridePendingTransition(R.anim.right_in, R.anim.right_out);
             }
         });
+        tvEmergencyContacts.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_EMERGENCY_MODE_ENABLED, 0) == 1 ? View.VISIBLE : View.GONE);
+        findViewById(R.id.ivDivEmergencyContacts).setVisibility(tvEmergencyContacts.getVisibility());
+        tvEmergencyContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Data.userData == null) {
+                    return;
+                }
+                Intent intent = new Intent(DriverProfileActivity.this, EmergencyActivity.class);
+                intent.putExtra(Constants.KEY_EMERGENCY_ACTIVITY_MODE,
+                        EmergencyActivity.EmergencyActivityMode.EMERGENCY_CONTACTS.getOrdinal1());
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
+
+        enableDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(enableDelivery.isChecked()){
+                    delivery_available =1;
+                }
+                try {
+                    if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+                        DialogPopup.showLoadingDialog(DriverProfileActivity.this, getResources().getString(R.string.loading));
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("client_id", Data.CLIENT_ID);
+                        params.put("access_token", Data.userData.accessToken);
+                        params.put("delivery_available",""+delivery_available);
+                        HomeUtil.putDefaultParams(params);
+
+                        Log.i("params", ">" + params);
+
+                        RestClient.getApiServices().enableDelivery(params, new Callback<RegisterScreenResponse>() {
+                            @Override
+                            public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                                try {
+                                    String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+                                    Log.i("Server response", "response = " + responseStr);
+                                    JSONObject jObj = new JSONObject(responseStr);
+                                    int flag = jObj.getInt("flag");
+                                    if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+                                      setDefaultValue();
+                                        String error = jObj.getString("error");
+                                        DialogPopup.dialogBanner(DriverProfileActivity.this, error);
+                                    } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                                        Data.userData.setDeliveryAvailable(delivery_available);
+                                    } else {
+                                       setDefaultValue();
+                                        DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_ERROR_MSG);
+                                    }
+
+
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                    DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_ERROR_MSG);
+                                }
+                                DialogPopup.dismissLoadingDialog();
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Log.e("request fail", error.toString());
+                                setDefaultValue();
+                                DialogPopup.dismissLoadingDialog();
+                                DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.SERVER_NOT_RESOPNDING_MSG);
+                            }
+                        });
+
+                    } else {
+                        DialogPopup.alertPopup(DriverProfileActivity.this, "", Data.CHECK_INTERNET_MSG);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+        });
 
         switchMaxSound.setChecked(Prefs.with(this).getInt(Constants.KEY_MAX_SOUND, 1) == 1);
         switchMaxSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -257,6 +350,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 }
             }
         });
+
+		tvSelectRingtone.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
+		findViewById(R.id.ivDivRingtoneSelection).setVisibility(tvSelectRingtone.getVisibility());
+		tvSelectRingtone.setOnClickListener(v -> RingtoneSelectionDialog.INSTANCE.show(DriverProfileActivity.this));
+
 
 
         rvVehicleTypes = findViewById(R.id.rvVehicleDetails);
@@ -271,6 +369,43 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         setVehicleSetsData();
 
 
+		switchOnlyCashRides = findViewById(R.id.switchOnlyCashRides);
+		switchOnlyLongRides = findViewById(R.id.switchOnlyLongRides);
+
+		if(Data.userData != null && Data.userData.getSubscriptionEnabled() == 1){
+			switchOnlyCashRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.VISIBLE);
+			switchOnlyCashRides.setChecked(Data.userData.getOnlyCashRides() == 1);
+
+			switchOnlyLongRides.setVisibility(View.VISIBLE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.VISIBLE);
+			switchOnlyLongRides.setChecked(Data.userData.getOnlyLongRides() == 1);
+
+			switchOnlyCashRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_TOGGLE_CASH_RIDES, switchOnlyCashRides.isChecked() ? 1 : 0, switchOnlyCashRides);
+			});
+			switchOnlyLongRides.setOnClickListener((view) -> {
+				updateDriverPreferences(Constants.KEY_TOGGLE_LONG_RIDES, switchOnlyLongRides.isChecked() ? 1 : 0, switchOnlyLongRides);
+			});
+
+		}
+		else {
+			switchOnlyCashRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyCashRides).setVisibility(View.GONE);
+
+			switchOnlyLongRides.setVisibility(View.GONE);
+			findViewById(R.id.ivDivOnlyLongRides).setVisibility(View.GONE);
+		}
+
+    }
+
+    private void setDefaultValue() {
+        if(Data.userData.getDeliveryAvailable()==1){
+            checked = true;
+        }else{
+            checked = false;
+        }
+        enableDelivery.setChecked(checked);
     }
 
     private void setVehicleSetsData() {
@@ -499,10 +634,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 if (openedProfileInfo.textViewMonthlyValue > 0 && getResources().getBoolean(R.bool.show_earnings_on_profile)) {
                     textViewMonthlyValue.setText(Utils.formatCurrencyValue(openedProfileInfo.currency, openedProfileInfo.textViewMonthlyValue));
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.VISIBLE);
+                    findViewById(R.id.imageViewHorizontal1).setVisibility(View.VISIBLE);
 
 
                 } else {
                     findViewById(R.id.rlMonthlyEarnings).setVisibility(View.GONE);
+                    findViewById(R.id.imageViewHorizontal1).setVisibility(View.GONE);
                 }
                 textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
@@ -591,4 +728,36 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
         onBackPressed();
     }
+
+    private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
+    	HashMap<String, String> params = new HashMap<>();
+    	params.put(key, String.valueOf(1));
+		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
+				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+			@Override
+			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
+					if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_CASH_RIDES)) {
+						Data.userData.setOnlyCashRides(value);
+					} else if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_LONG_RIDES)) {
+						Data.userData.setOnlyLongRides(value);
+					}
+					switchCompat.setChecked(value == 1);
+				}
+			}
+
+			@Override
+			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+				switchCompat.setChecked(value != 1);
+				return false;
+			}
+
+			@Override
+			public boolean onFailure(RetrofitError error) {
+				switchCompat.setChecked(value != 1);
+				return super.onFailure(error);
+			}
+		});
+	}
+
 }

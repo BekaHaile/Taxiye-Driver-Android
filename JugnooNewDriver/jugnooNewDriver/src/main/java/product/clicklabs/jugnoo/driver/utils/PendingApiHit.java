@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Context;
 import android.content.Intent;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -39,6 +38,9 @@ public class PendingApiHit {
                 else if(PendingCall.END_DELIVERY.getPath().equalsIgnoreCase(pendingAPICall.url)){
                     response = RestClient.getApiServices().endDelivery(pendingAPICall.nameValuePairs);
                 }
+				else if(PendingCall.EMERGENCY_ALERT.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().emergencyAlertSync(pendingAPICall.nameValuePairs);
+				}
                 Log.e(TAG, "response="+response);
                 if(response != null){
                     try {

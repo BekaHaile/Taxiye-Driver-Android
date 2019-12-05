@@ -84,25 +84,21 @@
 
         <Button
             android:id="@+id/btn_disagree"
-            android:background="@drawable/orange_btn_selector"
+            style="@style/ButtonThemeAlternate"
             android:text="@string/dont_agree"
             android:textAllCaps="true"
-            android:layout_marginRight="10dp"
-            android:textColor="@drawable/white_color_selector"
+            android:layout_marginEnd="10dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_agree"
-            android:background="@drawable/orange_btn_selector"
+            style="@style/ButtonTheme"
             android:text="@string/i_agree"
-            android:layout_marginLeft="10dp"
-            android:textColor="@drawable/white_color_selector"
+            android:layout_marginStart="10dp"
             android:layout_width="0dp"
             android:textAllCaps="true"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_weight="1" />
 
 
     </LinearLayout>

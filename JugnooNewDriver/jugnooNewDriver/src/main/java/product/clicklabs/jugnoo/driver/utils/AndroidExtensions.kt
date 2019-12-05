@@ -3,11 +3,11 @@ package product.clicklabs.jugnoo.driver.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Build
-import android.support.annotation.IdRes
-import android.support.annotation.RequiresApi
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +33,10 @@ fun View.invisible() {
 
 fun  View.isGone():Boolean{
     return  visibility==View.GONE
+}
+
+fun View.isVisible():Boolean {
+    return visibility == View.VISIBLE
 }
 
 // ========================= VIEW INFLATE =========================

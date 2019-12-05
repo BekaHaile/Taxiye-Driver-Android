@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -32,6 +33,12 @@ public class DocFieldsInfo extends SearchDataModel {
     private List<DocFieldsInfo> set;
     @SerializedName("ref_key")
     private String refKey;
+    @SerializedName("confirm_key")
+    private String confirmKey;
+    @SerializedName("is_secure")
+    private int isSecure;
+    @SerializedName("mandatory")
+    private boolean mandatory;
 
     @SerializedName("is_selected")
     private boolean isSelected;
@@ -41,7 +48,7 @@ public class DocFieldsInfo extends SearchDataModel {
     }
 
     public String getLabel() {
-        if(type.equalsIgnoreCase("element")){
+        if(type.equalsIgnoreCase("element") && TextUtils.isEmpty(label)){
             return value;
         }
         return label;
@@ -102,5 +109,29 @@ public class DocFieldsInfo extends SearchDataModel {
 
     public void setRefKey(String refKey) {
         this.refKey = refKey;
+    }
+
+    public String getConfirmKey() {
+        return confirmKey;
+    }
+
+    public void setConfirmKey(String confirmKey) {
+        this.confirmKey = confirmKey;
+    }
+
+    public int getIsSecured() {
+        return isSecure;
+    }
+
+    public void setIsSecured(int isSecured) {
+        this.isSecure = isSecured;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void isMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
     }
 }

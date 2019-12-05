@@ -3,8 +3,8 @@ package product.clicklabs.jugnoo.driver.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -576,7 +576,6 @@ class VehicleDetailsFragment : Fragment() {
             putExtra("in_side", false)
             putExtra("doc_required", 3)
         }
-        Utils.enableReceiver(activity, IncomingSmsReceiver::class.java, false)
         startActivity(intent)
     }
 
@@ -591,7 +590,7 @@ class VehicleDetailsFragment : Fragment() {
             if(s.length==4 && isYearValid(s.toString())){
                 edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor))
             }else{
-                edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                edtYear.setTextColor(ContextCompat.getColor(requireContext(),R.color.red_btn))
             }
 
         }

@@ -19,7 +19,7 @@
         android:divider="@drawable/transparent"
         android:dividerHeight="0px"
         android:listSelector="@drawable/transparent"
-        android:background="@color/white_light_more_grey"
+        android:background="@color/white"
         android:splitMotionEvents="false" >
     </ListView>
 

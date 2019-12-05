@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import product.clicklabs.jugnoo.driver.BuildConfig;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.heremaps.HereMapsAPIService;
 import product.clicklabs.jugnoo.driver.retrofit.model.PushAckAPIService;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.RestAdapter;
@@ -22,10 +23,14 @@ public class RestClient {
 	private static String CURRENT_URL, CURRENT_URL_CHAT;
 	private static APIServices API_SERVICES;
 	private static DirectionAPIService DISTANCE_API_SERVICE;
+	private static HereMapsAPIService HERE_MAPS_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
 	private static RoadApiService ROADS_API_SERVICE;
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
 	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
+	private static MapsCachingApiService MAPS_CACHING_API_SERVICE;
+	private static JungleMapsApi JUNGLE_MAPS_API = null;
+	private static BranchApi BRANCH_API = null;
 
 	static {
 		setupRestClient();
@@ -34,9 +39,17 @@ public class RestClient {
 		setupDistanceAPIRestClient();
 		setupPushAckAPIRestClient();
 		setupChatAPIRestClient();
+		setupHereMapApiServices();
+		setupMapsCachingRestClient();
+		setupJungleMapsApi();
+		setupBranchApi();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
+		return getOkHttpClient(false, 15);
+	}
+
+	private static OkHttpClient getOkHttpClient(boolean retryOnConnectionFailure, long timeoutSeconds){
 
 		ArrayList<Protocol> protocolList = new ArrayList<>();
 		protocolList.add(Protocol.HTTP_2);
@@ -47,10 +60,10 @@ public class RestClient {
 
 		OkHttpClient.Builder builder = new OkHttpClient.Builder();
 		builder.connectionPool(connectionPool);
-		builder.readTimeout(15, TimeUnit.SECONDS);
-		builder.connectTimeout(15, TimeUnit.SECONDS);
-		builder.writeTimeout(15, TimeUnit.SECONDS);
-		builder.retryOnConnectionFailure(false);
+		builder.readTimeout(timeoutSeconds, TimeUnit.SECONDS);
+		builder.connectTimeout(timeoutSeconds, TimeUnit.SECONDS);
+		builder.writeTimeout(timeoutSeconds, TimeUnit.SECONDS);
+		builder.retryOnConnectionFailure(retryOnConnectionFailure);
 		builder.protocols(protocolList);
 
 		return builder.build();
@@ -164,6 +177,27 @@ public class RestClient {
 		return DISTANCE_API_SERVICE;
 	}
 
+	private static void setupHereMapApiServices() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint("https://maphub.api.here.com")
+				.setClient(new Ok3Client(getOkHttpClient()))
+//				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+		RestAdapter restAdapter = builder.build();
+		HERE_MAPS_API_SERVICE = restAdapter.create(HereMapsAPIService.class);
+	}
+
+	public static HereMapsAPIService getHereMapsApiService() {
+		return HERE_MAPS_API_SERVICE;
+	}
+
 	public static void setupPushAckAPIRestClient() {
 
 		RestAdapter.Log fooLog = new RestAdapter.Log() {
@@ -214,4 +248,75 @@ public class RestClient {
 	public static ChatAckAPIService getChatAckApiServices() {
 		return CHAT_ACK_API_SERVICE;
 	}
+
+	public static void setupMapsCachingRestClient() {
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		if(MAPS_CACHING_API_SERVICE == null) {
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(BuildConfig.MAPS_CACHING_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient(true, 5)))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			MAPS_CACHING_API_SERVICE = restAdapter.create(MapsCachingApiService.class);
+		}
+	}
+
+	public static MapsCachingApiService getMapsCachingService() {
+		return MAPS_CACHING_API_SERVICE;
+	}
+
+	public static void setupJungleMapsApi() {
+		if(JUNGLE_MAPS_API == null) {
+			RestAdapter.Log fooLog = new RestAdapter.Log() {
+				@Override public void log(String message) {
+				}
+			};
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(Data.JUNGLE_MAPS_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient(true, 5)))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			JUNGLE_MAPS_API = restAdapter.create(JungleMapsApi.class);
+		}
+	}
+
+	public static JungleMapsApi getJungleMapsApi() {
+		return JUNGLE_MAPS_API;
+	}
+
+	private static void setupBranchApi() {
+		if(BRANCH_API == null) {
+			RestAdapter.Log fooLog = new RestAdapter.Log() {
+				@Override public void log(String message) {
+				}
+			};
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(Data.BRANCH_SERVER_URL)
+					.setClient(new Ok3Client(getOkHttpClient(true, 5)))
+					.setLogLevel(RestAdapter.LogLevel.FULL);
+			if(!BuildConfig.DEBUG){
+				builder.setLog(fooLog);
+			}
+
+			RestAdapter restAdapter = builder.build();
+			BRANCH_API = restAdapter.create(BranchApi.class);
+		}
+	}
+
+	public static BranchApi getBranchApi() {
+		return BRANCH_API;
+	}
+
 }

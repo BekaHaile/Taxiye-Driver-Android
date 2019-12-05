@@ -14,184 +14,95 @@
         android:layout_below="@+id/topRl"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutResources"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20px"
-            android:layout_marginTop="36px"
-            android:background="@drawable/transparent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15px">
-
-                <TextView
-                    android:id="@+id/textViewResource"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/upload_Documents"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="34px"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:layout_width="21px"
-                    android:layout_height="20px"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="36px"
-                    android:src="@drawable/arrow_thick_new"
-                    android:rotationY="@integer/locale_mirror_flip"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="700px"
-            android:layout_height="2px"
-            android:layout_below="@+id/linearLayoutResources"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2px"
-            android:layout_marginTop="36px"
-            android:background="@color/grey_light"/>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutTraining"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20px"
-            android:layout_marginTop="36px"
-            android:background="@drawable/transparent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15px">
-
-                <TextView
-                    android:id="@+id/textViewTraining"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/start_training"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="34px"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:layout_width="21px"
-                    android:layout_height="20px"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="36px"
-                    android:src="@drawable/arrow_thick_new"
-                    android:rotationY="@integer/locale_mirror_flip"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="700px"
-            android:layout_height="2px"
-            android:layout_below="@+id/linearLayoutResources"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2px"
-            android:layout_marginTop="36px"
-            android:background="@color/grey_light"/>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutSupport"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20px"
-            android:layout_marginTop="36px"
-            android:background="@drawable/transparent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15px">
-
-                <TextView
-                    android:id="@+id/textViewSupport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/support"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="34px"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:layout_width="21px"
-                    android:layout_height="20px"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="36px"
-                    android:src="@drawable/arrow_thick_new"
-                    android:rotationY="@integer/locale_mirror_flip"/>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="700px"
-            android:layout_height="2px"
-            android:layout_below="@+id/linearLayoutResources"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2px"
-            android:layout_marginTop="36px"
-            android:background="@color/grey_light"/>
-
-        <RelativeLayout
-            android:id="@+id/rlBrandingImages"
+        <TextView
+            android:id="@+id/textViewResource"
+            style="@style/TextNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableEnd="@drawable/ic_chevron_right"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            android:paddingEnd="17dp"
+            android:paddingStart="22dp"
+            android:text="@string/upload_Documents"/>
+
+
+        <View
+            android:id="@+id/vResources"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:background="@color/grey_new"
             android:tag="@string/dont_touch_me"
-            android:background="@drawable/bg_white_grey_light_selector"
-            >
+            />
 
-            <TextView
-                android:id="@+id/tvBrandingImages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="17dp"
-                android:paddingTop="17dp"
-                android:text="@string/branding_images"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="17sp"
-                android:visibility="visible"
-                android:layout_marginStart="18dp"
-                />
+        <TextView
+            android:id="@+id/textViewTraining"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableEnd="@drawable/ic_chevron_right"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            android:paddingEnd="17dp"
+            android:paddingStart="22dp"
+            android:text="@string/start_training"/>
 
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="18dp"
-                android:src="@drawable/arrow_thick_new"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/tvBrandingImages"
-                android:background="@color/grey_light"
-                android:layout_marginEnd="6dp"
-                />
+        <View
+            android:id="@+id/vTraining"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:background="@color/grey_new"
+            android:tag="@string/dont_touch_me"
+            />
 
-        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewSupport"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableEnd="@drawable/ic_chevron_right"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            android:paddingEnd="17dp"
+            android:paddingStart="22dp"
+            android:text="@string/support"/>
+
+
+        <View
+            android:id="@+id/vSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:background="@color/grey_new"
+            android:tag="@string/dont_touch_me"
+            />
+
+
+        <TextView
+            android:id="@+id/tvBrandingImages"
+            style="@style/TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:drawableEnd="@drawable/ic_chevron_right"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            android:paddingEnd="17dp"
+            android:paddingStart="22dp"
+            android:text="@string/branding_images"/>
+
+
+        <View
+            android:id="@+id/vBranding"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:background="@color/grey_new"
+            android:tag="@string/dont_touch_me"
+            />
 
 
     </LinearLayout>

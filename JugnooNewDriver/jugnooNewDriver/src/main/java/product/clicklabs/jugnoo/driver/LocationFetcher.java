@@ -8,8 +8,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -43,6 +43,13 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			this.priority = priority;
 	}
 
+	public LocationFetcher(Context context, LocationUpdate locationUpdate, long requestInterval, int priority){
+			this.locationUpdate = locationUpdate;
+			this.context = context;
+			this.requestInterval = requestInterval;
+			this.priority = priority;
+	}
+
 	public  void connect(){
 		destroy();
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
@@ -68,7 +75,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}, 2000);
 	}
 
-	private  void saveLatLngToSP(Location location){
+	public static void saveLatLngToSP(Context context, Location location){
 		Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 	}
 
@@ -270,7 +277,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
 					this.location = location;
 					locationUpdate.onLocationChanged(location, priority);
-					saveLatLngToSP(location);
+					saveLatLngToSP(context, location);
 				}
             }
 			locationUnchecked = location;

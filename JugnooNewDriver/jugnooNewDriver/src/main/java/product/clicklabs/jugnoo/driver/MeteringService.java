@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -20,6 +18,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import androidx.core.app.NotificationCompat;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -39,25 +38,12 @@ public class MeteringService extends Service {
 	public IBinder onBind(Intent intent) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
-	
-	
-	@Override
-    public void onCreate() {
-    }
 
-	
-    @Override
-    public void onStart(Intent intent, int startId) {
-    	cancelAlarm();
-        gpsInstance(this).start();
-        startUploadPathAlarm();
-		startUploadInRideDataAlarm();
-    }
-    
-    
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
+		cancelAlarm();
+		gpsInstance(this).start();
 		try {
 			startForeground(METER_NOTIF_ID,generateNotification(MeteringService.this,getString(R.string.metering_service_notif_label),METER_NOTIF_ID));
 		} catch (Exception e) {
@@ -70,7 +56,7 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
-    	restartServiceViaAlarm();
+//    	restartServiceViaAlarm();
     }
 
 	@Override
@@ -81,77 +67,8 @@ public class MeteringService extends Service {
 
 
 
-    public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
     public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
-    public static final long ALARM_REPEAT_INTERVAL = 15000;
-    public void startUploadPathAlarm() {
-        // check task is scheduled or not
-        boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH),
-            PendingIntent.FLAG_NO_CREATE) != null);
-
-        if (alarmUp) {
-            cancelUploadPathAlarm();
-        }
-
-        Intent intent = new Intent(this, PathUploadReceiver.class);
-        intent.setAction(UPOLOAD_PATH);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
-				ALARM_REPEAT_INTERVAL, pendingIntent);
-
-    }
-
-    public void cancelUploadPathAlarm() {
-        Intent intent = new Intent(this, PathUploadReceiver.class);
-        intent.setAction(UPOLOAD_PATH);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
-        alarmManager.cancel(pendingIntent);
-        pendingIntent.cancel();
-    }
-
-
-
-
-
-
-
-
-	public static final int UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE = 114;
 	public static final String UPLOAD_IN_RIDE_DATA = "product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA";
-	public static final long UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL = 30000;
-	public void startUploadInRideDataAlarm() {
-		boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				new Intent(this, UploadInRideDataReceiver.class).setAction(UPLOAD_IN_RIDE_DATA),
-				PendingIntent.FLAG_NO_CREATE) != null);
-		if (alarmUp) {
-			cancelUploadInRideDataAlarm();
-		}
-
-		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
-		intent.setAction(UPLOAD_IN_RIDE_DATA);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
-				UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL, pendingIntent);
-	}
-
-	public void cancelUploadInRideDataAlarm() {
-		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
-		intent.setAction(UPLOAD_IN_RIDE_DATA);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
-		pendingIntent.cancel();
-	}
 
 
 
@@ -176,8 +93,8 @@ public class MeteringService extends Service {
     		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
-				cancelUploadPathAlarm();
-				cancelUploadInRideDataAlarm();
+				stopForeground(true);
+				stopSelf();
     		}
     		else{
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
@@ -185,6 +102,7 @@ public class MeteringService extends Service {
 				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 				AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+				Log.e("MeteringService restartServiceViaAlarm","="+restartService);
     		}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -223,11 +141,14 @@ public class MeteringService extends Service {
 							DriverScreenMode.D_INITIAL.getOrdinal());
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
-							String message = context.getResources().getString(R.string.total_distance)
-									+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context)) +" "
-									+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
-									+ "\n" + context.getResources().getString(R.string.ride_time)
-									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
+							String message = context.getString(R.string.metering_service_notif_label);
+							if(Prefs.with(context).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 0){
+								message = context.getResources().getString(R.string.total_distance)
+										+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context, false)) +" "
+										+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
+										+ "\n" + context.getResources().getString(R.string.ride_time)
+										+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
+							}
 							generateNotification(context, message,METER_NOTIF_ID);
 						}
 						if (HomeActivity.appInterruptHandler != null) {
@@ -255,7 +176,20 @@ public class MeteringService extends Service {
 						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
 					}
 				}
-				
+
+				@Override
+				public void googleApiHitStart() {
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.googleApiHitStart();
+					}
+				}
+
+				@Override
+				public void googleApiHitStop() {
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.googleApiHitStop();
+					}
+				}
 			};
 		}
 		return gpsDistanceTimeUpdater;

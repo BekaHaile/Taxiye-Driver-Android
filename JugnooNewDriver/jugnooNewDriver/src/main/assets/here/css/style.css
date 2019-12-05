@@ -1,0 +1,68 @@
+body{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+}
+
+
+#map {
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+#placeMarker{
+	position: absolute;
+	width: 32px;
+	height: 48px;
+	left: calc(50vw - 16px);
+	top: calc(50vh - 48px);
+	background: url("../img/mapPin.svg");
+	background-size: cover;
+}
+
+#controls{
+	position: absolute;
+	bottom: 50px;
+	left: calc(50vw - 75px);
+	width: 150px;
+	height: 50px;
+}
+
+#controls .button{
+	display: inline-block;
+	background-color: #666;
+	color: #fff;
+	padding: 15px;
+	border: 2px solid rgb(42, 208, 33);
+	cursor: pointer;
+	width: 100%;
+	text-align: center;
+}
+
+
+/* Modes */
+
+/* mode: default */
+body #savePlace.button{
+	display: none;
+}
+body #placeMarker {
+	display: none;
+}
+
+/* mode: AddPlace */
+
+body.modeAddPlace #addPlace.button{
+	display: none;
+}
+
+body.modeAddPlace #savePlace.button{
+	display: none;
+}
+
+body.modeAddPlace #placeMarker {	
+	display: block;
+}

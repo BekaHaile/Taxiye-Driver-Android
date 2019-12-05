@@ -3,8 +3,8 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,9 +94,11 @@ public class NotificationTipsFragment extends Fragment {
 		webview.getSettings().setDomStorageEnabled(true);
 		webview.getSettings().setDatabaseEnabled(true);
 		webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+		webview.getSettings().setAppCacheEnabled(true);
 
 		//enable Javascript
 		webview.getSettings().setJavaScriptEnabled(true);
+
 		textViewInfo.setOnClickListener(new View.OnClickListener() {
 
 			@Override

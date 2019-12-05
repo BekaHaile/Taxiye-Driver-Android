@@ -1,6 +1,10 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +16,15 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.RentalAndOutstationVehicleAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RentalVehicle;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -27,7 +35,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverRateCard extends android.support.v4.app.Fragment {
+public class DriverRateCard extends Fragment {
 
 	LinearLayout relative, linearLayoutDriverReferral, linearLayoutMain;
 	RelativeLayout relativeLayoutDriverReferralHeading, relativeLayoutDriverReferralSingle, relativeLayoutNoData;
@@ -37,25 +45,26 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			textViewPickupChargesperkm, textViewPKm;
 	ImageView imageViewHorizontal7;
 	TextView textViewSpecialInfo;
-	LinearLayout llBeforeRide, llInRide;
+	LinearLayout llBeforeRide, llInRide, llInRideBefore, llReferralInfo;
 	RelativeLayout rlBeforeRide;
-	
+	RecyclerView rvRentalVehicle, rvOutstationVehicle;
+	NestedScrollView nestedScrollView;
+
 	NewRateCardActivity activity;
 	private View rootView;
 	public DriverRateCard(){
 		
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
+	public static DriverRateCard newInstance(boolean isHTMLRateCard){
+		DriverRateCard fragment = new DriverRateCard();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(Constants.KEY_HTML_RATE_CARD, isHTMLRateCard);
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
-	@Override
-	public void onStop() {
-		super.onStop();
-	}
-	
+	private boolean isHTMLRateCard;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,12 +73,14 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 
 		relative = (LinearLayout) rootView.findViewById(R.id.relative);
 		new ASSL(activity, relative, 1134, 720, false);
-		
+
+		isHTMLRateCard = getArguments().getBoolean(Constants.KEY_HTML_RATE_CARD, false);
 
 		linearLayoutDriverReferral = (LinearLayout) rootView.findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutDriverReferralHeading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDriverReferralHeading);
 		relativeLayoutNoData = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNoData);
 		relativeLayoutNoData.setVisibility(View.GONE);
+		nestedScrollView = rootView.findViewById(R.id.nestedScrollView);
 
 		linearLayoutMain = (LinearLayout) rootView.findViewById(R.id.linearLayoutMain);
 		linearLayoutMain.setVisibility(View.INVISIBLE);
@@ -96,6 +107,8 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		textViewDtoC = (TextView) rootView.findViewById(R.id.textViewDtoC);
 		textViewDtoC.setTypeface(Fonts.mavenRegular(activity));
 		textViewDtoD = (TextView) rootView.findViewById(R.id.textViewDtoD);
+		rvRentalVehicle = rootView.findViewById(R.id.rvRentalVehicle);
+		rvOutstationVehicle = rootView.findViewById(R.id.rvOutstationVehicle);
 		textViewDtoD.setTypeface(Fonts.mavenRegular(activity));
 
 		textViewPickupChargesCond = (TextView) rootView.findViewById(R.id.textViewPickupChargesCond);
@@ -120,6 +133,9 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 		llBeforeRide = (LinearLayout) rootView.findViewById(R.id.llBeforeRide);
 		rlBeforeRide = rootView.findViewById(R.id.rlBeforeRide);
 		llInRide = (LinearLayout) rootView.findViewById(R.id.llInRide);
+		llInRideBefore = (LinearLayout) rootView.findViewById(R.id.llInRideBefore);
+		llInRideBefore.setVisibility(View.GONE);
+		llReferralInfo = rootView.findViewById(R.id.llReferralInfo);
 		textViewSpecialInfo = (TextView) rootView.findViewById(R.id.textViewSpecialInfo);
 		textViewSpecialInfo.setTypeface(Fonts.mavenRegular(activity));
 
@@ -252,6 +268,18 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 							updateData(rateCardResponse);
 							linearLayoutMain.setVisibility(View.VISIBLE);
 							relativeLayoutNoData.setVisibility(View.GONE);
+
+							rvRentalVehicle.setVisibility(View.GONE);
+							if(!isHTMLRateCard){
+								llReferralInfo.setVisibility(View.VISIBLE);
+								if(rateCardResponse.getRegions() != null && !rateCardResponse.getRegions().isEmpty()) {
+									rvRentalVehicle.setVisibility(View.VISIBLE);
+									setRentalAndOutstationAdapter(rateCardResponse.getRegions());
+								}
+							} else {
+								llReferralInfo.setVisibility(View.GONE);
+							}
+
 						} else {
 							relativeLayoutNoData.setVisibility(View.VISIBLE);
 						}
@@ -272,6 +300,19 @@ public class DriverRateCard extends android.support.v4.app.Fragment {
 			e.printStackTrace();
 			relativeLayoutNoData.setVisibility(View.VISIBLE);
 		}
+	}
+
+	private void setRentalAndOutstationAdapter(List<RentalVehicle> regions) {
+		LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
+		rvRentalVehicle.setLayoutManager(layoutManager);
+		rvRentalVehicle.setNestedScrollingEnabled(false);
+		RentalAndOutstationVehicleAdapter rentalAndOutstationVehicleAdapter = new RentalAndOutstationVehicleAdapter();
+		rentalAndOutstationVehicleAdapter.setList((ArrayList<RentalVehicle>) regions, Data.userData.getCurrency());
+		rvRentalVehicle.setAdapter(rentalAndOutstationVehicleAdapter);
+		nestedScrollView.post(() -> nestedScrollView.scrollTo(0,0));
+
+        rvOutstationVehicle.setVisibility(View.GONE);
+
 	}
 
 }

@@ -9,7 +9,7 @@
 
     <include layout="@layout/layout_top_bar"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/topRl">
@@ -66,7 +66,7 @@
                 android:background="@color/grey_light"/>
 
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRideInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -434,11 +434,22 @@
                 android:textColor="@color/black_text_v2"
                 android:textSize="30px"
                 android:visibility="gone"/>
+            <Button
+                android:id="@+id/buttonSendInvoice"
+                android:layout_width="432px"
+                android:layout_height="80px"
+                android:layout_marginBottom="25px"
+                android:background="@drawable/shadow_btn_selector"
+                android:text="@string/send_invoice"
+                android:textAllCaps="true"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"
+                android:visibility="gone"/>
 
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/relativeContainer"

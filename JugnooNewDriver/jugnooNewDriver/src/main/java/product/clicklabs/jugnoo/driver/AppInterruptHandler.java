@@ -7,14 +7,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 
 public interface AppInterruptHandler {
 	
 	public void onNewRideRequest(int perfectRide, int isPooled, int isDelivery);
 	
-	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver);
+	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver, String message);
 	
 	public void onRideRequestTimeout(String engagementId);
 	
@@ -28,6 +30,9 @@ public interface AppInterruptHandler {
 	
 	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);
+
+	void googleApiHitStart();
+	void googleApiHitStop();
 	
 	public void drawOldPath();
 	
@@ -54,5 +59,13 @@ public interface AppInterruptHandler {
 	void showStartRidePopup();
 
 	public void showDialogFromPush(String message);
+
+	void pathAlt(List<LatLng> list, List<LatLng> waypoints);
+
+	void polylineAlt(LatLng start, LatLng end);
+
+	void refreshTractionScreen();
+
+	void cancelRequest(CustomerInfo customerInfo, RequestActivity.RejectRequestCallback callback);
 
 }

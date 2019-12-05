@@ -1,16 +1,24 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -28,6 +36,7 @@ public class CustomerInfo {
 	public LatLng requestlLatLng;
 	public LatLng currentLatLng;
 	private int cachedApiEnabled;
+	private int canAcceptRequest;
 
 	public String image, rating;
 	public CouponInfo couponInfo;
@@ -35,13 +44,14 @@ public class CustomerInfo {
 	public double jugnooBalance;
 	public LatLng dropLatLng;
 	public String dropAddress;
+	public String pickupAddress;
 	public int meterFareApplicable;
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable, forceEndDelivery;
 
 	private int status;
-	private String address, startTime;
+	private String address, startTime, requestTime;
 	private double fareFactor, cashOnDelivery;
 	private int isPooled;
 
@@ -50,7 +60,7 @@ public class CustomerInfo {
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private ArrayList<String> deliveryAddress;
 	private int totalDeliveries, orderId;
-	private double estimatedFare, dryDistance, estimatedDist;
+	private double estimatedFare, dryDistance, estimatedDist,distance;
 	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
@@ -62,22 +72,34 @@ public class CustomerInfo {
 	private double bidValue;
 	private double initialBidValue;
 	private double estimatedTripDistance;
-	private double tollFare;
+	private ArrayList<TollData> tollData;
 	private double tipAmount;
 	private int luggageCount;
 	private double waypointDistance;
 	private String pickupTime;
+	private String timeDiff;
+	private String pickupAddressEng, dropAddressEng;
+	private int isCorporateRide;
+	private String customerNotes;
+	private int tollApplicable;
+	private String rentalInfo;
+	private List<String> customerOrderImagesList;
+
+	private double incrementPercent;
+	private int stepSize;
+	private String bidCreatedAt;
 
 
 	/**
 	 * For accepted customers
 	 */
-	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
+	public CustomerInfo(Context context, int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare,
-						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount,int luggageCount, String pickupTime){
+						int falseDeliveries, int orderId, int loadingStatus, String currencyUnit, double tipAmount, int luggageCount, String pickupTime,
+						int isCorporateRide, String customerNotes, int tollApplicable, final String rentalInfo,List<String> customerOrderImagesList){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -105,7 +127,13 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
 		this.isDeliveryPool = isDeliveryPool;
-		this.address = address;
+		if (Prefs.with(context).getInt(Constants.KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, 0) != 1
+				|| context.getResources().getConfiguration().locale.getLanguage().contains("en")) {
+			this.address = address;
+		} else {
+			this.address = "";
+			this.pickupAddressEng = address;
+		}
 
 		if(this.isDelivery == 1){
 			this.waitingChargesApplicable = 1;
@@ -123,6 +151,17 @@ public class CustomerInfo {
 		this.tipAmount = tipAmount;
 		this.luggageCount = luggageCount;
 		this.pickupTime = pickupTime;
+		this.isCorporateRide = isCorporateRide;
+		this.customerNotes = customerNotes;
+		this.tollApplicable = tollApplicable;
+		this.rentalInfo = rentalInfo;
+		this.customerOrderImagesList = customerOrderImagesList;
+
+
+		setMapValue(engagementId, Constants.KEY_WAYPOINT_DISTANCE, "0");
+//		setMapValue(engagementId, Constants.KEY_CSV_PATH, "");
+//		setMapValue(engagementId, Constants.KEY_CSV_WAYPOINTS, "");
+//		setMapValue(engagementId, Constants.KEY_NUM_WAYPOINTS, "0");
 	}
 
 
@@ -134,6 +173,35 @@ public class CustomerInfo {
 	}
 
 	/**
+	 * For finding offline requests from array
+	 */
+	public CustomerInfo(String name,String address,String dropAddress,String time,String driverFare,double distance,String image,int canAcceptRequest,int userId,int engagementId,int reverseBid){
+		this.name = name;
+		this.pickupAddressEng =address;
+		this.dropAddress=dropAddress;
+		this.timeDiff = time;
+		this.estimatedDriverFare=driverFare;
+		this.distance =distance;
+		this.image = image;
+		this.canAcceptRequest = canAcceptRequest;
+		this.userId=userId;
+		this.engagementId=engagementId;
+		this.reverseBid=reverseBid;
+
+
+//		@SerializedName("request_latitude")
+//		@Expose
+//		private Double requestLatitude;
+//		@SerializedName("request_longitude")
+//		@Expose
+//		private Double requestLongitude;
+//		@SerializedName("ride_type")
+//		@Expose
+//		private String rideType;
+	}
+
+
+	/**
 	 * For customer requests
 	 */
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
@@ -141,7 +209,7 @@ public class CustomerInfo {
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng, String estimatedDriverFare, ArrayList<String> deliveryAddress, double estimatedDist,
 						String currency, int reverseBid, int bidPlaced, double bidValue, double initialBidValue, double estimatedTripDistance,
-						String pickupTime){
+						String pickupTime, String rentalInfo, double incrementPercent, int stepSize, String pickUpAddress, String dropAddress, String requestTime, String bidCreatedAt){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -169,7 +237,15 @@ public class CustomerInfo {
 		this.initialBidValue = initialBidValue;
 		this.estimatedTripDistance = estimatedTripDistance;
 		this.pickupTime = pickupTime;
+		this.rentalInfo = rentalInfo;
+		this.incrementPercent = incrementPercent;
+		this.stepSize = stepSize;
+		this.dropAddress = dropAddress;
+		this.pickupAddress = pickUpAddress;
+		this.requestTime = requestTime;
+		this.bidCreatedAt = bidCreatedAt;
 	}
+
 
 	public double getDryDistance() {
 		return dryDistance;
@@ -177,6 +253,14 @@ public class CustomerInfo {
 
 	public void setDryDistance(double dryDistance) {
 		this.dryDistance = dryDistance;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	@Override
@@ -352,8 +436,23 @@ public class CustomerInfo {
 		return dropAddress;
 	}
 
-	public void setDropAddress(String dropAddress) {
-		this.dropAddress = dropAddress;
+	public void setDropAddress(Context context, String dropAddress, boolean forceSet) {
+		if(forceSet
+				|| Prefs.with(context).getInt(Constants.KEY_DRIVER_CHECK_LOCALE_FOR_ADDRESS, 0) != 1
+				|| context.getResources().getConfiguration().locale.getLanguage().contains("en")){
+			this.dropAddress = dropAddress;
+		} else {
+			this.dropAddress = "";
+			this.dropAddressEng = dropAddress;
+		}
+	}
+
+	public int getCanAcceptRequest() {
+		return canAcceptRequest;
+	}
+
+	public void setCanAcceptRequest(int canAcceptRequest) {
+		this.canAcceptRequest = canAcceptRequest;
 	}
 
 	public int getMeterFareApplicable() {
@@ -432,7 +531,7 @@ public class CustomerInfo {
 		if(estimatedFare > 0){
 			return Utils.getDecimalFormatForMoney().format(estimatedFare);
 		} else{
-			return "0";
+			return "";
 		}
 	}
 
@@ -468,14 +567,54 @@ public class CustomerInfo {
 		this.vendorMessage = vendorMessage;
 	}
 
-	public double getTotalDistance(double distance, Context context){
+	private boolean distanceRecover = false;
+	private double totalDistanceRecovered = 0;
+
+	public void setTotalDistance(double distance){
+		distanceRecover = true;
+		totalDistanceRecovered = distance;
+	}
+
+	public double getTotalDistance(double distance, Context context, boolean onEndRide){
+		if(distanceRecover){return totalDistanceRecovered;}
+
+		double meteringDistance = getSPSavedDistance(distance, context);
+
+		//if Waypoint estimation logic is enabled then waypoint_distance would be in customer map values db
+		if(Data.userData != null && Data.userData.getDriverTag().equalsIgnoreCase(DriverTagValues.WAYPOINT_DISTANCE.getType())){
+			try {
+				String wpDistance = getMapValue(getEngagementId(), Constants.KEY_WAYPOINT_DISTANCE);
+				Log.e("CustomerInfo getTotalDistance", "wpDistance = "+wpDistance);
+
+				//check if waypoint distance is in specified range of metering distance
+				// if yes then use waypoint distance else use metering distance for fare calculation
+				double wpDist = Double.parseDouble(wpDistance);
+				String range = Prefs.with(context).getString(Constants.KEY_DRIVER_WAYPOINT_DISTANCE_RANGE, "");
+				Log.e("CustomerInfo getTotalDistance", "range = "+range+", meteringDistance="+meteringDistance);
+				if(onEndRide && !TextUtils.isEmpty(range)){
+					try {
+						double rangeVal = Double.parseDouble(range) * meteringDistance / 100D;
+						double lowerBound = meteringDistance - rangeVal;
+						double upperBound = meteringDistance + rangeVal;
+						Log.e("CustomerInfo getTotalDistance", "lowerBound="+lowerBound+", upperBound="+upperBound+", wpDist="+wpDist);
+						if(lowerBound <= wpDist && wpDist <= upperBound){
+							return wpDist;
+						} else {
+							return meteringDistance;
+						}
+					} catch (Exception ignored) {}
+				}
+
+				return wpDist;
+			} catch (Exception ignored) {}
+		}
 //		if(getIsPooled() == 1 && getPoolFare() != null){
 //			return getPoolFare().getDistance();
 //		} else {
 		if(waypointDistance > 0 && Prefs.with(context).getInt(Constants.KEY_USE_WAYPOINT_DISTANCE_FOR_FARE, 0) == 1){
 			return waypointDistance;
 		}
-		return getSPSavedDistance(distance, context);
+		return meteringDistance;
 	}
 
 	public double getSPSavedDistance(double distance, Context context) {
@@ -684,12 +823,15 @@ public class CustomerInfo {
 	}
 
 	public double getTollFare() {
+		double tollFare = 0;
+		for(TollData td : getTollData()){
+			if(!td.getEdited() || td.getToll() > 0) {
+				tollFare += td.getToll();
+			}
+		}
 		return tollFare;
 	}
 
-	public void setTollFare(double tollFare) {
-		this.tollFare = Utils.currencyPrecision(tollFare);
-	}
 
 	public double getTipAmount() {
 		return tipAmount;
@@ -713,5 +855,120 @@ public class CustomerInfo {
 
 	public void setPickupTime(String pickupTime) {
 		this.pickupTime = pickupTime;
+	}
+
+	public ArrayList<TollData> getTollData() {
+		if(tollData == null){
+			tollData = new ArrayList<>();
+		}
+		return tollData;
+	}
+
+	public String getTimeDiff() {
+		return timeDiff;
+	}
+
+	public void setTimeDiff(String timeDiff) {
+		this.timeDiff = timeDiff;
+	}
+
+	public void setTollData(ArrayList<TollData> tollData) {
+		this.tollData = tollData;
+	}
+
+	public String getPickupAddressEng() {
+		return pickupAddressEng;
+	}
+
+	public String getDropAddressEng() {
+		return dropAddressEng;
+	}
+
+	public int getIsCorporateRide() {
+		return isCorporateRide;
+	}
+
+	public void setIsCorporateRide(int isCorporateRide) {
+		this.isCorporateRide = isCorporateRide;
+	}
+
+	public String getCustomerNotes() {
+		if(customerNotes != null && customerNotes.equalsIgnoreCase("null")){
+			customerNotes = "";
+		}
+		return customerNotes;
+	}
+
+	public int getTollApplicable() {
+		return tollApplicable;
+	}
+
+	public void setTollApplicable(int tollApplicable) {
+		this.tollApplicable = tollApplicable;
+	}
+
+	public String getRentalInfo() {
+		return rentalInfo;
+	}
+
+	public void setRentalInfo(String rentalInfo) {
+		this.rentalInfo = rentalInfo;
+	}
+
+	public List<String> getCustomerOrderImagesList() {
+		return customerOrderImagesList!=null ? customerOrderImagesList : new ArrayList<String>();
+	}
+
+	public void setCustomerOrderImagesList(List<String> customerOrderImagesList) {
+		this.customerOrderImagesList = customerOrderImagesList;
+	}
+
+	public static void setMapValue(int engagementId, String key, String value){
+		Database2.getInstance(MyApplication.getInstance()).setKeyValue(key+engagementId, value);
+	}
+
+	public static String getMapValue(int engagementId, String key){
+		return Database2.getInstance(MyApplication.getInstance()).getKeyValue(key+engagementId);
+	}
+
+	public long getElapsedTime(){
+		try {
+			return System.currentTimeMillis() - Long.parseLong(getMapValue(getEngagementId(), Constants.KEY_RIDE_START_TIME));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return getElapsedRideTime(MyApplication.getInstance());
+		}
+	}
+
+	public double getIncrementPercent() {
+		return incrementPercent;
+	}
+
+	public void setIncrementPercent(double incrementPercent) {
+		this.incrementPercent = incrementPercent;
+	}
+
+	public int getStepSize() {
+		return stepSize;
+	}
+
+	public void setStepSize(int stepSize) {
+		this.stepSize = stepSize;
+	}
+
+	public String getPickupAddress() {
+		return pickupAddress;
+	}
+
+	public void setPickupAddress(String pickupAddress) {
+		this.pickupAddress = pickupAddress;
+	}
+	public int getProgressValue(Context context){
+		if(TextUtils.isEmpty(bidCreatedAt)){
+			return 0;
+		}
+		double currentDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(),bidCreatedAt);
+		double total = Prefs.with(context).getLong(Constants.KEY_BID_TIMEOUT, 30000L);
+		return (int) (100D - (currentDiff/total*100D));
 	}
 }

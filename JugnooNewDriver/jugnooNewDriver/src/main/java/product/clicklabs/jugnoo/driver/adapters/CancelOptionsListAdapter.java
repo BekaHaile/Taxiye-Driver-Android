@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +29,11 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 	LayoutInflater mInflater;
 	ViewHolderCancelOption holder;
 	Context context;
+	Callback callback;
 
-	public CancelOptionsListAdapter(Context context) {
+	public CancelOptionsListAdapter(Context context, Callback callback) {
 		this.context = context;
+		this.callback = callback;
 		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -102,6 +104,9 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 						}
 					}
 					notifyDataSetChanged();
+					if(callback != null) {
+						callback.onOptionSelected();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -109,5 +114,9 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 		});
 
 		return convertView;
+	}
+
+	public interface Callback{
+		void onOptionSelected();
 	}
 }

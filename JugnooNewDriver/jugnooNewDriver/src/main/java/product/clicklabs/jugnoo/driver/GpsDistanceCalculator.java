@@ -5,23 +5,16 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +22,14 @@ import java.util.List;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections;
+import product.clicklabs.jugnoo.driver.directions.room.model.Path;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 public class GpsDistanceCalculator {
 
@@ -48,7 +41,7 @@ public class GpsDistanceCalculator {
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 20; //in meters per second
 	public static final double MAX_ACCURACY = 200;
-	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
+	public static final long WAITING_WINDOW_TIME_MILLIS = 10000;
 	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
 	public final double WAIT_TIME_RESET_TOLERANCE = 10000; // in milliseconds
 	public static final int TOTAL_DISTANCE_MAX = 200000;
@@ -57,7 +50,7 @@ public class GpsDistanceCalculator {
 
 	public double totalDistance;
 	public double totalHaversineDistance;
-	public Location lastGPSLocation, lastFusedLocation, gsmLocation;
+	public Location lastGPSLocation, lastFusedLocation;
 	public static long lastLocationTime;
 	private double accumulativeSpeed;
 	private int speedCounter;
@@ -65,13 +58,10 @@ public class GpsDistanceCalculator {
 
 
 
-	private FusedLocationFetcherBackgroundHigh gpsForegroundLocationFetcher;
-	private FusedLocationFetcherBackgroundBalanced fusedLocationFetcherBackgroundBalanced;
-	public static GPSLocationUpdate gpsLocationUpdate;
-	public static FusedLocationUpdate fusedLocationUpdate;
+	private FusedLocationFetcherBackground gpsForegroundLocationFetcher, fusedLocationFetcherBackgroundBalanced;
+	public static GPSLocationUpdate gpsLocationUpdate, fusedLocationUpdate;
 	private GpsDistanceTimeUpdater gpsDistanceUpdater;
 	private Context context;
-	private LocationManager GSMmgr;
 
 	private ArrayList<LatLngPair> deltaLatLngPairs = new ArrayList<LatLngPair>();
 	private ArrayList<DirectionsAsyncTask> directionsAsyncTasks = new ArrayList<DirectionsAsyncTask>();
@@ -98,6 +88,7 @@ public class GpsDistanceCalculator {
 		this.gpsForegroundLocationFetcher = null;
 		this.fusedLocationFetcherBackgroundBalanced = null;
 		initializeGPSForegroundLocationFetcher(context);
+		this.handler = new Handler();
 
 	}
 
@@ -124,15 +115,17 @@ public class GpsDistanceCalculator {
 			saveWaitTimeToSP(context, 0);
 			saveTotalDistanceToSP(context, -1);
 			saveLastLocationTimeToSP(context, System.currentTimeMillis());
-			Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, 0);
+			Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, System.currentTimeMillis());
 		}
 		connectGPSListener(context);
 		setupMeteringAlarm(context);
+		startUploadRunnables();
 
 		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 				getWaitTimeFromSP(context), lastGPSLocation,
 				lastFusedLocation, totalHaversineDistance, true);
 		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at start =" + totalDistance);
+		GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 	}
 
 
@@ -143,6 +136,7 @@ public class GpsDistanceCalculator {
 	public void stop() {
 		disconnectGPSListener();
 		cancelMeteringAlarm(context);
+		stopUploadRunnables();
 
 		saveStartTimeToSP(context, System.currentTimeMillis());
 		saveWaitTimeToSP(context, 0);
@@ -173,10 +167,10 @@ public class GpsDistanceCalculator {
 
 	private static int METERING_PI_REQUEST_CODE = 112;
 	private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
-	private static final long ALARM_REPEAT_INTERVAL = 30000;
+	private static final long ALARM_REPEAT_INTERVAL = 60000;
 
 
-	public void setupMeteringAlarm(Context context) {
+	private void setupMeteringAlarm(Context context) {
 		// check task is scheduled or not
 		boolean alarmUp = (PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
 				new Intent(context, MeteringAlarmReceiver.class).setAction(CHECK_LOCATION),
@@ -191,44 +185,37 @@ public class GpsDistanceCalculator {
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 20000,
-				ALARM_REPEAT_INTERVAL, pendingIntent);
+		if (alarmManager != null) {
+			alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 20000,
+					ALARM_REPEAT_INTERVAL, pendingIntent);
+		}
 	}
 
-	public void cancelMeteringAlarm(Context context) {
+	private void cancelMeteringAlarm(Context context) {
 		Intent intent = new Intent(context, MeteringAlarmReceiver.class);
 		intent.setAction(CHECK_LOCATION);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
+		if (alarmManager != null) {
+			alarmManager.cancel(pendingIntent);
+		}
 		pendingIntent.cancel();
 	}
 
 
 	private void initializeGPSForegroundLocationFetcher(Context context) {
-		if (gpsForegroundLocationFetcher == null) {
-			gpsForegroundLocationFetcher = new FusedLocationFetcherBackgroundHigh(context, LOCATION_UPDATE_INTERVAL);
-		}
-		initializeFusedLocationFetcherBackgroundBalanced(context);
-
-		GSMmgr = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				&& ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-				    != PackageManager.PERMISSION_GRANTED) {
-			Log.e(TAG, "ACCESS_FINE_LOCATION NOT GRANTED");
-			return;
-		}
-		GSMmgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, GSMlistener);
-
 		initializeGpsLocationUpdate();
+
+		if (gpsForegroundLocationFetcher == null) {
+			gpsForegroundLocationFetcher = new FusedLocationFetcherBackground(context, LOCATION_UPDATE_INTERVAL, LocationRequest.PRIORITY_HIGH_ACCURACY, gpsLocationUpdate);
+		}
+		if (fusedLocationFetcherBackgroundBalanced == null) {
+			fusedLocationFetcherBackgroundBalanced = new FusedLocationFetcherBackground(context, LOCATION_UPDATE_INTERVAL, LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, fusedLocationUpdate);
+		}
+
 	}
 
-	private void initializeFusedLocationFetcherBackgroundBalanced(Context context) {
-		if (fusedLocationFetcherBackgroundBalanced == null) {
-			fusedLocationFetcherBackgroundBalanced = new FusedLocationFetcherBackgroundBalanced(context, LOCATION_UPDATE_INTERVAL);
-		}
-	}
 
 	private void initializeGpsLocationUpdate() {
 		if (gpsLocationUpdate == null) {
@@ -241,29 +228,11 @@ public class GpsDistanceCalculator {
 
 						boolean locationLogged = false;
 						if (location.getAccuracy() < MAX_ACCURACY) {
-							if (10 >= (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
-								if (MapUtils.distance(gsmLocation, location) < 2000) {
-									if ((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)) {
-										locationLogged = true;
-										drawLocationChanged(location);
-									}
-								}
-								Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0) + 1);
-							}
-							else{
 								if ((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)) {
 									locationLogged= true;
 									drawLocationChanged(location);
 								}
 
-								try {
-									if (11 == (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
-										Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0) + 1);
-									}
-								} catch(Exception e){
-									e.printStackTrace();
-								}
-							}
 							try {
 								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 							} catch (Exception e) {
@@ -291,29 +260,31 @@ public class GpsDistanceCalculator {
 				}
 			};
 		}
-		initializeFusedLocationUpdate();
-	}
-
-	private void initializeFusedLocationUpdate() {
 		if (fusedLocationUpdate == null) {
-			fusedLocationUpdate = new FusedLocationUpdate() {
+			fusedLocationUpdate = new GPSLocationUpdate() {
 
 				@Override
-				public void onFusedLocationChanged(Location location) {
+				public void onGPSLocationChanged(Location location) {
 					lastFusedLocation = location;
 					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 							getWaitTimeFromSP(context), lastGPSLocation,
 							lastFusedLocation, totalHaversineDistance, false);
+				}
+
+				@Override
+				public void refreshLocationFetchers(Context context) {
 				}
 			};
 		}
 	}
 
 
+
 	private void connectGPSListener(Context context) {
 		disconnectGPSListener();
 		try {
 			initializeGPSForegroundLocationFetcher(context);
+			Log.e("gpsForegroundLocationFetcher", "connect called connectGPSListener");
 			gpsForegroundLocationFetcher.connect();
 			fusedLocationFetcherBackgroundBalanced.connect();
 		} catch (Exception e) {
@@ -324,14 +295,14 @@ public class GpsDistanceCalculator {
 	private void disconnectGPSListener() {
 		try {
 			if (gpsForegroundLocationFetcher != null) {
-				gpsForegroundLocationFetcher.destroy();
+				gpsForegroundLocationFetcher.disconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
 			if (fusedLocationFetcherBackgroundBalanced != null) {
-				fusedLocationFetcherBackgroundBalanced.destroy();
+				fusedLocationFetcherBackgroundBalanced.disconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -408,15 +379,22 @@ public class GpsDistanceCalculator {
 			accumulativeSpeed = accumulativeSpeed + speedMPS;
 			speedCounter++;
 		} else{
-			double speedAvg = accumulativeSpeed / speedCounter;
-
-			if(speedAvg < 1.4){
-				long waitTime = getWaitTimeFromSP(context) + WAITING_WINDOW_TIME_MILLIS;
+			if(speedCounter == 0 || (accumulativeSpeed / speedCounter) <= waitSpeed()){
+				long waitTime = getWaitTimeFromSP(context) + millisTillWaitWindow;
 				saveWaitTimeToSP(context, waitTime);
+				Log.e(TAG, "calculateWaitTime waitTime="+(waitTime/60000.0));
 			}
 			this.accumulativeSpeed = 0;
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
+		}
+	}
+
+	private double waitSpeed(){
+		try {
+			return Double.parseDouble(Prefs.with(context).getString(Constants.KEY_DRIVER_WAIT_SPEED, "2"));
+		} catch (Exception e) {
+			return 2;
 		}
 	}
 
@@ -437,6 +415,7 @@ public class GpsDistanceCalculator {
 			final double displacement = MapUtils.distance(lastLatLng, currentLatLng);
 			if (!useDirectionsApi() || (Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)))) == 1
 					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1)) {
+				Log.e("addLatLngPathToDistance", "direct straight line");
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if (validDistance) {
 					if(isInRideState()) {
@@ -450,6 +429,7 @@ public class GpsDistanceCalculator {
 				}
 				return true;
 			} else if(Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) >= 0){
+				Log.e("addLatLngPathToDistance", "Google api");
 				long rowId = -1;
 				if(isInRideState()) {
 					rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
@@ -523,7 +503,7 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	private class DirectionsAsyncTask extends AsyncTask<Void, Void, String> {
+	private class DirectionsAsyncTask extends AsyncTask<Void, Void, GAPIDirections.DirectionsResult> {
 		double displacementToCompare;
 		LatLng source, destination;
 		Location currentLocation;
@@ -540,26 +520,29 @@ public class GpsDistanceCalculator {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStart();
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected GAPIDirections.DirectionsResult doInBackground(Void... params) {
 			try {
-				Response response = GoogleRestApis.INSTANCE.getDirections(source.latitude + "," + source.longitude,
-						destination.latitude + "," + destination.longitude, false, "driving", false);
-				return new String(((TypedByteArray) response.getBody()).getBytes());
+				List<EngagementSPData> list = MyApplication.getInstance().getEngagementSP().getEngagementSPDatasArray();
+				long engagementId = list.size() > 0 ? list.get(0).getEngagementId() : System.currentTimeMillis();
+
+				return GAPIDirections.INSTANCE.getDirectionsPathSync(engagementId, source, destination, "metering");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "";
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(GAPIDirections.DirectionsResult result) {
 			super.onPostExecute(result);
 			if (result != null) {
-				updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
+				updateGAPIDistance(result.getLatLngs(), result.getPath(), displacementToCompare, source, destination, currentLocation, rowId);
 			}
+			GpsDistanceCalculator.this.gpsDistanceUpdater.googleApiHitStop();
 			directionsAsyncTasks.remove(this);
 		}
 
@@ -584,15 +567,9 @@ public class GpsDistanceCalculator {
 	}
 
 
-	private synchronized void updateGAPIDistance(String result, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
+	private synchronized void updateGAPIDistance(List<LatLng> latLngs, Path path, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
 		try {
-			double distanceOfPath = Double.MAX_VALUE;
-			JSONObject jsonObject = new JSONObject(result);
-			String status = jsonObject.getString("status");
-			if ("OK".equalsIgnoreCase(status)) {
-				JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-				distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
-			}
+			double distanceOfPath = path.getDistance();
 			if (Utils.compareDouble(distanceOfPath, (displacementToCompare * 1.5)) <= 0) {                                                        // distance would be approximately correct
 				boolean validDistance = updateTotalDistance(source, destination, distanceOfPath, currentLocation);
 				if (validDistance) {
@@ -600,11 +577,7 @@ public class GpsDistanceCalculator {
 							getWaitTimeFromSP(context), lastGPSLocation,
 							lastFusedLocation, totalHaversineDistance, true);
 
-					JSONArray routeArray = jsonObject.getJSONArray("routes");
-					JSONObject routes = routeArray.getJSONObject(0);
-					JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
-					String encodedString = overviewPolylines.getString("points");
-					List<LatLng> list = MapUtils.decodeDirectionsPolyline(encodedString);
+					List<LatLng> list = latLngs;
 
 					PolylineOptions polylineOptions = new PolylineOptions();
 
@@ -639,7 +612,7 @@ public class GpsDistanceCalculator {
 				GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(source, destination));
 
 				if(rowId != -1) {
-					Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
+					Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId);
 				}
 
 			}
@@ -827,34 +800,47 @@ public class GpsDistanceCalculator {
 	}
 
 
-	LocationListener GSMlistener = new LocationListener() {
-
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-		}
-
-		@Override
-		public void onProviderEnabled(String provider) {
-		}
-
-		@Override
-		public void onProviderDisabled(String provider) {
-		}
-
-		@Override
-		public void onLocationChanged(Location location) {
-			if (12 == (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
-				GSMmgr.removeUpdates(GSMlistener);
-				GSMmgr = null;
-				Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0) + 1);
-			}
-			gsmLocation = location;
-		}
-	};
 
 
 	private boolean useDirectionsApi(){
-		return Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
+		return !HomeActivity.isAltMeteringEnabledForDriver(context)
+				&& Prefs.with(context).getInt(Constants.KEY_USE_DIRECTIONS_API_FOR_METERING, 1) == 1;
+	}
+
+	private Handler handler;
+	private boolean uploadRunnablesRunning;
+	private static final long PATH_UPLOAD_INTERVAL = 15000;
+	private static final long UPLOAD_IN_RIDE_DATA_INTERVAL = 30000;
+
+	private Runnable pathUploadRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(uploadRunnablesRunning) {
+				GpsDistanceRideDataUpload.INSTANCE.uploadInRidePath(context, () -> handler.postDelayed(pathUploadRunnable, PATH_UPLOAD_INTERVAL));
+			}
+		}
+	};
+	private Runnable inRideDataUploadRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(uploadRunnablesRunning){
+				GpsDistanceRideDataUpload.INSTANCE.updateInRideData(context, lastGPSLocation, () -> handler.postDelayed(inRideDataUploadRunnable, UPLOAD_IN_RIDE_DATA_INTERVAL));
+			}
+		}
+	};
+
+	private void startUploadRunnables(){
+		handler.removeCallbacks(pathUploadRunnable);
+		handler.removeCallbacks(inRideDataUploadRunnable);
+		uploadRunnablesRunning = true;
+		handler.postDelayed(pathUploadRunnable, PATH_UPLOAD_INTERVAL);
+		handler.postDelayed(inRideDataUploadRunnable, UPLOAD_IN_RIDE_DATA_INTERVAL);
+	}
+
+	private void stopUploadRunnables(){
+		uploadRunnablesRunning = false;
+		handler.removeCallbacks(pathUploadRunnable);
+		handler.removeCallbacks(inRideDataUploadRunnable);
 	}
 
 }

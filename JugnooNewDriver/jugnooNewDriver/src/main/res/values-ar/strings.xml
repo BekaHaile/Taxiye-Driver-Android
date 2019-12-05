@@ -34,7 +34,7 @@
     <string name="end_ride">انهاء الرحلة</string>
     <string name="reached_destination">الوجهة التي تم التوصل إليها</string>
     <string name="distance">مسافه: بعد</string>
-    <string name="wait_time">وقت الانتظار</string>
+    <string name="wait_time">وقت الازدحام</string>
     <string name="fare">أجرة</string>
     <string name="accept_ride">استعرض ركوب</string>
     <string name="cancel_ride">إلغاء جولة</string>
@@ -685,6 +685,13 @@
     <string name="terms_of_schedule">شروط الجدول</string>
     <string name="faqs">أسئلة وأجوبة</string>
     <string name="pickup_time_format">Pickup time: %s</string>
+    <string name="emergency_contacts">جهة اتصال للطوارئ</string>
+    <string name="add_contacts">اضف جهات اتصال</string>
+    <string name="please_select_some_contacts_first">يرجى اختيار بعض جهات الاتصال أولاً</string>
+    <string name="are_you_sure_want_to_disable_emergency">هل أنت متأكد من أنك تريد تعطيل وضع الطوارئ؟ </string>
+    <string name="edit">تصحيح</string>
+    <string name="configure_your_emergency_contacts">جهة اتصال للطوارئ
+تكوين الخاص بك</string>
     <string name="incentive">Incentives</string>
     <!--login with phone-->
 

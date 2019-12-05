@@ -63,7 +63,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 			if (componentInfo.getPackageName().equals(context.getPackageName()))
 				return true;
 			return false;
-		} catch (SecurityException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return true;
 		}

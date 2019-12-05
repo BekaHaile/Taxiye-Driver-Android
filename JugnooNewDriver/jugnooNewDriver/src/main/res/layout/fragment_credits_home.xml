@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:background="@color/grey_light_alpha"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,20 +10,20 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:visibility="visible"
-        app:pstsIndicatorHeight="4dp"
-        app:pstsDividerColor="@color/menu_black"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsDividerColor="@color/transparent"
         app:pstsShouldExpand="true"
         app:pstsUnderlineHeight="1dp"
         app:pstsUnderlineColor="@color/white"/>
 
 
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_below="@id/tabs"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 </RelativeLayout>

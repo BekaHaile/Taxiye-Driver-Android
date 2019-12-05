@@ -58,7 +58,7 @@
     <string name="end_ride">ରାଇଡ୍ ଶେଷ କରନ୍ତୁ</string>
     <string name="reached_destination">ପଂହଚିବା ସ୍ତାନ</string>
     <string name="distance">ଦୁରତା</string>
-    <string name="wait_time">ଅପେକ୍ଷା ସମୟ</string>
+    <string name="wait_time">କଂଗେସସନ ର୍ଟମେ</string>
     <string name="fare">ଭଡ଼ା ପଇସା</string>
     <string name="accept_ride">ରାଇଡ୍ ଗ୍ରହଣ</string>
     <string name="cancel_ride">କ୍ୟାନ୍ସଲ୍ ରାଇଡ୍</string>
@@ -575,7 +575,6 @@
     <string name="away_cap">Away</string>
     <string name="pool_only">Pool</string>
     <string name="pickup_from">Pickup From:</string>
-    <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn Jugnoo On</string>
     <string name="delivery_1">Delivery 1</string>

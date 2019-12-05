@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.dodo.fragments;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 
 import java.util.ArrayList;

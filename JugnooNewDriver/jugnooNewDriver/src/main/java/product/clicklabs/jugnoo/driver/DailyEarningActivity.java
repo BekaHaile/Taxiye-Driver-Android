@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Shader;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class DailyEarningActivity extends BaseFragmentActivity {
 	ImageView backBtn;
 	TextView title;
 	String date = "";
+	LinearLayout linearLayoutNoItems;
 	TextView textViewInfoDisplay;
 	ArrayList<DailyEarningItem> dailyEarningItems = new ArrayList<>();
 	RecyclerView recyclerViewDailyInfo;
@@ -113,9 +115,11 @@ public class DailyEarningActivity extends BaseFragmentActivity {
 //				new float[]{0, 1}, Shader.TileMode.CLAMP);
 //		title.getPaint().setShader(textShader);
 
+
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Fonts.mavenRegular(this));
-		textViewInfoDisplay.setVisibility(View.GONE);
+		linearLayoutNoItems = findViewById(R.id.linearLayoutNoItems);
+		linearLayoutNoItems.setVisibility(View.GONE);
 
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -178,9 +182,10 @@ public class DailyEarningActivity extends BaseFragmentActivity {
 	public void updateListData(String message, boolean errorOccurred, DailyEarningResponse dailyEarningResponse, InvoiceDetailResponseNew invoiceDetailResponseNew) {
 		if (errorOccurred) {
 			textViewInfoDisplay.setText(message);
-			textViewInfoDisplay.setVisibility(View.VISIBLE);
+			linearLayoutNoItems.setVisibility(View.VISIBLE);
 			dailyRideDetailsAdapter.notifyDataSetChanged();
 		} else {
+			linearLayoutNoItems.setVisibility(View.GONE);
 			dailyRideDetailsAdapter.setList(dailyEarningItems, dailyEarningResponse, invoiceDetailResponseNew);
 		}
 	}

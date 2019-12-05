@@ -3,13 +3,14 @@ package product.clicklabs.jugnoo.driver.fragments
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintSet
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.text.InputFilter
 import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
+import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.inflate
 import product.clicklabs.jugnoo.driver.utils.pxValue
 import java.text.SimpleDateFormat
@@ -46,7 +48,7 @@ const val ARGS_DOC_INFO = "args_doc_info"
 const val ARGS_POS = "args_position"
 
 
-class DocumentDetailsFragment:Fragment(){
+class DocumentDetailsFragment: Fragment(){
 
 
     companion object {
@@ -111,21 +113,27 @@ class DocumentDetailsFragment:Fragment(){
         val inputTopMargin = 10.pxValue(requireContext())
         val sideMargin = labelTopMargin
 
+        setDocData(docInfo)
+        viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
+        lastEdtId = viewHolder!!.id
+
+        listener?.setSubmitButtonVisibility(if(docInfo.listDocFieldsInfo == null || docInfo.listDocFieldsInfo.size == 0) View.GONE else View.VISIBLE)
 
         if (docInfo.listDocFieldsInfo!=null) {
             for (item in docInfo.listDocFieldsInfo) {
 
                 val label = layoutInflater.inflate(R.layout.list_item_document_detail_label, null) as TextView
                 label.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
-                label.text = item.label
+                label.text = item.label + if (item.isMandatory) "*" else ""
 
                 val editText = layoutInflater.inflate(R.layout.list_item_document_edit_input, null) as EditText
                 editText.run(addViewToParentConstraint(label.id, inputTopMargin, sideMargin))
 
                 lastEdtId = editText.id
-                var docField = DocumentInputField(item.key,item.label,item.value,
+                val docField = DocumentInputField(item.key,item.label,item.value,
                         editText, item.type,
-                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext())
+                        docInfo.isDocInfoEditable, item.set, item.setValue as ArrayList<String>?, requireContext(), item.isSecured,
+                        isMandatory = item.isMandatory)
 
                 documentInputFields[item.key] = docField
 
@@ -138,13 +146,15 @@ class DocumentDetailsFragment:Fragment(){
                     if(!refKey.isNullOrEmpty() && documentInputFields.containsKey(refKey)){
                        documentInputFields[key]?.child = documentInputFields[refKey]
                     }
+                    // check confirm_key and save confirm parent
+                    if(!confirmKey.isNullOrEmpty() && documentInputFields.containsKey(confirmKey)){
+                        documentInputFields[key]?.confirmParent = documentInputFields[confirmKey]
+                    }
                 }
 
             }
         }
 
-        setDocData(docInfo)
-        viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
 
 
 
@@ -154,19 +164,17 @@ class DocumentDetailsFragment:Fragment(){
         this.docInfo = docInfo
 
         viewHolder = (activity as DriverDocumentActivity).documentListFragment.driverDocumentListAdapter.getDocumentListView(
-                    pos, viewHolder, layoutInflater, activity as DriverDocumentActivity,true)
-
+                    pos, viewHolder, layoutInflater, activity as DriverDocumentActivity,true, true)
 
 
     }
 
     public fun submitInputData(){
         //if doc is editable and user has not uploaded image
-        if(docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1 && docInfo.docCount>0) {
+        if((docInfo.status=="2" || docInfo.status=="4" || docInfo.isEditable==1) && docInfo.docCount>0) {
 
             //if no image has been uploaded
-            if (docInfo.file == null && docInfo.file1 == null &&
-                (docInfo.url==null   ||  (docInfo.url[0].isNullOrEmpty() && docInfo.url[1].isNullOrEmpty()))) {
+            if (docInfo.docCount > 0 && docInfo.checkIfURLEmpty()) {
                 DialogPopup.alertPopup(requireActivity(), "", getString(R.string.upload_images_error))
                 return
 
@@ -180,7 +188,13 @@ class DocumentDetailsFragment:Fragment(){
         }
 
         val keyValueMap = hashMapOf<String, ServerRequestInputFields>()
+        var confirmErrors = ""
+        var isFirst = true
         val listInputFields = documentInputFields.values.map {
+            if (it.isMandatory && it.getValue().isNullOrBlank()) {
+                Utils.showToast(requireActivity(), getString(R.string.error_empty_mandatory_field, it.label))
+                return
+            }
             if(it.inputType == FieldTypes.SET_SS.type
                     || it.inputType == FieldTypes.SET_MS.type
                     || it.inputType == FieldTypes.SET_SS_REF.type){
@@ -188,7 +202,19 @@ class DocumentDetailsFragment:Fragment(){
             } else {
                 keyValueMap[it.key] = ServerRequestInputFields(it.key, it.getValue(), null)
             }
+
+            //Error Message for confirm fields
+            if(it.confirmParent != null && !it.getValue().equals(it.confirmParent!!.getValue())){
+                confirmErrors += (if(isFirst) "" else ", ").plus(it.confirmParent!!.label)
+                isFirst = false
+            }
             keyValueMap[it.key]
+        }
+
+        //Show error Message for confirm field if not matched with parent
+        if(!confirmErrors.isEmpty()){
+            Utils.showToast(activity, confirmErrors.plus(" ").plus(activity?.resources?.getString(R.string.not_match)))
+            return
         }
 
         val element = gson.toJsonTree(listInputFields, object : TypeToken<List<ServerRequestInputFields>>() {}.type)
@@ -256,6 +282,7 @@ class DocumentDetailsFragment:Fragment(){
 
     interface InteractionListener{
         fun updateDocInfo(pos: Int, docInfo: DocInfo)
+        fun setSubmitButtonVisibility(visibility:Int)
     }
 }
 
@@ -269,7 +296,10 @@ class DocumentInputField(
         var set: List<DocFieldsInfo>?,
         var setValue: ArrayList<String>?,
         var context: Context,
-        child:DocumentInputField? = null) {
+        var isSecured: Int,
+        child:DocumentInputField? = null,
+        var confirmParent:DocumentInputField? = null,
+        var isMandatory: Boolean) {
 
     val FORMAT_UTC = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val DOB_DATE_FORMAT = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -346,7 +376,10 @@ class DocumentInputField(
         setText(value)
         inputField.isEnabled = isEditable
 
-
+        //id is_secure == 1 then setting input type to Password_type
+        if(isSecured == 1) {
+            inputField.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
     }
 
     private fun setText(value: String?) {
@@ -446,18 +479,14 @@ class DocumentInputField(
                             setValue!!.remove(country.value)
                             country.isSelected = false
                         }
-                        val str = setValue!!.toString()
-                        inputField.setText(str.substring(1, str.length-1))
+                        setTextForSetValues()
                     }
                 }
 
                 inputField.setOnClickListener{
                     showSelectionDialog(listener,pickListener,label+"-dialog",label, (inputType == DocumentDetailsFragment.FieldTypes.SET_MS.type))
                 }
-                if(setValue != null) {
-                    val str = setValue.toString()
-                    inputField.setText(str.substring(1, str.length-1))
-                }
+                setTextForSetValues()
             }
 
         }
@@ -492,6 +521,22 @@ class DocumentInputField(
             countryPickerDialog.setCountryPickerListener(pickerListener)
             countryPickerDialog.setDialogInteractionListener(interactionListener)
             countryPickerDialog.show((context as AppCompatActivity).supportFragmentManager, tag)
+        }
+    }
+
+    private fun setTextForSetValues(){
+        if(setValue != null) {
+            val str = StringBuilder()
+            for (df in set!!.iterator()) {
+                if(df.isSelected){
+                    str.append(df.label).append(", ")
+                }
+            }
+            var string = str.toString()
+            if(!TextUtils.isEmpty(string)) {
+                string = string.substring(0, string.length - 2)
+            }
+            inputField.setText(string)
         }
     }
 

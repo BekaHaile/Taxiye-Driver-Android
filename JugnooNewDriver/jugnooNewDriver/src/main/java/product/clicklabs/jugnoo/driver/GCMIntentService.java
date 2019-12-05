@@ -26,10 +26,14 @@ import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
-import android.telephony.TelephonyManager;
 
-import com.fugu.HippoNotificationConfig;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+
+import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -59,6 +63,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.home.RingtoneTypes;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
@@ -66,7 +71,6 @@ import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
-import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
@@ -89,11 +93,12 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public static int PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	private static final long WAKELOCK_TIMEOUT = 5000;
+
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 
 	public static final int NOTIFICATON_SMALL_ICON = R.drawable.ic_notification_small_drawable;
 	public static final int NOTIFICATION_BIG_ICON = R.drawable.app_icon;
-	HippoNotificationConfig fuguNotificationConfig = new HippoNotificationConfig();
+	FuguNotificationConfig fuguNotificationConfig = new FuguNotificationConfig();
 	public GCMIntentService() {
 	}
 
@@ -490,7 +495,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 //		super.onMessageReceived(remoteMessage);
 
-		if (fuguNotificationConfig.isHippoNotification(remoteMessage.getData())) {
+		if (fuguNotificationConfig.isFuguNotification(remoteMessage.getData())) {
 			fuguNotificationConfig.setSmallIcon(NOTIFICATON_SMALL_ICON);
 			//your icon drawable
 			fuguNotificationConfig.setLargeIcon(R.mipmap.ic_launcher);
@@ -558,9 +563,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								}
-
+								if(HomeActivity.appInterruptHandler != null){
+									HomeActivity.appInterruptHandler.refreshTractionScreen();
+								}
+								boolean isOffline = Prefs.with(this).getInt(Constants.IS_OFFLINE, 0) == 1;
+								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
+								int reverseBid = jObj.optInt(Constants.KEY_REVERSE_BID, 0);
 								if (entertainRequest) {
-									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
 									double latitude = jObj.getDouble(Constants.KEY_LATITUDE);
 									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
@@ -571,6 +580,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 									if(Prefs.with(this).getInt(Constants.KEY_SHOW_DROP_ADDRESS_BEFORE_INRIDE, 1) == 0){
 										address = jObj.optString(Constants.KEY_PICKUP_ADDRESS, address);
 									}
+									String dropAddress = jObj.optString(Constants.KEY_DROP_ADDRESS, "");
+									String pickupAdress = jObj.optString(Constants.KEY_PICKUP_ADDRESS,"");
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
@@ -579,6 +590,40 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
 									String currency = jObj.optString(Constants.KEY_CURRENCY, "");
 									String pickupTime = jObj.optString(Constants.KEY_PICKUP_TIME);
+									if(TextUtils.isEmpty(pickupTime)){
+										pickupTime = jObj.optString(Constants.KEY_SCHEDULED_RIDE_PICKUP_TIME);
+									}
+									JSONObject joRentalInfo = jObj.optJSONObject(Constants.KEY_RENTAL_INFO);
+									String strRentalInfo = "";
+									if(joRentalInfo != null) {
+										if(joRentalInfo.has(Constants.KEY_RENTAL_TIME) && joRentalInfo.optDouble(Constants.KEY_RENTAL_TIME, 0) != 0) {
+											double timeInMins = joRentalInfo.getDouble(Constants. KEY_RENTAL_TIME);
+											String time;
+											if (timeInMins >= 60) {
+												int hours =  (int)(timeInMins / 60);
+												int  minutes = (int) timeInMins % 60;
+												String strMins = minutes > 1 ? getString(R.string.rental_mins).concat(" ") : getString(R.string.rental_min).concat(" ");
+												String strHours = hours > 1 ? getString(R.string.rental_hours).concat(" ") : getString(R.string.rental_hour).concat(" ");
+												time = strRentalInfo + (Utils.getDecimalFormat().format(hours) + " " +strHours + Utils.getDecimalFormat().format(minutes)+" "+strMins + " | ");
+											} else {
+												time = strRentalInfo.concat(joRentalInfo.getString(Constants.KEY_RENTAL_TIME).concat(" ").concat(
+														timeInMins <= 1 ? getString(R.string.rental_min).concat(" ") : getString(R.string.rental_mins).concat(" | ")));
+											}
+											strRentalInfo = strRentalInfo.concat(time);
+										}
+										if(joRentalInfo.has(Constants.KEY_RENTAL_DISTANCE) && joRentalInfo.optDouble(Constants.KEY_RENTAL_DISTANCE, 0) != 0) {
+											strRentalInfo = strRentalInfo.concat(getString(R.string.rental_max)).concat(" ").concat(joRentalInfo.getString(Constants.KEY_RENTAL_DISTANCE))
+													.concat(" ").concat(UserData.getDistanceUnit(this)).concat(" | ");
+										}
+										if(joRentalInfo.has(Constants.KEY_RENTAL_AMOUNT) && joRentalInfo.optDouble(Constants.KEY_RENTAL_AMOUNT, 0) != 0) {
+											strRentalInfo = strRentalInfo.concat(Utils.formatCurrencyValue(Data.userData.getCurrency(), joRentalInfo.getDouble(Constants.KEY_RENTAL_AMOUNT)));
+										}
+
+									}
+
+									if(isPooled == 1 && Prefs.with(this).getInt(Constants.KEY_DRIVER_SHOW_POOL_REQUEST_DEST, 0) == 1){
+										address = address + "\n" + getString(R.string.to)+dropAddress;
+									}
 
 									ArrayList<String> dropPoints = new ArrayList<>();
 									if(jObj.has(Constants.KEY_DROP_POINTS)) {
@@ -596,12 +641,14 @@ public class GCMIntentService extends FirebaseMessagingService {
 									int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 
 									String startTimeLocal = DateOperations.utcToLocal(startTime);
+									String bidCreatedAt = DateOperations.utcToLocal(jObj.optString(Constants.KEY_BID_CREATED_AT, DateOperations.getCurrentTimeInUTC()));
 									String endTime = jObj.optString(Constants.KEY_END_TIME, "");
-									int reverseBid = jObj.optInt(Constants.KEY_REVERSE_BID, 0);
 									int bidPlaced = jObj.optInt(Constants.KEY_BID_PLACED, 0);
 									double bidValue = jObj.optInt(Constants.KEY_BID_VALUE, 0);
 									double initialBidValue = jObj.optDouble(Constants.KEY_INITIAL_BID_VALUE, 10d);
 									double estimatedTripDistance = jObj.optDouble(Constants.KEY_ESTIMATED_TRIP_DISTANCE, 0);
+									double incrementPercent = jObj.optDouble(Constants.KEY_INCREASE_PERCENTAGE, (double)Prefs.with(this).getFloat(Constants.BID_INCREMENT_PERCENT, 10f));
+									int stepSize = jObj.optInt(Constants.KEY_STEP_SIZE, 5);
 									long requestTimeOutMillis;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
@@ -619,7 +666,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									String distanceDry = "";
 									try {
 										DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this))
+										distanceDry = decimalFormat.format(dryDistance * UserData.getDistanceUnitFactor(this, false))
 												+" "+ Utils.getDistanceUnit(UserData.getDistanceUnit(this));
 									} catch (Resources.NotFoundException e) {
 										e.printStackTrace();
@@ -633,48 +680,46 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
+
+									Data.instantiateAssignedCustomerInfos();
+									CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+											Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+											referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
+											isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+											new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
+											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
+											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt);
+									Data.addCustomerInfo(customerInfo);
+
+									if(!isOffline) {
+										startRing(this, engagementId, changeRing);
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+												referenceId, userId, perfectRide,
+												isPooled, isDelivery, isDeliveryPool, reverseBid);
+									}
+									flurryEventForRequestPush(engagementId, driverScreenMode);
+
+									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+										startTimeoutAlarm(this);
+									}
+									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+
 									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
-										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
-												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare,
-												dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
-												pickupTime);
-										Data.addCustomerInfo(customerInfo);
-
-										startRing(this, engagementId, changeRing);
-										flurryEventForRequestPush(engagementId, driverScreenMode);
-
-										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-											startTimeoutAlarm(this);
-										}
-										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool, reverseBid);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
-
 										Log.e("referenceId", "=" + referenceId);
-									} else {
-										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool, reverseBid);
-										startRing(this, engagementId, changeRing);
-										flurryEventForRequestPush(engagementId, driverScreenMode);
-
-										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-											startTimeoutAlarm(this);
-										}
-
-										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 									}
 								}
 
 								try {
-									if (jObj.optInt("wake_up_lock_enabled", 0) == 1) {
+									if(reverseBid == 1){
+										if(HomeActivity.appInterruptHandler == null) {
+											Intent intentN = new Intent(this, RequestActivity.class);
+											intentN.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											intentN.putExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(engagementId));
+											startActivity(intentN);
+										}
+									} else if (jObj.optInt("wake_up_lock_enabled", 0) == 1) {
 										if (HomeActivity.activity != null) {
 											if (!HomeActivity.activity.hasWindowFocus()) {
 												Intent newIntent = new Intent(this, HomeActivity.class);
@@ -687,43 +732,31 @@ public class GCMIntentService extends FirebaseMessagingService {
 											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											startActivity(homeScreen);
 										}
+
 									}
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
+								Location location = Database2.getInstance(this).getDriverCurrentLocation(this);
 
-							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
-
-								String engagementId = jObj.getString("engagement_id");
-								clearNotifications(this);
-
-								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
-									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
-								}
-								cancelUploadPathAlarm(this);
-								stopRing(false, this);
-
-							} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
+							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag
+									|| PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag
+									|| PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
 								String engagementId = jObj.getString("engagement_id");
+								String messageInternal = jObj.optString(Constants.KEY_MESSAGE);
 								clearNotifications(this);
 
+								Data.instantiateAssignedCustomerInfos();
+								Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
-									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
-								}
-								cancelUploadPathAlarm(this);
-								stopRing(false, this);
-
-							} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-
-								String engagementId = jObj.getString("engagement_id");
-								clearNotifications(this);
-
-								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
-									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
+									if(PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag){
+										HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
+									} else {
+										HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag, messageInternal);
+									}
+								} else{
+									try{LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(RequestActivity.INTENT_ACTION_REFRESH_BIDS));}catch(Exception ignored){}
 								}
 								cancelUploadPathAlarm(this);
 								stopRing(false, this);
@@ -899,13 +932,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
 								if(PermissionCommon.isGranted(Manifest.permission.READ_CONTACTS, this)) {
 									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
-									intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+									intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 									startService(intent1);
 								}
 
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
-								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								intent1.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 								intent1.putExtra("file_id", jObj.getString("engagement_id"));
 								startService(intent1);
 
@@ -920,15 +953,10 @@ public class GCMIntentService extends FirebaseMessagingService {
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
-								if(PermissionCommon.isGranted(Manifest.permission.READ_SMS, this)) {
-									Intent synIntent = new Intent(this, SyncMessageService.class);
-									synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
-									startService(synIntent);
-								}
 
 							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);
-								fetchDocIntent.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								fetchDocIntent.putExtra("access_token", JSONParser.getAccessTokenPair(this).first);
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
@@ -964,11 +992,19 @@ public class GCMIntentService extends FirebaseMessagingService {
 								Intent mpesaPush = new Intent(Constants.UPDATE_MPESA_PRICE);
 								mpesaPush.putExtra("to_pay", jObj.getString("to_pay"));
 								sendBroadcast(mpesaPush);
-
+								String message1 = jObj.optString("message", " ");
+								if (message1 != null && !TextUtils.isEmpty(message1)) {
+									if (HomeActivity.appInterruptHandler != null) {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, HomeActivity.class, null);
+									} else {
+										notificationManagerCustomID(this, title, message1, PROMOTION_ID, DriverSplashActivity.class, null);
+									}
+								}
 							}
 
 							String message1 = jObj.optString("message", " ");
 							savePush(jObj, flag, title, message1);
+
 
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -1007,165 +1043,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 	}
 
-//	public void createDemoRequest(Context context, TourResponseModel message) {
-//		try {
-//			 {
-//
-//				try {
-//					TourResponseModel.RequestResponse jObj = message.responses.requestResponse;
-//					Log.i("push_notification", String.valueOf(jObj));
-//					int flag = jObj.getFlag();
-//					String title = "Jugnoo";
-//
-//					if (PushFlags.REQUEST.getOrdinal() == flag) {
-//						int perfectRide = jObj.getPerfectRide();
-//						int isPooled = jObj.getIsPooled();
-//						int isDelivery = jObj.getIsDelivery();
-//						int isDeliveryPool = 0;
-//						int changeRing = jObj.getRingType();
-//						int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
-//								DriverScreenMode.D_INITIAL.getOrdinal());
-//						boolean entertainRequest = false;
-//						if(jObj.getRideType() == 4){
-//							isDeliveryPool =1;
-//						}
-//						if (1 == perfectRide
-//								&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
-//								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-//							entertainRequest = true;
-//						} else if (1 == isPooled
-//								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-//							entertainRequest = true;
-//						} else if (1 == isDelivery
-//								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-//							entertainRequest = true;
-//						} else if (0 == perfectRide && 0 == isPooled
-//								&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)
-//								&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-//							entertainRequest = true;
-//						}
-//
-//						if (entertainRequest) {
-//							String engagementId = String.valueOf(jObj.getEngagementId());
-//							String userId = String.valueOf(jObj.getUserId());
-//							double latitude = jObj.getLatitude();
-//							double longitude = jObj.getLongitude();
-//							double currrentLatitude = Double.parseDouble(jObj.getCurrentLatitude());
-//							double currrentLongitude = Double.parseDouble(jObj.getCurrentLongitude());
-//							String startTime = jObj.getStartTime();
-//							String address = jObj.getAddress();
-//							double dryDistance = jObj.getDryDistance();
-//							int totalDeliveries = 0;
-//							double estimatedFare = 0;
-//							double cashOnDelivery = 0;
-//							String estimatedDriverFare = "0";
-//
-//							String userName = "";
-//							int referenceId = 0;
-//
-//							String startTimeLocal = DateOperations.utcToLocal(startTime);
-//							String endTime = jObj.getEndTime();
-//							long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-//							if ("".equalsIgnoreCase(endTime)) {
-//								long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
-//								long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
-//								requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
-//							} else {
-//								long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
-//										startTimeLocal);
-//								if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
-//									requestTimeOutMillis = startEndDiffMillis;
-//								} else {
-//									requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-//								}
-//							}
-//							String distanceDry = "";
-//							try {
-//								DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
-//								DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
-//								if (dryDistance >= 1000) {
-//									distanceDry = decimalFormat.format(dryDistance / 1000) + context.getResources().getString(R.string.km_away);
-//								} else {
-//									distanceDry = ""+decimalFormatNoDecimal.format(dryDistance) + " " + context.getResources().getString(R.string.m_away);
-//								}
-//							} catch (Exception e) {
-//								e.printStackTrace();
-//							}
-//
-//							double fareFactor = jObj.getFareFactor();
-//
-//
-//
-//							startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
-//
-//							if (HomeActivity.appInterruptHandler != null) {
-//								CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-//										Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
-//										referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-//										isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-//										new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
-//								Data.addCustomerInfo(customerInfo);
-//
-//								startRing(context, engagementId, changeRing);
-//
-//								if (jObj.getPenaliseDriverTimeout() == 1) {
-//									startTimeoutAlarm(context);
-//								}
-//								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
-//								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-//								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
-//										referenceId, userId, perfectRide,
-//										isPooled, isDelivery, isDeliveryPool);
-//								HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
-//
-//								Log.e("referenceId", "=" + referenceId);
-//							} else {
-//								notificationManagerResumeAction(context, address + "\n" + distanceDry, true, engagementId,
-//										referenceId, userId, perfectRide,
-//										isPooled, isDelivery, isDeliveryPool);
-//								startRing(context, engagementId, changeRing);
-//
-//								RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(context, engagementId);
-//								requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-//							}
-//						}
-//
-//						try {
-//							if (jObj.getWakeUpLockEnabled() == 1) {
-//								if (HomeActivity.activity != null) {
-//									if (!HomeActivity.activity.hasWindowFocus()) {
-//										Intent newIntent = new Intent(context, HomeActivity.class);
-//										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//										context.startActivity(newIntent);
-//									}
-//								} else {
-//									Intent homeScreen = new Intent(context, DriverSplashActivity.class);
-//									homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//									context.startActivity(homeScreen);
-//								}
-//							}
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-//
-//					}
-//
-//					String message1 = "";
-////					savePush(jObj, flag, title, message1);
-//
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//
-//			// Release the wake lock provided by the WakefulBroadcastReceiver.
-//
-//		}
-//	}
 
 
 	public static MediaPlayer mediaPlayer;
@@ -1219,18 +1096,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
-				}else {
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-				}
-			}else{
-				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
-				}else {
-					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-				}
 			}
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, ringType, true);
 
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -1252,7 +1119,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 			e.printStackTrace();
 		}
 	}
-
 
 	public static void startRingCustom(Context context, String file) {
 		try {
@@ -1322,7 +1188,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if(Prefs.with(context).getInt(Constants.KEY_MAX_SOUND, 1) == 1)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer = RingtoneTypes.INSTANCE.getMediaPlayerFromRingtone(context, 0, true);
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
@@ -1541,13 +1407,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			@Override
 			public void run() {
 				try {
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if ("".equalsIgnoreCase(accessToken)) {
-						DriverLocationUpdateService.updateServerData(context);
-						accessToken = Database2.getInstance(context).getDLDAccessToken();
-					}
+					String accessToken = JSONParser.getAccessTokenPair(context).first;
 
-					String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 					String networkName = getNetworkName(context);
 
 
@@ -1583,11 +1444,6 @@ public class GCMIntentService extends FirebaseMessagingService {
 			@Override
 			public void run() {
 				try {
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if ("".equalsIgnoreCase(accessToken)) {
-						DriverLocationUpdateService.updateServerData(context);
-						accessToken = Database2.getInstance(context).getDLDAccessToken();
-					}
 					JSONObject params = new JSONObject();
 					try {
 						params.put("user_id", Data.userData.getUserId());

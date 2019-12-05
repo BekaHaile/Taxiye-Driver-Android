@@ -9,9 +9,10 @@ public class EndRideData {
 	public int paymentMode;
 	private String currency;
 	private ArrayList<FareDetail> fareDetails;
+	private FareStructure fareStructure;
 	
 	public EndRideData(String engagementId, double fare, double discount, double paidUsingWallet, double toPay, int paymentMode,String currency,
-					   ArrayList<FareDetail> fareDetails){
+					   ArrayList<FareDetail> fareDetails, FareStructure fareStructure){
 		this.engagementId = engagementId;
 		
 		this.fare = fare;
@@ -21,6 +22,7 @@ public class EndRideData {
 		this.paymentMode = paymentMode;
 		this.currency = currency;
 		this.fareDetails = fareDetails;
+		this.fareStructure = fareStructure;
 	}
 	
 	@Override
@@ -40,4 +42,9 @@ public class EndRideData {
 	public void setFareDetails(ArrayList<FareDetail> fareDetails) {
 		this.fareDetails = fareDetails;
 	}
+
+	public FareStructure getFareStructure() {
+		return fareStructure;
+	}
+
 }

@@ -8,6 +8,8 @@ package product.clicklabs.jugnoo.driver.retrofit.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 
@@ -17,6 +19,9 @@ public class RateCardResponse extends FeedCommonResponse{
 	@SerializedName("rates")
 	@Expose
 	private Rates rates;
+	@SerializedName("regions")
+	@Expose
+	private List<RentalVehicle> regions;
 
 	/**
 	 *
@@ -36,6 +41,13 @@ public class RateCardResponse extends FeedCommonResponse{
 		this.rates = rates;
 	}
 
+	public List<RentalVehicle> getRegions() {
+		return regions;
+	}
+
+	public void setRegions(List<RentalVehicle> regions) {
+		this.regions = regions;
+	}
 
 	public class Rates extends CurrencyModel{
 

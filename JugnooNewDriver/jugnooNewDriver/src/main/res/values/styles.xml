@@ -64,6 +64,8 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
         <item name="android:padding">8dp</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
@@ -77,6 +79,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:padding">8dp</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
@@ -92,6 +96,8 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
     </style>
@@ -103,6 +109,8 @@
         <item name="android:background">@drawable/menu_black_btn_selector</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:tag">@string/dont_touch_me</item>
         <item name="android:fontFamily">@font/maven_pro_medium</item>
@@ -140,6 +148,7 @@
         <item name="android:textColorHint">@color/textColorLight</item>
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/maven_pro_regular</item>
+        <item name="colorControlHighlight">@color/grey_light_more</item>
     </style>
     <style name="TextMedium">
         <item name="android:tag">@string/dont_touch_me</item>
@@ -178,4 +187,50 @@
         <item name="android:textColorSecondary">@color/bg_grey</item>
     </style>
 
+    <style name="cross_popup">
+        <item name="android:layout_width">73px</item>
+        <item name="android:layout_height">73px</item>
+        <item name="android:layout_alignEnd">@+id/linearLayoutInner</item>
+        <item name="android:layout_alignTop">@+id/linearLayoutInner</item>
+        <item name="android:clickable">true</item>
+        <item name="android:src">@drawable/ic_cross_popup_selector</item>
+        <item name="android:tag">mwar</item>
+        <item name="android:paddingStart">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:layout_marginEnd">-20px</item>
+        <item name="android:layout_marginTop">-20px</item>
+    </style>
+
+    <style name="GreyHighlight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlHighlight">@color/grey_light_more</item>
+    </style>
+
+    <style name="DialogFragmentTrans" parent="@android:style/Theme.Translucent.NoTitleBar"/>
+
+    <style name="TransparentTheme" parent="Theme.AppCompat.Translucent">
+        <item name="colorPrimary">
+            @color/transparent
+        </item>
+        <item name="colorPrimaryDark">
+            @color/black
+        </item>
+        <item name="colorAccent">
+            @color/white_light_dark
+        </item>
+        <item name="colorControlNormal">
+            @color/white_light_dark
+        </item>
+        <item name="colorControlActivated">
+            @color/themeColor
+        </item>
+        <item name="colorControlHighlight">
+            @color/white_light_dark
+        </item>
+        <item name="android:textColorHint">
+            #595968
+        </item>
+        <item name="android:windowContentTransitions">
+            true
+        </item>
+    </style>
 </resources>

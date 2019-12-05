@@ -28,16 +28,21 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.ReferralsInfoResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.TicketResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TollDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.TractionResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.drivertaks.DriverTasks;
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse;
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.tutorial.TourResponseModel;
 import product.clicklabs.jugnoo.driver.tutorial.UpdateTourStatusModel;
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
 import product.clicklabs.jugnoo.driver.ui.models.ProgramModel;
@@ -51,10 +56,12 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
+import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
 
 /**
@@ -272,6 +279,11 @@ public interface APIServices {
 	@POST("/verify_my_contact_number")
 	void verifyMyContactNumber(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/toggle_delivery_for_driver")
+	void enableDelivery(@FieldMap Map<String, String> params,
+							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/get_missed_rides")
@@ -703,10 +715,77 @@ public interface APIServices {
 	@POST("/log_google_api_hits")
 	void logGoogleApiHitsC(@FieldMap Map<String, String> params, Callback<SettleUserDebt> callback);
 
+	@GET("/get_toll_data")
+	void getTollData(@QueryMap Map<String, String> params, Callback<TollDataResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_toll_data")
+	void updateTollData(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
+
+
+	@FormUrlEncoded
+	@POST("/emergency/contacts/add_multiple")
+	void emergencyContactsAddMultiple(@FieldMap Map<String, String> params,
+									  Callback<SettleUserDebt> callback);
+
+
+	@FormUrlEncoded
+	@POST("/emergency/contacts/delete")
+	void emergencyContactsDelete(@FieldMap Map<String, String> params,
+								 Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/emergency/send_ride_status_message")
+	void emergencySendRideStatusMessage(@FieldMap Map<String, String> params,
+										Callback<SettleUserDebt> callback);
+
+
+	@GET("/emergency/contacts/list")
+	void emergencyContactsList(@QueryMap Map<String, String> params,
+							   Callback<SettleUserDebt> callback);
+
+
+	@FormUrlEncoded
+	@POST("/emergency/alert")
+	void emergencyAlert(@FieldMap Map<String, String> params,
+						Callback<SettleUserDebt> callback);
 	@FormUrlEncoded
 	@POST("/fetch_incentive_data")
 	void fetchPrograms(@FieldMap Map<String, String> params,
 							   Callback<ProgramModel> callback);
 
 
+	@FormUrlEncoded
+	@POST("/emergency/disable")
+	void emergencyDisable(@FieldMap Map<String, String> params,
+						  Callback<SettleUserDebt> callback);
+
+	@FormUrlEncoded
+	@POST("/emergency/alert")
+	Response emergencyAlertSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_tasks")
+	void fetchDriverTask(@FieldMap Map<String, String> params, Callback<DriverTasks> callback);
+
+
+	@FormUrlEncoded
+	@POST("/send_email_invoice")
+	void sendEmailInvoice(@FieldMap Map<String, String> params, Callback<FeedCommonResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_referral_info")
+	void fetchDriverReferral(@FieldMap Map<String, String> params, Callback<ReferralsInfoResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_traction_rides")
+	void fetchDriverTractionRides(@FieldMap Map<String, String> params, Callback<TractionResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_information")
+	Response fetchTutorialData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/update_driver_property")
+	void updateDriverProperty(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 }

@@ -19,11 +19,13 @@ public class FareStructure {
 	public int mandatoryFareApplicable = 0;
 	private double baggageCharges ;
 	private double taxPercent;
+	private double mandatoryDistance;
+	private double mandatoryTime;
 
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
 						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
 						 double farePerKmBeforeThreshold, double fareMinimum, double mandatoryFare, double mandatoryFareCapping,
-						 double baggageCharges, double taxPercent){
+						 double baggageCharges, double taxPercent, double mandatoryDistance, double mandatoryTime){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -43,6 +45,8 @@ public class FareStructure {
 		this.fareMinimum = fareMinimum;
 		this.baggageCharges = baggageCharges;
 		this.taxPercent = taxPercent;
+		this.mandatoryDistance = mandatoryDistance;
+		this.mandatoryTime = mandatoryTime;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin, int luggageCount){
@@ -57,7 +61,6 @@ public class FareStructure {
 		if(totalWaitTimeInMin < 0){
 			totalWaitTimeInMin = 0;
 		}
-		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
 
 		double fareOfDistance =0;
 		double fare = 0;
@@ -73,26 +76,14 @@ public class FareStructure {
 						+ ((totalDistanceInKm - farePerKmThresholdDistance) * farePerKmAfterThreshold);
 			}
 
-			fare = fareOfRideTime + fareOfWaitTime + fixedFare + fareOfDistance;
+			fare = fareOfRideTime + fixedFare + fareOfDistance;
 
 		} else {
-			fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
+			fare = fareOfRideTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
 		}
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
-		fare = fare + computeLuggageChargesCharges(luggageCount);
-
-		if(mandatoryFare > 0) {
-			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
-			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
-			if(fare < cappedFareUp && fare > cappedFareDown){
-				fare = mandatoryFare;
-				mandatoryFareApplicable = 1;
-			} else {
-				mandatoryFareApplicable = 0;
-			}
-		}
 
 		if(fareMinimum > 0){
 			if(fare < fareMinimum){
@@ -100,10 +91,29 @@ public class FareStructure {
 			}
 		}
 
-		return Utils.currencyPrecision(fare);
+		if(mandatoryFare > 0) {
+			double cappedFareUp = mandatoryFare + (mandatoryFareCapping * mandatoryFare / 100D);
+			double cappedFareDown = mandatoryFare - (mandatoryFareCapping * mandatoryFare / 100D);
+			if(fare <= cappedFareUp && fare >= cappedFareDown){
+				fare = mandatoryFare;
+				mandatoryFareApplicable = 1;
+			} else {
+				mandatoryFareApplicable = 0;
+			}
+		}
+
+
+		//congestion fare
+		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
+		fare = fare + fareOfWaitTime;
+
+
+		fare = fare + computeLuggageChargesCharges(luggageCount);
+
+		return fare;
 	}
 
-	public double getEffectiveConvenienceCharge(){
+	private double getEffectiveConvenienceCharge(){
 		return (convenienceCharge - convenienceChargeWaiver);
 	}
 
@@ -128,5 +138,13 @@ public class FareStructure {
 
 	public double getTaxPercent() {
 		return taxPercent;
+	}
+
+	public double getMandatoryDistance() {
+		return mandatoryDistance;
+	}
+
+	public double getMandatoryTime() {
+		return mandatoryTime;
 	}
 }

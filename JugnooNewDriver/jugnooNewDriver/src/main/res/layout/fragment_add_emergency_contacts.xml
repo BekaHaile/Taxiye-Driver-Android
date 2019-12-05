@@ -1,0 +1,129 @@
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <include layout="@layout/layout_top_bar"/>
+
+        <TextView
+            android:id="@+id/textViewAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10px"
+            android:padding="20px"
+            android:text="@string/add"
+            android:visibility="gone"
+            android:textAllCaps="true"
+            android:textColor="@color/text_color_light_selector"
+            android:textSize="@dimen/text_size_28"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topBar"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        >
+
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="40px"
+            android:layout_marginTop="50px"
+            android:gravity="center_vertical"
+            >
+            
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="35px"
+                android:src="@drawable/emergency_pick_contact_icon"
+                android:tag="mwar"
+                />
+
+            <TextView
+                android:id="@+id/textViewAddContacts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20px"
+                android:text="@string/add_contacts"
+                android:textAllCaps="true"
+                android:textColor="@color/themeColor"
+                android:textSize="@dimen/text_size_30"
+                />
+            
+        </LinearLayout>
+        
+        
+        <product.clicklabs.jugnoo.driver.widgets.ContactsCompletionView
+            android:id="@+id/editTextContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40px"
+            android:layout_marginEnd="40px"
+            android:layout_marginTop="10px"
+            android:background="@drawable/background_transparent"
+            android:hint="@string/type_a_name_or_mobile_number"
+            android:textSize="@dimen/text_size_30"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color_light_selector"
+            android:paddingStart="10px"
+            android:paddingEnd="10px"
+            android:paddingTop="20px"
+            android:paddingBottom="20px"
+            android:completionThreshold="1"
+            />
+
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginStart="40px"
+            android:layout_marginEnd="40px"
+            android:background="@color/themeColor"
+            />
+
+        <product.clicklabs.jugnoo.driver.utils.ProgressWheel
+            android:id="@+id/progressWheelLoadContacts"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:tag="@string/dont_touch_me"
+            xmlns:wheel="http://schemas.android.com/apk/res-auto"
+            wheel:matProg_barColor="@color/themeColor"
+            wheel:matProg_barWidth="3dp"
+            wheel:matProg_fillRadius="true"
+            wheel:matProg_progressIndeterminate="true"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewContacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_marginStart="40px"
+            android:layout_marginEnd="40px"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

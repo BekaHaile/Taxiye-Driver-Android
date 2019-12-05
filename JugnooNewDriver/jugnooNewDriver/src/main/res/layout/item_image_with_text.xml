@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivImage1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="2dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_fresh_item_placeholder"
+        android:tag="mwar"
+        android:visibility="visible" />
+
+    <View
+        android:id="@+id/view_review_shadow"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@id/ivImage1"
+        android:background="@drawable/shadow_up_fresh_home_item"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/ivImage1"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:maxLines="1"
+        tools:text="Delivery 1"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</RelativeLayout>

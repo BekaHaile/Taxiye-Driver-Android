@@ -1,11 +1,15 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,8 +23,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
@@ -95,7 +107,6 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_confrim);
-        Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, true);
         loginDataFetched = false;
 
         relative = (RelativeLayout) findViewById(R.id.relative);
@@ -291,7 +302,22 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         }
 
         OTP_SCREEN_OPEN = "yes";
-        Data.deviceToken  =  FirebaseInstanceId.getInstance().getToken();
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task.isSuccessful()) {
+                    Log.w("otp confirm screen","device_token_unsuccessful - onReceive",task.getException());
+                    return;
+                }
+                if(task.getResult() != null) {
+                    Log.e("DEVICE_TOKEN_TAG otp confirm screen  ", task.getResult().getToken());
+                    Data.deviceToken  =  task.getResult().getToken();
+                }
+
+            }
+        });
+
+        startSMSListener();
 
     }
 
@@ -393,7 +419,6 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                             customCountDownTimer.cancel();
                                         btnReGenerateOtp.setVisibility(View.GONE);
                                     } else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-                                        Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
                                         JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
                                         Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
                                         intent.putExtra("access_token", jObj.getString("access_token"));
@@ -459,7 +484,6 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                                     DialogPopup.dialogBanner(activity, error);
                                 } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
                                     String message = jObj.getString("message");
-                                    Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
                                     DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -578,18 +602,6 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
 
 
     public void performBackPressed() {
-//        if (intentFromRegister) {
-//            Intent intent = new Intent(OTPConfirmScreen.this, SplashNewActivity.class);
-//            intent.putExtra("back_from_otp", true);
-//            startActivity(intent);
-//        } else if (phoneNumberToVerify != null) {
-//            Intent intent = new Intent(OTPConfirmScreen.this, EditDriverProfile.class);
-//            startActivity(intent);
-//        } else {
-//            Intent intent = new Intent(OTPConfirmScreen.this, LoginViaOTP.class);
-//            intent.putExtra("back_from_otp", true);
-//            startActivity(intent);
-//        }
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }
@@ -598,7 +610,11 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
+        try {
+            if(smsReceiver != null){
+                unregisterReceiver(smsReceiver);
+            }
+        } catch (Exception ignored) {}
         OTP_SCREEN_OPEN = null;
         ASSL.closeActivity(relative);
         System.gc();
@@ -626,18 +642,18 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
                     otp = otp.replaceAll("\\ ", "");
                 }
             }
-            if (Utils.checkIfOnlyDigits(otp)) {
-                if (!"".equalsIgnoreCase(otp)) {
-                    if (Boolean.parseBoolean(Prefs.with(OTPConfirmScreen.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
-                        editTextOTP.setText(otp);
-                        editTextOTP.setCursorVisible(true);
-                        editTextOTP.setSelection(editTextOTP.getText().length());
-                        buttonVerify.performClick();
-                    }
-                }
-            }
+            setOTPToEditText(otp);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setOTPToEditText(String otp) {
+        if (!TextUtils.isEmpty(otp) && Utils.checkIfOnlyDigits(otp)) {
+            editTextOTP.setText(otp);
+            editTextOTP.setCursorVisible(true);
+            editTextOTP.setSelection(editTextOTP.getText().length());
+            buttonVerify.performClick();
         }
     }
 
@@ -702,6 +718,51 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         layoutResendOtp.setVisibility(View.VISIBLE);
         if (dialog != null && dialog.isShown())
             dialog.swictchLayout();
+    }
+
+    private void startSMSListener(){
+        SmsRetrieverClient client = SmsRetriever.getClient(this);
+        Task<Void> task = client.startSmsRetriever();
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                smsReceiver = getSmsReceiver();
+                registerReceiver(smsReceiver, new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION));
+            }
+        });
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
+    private BroadcastReceiver smsReceiver = null;
+    private BroadcastReceiver getSmsReceiver(){
+    return new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && intent.getExtras() != null
+                    && SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
+                Bundle extras = intent.getExtras();
+                Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
+                if (status != null)
+                    switch (status.getStatusCode()) {
+                        case CommonStatusCodes.SUCCESS:
+                            String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
+                            if (message != null) {
+                                setOTPToEditText(Utils.retrieveOTPFromSMS(message));
+                            }
+                            break;
+
+                        case CommonStatusCodes.TIMEOUT:
+                            break;
+                    }
+            }
+        }
+    };
     }
 
 

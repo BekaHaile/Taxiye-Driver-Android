@@ -9,27 +9,29 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.libraries.places.api.Places;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
 import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
 import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.room.database.CommonRoomDatabase;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -53,7 +55,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        Fabric.with(this, new Crashlytics());
         FirebaseApp.initializeApp(this);
         Paper.init(this);
         registerActivityLifecycleCallbacks(this);
@@ -70,6 +71,9 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Initialize Places.
+        Places.initialize(this, getResources().getString(R.string.google_maps_api_key));
     }
 
     public FirebaseAnalytics getmFirebaseAnalytics() {
@@ -242,7 +246,6 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
         }
         Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
         RestClient.setupRestClient(Data.SERVER_URL);
-        DriverLocationUpdateService.updateServerData(context);
     }
 
     public Locale getCurrentLocale(){
@@ -295,4 +298,32 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     public void onActivityDestroyed(Activity activity) {
 
     }
+
+    public boolean isOnline() {
+        try {
+            ConnectivityManager connectManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = connectManager.getActiveNetworkInfo();
+            if (activeNetwork != null) { // connected to the internet
+                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                    return true;
+                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+            return false;
+        } catch (Exception e) {
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private CommonRoomDatabase commonRoomDatabase;
+    public CommonRoomDatabase getCommonRoomDatabase(){
+    	if(commonRoomDatabase == null){
+    		commonRoomDatabase = CommonRoomDatabase.Companion.getInstance(this);
+		}
+    	return commonRoomDatabase;
+	}
 }

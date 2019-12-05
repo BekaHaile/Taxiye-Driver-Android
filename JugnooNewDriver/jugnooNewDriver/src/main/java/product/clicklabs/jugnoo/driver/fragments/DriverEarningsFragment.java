@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
@@ -82,11 +82,11 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 
 	LinearLayout linearLayoutDriverReferral;
-	RelativeLayout relativeLayoutPayout ,
+	RelativeLayout relativeLayoutPayout ,relativeLayoutDeliveryEarnings,
 			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relativeLayoutPrev,
 			relativeLayoutNext, relativeLayoutChartData, relativeLayoutWallet, relativeLayoutWalletCaptive,relativeLayoutNefy;
-	TextView textViewEstPayout, textViewInvPeriod,
-			textViewPayOutValue, textViewRideHistory, textViewNoChartData,
+	TextView textViewEstPayout,textViewDeliveryEarnings, textViewInvPeriod,
+			textViewPayOutValue,textViewDeliveryEarningsValue, textViewRideHistory, textViewNoChartData,
 			textViewWalletBalanceAmount,textViewWalletBalanceAmountCaptive, textViewWalletBalance,textViewWalletBalanceCaptive, textViewNefy, textViewNefyAmount;
 	TextView tvDistanceCaptive, tvDaysLeftCaptive, tvAmountCollectedCaptive;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
@@ -144,6 +144,7 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 		listEarningsPerDay.setNestedScrollingEnabled(false);
 		linearLayoutDriverReferral = (LinearLayout) rootView.findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutPayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutPayout);
+		relativeLayoutDeliveryEarnings = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutDeliveryEarnings);
 		relativelayoutChart = (RelativeLayout) rootView.findViewById(R.id.relativelayoutChart);
 		relativeLayoutChartData = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutChartData);
 		relativelayoutRandom = (RelativeLayout) rootView.findViewById(R.id.relativelayoutRandom);
@@ -156,8 +157,10 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 		imageViewPrev = (ImageView) rootView.findViewById(R.id.imageViewPrev);
 		imageViewNext = (ImageView) rootView.findViewById(R.id.imageViewNext);
 		textViewEstPayout = (TextView) rootView.findViewById(R.id.textViewEstPayout);
+		textViewDeliveryEarnings = (TextView) rootView.findViewById(R.id.textViewDeliveryEarnings);
 		textViewInvPeriod = (TextView) rootView.findViewById(R.id.textViewInvPeriod);
 		textViewPayOutValue = (TextView) rootView.findViewById(R.id.textViewPayOutValue);
+		textViewDeliveryEarningsValue = (TextView) rootView.findViewById(R.id.textViewDeliveryEarningsValue);
 		textViewRideHistory = (TextView) rootView.findViewById(R.id.textViewRideHistory);
 		textViewNoChartData = (TextView) rootView.findViewById(R.id.textViewNoChartData);
 		dateTimeValue = (TextView) rootView.findViewById(R.id.dateTimeValue);
@@ -387,7 +390,16 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				layoutCaptivePlanDetails.setVisibility(View.GONE);
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
-					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(),driverEarningsResponse.getEarnings().get(0).getEarnings()));
+					if(Data.userData.getDeliveryEnabled()==1) {
+//						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+						textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+						relativeLayoutDeliveryEarnings.setVisibility(View.VISIBLE);
+					}
+					else {
+						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+						relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+					}
+					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
 				} else {
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 				}
@@ -421,7 +433,8 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				maxIndex = driverEarningsResponse.getEarnings().size();
 				boolean graphVisibility = false;
 				for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
-					entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings().intValue(), j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
+					float value = Float.parseFloat(driverEarningsResponse.getEarnings().get(i-1).getEarnings()+"");
+					entries.add(new BarEntry(value, j++,driverEarningsResponse.getEarnings().get(i-1).getCurrencyUnit()));
 					labels.add(driverEarningsResponse.getEarnings().get(i-1).getDay());
 					if(driverEarningsResponse.getEarnings().get(i-1).getEarnings() != 0){
 						graphVisibility =true;

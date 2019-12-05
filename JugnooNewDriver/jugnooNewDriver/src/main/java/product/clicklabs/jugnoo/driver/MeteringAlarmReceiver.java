@@ -4,13 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MeteringAlarmReceiver extends BroadcastReceiver {
 
@@ -26,9 +28,14 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 		try {
 			String action = intent.getAction();
 			if (CHECK_LOCATION.equals(action)) {
-				long timeDiff = System.currentTimeMillis() - GpsDistanceCalculator.lastLocationTime;
+				long currTime = System.currentTimeMillis();
+				long timeDiff = currTime - GpsDistanceCalculator.lastLocationTime;
+				long timeDiffLocal = currTime - Prefs.with(context).getLong(Constants.SP_RECEIVER_LAST_LOCATION_TIME, currTime);
+				if(timeDiffLocal < 10000){
+					Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, currTime);
+				}
 
-				if (timeDiff >= 6 * MINUTE) {
+				if (timeDiffLocal >= 6 * MINUTE && timeDiff >= 6 * MINUTE) {
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_SIX.getOrdinal());
 
 					SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -46,10 +53,9 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 					dialogIntent.putExtra("restart_phone", context.getResources().getString(R.string.restart_phone));
 					context.startActivity(dialogIntent);
 
-					GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis();
-					GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
+					Prefs.with(context).save(Constants.SP_RECEIVER_LAST_LOCATION_TIME, currTime);
 
-				} else if (timeDiff > 7 * HALF_MINUTE) {
+				} else if (timeDiffLocal > 7 * HALF_MINUTE && timeDiff > 7 * HALF_MINUTE) {
 					if (Database2.getInstance(context).getGpsState()
 							== GpsState.TWO_LESS_FOUR.getOrdinal()) {
 						if(HomeActivity.activity != null) {
@@ -65,16 +71,26 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 						if(GpsDistanceCalculator.gpsLocationUpdate != null) {
 							GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
 						} else {
-							context.stopService(new Intent(context, MeteringService.class));
+							if(Utils.isServiceRunning(context, MeteringService.class)) {
+								context.stopService(new Intent(context, MeteringService.class));
+							} else {
+								context.stopService(new Intent(context, MeteringService.class));
+								context.startService(new Intent(context, MeteringService.class));
+							}
 						}
 						FlurryEventLogger.gpsStatus(context, "Old Location After");
 					}
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_FOUR.getOrdinal());
-				} else if (timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE) {
+				} else if (timeDiffLocal > MAX_TIME_BEFORE_LOCATION_UPDATE && timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE) {
 					if(GpsDistanceCalculator.gpsLocationUpdate != null) {
 						GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
 					} else {
-						context.stopService(new Intent(context, MeteringService.class));
+						if(Utils.isServiceRunning(context, MeteringService.class)) {
+							context.stopService(new Intent(context, MeteringService.class));
+						} else {
+							context.stopService(new Intent(context, MeteringService.class));
+							context.startService(new Intent(context, MeteringService.class));
+						}
 						Log.w(MeteringAlarmReceiver.class.getSimpleName(), "MeteringService restarted ---------------------------------------");
 					}
 					Database2.getInstance(context).updateGpsState(GpsState.TWO_LESS_FOUR.getOrdinal());

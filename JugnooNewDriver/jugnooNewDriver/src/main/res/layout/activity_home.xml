@@ -1,8 +1,9 @@
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     android:id="@+id/drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,14 +96,32 @@
                     <!-- initial layout-->
                     <include layout="@layout/layout_driver_initial"/>
 
+
+
                 </RelativeLayout>
 
                 <include layout="@layout/layout_home_sliding_menu"/>
 
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+            <!-- initial layout requests-->
+            <include layout="@layout/layout_driver_initial_requests"/>
+
+            <TextView
+                android:id="@+id/tvTutorialBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/themeColor"
+                android:padding="8dp"
+                android:gravity="center"
+                android:text="@string/tap_for_tutorial"
+                android:textColor="@color/white"
+                android:tag="@string/dont_touch_me"
+                style="@style/TextNormal"
+                android:textStyle="bold"
+                />
 
 
-            <!-- request accept layout-->
+            <!-- offline request accept layout-->
             <include layout="@layout/layout_driver_request_accept"/>
 
             <!-- engaged layout-->
@@ -204,11 +223,20 @@
                 android:descendantFocusability="afterDescendants"
                 />
 
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vpBidRequestPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:id="@+id/relativeLayoutContainerEarnings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"/>
+
+            <include layout="@layout/activity_request"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -218,4 +246,4 @@
     <!-- menu layout -->
     <include layout="@layout/layout_driver_menu"/>
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

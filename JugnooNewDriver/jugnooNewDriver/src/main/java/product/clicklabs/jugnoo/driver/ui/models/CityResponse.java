@@ -26,17 +26,10 @@ public class CityResponse extends FeedCommonResponseKotlin {
 	@Expose
 	private String promoCode;
 
-	@SerializedName("show_referral")
-	@Expose
-	private int showPromo;
-
 	public String getPromoCode() {
 		return promoCode;
 	}
 
-	public boolean getShowPromo() {
-		return showPromo==1;
-	}
 
 	/**
 	 * @return The currentCity
@@ -79,7 +72,16 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		@SerializedName("vehicle_types")
 		@Expose
-		private List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+		private List<VehicleType> vehicleTypes = new ArrayList<>();
+		@SerializedName("fleets")
+		@Expose
+		private List<Fleet> fleets = new ArrayList<>();
+		@SerializedName("mandatory_fleet_registration")
+		@Expose
+		private int mandatoryFleetRegistration;
+		@SerializedName("show_referral")
+		@Expose
+		private int showPromo;
 
 		public City(Integer cityId, String cityName) {
 			this.cityId = cityId;
@@ -127,6 +129,21 @@ public class CityResponse extends FeedCommonResponseKotlin {
 		@Override
 		public boolean isSelected() {
 			return false;
+		}
+
+		public List<Fleet> getFleets() {
+			return fleets;
+		}
+		public int getMandatoryFleetRegistration() {
+			return mandatoryFleetRegistration;
+		}
+
+		public void setMandatoryFleetRegistration(int mandatoryFleetRegistration) {
+			this.mandatoryFleetRegistration = mandatoryFleetRegistration;
+		}
+
+		public int getShowPromo() {
+			return showPromo;
 		}
 	}
 
@@ -212,6 +229,54 @@ public class CityResponse extends FeedCommonResponseKotlin {
 
 		public void setRegionId(int regionId) {
 			this.regionId = regionId;
+		}
+	}
+
+	public static class Fleet extends SearchDataModel{
+		@SerializedName("id")
+		int id;
+		@SerializedName("name")
+		String name;
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public String getLabel() {
+			return getName();
+		}
+
+		@Override
+		public int getImage(Context context) {
+			return -1;
+		}
+
+		@Override
+		public boolean showImage() {
+			return false;
+		}
+
+		@Override
+		public boolean isSelected() {
+			return false;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj instanceof Fleet && ((Fleet)obj).id == id;
 		}
 	}
 

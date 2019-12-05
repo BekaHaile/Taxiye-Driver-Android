@@ -117,6 +117,7 @@
     <color name="grey_light">#DDDDDD</color>
     <color name="grey_light_delivery">#20595968</color>
     <color name="grey_light_op_60">#60DDDDDD</color>
+    <color name="grey_new">#f2f4f5</color>>
     <color name="grey_light_seprator">#60a1a0a0</color>
     <color name="grey_light_side_menu">#f9fafb</color>
     <color name="grey_default">#fafbfc</color>
@@ -169,7 +170,18 @@
     <color name="bgColor">#f2f2f2</color>
     <color name="call">#00cc00</color>
     <color name="call_selected">#9000cc00</color>
+    <color name="black_translucent_less">#99000000</color>
 
+
+    <color name="red_dark">#EA452F</color>
+    <color name="red_dark_alpha">#99EA452F</color>
+    <color name="green_status_alpha">#992EA058</color>
+    <color name="green_online">#6EB616</color>
+    <color name="red_offline">#E9FF3F10</color>
+
+    <color name="green_online_alpha">#4DA1C47E</color>
+    <color name="red_offline_alpha">#32FFCFC5</color>
+    <color name="theme_color_aplha">#4AE2B7A3</color>
 
 
 </resources>

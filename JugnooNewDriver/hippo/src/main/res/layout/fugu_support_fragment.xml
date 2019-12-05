@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/tvPoweredBy"
         android:layout_below="@+id/my_toolbar"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -1,10 +1,10 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.net.PlacesClient;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -51,7 +52,7 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 
 	private View rootView;
     private Activity activity;
-	private GoogleApiClient mGoogleApiClient;
+	private PlacesClient mGoogleApiClient;
 	private SearchListAdapter.SearchListActionsHandler searchListActionsHandler;
 	private SearchListAdapter searchListAdapter;
 
@@ -61,24 +62,25 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 
 	}
 
-	@SuppressLint("ValidFragment")
-	public PlaceSearchListFragment(SearchListAdapter.SearchListActionsHandler searchListActionsHandler, GoogleApiClient mGoogleApiClient){
-		this.searchListActionsHandler = searchListActionsHandler;
-		this.mGoogleApiClient = mGoogleApiClient;
+	public static PlaceSearchListFragment newInstance(){
+		PlaceSearchListFragment fragment = new PlaceSearchListFragment();
+		Bundle bundle = new Bundle();
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if(context instanceof SearchListAdapter.SearchListActionsHandler){
+			this.searchListActionsHandler = (SearchListAdapter.SearchListActionsHandler) context;
+		}
+		if(context instanceof  HomeActivity){
+			mGoogleApiClient = ((HomeActivity)context).mGoogleApiClient;
+		}
+	}
 
-    @Override
-    public void onStop() {
-		super.onStop();
-    }
-	
-
-    @Override
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_place_search_list, container, false);
 
@@ -117,9 +119,8 @@ public class PlaceSearchListFragment extends Fragment implements FlurryEventName
 			}
 		});
 
-		Bundle bundle = getArguments();
 
-		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78), mGoogleApiClient,
+		searchListAdapter = new SearchListAdapter(activity, editTextSearch, new LatLng(30.75, 76.78),
 				new SearchListAdapter.SearchListActionsHandler() {
 
 					@Override

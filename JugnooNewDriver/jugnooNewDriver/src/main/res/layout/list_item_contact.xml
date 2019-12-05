@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="640px"
+    android:layout_height="128px"
+    android:layout_marginTop="-3px"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:id="@+id/imageViewContact"
+        android:layout_width="128px"
+        android:layout_height="132px"
+        android:src="@drawable/ic_contact_placeholder"
+        android:layout_marginTop="-4px"
+        android:layout_marginBottom="-4px"
+        />
+
+
+    <TextView
+        android:id="@+id/textViewContactName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20px"
+        android:layout_marginTop="25px"
+        android:layout_toEndOf="@+id/imageViewContact"
+        android:singleLine="true"
+        android:text="Contact Name"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size_34"
+
+        />
+
+    <TextView
+        android:id="@+id/textViewContactNumberType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewContactName"
+        android:layout_marginBottom="25px"
+        android:layout_marginStart="20px"
+        android:layout_toEndOf="@+id/imageViewContact"
+        android:singleLine="true"
+        android:layoutDirection="ltr"
+        android:textColor="@color/text_color_light"
+        android:textSize="@dimen/text_size_30"
+        />
+
+    <ImageView
+        android:id="@+id/imageViewOption"
+        android:layout_width="75px"
+        android:layout_height="75px"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:padding="20px"
+        android:src="@drawable/ic_cross_grey"
+        android:tag="mwar"
+        />
+
+    <!-- checkbox_signup_checked -->
+    <!-- checkbox_signup_unchecked -->
+    <!-- ic_phone_green -->
+    <!-- ic_cross_grey -->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/stroke_color_light"
+        />
+
+</RelativeLayout>

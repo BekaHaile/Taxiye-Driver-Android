@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main">
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/llDocumentsState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/grey_new"
+        android:tag="@string/dont_touch_me"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/tvDocsPending"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:maxHeight="100dp"
+            style="@style/TextNormal"
+            tools:text="Hello"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tvDocsFailed"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:maxHeight="100dp"
+            style="@style/TextNormal"
+            tools:text="Hello"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tvDocsCompleted"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:maxHeight="100dp"
+            style="@style/TextNormal"
+            tools:text="Hello"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/transparent"
+        android:dividerHeight="0px"
+        android:listSelector="@drawable/transparent"
+        android:background="@color/white"
+        android:layout_below="@+id/llDocumentsState"
+        android:splitMotionEvents="false" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textViewInfoDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/no_missed_rides_currently"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+</RelativeLayout>

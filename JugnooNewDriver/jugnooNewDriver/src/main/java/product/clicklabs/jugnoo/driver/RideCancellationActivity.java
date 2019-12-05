@@ -1,16 +1,17 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -19,7 +20,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
-import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -28,13 +28,11 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
-import product.clicklabs.jugnoo.driver.utils.PermissionCommon;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-
-import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CALL_LOGS;
 
 public class RideCancellationActivity extends BaseActivity implements ActivityCloser {
 
@@ -46,6 +44,12 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	NonScrollListView listViewCancelOptions;
 	CancelOptionsListAdapter cancelOptionsListAdapter;
 
+	RelativeLayout relativeLayoutOtherCancelOptionInner;
+	TextView textViewOtherCancelOption;
+	ImageView imageViewOtherCancelOptionCheck;
+	EditText editTextOtherCancelOption;
+	boolean otherChecked;
+
 	Button buttonCancelRide;
 
 	ScrollView scrollView;
@@ -54,8 +58,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	public static ActivityCloser activityCloser = null;
 
 	String engagementId = "";
-
-	private PermissionCommon mPermissionCommon;
 
 
 	@Override
@@ -78,9 +80,19 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 
 		listViewCancelOptions = (NonScrollListView) findViewById(R.id.listViewCancelOptions);
-		cancelOptionsListAdapter = new CancelOptionsListAdapter(RideCancellationActivity.this);
+		cancelOptionsListAdapter = new CancelOptionsListAdapter(RideCancellationActivity.this, new CancelOptionsListAdapter.Callback() {
+			@Override
+			public void onOptionSelected() {
+				otherChecked = false;
+				updateCheckBoxes();
+			}
+		});
 		listViewCancelOptions.setAdapter(cancelOptionsListAdapter);
 
+		relativeLayoutOtherCancelOptionInner = (RelativeLayout) findViewById(R.id.relativeLayoutOtherCancelOptionInner);
+		textViewOtherCancelOption = (TextView) findViewById(R.id.textViewOtherCancelOption);
+		imageViewOtherCancelOptionCheck = (ImageView) findViewById(R.id.imageViewOtherCancelOptionCheck);
+		editTextOtherCancelOption = (EditText) findViewById(R.id.editTextOtherCancelOption);
 
 		buttonCancelRide = (Button) findViewById(R.id.buttonCancelRide);
 		buttonCancelRide.setTypeface(Fonts.mavenRegular(this));
@@ -104,10 +116,18 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			public void onClick(View v) {
 				if (Data.cancelOptionsList != null) {
 					String cancelReasonsStr = "";
-					for (int i = 0; i < Data.cancelOptionsList.size(); i++) {
-						if (Data.cancelOptionsList.get(i).checked) {
-							cancelReasonsStr = Data.cancelOptionsList.get(i).name;
-							break;
+					if(otherChecked){
+						cancelReasonsStr = editTextOtherCancelOption.getText().toString().trim();
+						if ("".equalsIgnoreCase(cancelReasonsStr)) {
+							Utils.showToast(RideCancellationActivity.this, getString(R.string.please_enter_something));
+							return;
+						}
+					} else {
+						for (int i = 0; i < Data.cancelOptionsList.size(); i++) {
+							if (Data.cancelOptionsList.get(i).checked) {
+								cancelReasonsStr = Data.cancelOptionsList.get(i).name;
+								break;
+							}
 						}
 					}
 
@@ -121,6 +141,16 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			}
 		});
 
+
+		relativeLayoutOtherCancelOptionInner.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(Data.cancelOptionsList != null) {
+					otherChecked = true;
+					updateCheckBoxes();
+				}
+			}
+		});
 
 		RideCancellationActivity.activityCloser = this;
 
@@ -142,6 +172,8 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 					Data.cancelOptionsList.get(i).checked = false;
 				}
 				cancelOptionsListAdapter.notifyDataSetChanged();
+				otherChecked = false;
+				updateCheckBoxes();
 			} else {
 				performBackPressed(false);
 			}
@@ -149,6 +181,30 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			e.printStackTrace();
 			performBackPressed(false);
 		}
+	}
+
+	private void updateCheckBoxes(){
+		if(otherChecked){
+			for(int i=0; i<Data.cancelOptionsList.size(); i++){
+				Data.cancelOptionsList.get(i).checked = false;
+			}
+			relativeLayoutOtherCancelOptionInner.setBackgroundColor(Color.WHITE);
+			imageViewOtherCancelOptionCheck.setImageResource(R.drawable.option_checked_orange);
+			imageViewOtherCancelOptionCheck.setColorFilter(ContextCompat.getColor(imageViewOtherCancelOptionCheck.getContext(), R.color.themeColor),
+					android.graphics.PorterDuff.Mode.MULTIPLY);
+			if(View.VISIBLE != editTextOtherCancelOption.getVisibility()) {
+				editTextOtherCancelOption.setVisibility(View.VISIBLE);
+			}
+		}
+		else{
+			relativeLayoutOtherCancelOptionInner.setBackgroundColor(Color.TRANSPARENT);
+			imageViewOtherCancelOptionCheck.setImageResource(R.drawable.option_unchecked);
+			imageViewOtherCancelOptionCheck.setColorFilter(null);
+			if(View.GONE != editTextOtherCancelOption.getVisibility()) {
+				editTextOtherCancelOption.setVisibility(View.GONE);
+			}
+		}
+		cancelOptionsListAdapter.notifyDataSetChanged();
 	}
 
 
@@ -211,34 +267,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									performBackPressed(true);
 									Data.getCurrentCustomerInfo().setDeliveryInfoInRideDetails(null);
 
-
-									if (mPermissionCommon == null){
-										mPermissionCommon = new PermissionCommon(RideCancellationActivity.this);
-									}
-
-									mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-										@SuppressLint("MissingPermission")
-										@Override
-										public void permissionGranted(final int requestCode) {
-											try {
-												new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-														engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
-											} catch (Exception e) {
-												e.printStackTrace();
-											}
-										}
-										@Override
-										public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-											return true;
-										}
-
-										@Override
-										public void onRationalRequestIntercepted() {
-
-										}
-									}).getPermission(REQUEST_CODE_CALL_LOGS, Manifest.permission.READ_CALL_LOG);
-
-
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 
 									if (HomeActivity.appInterruptHandler != null) {
@@ -283,13 +311,4 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		}
 	}
 
-
-	@Override
-	public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-		if (mPermissionCommon != null) {
-			mPermissionCommon.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		}
-	}
 }

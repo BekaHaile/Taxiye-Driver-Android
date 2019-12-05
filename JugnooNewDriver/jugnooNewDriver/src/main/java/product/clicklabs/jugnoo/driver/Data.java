@@ -11,8 +11,8 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.fugu.CaptureUserData;
-import com.fugu.HippoColorConfig;
-import com.fugu.HippoConfig;
+import com.fugu.FuguColorConfig;
+import com.fugu.FuguConfig;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -99,6 +99,9 @@ public class Data {
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
+	public static final String JUNGLE_MAPS_SERVER_URL = "http://nominatim-api-live.jungleworks.com";
+	public static final String BRANCH_SERVER_URL = "https://api.branch.io/v1";
+
 
 
 
@@ -180,7 +183,7 @@ public class Data {
 
 			Prefs.with(context).remove(Constants.KEY_NAVIGATION_TYPE);
 			Prefs.with(context).remove(Constants.SP_OVERLAY_PERMISSION_ASKED);
-			Prefs.with(context).remove(Constants.KEY_MAX_SOUND);
+			Prefs.with(context).remove(Constants.SP_BATTERY_OPTIMIZATIONS_ASKED);
 
 			AuthKeySaver.writeAuthToFile(context, "");
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -188,7 +191,7 @@ public class Data {
 			editor.clear();
 			editor.apply();
 			Prefs.with(context).save(Constants.IS_OFFLINE, 1);
-			HippoConfig.clearFuguData((Activity) context);
+			FuguConfig.clearFuguData((Activity) context);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -244,6 +247,11 @@ public class Data {
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfos(){
 		return assignedCustomerInfos;
+	}
+	public static void instantiateAssignedCustomerInfos(){
+		if(assignedCustomerInfos == null){
+			assignedCustomerInfos = new ArrayList<>();
+		}
 	}
 
 	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
@@ -313,9 +321,7 @@ public class Data {
 			if(index > -1){
 				return assignedCustomerInfos.get(index);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception ignored) {}
 		return null;
 	}
 
@@ -481,41 +487,41 @@ public class Data {
 				if(TextUtils.isEmpty(keyFromServer) || "null".equalsIgnoreCase(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key);
 				}
-				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
+				FuguConfig.init(String.valueOf(appTypeFromServer), keyFromServer, activity, "live", captureUserData, activity.getString(R.string.file_provider));
 			} else {
 				if(TextUtils.isEmpty(keyFromServer) || "null".equalsIgnoreCase(keyFromServer)){
 					keyFromServer = activity.getString(R.string.fugu_app_key_test);
 				}
-				HippoConfig.init(appTypeFromServer, keyFromServer, activity, "test", captureUserData, activity.getString(R.string.file_provider));
+				FuguConfig.init(String.valueOf(appTypeFromServer), keyFromServer, activity, "test", captureUserData, activity.getString(R.string.file_provider));
 			}
 
 //			FuguConfig.getInstance().setHomeUpIndicatorDrawableId(R.drawable.ic_profile);
 
-			HippoColorConfig fuguColorConfig = new HippoColorConfig.Builder()
-					.hippoActionBarBg(FuguColorConfigStrings.FUGU_ACTION_BAR_BG)
-					.hippoActionBarText(FuguColorConfigStrings.FUGU_ACTION_BAR_TEXT)
-					.hippoBgMessageYou(FuguColorConfigStrings.FUGU_BG_MESSAGE_YOU)
-					.hippoBgMessageFrom(FuguColorConfigStrings.FUGU_BG_MESSAGE_FROM)
-					.hippoPrimaryTextMsgYou(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_YOU)
-					.hippoMessageRead(FuguColorConfigStrings.FUGU_MESSAG_EREAD)
-					.hippoPrimaryTextMsgFrom(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_FROM)
-					.hippoSecondaryTextMsgYou(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_YOU)
-					.hippoSecondaryTextMsgFrom(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_FROM)
-					.hippoTextColorPrimary(FuguColorConfigStrings.FUGU_TEXT_COLOR_PRIMARY)
-					.hippoChannelDateText(FuguColorConfigStrings.FUGU_CHANNEL_DATE_TEXT)
-					.hippoChatBg(FuguColorConfigStrings.FUGU_CHAT_BG)
-					.hippoBorderColor(FuguColorConfigStrings.FUGU_BORDER_COLOR)
-					.hippoChatDateText(FuguColorConfigStrings.FUGU_CHAT_DATE_TEXT)
-					.hippoThemeColorPrimary(FuguColorConfigStrings.FUGU_THEME_COLOR_PRIMARY)
-					.hippoThemeColorSecondary(FuguColorConfigStrings.FUGU_THEME_COLOR_SECONDARY)
-					.hippoTypeMessageBg(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_BG)
-					.hippoTypeMessageHint(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_HINT)
-					.hippoTypeMessageText(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_TEXT)
-					.hippoChannelBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
-					.hippoChannelItemBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+			FuguColorConfig fuguColorConfig = new FuguColorConfig.Builder()
+					.fuguActionBarBg(FuguColorConfigStrings.FUGU_ACTION_BAR_BG)
+					.fuguActionBarText(FuguColorConfigStrings.FUGU_ACTION_BAR_TEXT)
+					.fuguBgMessageYou(FuguColorConfigStrings.FUGU_BG_MESSAGE_YOU)
+					.fuguBgMessageFrom(FuguColorConfigStrings.FUGU_BG_MESSAGE_FROM)
+					.fuguPrimaryTextMsgYou(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_YOU)
+					.fuguMessageRead(FuguColorConfigStrings.FUGU_MESSAG_EREAD)
+					.fuguPrimaryTextMsgFrom(FuguColorConfigStrings.FUGU_PRIMARY_TEXT_MSG_FROM)
+					.fuguSecondaryTextMsgYou(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_YOU)
+					.fuguSecondaryTextMsgFrom(FuguColorConfigStrings.FUGU_SECONDARY_TEXT_MSG_FROM)
+					.fuguTextColorPrimary(FuguColorConfigStrings.FUGU_TEXT_COLOR_PRIMARY)
+					.fuguChannelDateText(FuguColorConfigStrings.FUGU_CHANNEL_DATE_TEXT)
+					.fuguChatBg(FuguColorConfigStrings.FUGU_CHAT_BG)
+					.fuguBorderColor(FuguColorConfigStrings.FUGU_BORDER_COLOR)
+					.fuguChatDateText(FuguColorConfigStrings.FUGU_CHAT_DATE_TEXT)
+					.fuguThemeColorPrimary(FuguColorConfigStrings.FUGU_THEME_COLOR_PRIMARY)
+					.fuguThemeColorSecondary(FuguColorConfigStrings.FUGU_THEME_COLOR_SECONDARY)
+					.fuguTypeMessageBg(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_BG)
+					.fuguTypeMessageHint(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_HINT)
+					.fuguTypeMessageText(FuguColorConfigStrings.FUGU_TYPE_MESSAGE_TEXT)
+					.fuguChannelBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
+					.fuguChannelItemBg(FuguColorConfigStrings.FUGU_CHANNEL_BG)
 					.build();
 
-			HippoConfig.getInstance().setColorConfig(fuguColorConfig);
+			FuguConfig.getInstance().setColorConfig(fuguColorConfig);
 		}
 	}
 

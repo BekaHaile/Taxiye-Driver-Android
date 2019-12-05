@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:soundEffectsEnabled="false">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutInner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="50px"
+        android:background="@drawable/background_white_rounded"
+        android:orientation="vertical"
+        android:soundEffectsEnabled="false"
+        android:splitMotionEvents="false"
+        tools:ignore="UselessParent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:tag="@string/dont_touch_me"
+            android:background="@drawable/bg_menu_item_selector_tlrr"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvNotesHeading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notes"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:maxLength="50"
+                android:ellipsize="end"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivClose"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_cross_grey_light"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+        
+        <EditText
+            android:id="@+id/etNotes"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top|start"
+            android:padding="10dp"
+            android:maxLines="4"
+            android:maxLength="160"
+            android:textColor="@color/text_color"
+            android:background="@color/transparent"
+            android:tag="@string/dont_touch_me"
+            android:hint="@string/write_notes_here"
+            tools:ignore="TextFields" />
+        <Button
+            style="@style/ButtonTheme"
+            android:textSize="13sp"
+            android:tag="@string/dont_touch_me"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/btnSaveNotes"
+            android:layout_width="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="40dp"
+            android:text="@string/save_notes" />
+    </LinearLayout>
+</RelativeLayout>

@@ -12,7 +12,10 @@
     <RelativeLayout
         android:id="@+id/inRideCustomerInfoRl"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        >
 
         <LinearLayout
             android:id="@+id/driverPassengerInfoRl"
@@ -37,6 +40,7 @@
                     android:textColor="@color/textColor"
                     android:textSize="36px"
                     android:layout_marginStart="18px"
+                    android:drawablePadding="5dp"
                     android:layout_centerVertical="true"/>
 
                 <Button
@@ -76,12 +80,6 @@
                 android:visibility="visible"
                 android:background="@color/white_translucent">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerViewCustomersLinked"
-                    android:layout_width="720px"
-                    android:layout_height="80px"
-                    android:visibility="gone">
-                </android.support.v7.widget.RecyclerView>
 
                 <include layout="@layout/layout_customer_info"/>
 
@@ -236,6 +234,8 @@
         android:background="@drawable/transparent"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
 
@@ -312,7 +312,7 @@
                     <RelativeLayout
                         android:id="@+id/linearLayoutDeliveryItemHeader"
                         android:layout_width="match_parent"
-                        android:layout_height="95px"
+                        android:layout_height="110px"
                         android:background="@color/white">
 
                         <TextView
@@ -321,13 +321,27 @@
                             android:layout_alignParentStart="true"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30px"
+                            android:ellipsize="end"
                             android:layout_centerVertical="true"
+                            android:singleLine="true"
                             android:text="@string/NA"
                             android:textSize="40px"
                             android:visibility="visible"
                             android:textColor="@color/black_text_v2"
-                            android:layout_toStartOf="@+id/bDropAddressToggle"
+                            android:layout_toStartOf="@+id/rvPickupFeedImages"
                             />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPickupFeedImages"
+                            android:layout_toStartOf="@id/bDropAddressToggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:layout_alignParentBottom="true"
+                            android:overScrollMode="never"
+                            android:layout_centerVertical="true"
+                            tools:listitem="@layout/item_image_with_text"
+                            android:layout_marginStart="10dp"/>
 
                         <Button
                             android:id="@+id/bDropAddressToggle"
@@ -339,16 +353,18 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="10dp"
                             android:layout_marginStart="10dp"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:textAllCaps="false"
+                            android:drawableEnd="@drawable/ic_location_on_black_24dp"
+                            android:paddingEnd="5dp"
 
                             />
 
                         <RelativeLayout
                             android:id="@+id/relativeLayoutCall"
                             style="@style/ButtonTheme"
-                            android:layout_width="85dp"
-                            android:layout_height="37dp"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:layout_marginEnd="12dp"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
@@ -360,64 +376,99 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_centerVertical="true"
-                                android:layout_marginStart="11dp"
                                 android:src="@drawable/call_icon_selector"/>
 
-                            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                                android:id="@+id/textViewCall"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toEndOf="@+id/driverCallIcon"
-                                android:layout_marginStart="10dp"
-                                android:text="@string/call"
-                                android:textColor="@color/textColorButton"
-                                android:textSize="17sp"/>
                         </RelativeLayout>
 
                     </RelativeLayout>
 
                     <ImageView
+                        android:id="@+id/view_line"
                         android:layout_width="match_parent"
                         android:layout_height="2px"
                         android:background="@color/grey_light"
                         android:layout_marginStart="30px"
                         android:layout_marginEnd="30px"/>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="142px"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="12px">
+                        android:layout_height="wrap_content"
+                        android:paddingTop="20px"
+                        android:paddingBottom="20px">
 
                         <LinearLayout
                             android:id="@+id/linearLayoutContent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_toStartOf="@+id/textViewShowDistance"
+                            android:layout_alignParentStart="true"
+                            android:minHeight="70dp"
+                            android:layout_marginStart="30px"
+                            android:layout_marginEnd="30px">
 
                             <TextView
                                 android:id="@+id/textViewCustomerPickupAddress"
-                                android:layout_width="448px"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="30px"
-                                android:maxLines="2"
+                                android:maxLines="4"
+                                android:drawableStart="@drawable/ic_circle_green"
+                                android:drawablePadding="15px"
                                 android:textSize="28px"
-                                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                                tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                                 android:textColor="@color/black_text_v2"
                             />
-
+                            <TextView
+                                android:id="@+id/textViewCustomerDropAddress"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="18px"
+                                android:maxLines="4"
+                                android:drawablePadding="15px"
+                                android:drawableStart="@drawable/ic_circle_red"
+                                android:textSize="28px"
+                                tools:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                                android:textColor="@color/black_text_v2"
+                            />
+                            <TextView
+                                android:layout_marginTop="20px"
+                                android:layout_marginBottom="20px"
+                                android:id="@+id/tvRentalRideInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:textSize="28px"
+                                tools:text="4 hour | Max. 80 km | Rs. 1500"
+                                android:textColor="@color/black_text_v2"
+                                />
                             <TextView
                                 android:id="@+id/textViewCustomerCashRequired"
-                                android:layout_width="428px"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:visibility="visible"
-                                android:layout_marginStart="30px"
                                 android:layout_marginTop="10px"
                                 android:layout_marginBottom="10px"
                                 android:textSize="28px"
                                 android:text="lllllllllllllll"
                                 android:textColor="@color/black_text_v2"
+                            />
+                            <TextView
+                                android:id="@+id/tvCustomerNotes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"
+                                android:tag="@string/dont_touch_me"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="4dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:theme="@style/GreyHighlight"
+                                android:drawableStart="@drawable/ic_notes_grey"
+                                android:drawablePadding="5dp"
+                                style="@style/TextMedium"
+                                tools:text="wwwwwwwwwwwwwwwwwwww"
+
                             />
 
                         </LinearLayout>
@@ -426,9 +477,10 @@
                             android:id="@+id/textViewShowDistance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="100px"
-                            android:layout_marginEnd="25px"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="30px"
+                            android:layout_marginEnd="30px"
                             android:gravity="end"
                             android:text="@string/NA"
                             android:textColor="@color/black"
@@ -436,7 +488,7 @@
                             android:visibility="visible"
                         />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -498,35 +550,22 @@
                 android:layout_gravity="bottom"
                 android:layout_alignParentBottom="true"/>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="6px"
-                android:visibility="gone"
-                android:background="@drawable/shadow_up"/>
 
             <!-- in ride operations rl-->
 
 
             <Button
                 android:id="@+id/buttonAddLuggage"
-                android:layout_width="wrap_content"
-                android:layout_height="39dp"
-                android:layout_marginBottom="-15dp"
+                style="@style/ButtonTheme"
+                android:layout_marginBottom="5dp"
+                android:paddingEnd="10dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="10dp"
-                android:contentDescription="@string/call_driver"
                 android:visibility="visible"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:drawablePadding="5dp"
                 android:text="@string/add_luggage"
                 android:gravity="center"
-                style="@style/TextNormal"
-                android:textSize="14sp"
-                android:textColor="@color/white"
-                android:drawableEnd="@drawable/ic_suitcase"
-                android:background="@drawable/orange_btn_selector"
-                android:tag="@string/dont_touch_me" />
+                android:drawableEnd="@drawable/ic_suitcase"/>
 
 
 
@@ -560,40 +599,6 @@
                     android:textSize="@dimen/text_size_30"
                     android:visibility="gone"
                     />
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayoutItemHeader"
-                    android:layout_width="720px"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20px"
-                    android:paddingBottom="20px"
-                    android:background="@drawable/background_white_top_rounded_bordered">
-
-
-                    <ImageView
-                        android:id="@+id/imageViewDot1"
-                        android:layout_width="14px"
-                        android:layout_height="14px"
-                        android:layout_marginStart="29px"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/red_dot_icon"
-                        />
-
-                    <TextView
-                        android:id="@+id/textViewCustomerAddressInRide"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="28px"
-                        android:hint="@string/enter_destination"
-                        android:layout_marginStart="32px"
-                        android:layout_marginEnd="12px"
-                        android:maxLines="2"
-                        android:layout_toEndOf="@+id/imageViewDot1"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/black_text_v2"/>
-
-
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutEnterDestination"
@@ -724,6 +729,7 @@
                         android:visibility="visible">
 
                         <ImageView
+                            android:id="@+id/ivWaitInRideDiv"
                             android:layout_width="2px"
                             android:layout_height="72px"
                             android:background="@color/bg_grey_opaque"

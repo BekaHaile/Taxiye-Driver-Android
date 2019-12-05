@@ -11,9 +11,17 @@
 
     <include layout="@layout/layout_top_bar"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOptions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutContainerEarnings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/white">
+    </RelativeLayout>
 
 </LinearLayout>

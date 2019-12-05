@@ -59,7 +59,7 @@
     <string name="end_ride">ভাড়া সমাপ্ত কৰক</string>
     <string name="reached_destination">পাবলিগয়া ন্থান</string>
     <string name="distance">দূৰত্ব</string>
-    <string name="wait_time">ৰখি থকা সযয়</string>
+    <string name="wait_time">চোনগেসতিোন তিমে</string>
     <string name="fare">ভাড়া</string>
     <string name="accept_ride">ভাড়াটো একচেপ্ত কৰক</string>
     <string name="cancel_ride">ভাড়া কেনচল</string>
@@ -579,7 +579,6 @@
     <string name="away_cap">Away</string>
     <string name="pool_only">Pool</string>
     <string name="pickup_from">Pickup From:</string>
-    <string name="switch_confiramtion">Are you sure you want to switch delivery ?</string>
     <string name="delivery_route">Delivery Route</string>
     <string name="turn_jugnooo_for_training">Please turn %s On</string>
     <string name="delivery_1">Delivery 1</string>

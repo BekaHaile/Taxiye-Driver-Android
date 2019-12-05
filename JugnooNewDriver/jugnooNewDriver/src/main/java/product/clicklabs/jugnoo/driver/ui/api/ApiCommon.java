@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui.api;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import java.util.HashMap;
@@ -212,6 +212,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case SHOW_RATE_CARD:
                 RestClient.getApiServices().rateCardDetail(params, callback);
+                break;
+            case SEND_EMAIL_INVOICE:
+                RestClient.getApiServices().sendEmailInvoice(params, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

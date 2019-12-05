@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/clRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <TextView
+        android:id="@+id/tvTollName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Toll Name"
+        style="@style/TextNormal"
+        android:padding="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvTollValue"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/tvTollValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="150dp"
+        android:gravity="end"
+        tools:text="10RS"
+        style="@style/TextNormal"
+        app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+        app:layout_constraintTop_toTopOf="@+id/tvTollName"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTollName"
+        />
+
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_cross_grey_selector"
+        app:layout_constraintTop_toTopOf="@+id/tvTollName"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTollName"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <View
+        android:id="@+id/vDiv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTollName"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

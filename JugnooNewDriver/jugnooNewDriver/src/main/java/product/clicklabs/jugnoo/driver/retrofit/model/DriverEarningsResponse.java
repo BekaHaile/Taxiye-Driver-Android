@@ -237,6 +237,9 @@ public class DriverEarningsResponse extends CurrencyModel{
 		@SerializedName("earnings")
 		@Expose
 		private Double earnings;
+		@SerializedName("delivery_earnings")
+		@Expose
+		private Double deliveryEarnings;
 		@SerializedName("date")
 		@Expose
 		private String date;
@@ -296,6 +299,14 @@ public class DriverEarningsResponse extends CurrencyModel{
 		 */
 		public void setEarnings(Double earnings) {
 			this.earnings = earnings;
+		}
+
+		public Double getDeliveryEarnings() {
+			return deliveryEarnings;
+		}
+
+		public void setDeliveryEarnings(Double deliveryEarnings) {
+			this.deliveryEarnings = deliveryEarnings;
 		}
 
 		/**

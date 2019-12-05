@@ -1,11 +1,11 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,17 +163,17 @@ public class ShareLeaderboardFragment extends Fragment {
 
 			if (LBTimeType.DAILY == lbTimeType) {
 				if (this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.color.themeColor);
-					textViewDaily.setTextColor(getResources().getColor(R.color.white));
-					textViewWeekly.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewDaily.setBackgroundResource(R.drawable.background_orange_bottom_line);
+					textViewDaily.setTextColor(getResources().getColor(R.color.themeColor));
+					textViewWeekly.setBackgroundResource(R.color.white);
 					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
 			} else if (LBTimeType.WEEKLY == lbTimeType) {
 				if (this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewDaily.setBackgroundResource(R.color.white);
 					textViewDaily.setTextColor(getResources().getColorStateList(R.color.menu_black));
-					textViewWeekly.setBackgroundResource(R.color.themeColor);
-					textViewWeekly.setTextColor(getResources().getColor(R.color.white));
+					textViewWeekly.setBackgroundResource(R.drawable.background_orange_bottom_line);
+					textViewWeekly.setTextColor(getResources().getColor(R.color.themeColor));
 				}
 			}
 

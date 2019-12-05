@@ -28,36 +28,17 @@
         android:maxLines="1"
         android:padding="16dp" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countries_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/country_code_picker_search" />
 
-    <LinearLayout
-        android:id="@+id/llNoData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/country_code_picker_search"
-        android:orientation="vertical"
-        android:visibility="gone">
+    <include layout="@layout/layout_no_data_place_holder"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_below="@+id/country_code_picker_search"
+             android:visibility="gone"
+        />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_no_result_found" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ivNoData"
-            android:gravity="center_horizontal"
-            android:letterSpacing="0.03"
-            android:text="@string/no_results_found"
-            android:textColor="#979797"
-            android:textSize="10sp"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            />
-    </LinearLayout>
 </RelativeLayout>

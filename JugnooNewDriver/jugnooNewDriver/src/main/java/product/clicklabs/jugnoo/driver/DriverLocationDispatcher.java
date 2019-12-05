@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
@@ -52,10 +56,9 @@ public class DriverLocationDispatcher {
 					wakeLock.acquire(5000);
 				}
 				
-				String accessToken = Database2.getInstance(context).getDLDAccessToken();
-				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
-				String pushyToken = Database2.getInstance(context).getPushyToken();
-				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+				String accessToken = JSONParser.getAccessTokenPair(context).first;
+
+				String pushyToken = "";
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
@@ -77,67 +80,25 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
 							nameValuePairs.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
-							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
-							nameValuePairs.put("pushy_token", pushyToken);
-							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
-							HomeUtil.putDefaultParams(nameValuePairs);
-							if(Double.parseDouble(Utils.getActualBatteryPer(context)) < 20d && Utils.isBatteryChargingNew(context) == 0){
-								Intent batteryLow = new Intent(Constants.ALERT_BATTERY_LOW);
-								context.sendBroadcast(batteryLow);
-							}
-							nameValuePairs.put("is_charging", String.valueOf(Utils.isBatteryChargingNew(context)));
-							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
-								nameValuePairs.put("mobile_data_state", String.valueOf(1));
-							}else {
-								nameValuePairs.put("mobile_data_state", String.valueOf(0));
-							}
-							if(Prefs.with(context).getBoolean(Constants.POWER_OFF_INITIATED, false)) {
-								nameValuePairs.put("power_off_state", String.valueOf(1));
-							} else {
-								nameValuePairs.put("power_off_state", String.valueOf(0));
-							}
-							nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
-							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
-
-							Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
-							RestClient.setupRestClient(serverUrl);
-
-							Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
-							String result = new String(((TypedByteArray) response.getBody()).getBytes());
-							Log.i(TAG, "sendLocationToServer result=" + result);
-
-							try {
-								//{"log":"Updated"}
-								JSONObject jObj = new JSONObject(result);
-								if (jObj.has("log")) {
-									String log = jObj.getString("log");
-									if ("Updated".equalsIgnoreCase(log)) {
-										Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_SENT);
-										Prefs.with(context).save(Constants.MOBILE_DATA_STATE, true);
-										Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
-										Database2.getInstance(context).updateDriverLastLocationTime();
-										Prefs.with(context).save(SPLabels.UPDATE_DRIVER_LOCATION_TIME, System.currentTimeMillis());
-										Intent intent1 = new Intent(context, FetchDataUsageService.class);
-										intent1.putExtra("task_id", "2");
-										context.startService(intent1);
-										Prefs.with(context).save(SPLabels.GET_USL_STATUS, false);
-										Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
-										context.sendBroadcast(refreshUSL);
-										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
+							FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+								@Override
+								public void onComplete(@NonNull Task<InstanceIdResult> task) {
+									if(!task.isSuccessful()) {
+										Log.w("Driverlocationdispatcher","device_token_unsuccessful - onReceive",task.getException());
+										return;
 									}
+									if(task.getResult() != null) {
+										Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "Driverlocationdispatcher send location", task.getResult().getToken());
+										nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, task.getResult().getToken());
+									}
+									new Thread(new Runnable() {
+										@Override
+										public void run() {
+											sendLocationToServer(context, responseTime, pushyToken, location, nameValuePairs);
+										}
+									}).start();
 								}
-
-								int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-								if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
-									String deviceTokenNew =	FirebaseInstanceId.getInstance().getToken();
-
-									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
-									sendLocationToServer(context);
-									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							});
 						} else {
 							Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_REJECTED_TIME_DIFF);
 						}
@@ -189,7 +150,65 @@ public class DriverLocationDispatcher {
 		}
 	}
 
+	private void sendLocationToServer(Context context, long responseTime, String pushyToken, Location location, HashMap<String, String> nameValuePairs) {
+		nameValuePairs.put("pushy_token", pushyToken);
+		nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
+		HomeUtil.putDefaultParams(nameValuePairs);
+		if(Double.parseDouble(Utils.getActualBatteryPer(context)) < 20d && Utils.isBatteryChargingNew(context) == 0){
+			Intent batteryLow = new Intent(Constants.ALERT_BATTERY_LOW);
+			context.sendBroadcast(batteryLow);
+		}
+		nameValuePairs.put("is_charging", String.valueOf(Utils.isBatteryChargingNew(context)));
+		if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
+			nameValuePairs.put("mobile_data_state", String.valueOf(1));
+		}else {
+			nameValuePairs.put("mobile_data_state", String.valueOf(0));
+		}
+		if(Prefs.with(context).getBoolean(Constants.POWER_OFF_INITIATED, false)) {
+			nameValuePairs.put("power_off_state", String.valueOf(1));
+		} else {
+			nameValuePairs.put("power_off_state", String.valueOf(0));
+		}
+		nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
+		nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 
+		Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
+
+
+		try {
+			Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
+			String result = new String(((TypedByteArray) response.getBody()).getBytes());
+			Log.i(TAG, "sendLocationToServer result=" + result);
+
+			//{"log":"Updated"}
+			JSONObject jObj = new JSONObject(result);
+			if (jObj.has("log")) {
+				String log = jObj.getString("log");
+				if ("Updated".equalsIgnoreCase(log)) {
+					Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_SENT);
+					Prefs.with(context).save(Constants.MOBILE_DATA_STATE, true);
+					Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
+					Database2.getInstance(context).updateDriverLastLocationTime();
+					Prefs.with(context).save(SPLabels.UPDATE_DRIVER_LOCATION_TIME, System.currentTimeMillis());
+					Intent intent1 = new Intent(context, FetchDataUsageService.class);
+					intent1.putExtra("task_id", "2");
+					context.startService(intent1);
+					Prefs.with(context).save(SPLabels.GET_USL_STATUS, false);
+					Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+					context.sendBroadcast(refreshUSL);
+					FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
+				}
+			}
+
+			int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+			if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
+				sendLocationToServer(context);
+				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	private void checkForMarkArrived(Context context, Location location, String accessToken){

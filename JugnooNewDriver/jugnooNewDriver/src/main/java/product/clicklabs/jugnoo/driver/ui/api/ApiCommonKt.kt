@@ -5,10 +5,12 @@ import android.text.TextUtils
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
+import product.clicklabs.jugnoo.driver.retrofit.model.*
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardResponse
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.models.*
+import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup
 import product.clicklabs.jugnoo.driver.utils.AppStatus
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
@@ -182,6 +184,12 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
                     callback as Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> )
             ApiName.UPDATE_DOC_FIELDS ->  RestClient.getApiServices().uploadFields(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.UPDATE_FARES ->  RestClient.getApiServices().updateDriverFares(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.GET_TOLL_DATA ->  RestClient.getApiServices().getTollData(params, callback as Callback<TollDataResponse> )
+            ApiName.UPDATE_TOLL_DATA ->  RestClient.getApiServices().updateTollData(params, callback as Callback<FeedCommonResponseKotlin> )
+            ApiName.FETCH_DRIVER_REFERRAL_INFO -> RestClient.getApiServices().fetchDriverReferral(params, callback as Callback<ReferralsInfoResponse>)
+            ApiName.FETCH_DRIVER_TRACTION_RIDES-> RestClient.getApiServices().fetchDriverTractionRides(params, callback as Callback<TractionResponse>)
+            ApiName.BRANCH_GENERATE_URL-> RestClient.getBranchApi().generateUrl(bodyParams as BranchUrlRequest, callback as Callback<BranchUrlResponse>)
+            ApiName.UPDATE_DRIVER_PROPERTY-> RestClient.getApiServices().updateDriverProperty(params, callback as Callback<FeedCommonResponseKotlin>)
             ApiName.FETCH_PROGRAMS ->  RestClient.getApiServices().fetchPrograms(params, callback as Callback<ProgramModel> )
             else -> throw IllegalArgumentException("API Type not declared")
         }

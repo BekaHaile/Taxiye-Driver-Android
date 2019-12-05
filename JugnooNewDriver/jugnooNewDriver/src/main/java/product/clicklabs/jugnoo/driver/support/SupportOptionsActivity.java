@@ -1,19 +1,17 @@
 package product.clicklabs.jugnoo.driver.support;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fugu.HippoConfig;
-import com.fugu.HippoTicketAttributes;
+import com.fugu.FuguConfig;
+import com.fugu.FuguTicketAttributes;
 
 import java.util.ArrayList;
 
@@ -75,41 +73,20 @@ public class SupportOptionsActivity extends BaseActivity implements View.OnClick
 	public void openSupportOption(Activity activity, SupportOption supportOption){
 		try {
 			if(supportOption.getTag().equalsIgnoreCase(Constants.CHAT_SUPPORT)){
-				HippoConfig.getInstance().showConversations(activity, activity.getString(R.string.chat));
+				FuguConfig.getInstance().showConversations(activity, activity.getString(R.string.chat));
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.TICKET_SUPPORT)){
-				HippoTicketAttributes.Builder builder = new HippoTicketAttributes.Builder();
+				FuguTicketAttributes.Builder builder = new FuguTicketAttributes.Builder();
 				if(Data.userData != null){
 					builder.setFaqName(Data.userData.getHippoTicketFAQ());
 				}
 
 				ArrayList<String> tags = new ArrayList<>();
 				tags.add(Constants.HIPPO_TAG_DRIVER_APP);
-				builder.setTags(tags);
+//				builder.setTags(tags);
 
-				HippoConfig.getInstance().showFAQSupport(builder.build());
+				FuguConfig.getInstance().showFAQSupport(builder.build());
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_CALL_US_MENU)){
-
-				if (mPermissionCommon == null) {
-					mPermissionCommon = new PermissionCommon(SupportOptionsActivity.this);
-				}
-					mPermissionCommon.setCallback(new PermissionCommon.PermissionListener() {
-						@SuppressLint("MissingPermission")
-						@Override
-						public void permissionGranted(final int requestCode) {
-							Utils.makeCallIntent(SupportOptionsActivity.this, Data.userData.driverSupportNumber);
-						}
-
-						@Override
-						public boolean permissionDenied(final int requestCode, boolean neverAsk) {
-							return true;
-						}
-
-						@Override
-						public void onRationalRequestIntercepted() {
-
-						}
-					}).getPermission(PermissionCommon.REQUEST_CODE_CALL_PHONE, Manifest.permission.CALL_PHONE);
-
+				Utils.makeCallIntent(SupportOptionsActivity.this, Data.userData.driverSupportNumber);
 
 			} else if(supportOption.getTag().equalsIgnoreCase(Constants.SHOW_IN_APP_CALL_US)){
 				HomeUtil.scheduleCallDriver(activity);

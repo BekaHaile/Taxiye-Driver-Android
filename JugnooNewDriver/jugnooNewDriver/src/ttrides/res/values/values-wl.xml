@@ -115,5 +115,6 @@
     <integer name="driver_get_directions_interval">120000</integer>
     <integer name="email_input_at_signup">1</integer>
     <integer name="google_apis_logging">1</integer>
+    <string name="police_number">999</string>
 
 </resources>

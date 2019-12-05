@@ -36,6 +36,56 @@
             </product.clicklabs.jugnoo.driver.utils.NonScrollListView>
 
 
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOtherCancelOptionInner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:tag="@string/dont_touch_me"
+                >
+
+                <TextView
+                    android:id="@+id/textViewOtherCancelOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="@string/other"
+                    android:layout_toStartOf="@+id/imageViewOtherCancelOptionCheck"
+                    android:layout_marginEnd="10dp"
+                    style="@style/TextNormal"/>
+
+                <ImageView
+                    android:id="@+id/imageViewOtherCancelOptionCheck"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/option_checked_orange"
+                    />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/editTextOtherCancelOption"
+                android:tag="@string/dont_touch_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
+                android:inputType="text"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:gravity="start"
+                android:hint="@string/please_specify_the_reason"
+                android:maxLength="63"
+                android:minHeight="80dp"
+                android:padding="10dp"
+                style="@style/TextNormal"
+                />
+
+
             <Button
                 android:id="@+id/buttonCancelRide"
                 style="@style/ButtonTheme"

@@ -2,8 +2,8 @@ package product.clicklabs.jugnoo.driver;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,7 +65,8 @@ public class NewRateCardActivity extends BaseFragmentActivity implements Display
 		});
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager());
+		rateCardFragmentAdapter = new RateCardFragmentAdapter(NewRateCardActivity.this, getSupportFragmentManager(),
+				getIntent().getBooleanExtra(Constants.KEY_HTML_RATE_CARD, false));
 		viewPager.setAdapter(rateCardFragmentAdapter);
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));

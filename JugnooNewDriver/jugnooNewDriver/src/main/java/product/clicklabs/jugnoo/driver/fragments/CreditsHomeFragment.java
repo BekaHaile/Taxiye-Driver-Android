@@ -3,9 +3,9 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +55,7 @@ public class CreditsHomeFragment extends BaseFragment {
         viewPager.setAdapter(driverCreditsAdapter);
 
         tabs = (PagerSlidingTabStrip) rootView.findViewById(R.id.tabs);
+        tabs.setTextSize(28);
         tabs.setIndicatorColor(getResources().getColor(R.color.themeColor));
         tabs.setTextColorResource(R.color.themeColor, R.color.textColor);
         tabs.setTypeface(Fonts.mavenRegular(getActivity()), Typeface.NORMAL);
