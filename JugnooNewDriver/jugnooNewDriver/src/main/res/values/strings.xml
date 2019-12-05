@@ -1300,4 +1300,5 @@
     <string name="view_more_sharing_options">View more sharing options</string>
     <string name="only_cash_rides">Only Cash Rides</string>
     <string name="only_long_rides">Only Long Rides</string>
+    <string name="we_are_unable_to_process_your_request">We are unable to process your request at this time. Please try again later.</string>
 </resources>

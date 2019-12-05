@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
+import retrofit.RetrofitError
 import java.util.*
 
 class LoginFragment : Fragment() {
@@ -207,7 +208,8 @@ class LoginFragment : Fragment() {
             }
 
             override fun onException(e: Exception?): Boolean {
-                return false
+                DialogPopup.alertPopup(requireActivity(), "", getString(R.string.we_are_unable_to_process_your_request))
+                return true
             }
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
@@ -218,6 +220,11 @@ class LoginFragment : Fragment() {
                 }
 
 
+            }
+
+            override fun onFailure(error: RetrofitError?): Boolean {
+                DialogPopup.alertPopup(requireActivity(), "", getString(R.string.we_are_unable_to_process_your_request))
+                return true
             }
 
             override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
