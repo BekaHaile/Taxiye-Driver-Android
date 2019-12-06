@@ -2,8 +2,8 @@ package product.clicklabs.jugnoo.driver
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import kotlinx.android.synthetic.main.activity_support_options.*
 import kotlinx.android.synthetic.main.layout_top_bar.*

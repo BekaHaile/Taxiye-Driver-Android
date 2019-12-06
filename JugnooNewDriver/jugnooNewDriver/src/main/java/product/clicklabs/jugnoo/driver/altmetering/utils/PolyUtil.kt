@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.altmetering.utils
 
-import android.support.v4.math.MathUtils.clamp
+import androidx.core.math.MathUtils.clamp
 import com.google.android.gms.maps.model.LatLng
 import product.clicklabs.jugnoo.driver.altmetering.utils.MathUtil.EARTH_RADIUS
 import product.clicklabs.jugnoo.driver.altmetering.utils.MathUtil.hav

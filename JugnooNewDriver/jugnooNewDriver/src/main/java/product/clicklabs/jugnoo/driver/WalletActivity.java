@@ -1,9 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import product.clicklabs.jugnoo.driver.fragments.WalletFragment;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;

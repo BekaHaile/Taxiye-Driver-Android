@@ -1,7 +1,7 @@
 
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 
 public class ZoomOutPageTransformer implements ViewPager.PageTransformer {

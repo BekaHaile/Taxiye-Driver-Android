@@ -11,12 +11,12 @@ import android.content.pm.PermissionInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -416,7 +416,7 @@ public final class PermissionCommon {
             view.setVisibility(View.VISIBLE);
             snackBarPermissionDenied = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
             snackBarPermissionDenied.setActionTextColor(ContextCompat.getColor(activity, R.color.themeColor));
-            ((TextView) snackBarPermissionDenied.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
+            ((TextView) snackBarPermissionDenied.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setMaxLines(5);
 
             snackBarPermissionDenied.setAction(activity.getString(R.string.grant), new View.OnClickListener() {
                 @Override
@@ -440,7 +440,7 @@ public final class PermissionCommon {
         if (snackBarRational == null) {
             snackBarRational = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE);
             snackBarRational.setActionTextColor(ContextCompat.getColor(activity, R.color.themeColor));
-            ((TextView) snackBarRational.getView().findViewById(android.support.design.R.id.snackbar_text)).setMaxLines(5);
+            ((TextView) snackBarRational.getView().findViewById(com.google.android.material.R.id.snackbar_text)).setMaxLines(5);
 
         }
 

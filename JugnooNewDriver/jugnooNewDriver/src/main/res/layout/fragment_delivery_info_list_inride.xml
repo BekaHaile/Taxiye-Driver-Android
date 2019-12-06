@@ -148,7 +148,7 @@
         android:layout_below="@+id/relativeLayoutMerchantDetails"
         android:background="@drawable/shadow_up_light_60"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDeliveryInfoInRide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -157,7 +157,7 @@
         android:layout_above="@+id/customerInfoLine4"
         android:scrollbars="vertical"
         android:splitMotionEvents="false">
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
         android:id="@+id/customerInfoLine4"

@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.app.Activity
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.RecyclerView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.TollData
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Utils
 
-class TollDataAdapter(val activity: Activity, val rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<TollDataAdapter.FareDetailViewHolder>(),ItemListener {
+class TollDataAdapter(val activity: Activity, val rv: RecyclerView, val callback:Callback) : RecyclerView.Adapter<TollDataAdapter.FareDetailViewHolder>(),ItemListener {
 
     private val tollData = mutableListOf<TollData>()
     private lateinit var currency: String

@@ -1,4 +1,4 @@
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     android:id="@+id/drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                 android:descendantFocusability="afterDescendants"
                 />
 
-            <android.support.v4.view.ViewPager
+            <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vpBidRequestPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,4 +246,4 @@
     <!-- menu layout -->
     <include layout="@layout/layout_driver_menu"/>
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

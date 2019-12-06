@@ -12,11 +12,11 @@ import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,12 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import io.reactivex.Observable;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.altmetering.model.Waypoint;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 
 public class DialogPopup {

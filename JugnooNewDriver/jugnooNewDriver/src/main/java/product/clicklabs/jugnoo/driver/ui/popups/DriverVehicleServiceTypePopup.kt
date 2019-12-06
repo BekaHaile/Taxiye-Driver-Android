@@ -4,10 +4,10 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.AppCompatCheckBox
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -109,7 +109,7 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
                }
                checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                    val pos = recyclerView.getChildLayoutPosition(parentView)
-                   if(pos!=RecyclerView.NO_POSITION){
+                   if(pos!= RecyclerView.NO_POSITION){
                        details[pos].checked = if(isChecked)1 else 0
                    }
                }

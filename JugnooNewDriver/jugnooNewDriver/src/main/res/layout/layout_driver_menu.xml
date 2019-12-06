@@ -917,25 +917,6 @@
             </RelativeLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/bookingsRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/menu_item_selector"
-                android:splitMotionEvents="false"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/bookingsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/rides"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutSharingRides"
@@ -957,46 +938,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/fareDetailsRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/menu_item_selector"
-                android:visibility="gone"
-                android:splitMotionEvents="false">
-
-                <TextView
-                    android:id="@+id/fareDetailsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/fare_details"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/notificationCenterRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/menu_item_selector"
-                android:splitMotionEvents="false"
-                android:visibility="gone">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/notificationCenterText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/Notifications"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
 
 
             <RelativeLayout
@@ -1133,25 +1074,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/termsConditionRl"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/menu_item_selector"
-                android:visibility="gone"
-                android:splitMotionEvents="false">
-
-                <TextView
-                    android:id="@+id/termsConditionText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="42px"
-                    android:text="@string/terms"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
-
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/logoutRl"

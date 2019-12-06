@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;

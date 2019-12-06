@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.widgets;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
  * Created by aneeshbansal on 26/09/16.

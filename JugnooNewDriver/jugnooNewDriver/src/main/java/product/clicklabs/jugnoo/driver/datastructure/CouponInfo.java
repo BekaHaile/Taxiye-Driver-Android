@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 
 public class CouponInfo {
@@ -20,10 +22,11 @@ public class CouponInfo {
     public double dropRadius;
     public LatLng droplLatLng;
     public boolean couponApplied;
+	private ArrayList<LatLng> locationsCoordinates;
 
 	public CouponInfo(String title, String subtitle, String description,
 			double discountPrecent, double maximumDiscountValue, double cappedFare, double cappedFareMaximum,
-                      int couponType, int benefitType, double dropLatitude, double dropLongitude, double dropRadius){
+                      int couponType, int benefitType, double dropLatitude, double dropLongitude, double dropRadius, ArrayList<LatLng> locationsCoordinates){
 		this.status = CouponStatus.ACTIVE.getOrdinal();
 		this.title = title;
 		this.subtitle = subtitle;
@@ -43,6 +46,7 @@ public class CouponInfo {
         this.droplLatLng = new LatLng(dropLatitude, dropLongitude);
         this.dropRadius = dropRadius;
         this.couponApplied = false;
+        this.locationsCoordinates = locationsCoordinates;
 	}
 	
 	@Override
@@ -65,4 +69,11 @@ public class CouponInfo {
 				+", "+cappedFare+", "+cappedFareMaximum+", "+couponType+", "+benefitType+", "+droplLatLng+", "+dropRadius;
 	}
 
+	public ArrayList<LatLng> getLocationsCoordinates() {
+		return locationsCoordinates;
+	}
+
+	public void setLocationsCoordinates(ArrayList<LatLng> locationsCoordinates) {
+		this.locationsCoordinates = locationsCoordinates;
+	}
 }

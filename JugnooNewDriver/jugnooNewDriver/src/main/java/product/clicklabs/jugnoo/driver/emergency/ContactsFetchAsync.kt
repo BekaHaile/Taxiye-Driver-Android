@@ -3,7 +3,7 @@ package product.clicklabs.jugnoo.driver.emergency
 import android.content.Context
 import android.os.AsyncTask
 import android.provider.ContactsContract
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.emergency.models.ContactBean
 import product.clicklabs.jugnoo.driver.utils.DialogPopup

@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class FragmentDeliveryRateCard extends android.support.v4.app.Fragment {
+public class FragmentDeliveryRateCard extends Fragment {
 
 	LinearLayout basefare_extras, perKm_extras, perDelivery_extras, pickupWaitTime_extras, pickupDistanceFare_extras,
 			loadingFare_extras, unLoadingFare_extras, returnFare_extras, linearLayoutRCard;

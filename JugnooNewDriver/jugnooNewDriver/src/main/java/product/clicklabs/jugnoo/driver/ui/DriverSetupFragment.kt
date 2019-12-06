@@ -6,11 +6,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -242,18 +242,32 @@ class DriverSetupFragment : Fragment() {
                 "client_id" to Data.CLIENT_ID,
                 "login_type" to Data.LOGIN_TYPE,
                 "referral_code" to "",
-                "device_token" to FirebaseInstanceId.getInstance().getToken()!!,
+//                "device_token" to FirebaseInstanceId.getInstance().instanceId.result?.getToken()!!,
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
-        if(referralCode!=null){
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
+            if(!it.isSuccessful) {
+                Log.w(TAG,"${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + driversetupfrag -> registerDriver device_token_unsuccessful",it.exception)
+                return@addOnCompleteListener
+            }
+            if(it.result?.token != null) {
+                Log.e("${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + driversetupfrag -> registerDriver", it.result?.token)
+                params["device_token"] = it.result?.token!!
+            }
+            registerDriverFunc(referralCode, params, vehicleType, userName)
+        }
+    }
+
+    private fun registerDriverFunc(referralCode: String?, params: HashMap<String, String>, vehicleType: String, userName: String) {
+        if (referralCode != null) {
             params["referral_code"] = referralCode;
         }
-        if(fleetSelected != null && fleetSelected!!.id > 0){
+        if (fleetSelected != null && fleetSelected!!.id > 0) {
             params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
-    HomeUtil.putDefaultParams(params)
-    ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        HomeUtil.putDefaultParams(params)
+        ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
@@ -261,10 +275,10 @@ class DriverSetupFragment : Fragment() {
                     when (t.flag) {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
 
-                            if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1){
-                                (activity as DriverSplashActivity).openVehicleDetails(accessToken,cityId!!,
+                            if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1) {
+                                (activity as DriverSplashActivity).openVehicleDetails(accessToken, cityId!!,
                                         vehicleType, userName)
-                            }else{
+                            } else {
                                 openDocumentUploadActivity()
 
                             }
@@ -288,13 +302,13 @@ class DriverSetupFragment : Fragment() {
             }
 
             override fun onError(t: RegisterScreenResponse?, message: String?, flag: Int): Boolean {
-                if(flag==ApiResponseFlags.SHOW_MESSAGE.getOrdinal()){
+                if (flag == ApiResponseFlags.SHOW_MESSAGE.getOrdinal()) {
                     DialogPopup.alertPopupWithListener(activity, "", message, {
-                        setPromoLayout(true,referralCode)
+                        setPromoLayout(true, referralCode)
                         openDocumentUploadActivity()
                     })
                     return true
-                }else{
+                } else {
                     return false
 
                 }
@@ -422,7 +436,7 @@ class DriverSetupFragment : Fragment() {
             adapter.setList(city.vehicleTypes,0)
             if(city.vehicleTypes==null || city.vehicleTypes.size==0){
                 rvVehicleTypes.gone()
-                Snackbar.make(view!!,getString(R.string.no_vehicles_available),Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view!!,getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
             }else{
                 rvVehicleTypes.visible()
             }
@@ -526,5 +540,10 @@ class DriverSetupFragment : Fragment() {
             })
             countryPickerDialog.show(supportFragmentManager, FLEET_DIALOG_FRAGMENT_TAG)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarChangeListener?.setToolbarVisibility(true)
     }
 }

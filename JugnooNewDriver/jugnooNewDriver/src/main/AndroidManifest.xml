@@ -69,10 +69,11 @@
         android:largeHeap="true"
         android:resizeableActivity="false"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         tools:replace="android:icon"
         android:networkSecurityConfig="@xml/network_security_config"
-        >
+        tools:ignore="UnusedAttribute">
         <provider
             android:name="product.clicklabs.jugnoo.driver.utils.PhotoProvider"
             android:authorities="${authorities}"
@@ -80,7 +81,7 @@
             android:grantUriPermissions="true" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="@string/file_provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -107,13 +108,13 @@
             android:launchMode="singleTask"
             android:label=""/>
 
-        <service
-            android:name=".MyInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".MyInstanceIDListenerService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
         <activity
             android:name=".ui.DriverSplashActivity"

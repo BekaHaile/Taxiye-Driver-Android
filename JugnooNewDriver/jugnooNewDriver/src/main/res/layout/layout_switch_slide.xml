@@ -13,7 +13,7 @@
     <!--android:background="@drawable/selector_red_stroke_white_theme"/>-->
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
@@ -64,7 +64,9 @@
                     android:singleLine="true"
                     android:text="@string/offline_caps"
                     android:textColor="@drawable/selector_dark_white_text_color"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/maven_pro_regular"
+                    />
 
                 <TextView
                     android:id="@+id/tvOnlineTop"
@@ -83,10 +85,11 @@
                     android:singleLine="true"
                     android:text="@string/online_caps"
                     android:textColor="@drawable/selector_dark_white_text_color"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:fontFamily="@font/maven_pro_regular" />
 
             </LinearLayout>
         </RelativeLayout>
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

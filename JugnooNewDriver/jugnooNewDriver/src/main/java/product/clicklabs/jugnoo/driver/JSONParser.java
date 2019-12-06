@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Pair;
 
 import com.fugu.CaptureUserData;
 import com.fugu.FuguNotificationConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -149,6 +153,18 @@ public class JSONParser implements Constants {
 	}
 
 
+	private static ArrayList<LatLng> parseLocationCoordinates(String locationCoordinates){
+		ArrayList<LatLng> locationsCoordinates = new ArrayList<>();
+		if(!TextUtils.isEmpty(locationCoordinates)){
+			String[] latLngs = locationCoordinates.split(":");
+			for(String latLng:latLngs){
+				String[] arr = latLng.split(",");
+				try{locationsCoordinates.add(new LatLng(Double.parseDouble(arr[0]), Double.parseDouble(arr[1])));} catch(Exception ignored){}
+			}
+		}
+		return locationsCoordinates;
+	}
+
 	public static CouponInfo parseCouponInfo(JSONObject jObj) {
 		try {
 			JSONObject couponObject = jObj.getJSONObject("coupon");
@@ -163,7 +179,8 @@ public class JSONParser implements Constants {
 					couponObject.getInt("benefit_type"),
 					couponObject.getDouble("drop_latitude"),
 					couponObject.getDouble("drop_longitude"),
-					couponObject.getDouble("drop_radius")
+					couponObject.getDouble("drop_radius"),
+					parseLocationCoordinates(couponObject.optString(KEY_LOCATIONS_COORDINATES, ""))
 			);
 			return couponInfo;
 		} catch (Exception e) {
@@ -184,7 +201,8 @@ public class JSONParser implements Constants {
 					jPromoObject.getDouble("cashback_percentage"),
 					jPromoObject.getDouble("drop_latitude"),
 					jPromoObject.getDouble("drop_longitude"),
-					jPromoObject.getDouble("drop_radius"));
+					jPromoObject.getDouble("drop_radius"),
+					parseLocationCoordinates(jPromoObject.optString(KEY_LOCATIONS_COORDINATES, "")));
 
 			return promoInfo;
 		} catch (Exception e) {
@@ -269,7 +287,6 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 		}
 
-		String customerReferralBonus = userData.optString("customer_referral_bonus", "30");
 
 		String deiValue = userData.optString("driver_dei", "-1");
 
@@ -279,10 +296,9 @@ public class JSONParser implements Constants {
 		String driverSupportNumber = userData.optString("driver_support_number", context.getString(R.string.support_phone_number));
 		String hippoTicketFAQ = userData.optString(Constants.HIPPO_TICKET_FAQ_NAME, context.getString(R.string.hippo_support_faq_name_default));
 		String referralCode = userData.getString("referral_code");
+		int cityId = userData.optInt(Constants.KEY_CITY, 0);
 
 
-		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-		context.getResources().getString(R.string.referal_sms_message,referralCode, context.getString(R.string.appname), context.getString(R.string.appname),context.getString(R.string.customer_app_download_link)));
 		String referralMessage = userData.optString(Constants.KEY_REFERRAL_MESSAGE);
 		String referralMessageDriver = userData.optString(Constants.KEY_REFERRAL_MESSAGE_DRIVER);
 		String referralButtonText = userData.optString("referral_button_text", "Share");
@@ -293,6 +309,12 @@ public class JSONParser implements Constants {
 		String getCreditsInfo = userData.optString(Constants.KEY_GET_CREDITS_INFO);
 		String getCreditsImage = userData.optString(Constants.KEY_GET_CREDITS_IMAGE);
 		int sendCreditsEnabled = userData.optInt(Constants.KEY_SEND_CREDITS_ENABLED, 0);
+
+
+		Prefs.with(context).save(Constants.KEY_D2C_DISPLAY_MESSAGE, referralMessage);
+		Prefs.with(context).save(Constants.KEY_D2C_REFERRAL_IMAGE, referralImageD2C);
+		Prefs.with(context).save(Constants.KEY_D2D_DISPLAY_MESSAGE, referralMessageDriver);
+		Prefs.with(context).save(Constants.KEY_D2D_REFERRAL_IMAGE, referralImageD2D);
 
 		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
@@ -311,7 +333,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SHOW_SUPPORT_IN_RESOURCES, userData.optInt("show_support_in_resources", 0));
 		Prefs.with(context).save(SPLabels.MENU_OPTION_VISIBILITY, userData.optInt("menu_option_visibility", 0));
 		Prefs.with(context).save(SPLabels.VEHICLE_TYPE, userData.optInt("vehicle_type", 0));
-		Prefs.with(context).save(SPLabels.CITY_ID, userData.optInt("city", 0));
+		Prefs.with(context).save(SPLabels.CITY_ID, cityId);
 
 		Prefs.with(context).save(SPLabels.SET_TRAINING_ID, userData.optInt("driver_training_id", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
@@ -401,7 +423,7 @@ public class JSONParser implements Constants {
 			Prefs.with(context).save(Constants.KEY_NAVIGATION_TYPE, userData.optInt(Constants.KEY_NAVIGATION_TYPE, Constants.NAVIGATION_TYPE_GOOGLE_MAPS));
 		}
 		Utils.setCurrencyPrecision(context, userData.optInt(Constants.KEY_CURRENCY_PRECISION, 0));
-		parseConfigVariables(context, userData);
+		parseConfigVariables(context, userData, cityId);
 
 		Prefs.with(context).save(Constants.KEY_STRIPE_CARDS_ENABLED, userData.optInt(Constants.KEY_STRIPE_CARDS_ENABLED, 0));
 
@@ -434,22 +456,25 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.KEY_DRIVER_TAG, driverTag);
 
 		Prefs.with(context).save(Constants.KEY_USER_ID, userId);
+		int subscriptionEnabled = userData.optInt(KEY_DRIVER_SUBSCRIPTION, 0);
+		int onlyCashRides = userData.optInt(KEY_ONLY_CASH_RIDES, 0);
+		int onlyLongRides = userData.optInt(KEY_ONLY_LONG_RIDES, 0);
 
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
-				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
+				deiValue, sharingEnabled, sharingAvailable, driverSupportNumber,
+				showDriverRating, driverArrivalDistance,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
 				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable,fareCachingLimit,
 				isCaptiveDriver, countryCode,userIdentifier,
-				hippoTicketFAQ, currency,creditsEarned,commissionSaved, referralMessageDriver,
-				referralImageD2D, referralImageD2C, getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag);
+				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
+				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides);
 	}
 
-	private void parseConfigVariables(Context context, JSONObject userData) {
+	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
 		Prefs.with(context).save(KEY_FACEBOOK_PAGE_ID, userData.optString(KEY_FACEBOOK_PAGE_ID, context.getString(R.string.facebook_page_id)));
 		Prefs.with(context).save(KEY_FACEBOOK_PAGE_URL, userData.optString(KEY_FACEBOOK_PAGE_URL, context.getString(R.string.facebook_page_url)));
 		Prefs.with(context).save(DRIVER_SUPPORT_EMAIL, userData.optString(DRIVER_SUPPORT_EMAIL, context.getString(R.string.support_email)));
@@ -565,6 +590,68 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(KEY_SHOW_FARE_BEFORE_RIDE_START, userData.optInt(KEY_SHOW_FARE_BEFORE_RIDE_START, context.getResources().getInteger(R.integer.show_fare_before_ride_start)));
 
 		Prefs.with(context).save(KEY_DRIVER_PLANS_URL, userData.optString(KEY_DRIVER_PLANS_URL, context.getString(R.string.driver_plans_url)));
+
+		Prefs.with(context).save(KEY_D2C_WHATSAPP_SHARE, userData.optInt(KEY_D2C_WHATSAPP_SHARE, 1));
+		Prefs.with(context).save(KEY_D2C_SHARE_CONTENT, userData.optString(KEY_D2C_SHARE_CONTENT, context.getString(R.string.d2c_share_content)));
+		Prefs.with(context).save(KEY_D2C_BRANCH_KEY, userData.optString(KEY_D2C_BRANCH_KEY, ""));
+		Prefs.with(context).save(KEY_D2C_BRANCH_SECRET, userData.optString(KEY_D2C_BRANCH_SECRET, ""));
+		Prefs.with(context).save(KEY_D2C_DEFAULT_SHARE_URL, userData.optString(KEY_D2C_DEFAULT_SHARE_URL, "http://share.jugnoo.in/dcrefer"));
+
+		Prefs.with(context).save(KEY_D2D_WHATSAPP_SHARE, userData.optInt(KEY_D2D_WHATSAPP_SHARE, 1));
+		Prefs.with(context).save(KEY_D2D_SHARE_CONTENT, userData.optString(KEY_D2D_SHARE_CONTENT, context.getString(R.string.d2d_share_content)));
+		Prefs.with(context).save(KEY_D2D_BRANCH_KEY, userData.optString(KEY_D2D_BRANCH_KEY, ""));
+		Prefs.with(context).save(KEY_D2D_BRANCH_SECRET, userData.optString(KEY_D2D_BRANCH_SECRET, ""));
+		Prefs.with(context).save(KEY_D2D_DEFAULT_SHARE_URL, userData.optString(KEY_D2D_DEFAULT_SHARE_URL, "https://driver.jugnoo.in/ddrefer"));
+
+		Prefs.with(context).save(KEY_HOME_BANNER_TEXT, userData.optString(KEY_HOME_BANNER_TEXT, ""));
+		Prefs.with(context).save(KEY_HOME_BANNER_INDEX, userData.optInt(KEY_HOME_BANNER_INDEX, 0));
+
+
+		parseCityConfigVariables(context, userData, cityId);
+
+	}
+
+	private void parseCityConfigVariables(Context context, JSONObject userData, int cityId){
+		try{
+			JSONObject cityMainObj = userData.optJSONObject(Constants.KEY_CITY_OBJ);
+
+			JSONObject cityDefaultObj = cityMainObj.has(String.valueOf(0)) ? cityMainObj.optJSONObject(String.valueOf(0)) : new JSONObject();
+
+			JSONObject cityObj = cityMainObj.has(String.valueOf(cityId)) ? cityMainObj.optJSONObject(String.valueOf(cityId)) : new JSONObject();
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_SHARE_CONTENT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_DISPLAY_MESSAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_REFERRAL_IMAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2C_WHATSAPP_SHARE, false);
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_SHARE_CONTENT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_DISPLAY_MESSAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_REFERRAL_IMAGE, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_D2D_WHATSAPP_SHARE, false);
+
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_TEXT, true);
+			saveCityLevelParam(context, cityDefaultObj, cityObj, KEY_HOME_BANNER_INDEX, false);
+
+
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	private void saveCityLevelParam(Context context, JSONObject cityDefaultObj, JSONObject cityObj, String key, boolean isString) {
+		if(cityObj.has(key)) {
+			if(!isString) {
+				Prefs.with(context).save(key, cityObj.optInt(key));
+			} else {
+				Prefs.with(context).save(key, cityObj.optString(key));
+			}
+		} else if(cityDefaultObj.has(key)) {
+			if(!isString) {
+				Prefs.with(context).save(key, cityDefaultObj.optInt(key));
+			} else {
+				Prefs.with(context).save(key, cityDefaultObj.optString(key));
+			}
+		}
 	}
 
 	private void parseJungleApiObjects(Context context, JSONObject userData) {
@@ -617,10 +704,26 @@ public class JSONParser implements Constants {
 
 				CaptureUserData captureUserData = Data.getFuguUserData(context);
 				if(captureUserData!=null){
-					FuguNotificationConfig.updateFcmRegistrationToken(FirebaseInstanceId.getInstance().getToken());
-					Data.initFugu((Activity) context, captureUserData,
-							jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
-							jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));
+//					Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "json parser", FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken());
+					FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+						@Override
+						public void onComplete(@NonNull Task<InstanceIdResult> task) {
+							if(!task.isSuccessful()) {
+								Log.w("JSON_PARSER","device_token_unsuccessful - onReceive",task.getException());
+								return;
+							}
+							if(task.getResult() != null) {
+								Log.e("DEVICE_TOKEN_TAG JSON_PARSER  -> parseAccessTokenLoginData", task.getResult().getToken());
+								FuguNotificationConfig.updateFcmRegistrationToken(task.getResult().getToken());
+							}
+
+							Data.initFugu((Activity) context, captureUserData,
+									jLoginObject.optString(Constants.KEY_FUGU_APP_KEY),
+									jLoginObject.optInt(KEY_FUGU_APP_TYPE, 2));
+						}
+					});
+
+
 				}
 
 			}
