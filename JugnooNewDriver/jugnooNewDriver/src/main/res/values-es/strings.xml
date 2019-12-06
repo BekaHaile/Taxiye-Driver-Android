@@ -282,6 +282,7 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="enter_otp_received">Por favor ingrese la contraseña de One Time que acaba de recibir por SMS en</string>
     <string name="select_reason">Por favor selecciona una razón</string>
     <string name="referral_money">Dinero referido</string>
+    <string name="send">`$-`% `$_`% `$_</string>
 
     <string name="hint_created_multiple_account">Ya has creado 2 cuentas desde este dispositivo. Por favor explique la razón para crear una nueva cuenta.</string>
     <string name="convenience_charge">Cargo de conveniencia</string>
@@ -725,7 +726,7 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="increase_by_10">Incrementar\nby 10%</string>
     <string name="reduce_by_format"> Reducir\nby %s</string>
     <string name="increase_by_format"> Incrementar\nby %s</string>
-    <string name="documents_authentication">Acepto que los documentos cargados por mí son verdaderos y correctos. Entiendo que cualquier intento de proporcionar información incorrecta, engañosa o documentos falsos llevará a mi lista negra inmediata desde la plataforma %1$ s. La plataforma %2$ s se reserva el derecho de llevar el asunto a las autoridades policiales en caso de documentos falsificados.</string>
+    <string name="documents_authentication">Acepto que los documentos cargados por mí son verdaderos y correctos. Entiendo que cualquier intento de proporcionar información incorrecta, engañosa o documentos falsos llevará a mi lista negra inmediata desde la plataforma% 1 $ s. La plataforma% 2 $ s se reserva el derecho de llevar el asunto a las autoridades policiales en caso de documentos falsificados.</string>
     <string name="i_agree"> Estoy de acuerdo</string>
     <string name="dont_agree">Estoy en desacuerdo</string>
     <string name="chat_support"> Soporte de chat</string>
@@ -1146,40 +1147,15 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="error_empty_mandatory_field">%s es un campo obligatorio.</string>
     <string name="please_enter_less_value_for_bid"> Por favor, introduzca menos valor para la oferta</string>
     <string name="note">Nota</string>
+    <string name="enable_emergency_mode">Habilitar modo de emergencia</string>
+    <string name="send_ride_status">Enviar estado de viaje</string>
     <string name="chat_with_us">Habla con nosotros</string>
+    <string name="everything_is_alright_caps">TODO ESTÁ BIEN</string>
+    <string name="you_have_disabled_jugnoo_emergency">Ha deshabilitado el modo %s\n Emergency</string>
     <string name="click_to_view_notes">Haga clic para ver notas</string>
     <string name="notes">Notas</string>
 
-    <!-- Emergency New -->
-    <string name="enable_emergency_mode">Habilitar el modo de emergencia</string>
-    <string name="send_ride_status">Enviar estado de viaje</string>
-    <string name="in_app_customer_support">En la aplicación de soporte al cliente</string>
-    <string name="emergency_mode_enabled">Modo de emergencia habilitado</string>
-    <string name="emergency_mode_enabled_title">Has habilitado de emergencia.</string>
-    <string name="emergency_mode_enabled_message">Hemos enviado su ubicación a sus \n contactos de emergencia y al servicio de asistencia de %s.</string>
-    <string name="call_police">Llamar a la policía</string>
-    <string name="call_emergency_contact">Llame al Contacto de Emergencia</string>
-    <string name="call_your_contacts">Llama a tus contactos</string>
-    <string name="disable_emergency_mode">Desactiva el modo de emergencia</string>
-    <string name="emergency_contacts">Añadir contactos de emergencia</string>
-    <string name="add_contacts">Añadir contactos</string>
-    <string name="contacts">Contactos</string>
-    <string name="edit">Editar</string>
-    <string name="send">Enviaar</string>
-    <string name="send_invites">Enviar invitaciones</string>
-    <string name="send_invites_2">a amigos que no han probado %s</string>
-    <string name="delete_emergency_contact_message">¿Está seguro de que desea eliminar este contacto de su lista de emergencias?</string>
-    <string name="type_a_name_or_mobile_number">Escriba un nombre o un número de móvil</string>
-    <string name="or_call_directly">o llame directamente</string>
-    <string name="or_send_directly">o Enviar directamente</string>
-    <string name="send_ride_status_no_contacts_message">Por favor, seleccione algunos contactos primero</string>
-    <string name="send_ride_status_more_contacts_message_format">Has seleccionado más de %1$s contactos, Enviaremos el estado de viaje a sólo %2$s contactos a la vez.</string>
-    <string name="configure_your_emergency_contacts">Configure sus contactos de emergencia</string>
-    <string name="inform_your_friends">Informe a sus amigos y familiares\nacerca de su ubicación actual cada vez\nque te vas con %s</string>
-    <string name="everything_is_alright_caps">TODO ESTÁ BIEN</string>
-    <string name="you_have_disabled_jugnoo_emergency">Has inhabilitado el %s\nModo de emergencia</string>
-    <string name="please_select_some_contacts_first">Por favor, seleccione algunos contactos primero</string>
-    <string name="are_you_sure_want_to_disable_emergency">¿Estás seguro de que quieres desactivar el modo de emergencia?</string>
-    <string name="emergency_contacts_only">Contactos de emergencia</string>
+
+
 
 </resources>

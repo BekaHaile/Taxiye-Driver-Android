@@ -960,16 +960,16 @@ public class GCMIntentService extends FirebaseMessagingService {
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
-//								if(Data.contextiii == null || !(Data.contextiii instanceof ChatActivity)){
+								if(Data.contextiii == null || !(Data.contextiii instanceof ChatActivity)){
 									String chatMessage = jObj.getJSONObject("message").optString("chat_message", "");
 									Prefs.with(this).save(Constants.KEY_CHAT_COUNT , Prefs.with(this).getInt(Constants.KEY_CHAT_COUNT, 0) + 1);
-//									if(ChatActivity.CHAT_SCREEN_OPEN == null) {
+									if(ChatActivity.CHAT_SCREEN_OPEN == null) {
 										notificationManagerChat(this, title, chatMessage, PROMOTION_ID, ChatActivity.class, null);
-//									}
+									}
 									Intent setChatCount = new Intent(Constants.ALERT_CHARGING);
 									setChatCount.putExtra("type", 1);
 									sendBroadcast(setChatCount);
-//								}  // Nothing
+								}  // Nothing
 
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
@@ -1588,8 +1588,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			CharSequence name = context.getString(R.string.notification_channel_default);
 			// The user-visible description of the channel.
 			String description = context.getString(R.string.notification_channel_description_default);
-			int importance = channel.equalsIgnoreCase(Constants.NOTIF_CHANNEL_DEFAULT) ? NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_LOW;
-			NotificationChannel mChannel = new NotificationChannel(channel, channel, importance);
+			int importance = NotificationManager.IMPORTANCE_LOW;
+			NotificationChannel mChannel = new NotificationChannel(channel, name, importance);
 			// Configure the notification channel.
 			mChannel.setDescription(description);
 			notificationManager.createNotificationChannel(mChannel);
