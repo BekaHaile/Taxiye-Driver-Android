@@ -249,7 +249,6 @@ class DocumentDetailsFragment:Fragment(){
                     listener?.updateDocInfo(pos, docInfo);
                     requireActivity().onBackPressed()
                 }
-                Data.setDriverMappingIdOnBoarding(-1)
             }
 
             override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {

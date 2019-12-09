@@ -642,6 +642,9 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         }
 
         vehicleDetails.setVisibility(View.VISIBLE);
+        if(Data.getMultipleVehiclesEnabled()==1){
+            vehicleDetails.setVisibility(View.GONE);
+        }
 
 
         if(Data.userData.getVehicleDetailsLogin()!=null){

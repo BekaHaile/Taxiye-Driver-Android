@@ -227,6 +227,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag, null)) {
                                 DialogPopup.dismissLoadingDialog();
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									Data.setDriverMappingIdOnBoarding(-1);
 									if(fromVehicleDetailsScreen)
 									{
 										setResult(Activity.RESULT_OK);
@@ -240,6 +241,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 //										startActivity(new Intent(DriverDocumentActivity.this,VehicleDetailsActivity.class));
 										return;
 									}
+
 
 									if(!inSideApp) {
 										accessTokenLogin(DriverDocumentActivity.this, accessToken);

@@ -202,44 +202,51 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     }
 
     public void hitRemoveDriverVehicles(int positionInList,int mappingId) {
-        HashMap<String,String> params=new HashMap<>();
-        params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,""+mappingId);
-        DialogPopup.showLoadingDialog(this, getString(R.string.loading));
-        params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
-        RestClient.getApiServices().removeVehicle(params, new Callback<Object>() {
+        DialogPopup.alertPopupTwoButtonsWithListeners(this, getString(R.string.remove_vehicle_warning), new View.OnClickListener() {
             @Override
-            public void success(Object o, Response response) {
-                String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-                Log.i(TAG, "fetchDriverVehicle response = " + responseStr);
-                DialogPopup.dismissLoadingDialog();
-                try {
-                    JSONObject jObj = new JSONObject(responseStr);
-                    int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-                    String message = JSONParser.getServerMessage(jObj);
-                    if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                        Data.userData.getDriverVehicleDetailsList().get(positionInList).setDriverVehicleMappingStatus(2);
-                        updateVehicleList();
+            public void onClick(View v) {
+                HashMap<String,String> params=new HashMap<>();
+                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,""+mappingId);
+                DialogPopup.showLoadingDialog(VehicleDetailsActivity.this, getString(R.string.loading));
+                params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+                RestClient.getApiServices().removeVehicle(params, new Callback<Object>() {
+                    @Override
+                    public void success(Object o, Response response) {
+                        String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+                        Log.i(TAG, "fetchDriverVehicle response = " + responseStr);
+                        DialogPopup.dismissLoadingDialog();
+                        try {
+                            JSONObject jObj = new JSONObject(responseStr);
+                            int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+                            String message = JSONParser.getServerMessage(jObj);
+                            if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+//                                Data.userData.getDriverVehicleDetailsList().get(positionInList).setDriverVehicleMappingStatus(2);
+//                                updateVehicleList();
+                                ( VehicleDetailsActivity.this).hitFetchDriverVehicles();
+                            }
+                            DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        DialogPopup.dismissLoadingDialog();
                     }
-                    DialogPopup.alertPopup(VehicleDetailsActivity.this, "", message);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                DialogPopup.dismissLoadingDialog();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                try {
-                    DialogPopup.dismissLoadingDialog();
-                    DialogPopup.alertPopup(VehicleDetailsActivity.this, "", VehicleDetailsActivity.this.getString(R.string.error_occured_tap_to_retry));
-                } catch (Exception e) {
-                    DialogPopup.dismissLoadingDialog();
-                    e.printStackTrace();
-                }
-                DialogPopup.dismissLoadingDialog();
+                    @Override
+                    public void failure(RetrofitError error) {
+                        try {
+                            DialogPopup.dismissLoadingDialog();
+                            DialogPopup.alertPopup(VehicleDetailsActivity.this, "", VehicleDetailsActivity.this.getString(R.string.error_occured_tap_to_retry));
+                        } catch (Exception e) {
+                            DialogPopup.dismissLoadingDialog();
+                            e.printStackTrace();
+                        }
+                        DialogPopup.dismissLoadingDialog();
+                    }
+                });
             }
         });
+
     }
 
 
@@ -310,7 +317,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
         if (!vehImage.isEmpty())
             Picasso.with(activity)
                     .load(vehImage)
-                    .placeholder(R.drawable.auto_icon_front_new)
+                    .placeholder(R.drawable.ic_auto_request)
                     .transform(new CircleTransform())
                     .into(customerVh.profileImg);
         if (selectVehicleView) {
@@ -328,20 +335,22 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
     class CustomerVh extends RecyclerView.ViewHolder {
         TextView tvVehicleDetails, tvVehicleStatus, tvVehicleName;
         ImageView profileImg, ivDelete;
-        View border;
+        View border,rlRemoveVehicle;
 
         private CustomerVh(@NonNull View itemView) {
             super(itemView);
             tvVehicleDetails = itemView.findViewById(R.id.tvVehicleDetails);
+            rlRemoveVehicle = itemView.findViewById(R.id.rlRemoveVehicle);
             tvVehicleStatus = itemView.findViewById(R.id.tvVehicleStatus);
             tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
             profileImg = itemView.findViewById(R.id.profileImg);
             ivDelete = itemView.findViewById(R.id.ivDelete);
             border = itemView.findViewById(R.id.border);
-            ivDelete.setOnClickListener(new View.OnClickListener() {
+            rlRemoveVehicle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((VehicleDetailsActivity) activity).hitRemoveDriverVehicles(getAdapterPosition(), vehicleDetails.get(getAdapterPosition()).getDriverVehicleMappingId());
+
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -904,7 +904,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				if (docInfo.docCategory == 1&&Data.getMultipleVehiclesEnabled() == 1) {
 					if(driverVehicleMappingId!=-1)
 					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
-					if(Data.getMultipleVehiclesEnabled()==1&&Data.getDriverMappingIdOnBoarding()!=-1){
+					if(Data.getDriverMappingIdOnBoarding()!=-1){
 					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
 					}
 				}

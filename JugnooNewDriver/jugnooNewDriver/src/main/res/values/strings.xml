@@ -1300,6 +1300,7 @@
     <string name="your_vehicles">Your Vehicles</string>
     <string name="title_activity_vehicle_details">VehicleDetailsActivity</string>
     <string name="select_vehicle">Select a Vehicle</string>
+    <string name="remove_vehicle_warning">Are you sure you want to delete this vehicle.You wont\'t be able to use this vehicle anymore.Continue ?</string>
 
 
 </resources>

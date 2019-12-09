@@ -66,6 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingBottom="30dp"
+        tools:listitem="@layout/content_vehicle_details"
+        tools:itemCount="4"
          />
     </FrameLayout>
 
