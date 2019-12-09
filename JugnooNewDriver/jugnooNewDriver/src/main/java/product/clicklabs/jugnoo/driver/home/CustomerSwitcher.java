@@ -60,6 +60,10 @@ public class CustomerSwitcher {
 	private LinearLayout llRentalRequest;
 	private RecyclerView rvPickupFeedImages;
 	private CustomerInfoAdapter customerInfoAdapter;
+	private TextView tvFeedInstructions;
+	private RecyclerView recyclerViewCustomersLinked;
+
+
 	double distanceRefreshTime = 0;
 	String dropAddress;
 
@@ -95,9 +99,16 @@ public class CustomerSwitcher {
 		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
+		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
+		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+		recyclerViewCustomersLinked.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewCustomersLinked.setHasFixedSize(false);
 		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
 		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
 		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
+        tvFeedInstructions = rootView.findViewById(R.id.tvFeedInstructions);
+        tvFeedInstructions.setTypeface(Fonts.mavenRegular(activity));
+
 
 
 		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
@@ -114,6 +125,9 @@ public class CustomerSwitcher {
 
 		});
 
+
+
+		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
@@ -210,6 +224,19 @@ public class CustomerSwitcher {
 				} else {
 					rvPickupFeedImages.setVisibility(View.GONE);
 				}
+
+
+                if (customerInfo.getVendorMessage() != null && !TextUtils.isEmpty(customerInfo.getVendorMessage())) {
+                    tvFeedInstructions.setVisibility(View.GONE);
+
+                    tvFeedInstructions.setText(activity.getString(R.string.instructions_colon) + customerInfo.getVendorMessage());
+
+                }
+                else {
+                    tvFeedInstructions.setVisibility(View.GONE);
+                }
+
+
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
@@ -268,9 +295,16 @@ public class CustomerSwitcher {
 					}
 					if(!TextUtils.isEmpty(customerInfo.getVendorMessage())) {
 						tvCustomerNotes.setVisibility(View.VISIBLE);
-						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
+						if(customerInfo.getVendorMessage().length() > 20) {
+							tvCustomerNotes.setText(R.string.click_to_view_notes);
+							tvCustomerNotes.setEnabled(true);
+						} else {
+							tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
+							tvCustomerNotes.setEnabled(false);
+						}
 					} else {
 						tvCustomerNotes.setVisibility(View.GONE);
+						tvCustomerNotes.setText("");
 					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
@@ -284,6 +318,7 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 
+					updateDistanceOnLocationChanged(customerInfo);
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
@@ -339,11 +374,19 @@ public class CustomerSwitcher {
 					}
 				}
 			}
-			textViewCustomerName1.setVisibility(View.VISIBLE);
-			textViewCustomerName.setVisibility(View.VISIBLE);
-			updateDistanceOnLocationChanged(customerInfo);
-
-			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(customerInfo.getCustomerNotes()));
+			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
+			} else {
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
+			}
+			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
+				textViewShowDistance.setText("");
+			}
+			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(TextUtils.isEmpty(customerInfo.getVendorMessage())?customerInfo.getCustomerNotes():customerInfo.getVendorMessage()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -426,7 +469,8 @@ public class CustomerSwitcher {
 
 	public void setCallButton(){
 		if(Data.getCurrentCustomerInfo() != null){
-			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
+			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
+					&& activity.getResources().getBoolean(R.bool.show_customer_info_in_inride)){
 				relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
 			}else {
 				relativeLayoutCustomerInfo.setVisibility(View.GONE);
