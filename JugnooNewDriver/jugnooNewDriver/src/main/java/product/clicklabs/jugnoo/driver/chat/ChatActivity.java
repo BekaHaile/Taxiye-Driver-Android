@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,6 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -55,15 +55,15 @@ import retrofit.mime.TypedByteArray;
 
 public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
+	public static boolean isActive = false;
+
 	private EditText input;
 	private int engagementId = 0;
 	private String userImage;
 	LinearLayoutManager linearLayoutManager;
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
 	ChatAdapter chatAdapter;
-	boolean appOpen = true;
 	ChatSuggestionAdapter chatSuggestionAdapter;
-	public static String CHAT_SCREEN_OPEN = null;
 	private Handler handler = new Handler();
 	ArrayList<FetchChatResponse.ChatHistory> chatResponse = new ArrayList<>();
 	ArrayList<FetchChatResponse.Suggestion> chatSuggestions = new ArrayList<>();
@@ -78,7 +78,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			userImage = getIntent().getStringExtra("user_image");
 		} else{
 			try {
-				appOpen =false;
 				engagementId = Integer.parseInt(Data.getCurrentEngagementId());
 				userImage = Data.getCurrentCustomerInfo().image;
 			} catch (Exception e) {
@@ -154,7 +153,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		}
 
 
-		CHAT_SCREEN_OPEN = "yes";
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -166,7 +164,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			}
 		}, 100);
 
-		registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_FINISH_ACTIVITY));
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constants.ACTION_FINISH_ACTIVITY);
+		intentFilter.addAction(Constants.INTENT_ACTION_CHAT_REFRESH);
+		registerReceiver(broadcastReceiver, intentFilter);
+		isActive = true;
 	}
 
 	Runnable loadDiscussion=new Runnable() {
@@ -192,19 +194,6 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		}
 	}
 
-	@Override
-	public void onResume(){
-		super.onResume();
-		CHAT_SCREEN_OPEN = "yes";
-		Data.contextiii = ChatActivity.this;
-	}
-
-	@Override
-	public void onPause(){
-		CHAT_SCREEN_OPEN = null;
-		super.onPause();
-	}
-
     public void performBackPressed() {
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
@@ -213,12 +202,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		CHAT_SCREEN_OPEN = null;
-		Data.contextiii = null;
 		unregisterReceiver(broadcastReceiver);
 		if(handler != null && loadDiscussion != null){
 			handler.removeCallbacks(loadDiscussion);
 		}
+		isActive = false;
 	}
 
 
@@ -292,7 +280,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatSuggestions.clear();
 								chatResponse.addAll(fetchChat.getChatHistory());
 								Collections.reverse(chatResponse);
-								if(fetchChat.getChatHistory().size() > Prefs.with(activity).getInt(SPLabels.CHAT_SIZE,0) && CHAT_SCREEN_OPEN != null){
+								if(fetchChat.getChatHistory().size() > Prefs.with(activity).getInt(SPLabels.CHAT_SIZE,0)){
 									SoundMediaPlayer.startSound(activity, R.raw.whats_app_shat_sound, 1, false);
 								}
 								Prefs.with(activity).save(SPLabels.CHAT_SIZE, fetchChat.getChatHistory().size());
@@ -381,6 +369,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(Constants.ACTION_FINISH_ACTIVITY)) {
 				performBackPressed();
+			} else if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(Constants.INTENT_ACTION_CHAT_REFRESH)) {
+				if(handler != null && loadDiscussion != null) {
+					handler.removeCallbacks(loadDiscussion);
+				}
+				loadDiscussions();
 			}
 		}
 	};
