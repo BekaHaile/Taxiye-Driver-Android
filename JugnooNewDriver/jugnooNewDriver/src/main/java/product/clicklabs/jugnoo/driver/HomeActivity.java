@@ -3083,7 +3083,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 changeJugnooONUIAndInitService(false);
 
-				PushClickAction.INSTANCE.performAction(this);
 
 
             } catch (Exception e) {
@@ -5370,6 +5369,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
+
+		PushClickAction.INSTANCE.performAction(this);
     }
 
 
