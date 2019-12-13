@@ -197,6 +197,7 @@ import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
 import product.clicklabs.jugnoo.driver.home.HomeBannerAction;
+import product.clicklabs.jugnoo.driver.home.PushClickAction;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
@@ -2361,7 +2362,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             HomeActivity.this.registerReceiver(broadcastReceiver, intentFilter);
             HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
             HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
-            HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
+            HomeActivity.this.registerReceiver(broadcastReceiverChatCount, new IntentFilter(Constants.INTENT_ACTION_CHAT_REFRESH));
             HomeActivity.this.registerReceiver(broadcastReceiverCancelEndDeliveryPopup, new IntentFilter(Constants.DISMISS_END_DELIVERY_POPUP));
 
             new Handler().postDelayed(new Runnable() {
@@ -2652,19 +2653,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     };
 
-    BroadcastReceiver broadcastReceiverIsCharging = new BroadcastReceiver() {
+    BroadcastReceiver broadcastReceiverChatCount = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
             HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    int flag = intent.getIntExtra("type", -1);
-                    if (flag == 1) {
-                        tvChatCount.setVisibility(View.VISIBLE);
-                        tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1)));
-                    } else {
-                        showLowBatteryAlert(false);
-                    }
+                	int count = Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1);
+                	tvChatCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                	tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1)));
                 }
             });
         }
@@ -5372,6 +5369,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
+
+		PushClickAction.INSTANCE.performAction(this);
     }
 
 
@@ -5503,7 +5502,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             unregisterReceiver(broadcastReceiver);
             unregisterReceiver(broadcastReceiverUSL);
             unregisterReceiver(broadcastReceiverLowBattery);
-            unregisterReceiver(broadcastReceiverIsCharging);
+            unregisterReceiver(broadcastReceiverChatCount);
             unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 
         } catch (Exception e) {

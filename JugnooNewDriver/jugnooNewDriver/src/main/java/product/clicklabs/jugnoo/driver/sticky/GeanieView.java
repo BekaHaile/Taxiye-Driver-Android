@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
@@ -21,6 +20,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.Nullable;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
@@ -424,8 +424,10 @@ public class GeanieView extends Service {
 	public void onDestroy() {
 
 		try {
-			if(windowManager != null)
-			windowManager.removeViewImmediate(convertView);
+			if(windowManager != null) {
+				windowManager.removeViewImmediate(convertView);
+				windowManager.removeViewImmediate(removeView);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
