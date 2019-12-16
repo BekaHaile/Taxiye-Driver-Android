@@ -963,10 +963,12 @@ public class Utils {
                 currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
                 currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
                 currencyNumberFormat.setGroupingUsed(false);
+                currencyNumberFormat.setMinimumFractionDigits(2);
+                currencyNumberFormat.setMaximumFractionDigits(2);
             }
             int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
-            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
+//            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+//            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
             if (TextUtils.isEmpty(currency)) {
                 currency = fallbackCurrency;
             }

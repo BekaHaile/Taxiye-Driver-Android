@@ -726,7 +726,7 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="increase_by_10">Incrementar\nby 10%</string>
     <string name="reduce_by_format"> Reducir\nby %s</string>
     <string name="increase_by_format"> Incrementar\nby %s</string>
-    <string name="documents_authentication">Acepto que los documentos cargados por mí son verdaderos y correctos. Entiendo que cualquier intento de proporcionar información incorrecta, engañosa o documentos falsos llevará a mi lista negra inmediata desde la plataforma% 1 $ s. La plataforma% 2 $ s se reserva el derecho de llevar el asunto a las autoridades policiales en caso de documentos falsificados.</string>
+    <string name="documents_authentication">Acepto que los documentos cargados por mí son verdaderos y correctos. Entiendo que cualquier intento de proporcionar información incorrecta, engañosa o documentos falsos llevará a mi lista negra inmediata desde la plataforma %1$ s. La plataforma %2$ s se reserva el derecho de llevar el asunto a las autoridades policiales en caso de documentos falsificados.</string>
     <string name="i_agree"> Estoy de acuerdo</string>
     <string name="dont_agree">Estoy en desacuerdo</string>
     <string name="chat_support"> Soporte de chat</string>
