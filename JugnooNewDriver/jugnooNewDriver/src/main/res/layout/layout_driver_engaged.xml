@@ -80,12 +80,12 @@
                 android:visibility="visible"
                 android:background="@color/white_translucent">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewCustomersLinked"
                     android:layout_width="720px"
                     android:layout_height="80px"
                     android:visibility="gone">
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <include
                     android:visibility="gone"

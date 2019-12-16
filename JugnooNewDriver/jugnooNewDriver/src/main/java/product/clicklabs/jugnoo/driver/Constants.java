@@ -197,7 +197,7 @@ public interface Constants {
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
     String ALERT_BATTERY_LOW = "alert_battery_low";
-	String ALERT_CHARGING = "alert_charging";
+	String INTENT_ACTION_CHAT_REFRESH = "INTENT_ACTION_CHAT_REFRESH";
 	String DISMISS_END_DELIVERY_POPUP = "dismiss_end_delivery_popup";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
@@ -564,5 +564,7 @@ public interface Constants {
 	String KEY_ONLY_LONG_RIDES = "only_long_rides";
 	String KEY_TOGGLE_CASH_RIDES = "toggle_cash_rides";
 	String KEY_TOGGLE_LONG_RIDES = "toggle_long_rides";
+	String KEY_PAYLOAD = "payload";
+	String KEY_OPEN_CHAT = "open_chat";
 }
 

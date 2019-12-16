@@ -27,7 +27,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
@@ -376,28 +375,22 @@ public class GCMIntentService extends FirebaseMessagingService {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerChat(Context context, String title, String message, int notificationId,
-												   Class notifClass, Bitmap bitmap) {
+	public static void notificationManagerChat(Context context, String message, int notificationId, String payload) {
 
 		try {
 			long when = System.currentTimeMillis();
 
 			NotificationManager notificationManager = GCMIntentService.getNotificationManager(context, Constants.NOTIF_CHANNEL_DEFAULT);
-			Log.v("message", "," + message);
 
-			Intent notificationIntent = new Intent(context, notifClass);
+			Intent notificationIntent = new Intent(context, PushClickActivity.class);
+			notificationIntent.putExtra(Constants.KEY_PAYLOAD, payload);
 			notificationIntent.putExtra(Constants.KEY_FROM_CHAT_PUSH,Data.getCurrentEngagementId());
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
-			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
-			} else {
-				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
-						.setBigContentTitle(title).setSummaryText(message));
-			}
 			builder.setContentText(message);
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
@@ -413,17 +406,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 
 			Notification notification = builder.build();
-			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl;
-			if (pm != null) {
-				wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-				wl.acquire(WAKELOCK_TIMEOUT);
-			}
-
 			if (notificationManager != null) {
 				notificationManager.notify(notificationId, notification);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -962,16 +947,13 @@ public class GCMIntentService extends FirebaseMessagingService {
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
-								if(Data.contextiii == null || !(Data.contextiii instanceof ChatActivity)){
+								Prefs.with(this).save(Constants.KEY_CHAT_COUNT , Prefs.with(this).getInt(Constants.KEY_CHAT_COUNT, 0) + 1);
+								if(!ChatActivity.isActive){
 									String chatMessage = jObj.getJSONObject("message").optString("chat_message", "");
-									Prefs.with(this).save(Constants.KEY_CHAT_COUNT , Prefs.with(this).getInt(Constants.KEY_CHAT_COUNT, 0) + 1);
-									if(ChatActivity.CHAT_SCREEN_OPEN == null) {
-										notificationManagerChat(this, title, chatMessage, PROMOTION_ID, ChatActivity.class, null);
-									}
-									Intent setChatCount = new Intent(Constants.ALERT_CHARGING);
-									setChatCount.putExtra("type", 1);
-									sendBroadcast(setChatCount);
-								}  // Nothing
+									notificationManagerChat(this, chatMessage, PROMOTION_ID, message);
+								}
+								Intent setChatCount = new Intent(Constants.INTENT_ACTION_CHAT_REFRESH);
+								sendBroadcast(setChatCount);
 
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
@@ -1590,7 +1572,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 			CharSequence name = context.getString(R.string.notification_channel_default);
 			// The user-visible description of the channel.
 			String description = context.getString(R.string.notification_channel_description_default);
-			int importance = NotificationManager.IMPORTANCE_LOW;
+			int importance = NotificationManager.IMPORTANCE_HIGH;
 			NotificationChannel mChannel = new NotificationChannel(channel, name, importance);
 			// Configure the notification channel.
 			mChannel.setDescription(description);
