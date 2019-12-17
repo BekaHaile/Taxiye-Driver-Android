@@ -71,14 +71,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         }
     }
 
-    public Fragment getDriverSetupFragment() {
-        return getSupportFragmentManager().findFragmentByTag(DriverSetupFragment.class.getName());
-    }
 
-    public void vehicleSelected() {
-        setResult(RESULT_OK);
-        finish();
-    }
 
     private void initViews() {
         ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
@@ -96,8 +89,17 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
 
         rvVehicles.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvVehicles.setAdapter(vehicleDetailsAdapter);
+        if(Data.userData.autosAvailable==1){
+            setAddBtnVisibility(View.GONE);
+        }
+        else
+            setAddBtnVisibility(View.VISIBLE);
 
 
+    }
+
+    public void setAddBtnVisibility(int visibility) {
+        ivAddDestRide.setVisibility(visibility);
     }
 
     private void setListeners() {
@@ -118,8 +120,26 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
             @Override
             public void onClick(View v) {
                 onBackPressed();
+
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(getSupportFragmentManager().getFragments().size()==0){
+            setAddBtnVisibility(View.VISIBLE);
+        }
+    }
+
+    public Fragment getDriverSetupFragment() {
+        return getSupportFragmentManager().findFragmentByTag(DriverSetupFragment.class.getName());
+    }
+
+    public void vehicleSelected() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void updateVehicleList() {
@@ -253,6 +273,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     @Override
     public void setToolbarText(@NotNull String title) {
         ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
+        setAddBtnVisibility(View.GONE);
     }
 
     @Override

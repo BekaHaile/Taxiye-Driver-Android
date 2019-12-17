@@ -231,8 +231,10 @@ class VehicleDetailsFragment : Fragment() {
 
         val params = hashMapOf(
                 Constants.KEY_ACCESS_TOKEN to accessToken,
-                "city_id" to cityId,
-                "vehicle_type" to vehicleType)
+                "city_id" to cityId
+//                "vehicle_type" to vehicleType
+        )
+
 
         ApiCommonKt<VehicleDetailsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MAKE_DATA,
                 object : APICommonCallbackKotlin<VehicleDetailsResponse>() {
@@ -288,7 +290,7 @@ class VehicleDetailsFragment : Fragment() {
         val params = hashMapOf(
                 Constants.KEY_ACCESS_TOKEN to accessToken,
                 "city_id" to cityId,
-                "vehicle_type" to vehicleType,
+//                "vehicle_type" to vehicleType,
                 "model_id" to "" + modelRequested.id)
 
         ApiCommonKt<VehicleModelCustomisationsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MODEL_DATA,
@@ -589,7 +591,7 @@ class VehicleDetailsFragment : Fragment() {
                 //vehicle model specific details
                 "vehicle_no" to vehicleNumber,
                 "vehicle_details" to customisationData.toString(),
-                "vehicle_type" to vehicleType,
+//                "vehicle_type" to vehicleType,
                 "vehicle_year" to "" + year)
 
         driverDetails?.let { params.putAll(it) }

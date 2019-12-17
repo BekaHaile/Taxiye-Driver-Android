@@ -2545,10 +2545,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 rlMailSupport.setVisibility(View.GONE);
             }
 
-            if (Prefs.with(HomeActivity.this).getInt(Constants.VEHICLE_DETAILS, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
+            if (Prefs.with(HomeActivity.this).getInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
                 vehiclesDetailRL.setVisibility(View.VISIBLE);
             } else {
-                vehiclesDetailRL.setVisibility(View.VISIBLE);
+                vehiclesDetailRL.setVisibility(View.GONE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU, 0) == 1) {
@@ -3427,7 +3427,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
     private void updateActiveVehicleSideMenu(){
-        if(Data.userData.getActiveVehicle()!=null){
+        if(Data.userData.getActiveVehicle()!=null&&Data.getMultipleVehiclesEnabled()==1){
         tvVehicleName.setVisibility(View.VISIBLE);
         String vehicleName=Data.userData.getActiveVehicle().getModelName().isEmpty()?Data.userData.getActiveVehicle().getVehicleNo():Data.userData.getActiveVehicle().getModelName()+" "+Data.userData.getActiveVehicle().getVehicleNo();
         tvVehicleName.setText(vehicleName);
@@ -3444,7 +3444,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             isTourBtnClicked = false;
             isTourFlag = true;
         }
-        if((Data.userData.getActiveVehicle()==null||Data.userData.getActiveVehicle().getDriverVehicleMappingId()==-1)&&1==jugnooOnFlag){
+        if(Data.getMultipleVehiclesEnabled() == 1&&(Data.userData.getActiveVehicle()==null||Data.userData.getActiveVehicle().getDriverVehicleMappingId()==-1)&&1==jugnooOnFlag){
             Intent intent =new Intent(HomeActivity.this,VehicleDetailsActivity.class);
             intent.putExtra(Constants.OPEN_ACTIVITY_TO_SELECT_VEHICLE,true);
             startActivityForResult(intent,20);
@@ -3497,9 +3497,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                         params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
                         params.put("business_id", "1");
-                        if(Data.getMultipleVehiclesEnabled()==1&&Data.userData.getActiveVehicle()!=null){
-                            params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.userData.getActiveVehicle().getDriverVehicleMappingId()+"");
-                        }
                         HomeUtil.putDefaultParams(params);
                         if (toggleDelivery) {
                             params.put(KEY_DELIVERY_FLAG, "" + jugnooOnFlag);
@@ -3515,8 +3512,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             params.put(KEY_LATITUDE, "" + latLng.latitude);
                             params.put(KEY_LONGITUDE, "" + latLng.longitude);
                         }
-                        if(Data.getMultipleVehiclesEnabled()==1&&Data.userData.autosEnabled==0){
-                            params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+
+                        if (Data.getMultipleVehiclesEnabled() == 1) {
+                            if(Data.userData.getActiveVehicle()!=null&&Data.userData.getActiveVehicle().getDriverVehicleMappingId()!=-1)
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.userData.getActiveVehicle().getDriverVehicleMappingId()+"");
+                            if(Data.getDriverMappingIdOnBoarding()!=-1){
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+                            }
                         }
 
                         Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);

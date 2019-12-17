@@ -112,6 +112,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	int index = 0;
 	int coloum = 0;
 	double latitude, longitude;
+	private boolean showSubmitButton=false;
 
 
 	public DocumentListFragment() {
@@ -129,9 +130,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if(!hidden){
-			activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
-		}
+		activity.setSubmitButtonVisibility(showSubmitButton? View.VISIBLE : View.GONE);
+
 	}
 
 	@Override
@@ -638,7 +638,14 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 					} else if(brandingImagesOnly == 0 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
 						docs.add(docInfo);
 					}
+					if (data.getDocStatus().equals("0")||data.getIsDocInfoEditable()){
+						showSubmitButton=true;
+						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.VISIBLE);
+					}
+					else
+						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.GONE);
 				}
+
 				updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 				userPhoneNo = docRequirementResponse.getuserPhoneNo();
 				checkForDocumentsSubmit();

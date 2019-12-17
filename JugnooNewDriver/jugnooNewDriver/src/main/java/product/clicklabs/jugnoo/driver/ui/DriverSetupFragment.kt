@@ -132,6 +132,25 @@ class DriverSetupFragment : Fragment() {
         else
             multipleVehicleEnabledGroup.visibility=View.GONE
 
+        selectVehicleVisibility()
+    }
+
+    private fun selectVehicleVisibility(){
+
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1){
+            vehicleTypeGroup.visibility=View.GONE
+            tvSelectVehicle.text=resources.getString(R.string.title_dialog_select_city)
+            tvCities.text="city"
+        }
+        else{
+                vehicleTypeGroup.visibility=View.VISIBLE
+                tvSelectVehicle.text=resources.getString(R.string.select_vehicle)
+                tvCities.text=resources.getString(R.string.label_select_city)
+
+        }
+        if(!fromVehicleDetailScreen){
+            selectVehicleGroup.visibility=View.VISIBLE
+        }
     }
 
     private fun showVehicleDetailsView() {
@@ -211,13 +230,14 @@ class DriverSetupFragment : Fragment() {
             return false
         }
         val vehicleNumber = edtVehicleNo.text.toString().trim()
-        if (vehicleNumber.isEmpty()&&Data.getMultipleVehiclesEnabled()==1) {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0
+                && (vehicleNumber.isEmpty() && Data.getMultipleVehiclesEnabled()==1)) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.invalid_vehicle_number))
             return false
         }
 
 
-        if (cityId == null || cityId == "0") {
+        if (!fromVehicleDetailScreen && (cityId == null || cityId == "0")) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.city_unavailable))
             return false
         }
@@ -256,7 +276,7 @@ class DriverSetupFragment : Fragment() {
                 "city" to cityId!!,
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
-                "vehicle_type" to vehicleType,
+//                "vehicle_type" to vehicleType,
                 Constants.KEY_REGION_ID to regionId,
                 "offering_type" to "" + 1,
                 "vehicle_status" to getString(R.string.owned),
@@ -272,6 +292,9 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1){
+            params["vehicle_type"] = vehicleType
+        }
 
         if(Data.getMultipleVehiclesEnabled()==1){
             params["vehicle_no"] = edtVehicleNo.text.toString()

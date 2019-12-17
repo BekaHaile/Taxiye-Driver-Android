@@ -107,7 +107,7 @@ public class DriverVehicleDetails {
 
     public static DriverVehicleDetails parseDocumentVehicleDetails(JSONObject vehObj){
         if(vehObj!=null) {
-            int driverMappingId = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_ID);
+            int driverMappingId = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_ID,-1);
             int driverMappingStatus = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_STATUS);
             String vehicleNo = vehObj.optString(Constants.VEHICLE_NO, "-----");
             String brandName = vehObj.optString(Constants.BRAND, " ");

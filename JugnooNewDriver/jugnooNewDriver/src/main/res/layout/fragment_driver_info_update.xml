@@ -340,6 +340,18 @@
             android:layout_height="match_parent"
             android:visibility="visible"
             app:constraint_referenced_ids="tvEnterName,editTextName,edtLastName,tvSelectFleet,tvFleetSelected,tvPromo,edtPromo"/>
+        <android.support.constraint.Group
+            android:id="@+id/vehicleTypeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvSelectVehicle,tvCities,rvVehicleTypes"/>
+        <android.support.constraint.Group
+            android:id="@+id/selectVehicleGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvSelectVehicle,tvCities"/>
 
         <android.support.constraint.Group
             android:id="@+id/promoGroupView"

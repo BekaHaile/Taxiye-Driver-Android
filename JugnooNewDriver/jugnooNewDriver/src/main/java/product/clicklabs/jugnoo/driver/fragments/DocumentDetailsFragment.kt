@@ -118,8 +118,9 @@ class DocumentDetailsFragment:Fragment(){
         viewHolder!!.run(addViewToParentConstraint(lastEdtId, labelTopMargin, sideMargin))
         lastEdtId = viewHolder!!.id
 
-        listener?.setSubmitButtonVisibility(if(docInfo.listDocFieldsInfo == null || docInfo.listDocFieldsInfo.size == 0) View.GONE else View.VISIBLE)
-
+        listener?.setSubmitButtonVisibility(
+                if(docInfo.status == "0"||docInfo.isEditable==1)
+                    View.VISIBLE else View.GONE)
         if (docInfo.listDocFieldsInfo!=null) {
             for (item in docInfo.listDocFieldsInfo) {
 

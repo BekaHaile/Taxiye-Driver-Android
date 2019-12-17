@@ -242,7 +242,7 @@ public class JSONParser implements Constants {
         }
 		if(userData.has(Constants.ACTIVE_VEHICLE)){
 			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
-			if(vehObj!=null) {
+			if(vehObj.length()>0) {
 				activeVehicle=DriverVehicleDetails.parseDocumentVehicleDetails(vehObj);
 			}
 		}
@@ -1282,7 +1282,7 @@ public class JSONParser implements Constants {
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
-				Constants.VEHICLE_DETAILS
+				Constants.MULTIPLE_VEHICLES_ENABLED
 		);
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

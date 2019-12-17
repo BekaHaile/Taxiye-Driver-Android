@@ -137,7 +137,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="INNOVA PB02 HO3224"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:singleLine="true"
                             android:layout_marginTop="2dp"
                             android:textColor="@color/white"
