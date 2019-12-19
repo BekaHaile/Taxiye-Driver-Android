@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -79,27 +80,31 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         ivAddDestRide = findViewById(R.id.ivAddDestRide);
         backBtn = findViewById(R.id.backBtn);
 
+
         if (openSelectVehicle) {
             vehicleDetailsAdapter = new VehicleDetailsAdapter(this, Data.userData.getDriverVehicleDetailsList(), true);
             backBtn.setVisibility(View.GONE);
-            ivAddDestRide.setVisibility(View.GONE);
+            setAddBtnVisibility(View.GONE);
             ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.select_vehicle);
-        } else
+        } else {
+            if(Data.userData.autosAvailable==1){
+                setAddBtnVisibility(View.GONE);
+            }
+            else
+                setAddBtnVisibility(View.VISIBLE);
             vehicleDetailsAdapter = new VehicleDetailsAdapter(this, Data.userData.getDriverVehicleDetailsList(), false);
-
+        }
         rvVehicles.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvVehicles.setAdapter(vehicleDetailsAdapter);
-        if(Data.userData.autosAvailable==1){
-            setAddBtnVisibility(View.GONE);
-        }
-        else
-            setAddBtnVisibility(View.VISIBLE);
+
 
 
     }
 
     public void setAddBtnVisibility(int visibility) {
         ivAddDestRide.setVisibility(visibility);
+        if(openSelectVehicle)
+            ivAddDestRide.setVisibility(View.GONE);
     }
 
     private void setListeners() {
@@ -129,6 +134,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     public void onBackPressed() {
         super.onBackPressed();
         if(getSupportFragmentManager().getFragments().size()==0){
+            setToolbarText(getString(R.string.your_vehicles));
             setAddBtnVisibility(View.VISIBLE);
         }
     }
@@ -272,7 +278,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
 
     @Override
     public void setToolbarText(@NotNull String title) {
-        ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
+        ((AppCompatTextView) findViewById(R.id.title)).setText(title);
         setAddBtnVisibility(View.GONE);
     }
 
@@ -324,10 +330,16 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
 
     @Override
     public void onBindViewHolder(@NonNull CustomerVh customerVh, int i) {
-        customerVh.tvVehicleName.setText(vehicleDetails.get(i).getVehicleName());
-        customerVh.tvVehicleDetails.setText(vehicleDetails.get(i).getVehicleNo());
-        String status = vehicleDetails.get(i).getDriverVehicleMappingStatus();
-        //show only approved vehicles for selection
+        DriverVehicleDetails vehicle=vehicleDetails.get(i);
+        customerVh.tvVehicleName.setText(vehicle.getVehicleName());
+        customerVh.tvVehicleDetails.setText(vehicle.getVehicleNo());
+        String status = vehicle.getDriverVehicleMappingStatus();
+        if(!vehicle.getReason().equals("")||vehicle.getReason()!=null){
+            customerVh.tvVehicleRejectReason.setVisibility(View.VISIBLE);
+            customerVh.tvVehicleRejectReason.setText(vehicle.getReason());
+        }
+        else
+            customerVh.tvVehicleRejectReason.setVisibility(View.GONE);
 
         if (status.equalsIgnoreCase("approved")) {
             customerVh.tvVehicleStatus.setTextColor(activity.getResources().getColor(R.color.green_btn));
@@ -344,6 +356,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
         if (selectVehicleView) {
             customerVh.ivDelete.setVisibility(View.GONE);
         }
+        customerVh.tvVehicleType.setText(vehicle.getVehicleType());
 
 
     }
@@ -354,16 +367,18 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
     }
 
     class CustomerVh extends RecyclerView.ViewHolder {
-        TextView tvVehicleDetails, tvVehicleStatus, tvVehicleName;
+        TextView tvVehicleDetails, tvVehicleStatus, tvVehicleName,tvVehicleRejectReason,tvVehicleType;
         ImageView profileImg, ivDelete;
         View border,rlRemoveVehicle;
 
         private CustomerVh(@NonNull View itemView) {
             super(itemView);
             tvVehicleDetails = itemView.findViewById(R.id.tvVehicleDetails);
+            tvVehicleType = itemView.findViewById(R.id.tvVehicleType);
             rlRemoveVehicle = itemView.findViewById(R.id.rlRemoveVehicle);
             tvVehicleStatus = itemView.findViewById(R.id.tvVehicleStatus);
             tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
+            tvVehicleRejectReason = itemView.findViewById(R.id.tvVehicleRejectReason);
             profileImg = itemView.findViewById(R.id.profileImg);
             ivDelete = itemView.findViewById(R.id.ivDelete);
             border = itemView.findViewById(R.id.border);

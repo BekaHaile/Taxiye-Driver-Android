@@ -78,7 +78,10 @@ class DriverSetupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        if(!fromVehicleDetailScreen)
+            toolbarChangeListener?.setToolbarText(getString(R.string.register_as_driver))
+        else
+            toolbarChangeListener?.setToolbarText(getString(R.string.title_vehicle_details))
         toolbarChangeListener?.setToolbarVisibility(true)
         return container?.inflate(R.layout.fragment_driver_info_update)
     }

@@ -1099,7 +1099,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				break;
 			}
 		}
-		if(mandatoryDocsSubmitted){
+		if(mandatoryDocsSubmitted&&showSubmitButton){
 			DialogPopup.dialogBanner(activity,
 					activity.getString(R.string.please_press_submit_button), null, 5000,
 					R.color.white, R.color.themeColor);

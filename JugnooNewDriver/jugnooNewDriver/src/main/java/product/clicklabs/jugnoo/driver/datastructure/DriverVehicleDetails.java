@@ -23,6 +23,10 @@ public class DriverVehicleDetails {
     private String image = "";
     @SerializedName(Constants.DRIVER_VEHICLE_MAPPING_ID)
     private int driverVehicleMappingId=-1;
+    @SerializedName("reason")
+    private String rejectReason="";
+    @SerializedName("vehicle_type")
+    private int vehicleType;
 
 
     private String vehicleName;
@@ -43,13 +47,15 @@ public class DriverVehicleDetails {
                                 String modelName,
                                 String vehicleNo,
                                 int driverVehicleMappingId,
-                                int driverVehicleMappingStatus, String image) {
+                                int driverVehicleMappingStatus, String image,String rejectReason,int vehicleType) {
         this.image = image;
         this.vehicleNo = vehicleNo;
         this.driverVehicleMappingId = driverVehicleMappingId;
         this.driverVehicleMappingStatus = driverVehicleMappingStatus;
         this.modelName = modelName;
         this.brandName = brandName;
+        this.rejectReason=rejectReason;
+        this.vehicleType=vehicleType;
     }
 
     public String getModelName() {
@@ -105,6 +111,11 @@ public class DriverVehicleDetails {
         return noOfSeatBelts;
     }
 
+    public String getReason() {
+        return rejectReason;
+    }
+
+
     public static DriverVehicleDetails parseDocumentVehicleDetails(JSONObject vehObj){
         if(vehObj!=null) {
             int driverMappingId = vehObj.optInt(Constants.DRIVER_VEHICLE_MAPPING_ID,-1);
@@ -112,10 +123,31 @@ public class DriverVehicleDetails {
             String vehicleNo = vehObj.optString(Constants.VEHICLE_NO, "-----");
             String brandName = vehObj.optString(Constants.BRAND, " ");
             String modelName = vehObj.optString(Constants.MODEL_NAME, "");
-
+            String rejectReason = vehObj.optString(Constants.REJECT_REASON, "");
+            int vehicletype = vehObj.optInt("vehicle_type");
+            rejectReason=rejectReason.toLowerCase().equals("null")?"":rejectReason;
             String vehicleImage = vehObj.optString(Constants.BRAND, " ") + ", " + vehObj.optString(Constants.KEY_IMAGE, "");
-            return new DriverVehicleDetails(brandName,modelName, vehicleNo, driverMappingId, driverMappingStatus, vehicleImage);
+
+            return new DriverVehicleDetails(brandName,modelName, vehicleNo, driverMappingId, driverMappingStatus, vehicleImage,rejectReason,vehicletype);
         }
         return null;
+    }
+
+    public String getVehicleType() {
+        switch (vehicleType){
+            case 1:
+                return "Autos";
+            case 2:
+                return "Bikes";
+            case 3:
+                return "Taxi";
+            case 4:
+                return "Mini Truck";
+            case 5:
+                return "E-Rickshaw";
+             default:
+                 return "";
+
+        }
     }
 }

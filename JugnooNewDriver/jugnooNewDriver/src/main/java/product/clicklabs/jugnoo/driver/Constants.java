@@ -538,6 +538,7 @@ public interface Constants {
 	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
 	String OPEN_ACTIVITY_TO_SELECT_VEHICLE="open_activity_to_select_vehicle";
 	String ACTIVE_VEHICLE = "active_vehicle";
+	String REJECT_REASON = "reason";
 
 
 
