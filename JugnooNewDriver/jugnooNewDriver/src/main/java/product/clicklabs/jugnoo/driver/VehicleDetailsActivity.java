@@ -101,7 +101,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
 
     }
 
-    public void setAddBtnVisibility(int visibility) {
+    private void setAddBtnVisibility(int visibility) {
         ivAddDestRide.setVisibility(visibility);
         if(openSelectVehicle)
             ivAddDestRide.setVisibility(View.GONE);
@@ -135,7 +135,8 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         super.onBackPressed();
         if(getSupportFragmentManager().getFragments().size()==0){
             setToolbarText(getString(R.string.your_vehicles));
-            setAddBtnVisibility(View.VISIBLE);
+            if(!openSelectVehicle&&Data.userData.autosAvailable!=1)
+                setAddBtnVisibility(View.VISIBLE);
         }
     }
 
@@ -334,7 +335,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
         customerVh.tvVehicleName.setText(vehicle.getVehicleName());
         customerVh.tvVehicleDetails.setText(vehicle.getVehicleNo());
         String status = vehicle.getDriverVehicleMappingStatus();
-        if(!vehicle.getReason().equals("")||vehicle.getReason()!=null){
+        if(vehicle.getDriverVehicleMappingStatus().equalsIgnoreCase("Rejected")){
             customerVh.tvVehicleRejectReason.setVisibility(View.VISIBLE);
             customerVh.tvVehicleRejectReason.setText(vehicle.getReason());
         }

@@ -21,14 +21,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.crashlytics.android.beta.Beta
 import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import kotlinx.android.synthetic.main.fragment_vehicle_model.*
+import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
@@ -37,7 +41,9 @@ import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
+import retrofit.Callback
 import retrofit.RetrofitError
+import retrofit.mime.TypedByteArray
 
 
 class DriverSetupFragment : Fragment() {
@@ -282,7 +288,7 @@ class DriverSetupFragment : Fragment() {
 //                "vehicle_type" to vehicleType,
                 Constants.KEY_REGION_ID to regionId,
                 "offering_type" to "" + 1,
-                "vehicle_status" to getString(R.string.owned),
+                "vehicle_status" to ownershipSpinner.selectedItem.toString(),
                 "device_type" to Data.DEVICE_TYPE,
                 "device_name" to Data.deviceName,
                 "app_version" to "" + Data.appVersion,
@@ -295,7 +301,7 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
-        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1){
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0){
             params["vehicle_type"] = vehicleType
         }
 
@@ -311,14 +317,18 @@ class DriverSetupFragment : Fragment() {
         }
         HomeUtil.putDefaultParams(params)
 
-        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1||fromVehicleDetailScreen) {
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1) {
             if(activity is VehicleDetailsActivity)
             (activity as VehicleDetailsActivity).openVehicleDetails(accessToken, cityId!!,
                     vehicleType, userName, params)
             else
                 (activity as DriverSplashActivity).openVehicleDetails(accessToken, cityId!!,
                         vehicleType, userName, params)
-        } else {
+        }
+        else if(fromVehicleDetailScreen){
+            hitAddVehicle(params)
+        }
+        else {
             ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
                 override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
@@ -560,6 +570,54 @@ class DriverSetupFragment : Fragment() {
 
 
     }
+    fun hitAddVehicle(params: HashMap<String, String>? = null) {
+
+        RestClient.getApiServices().addNewVehicle(params, object : Callback<Any> {
+            override fun success(o: Any, response: retrofit.client.Response) {
+                val responseStr = String((response.body as TypedByteArray).bytes)
+                Log.i(Beta.TAG, "AddNewVehicle response = $responseStr")
+                DialogPopup.dismissLoadingDialog()
+                try {
+                    val jObj = JSONObject(responseStr)
+                    val flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+                    val message = JSONParser.getServerMessage(jObj)
+                    if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                        if (jObj.has(Constants.KEY_DATA)) {
+                            val dataObj = jObj.getJSONObject(Constants.KEY_DATA)
+                            if (dataObj!= null) {
+                                var driverVehicleDetail: DriverVehicleDetails?=null
+
+                                driverVehicleDetail= DriverVehicleDetails.parseDocumentVehicleDetails(dataObj)
+                                Data.userData.driverVehicleDetailsList.add(driverVehicleDetail)
+                                (activity as VehicleDetailsActivity).vehicleAdded(driverVehicleDetail)
+                            }
+
+                        }
+                        else
+                            activity!!.supportFragmentManager.popBackStackImmediate()
+                    }
+                    DialogPopup.alertPopup(activity, "", message)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                DialogPopup.dismissLoadingDialog()
+            }
+
+            override fun failure(error: RetrofitError) {
+                try {
+                    DialogPopup.dismissLoadingDialog()
+                    DialogPopup.alertPopup(activity, "", activity!!.getString(R.string.error_occured_tap_to_retry))
+                } catch (e: Exception) {
+                    DialogPopup.dismissLoadingDialog()
+                    e.printStackTrace()
+                }
+
+                DialogPopup.dismissLoadingDialog()
+            }
+        })
+    }
+
 
     private fun showFleetDialog(supportFragmentManager: FragmentManager) {
         if (citiesList == null || citiesList!!.isEmpty() || citySelected == null) {
