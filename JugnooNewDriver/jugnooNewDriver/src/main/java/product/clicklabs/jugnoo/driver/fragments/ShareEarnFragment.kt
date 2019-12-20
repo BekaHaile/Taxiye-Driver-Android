@@ -102,8 +102,12 @@ class ShareEarnFragment : BaseFragment() {
         buttonShare.setOnClickListener {
             MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN + "_" + FirebaseEvents.SHARE, null)
 
-            if(isWhatsappShareEnabled() && Utils.appInstalledOrNot(activity, "com.whatsapp")){
-                generateBranchUrl()
+            if(isWhatsappShareEnabled()){
+                if(Utils.appInstalledOrNot(activity, "com.whatsapp")) {
+                    generateBranchUrl()
+                } else {
+                    Utils.showToast(requireContext(), getString(R.string.please_install_whatsapp))
+                }
             } else {
                 confirmCustomerNumberPopup(activity)
             }
