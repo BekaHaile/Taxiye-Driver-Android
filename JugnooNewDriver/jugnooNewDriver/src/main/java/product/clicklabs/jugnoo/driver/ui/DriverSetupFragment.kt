@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.ui
 
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -19,13 +20,19 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.DatePicker
 import com.google.firebase.iid.FirebaseInstanceId
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_driver_info_update.*
 import product.clicklabs.jugnoo.driver.*
+import product.clicklabs.jugnoo.driver.Constants.DOB_DATE_FORMAT
 import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
+import product.clicklabs.jugnoo.driver.adapters.DropDownListAdapter
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.Gender
+import product.clicklabs.jugnoo.driver.datastructure.GenderValues
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
@@ -35,9 +42,24 @@ import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class DriverSetupFragment : Fragment() {
+class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+        if(IS_FIRST_ITEM_TITLE && pos != 0 || !IS_FIRST_ITEM_TITLE) {
+            mGender = (parent?.getItemAtPosition(pos) as Gender).type
+        }else{
+            mGender =  null
+        }
+        setCityData(citySelected)
+    }
+
     private var parentActivity: DriverSplashActivity? = null
 
     private lateinit var accessToken: String
@@ -49,6 +71,9 @@ class DriverSetupFragment : Fragment() {
     private var promoCodeFromServer:String? = null
     private val CITIES_DIALOG_FRAGMENT_TAG = "cities_fragment_dialog";
     private val FLEET_DIALOG_FRAGMENT_TAG = "fleet_fragment_dialog";
+    private var mGender : Int? = null
+    private var calendar: Calendar? = null
+
 
     private val adapter by lazy { VehicleTypeSelectionAdapter(requireActivity(), rvVehicleTypes, null) }
 
@@ -60,12 +85,14 @@ class DriverSetupFragment : Fragment() {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
                     }
                 }
+
+        private const val IS_FIRST_ITEM_TITLE = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)
+            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN).toString()
         }
     }
 
@@ -91,10 +118,16 @@ class DriverSetupFragment : Fragment() {
             tvTermsOfUse.typeface = Fonts.mavenRegular(parentActivity!!)
             tvPromo.typeface = Fonts.mavenMedium(parentActivity!!)
             edtPromo.typeface = Fonts.mavenRegular(parentActivity!!)
+            edtDob.typeface = Fonts.mavenRegular(parentActivity!!)
             tvCities.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvGender.typeface = Fonts.mavenRegular(parentActivity!!)
+            tvDob.typeface = Fonts.mavenRegular(parentActivity!!)
 
 
+        calendar = Calendar.getInstance()
+        calendar?.timeInMillis = System.currentTimeMillis()
 
+        setSpinnerListGender()
         bContinue.typeface = Fonts.mavenMedium(requireActivity())
         bContinue.setOnClickListener { if (validateData()) checkForPromoCode() }
         editTextName.setOnEditorActionListener { _, _, _ ->
@@ -113,11 +146,41 @@ class DriverSetupFragment : Fragment() {
             adapter = this@DriverSetupFragment.adapter
         }
 
+        edtDob.setOnClickListener {
+            openDatePicker()
+        }
+
         if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0) {
             tvEnterEmail.text = getString(R.string.email)
         }
         getCitiesAPI()
 
+    }
+
+     private fun openDatePicker() {
+        val date = DatePickerDialog.OnDateSetListener { view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+
+            calendar?.set(Calendar.YEAR, year)
+            calendar?.set(Calendar.MONTH, monthOfYear)
+            calendar?.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateLabel()
+        }
+
+        val datePickerDialog = context?.let { DatePickerDialog(it, R.style.DatePickerDialogTheme, date, calendar!!.get(Calendar.YEAR), calendar!!.get(Calendar.MONTH), calendar!!.get(Calendar.DAY_OF_MONTH)) }
+         if (datePickerDialog != null) {
+             datePickerDialog.datePicker.maxDate = calendar!!.timeInMillis
+             datePickerDialog.datePicker.minDate = System.currentTimeMillis() - (3.154e+12).toLong()
+             datePickerDialog.show()
+         }
+
+     }
+
+    /**
+     * formatting and updating
+     */
+    private fun updateLabel() {
+        edtDob.setText(SimpleDateFormat(DOB_DATE_FORMAT, Locale.ENGLISH)
+                .format(calendar?.getTime()))
     }
 
     private fun setupTermsAndConditionsTextView() {
@@ -171,8 +234,23 @@ class DriverSetupFragment : Fragment() {
             return false
         }
 
+        if (resources.getBoolean(R.bool.last_name_mandatory) && edtLastName.text.trim().toString().isBlank()) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.last_name_required))
+            return false
+        }
+
         if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0 && editTextEmail.text.trim().toString().isBlank()) {
             DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_email))
+            return false
+        }
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 1
+                && mGender == null) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_gender))
+            return false
+        }
+        if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 0) == 1
+                && edtDob.text.toString().isEmpty()) {
+            DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_enter_date_of_birth))
             return false
         }
         if (!editTextEmail.text.trim().toString().isBlank() && !Utils.isEmailValid(editTextEmail.text.trim().toString())) {
@@ -217,13 +295,14 @@ class DriverSetupFragment : Fragment() {
         val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
         var userName = editTextName.text.trim().toString()
         val lastName = edtLastName.text.trim().toString()
+        val dob = edtDob.text.trim().toString()
         if(lastName.isNotEmpty()){
             userName += " $lastName"
         }
 
         val userEmail = editTextEmail.text.trim().toString();
         val params = hashMapOf<String, String>(
-                KEY_ACCESS_TOKEN to accessToken,
+                (KEY_ACCESS_TOKEN to accessToken) as Pair<String, String>,
                 "user_name" to userName ,
                 "updated_user_email" to userEmail,
                 "alt_phone_no" to "",
@@ -246,6 +325,13 @@ class DriverSetupFragment : Fragment() {
                 "unique_device_id" to Data.uniqueDeviceId,
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
+        if(!dob.isEmpty()){
+            params[Constants.KEY_DATE_OF_BIRTH] = dob
+        }
+        if(mGender != null){
+            params[Constants.KEY_GENDER] = mGender!!.toString()
+        }
+
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener{
             if(!it.isSuccessful) {
                 Log.w(TAG,"${SplashNewActivity.DEVICE_TOKEN_TAG} $TAG + driversetupfrag -> registerDriver device_token_unsuccessful",it.exception)
@@ -266,6 +352,8 @@ class DriverSetupFragment : Fragment() {
         if (fleetSelected != null && fleetSelected!!.id > 0) {
             params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
+
+
         HomeUtil.putDefaultParams(params)
         ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
 
@@ -276,8 +364,10 @@ class DriverSetupFragment : Fragment() {
                         ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
 
                             if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1) {
-                                (activity as DriverSplashActivity).openVehicleDetails(accessToken, cityId!!,
-                                        vehicleType, userName)
+                                accessToken?.let {
+                                    (activity as DriverSplashActivity).openVehicleDetails(it, cityId!!,
+                                            vehicleType, userName)
+                                }
                             } else {
                                 openDocumentUploadActivity()
 
@@ -337,6 +427,24 @@ class DriverSetupFragment : Fragment() {
                 })
 
     }
+     private fun setSpinnerListGender() {
+
+         // Spinner Drop down elements
+         val categories = java.util.ArrayList<Gender>()
+         categories.add(Gender(0, getString(R.string.hint_gender)))
+         categories.add(Gender(GenderValues.FEMALE.type, getString(R.string.gender_female)))
+         categories.add(Gender(GenderValues.MALE.type, getString(R.string.gender_male)))
+         categories.add(Gender(GenderValues.OTHER.type, getString(R.string.gender_others)))
+
+//       // Creating adapter for spinner
+         val dataAdapter = DropDownListAdapter(context!!,android.R.layout.simple_spinner_dropdown_item, categories, IS_FIRST_ITEM_TITLE)
+
+//         val spinnerArrayAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, categories)
+         spinnerGender?.adapter = dataAdapter
+         spinnerGender?.onItemSelectedListener = this
+    }
+
+
 
     private fun getCitiesAPI() {
         val params = hashMapOf(
@@ -364,6 +472,22 @@ class DriverSetupFragment : Fragment() {
                 } else {
                     tvEnterEmail.gone()
                     editTextEmail.gone()
+                }
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 1) == 1){
+                    tvGender.visible()
+                    spinnerGender.visible()
+                    tvArrow.visible()
+                } else {
+                    tvGender.gone()
+                    spinnerGender.gone()
+                    tvArrow.gone()
+                }
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_DOB_INPUT, 1) == 1){
+                    tvDob.visible()
+                    edtDob.visible()
+                } else {
+                    tvDob.gone()
+                    edtDob.gone()
                 }
             }
 
@@ -433,8 +557,23 @@ class DriverSetupFragment : Fragment() {
             tvCities.text = city.cityName
             cityId = city.cityId.toString()
             citySelected = city
-            adapter.setList(city.vehicleTypes,0)
-            if(city.vehicleTypes==null || city.vehicleTypes.size==0){
+
+            var list = city.vehicleTypes
+            if(Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 1) {
+                list = mutableListOf<CityResponse.VehicleType>()
+                for (vh in city.vehicleTypes) {
+                    if (mGender == null
+                            || mGender == 0
+                            || vh.applicableGender == 0
+                            || mGender == vh.applicableGender) {
+                        list.add(vh)
+                    }
+                }
+            }
+
+
+            adapter.setList(list,0)
+            if(list==null || list.size==0){
                 rvVehicleTypes.gone()
                 Snackbar.make(view!!,getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
             }else{
@@ -452,6 +591,7 @@ class DriverSetupFragment : Fragment() {
                 fleetGroupView.visibility = View.GONE
                 fleetSelected = null
             }
+            citySelected = city
 
             setPromoLayout(city.showPromo == 1, promoCodeFromServer)
         }else{

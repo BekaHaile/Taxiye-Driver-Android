@@ -42,9 +42,9 @@ import java.util.*
 
 class OTPConfirmFragment : Fragment(){
 
-    private lateinit var countryCode: String
+    private var countryCode: String? = null
     private var missedCallNumber: String? = null
-    private lateinit var phoneNumber: String
+    private var phoneNumber: String? = null
     private var otpDialog: OtpDialog? = null
     private var countDownTimer: CountDownTimer? = null
     private lateinit var toolbarChangeListener: ToolbarChangeListener
@@ -347,6 +347,13 @@ class OTPConfirmFragment : Fragment(){
                         else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
                             Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
                                     if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+                            if(jObj.has(Constants.KEY_LOGIN)) {
+                                Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_DOB_INPUT, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_DOB_INPUT,
+                                        getResources().getInteger(R.integer.driver_dob_input)))
+                                Prefs.with(context).save(Constants.KEY_DRIVER_GENDER_FILTER, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_GENDER_FILTER,
+                                        getResources().getInteger(R.integer.driver_gender_filter)))
+                            }
+
                             val accessToken = jObj.getString("access_token")
                             val reqInactiveDrivers = jObj.optJSONObject(Constants.KEY_LOGIN)?.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                             JSONParser.saveAccessToken(requireActivity(), accessToken)
@@ -395,7 +402,7 @@ class OTPConfirmFragment : Fragment(){
 
         val params = HashMap<String, String>()
         params.put(Constants.KEY_PHONE_NO, countryCode + phoneNumber)
-        params.put(Constants.KEY_COUNTRY_CODE, countryCode)
+        params.put(Constants.KEY_COUNTRY_CODE, countryCode+"")
         params.put(Constants.LOGIN_TYPE, "1")
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNumber)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())

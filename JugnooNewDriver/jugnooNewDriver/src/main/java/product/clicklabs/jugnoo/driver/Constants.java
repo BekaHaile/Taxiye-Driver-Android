@@ -566,5 +566,10 @@ public interface Constants {
 	String KEY_TOGGLE_LONG_RIDES = "toggle_long_rides";
 	String KEY_PAYLOAD = "payload";
 	String KEY_OPEN_CHAT = "open_chat";
+	String DOB_DATE_FORMAT = "yyyy-MM-dd";
+	String KEY_GENDER = "gender";
+	String KEY_DATE_OF_BIRTH = "date_of_birth";
+	String KEY_DRIVER_GENDER_FILTER = "driver_gender_filter";
+	String KEY_DRIVER_DOB_INPUT = "driver_dob_input";
 }
 

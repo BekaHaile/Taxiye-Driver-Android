@@ -460,6 +460,9 @@ public class JSONParser implements Constants {
 		int onlyCashRides = userData.optInt(KEY_ONLY_CASH_RIDES, 0);
 		int onlyLongRides = userData.optInt(KEY_ONLY_LONG_RIDES, 0);
 
+		int gender = userData.optInt(Constants.KEY_GENDER, 0);
+		String dateOfBirth = userData.optString(Constants.KEY_DATE_OF_BIRTH, "");
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -471,7 +474,8 @@ public class JSONParser implements Constants {
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides);
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
+                gender, dateOfBirth);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
@@ -673,6 +677,11 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Prefs.with(context).save(KEY_DRIVER_DOB_INPUT, userData.optInt(KEY_DRIVER_DOB_INPUT,
+				context.getResources().getInteger(R.integer.driver_dob_input)));
+		Prefs.with(context).save(KEY_DRIVER_GENDER_FILTER, userData.optInt(KEY_DRIVER_GENDER_FILTER,
+				context.getResources().getInteger(R.integer.driver_gender_filter)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

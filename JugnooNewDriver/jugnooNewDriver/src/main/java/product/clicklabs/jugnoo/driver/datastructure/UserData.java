@@ -34,6 +34,8 @@ public class UserData {
 	private int resendEmailInvoiceEnabled;
 	private VehicleDetailsLogin vehicleDetailsLogin;
 	private  List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel;
+	private int gender;
+	private String dateOfBirth;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
 	private int subscriptionEnabled;
@@ -52,7 +54,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -76,6 +78,8 @@ public class UserData {
 		this.driverSupportNumber = driverSupportNumber;
 		this.getCreditsInfo = getCreditsInfo;
 		this.getCreditsImage = getCreditsImage;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
 		this.driverOnlineHours = "00:00";
 
 		this.showDriverRating = showDriverRating;
@@ -280,5 +284,35 @@ public class UserData {
 
 	public void setSubscriptionEnabled(int subscriptionEnabled) {
 		this.subscriptionEnabled = subscriptionEnabled;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+	public String getGenderName(Context context) {
+		if(gender == GenderValues.MALE.getType()){
+			return context.getString(R.string.gender_male);
+		} else if(gender == GenderValues.FEMALE.getType()){
+			return context.getString(R.string.gender_female);
+		} else if(gender == GenderValues.OTHER.getType()){
+			return context.getString(R.string.gender_others);
+		} else {
+			return "";
+		}
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+
+	public String getDateOfBirth() {
+		if(dateOfBirth != null && dateOfBirth.equalsIgnoreCase("null")){
+			dateOfBirth = "";
+		}
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 }
