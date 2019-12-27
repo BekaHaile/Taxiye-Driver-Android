@@ -318,6 +318,13 @@ class OTPConfirmFragment : Fragment(){
                                     requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
                                     mListener?.goToHomeScreen()
                                 }
+
+                                if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
+                                    Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                            if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+
+                                    Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
+                                }
                             }
 //                            else if () {
 //                                (parentActivity as DriverSplashActivity)

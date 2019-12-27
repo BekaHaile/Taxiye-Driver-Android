@@ -147,18 +147,15 @@ class DriverSetupFragment : Fragment() {
     private fun selectVehicleVisibility(){
 
         if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1){
-            vehicleTypeGroup.visibility=View.GONE
+            rvVehicleTypes.visibility=View.GONE
             tvSelectVehicle.text=resources.getString(R.string.title_dialog_select_city)
             tvCities.text="city"
         }
         else{
-                vehicleTypeGroup.visibility=View.VISIBLE
-                tvSelectVehicle.text=resources.getString(R.string.select_vehicle)
-                tvCities.text=resources.getString(R.string.label_select_city)
+            rvVehicleTypes.visibility=View.VISIBLE
+            tvSelectVehicle.text=resources.getString(R.string.select_vehicle)
+            tvCities.text=resources.getString(R.string.label_select_city)
 
-        }
-        if(!fromVehicleDetailScreen){
-            selectVehicleGroup.visibility=View.VISIBLE
         }
     }
 
@@ -233,10 +230,11 @@ class DriverSetupFragment : Fragment() {
                 DialogPopup.alertPopup(parentActivity, "", getString(R.string.please_select_fleet))
                 return false
             }
-        }
-        if (adapter.getCurrentSelectedVehicle() == null) {
-            DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
-            return false
+
+            if (adapter.getCurrentSelectedVehicle() == null) {
+                DialogPopup.alertPopup(parentActivity, "", getString(R.string.select_vehicle_type))
+                return false
+            }
         }
         val vehicleNumber = edtVehicleNo.text.toString().trim()
         if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0
@@ -268,8 +266,6 @@ class DriverSetupFragment : Fragment() {
 
     private fun registerDriver(referralCode: String?) {
         Utils.hideSoftKeyboard(parentActivity, editTextName)
-        val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
-        val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
         var userName = editTextName.text.trim().toString()
         val lastName = edtLastName.text.trim().toString()
         if (lastName.isNotEmpty()) {
@@ -286,7 +282,6 @@ class DriverSetupFragment : Fragment() {
                 "latitude" to "" + Data.latitude,
                 "longitude" to "" + Data.longitude,
 //                "vehicle_type" to vehicleType,
-                Constants.KEY_REGION_ID to regionId,
                 "offering_type" to "" + 1,
                 "vehicle_status" to ownershipSpinner.selectedItem.toString(),
                 "device_type" to Data.DEVICE_TYPE,
@@ -302,7 +297,10 @@ class DriverSetupFragment : Fragment() {
                 "device_rooted" to if (Utils.isDeviceRooted()) "1" else "0"
         )
         if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0){
+            val vehicleType = (adapter.getCurrentSelectedVehicle()!!.vehicleType).toString();
+            val regionId = (adapter.getCurrentSelectedVehicle()!!.regionId).toString();
             params["vehicle_type"] = vehicleType
+            params[Constants.KEY_REGION_ID] = regionId
         }
 
         if(Data.getMultipleVehiclesEnabled()==1){
@@ -320,10 +318,10 @@ class DriverSetupFragment : Fragment() {
         if (Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED, 0) == 1) {
             if(activity is VehicleDetailsActivity)
             (activity as VehicleDetailsActivity).openVehicleDetails(accessToken, cityId!!,
-                    vehicleType, userName, params)
+                    "", userName, params)
             else
                 (activity as DriverSplashActivity).openVehicleDetails(accessToken, cityId!!,
-                        vehicleType, userName, params)
+                        "", userName, params)
         }
         else if(fromVehicleDetailScreen){
             hitAddVehicle(params)
@@ -422,16 +420,17 @@ class DriverSetupFragment : Fragment() {
                 promoCodeFromServer = if (t != null) t.promoCode else ""
                 citiesList = t!!.cities
                 setCityData(t.currentCity)
-               if(!fromVehicleDetailScreen)
-                groupView.visible()
-                setupTermsAndConditionsTextView()
-                if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
+                if(!fromVehicleDetailScreen){
+                    groupView.visible()
+                    setupTermsAndConditionsTextView()
+                    if (Prefs.with(requireActivity()).getInt(Constants.KEY_DRIVER_EMAIL_OPTIONAL, 1) == 0
                         || Prefs.with(requireActivity()).getInt(Constants.KEY_EMAIL_INPUT_AT_SIGNUP, 0) == 1&&!fromVehicleDetailScreen) {
                     tvEnterEmail.visible()
                     editTextEmail.visible()
-                } else {
+                    } else {
                     tvEnterEmail.gone()
                     editTextEmail.gone()
+                    }
                 }
             }
 
@@ -498,6 +497,8 @@ class DriverSetupFragment : Fragment() {
     }
 
     private fun setCityData(city: CityResponse.City?) {
+        if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==1)
+            rvVehicleTypes.gone()
         if (city != null) {
             tvCities.text = city.cityName
             cityId = city.cityId.toString()
@@ -507,7 +508,10 @@ class DriverSetupFragment : Fragment() {
                 rvVehicleTypes.gone()
                 Snackbar.make(view!!, getString(R.string.no_vehicles_available), Snackbar.LENGTH_SHORT).show()
             } else {
+                if(Prefs.with(requireActivity()).getInt(Constants.KEY_VEHICLE_MODEL_ENABLED,0)==0)
                 rvVehicleTypes.visible()
+                else
+                    rvVehicleTypes.gone()
             }
             if (city.fleets != null && city.fleets.size > 0&&!fromVehicleDetailScreen) {
                 fleetGroupView.visibility = View.VISIBLE

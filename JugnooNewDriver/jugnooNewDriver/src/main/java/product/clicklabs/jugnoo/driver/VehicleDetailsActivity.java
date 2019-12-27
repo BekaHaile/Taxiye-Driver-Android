@@ -69,6 +69,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
             if(requestCode==1){
                 getSupportFragmentManager().popBackStackImmediate(DriverSetupFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
+            setAddBtnVisibility(View.VISIBLE);
         }
     }
 
@@ -102,8 +103,9 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     }
 
     private void setAddBtnVisibility(int visibility) {
+        if(Data.userData.autosAvailable==0&&!openSelectVehicle)
         ivAddDestRide.setVisibility(visibility);
-        if(openSelectVehicle)
+        else
             ivAddDestRide.setVisibility(View.GONE);
     }
 
@@ -135,7 +137,7 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         super.onBackPressed();
         if(getSupportFragmentManager().getFragments().size()==0){
             setToolbarText(getString(R.string.your_vehicles));
-            if(!openSelectVehicle&&Data.userData.autosAvailable!=1)
+
                 setAddBtnVisibility(View.VISIBLE);
         }
     }
@@ -170,6 +172,11 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
 
     public void vehicleAdded(DriverVehicleDetails driverVehicleDetails){
         hitFetchDriverVehicles();
+        getSupportFragmentManager().popBackStackImmediate(DriverSetupFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        openUploadDocScreen(driverVehicleDetails);
+    }
+
+    public void openUploadDocScreen(DriverVehicleDetails driverVehicleDetails){
         Intent intent =new Intent(this,DriverDocumentActivity.class);
         intent.putExtra(Constants.FROM_VEHICLE_DETAILS_SCREEN,true);
         intent.putExtra(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleDetails.getDriverVehicleMappingId());
@@ -409,7 +416,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
                             border.setBackground(activity.getResources().getDrawable(R.drawable.background_white_rounded_orange_bordered));
 
                         } else
-                            ((VehicleDetailsActivity) activity).vehicleAdded(vehicleDetails.get(getAdapterPosition()));
+                            ((VehicleDetailsActivity) activity).openUploadDocScreen(vehicleDetails.get(getAdapterPosition()));
                     }
                 }
             });

@@ -125,9 +125,13 @@ class VehicleDetailsFragment : Fragment() {
         arguments?.let {
             accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)!!
             cityId = it.getString(ARGS_CITY_ID).toString()
-            vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
             userName = it.getString(ARGS_USER_NAME)!!
             isEditMode = it.getBoolean(ARGS_EDIT_MODE)
+
+            if (it.containsKey(ARGS_VEHICLE_TYPE)) {
+                vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
+            }
+
             if (it.containsKey(ARGS_VEHICLE_DETAIL)) {
                 vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
             }
