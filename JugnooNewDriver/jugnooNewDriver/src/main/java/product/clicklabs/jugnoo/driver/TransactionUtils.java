@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.Manifest;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfoInRideDetails;

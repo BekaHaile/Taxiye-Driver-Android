@@ -23,7 +23,7 @@
             android:id="@+id/backBtn"
             style="@style/BackArrow" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             style="@style/TextTitle"
             android:layout_width="wrap_content"
@@ -32,6 +32,8 @@
             android:gravity="center"
             android:maxHeight="45dp"
             android:textAllCaps="true"
+            android:layout_toStartOf="@id/ivAddDestRide"
+            android:layout_toEndOf="@id/backBtn"
             app:autoSizeTextType="uniform" />
 
         <ImageView
@@ -57,7 +59,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/topRl"
         android:id="@+id/container">
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVehicles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

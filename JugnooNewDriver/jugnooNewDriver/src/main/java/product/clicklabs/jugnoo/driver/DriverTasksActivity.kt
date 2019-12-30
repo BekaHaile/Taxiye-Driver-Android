@@ -3,7 +3,7 @@ package product.clicklabs.jugnoo.driver
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_driver_tasks.*
 import kotlinx.android.synthetic.main.layout_top_bar.*

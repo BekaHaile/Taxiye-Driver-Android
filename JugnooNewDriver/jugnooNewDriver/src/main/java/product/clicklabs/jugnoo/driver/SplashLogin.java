@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.location.Location;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,7 +21,10 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
@@ -263,8 +267,22 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+//		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "splash login", FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken());
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if(!task.isSuccessful()) {
+					Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+					return;
+				}
+				if(task.getResult() != null) {
+					Log.e("DEVICE_TOKEN_TAG SPLASHLOGIN  -> onCreate", task.getResult().getToken());
+					Data.deviceToken = 	task.getResult().getToken();
+				}
 
-		Data.deviceToken = 	FirebaseInstanceId.getInstance().getToken();
+			}
+		});
+
 		Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 
 		try {

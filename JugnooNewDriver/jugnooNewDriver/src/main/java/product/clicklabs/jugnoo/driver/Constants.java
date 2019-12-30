@@ -178,6 +178,7 @@ public interface Constants {
     String SP_START_LATITUDE = "sp_start_latitude";
     String SP_START_LONGITUDE = "sp_start_longitude";
     String KEY_PICKUP_TIME = "pickup_time";
+    String KEY_SCHEDULED_RIDE_PICKUP_TIME = "scheduled_ride_pickup_time";
     String KEY_DRY_DISTANCE = "dry_distance";
     String SHOW_INVOICE_DETAILS = "show_invoice_details";
 //    String SHOW_EDIT_IMAGE_FLAG = "show_edit_image_flag";
@@ -194,7 +195,7 @@ public interface Constants {
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
     String ALERT_BATTERY_LOW = "alert_battery_low";
-	String ALERT_CHARGING = "alert_charging";
+	String INTENT_ACTION_CHAT_REFRESH = "INTENT_ACTION_CHAT_REFRESH";
 	String DISMISS_END_DELIVERY_POPUP = "dismiss_end_delivery_popup";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
@@ -263,6 +264,7 @@ public interface Constants {
 	String EARNINGS_IN_MENU = "earnings_in_menu";
 	String BANK_DETAILS_IN_EDIT_PROFILE = "bank_details_in_edit_profile";
 	String SHOW_PLANS_IN_MENU = "show_plans_in_menu";
+	String DRIVER_PLANS_COMMISSION = "driver_plans_commission";
 	String SHOW_SUPPORT_IN_MENU = "show_support_in_menu";
 	String SELF_AUDIT_BUTTON_STATUS = "self_audit_button_status";
 	String SHOW_CALL_US_MENU = "show_call_us_menu";
@@ -497,6 +499,9 @@ public interface Constants {
 	String KEY_SPECIFIED_COUNTRY_PLACES_SEARCH = "specified_country_places_search";
 	String KEY_DRIVER_WAYPOINT_DISTANCE_RANGE = "driver_waypoint_distance_range";
 	String KEY_DRIVER_RINGTONE_SELECTION_ENABLED = "driver_ringtone_selection_enabled";
+
+	String KEY_LOCATIONS_COORDINATES = "locations_coordinates";
+	String KEY_LOGIN = "login";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
 	String KEY_DRIVER_DIRECTIONS_CACHING = "driver_directions_caching";
 
@@ -544,5 +549,37 @@ public interface Constants {
 
 
 
+
+	String KEY_DRIVER_PLANS_URL = "driver_plans_url";
+
+	String KEY_D2C_WHATSAPP_SHARE = "d2c_whatsapp_share";
+	String KEY_D2C_SHARE_CONTENT = "d2c_share_content";
+	String KEY_D2C_BRANCH_KEY = "d2c_branch_key";
+	String KEY_D2C_BRANCH_SECRET = "d2c_branch_secret";
+	String KEY_D2C_DEFAULT_SHARE_URL = "d2c_default_share_url";
+
+	String KEY_D2D_WHATSAPP_SHARE = "d2d_whatsapp_share";
+	String KEY_D2D_SHARE_CONTENT = "d2d_share_content";
+	String KEY_D2D_BRANCH_KEY = "d2d_branch_key";
+	String KEY_D2D_BRANCH_SECRET = "d2d_branch_secret";
+	String KEY_D2D_DEFAULT_SHARE_URL = "d2d_default_share_url";
+
+	String KEY_D2C_DISPLAY_MESSAGE = "d2c_display_message";
+	String KEY_D2C_REFERRAL_IMAGE = "d2c_referral_image";
+	String KEY_D2D_DISPLAY_MESSAGE = "d2d_display_message";
+	String KEY_D2D_REFERRAL_IMAGE = "d2d_referral_image";
+
+	String KEY_CITY = "city";
+	String KEY_CITY_OBJ = "city_obj";
+
+	String KEY_HOME_BANNER_TEXT = "home_banner_text";
+	String KEY_HOME_BANNER_INDEX = "home_banner_index";
+	String KEY_DRIVER_SUBSCRIPTION = "driver_subscription";
+	String KEY_ONLY_CASH_RIDES = "only_cash_rides";
+	String KEY_ONLY_LONG_RIDES = "only_long_rides";
+	String KEY_TOGGLE_CASH_RIDES = "toggle_cash_rides";
+	String KEY_TOGGLE_LONG_RIDES = "toggle_long_rides";
+	String KEY_PAYLOAD = "payload";
+	String KEY_OPEN_CHAT = "open_chat";
 }
 

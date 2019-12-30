@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -64,7 +63,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
 	TextView tvCountryCode;
 	ImageView profileImg, imageViewTitleBarDEI;
 	CountryPicker countryPicker;
-	private LinearLayout layoutBankDetails;
 	private CardView cvBankLayout;
 	private Button buttonStripe;
 	public static final int REQUEST_CODE_STRIPE_CONNECT_EXPRESS = 0x23;
@@ -84,7 +82,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
         stripeStatus = Prefs.with(EditDriverProfile.this).getInt(Constants.STRIPE_ACCOUNT_STATUS, 0);
 		canEditName = Prefs.with(EditDriverProfile.this).getInt(Constants.KEY_USERNAME_EDITABLE_IN_PROFILE, 0)==1;
 		canEditEmail = Prefs.with(this).getInt(Constants.KEY_EMAIL_EDITABLE_IN_PROFILE, 0) == 1;
-		layoutBankDetails= (LinearLayout) findViewById(R.id.layout_bank_details);
 		buttonStripe= (Button) findViewById(R.id.button_stripe);
 		relative = (RelativeLayout) findViewById(R.id.activity_profile_screen);
 
@@ -119,11 +116,6 @@ public class EditDriverProfile extends BaseFragmentActivity {
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
 
 		cvBankLayout = (CardView) findViewById(R.id.cvBankLayout);
-		if(Prefs.with(this).getInt(Constants.BANK_DETAILS_IN_EDIT_PROFILE, 1) == 1){
-			cvBankLayout.setVisibility(View.VISIBLE);
-		} else {
-			cvBankLayout.setVisibility(View.GONE);
-		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -149,26 +141,28 @@ public class EditDriverProfile extends BaseFragmentActivity {
 				countryPicker.showDialog(getSupportFragmentManager());
 			}
 		});
-		buttonStripe.setVisibility(View.GONE);
+
+
+		if(Prefs.with(this).getInt(Constants.BANK_DETAILS_IN_EDIT_PROFILE, 1) == 1){
+			cvBankLayout.setVisibility(View.VISIBLE);
+		} else {
+			cvBankLayout.setVisibility(View.GONE);
+		}
+
 		if(DriverProfileActivity.openedProfileInfo != null){
+			tvAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
+			textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
+			textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
+			textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
 
-			if(stripeStatus== StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
+		}
+		buttonStripe.setVisibility(View.GONE);
+		if(stripeStatus== StripeUtils.STRIPE_EXPRESS_ACCOUNT_AVAILABLE || stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED
 				|| stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_AVAILABLE || stripeStatus == StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
-//				accountDetailsLayout.setVisibility(View.VISIBLE);
-				buttonStripe.setVisibility(View.VISIBLE);
-				layoutBankDetails.setVisibility(View.GONE);
-				if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED || stripeStatus ==StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
-					buttonStripe.setText(getString(R.string.login_with_stripe));
-				}
-
-
-			}else{
-				tvAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
-				textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
-				textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
-				textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
+			buttonStripe.setVisibility(View.VISIBLE);
+			if(stripeStatus==StripeUtils.STRIPE_EXPRESS_ACCOUNT_CONNECTED || stripeStatus ==StripeUtils.STRIPE_STANDARD_ACCOUNT_CONNECTED){
+				buttonStripe.setText(getString(R.string.login_with_stripe));
 			}
-
 		}
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {

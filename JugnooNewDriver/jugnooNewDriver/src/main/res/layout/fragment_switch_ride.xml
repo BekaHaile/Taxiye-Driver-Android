@@ -91,7 +91,7 @@
             android:layout_marginStart="72px"/>
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCustomer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -99,7 +99,7 @@
             android:layout_above="@+id/textViewPoolEnd"
             android:layout_marginStart="28px"
             android:splitMotionEvents="false">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/textViewPoolEnd"

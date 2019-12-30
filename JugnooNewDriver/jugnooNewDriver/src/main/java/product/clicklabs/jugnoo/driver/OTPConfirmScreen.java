@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,10 +27,12 @@ import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
@@ -300,7 +302,21 @@ public class OTPConfirmScreen extends BaseActivity implements CustomCountDownTim
         }
 
         OTP_SCREEN_OPEN = "yes";
-        Data.deviceToken  =  FirebaseInstanceId.getInstance().getToken();
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(!task.isSuccessful()) {
+                    Log.w("otp confirm screen","device_token_unsuccessful - onReceive",task.getException());
+                    return;
+                }
+                if(task.getResult() != null) {
+                    Log.e("DEVICE_TOKEN_TAG otp confirm screen  ", task.getResult().getToken());
+                    Data.deviceToken  =  task.getResult().getToken();
+                }
+
+            }
+        });
+
         startSMSListener();
 
     }

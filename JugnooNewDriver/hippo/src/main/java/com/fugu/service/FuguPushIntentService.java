@@ -3,7 +3,7 @@ package com.fugu.service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.core.content.LocalBroadcastManager;
 
 import com.fugu.HippoConfig;
 import com.fugu.HippoNotificationConfig;

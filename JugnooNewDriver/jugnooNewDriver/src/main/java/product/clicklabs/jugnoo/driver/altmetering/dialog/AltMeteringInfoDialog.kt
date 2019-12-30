@@ -2,7 +2,7 @@ package product.clicklabs.jugnoo.driver.altmetering.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.support.constraint.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.view.WindowManager

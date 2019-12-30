@@ -30,24 +30,24 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.util.Pair;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.core.util.Pair;
+import androidx.core.view.GravityCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -192,12 +192,13 @@ import product.clicklabs.jugnoo.driver.fragments.BidInteractionListener;
 import product.clicklabs.jugnoo.driver.fragments.BidRequestFragment;
 import product.clicklabs.jugnoo.driver.fragments.DriverEarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
-import product.clicklabs.jugnoo.driver.google.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsActivity;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.EnterTollDialog;
+import product.clicklabs.jugnoo.driver.home.HomeBannerAction;
+import product.clicklabs.jugnoo.driver.home.PushClickAction;
 import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
@@ -288,23 +289,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
     ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
-    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, driverCreditsRl, manaulRequestRl, walletRl;
     LinearLayout driverRatingRl;
-    TextView inviteFriendText, notificationCenterText;
+    TextView inviteFriendText;
 
-    RelativeLayout bookingsRl, rlNotificationCenter, etaTimerRLayout;
-    TextView bookingsText, etaTimerText;
+    RelativeLayout rlNotificationCenter, etaTimerRLayout;
+    TextView etaTimerText;
 
     RelativeLayout relativeLayoutSharingRides;
 
-    RelativeLayout fareDetailsRl;
-    TextView fareDetailsText, textViewDestination;
+    TextView textViewDestination;
     RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-    RelativeLayout callUsRl, termsConditionRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
-            relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain,
+    RelativeLayout callUsRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
+            relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain, rlPlansNew,
             rlSupportTicket, rlMailSupport,vehiclesDetailRL;
-    TextView callUsText, tvGetSupport, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
+    TextView callUsText, tvGetSupport, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
 
     RelativeLayout paytmRechargeRl, paymentsRl;
@@ -439,7 +439,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     public DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-    public DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+    public static DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     public DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
     private CustomerRideData customerRideDataGlobal = new CustomerRideData();
@@ -567,7 +567,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private PagerAdapter pagerAdapter;
 
-    private TextView tvIntro;
+    private TextView tvTutorialBanner;
     private ImageView ivRingtoneSelection;
     private Dialog ringtoneDialog;
 
@@ -669,15 +669,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             inviteFriendText.setText(getStringText(R.string.invite_earn));
 
-            notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
-            notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
-            notificationCenterText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-            notificationCenterText.setText(getResources().getString(R.string.Notifications));
 
-            bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
             rlNotificationCenter = (RelativeLayout) findViewById(R.id.rlNotificationCenter);
-            bookingsText = (TextView) findViewById(R.id.bookingsText);
-            bookingsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             etaTimerRLayout = (RelativeLayout) findViewById(R.id.etaTimerRLayout);
             etaTimerText = (TextView) findViewById(R.id.ETATimerText);
@@ -688,10 +681,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
             ((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Fonts.mavenRegular(this));
 
-            fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
             driverImageRL = (RelativeLayout) findViewById(R.id.driverImageRL);
-            fareDetailsText = (TextView) findViewById(R.id.fareDetailsText);
-            fareDetailsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
             textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
@@ -720,6 +710,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
+            rlPlansNew = findViewById(R.id.rlPlansNew);
 
             ((TextView) findViewById(R.id.textViewPlans)).setTypeface(Fonts.mavenRegular(this));
             ((TextView) findViewById(R.id.textViewSupportMain)).setTypeface(Fonts.mavenRegular(this));
@@ -759,9 +750,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             textViewRateCard.setText(getResources().getText(R.string.rate_card));
 
 
-            termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
-            termsConditionText = (TextView) findViewById(R.id.termsConditionText);
-            termsConditionText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
             paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
@@ -932,7 +920,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tvPickupTime.setTypeface(Fonts.mavenRegular(this));
             bDropAddressToggle = (Button) findViewById(R.id.bDropAddressToggle);
             bDropAddressToggle.setTypeface(Fonts.mavenRegular(this));
-			tvIntro = findViewById(R.id.tvTutorialBanner);
+			tvTutorialBanner = findViewById(R.id.tvTutorialBanner);
 
 
             //In ride layout
@@ -1407,8 +1395,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, StripeCardsActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openWalletActivity();
 
                 }
             });
@@ -1433,28 +1420,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, DriverCreditsActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
-
+					openDriverCreditsActivity(0);
                 }
             });
             manaulRequestRl.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                    startActivity(new Intent(HomeActivity.this, ManualRideActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                    openManualRequestActivity();
 
                 }
             });
 
-            notificationCenterRl.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
-                }
-            });
 
             rlNotificationCenter.setOnClickListener(new OnClickListener() {
                 @Override
@@ -1481,40 +1458,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-			tvIntro.setOnClickListener(new OnClickListener() {
+			tvTutorialBanner.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					ArrayList<PagerInfo> pagerInfos = new ArrayList<>();
-//					pagerInfos.add(new PagerInfo("", ",We will be having Town hall in the conference room, Ground floor @ 6:00 PM , Monday 19th Aug. \n" +
-//							"Please do post your queries in the Town hall Query Form", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_MiwK8FuWxhk2"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_4HcN7r2cyPz1"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_4VrRAIUP0IhM"));
-//					pagerInfos.add(new PagerInfo("", "", "https://jugnoo-menus.s3-ap-south-1.amazonaws.com/images/item_image_ubBqYiGfE9BP"));
-
-					LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
-					if(myLocation != null){
-						latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+					int homeBannerIndex = Prefs.with(HomeActivity.this).getInt(KEY_HOME_BANNER_INDEX, 0);
+					if(homeBannerIndex > 0){
+						HomeBannerAction.performBannerClick(HomeActivity.this, homeBannerIndex);
+					} else {
+						TutorialInfoDialog.INSTANCE.showAddToll(HomeActivity.this, getCurrentLatLng());
 					}
-					TutorialInfoDialog.INSTANCE.showAddToll(HomeActivity.this, latLng);
 				}
 			});
 
-            fareDetailsRl.setVisibility(View.GONE);
-            fareDetailsRl.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    sendToFareDetails();
-                    FlurryEventLogger.event(FARE_DETAILS_CHECKED);
-                }
-            });
 
             relativeLayoutSuperDrivers.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openLeaderboardActivity();
                     FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
                 }
             });
@@ -1576,7 +1537,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             rlSupportMain.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, SupportOptionsActivity.class));
+					openSupportOptionsActivity();
                 }
             });
             rlMailSupport.setOnClickListener(new OnClickListener() {
@@ -1620,27 +1581,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
+            rlPlansNew.setOnClickListener(v -> {
+            	openPlansThroughWebview();
+            });
+
 
             relativeLayoutDocs.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
-                    startActivityForResult(intent, 14);
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openDriverResourcesActivity();
                 }
             });
             tvDriverTasks.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(Data.userData != null) {
-                        Intent intent = new Intent(HomeActivity.this, DriverTasksActivity.class);
-                        intent.putExtra("access_token", Data.userData.accessToken);
-                        intent.putExtra("in_side", true);
-                        intent.putExtra("doc_required", 0);
-                        intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.right_in, R.anim.right_out);
-                    }
+					openTasksActivity(HomeActivity.this);
                 }
             });
 
@@ -1676,26 +1631,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             earningsRL.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, IncomeDetailsActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openIncomeDetailsActivity();
                 }
             });
 
             relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
-
+					openRateCardActivity(false);
                 }
             });
 
 			relativeLayoutRateCardNew.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class)
-							.putExtra(Constants.KEY_HTML_RATE_CARD, true));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openRateCardActivity(true);
 
                 }
             });
@@ -1707,14 +1657,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-            termsConditionRl.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, HelpActivity.class));
-                    FlurryEventLogger.event(TERMS_OF_USE);
-                }
-            });
 
             paytmRechargeRl.setOnClickListener(new OnClickListener() {
                 @Override
@@ -1726,16 +1668,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             });
 
-//		Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
-//		startActivity(intent);
 
             languagePrefrencesRl.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
-                    currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openLanguagePreferenceActivity();
                 }
             });
 
@@ -1744,21 +1682,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, PaymentActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					openPaymentActivity();
                     FlurryEventLogger.event(RIDES_OPENED);
                 }
             });
 
-            bookingsRl.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(HomeActivity.this, DriverHistoryActivity.class));
-                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
-                    FlurryEventLogger.event(RIDES_OPENED);
-                }
-            });
 
             relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
                 @Override
@@ -2449,7 +2377,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             HomeActivity.this.registerReceiver(broadcastReceiver, intentFilter);
             HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
             HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
-            HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
+            HomeActivity.this.registerReceiver(broadcastReceiverChatCount, new IntentFilter(Constants.INTENT_ACTION_CHAT_REFRESH));
             HomeActivity.this.registerReceiver(broadcastReceiverCancelEndDeliveryPopup, new IntentFilter(Constants.DISMISS_END_DELIVERY_POPUP));
 
             new Handler().postDelayed(new Runnable() {
@@ -2555,6 +2483,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 relativeLayoutPlans.setVisibility(View.VISIBLE);
             } else {
                 relativeLayoutPlans.setVisibility(View.GONE);
+            }
+            if (Prefs.with(HomeActivity.this).getInt(Constants.DRIVER_PLANS_COMMISSION, 0) == 1) {
+                rlPlansNew.setVisibility(View.VISIBLE);
+            } else {
+                rlPlansNew.setVisibility(View.GONE);
             }
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_RATE_CARD_IN_MENU, 0) == 1) {
@@ -2681,12 +2614,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         offlineRequests = new ArrayList<>();
 
         offlineRequestsAdapter = new OfflineRequestsAdapter(offlineRequests, activity,
-                R.layout.list_item_requests, 0, new OfflineRequestsAdapter.Callback() {
+                R.layout.list_item_requests, 0, false, new OfflineRequestsAdapter.Callback() {
             @Override
             public void onShowMoreClick() {
 //                getNotificationInboxApi(false);
             }
-        },this);
+        }, HomeActivity.this);
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
     }
 
@@ -2741,19 +2674,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     };
 
-    BroadcastReceiver broadcastReceiverIsCharging = new BroadcastReceiver() {
+    BroadcastReceiver broadcastReceiverChatCount = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
             HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    int flag = intent.getIntExtra("type", -1);
-                    if (flag == 1) {
-                        tvChatCount.setVisibility(View.VISIBLE);
-                        tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1)));
-                    } else {
-                        showLowBatteryAlert(false);
-                    }
+                	int count = Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1);
+                	tvChatCount.setVisibility(count > 0 ? View.VISIBLE : View.GONE);
+                	tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1)));
                 }
             });
         }
@@ -2829,8 +2758,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
             FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
         } else if (infoTileResponse.getDeepIndex() == 5) {
-            Intent intent = new Intent(HomeActivity.this, EarningsActivity.class);
-            HomeActivity.this.startActivity(intent);
+			openEarningsActivity();
             HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
             firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);
             FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_EARNINGS);
@@ -3532,6 +3460,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 Data.userData.setActiveVehicle(DriverVehicleDetails.parseDocumentVehicleDetails(jObj.optJSONObject(Constants.ACTIVE_VEHICLE)));
                             }
                             if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
                                 int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
                                 if (menuOptionVisibility == 1) {
                                     Data.userData.setDeliveryAvailable(jugnooOnFlag);
@@ -3971,7 +3900,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             boolean showOfflineRequests = Prefs.with(HomeActivity.this).getInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0) == 1;
             if(showOfflineRequests){
 
-                getTractionRides(true);
+                if(Data.userData != null){getTractionRides(true);}
                 if(handler != null) {
                     handler.postDelayed(this, Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_TRACTION_API_INTERVAL, 20000));
                 }
@@ -4511,7 +4440,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     startMarker.remove();
                 }
             }
-			tvIntro.setVisibility(View.GONE);
+			tvTutorialBanner.setVisibility(View.GONE);
 
             switch (mode) {
 
@@ -4593,9 +4522,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     }
                     disableEmergencyModeIfNeeded(Data.getCurrentEngagementId());
                     containerSwitch.post(this::changeOnOFFStateTop);
-                    String tutorialBannerText = Prefs.with(this).getString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, "");
-					tvIntro.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
-					tvIntro.setText(tutorialBannerText);
+					bannerDisplay();
 
 					ivRingtoneSelection.setVisibility(Prefs.with(this).getInt(Constants.KEY_DRIVER_RINGTONE_SELECTION_ENABLED, 0) == 1 ? View.VISIBLE:View.GONE);
 
@@ -4877,8 +4804,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                     .getDistance(HomeActivity.this), HomeActivity.this, false),
                             rideTimeChronometer.eclipsedTime,
                             waitTime);
-                    int vis = Data.fareStructure != null && Data.fareStructure.mandatoryFare > 0
-                            && Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1 ? View.GONE:View.VISIBLE;
+                    int vis = Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 1 ? View.GONE:View.VISIBLE;
                     findViewById(R.id.driverIRDistanceRl).setVisibility(vis);
                     findViewById(R.id.driverRideTimeRl).setVisibility(vis);
                     findViewById(R.id.ivWaitInRideDiv).setVisibility(findViewById(R.id.driverRideTimeRl).getVisibility());
@@ -5288,6 +5214,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     private void updateDropLatngForAltService(CustomerInfo customerInfo){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+				&& customerInfo != null
 				&& customerInfo.getDropLatLng() != null
 				&& isAltMeteringEnabledForDriver(HomeActivity.this)) {
 			Intent intent = getAltServiceIntent(customerInfo);
@@ -5497,6 +5424,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
+
+		PushClickAction.INSTANCE.performAction(this);
     }
 
 
@@ -5628,7 +5557,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             unregisterReceiver(broadcastReceiver);
             unregisterReceiver(broadcastReceiverUSL);
             unregisterReceiver(broadcastReceiverLowBattery);
-            unregisterReceiver(broadcastReceiverIsCharging);
+            unregisterReceiver(broadcastReceiverChatCount);
             unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 
         } catch (Exception e) {
@@ -7732,8 +7661,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (customerInfo.couponInfo != null) {        // coupon
                 if (CouponType.DROP_BASED.getOrdinal() == customerInfo.couponInfo.couponType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.couponInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.couponInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.couponInfo.getLocationsCoordinates(),
+							customerInfo.couponInfo.dropRadius, customerInfo.couponInfo.droplLatLng, dropLatLng);
+					if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculateCouponDiscount(totalFare, customerInfo.couponInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7743,8 +7673,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 }
             } else if (customerInfo.promoInfo != null) {        // promotion
                 if (PromotionType.DROP_BASED.getOrdinal() == customerInfo.promoInfo.promoType) {
-                    double distanceFromDrop = MapUtils.distance(dropLatLng, customerInfo.promoInfo.droplLatLng);
-                    if (distanceFromDrop <= customerInfo.promoInfo.dropRadius) {                                     // drop condition satisfied
+					boolean discountApplicable = isDropDiscountApplicable(customerInfo.promoInfo.getLocationsCoordinates(),
+							customerInfo.promoInfo.dropRadius, customerInfo.promoInfo.droplLatLng, dropLatLng);
+                    if (discountApplicable) {                                     // drop condition satisfied
                         finalDiscount = calculatePromoDiscount(totalFare, customerInfo.promoInfo);
                     } else {
                         finalDiscount = 0D;
@@ -7877,7 +7808,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
-    private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
+	private boolean isDropDiscountApplicable(ArrayList<LatLng> locationCoordinates, double dropRadius, LatLng discountDropLatLng, LatLng driverDropLatLng) {
+		boolean discountApplicable = false;
+		if(locationCoordinates != null && locationCoordinates.size() > 0) {
+			for (LatLng latLng : locationCoordinates){
+				if(MapUtils.distance(driverDropLatLng, latLng) <= dropRadius){
+					discountApplicable = true;
+					break;
+				}
+			}
+		} else {
+			discountApplicable = MapUtils.distance(driverDropLatLng, discountDropLatLng) <= dropRadius;
+		}
+		return discountApplicable;
+	}
+
+	private int getInvalidPool(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, int invalidPool) {
         try {
             if (customerInfo.getPoolFare() != null && customerInfo.getIsPooled() == 1) {
                 LatLng poolDropLatLng = customerInfo.dropLatLng;
@@ -12371,4 +12317,106 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     public void rejectCLick(@NotNull CustomerInfo customerInfo) {
         rejectRequestFuncCall(customerInfo);
     }
+
+	private void bannerDisplay() {
+    	String homeBannerText = Prefs.with(this).getString(KEY_HOME_BANNER_TEXT, "");
+    	if(!TextUtils.isEmpty(homeBannerText)){
+			tvTutorialBanner.setVisibility(View.VISIBLE);
+			tvTutorialBanner.setText(homeBannerText);
+		} else {
+			String tutorialBannerText = Prefs.with(this).getString(KEY_DRIVER_TUTORIAL_BANNER_TEXT, "");
+			tvTutorialBanner.setVisibility(TextUtils.isEmpty(tutorialBannerText) ? View.GONE : View.VISIBLE);
+			tvTutorialBanner.setText(tutorialBannerText);
+		}
+	}
+
+	public LatLng getCurrentLatLng(){
+		LatLng latLng = new LatLng(LocationFetcher.getSavedLatFromSP(HomeActivity.this), LocationFetcher.getSavedLngFromSP(HomeActivity.this));
+		if(myLocation != null){
+			latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+		}
+		return latLng;
+	}
+
+	public void openPlansThroughWebview(){
+		String url = Prefs.with(HomeActivity.this).getString(KEY_DRIVER_PLANS_URL, getString(R.string.driver_plans_url));
+		if(Data.userData != null && Data.userData.userId != null) {
+			Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+			intent.putExtra("title", getString(R.string.plans_drawer_title));
+			intent.putExtra("extras", url);
+			intent.putExtra("driverId", Data.userData.userId);
+			startActivity(intent);
+			overridePendingTransition(R.anim.right_in, R.anim.right_out);
+		}
+	}
+
+	public void openDriverCreditsActivity(int index){
+		startActivity(DriverCreditsActivity.createIntent(HomeActivity.this, index));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openManualRequestActivity(){
+		drawerLayout.closeDrawer(GravityCompat.START);
+		startActivity(new Intent(HomeActivity.this, ManualRideActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openIncomeDetailsActivity(){
+		startActivity(new Intent(HomeActivity.this, IncomeDetailsActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openEarningsActivity(){
+		startActivity(new Intent(HomeActivity.this, EarningsActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openPaymentActivity(){
+		startActivity(new Intent(HomeActivity.this, PaymentActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openWalletActivity(){
+		startActivity(new Intent(HomeActivity.this, StripeCardsActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openLeaderboardActivity(){
+		startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public static void openTasksActivity(Activity context){
+    	if(Data.userData != null) {
+			Intent intent = new Intent(context, DriverTasksActivity.class);
+			intent.putExtra("access_token", Data.userData.accessToken);
+			intent.putExtra("in_side", true);
+			intent.putExtra("doc_required", 0);
+			intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
+			context.startActivity(intent);
+			context.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+		}
+	}
+
+	public void openSupportOptionsActivity(){
+		startActivity(new Intent(HomeActivity.this, SupportOptionsActivity.class));
+	}
+
+	public void openDriverResourcesActivity(){
+		Intent intent = new Intent(HomeActivity.this, DriverResourceActivity.class);
+		startActivityForResult(intent, 14);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openRateCardActivity(boolean isHtml){
+		startActivity(new Intent(HomeActivity.this, NewRateCardActivity.class)
+				.putExtra(Constants.KEY_HTML_RATE_CARD, isHtml));
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+	public void openLanguagePreferenceActivity(){
+		startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
+		currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
 }

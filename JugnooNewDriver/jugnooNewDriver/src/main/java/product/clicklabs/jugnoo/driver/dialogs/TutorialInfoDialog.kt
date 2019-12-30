@@ -2,8 +2,8 @@ package product.clicklabs.jugnoo.driver.dialogs
 
 import android.app.Activity
 import android.app.Dialog
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -19,6 +18,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import androidx.core.app.NotificationCompat;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -141,11 +141,14 @@ public class MeteringService extends Service {
 							DriverScreenMode.D_INITIAL.getOrdinal());
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
-							String message = context.getResources().getString(R.string.total_distance)
-									+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context, false)) +" "
-									+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
-									+ "\n" + context.getResources().getString(R.string.ride_time)
-									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
+							String message = context.getString(R.string.metering_service_notif_label);
+							if(Prefs.with(context).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 0){
+								message = context.getResources().getString(R.string.total_distance)
+										+ " = " + getDecimalFormat().format(Math.abs(distance) * UserData.getDistanceUnitFactor(context, false)) +" "
+										+ Utils.getDistanceUnit(UserData.getDistanceUnit(context)) + " "
+										+ "\n" + context.getResources().getString(R.string.ride_time)
+										+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
+							}
 							generateNotification(context, message,METER_NOTIF_ID);
 						}
 						if (HomeActivity.appInterruptHandler != null) {

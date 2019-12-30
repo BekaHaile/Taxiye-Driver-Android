@@ -79,13 +79,7 @@ public class DriverResourceActivity extends BaseFragmentActivity {
 //				intent.putExtra("in_side", true);
 //				intent.putExtra("doc_required", 0);
 //				intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
-				Intent intent = new Intent(DriverResourceActivity.this, DriverTasksActivity.class);
-				intent.putExtra("access_token",Data.userData.accessToken);
-				intent.putExtra("in_side", true);
-				intent.putExtra("doc_required", 0);
-				intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
-				startActivity(intent);
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				HomeActivity.openTasksActivity(DriverResourceActivity.this);
 			}
 		});
 

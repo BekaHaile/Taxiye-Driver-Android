@@ -1,19 +1,14 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.view.View;
 import android.widget.TextView;
 
-import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 
 /**

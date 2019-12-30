@@ -5,10 +5,10 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -31,7 +30,6 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.listeners.DirectionsGestureListener;
 import product.clicklabs.jugnoo.driver.utils.FeedUtils;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class DialogReviewImagesFragment extends DialogFragment {
 

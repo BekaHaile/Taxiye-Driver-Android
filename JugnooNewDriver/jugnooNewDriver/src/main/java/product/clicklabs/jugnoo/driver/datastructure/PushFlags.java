@@ -47,4 +47,7 @@ public enum PushFlags {
 	public int getOrdinal() {
 		return ordinal;
 	}
+	public int getKOrdinal() {
+		return ordinal;
+	}
 }

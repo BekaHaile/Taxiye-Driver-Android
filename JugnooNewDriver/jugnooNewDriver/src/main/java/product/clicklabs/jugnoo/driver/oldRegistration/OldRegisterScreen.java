@@ -14,13 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
@@ -314,7 +318,20 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		Data.deviceToken = 	FirebaseInstanceId.getInstance().getToken();
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if(!task.isSuccessful()) {
+					Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+					return;
+				}
+				if(task.getResult() != null) {
+					Log.e("DEVICE_TOKEN_TAG SPLASHLOGIN  -> onCreate", task.getResult().getToken());
+					Data.deviceToken = 	task.getResult().getToken();
+				}
+
+			}
+		});
 
 		
 //		nameEt.setText("Test");

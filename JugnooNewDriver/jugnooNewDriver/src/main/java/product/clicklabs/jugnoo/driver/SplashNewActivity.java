@@ -22,8 +22,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -57,7 +58,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -856,25 +860,54 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			handler.removeCallbacksAndMessages(null);
 		}
 
-		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "getDeviceToken() " +  FirebaseInstanceId.getInstance().getToken());
+//		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "getDeviceToken() " +  FirebaseInstanceId.getInstance().getToken());
 
-		if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getToken())){
-			Data.deviceToken = FirebaseInstanceId.getInstance().getToken();
-			Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			checkForTokens();
-		}else {
-			//wait for broadcast
-			try {
-				LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
-			} catch (Exception e) {
-				e.printStackTrace();
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if(!task.isSuccessful()) {
+					Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+					return;
+				}
+				if(task.getResult() != null) {
+					Log.e("DEVICE_TOKEN_TAG SPLASH_NEW_ACTIVITY  -> getDeviceToken", task.getResult().getToken());
+					if(!TextUtils.isEmpty(task.getResult().getToken())){
+						Data.deviceToken = task.getResult().getToken();
+						Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+						checkForTokens();
+					}else {
+						//wait for broadcast
+						try {
+							LocalBroadcastManager.getInstance(SplashNewActivity.this).unregisterReceiver(deviceTokenReceiver);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						LocalBroadcastManager.getInstance(SplashNewActivity.this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+						//give message after waiting for 5 Seconds
+						handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
+					}
+				}
+
 			}
-			try{LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());}catch(Exception ignored){}
-			//give message after waiting for 5 Seconds
-			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
-
-
-		}
+		});
+//		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "getDeviceToken()", FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken());
+//		if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken())){
+//			Data.deviceToken = FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken();
+//			Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+//			checkForTokens();
+//		}else {
+//			//wait for broadcast
+//			try {
+//				LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+//			//give message after waiting for 5 Seconds
+//			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
+//
+//
+//		}
 
 
 

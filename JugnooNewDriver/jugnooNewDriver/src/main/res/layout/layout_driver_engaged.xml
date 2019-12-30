@@ -331,7 +331,7 @@
                             android:layout_toStartOf="@+id/rvPickupFeedImages"
                             />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPickupFeedImages"
                             android:layout_toStartOf="@id/bDropAddressToggle"
                             android:layout_width="wrap_content"

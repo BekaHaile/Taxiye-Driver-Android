@@ -3,11 +3,11 @@ package product.clicklabs.jugnoo.driver.fragments
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintSet
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.text.InputFilter
 import android.text.InputType
 import android.text.TextUtils
@@ -46,7 +46,7 @@ const val ARGS_DOC_INFO = "args_doc_info"
 const val ARGS_POS = "args_position"
 
 
-class DocumentDetailsFragment:Fragment(){
+class DocumentDetailsFragment: Fragment(){
 
 
     companion object {

@@ -17,13 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import androidx.annotation.NonNull;
 import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -45,6 +48,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -199,7 +203,20 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 			e.printStackTrace();
 		}
 
-		Data.deviceToken = FirebaseInstanceId.getInstance().getToken()  ;
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if(!task.isSuccessful()) {
+					Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+					return;
+				}
+				if(task.getResult() != null) {
+					Log.e("DEVICE_TOKEN_TAG SPLASHLOGIN  -> onCreate", task.getResult().getToken());
+					Data.deviceToken = 	task.getResult().getToken();
+				}
+
+			}
+		});
 
 	}
 
