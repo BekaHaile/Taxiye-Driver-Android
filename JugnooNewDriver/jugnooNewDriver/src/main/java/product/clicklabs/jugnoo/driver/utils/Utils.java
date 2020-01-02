@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -946,14 +947,14 @@ public class Utils {
     }
 
     public static String formatCurrencyValue(String currency, double value) {
-        return formatCurrencyValue(currency, value, "INR");
+        return formatCurrencyValue(currency, value, MyApplication.getInstance().getResources().getString(R.string.currency_fallback));
     }
 
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency){
         return formatCurrencyValue(currency, value, fallbackCurrency, true);
     }
     public static String formatCurrencyValue(String currency, double value, boolean setPrecision) {
-        return formatCurrencyValue(currency, value, "INR", setPrecision);
+        return formatCurrencyValue(currency, value, MyApplication.getInstance().getResources().getString(R.string.currency_fallback), setPrecision);
     }
 
     private static NumberFormat currencyNumberFormat = null;
