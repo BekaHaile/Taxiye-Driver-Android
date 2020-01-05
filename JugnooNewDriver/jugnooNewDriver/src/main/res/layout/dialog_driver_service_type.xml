@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
+    android:id="@+id/clServiceType"
     app:layout_constraintTop_toBottomOf="@id/ivDismiss">
 
     <ImageView
@@ -15,6 +16,7 @@
         android:contentDescription="@string/cd_cross_service_type"
         android:src="@drawable/cross_30_px"
         android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -60,7 +62,7 @@
         android:text="@string/service_type"
         android:textAllCaps="true"
         android:textColor="@color/themeColor"
-        app:layout_constraintBottom_toTopOf="@id/rvVehicleTypes"
+        app:layout_constraintBottom_toTopOf="@id/rvVehicleTypesSet"
         app:layout_constraintEnd_toEndOf="@id/bgContent"
         app:layout_constraintStart_toStartOf="@id/bgContent"
         app:layout_constraintTop_toTopOf="@id/bgContent" />
@@ -106,13 +108,14 @@
         app:layout_constraintBottom_toBottomOf="@id/bgContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/bgContent"
-        app:layout_constraintTop_toBottomOf="@id/rvVehicleTypes" />
+        app:layout_constraintTop_toBottomOf="@id/rvVehicleTypesSet" />
 
     <ImageView
         android:id="@+id/ivDismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:tint="@color/themeColor"
+        app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/cd_cross_service_type"
         android:src="@drawable/cross_30_px"
         app:layout_constraintEnd_toEndOf="parent" />

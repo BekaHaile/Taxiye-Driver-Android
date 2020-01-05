@@ -782,4 +782,31 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_driver_property")
 	void updateDriverProperty(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/paytm/request_otp")
+	void paytmRequestOtp(@FieldMap Map<String, String> params,
+						 Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/paytm/login_with_otp")
+	void paytmLoginWithOtp(@FieldMap Map<String, String> params,
+						   Callback<FeedCommonResponseKotlin> callback);
+	@FormUrlEncoded
+	@POST("/driver_purchase_subscriptions")
+	void purchaseSubscriptions(@FieldMap Map<String, String> params,
+						   Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/paytm/delete_paytm")
+	void paytmDeletePaytm(@FieldMap Map<String, String> params,
+						  Callback<FeedCommonResponseKotlin> callback);
+
+	@FormUrlEncoded
+	@POST("/update_driver_property")
+	void updateDriverPropertyJava(@FieldMap Map<String, String> params, Callback<FeedCommonResponse> callback);
+
+	@POST("/update_driver_vehicle_sets")
+	void updateDriverVehicleServicesJava(@Body DriverVehicleServiceTypePopup.ServiceDetailModel list,
+									 Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> callback);
 }

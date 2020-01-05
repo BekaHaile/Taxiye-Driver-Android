@@ -17,9 +17,8 @@ import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.DriverProfileActivity
 import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 
 /**
@@ -43,13 +42,13 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.getAttributes().dimAmount = 0.6f
-        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        window?.attributes?.dimAmount = 0.6f
+        window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         setCancelable(true)
         setContentView(R.layout.dialog_driver_service_type)
-        window.setBackgroundDrawableResource(android.R.color.transparent)
-        window.setGravity(Gravity.CENTER)
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+        window?.setGravity(Gravity.CENTER)
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         setCanceledOnTouchOutside(true)
 
 
@@ -122,11 +121,11 @@ public class DriverVehicleServiceTypePopup(var context: Activity, var serviceLis
     class ServiceDetailModel (@Expose @SerializedName("vehicle_sets")  var serviceList: List<VehicleServiceDetail>): HomeUtil.DefaultParams()
 
 
-    class UpdateVehicleSetResponse(@Expose @SerializedName("vehicle_sets")  var serviceList: List<VehicleServiceDetail>):FeedCommonResponseKotlin()
-    private fun updateServiceList(serviceList: List<VehicleServiceDetail>) {
+    class UpdateVehicleSetResponse(@Expose @SerializedName("vehicle_sets")  var serviceList: List<VehicleServiceDetail>): FeedCommonResponse()
+    private fun updateServiceList(serviceList: List<VehicleServiceDetail>?) {
 
-        ApiCommonKt<UpdateVehicleSetResponse>(context, putAccessToken = true).execute(ServiceDetailModel(serviceList), ApiName.UPDATE_DRIVER_SERVICES,
-                object : APICommonCallbackKotlin<UpdateVehicleSetResponse>() {
+        ApiCommon<UpdateVehicleSetResponse>(context).putAccessToken(true).execute(ServiceDetailModel(serviceList?:ArrayList()), ApiName.UPDATE_DRIVER_SERVICES,
+                object : APICommonCallback<UpdateVehicleSetResponse>() {
                     override fun onSuccess(t: UpdateVehicleSetResponse, message: String?, flag: Int) {
                           Data.userData.vehicleServicesModel  = t.serviceList
                            if(context is DriverProfileActivity){

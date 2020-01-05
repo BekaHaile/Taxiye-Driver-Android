@@ -44,7 +44,7 @@ class DriverTasksActivity : BaseFragmentActivity(), DriverTasksAdapter.DriverTas
     private fun driverTaskApi() {
         try {
             val params = HashMap<String, String>()
-            params["access_token"] = intent.getStringExtra("access_token")
+            params["access_token"] = intent.getStringExtra("access_token")!!
             HomeUtil.putDefaultParams(params)
             DialogPopup.showLoadingDialog(this@DriverTasksActivity, getString(R.string.loading))
             RestClient.getApiServices().fetchDriverTask(params, object : Callback<DriverTasks> {

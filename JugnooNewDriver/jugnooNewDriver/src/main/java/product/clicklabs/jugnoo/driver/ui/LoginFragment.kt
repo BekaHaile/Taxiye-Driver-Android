@@ -542,9 +542,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context, resource, objects) {
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context!!, resource, objects!!) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view: View = super.getView(position, convertView, parent)
             if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)

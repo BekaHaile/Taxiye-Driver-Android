@@ -349,7 +349,7 @@ class DriverSetupFragment : Fragment() {
         ApiCommonKt<CityResponse>(requireActivity()).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
                 if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
-                    onError(t, t.serverMessage(), t.flag)
+                    onError(t, t.serverMessage(), t.flag!!)
                     return
                 }
                 promoCodeFromServer = if(t != null) t.promoCode else ""

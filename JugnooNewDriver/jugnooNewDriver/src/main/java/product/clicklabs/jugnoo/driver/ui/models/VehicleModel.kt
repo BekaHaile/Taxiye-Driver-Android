@@ -17,8 +17,8 @@ data class VehicleDetailsResponse(
 
 
 data class VehicleModelDetails(
-        @Expose @SerializedName("brand") val make:String,
-        @Expose @SerializedName("name") val modelName:String,
+        @Expose @SerializedName("brand") val make:String?,
+        @Expose @SerializedName("name") val modelName:String?,
         @Expose @SerializedName("model_id") val id:Int) :Parcelable,SearchDataModel() {
     override fun isSelected(): Boolean {
         return false
@@ -30,7 +30,7 @@ data class VehicleModelDetails(
             parcel.readInt()) {
     }
 
-    override fun getLabel(): String {
+    override fun getLabel(): String? {
        return modelName;
     }
 
@@ -97,7 +97,7 @@ class CustomisationData(
 
 data class  VehicleModelCustomisationDetails (
 
-        @Expose @SerializedName("value") val value:String,
+        @Expose @SerializedName("value") val value:String?,
         @Expose @SerializedName("id") val id:Int):Parcelable,SearchDataModel() {
     override fun isSelected(): Boolean {
         return false
@@ -117,7 +117,7 @@ data class  VehicleModelCustomisationDetails (
         return false
     }
 
-    override fun getLabel(): String {
+    override fun getLabel(): String? {
         return value;
     }
 

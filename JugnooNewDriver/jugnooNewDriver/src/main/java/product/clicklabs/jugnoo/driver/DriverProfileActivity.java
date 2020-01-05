@@ -41,9 +41,12 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.ui.VehicleDetailsFragment;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommon;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -732,10 +735,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     private void updateDriverPreferences(String key, int value, SwitchCompat switchCompat){
     	HashMap<String, String> params = new HashMap<>();
     	params.put(key, String.valueOf(1));
-		new ApiCommonKt<FeedCommonResponseKotlin>(this, true, true, true)
-				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+    	params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		new ApiCommon<FeedCommonResponse>(this).showLoader(true).putDefaultParams(true)
+				.execute(params, ApiName.UPDATE_DRIVER_PROPERTY, new APICommonCallback<FeedCommonResponse>() {
 			@Override
-			public void onSuccess(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+			public void onSuccess(FeedCommonResponse feedCommonResponseKotlin, String message, int flag) {
 				if(feedCommonResponseKotlin.getFlag() == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()) {
 					if (key.equalsIgnoreCase(Constants.KEY_TOGGLE_CASH_RIDES)) {
 						Data.userData.setOnlyCashRides(value);
@@ -747,7 +751,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
 			}
 
 			@Override
-			public boolean onError(FeedCommonResponseKotlin feedCommonResponseKotlin, String message, int flag) {
+			public boolean onError(FeedCommonResponse feedCommonResponseKotlin, String message, int flag) {
 				switchCompat.setChecked(value != 1);
 				return false;
 			}

@@ -39,7 +39,7 @@ class EmergencyActivity : BaseFragmentActivity() {
             val engagementId = intent.getStringExtra(Constants.KEY_ENGAGEMENT_ID)
             val customerId = intent.getStringExtra(Constants.KEY_CUSTOMER_ID)
             supportFragmentManager.beginTransaction()
-                    .add(container.id, EmergencyModeEnabledFragment.newInstance(customerId, engagementId),
+                    .add(container.id, EmergencyModeEnabledFragment.newInstance(customerId!!, engagementId!!),
                             EmergencyModeEnabledFragment::class.java.name)
                     .addToBackStack(EmergencyModeEnabledFragment::class.java.name)
                     .commitAllowingStateLoss()

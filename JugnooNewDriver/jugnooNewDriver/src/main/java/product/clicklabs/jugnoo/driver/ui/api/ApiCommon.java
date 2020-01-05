@@ -13,7 +13,9 @@ import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BranchUrlRequest;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import retrofit.Callback;
@@ -42,6 +44,8 @@ public class ApiCommon<T extends FeedCommonResponse> {
     private boolean isCancelled;
     private boolean isErrorCancellable = true;
     private boolean checkForTrivialErrors = true;
+    private Object objParams;
+    private boolean isObjectRequest = false;
 
     public boolean isInProgress() {
         return isInProgress;
@@ -89,6 +93,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
     }
 
     public void  execute(HashMap<String, String> params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = false;
         this.apiCommonCallback = apiCommonCallback;
         this.params = params;
         this.apiName = apiName;
@@ -97,8 +102,19 @@ public class ApiCommon<T extends FeedCommonResponse> {
         }
         hitAPI(false);
     }
+    public void  execute(Object params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = true;
+        this.apiCommonCallback = apiCommonCallback;
+        this.objParams = params;
+        this.apiName = apiName;
+        if(this.objParams==null){
+            this.objParams = new HashMap<>();
+        }
+        hitAPI(false);
+    }
 
     public void execute(MultipartTypedOutput params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = false;
         this.apiCommonCallback = apiCommonCallback;
         if(multipartTypedOutput==null){
             multipartTypedOutput = new MultipartTypedOutput();
@@ -181,7 +197,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
         if(isMultiPartRequest){
             HomeUtil.putDefaultParams(multipartTypedOutput);
-        } else {
+        } else if(!isObjectRequest){
             HomeUtil.putDefaultParams(params);
         }
 
@@ -215,6 +231,16 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case SEND_EMAIL_INVOICE:
                 RestClient.getApiServices().sendEmailInvoice(params, callback);
+                break;
+            case UPDATE_DRIVER_PROPERTY:
+                RestClient.getApiServices().updateDriverPropertyJava (params, callback);
+                break;
+
+            case UPDATE_DRIVER_SERVICES:
+                RestClient.getApiServices().updateDriverVehicleServicesJava ((DriverVehicleServiceTypePopup.ServiceDetailModel) objParams, callback);
+                break;
+            case BRANCH_GENERATE_URL:
+                RestClient.getBranchApi().generateUrl((BranchUrlRequest) objParams, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

@@ -107,13 +107,13 @@ class VehicleDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)
-            cityId = it.getString(ARGS_CITY_ID)
-            vehicleType = it.getString(ARGS_VEHICLE_TYPE)
-            userName = it.getString(ARGS_USER_NAME)
+            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)!!
+            cityId = it.getString(ARGS_CITY_ID)!!
+            vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
+            userName = it.getString(ARGS_USER_NAME)!!
             isEditMode = it.getBoolean(ARGS_EDIT_MODE)
             if(it.containsKey(ARGS_VEHICLE_DETAIL)){
-                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin?
             }
         }
 
@@ -211,7 +211,7 @@ class VehicleDetailsFragment : Fragment() {
                         vehiceMakeModelData = t?.models!!;
                         prepareMakeList()
                         currentModelSelected?.run {
-                            currentMakeSelected = VehicleMakeInfo(make)
+                            currentMakeSelected = VehicleMakeInfo(make!!)
                             edtMake.setText(make)
                             getModelDetails(this)
                         }
