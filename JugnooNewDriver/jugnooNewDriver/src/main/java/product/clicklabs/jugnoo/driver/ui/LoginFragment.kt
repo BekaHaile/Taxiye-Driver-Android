@@ -36,9 +36,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
@@ -61,7 +59,7 @@ class LoginFragment : Fragment() {
     private val permissionCommon by lazy { PermissionCommon(this) }
 
 
-    override fun onAttach(mActivity: Activity?) {
+    override fun onAttach(mActivity: Activity) {
         super.onAttach(mActivity)
         if(mActivity is SplashFragment.InteractionListener){
             mListener = mActivity;
@@ -202,7 +200,7 @@ class LoginFragment : Fragment() {
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
         Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        ApiCommon<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }
@@ -250,8 +248,8 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
-                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
+        ApiCommon<DriverLanguageResponse>(parentActivity).showLoader(false).checkForActionComplete(true)
+                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallback<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
                         val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
                                 == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
@@ -542,9 +540,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context, resource, objects) {
+    private class LanguageAdapter(context: Context?, resource: Int, objects: MutableList<LocaleModel>?) : ArrayAdapter<LocaleModel>(context!!, resource, objects!!) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view: View = super.getView(position, convertView, parent)
             if (view is TextView) {
                 (view).typeface = Fonts.mavenRegular(context)

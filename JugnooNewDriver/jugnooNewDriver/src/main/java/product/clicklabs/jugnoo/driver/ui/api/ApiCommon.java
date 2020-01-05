@@ -13,7 +13,9 @@ import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BranchUrlRequest;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
+import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import retrofit.Callback;
@@ -42,6 +44,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
     private boolean isCancelled;
     private boolean isErrorCancellable = true;
     private boolean checkForTrivialErrors = true;
+    private Object objParams;
+    private boolean isObjectRequest = false;
+    private boolean checkForActionComplete = false;
+    private Integer successFlag =  null;
 
     public boolean isInProgress() {
         return isInProgress;
@@ -67,6 +73,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
         this.showLoader = showLoader;
         return this;
     }
+    public ApiCommon<T> checkForActionComplete(boolean checkForActionComplete) {
+        this.checkForActionComplete = checkForActionComplete;
+        return this;
+    }
 
     public ApiCommon<T> isErrorCancellable(boolean isErrorCancellable) {
         this.isErrorCancellable = isErrorCancellable;
@@ -89,6 +99,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
     }
 
     public void  execute(HashMap<String, String> params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = false;
         this.apiCommonCallback = apiCommonCallback;
         this.params = params;
         this.apiName = apiName;
@@ -97,8 +108,19 @@ public class ApiCommon<T extends FeedCommonResponse> {
         }
         hitAPI(false);
     }
+    public void  execute(Object params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = true;
+        this.apiCommonCallback = apiCommonCallback;
+        this.objParams = params;
+        this.apiName = apiName;
+        if(this.objParams==null){
+            this.objParams = new HashMap<>();
+        }
+        hitAPI(false);
+    }
 
     public void execute(MultipartTypedOutput params, @NonNull ApiName apiName, APICommonCallback<T> apiCommonCallback) {
+        isObjectRequest = false;
         this.apiCommonCallback = apiCommonCallback;
         if(multipartTypedOutput==null){
             multipartTypedOutput = new MultipartTypedOutput();
@@ -137,7 +159,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
                     try {
 
-                        if (!isTrivialError(feedCommonResponse.getFlag())) {
+                        if (!isTrivialError(feedCommonResponse.getFlag()) &&
+                                (!checkForActionComplete || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+                                && (successFlag==null || successFlag==feedCommonResponse.flag)
+                        ) {
                             apiCommonCallback.onFinish();
 							apiCommonCallback.onSuccess(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag());
                         } else if(feedCommonResponse.getFlag()==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()){
@@ -181,7 +206,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
         if(isMultiPartRequest){
             HomeUtil.putDefaultParams(multipartTypedOutput);
-        } else {
+        } else if(!isObjectRequest){
             HomeUtil.putDefaultParams(params);
         }
 
@@ -205,7 +230,8 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 RestClient.getApiServices().generateOtpK(params,callback);
                 break;
             case GET_CITIES:
-                RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
+//                RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
+                RestClient.getApiServices().getDriverSignUpDetails(params, callback);
                 break;
             case REGISTER_DRIVER:
                 RestClient.getApiServices().updateDriverInfo(params, callback);
@@ -215,6 +241,50 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case SEND_EMAIL_INVOICE:
                 RestClient.getApiServices().sendEmailInvoice(params, callback);
+                break;
+            case UPDATE_DRIVER_PROPERTY:
+                RestClient.getApiServices().updateDriverPropertyJava (params, callback);
+                break;
+
+            case UPDATE_DRIVER_SERVICES:
+                RestClient.getApiServices().updateDriverVehicleServicesJava ((DriverVehicleServiceTypePopup.ServiceDetailModel) objParams, callback);
+                break;
+            case BRANCH_GENERATE_URL:
+                RestClient.getBranchApi().generateUrl((BranchUrlRequest) objParams, callback);
+                break;
+            case GET_LANGUAGES:
+                RestClient.getApiServices().fetchLanguageList(params, callback);
+                break;
+            case PAYTM_LOGIN_WITH_OTP:
+                RestClient.getApiServices().paytmLoginWithOtpJava(params, callback);
+                break;
+            case PURCHASE_SUBSCRIPTION:
+                RestClient.getApiServices().purchaseSubscriptions(params, callback);
+                break;
+            case PAYTM_REMOVE_WALLET:
+                RestClient.getApiServices().paytmDeletePaytm(params, callback);
+                break;
+
+            case FETCH_WALLET:
+                RestClient.getApiServices().fetchWalletBalance(params, callback);
+                break;
+            case ADD_CASH_WALLET:
+                RestClient.getApiServices().addMoneyViaStripe(params, callback);
+                break;
+            case UPDATE_DOC_FIELDS:
+                RestClient.getApiServices().uploadFields(params, callback);
+                break;
+            case GET_TOLL_DATA:
+                RestClient.getApiServices().getTollData(params, callback);
+                break;
+            case UPDATE_TOLL_DATA:
+                RestClient.getApiServices().updateTollData(params, callback);
+                break;
+            case VEHICLE_MAKE_DATA:
+                RestClient.getApiServices().getVehicleMakeDetails(params, callback);
+                break;
+            case VEHICLE_MODEL_DATA:
+                RestClient.getApiServices().getVehicleModelDetails(params, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

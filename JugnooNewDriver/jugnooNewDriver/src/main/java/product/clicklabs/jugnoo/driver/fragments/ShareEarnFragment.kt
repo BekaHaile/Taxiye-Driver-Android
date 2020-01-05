@@ -31,9 +31,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.BranchUrlRequest
 import product.clicklabs.jugnoo.driver.retrofit.model.BranchUrlResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.Callback
 import retrofit.RetrofitError
@@ -302,8 +300,8 @@ class ShareEarnFragment : BaseFragment() {
         } else {
             val branchUrlRequest = BranchUrlRequest(metaData, branchKey, branchSecret)
 
-            ApiCommonKt<BranchUrlResponse>(requireActivity(), putDefaultParams = false).execute(branchUrlRequest, ApiName.BRANCH_GENERATE_URL,
-                    object : APICommonCallbackKotlin<BranchUrlResponse>() {
+            ApiCommon<BranchUrlResponse>(requireActivity()).putDefaultParams(false).execute(branchUrlRequest, ApiName.BRANCH_GENERATE_URL,
+                    object : APICommonCallback<BranchUrlResponse>() {
                         override fun onSuccess(t: BranchUrlResponse?, message: String?, flag: Int) {
                             if (t != null) {
                                 shareToWhatsapp(t.url!!, defaultIntentShare)

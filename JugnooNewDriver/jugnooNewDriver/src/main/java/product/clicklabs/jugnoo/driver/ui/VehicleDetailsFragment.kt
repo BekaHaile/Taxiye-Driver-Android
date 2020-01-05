@@ -18,9 +18,7 @@ import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.*
 import product.clicklabs.jugnoo.driver.utils.*
 import retrofit.RetrofitError
@@ -107,13 +105,13 @@ class VehicleDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)
-            cityId = it.getString(ARGS_CITY_ID)
-            vehicleType = it.getString(ARGS_VEHICLE_TYPE)
-            userName = it.getString(ARGS_USER_NAME)
+            accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)!!
+            cityId = it.getString(ARGS_CITY_ID)!!
+            vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
+            userName = it.getString(ARGS_USER_NAME)!!
             isEditMode = it.getBoolean(ARGS_EDIT_MODE)
             if(it.containsKey(ARGS_VEHICLE_DETAIL)){
-                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin?
             }
         }
 
@@ -205,13 +203,13 @@ class VehicleDetailsFragment : Fragment() {
                 "city_id" to cityId,
                 "vehicle_type" to vehicleType)
 
-        ApiCommonKt<VehicleDetailsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MAKE_DATA,
-                object: APICommonCallbackKotlin<VehicleDetailsResponse>(){
+        ApiCommon<VehicleDetailsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MAKE_DATA,
+                object: APICommonCallback<VehicleDetailsResponse>(){
                     override fun onSuccess(t: VehicleDetailsResponse?, message: String?, flag: Int) {
                         vehiceMakeModelData = t?.models!!;
                         prepareMakeList()
                         currentModelSelected?.run {
-                            currentMakeSelected = VehicleMakeInfo(make)
+                            currentMakeSelected = VehicleMakeInfo(make!!)
                             edtMake.setText(make)
                             getModelDetails(this)
                         }
@@ -251,8 +249,8 @@ class VehicleDetailsFragment : Fragment() {
                 "vehicle_type" to vehicleType,
                 "model_id" to "" +modelRequested.id)
 
-        ApiCommonKt<VehicleModelCustomisationsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MODEL_DATA,
-                object: APICommonCallbackKotlin<VehicleModelCustomisationsResponse>(){
+        ApiCommon<VehicleModelCustomisationsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MODEL_DATA,
+                object: APICommonCallback<VehicleModelCustomisationsResponse>(){
 
                     override fun onSuccess(t: VehicleModelCustomisationsResponse?, message: String?, flag: Int) {
 
@@ -516,8 +514,8 @@ class VehicleDetailsFragment : Fragment() {
 
 
 
-        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(params,ApiName.REGISTER_DRIVER,object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
-            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+        ApiCommon<FeedCommonResponse>(requireActivity()).execute(params,ApiName.REGISTER_DRIVER,object : APICommonCallback<FeedCommonResponse>(){
+            override fun onSuccess(t: FeedCommonResponse?, message: String?, flag: Int) {
 
                 if(t!=null){
                     when (t.flag) {
@@ -554,7 +552,7 @@ class VehicleDetailsFragment : Fragment() {
 
             }
 
-            override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+            override fun onError(t: FeedCommonResponse?, message: String?, flag: Int): Boolean {
                 return false;
             }
 

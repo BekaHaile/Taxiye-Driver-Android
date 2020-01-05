@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model
 
 import com.google.gson.annotations.SerializedName
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 
 class BranchUrlRequest(
@@ -15,4 +16,4 @@ class BranchUrlRequest(
 class BranchUrlResponse(
         @SerializedName("url")
         var url:String?
-):FeedCommonResponseKotlin()
+): FeedCommonResponse()

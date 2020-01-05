@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by aneeshbansal on 29/01/16.
  */
-public class CityResponse extends FeedCommonResponseKotlin {
+public class CityResponse extends FeedCommonResponse {
 
 
 	@SerializedName("cities")

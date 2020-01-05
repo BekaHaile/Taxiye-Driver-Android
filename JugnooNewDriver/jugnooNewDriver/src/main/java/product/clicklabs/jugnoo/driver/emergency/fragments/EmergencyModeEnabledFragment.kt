@@ -78,7 +78,7 @@ class EmergencyModeEnabledFragment : BaseFragment(), LocationUpdate, PermissionC
         rootView = inflater.inflate(R.layout.fragment_emergency_mode_enabled, container, false)
 
         customerId = arguments!!.getString(Constants.KEY_CUSTOMER_ID)
-        engagementId = arguments!!.getString(Constants.KEY_ENGAGEMENT_ID)
+        engagementId = arguments!!.getString(Constants.KEY_ENGAGEMENT_ID)!!
 
 
         relative = rootView!!.findViewById<View>(R.id.relative) as RelativeLayout

@@ -225,7 +225,9 @@ import product.clicklabs.jugnoo.driver.tutorial.UpdateTutStatusService;
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.ManualRideActivity;
+import product.clicklabs.jugnoo.driver.ui.api.APICommonCallback;
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin;
+import product.clicklabs.jugnoo.driver.ui.api.ApiCommon;
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt;
 import product.clicklabs.jugnoo.driver.ui.api.ApiName;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
@@ -11850,8 +11852,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             DialogPopup.showLoadingDialog(this, getString(R.string.loading));
             HashMap<String, String> params = new HashMap<>();
             params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
-            new ApiCommonKt<TollDataResponse>(this, true, true, true).execute(params, ApiName.GET_TOLL_DATA,
-                    new APICommonCallbackKotlin<TollDataResponse>() {
+            params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+            new ApiCommon<TollDataResponse>(this).putDefaultParams(true).showLoader(true).execute(params, ApiName.GET_TOLL_DATA,
+                    new APICommonCallback<TollDataResponse>() {
                         @Override
                         public void onSuccess(TollDataResponse tollDataResponse, String message, int flag) {
                             DialogPopup.dismissLoadingDialog();
