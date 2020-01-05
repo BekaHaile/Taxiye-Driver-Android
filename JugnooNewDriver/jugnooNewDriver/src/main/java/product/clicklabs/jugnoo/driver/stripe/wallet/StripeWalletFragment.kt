@@ -15,15 +15,14 @@ import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
+import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText

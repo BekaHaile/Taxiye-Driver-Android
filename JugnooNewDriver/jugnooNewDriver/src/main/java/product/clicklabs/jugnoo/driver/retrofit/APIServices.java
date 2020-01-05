@@ -809,4 +809,8 @@ public interface APIServices {
 	@POST("/update_driver_vehicle_sets")
 	void updateDriverVehicleServicesJava(@Body DriverVehicleServiceTypePopup.ServiceDetailModel list,
 									 Callback<DriverVehicleServiceTypePopup.UpdateVehicleSetResponse> callback);
+	@FormUrlEncoded
+	@POST("/paytm/login_with_otp")
+	void paytmLoginWithOtpJava(@FieldMap Map<String, String> params,
+						   Callback<FeedCommonResponse> callback);
 }

@@ -28,9 +28,7 @@ import product.clicklabs.jugnoo.driver.Constants.KEY_ACCESS_TOKEN
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
 import product.clicklabs.jugnoo.driver.ui.adapters.VehicleTypeSelectionAdapter
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.CityResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.*
@@ -346,7 +344,7 @@ class DriverSetupFragment : Fragment() {
 
         HomeUtil.putDefaultParams(params)
 
-        ApiCommonKt<CityResponse>(requireActivity()).execute(params, ApiName.GET_CITIES, object : APICommonCallbackKotlin<CityResponse>() {
+        ApiCommon<CityResponse>(requireActivity()).execute(params, ApiName.GET_CITIES, object : APICommonCallback<CityResponse>() {
             override fun onSuccess(t: CityResponse?, message: String?, flag: Int) {
                 if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == t?.flag) {
                     onError(t, t.serverMessage(), t.flag!!)

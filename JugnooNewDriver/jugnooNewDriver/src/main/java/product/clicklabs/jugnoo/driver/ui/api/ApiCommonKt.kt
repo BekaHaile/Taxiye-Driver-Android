@@ -168,14 +168,14 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
         when (apiName) {
 
             ApiName.GENERATE_OTP -> RestClient.getApiServices().generateOtpK(params, callback as Callback<RegisterScreenResponse>)
-            ApiName.GET_CITIES -> RestClient.getApiServices().getDriverSignUpDetails(params, callback as Callback<CityResponse>)
+//            ApiName.GET_CITIES -> RestClient.getApiServices().getDriverSignUpDetails(params, callback as Callback<CityResponse>)
             ApiName.GET_LANGUAGES -> RestClient.getApiServices().fetchLanguageListKotlin(params, callback as Callback<DriverLanguageResponse>)
             ApiName.MANUAL_RIDE -> RestClient.getApiServices().requestManualRide(params, callback as Callback<ManualRideResponse>)
             ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             ApiName.APPLY_PROMO ->  RestClient.getApiServices().applyPromo(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToDriver(params, callback as Callback<StripeCardResponse> )
-            ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
-            ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
+//            ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
+//            ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
             ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetailsResponse> )
             ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as
                     Callback<VehicleModelCustomisationsResponse> )
@@ -190,6 +190,11 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
             ApiName.FETCH_DRIVER_TRACTION_RIDES-> RestClient.getApiServices().fetchDriverTractionRides(params, callback as Callback<TractionResponse>)
             ApiName.BRANCH_GENERATE_URL-> RestClient.getBranchApi().generateUrl(bodyParams as BranchUrlRequest, callback as Callback<BranchUrlResponse>)
             ApiName.UPDATE_DRIVER_PROPERTY-> RestClient.getApiServices().updateDriverProperty(params, callback as Callback<FeedCommonResponseKotlin>)
+          //  ApiName.GET_SUBSCRIPTION-> RestClient.getApiServices().getAllSubscription(params, callback as Callback<SubscriptionPlan>)
+            ApiName.PAYTM_REQUEST_OTP-> RestClient.getApiServices().paytmRequestOtp(params, callback as Callback<FeedCommonResponseKotlin>)
+//            ApiName.PAYTM_LOGIN_WITH_OTP-> RestClient.getApiServices().paytmLoginWithOtp(params, callback as Callback<FeedCommonResponseKotlin>)
+//            ApiName.PURCHASE_SUBSCRIPTION-> RestClient.getApiServices().purchaseSubscriptions(params, callback as Callback<PurchasePlan>)
+//            ApiName.PAYTM_REMOVE_WALLET-> RestClient.getApiServices().paytmDeletePaytm(params, callback as Callback<FeedCommonResponseKotlin>)
             else -> throw IllegalArgumentException("API Type not declared")
         }
     }

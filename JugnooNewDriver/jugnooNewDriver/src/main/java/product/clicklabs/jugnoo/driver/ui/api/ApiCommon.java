@@ -221,7 +221,8 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 RestClient.getApiServices().generateOtpK(params,callback);
                 break;
             case GET_CITIES:
-                RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
+//                RestClient.getApiServices().getCityRetro(params, BuildConfig.CITIES_PASSWORD, callback);
+                RestClient.getApiServices().getDriverSignUpDetails(params, callback);
                 break;
             case REGISTER_DRIVER:
                 RestClient.getApiServices().updateDriverInfo(params, callback);
@@ -241,6 +242,24 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case BRANCH_GENERATE_URL:
                 RestClient.getBranchApi().generateUrl((BranchUrlRequest) objParams, callback);
+                break;
+            case GET_LANGUAGES:
+                RestClient.getApiServices().fetchLanguageList(params, callback);
+                break;
+            case PAYTM_LOGIN_WITH_OTP:
+                RestClient.getApiServices().paytmLoginWithOtpJava(params, callback);
+                break;
+            case PURCHASE_SUBSCRIPTION:
+                RestClient.getApiServices().purchaseSubscriptions(params, callback);
+                break;
+            case PAYTM_REMOVE_WALLET:
+                RestClient.getApiServices().paytmDeletePaytm(params, callback);
+                break;
+            case FETCH_WALLET:
+                RestClient.getApiServices().fetchWalletBalance(params, callback);
+                break;
+            case ADD_CASH_WALLET:
+                RestClient.getApiServices().addMoneyViaStripe(params, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
