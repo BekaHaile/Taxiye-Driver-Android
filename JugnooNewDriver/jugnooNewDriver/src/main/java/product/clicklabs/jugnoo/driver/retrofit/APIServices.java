@@ -800,7 +800,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/paytm/delete_paytm")
 	void paytmDeletePaytm(@FieldMap Map<String, String> params,
-						  Callback<FeedCommonResponseKotlin> callback);
+						  Callback<FeedCommonResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/update_driver_property")
