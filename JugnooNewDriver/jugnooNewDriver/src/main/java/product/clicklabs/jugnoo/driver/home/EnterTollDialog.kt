@@ -10,13 +10,13 @@ import kotlinx.android.synthetic.main.dialog_toll.*
 import org.json.JSONArray
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.adapters.TollDataAdapter
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.retrofit.model.TollData
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.utils.Utils
 import java.util.*
@@ -177,10 +177,11 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
             return
         }
         params[Constants.KEY_UPDATED_TOLL] = jsonArray.toString()
+        params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken
 
-        ApiCommonKt<FeedCommonResponseKotlin>(activity, true, true, true).execute(params, ApiName.UPDATE_TOLL_DATA,
-                object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
-                    override fun onSuccess(feedCommonResponseKotlin: FeedCommonResponseKotlin, message: String, flag: Int) {
+        ApiCommon<FeedCommonResponse>(activity).showLoader(true).putDefaultParams(true).execute(params, ApiName.UPDATE_TOLL_DATA,
+                object : APICommonCallback<FeedCommonResponse>() {
+                    override fun onSuccess(feedCommonResponseKotlin: FeedCommonResponse, message: String, flag: Int) {
 
                         for(tollData in customerInfo.tollData){
                             if(tollData.edited) {
@@ -192,7 +193,7 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
                         callback.tollEntered(customerInfo.tollFare)
                     }
 
-                    override fun onError(feedCommonResponseKotlin: FeedCommonResponseKotlin, message: String, flag: Int): Boolean {
+                    override fun onError(feedCommonResponseKotlin: FeedCommonResponse, message: String, flag: Int): Boolean {
                         return false
                     }
                 })

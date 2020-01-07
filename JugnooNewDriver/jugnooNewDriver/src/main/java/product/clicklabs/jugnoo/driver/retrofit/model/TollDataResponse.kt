@@ -2,11 +2,12 @@ package product.clicklabs.jugnoo.driver.retrofit.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 
 class TollDataResponse(
         @SerializedName("data") @Expose var tollData: List<TollData>
-) : FeedCommonResponseKotlin()
+) : FeedCommonResponse()
 
 class TollData(
         @SerializedName("toll_visit_id") @Expose var tollVisitId : Int,

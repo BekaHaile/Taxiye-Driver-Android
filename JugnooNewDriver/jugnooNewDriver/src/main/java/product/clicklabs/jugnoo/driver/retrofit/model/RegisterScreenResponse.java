@@ -10,7 +10,7 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
  * Created by aneeshbansal on 09/09/15.
  */
 
-public class RegisterScreenResponse extends FeedCommonResponseKotlin {
+public class RegisterScreenResponse extends FeedCommonResponse {
 
 
 	@SerializedName("phone_no")

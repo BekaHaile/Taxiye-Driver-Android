@@ -475,7 +475,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/upload_document")
 	void uploadFields(@FieldMap Map<String, String> params,
-					Callback<FeedCommonResponseKotlin> callback);
+					Callback<FeedCommonResponse> callback);
 
 
 	@Multipart

@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VehicleDetailsResponse(
         @Expose @SerializedName("data") val models: Map<String,List<VehicleModelDetails>>
-):FeedCommonResponseKotlin()
+):FeedCommonResponse()
 
 
 
@@ -83,7 +83,7 @@ class VehicleMakeInfo(val makeName:String): SearchDataModel() {
 
 data class VehicleModelCustomisationsResponse(
         @Expose @SerializedName("data") val customisationList: CustomisationData
-):FeedCommonResponseKotlin()
+):FeedCommonResponse()
 
 class CustomisationData(
         @Expose @SerializedName("colors") val colorCustomisationList: List<VehicleModelCustomisationDetails>,

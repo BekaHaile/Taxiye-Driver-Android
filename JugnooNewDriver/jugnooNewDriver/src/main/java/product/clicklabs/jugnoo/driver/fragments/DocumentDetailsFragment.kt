@@ -28,9 +28,8 @@ import product.clicklabs.jugnoo.driver.DriverDocumentActivity
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo
 import product.clicklabs.jugnoo.driver.retrofit.model.DocFieldsInfo
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 import product.clicklabs.jugnoo.driver.ui.models.SearchDataModel
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
@@ -226,9 +225,9 @@ class DocumentDetailsFragment: Fragment(){
                 "doc_values" to fieldsInput.toString()
 
         )
-        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(map,ApiName.UPDATE_DOC_FIELDS
-                ,object: APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
-            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+        ApiCommon<FeedCommonResponse>(requireActivity()).execute(map,ApiName.UPDATE_DOC_FIELDS
+                ,object: APICommonCallback<FeedCommonResponse>(){
+            override fun onSuccess(t: FeedCommonResponse?, message: String?, flag: Int) {
                 for (i in 0 until  docInfo.listDocFieldsInfo.size){
                     if(keyValueMap.containsKey(docInfo.listDocFieldsInfo[i].key)) {
                         docInfo.listDocFieldsInfo[i].value = keyValueMap[docInfo.listDocFieldsInfo[i].key]!!.value
@@ -240,7 +239,7 @@ class DocumentDetailsFragment: Fragment(){
                 }
             }
 
-            override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+            override fun onError(t: FeedCommonResponse?, message: String?, flag: Int): Boolean {
                 return false
             }
 

@@ -153,7 +153,11 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
                     try {
 
-                        if (!isTrivialError(feedCommonResponse.getFlag())) {
+                        if (!isTrivialError(feedCommonResponse.getFlag())
+//                                &&
+//                                (!checkForActionComplete || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+//                                && (successFlag==null || successFlag==feedCommonResponse.flag)
+                        ) {
                             apiCommonCallback.onFinish();
 							apiCommonCallback.onSuccess(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag());
                         } else if(feedCommonResponse.getFlag()==ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal()){
@@ -260,6 +264,21 @@ public class ApiCommon<T extends FeedCommonResponse> {
                 break;
             case ADD_CASH_WALLET:
                 RestClient.getApiServices().addMoneyViaStripe(params, callback);
+                break;
+            case UPDATE_DOC_FIELDS:
+                RestClient.getApiServices().uploadFields(params, callback);
+                break;
+            case GET_TOLL_DATA:
+                RestClient.getApiServices().getTollData(params, callback);
+                break;
+            case UPDATE_TOLL_DATA:
+                RestClient.getApiServices().updateTollData(params, callback);
+                break;
+            case VEHICLE_MAKE_DATA:
+                RestClient.getApiServices().getVehicleMakeDetails(params, callback);
+                break;
+            case VEHICLE_MODEL_DATA:
+                RestClient.getApiServices().getVehicleModelDetails(params, callback);
                 break;
             default:
                 throw new IllegalArgumentException("API Type not declared");

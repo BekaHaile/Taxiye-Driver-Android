@@ -36,9 +36,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
+import product.clicklabs.jugnoo.driver.ui.api.*
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse
 import product.clicklabs.jugnoo.driver.ui.models.LocaleModel
 import product.clicklabs.jugnoo.driver.utils.*
@@ -202,7 +200,7 @@ class LoginFragment : Fragment() {
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo)
         Prefs.with(requireActivity()).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis())
         Utils.hideSoftKeyboard(parentActivity, rootView.edtPhoneNo)
-        ApiCommonKt<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        ApiCommon<RegisterScreenResponse>(requireActivity()).execute(params, ApiName.GENERATE_OTP, object : APICommonCallback<RegisterScreenResponse>() {
             override fun onNotConnected(): Boolean {
                 return false
             }

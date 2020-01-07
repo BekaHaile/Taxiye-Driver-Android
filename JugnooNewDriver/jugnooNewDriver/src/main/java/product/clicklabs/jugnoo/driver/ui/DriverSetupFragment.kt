@@ -265,7 +265,7 @@ class DriverSetupFragment : Fragment() {
             params[Constants.KEY_FLEET_ID] = fleetSelected!!.id.toString();
         }
         HomeUtil.putDefaultParams(params)
-        ApiCommonKt<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<RegisterScreenResponse>() {
+        ApiCommon<RegisterScreenResponse>(parentActivity!!).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallback<RegisterScreenResponse>() {
 
             override fun onSuccess(t: RegisterScreenResponse?, message: String?, flag: Int) {
                 if (t != null) {
