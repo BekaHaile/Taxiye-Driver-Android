@@ -332,7 +332,7 @@ public class Utils {
     private static DecimalFormat decimalFormat;
     public static DecimalFormat getDecimalFormat() {
         if (decimalFormat == null) {
-            decimalFormat = new DecimalFormat("#.##");
+            decimalFormat = new DecimalFormat("0.00");
         }
         return decimalFormat;
     }

@@ -1156,6 +1156,7 @@ Se le ha asignado una recogida. Por favor, elija el cliente.</string>
     <string name="notes">Notas</string>
 
 
-
+    <string name="income_details">Detalles de ingresos</string>
+    <string name="you_can_add_only_three_contacts">Puede agregar solo tres contactos.</string>
 
 </resources>

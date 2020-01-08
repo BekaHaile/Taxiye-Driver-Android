@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <include layout="@layout/layout_top_bar"/>
+        <include layout="@layout/layout_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/textViewEdit"/>
 
         <TextView
             android:id="@+id/textViewEdit"

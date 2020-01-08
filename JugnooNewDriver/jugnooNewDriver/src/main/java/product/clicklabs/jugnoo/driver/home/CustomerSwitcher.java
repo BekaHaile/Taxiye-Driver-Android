@@ -1,15 +1,16 @@
 package product.clicklabs.jugnoo.driver.home;
 
 import android.graphics.Typeface;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -26,12 +27,10 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -40,8 +39,7 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
+
 import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_DROP_LOCATION_BELOW_PICKUP;
 import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_FARE_BEFORE_RIDE_START;
 
@@ -466,13 +464,19 @@ public class CustomerSwitcher {
 	}
 
 
+	public void setCallButton() {
+		if (Data.getCurrentCustomerInfo() != null) {
+			if ((Data.getCurrentCustomerInfo().getIsDelivery() == 1)
+					&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
+					&& activity.getResources().getBoolean(R.bool.show_customer_info_in_inride)) {
+				if (Data.getCurrentCustomerInfo().getName().equals(Data.getCurrentCustomerInfo().getDeliveryInfos().get(0).getCustomerName())
+						&& Data.getCurrentCustomerInfo().getPhoneNumber().equals(Data.getCurrentCustomerInfo().getDeliveryInfos().get(0).getCustomerNo())) {
+					relativeLayoutCustomerInfo.setVisibility(View.GONE);
+				} else {
+					relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
+				}
 
-	public void setCallButton(){
-		if(Data.getCurrentCustomerInfo() != null){
-			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
-					&& activity.getResources().getBoolean(R.bool.show_customer_info_in_inride)){
-				relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
-			}else {
+			} else {
 				relativeLayoutCustomerInfo.setVisibility(View.GONE);
 			}
 		}
