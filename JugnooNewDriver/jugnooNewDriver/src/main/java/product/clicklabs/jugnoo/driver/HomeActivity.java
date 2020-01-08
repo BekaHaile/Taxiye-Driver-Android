@@ -4251,7 +4251,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     reviewReachedDistanceRl.setVisibility(View.VISIBLE);
                     linearLayoutMeterFare.setVisibility(View.GONE);
                     relativeLayoutRateCustomer.setVisibility(View.GONE);
-                    ratingBarFeedback.setVisibility(View.GONE);
+                    ratingBarFeedback.setVisibility(View.VISIBLE);
                     reviewSkipBtn.setVisibility(View.GONE);
                     ratingBarFeedback.setRating(0);
 
@@ -4285,8 +4285,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 endRideInfoRl.setVisibility(View.GONE);
                 reviewReachedDistanceRl.setVisibility(View.GONE);
                 linearLayoutMeterFare.setVisibility(View.VISIBLE);
-                relativeLayoutRateCustomer.setVisibility(View.GONE);
-                ratingBarFeedback.setVisibility(View.GONE);
+                relativeLayoutRateCustomer.setVisibility(View.VISIBLE);
+                ratingBarFeedback.setVisibility(View.VISIBLE);
                 reviewSkipBtn.setVisibility(View.GONE);
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
