@@ -46,6 +46,8 @@ public class ApiCommon<T extends FeedCommonResponse> {
     private boolean checkForTrivialErrors = true;
     private Object objParams;
     private boolean isObjectRequest = false;
+    private boolean checkForActionComplete = false;
+    private Integer successFlag =  null;
 
     public boolean isInProgress() {
         return isInProgress;
@@ -69,6 +71,10 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
     public ApiCommon<T> showLoader(boolean showLoader) {
         this.showLoader = showLoader;
+        return this;
+    }
+    public ApiCommon<T> checkForActionComplete(boolean checkForActionComplete) {
+        this.checkForActionComplete = checkForActionComplete;
         return this;
     }
 
@@ -153,10 +159,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
 
                     try {
 
-                        if (!isTrivialError(feedCommonResponse.getFlag())
-//                                &&
-//                                (!checkForActionComplete || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
-//                                && (successFlag==null || successFlag==feedCommonResponse.flag)
+                        if (!isTrivialError(feedCommonResponse.getFlag()) &&
+                                (!checkForActionComplete || feedCommonResponse.flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+                                && (successFlag==null || successFlag==feedCommonResponse.flag)
                         ) {
                             apiCommonCallback.onFinish();
 							apiCommonCallback.onSuccess(feedCommonResponse, feedCommonResponse.getMessage(), feedCommonResponse.getFlag());

@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.stripe.wallet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
@@ -23,6 +24,7 @@ import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
 import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
@@ -59,6 +61,7 @@ class StripeWalletFragment: Fragment(){
         return inflater.inflate(R.layout.frag_wallet,container,false)
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupShowStripe(if(stripeWalletInteractor.isStripeEnabled()) View.VISIBLE else View.GONE)
@@ -99,7 +102,7 @@ class StripeWalletFragment: Fragment(){
         tvQuickAmtOne.setFillListener(edtAmount)
         tvQuickAmtTwo.setFillListener(edtAmount)
         tvQuickAmtThree.setFillListener(edtAmount)
-        fetchWalletData();
+        fetchWalletData()
 
 
     }
@@ -108,11 +111,12 @@ class StripeWalletFragment: Fragment(){
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
         execute(params = null,apiName = ApiName.FETCH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
+                    //    walletModelResponse = t
                         tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance());
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;
                         edtAmount.addTextChangedListener(UpdateCurrencyDrawableWatcher(edtAmount,currencyUnit));
-                        setStripeData(t.stripeCards?.run { if(this.size>0) this[0] else null})
+                        setStripeData(t.stripeCards?.run { if(this.isNotEmpty()) this[0] else null})
 
 
 
@@ -182,7 +186,8 @@ class StripeWalletFragment: Fragment(){
 
         val params = hashMapOf("amount" to amount,
                                 "currency" to (currencyUnit?:"INR"),
-                                "card_id" to   (stripeCardData?.cardId?:""))
+                                "card_id" to   (stripeCardData?.cardId?:""),
+                Constants.KEY_ACCESS_TOKEN to Data.userData.accessToken)
 
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true,checkForActionComplete = true).
         execute(params,apiName = ApiName.ADD_CASH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
