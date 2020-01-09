@@ -786,4 +786,8 @@ public interface APIServices {
 	@POST("/toggle_driver_destination")
 	void toggleDriverDest(@FieldMap Map<String, String> params,
 							   Callback<Object> callback);
+
+	@FormUrlEncoded
+	@POST("/update_driver_property")
+	void updateDriverProperty(@FieldMap Map<String, String> params, Callback<FeedCommonResponseKotlin> callback);
 }

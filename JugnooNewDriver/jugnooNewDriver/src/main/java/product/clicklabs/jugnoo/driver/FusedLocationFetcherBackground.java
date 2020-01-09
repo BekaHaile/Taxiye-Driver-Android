@@ -4,7 +4,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -64,6 +64,9 @@ public class FusedLocationFetcherBackground extends LocationCallback {
 			if(location != null && gpsLocationUpdate != null && !Utils.mockLocationEnabled(location)) {
 				Log.w("FusedLocationFetcherBackground", "onReceive location="+location);
 				gpsLocationUpdate.onGPSLocationChanged(location);
+				if(fusedLocationClient != null) {
+					LocationFetcher.saveLatLngToSP(fusedLocationClient.getApplicationContext(), location);
+				}
 			}
 		}
 

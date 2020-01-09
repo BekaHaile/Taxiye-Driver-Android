@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/background_white_rounded_bordered"/>
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivTasksImage"
         android:layout_width="120dp"
         android:layout_marginTop="30dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="60dp" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvBrandingOffer"
         android:layout_width="0dp"
         app:layout_constraintStart_toStartOf="@id/viewMain"
@@ -46,7 +46,7 @@
         android:textSize="18sp"
         android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvValidTill"
         android:layout_width="0dp"
         app:layout_constraintStart_toStartOf="@id/viewMain"
@@ -63,7 +63,7 @@
         android:layout_marginBottom="25dp"
         android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivSeparator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,4 +71,4 @@
         android:layout_width="0dp"
         android:layout_height="8dp"
         android:background="@color/chat_background" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

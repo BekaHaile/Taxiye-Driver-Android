@@ -71,7 +71,7 @@
 
     <string name="reached_destination">Reached Destination</string>
     <string name="distance">Distance</string>
-    <string name="wait_time">Wait Time</string>
+    <string name="wait_time">Congestion Time</string>
     <string name="fare">Fare</string>
 
     <string name="accept_ride">Accept Ride</string>
@@ -515,7 +515,7 @@
     <string name="commission_to_be_deposited">Commission to be deposited</string>
     <string name="trips">TRIPS</string>
     <string name="home">Home</string>
-    <string name="duration">DURATION</string>
+    <string name="duration">Duration</string>
     <string name="daily_earnings">DAILY EARNINGS</string>
     <string name="Invoices_cap">INVOICES</string>
     <string name="Today_earning">TODAY\'S EARNING</string>
@@ -1130,7 +1130,7 @@
     <string name="my_rates">My Rates</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="edit_rate_card">Edit Rate Card</string>
-    <string name="wait_time_per_min">Wait Time (per min)</string>
+    <string name="wait_time_per_min">Congestion Time (per min)</string>
     <string name="number_00">00</string>
     <string name="please_complete_your_profile">Please complete your profile and setup your Rate Card to start driving with %s</string>
     <string name="upload_documents">Upload Documents</string>
@@ -1292,6 +1292,16 @@
     <string name="please_select_fleet">Please select fleet</string>
     <string name="select_ringtone">Select Ringtone</string>
     <string name="ringtone1">Ringtone 1</string>
+    <string name="send_via">Send via</string>
+    <string name="whatsapp_not_installed">Whatsapp not installed</string>
+    <string name="download_jugnoo_app">Download Jugnoo App</string>
+    <string name="download_jugnoo_driver_app">Download Jugnoo Driver App</string>
+    <string name="share_via_whatsapp">Share via Whatsapp</string>
+    <string name="view_more_sharing_options">View more sharing options</string>
+    <string name="only_cash_rides">Only Cash Rides</string>
+    <string name="only_long_rides">Only Long Rides</string>
+    <string name="we_are_unable_to_process_your_request">We are unable to process your request at this time. Please try again later.</string>
+    <string name="please_install_whatsapp">Please install Whatsapp</string>
     <string name="title_activity_destination_ride">DestinationRideActivity</string>
     <string name="dest_ride">Destination Ride</string>
     <string name="set_destination">Set Destination</string>

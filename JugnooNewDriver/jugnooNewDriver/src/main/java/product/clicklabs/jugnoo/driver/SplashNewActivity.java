@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -18,10 +21,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -55,7 +58,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.picker.Country;
 import com.picker.CountryPicker;
 import com.picker.OnCountryPickerListener;
@@ -81,6 +87,7 @@ import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity;
 import product.clicklabs.jugnoo.driver.ui.LogoutCallback;
 import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -853,25 +860,54 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			handler.removeCallbacksAndMessages(null);
 		}
 
-		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "getDeviceToken() " +  FirebaseInstanceId.getInstance().getToken());
+//		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG, "getDeviceToken() " +  FirebaseInstanceId.getInstance().getToken());
 
-		if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getToken())){
-			Data.deviceToken = FirebaseInstanceId.getInstance().getToken();
-			Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			checkForTokens();
-		}else {
-			//wait for broadcast
-			try {
-				LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
-			} catch (Exception e) {
-				e.printStackTrace();
+		FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+			@Override
+			public void onComplete(@NonNull Task<InstanceIdResult> task) {
+				if(!task.isSuccessful()) {
+					Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+					return;
+				}
+				if(task.getResult() != null) {
+					Log.e("DEVICE_TOKEN_TAG SPLASH_NEW_ACTIVITY  -> getDeviceToken", task.getResult().getToken());
+					if(!TextUtils.isEmpty(task.getResult().getToken())){
+						Data.deviceToken = task.getResult().getToken();
+						Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+						checkForTokens();
+					}else {
+						//wait for broadcast
+						try {
+							LocalBroadcastManager.getInstance(SplashNewActivity.this).unregisterReceiver(deviceTokenReceiver);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						LocalBroadcastManager.getInstance(SplashNewActivity.this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+						//give message after waiting for 5 Seconds
+						handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
+					}
+				}
+
 			}
-			try{LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());}catch(Exception ignored){}
-			//give message after waiting for 5 Seconds
-			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
-
-
-		}
+		});
+//		Log.i(SplashNewActivity.DEVICE_TOKEN_TAG + "getDeviceToken()", FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken());
+//		if(!TextUtils.isEmpty(FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken())){
+//			Data.deviceToken = FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken();
+//			Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+//			checkForTokens();
+//		}else {
+//			//wait for broadcast
+//			try {
+//				LocalBroadcastManager.getInstance(this).unregisterReceiver(deviceTokenReceiver);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			LocalBroadcastManager.getInstance(this).registerReceiver(deviceTokenReceiver, deviceTokenReceiverFilter());
+//			//give message after waiting for 5 Seconds
+//			handler.postDelayed(deviceTokenNotFoundRunnable,5*1000);
+//
+//
+//		}
 
 
 
@@ -1830,14 +1866,19 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 				public void onClick(View view) {
 					try {
 						loginDataFetched = false;
-						dialog.dismiss();
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						if("".equalsIgnoreCase(link)) {
-							intent.setData(Uri.parse("market://details?id="+BuildConfig.APPLICATION_ID));
-						} else {
-							intent.setData(Uri.parse(link));
+						if(activity instanceof DriverSplashActivity){
+							((DriverSplashActivity)activity).setGoToHomeScreenCalled(false);
+						} else if(activity instanceof DriverDocumentActivity){
+							((DriverDocumentActivity)activity).goToHomeScreenCalled = false;
 						}
-						activity.startActivity(intent);
+						dialog.dismiss();
+						if("".equalsIgnoreCase(link)) {
+							openAppRating(activity);
+						} else {
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse(link));
+							activity.startActivity(intent);
+						}
 						activity.finish();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -1851,7 +1892,51 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			e.printStackTrace();
 		}
 	}
-	
+
+	private static void openAppRating(Context context) {
+		// you can also use BuildConfig.APPLICATION_ID
+		String appId = context.getPackageName();
+		Intent rateIntent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse("market://details?id=" + appId));
+		boolean marketFound = false;
+
+		// find all applications able to handle our rateIntent
+		final List<ResolveInfo> otherApps = context.getPackageManager()
+				.queryIntentActivities(rateIntent, 0);
+		for (ResolveInfo otherApp: otherApps) {
+			// look for Google Play application
+			if (otherApp.activityInfo.applicationInfo.packageName
+					.equals("com.android.vending")) {
+
+				ActivityInfo otherAppActivity = otherApp.activityInfo;
+				ComponentName componentName = new ComponentName(
+						otherAppActivity.applicationInfo.packageName,
+						otherAppActivity.name
+				);
+				// make sure it does NOT open in the stack of your activity
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// task reparenting if needed
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				// if the Google Play was already open in a search result
+				//  this make sure it still go to the app page you requested
+				rateIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// this make sure only the Google Play app is allowed to
+				// intercept the intent
+				rateIntent.setComponent(componentName);
+				context.startActivity(rateIntent);
+				marketFound = true;
+				break;
+
+			}
+		}
+
+		// if GP not present on device, open web browser
+		if (!marketFound) {
+			Intent webIntent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse("https://play.google.com/store/apps/details?id="+appId));
+			context.startActivity(webIntent);
+		}
+	}
 	
 	
 	public static void sendToCustomerAppPopup(String title, String message, final Activity activity) {
@@ -2349,110 +2434,11 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	}
 	
 	
-	public static boolean isLastLocationUpdateFine(Activity activity){
-		try {
-			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
-			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
-			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
-			
-			long currentTime = System.currentTimeMillis();
-			
-			if(lastLocationUpdateTime == 0){
-				lastLocationUpdateTime = System.currentTimeMillis();
-			}
-			
-			long systemUpTime = SystemClock.uptimeMillis();
-			
-			
-			
-			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
-						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
-					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
-						showRestartPhonePopup(activity);
-						return false;
-					}
-					else{
-						dismissRestartPhonePopup();
-						return true;
-					}
-				}
-				else{
-					dismissRestartPhonePopup();
-					return true;
-				}
-			}
-			else{
-				dismissRestartPhonePopup();
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			dismissRestartPhonePopup();
-			return true;
-		}
-	}
+
 	
+
 	
-	public static Dialog restartPhoneDialog;
-	public static void showRestartPhonePopup(final Activity activity){
-		try {
-			if(restartPhoneDialog == null || !restartPhoneDialog.isShowing()){
-				restartPhoneDialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-				restartPhoneDialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-				restartPhoneDialog.setContentView(R.layout.dialog_custom_one_button);
-	
-				RelativeLayout frameLayout = (RelativeLayout) restartPhoneDialog.findViewById(R.id.rv);
-				new ASSL(activity, frameLayout, 1134, 720, true);
-	
-				WindowManager.LayoutParams layoutParams = restartPhoneDialog.getWindow().getAttributes();
-				layoutParams.dimAmount = 0.6f;
-				restartPhoneDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-				restartPhoneDialog.setCancelable(false);
-				restartPhoneDialog.setCanceledOnTouchOutside(false);
-	
-				TextView textHead = (TextView) restartPhoneDialog.findViewById(R.id.textHead);
-				textHead.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-				textHead.setVisibility(View.GONE);
-				TextView textMessage = (TextView) restartPhoneDialog.findViewById(R.id.textMessage);
-				textMessage.setTypeface(Fonts.mavenRegular(activity));
-	
-				textMessage.setMovementMethod(new ScrollingMovementMethod());
-				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
-				
-				textMessage.setText(activity.getString(R.string.network_problem, activity.getString(R.string.appname)));
-				
-	
-				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);
-				btnOk.setTypeface(Fonts.mavenRegular(activity));
-	
-				btnOk.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						restartPhoneDialog.dismiss();
-						activity.finish();
-					}
-				});
-	
-				restartPhoneDialog.show();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
-	public static void dismissRestartPhonePopup(){
-		try{
-			if(restartPhoneDialog != null && restartPhoneDialog.isShowing()){
-				restartPhoneDialog.dismiss();
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
+
 	public static boolean checkIfTrivialAPIErrors(Activity activity, JSONObject jObj, int flag, LogoutCallback callback){
 		try {
 			if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){

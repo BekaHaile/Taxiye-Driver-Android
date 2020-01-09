@@ -1,9 +1,9 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View

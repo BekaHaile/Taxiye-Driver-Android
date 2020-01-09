@@ -12,14 +12,13 @@ import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 public class UserData {
-	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
+	public String accessToken, userName, userImage, referralCode, phoneNo, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
-	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled;
-	public int destinationOptionEnable;
-	public CurrDestRide currDestRideObj;
-	public double showDriverRating;
-	public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer, referralDialogText;
+	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled, destinationOptionEnable;
+    public CurrDestRide currDestRideObj;
+    public double showDriverRating;
+	public String deiValue, driverSupportNumber, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
 	public long remainigPenaltyPeriod, walletUpdateTimeout;
@@ -31,8 +30,6 @@ public class UserData {
 	private String hippoTicketFAQ;
 	private String currency;
 	public Double creditsEarned,commissionSaved;
-	private String referralMessageDriver;
-	private String referralImageD2D, referralImageD2C;
 	private String getCreditsInfo, getCreditsImage;
 	private int sendCreditsEnabled;
 	private int resendEmailInvoiceEnabled;
@@ -41,21 +38,23 @@ public class UserData {
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
 	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
+	private int subscriptionEnabled;
+	private int onlyCashRides, onlyLongRides;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
-					int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus,
-					int sharingEnabled, int sharingAvailable, String driverSupportNumber, String referralSMSToCustomer,
-					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
+					int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue,
+					int sharingEnabled, int sharingAvailable, String driverSupportNumber,
+					double showDriverRating, double driverArrivalDistance, String referralButtonText,
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
 					String userId, String userEmail, String blockedAppPackageMessage,
 					int deliveryEnabled, int deliveryAvailable, Integer fareCachingLimit, int isCaptiveDriver, String countryCode, String userIdentifier,
 					String hippoTicketFAQ, String currency,
-					Double creditsEarned, Double commissionSaved, String referralMessageDriver,
-					String referralImageD2D, String referralImageD2C, String getCreditsInfo, String getCreditsImage,
-					int sendCreditsEnabled,VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag) {
+					Double creditsEarned, Double commissionSaved,
+					String getCreditsInfo, String getCreditsImage,
+					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -73,19 +72,16 @@ public class UserData {
 		this.mealsAvailable = mealsAvailable;
 		this.fatafatAvailable = fatafatAvailable;
 		this.deiValue = deiValue;
-		this.customerReferralBonus = customerReferralBonus;
 
 		this.sharingEnabled = sharingEnabled;
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
-		this.referralSMSToCustomer = referralSMSToCustomer;
 		this.getCreditsInfo = getCreditsInfo;
 		this.getCreditsImage = getCreditsImage;
 		this.driverOnlineHours = "00:00";
 
 		this.showDriverRating = showDriverRating;
 		this.driverArrivalDistance = driverArrivalDistance;
-		this.referralMessage = referralMessage;
 		this.referralButtonText = referralButtonText;
 		this.referralDialogText = referralDialogText;
 		this.referralDialogHintText = referralDialogHintText;
@@ -106,14 +102,14 @@ public class UserData {
 		this.currency = currency;
 		this.creditsEarned = creditsEarned;
 		this.commissionSaved = commissionSaved;
-		this.referralMessageDriver = referralMessageDriver;
-		this.referralImageD2D = referralImageD2D;
-		this.referralImageD2C = referralImageD2C;
 		this.sendCreditsEnabled = sendCreditsEnabled;
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
+		this.subscriptionEnabled = subscriptionEnabled;
+		this.onlyCashRides = onlyCashRides;
+		this.onlyLongRides = onlyLongRides;
 	}
 
 	public String getUserId() {
@@ -176,9 +172,9 @@ public class UserData {
 	public static String getDistanceUnit(Context context){
 		return Prefs.with(context).getString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km));
 	}
-	public static double getDistanceUnitFactor(Context context){
+	public static double getDistanceUnitFactor(Context context, boolean forKm){
 		double factor = (double) Prefs.with(context).getFloat(Constants.KEY_DISTANCE_UNIT_FACTOR, 1F);
-		return factor/1000.0D;
+		return factor/(forKm ? 1D : 1000.0D);
 	}
 
 	public String getCurrency() {
@@ -187,30 +183,6 @@ public class UserData {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
-	}
-
-	public String getReferralMessageDriver() {
-		return referralMessageDriver;
-	}
-
-	public void setReferralMessageDriver(String referralMessageDriver) {
-		this.referralMessageDriver = referralMessageDriver;
-	}
-
-	public String getReferralImageD2C() {
-		return referralImageD2C;
-	}
-
-	public void setReferralImageD2C(String referralImageD2C) {
-		this.referralImageD2C = referralImageD2C;
-	}
-
-	public String getReferralImageD2D() {
-		return referralImageD2D;
-	}
-
-	public void setReferralImageD2D(String referralImageD2D) {
-		this.referralImageD2D = referralImageD2D;
 	}
 
 	public String getGetCreditsInfo() {
@@ -286,6 +258,30 @@ public class UserData {
 
 	public void setDriverTag(String driverTag) {
 		this.driverTag = driverTag;
+	}
+
+	public int getOnlyCashRides() {
+		return onlyCashRides;
+	}
+
+	public void setOnlyCashRides(int onlyCashRides) {
+		this.onlyCashRides = onlyCashRides;
+	}
+
+	public int getOnlyLongRides() {
+		return onlyLongRides;
+	}
+
+	public void setOnlyLongRides(int onlyLongRides) {
+		this.onlyLongRides = onlyLongRides;
+	}
+
+	public int getSubscriptionEnabled() {
+		return subscriptionEnabled;
+	}
+
+	public void setSubscriptionEnabled(int subscriptionEnabled) {
+		this.subscriptionEnabled = subscriptionEnabled;
 	}
 
 	public ArrayList<SearchResultNew> getSavedAddressList(){

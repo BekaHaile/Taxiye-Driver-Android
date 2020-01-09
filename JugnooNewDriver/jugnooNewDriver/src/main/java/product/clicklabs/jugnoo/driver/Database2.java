@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -466,44 +466,6 @@ public class Database2 {                                                        
 
 
 
-	public String getDriverScreenMode() {
-		Cursor cursor = null;
-		String userMode = Database2.NOT_VULNERABLE;
-		try {
-			String[] columns = new String[]{Database2.DRIVER_SCREEN_MODE};
-			cursor = database.query(Database2.TABLE_DRIVER_SCREEN_MODE, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				userMode = cursor.getString(cursor.getColumnIndex(Database2.DRIVER_SCREEN_MODE));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null){cursor.close();}
-		}
-		return userMode;
-	}
-
-
-	public void updateDriverScreenMode(String userMode) {
-		try {
-			deleteDriverScreenMode();
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DRIVER_SCREEN_MODE, userMode);
-			database.insert(Database2.TABLE_DRIVER_SCREEN_MODE, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	private void deleteDriverScreenMode() {
-		try {
-			database.delete(Database2.TABLE_DRIVER_SCREEN_MODE, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	public Location getDriverCurrentLocation(Context context) {

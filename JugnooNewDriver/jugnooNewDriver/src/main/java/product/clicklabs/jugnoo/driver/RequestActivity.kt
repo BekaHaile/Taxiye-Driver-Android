@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.ViewGroup
 import android.widget.Toast
@@ -203,7 +203,8 @@ class RequestActivity : AppCompatActivity(), ActivityStateCallback, BidInteracti
 
     override fun onPause() {
         super.onPause()
-        try {LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver) } catch (ignored: Exception) {}
+        try {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver) } catch (ignored: Exception) {}
 
     }
 

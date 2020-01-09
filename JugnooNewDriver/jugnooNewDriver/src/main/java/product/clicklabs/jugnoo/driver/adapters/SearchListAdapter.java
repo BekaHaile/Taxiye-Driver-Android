@@ -28,9 +28,9 @@ import java.util.UUID;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.apis.GoogleAPICoroutine;
-import product.clicklabs.jugnoo.driver.apis.PlaceDetailCallback;
-import product.clicklabs.jugnoo.driver.apis.PlacesCallback;
+import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
+import product.clicklabs.jugnoo.driver.google.PlaceDetailCallback;
+import product.clicklabs.jugnoo.driver.google.PlacesCallback;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.PlaceDetailsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.Prediction;
@@ -38,7 +38,6 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -69,7 +68,7 @@ public class SearchListAdapter extends BaseAdapter {
     ArrayList<SearchResultNew> searchResults;
     String uuidVal = "";
 
-	long delay = 700; // 1 seconds after user stops typing
+	long delay = 1000; // 1 seconds after user stops typing
 	long last_text_edit = 0;
 	private Handler handler;
 	private class CustomRunnable implements Runnable {
@@ -130,6 +129,7 @@ public class SearchListAdapter extends BaseAdapter {
 						SearchListAdapter.this.searchListActionsHandler.onTextChange(s.toString());
 						if (s.length() > 0) {
 							last_text_edit = System.currentTimeMillis();
+                            handler.removeCallbacks(input_finish_checker);
 							handler.postDelayed(input_finish_checker.setTextToSearch(s.toString().trim()), delay);
 						}
 						else{
@@ -318,9 +318,10 @@ public class SearchListAdapter extends BaseAdapter {
                             refreshingAutoComplete = false;
 
                             if (!editTextForSearch.getText().toString().trim().equalsIgnoreCase(searchText)) {
+								handler.removeCallbacks(input_finish_checker);
 								handler.postDelayed(input_finish_checker.setTextToSearch(editTextForSearch.getText().toString().trim()), delay);
                             }
-                            GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);
+//                            GoogleRestApis.INSTANCE.logGoogleRestAPIC("0", "0", GoogleRestApis.API_NAME_AUTOCOMPLETE);
 
 
                         } catch (Exception e) {
@@ -393,8 +394,8 @@ public class SearchListAdapter extends BaseAdapter {
 
 
                     if(placeDetailsResponse.getResults().get(0).getGeometry().getLocation() != null) {
-                        GoogleRestApis.INSTANCE.logGoogleRestAPIC(String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLat()),
-                                String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLng()), GoogleRestApis.API_NAME_PLACES);
+//                        GoogleRestApis.INSTANCE.logGoogleRestAPIC(String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLat()),
+//                                String.valueOf(placeDetailsResponse.getResults().get(0).getGeometry().getLocation().getLng()), GoogleRestApis.API_NAME_PLACES);
                     }
 
                 } catch (Exception e) {

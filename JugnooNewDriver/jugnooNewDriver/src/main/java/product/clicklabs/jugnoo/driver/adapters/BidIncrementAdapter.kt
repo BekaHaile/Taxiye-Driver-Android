@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.adapters
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +10,14 @@ import product.clicklabs.jugnoo.driver.utils.Utils
 
 
 
-class BidIncrementAdapter(var rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<BidIncrementAdapter.BidValViewHolder>(),ItemListener {
+class BidIncrementAdapter(var rv: RecyclerView, val callback:Callback) : RecyclerView.Adapter<BidIncrementAdapter.BidValViewHolder>(),ItemListener {
 
     private var bidVals:MutableList<BidIncrementVal>? = mutableListOf()
     private var currency:String? = "INR"
     private var parentId:Int = 0
 
     fun setList(parentId:Int, currency:String?, initialBidVal:Double, increment:Double, selectedVal:Double,
-                stepSize:Int, rv:RecyclerView){
+                stepSize:Int, rv: RecyclerView){
         this.rv = rv
         this.parentId = parentId
         this.currency = currency
@@ -61,7 +61,7 @@ class BidIncrementAdapter(var rv:RecyclerView, val callback:Callback) : Recycler
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
-        val pos:Int = rv.getChildLayoutPosition(parentView)
+        val pos:Int = rv.getChildLayoutPosition(parentView!!)
         if(pos != RecyclerView.NO_POSITION){
             when(childView!!.id){
                 R.id.tvBidVal->{

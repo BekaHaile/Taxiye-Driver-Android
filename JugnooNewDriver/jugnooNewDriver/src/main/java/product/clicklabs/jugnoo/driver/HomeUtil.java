@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +12,6 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
@@ -114,6 +112,7 @@ public class HomeUtil {
 		params.put(Constants.KEY_OPERATOR_TOKEN, MyApplication.getInstance().getString(R.string.white_label_key));
 		params.put(Constants.LOGIN_TYPE, Data.LOGIN_TYPE);
 		params.put(Constants.KEY_DEVICE_TYPE, Data.DEVICE_TYPE);
+		params.put(Constants.KEY_APP_VERSION, String.valueOf(Data.appVersion));
 		params.put(Constants.KEY_LOCALE, Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang)));
 	}
 
@@ -121,6 +120,7 @@ public class HomeUtil {
 		params.addPart(Constants.KEY_OPERATOR_TOKEN, new TypedString(MyApplication.getInstance().getString(R.string.white_label_key)));
 		params.addPart(Constants.LOGIN_TYPE, new TypedString(Data.LOGIN_TYPE));
 		params.addPart(Constants.KEY_DEVICE_TYPE, new TypedString(Data.DEVICE_TYPE));
+		params.addPart(Constants.KEY_APP_VERSION, new TypedString(String.valueOf(Data.appVersion)));
 		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
 	}
 
@@ -184,6 +184,9 @@ public class HomeUtil {
 		@SerializedName(Constants.KEY_ACCESS_TOKEN)
 		private String accessToken;
 
+		@SerializedName(Constants.KEY_APP_VERSION)
+		private String appVersion;
+
 		@SerializedName(Constants.KEY_OPERATOR_TOKEN)
 		private String operatorToken;
 
@@ -197,6 +200,7 @@ public class HomeUtil {
 			this.accessToken = Data.userData!=null?Data.userData.accessToken:"";
 			this.operatorToken =MyApplication.getInstance().getString(R.string.white_label_key);
 			this.deviceType = Data.DEVICE_TYPE;
+			this.appVersion = String.valueOf(Data.appVersion);
 			this.locale = Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang));
 		}
 	}

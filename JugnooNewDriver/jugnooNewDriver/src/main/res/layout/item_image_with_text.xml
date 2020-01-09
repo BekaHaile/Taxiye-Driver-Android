@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivImage1"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -25,7 +25,7 @@
         android:layout_alignBottom="@id/ivImage1"
         android:background="@drawable/shadow_up_fresh_home_item"/>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
         android:layout_width="40dp"
         android:layout_height="wrap_content"

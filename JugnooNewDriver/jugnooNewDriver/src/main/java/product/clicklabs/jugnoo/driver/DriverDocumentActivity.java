@@ -5,16 +5,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -35,6 +41,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -43,7 +50,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class DriverDocumentActivity extends BaseFragmentActivity implements DocumentDetailsFragment.InteractionListener {
+public class DriverDocumentActivity extends BaseFragmentActivity implements DocumentDetailsFragment.InteractionListener,CallbackSlideOnOff {
 
 	View backBtn;
 	TextView title;
@@ -55,6 +62,11 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	DocumentListFragment documentListFragment;
 	boolean inSideApp = false;
 	int requirement, brandingImagesOnly;
+	private SlidingSwitch slidingSwitch;
+	private RelativeLayout containerSwitch, viewSlide;
+	private LinearLayout rlOnOff;
+	private TextView tvOnlineTop,tvOfflineTop;
+	private int slideVal = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +109,42 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 			title.setText(R.string.places);
 		}
 
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
-				.commit();
+		containerSwitch = findViewById(R.id.containerSwitch);
+		slidingSwitch = new SlidingSwitch(containerSwitch, this);
+		tvOnlineTop = findViewById(R.id.tvOnlineTop);
+		tvOfflineTop = findViewById(R.id.tvOfflineTop);
+		viewSlide = findViewById(R.id.viewSlide);
+		rlOnOff = findViewById(R.id.rlOnOff);
+
+		slideVal = 0;
+//		if(!getIntent().getBooleanExtra("in_side",false) && getResources().getBoolean(R.bool.traction_request_in_documents)) {
+//			if (slideVal == 0) {
+//				slidingSwitch.setSlideLeft();
+//				getSupportFragmentManager().beginTransaction()
+//						.add(R.id.fragment, TractionListFragment.newInstance(accessToken,true), TractionListFragment.class.getName())
+//						.commit();
+//				title.setVisibility(View.GONE);
+//				containerSwitch.setVisibility(View.VISIBLE);
+//				tvOnlineTop.setSelected(false);
+//				tvOfflineTop.setSelected(true);
+//				viewSlide.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_theme_rounded));
+//				slidingSwitch.getView().findViewById(R.id.switchContainer).getMeasuredWidth();
+//				slidingSwitch.getView().findViewById(R.id.viewSlide).getMeasuredWidth();
+//				viewSlide.post(() -> slidingSwitch.setSlideLeft());
+//				rlOnOff.setBackground(ContextCompat.getDrawable(DriverDocumentActivity.this, R.drawable.selector_red_stroke_white_theme));
+//				submitButton.setVisibility(View.GONE);
+//			} else {
+//				slidingSwitch.setSlideRight();
+//				removeTractionFrag();
+//				addDocumentListFragment();
+//			}
+//		} else {
+//			removeTractionFrag();
+			addDocumentListFragment();
+//		}
 
 
+//
 
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +186,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 				performbackPressed();
 			}
 		});
+	}
+
+	private void addDocumentListFragment() {
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
+				.commit();
+		containerSwitch.setVisibility(View.GONE);
+		title.setVisibility(View.VISIBLE);
 	}
 
 	public Fragment getDocumentDetailsFragment() {
@@ -301,144 +352,22 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accessToken);
-				params.put("device_token", FirebaseInstanceId.getInstance().getToken());
-
-				params.put("latitude", ""+Data.latitude);
-				params.put("longitude", ""+Data.longitude);
-
-				params.put("locale", conf.locale.toString());
-				params.put("app_version", ""+Data.appVersion);
-				params.put("device_type", Data.DEVICE_TYPE);
-				params.put("unique_device_id", Data.uniqueDeviceId);
-				params.put("is_access_token_new", "1");
-				params.put("client_id", Data.CLIENT_ID);
-				params.put("login_type", Data.LOGIN_TYPE);
-
-				params.put("device_name", Utils.getDeviceName());
-				params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
-				HomeUtil.putDefaultParams(params);
-
-				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
-					params.put("auto_n_cab_installed", "1");
-				}
-				else{
-					params.put("auto_n_cab_installed", "0");
-				}
-
-
-				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
-					params.put("uber_installed", "1");
-				}
-				else{
-					params.put("uber_installed", "0");
-				}
-
-				if(Utils.telerickshawInstall(activity)){
-					params.put("telerickshaw_installed", "1");
-				}
-				else{
-					params.put("telerickshaw_installed", "0");
-				}
-
-				if(Utils.olaInstall(activity)){
-					params.put("ola_installed", "1");
-				}
-				else{
-					params.put("ola_installed", "0");
-				}
-
-				if(Utils.isDeviceRooted()){
-					params.put("device_rooted", "1");
-				}
-				else{
-					params.put("device_rooted", "0");
-				}
-
-				DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
-
-				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
+				FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.getInt("flag");
-							String message = JSONParser.getServerMessage(jObj);
-
-							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
-								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-								else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
-										String resp;
-										try {
-											resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
-										} catch (Exception e) {
-											e.printStackTrace();
-											resp = Constants.SERVER_TIMEOUT;
-										}
-
-										DialogPopup.dismissLoadingDialog();
-										if(resp.contains(Constants.SERVER_TIMEOUT)){
-											DialogPopup.alertPopup(activity, "", message);
-										}
-										else{
-											Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
-											if(getIntent() != null && getIntent().getExtras() != null)
-												intent.putExtras(getIntent().getExtras());
-											startActivity(intent);
-											ActivityCompat.finishAffinity(DriverDocumentActivity.this);
-											overridePendingTransition(R.anim.right_in, R.anim.right_out);
-										}
-
-										Utils.deleteMFile(activity);
-//										Utils.clearApplicationData(DriverDocumentActivity.this);
-										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
-
-
-									}
-									else{
-										DialogPopup.dismissLoadingDialog();
-									}
-								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
-									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
-									Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
-									intent.putExtra("access_token",jObj.getString("access_token"));
-									intent.putExtra("in_side", false);
-									intent.putExtra("doc_required", 3);
-									startActivity(intent);
-								}  else{
-									DialogPopup.alertPopup(activity, "", message);
-									DialogPopup.dismissLoadingDialog();
-								}
-							}
-							else{
-								DialogPopup.dismissLoadingDialog();
-							}
-
-						}  catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-							DialogPopup.dismissLoadingDialog();
+					public void onComplete(@NonNull Task<InstanceIdResult> task) {
+						if(!task.isSuccessful()) {
+							Log.w("DRIVER_DOCUMENT_ACTIVITY","device_token_unsuccessful - onReceive",task.getException());
+							return;
 						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-
-						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+						if(task.getResult() != null) {
+							Log.e("DEVICE_TOKEN_TAG DRIVER_DOCUMENT_ACTIVITY  -> accessTokenLogin", task.getResult().getToken());
+							params.put("device_token", task.getResult().getToken());
+						}
+						accessTokenLoginFunc(activity, responseTime, params);
 
 					}
 				});
+
 
 			}
 			else {
@@ -447,12 +376,168 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 		}
 	}
 
+	private void accessTokenLoginFunc(Activity activity, long responseTime, HashMap<String, String> params) {
+		params.put("latitude", ""+ Data.latitude);
+		params.put("longitude", ""+Data.longitude);
+
+		params.put("locale", conf.locale.toString());
+		params.put("app_version", ""+Data.appVersion);
+		params.put("device_type", Data.DEVICE_TYPE);
+		params.put("unique_device_id", Data.uniqueDeviceId);
+		params.put("is_access_token_new", "1");
+		params.put("client_id", Data.CLIENT_ID);
+		params.put("login_type", Data.LOGIN_TYPE);
+
+		params.put("device_name", Utils.getDeviceName());
+		params.put("imei", DeviceUniqueID.getCachedUniqueId(this));
+		HomeUtil.putDefaultParams(params);
+
+		if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
+			params.put("auto_n_cab_installed", "1");
+		}
+		else{
+			params.put("auto_n_cab_installed", "0");
+		}
+
+
+		if(Utils.isAppInstalled(activity, Data.UBER_APP)){
+			params.put("uber_installed", "1");
+		}
+		else{
+			params.put("uber_installed", "0");
+		}
+
+		if(Utils.telerickshawInstall(activity)){
+			params.put("telerickshaw_installed", "1");
+		}
+		else{
+			params.put("telerickshaw_installed", "0");
+		}
+
+		if(Utils.olaInstall(activity)){
+			params.put("ola_installed", "1");
+		}
+		else{
+			params.put("ola_installed", "0");
+		}
+
+		if(Utils.isDeviceRooted()){
+			params.put("device_rooted", "1");
+		}
+		else{
+			params.put("device_rooted", "0");
+		}
+
+		DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+
+		RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
+			@Override
+			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					int flag = jObj.getInt("flag");
+					String message = JSONParser.getServerMessage(jObj);
+
+					if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag, null)){
+						if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+						else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+						else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+							if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+								String resp;
+								try {
+									resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+								} catch (Exception e) {
+									e.printStackTrace();
+									resp = Constants.SERVER_TIMEOUT;
+								}
+
+										DialogPopup.dismissLoadingDialog();
+										if(resp.contains(Constants.SERVER_TIMEOUT)){
+											DialogPopup.alertPopup(activity, "", message);
+										}
+										else{
+											goToHomeScreen();
+										}
+
+								Utils.deleteMFile(activity);
+//										Utils.clearApplicationData(DriverDocumentActivity.this);
+								FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
+
+
+							}
+							else{
+								DialogPopup.dismissLoadingDialog();
+							}
+						} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+							JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
+							Intent intent = new Intent(DriverDocumentActivity.this, DriverDocumentActivity.class);
+							intent.putExtra("access_token",jObj.getString("access_token"));
+							intent.putExtra("in_side", false);
+							intent.putExtra("doc_required", 3);
+							startActivity(intent);
+						}  else{
+							DialogPopup.alertPopup(activity, "", message);
+							DialogPopup.dismissLoadingDialog();
+						}
+					}
+					else{
+						DialogPopup.dismissLoadingDialog();
+					}
+
+				}  catch (Exception exception) {
+					exception.printStackTrace();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					DialogPopup.dismissLoadingDialog();
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+				DialogPopup.dismissLoadingDialog();
+				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
+			}
+		});
+	}
+
+	private void goToHomeScreen() {
+		if(!hasWindowFocus()){
+			goToHomeScreenCalled = true;
+			return;
+		}
+		Intent intent = new Intent(DriverDocumentActivity.this, HomeActivity.class);
+		if(getIntent() != null && getIntent().getExtras() != null)
+			intent.putExtras(getIntent().getExtras());
+		startActivity(intent);
+		ActivityCompat.finishAffinity(DriverDocumentActivity.this);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
 	}
 
+	public boolean goToHomeScreenCalled = false;
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(hasFocus && goToHomeScreenCalled){
+			goToHomeScreen();
+			goToHomeScreenCalled = false;
+		}
+	}
 
 	public DocumentListFragment getDocumentListFragment(){
 		return ( (DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName()));
@@ -469,4 +554,33 @@ public class DriverDocumentActivity extends BaseFragmentActivity implements Docu
 	public void setSubmitButtonVisibility(int visibility) {
 		submitButton.setVisibility(visibility);
 	}
+
+	@Override
+	public void onClickStandAction(int slideDir) {
+//		if(slideVal != slideDir && slideDir == 1) {
+//			removeTractionFrag();
+//		}
+//		if (slideDir == 1) {
+//			title.setVisibility(View.VISIBLE);
+//			containerSwitch.setVisibility(View.GONE);
+//			addDocumentListFragment();
+//			submitButton.setVisibility(View.VISIBLE);
+//		} else {
+//			title.setVisibility(View.GONE);
+//			containerSwitch.setVisibility(View.VISIBLE);
+//		}
+//		slideVal = slideDir;
+
+	}
+//
+//	private void removeTractionFrag() {
+//		if(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()) != null) {
+//			getSupportFragmentManager()
+//					.beginTransaction()
+//					.remove(getSupportFragmentManager().findFragmentByTag(TractionListFragment.class.getName()))
+//					.commit();
+//		}
+//		title.setVisibility(View.VISIBLE);
+//		containerSwitch.setVisibility(View.GONE);
+//	}
 }

@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.heremaps.adapter
 
 import android.app.Activity
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +72,7 @@ class HereMapsCategoryAdapter(val activity: Activity, val rv: RecyclerView, val 
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
-        val pos: Int = rv.getChildLayoutPosition(parentView)
+        val pos: Int = rv.getChildLayoutPosition(parentView!!)
         if (pos != RecyclerView.NO_POSITION) {
             when (childView!!.id) {
                 R.id.rbCategoryName -> {

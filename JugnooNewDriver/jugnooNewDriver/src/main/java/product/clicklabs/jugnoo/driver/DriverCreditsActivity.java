@@ -1,9 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import product.clicklabs.jugnoo.driver.fragments.EarnCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.GetCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.SendCreditsFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
+import product.clicklabs.jugnoo.driver.home.HomeBannerAction;
 import product.clicklabs.jugnoo.driver.listeners.DriverCreditsListener;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -24,7 +27,13 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 public class DriverCreditsActivity extends BaseFragmentActivity implements DriverCreditsListener {
 
     private TextView tvTitle;
+    private static final String BANNER_INDEX = "banner_index";
 
+    public static Intent createIntent(Context context, int bannerIndex){
+    	Intent intent = new Intent(context, DriverCreditsActivity.class);
+    	intent.putExtra(BANNER_INDEX, bannerIndex);
+    	return intent;
+	}
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +69,16 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 			}
 		});
 
-		getSupportFragmentManager().beginTransaction()
-				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-				.add(R.id.container, CreditsHomeFragment.newInstance(), CreditsHomeFragment.class.getName())
-				.addToBackStack(CreditsHomeFragment.class.getName())
-				.commit();
+		int bannerIndex = getIntent().getIntExtra(BANNER_INDEX, 0);
+		if(bannerIndex > 0) {
+			openEarnScreen(bannerIndex == HomeBannerAction.ACTION_D2C);
+		} else {
+			getSupportFragmentManager().beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.add(R.id.container, CreditsHomeFragment.newInstance(), CreditsHomeFragment.class.getName())
+					.addToBackStack(CreditsHomeFragment.class.getName())
+					.commit();
+		}
 
 
 
@@ -87,13 +101,19 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	public void openEarnScreen(boolean isCustomerSharing){
 
-		getSupportFragmentManager().beginTransaction()
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
 				.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
 				.add(R.id.container, ShareEarnFragment.newInstance(isCustomerSharing), ShareEarnFragment.class.getName())
-				.addToBackStack(ShareEarnFragment.class.getName())
-				.hide(  getSupportFragmentManager().findFragmentByTag( getSupportFragmentManager()
-						.getBackStackEntryAt(  getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
-				.commit();
+				.addToBackStack(ShareEarnFragment.class.getName());
+		if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+			Fragment topFragment = getSupportFragmentManager().findFragmentByTag(getSupportFragmentManager()
+					.getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName());
+			if(topFragment != null) {
+				transaction.hide(topFragment);
+			}
+		}
+
+		transaction.commit();
 	}
 
 	@Override
@@ -109,13 +129,7 @@ public class DriverCreditsActivity extends BaseFragmentActivity implements Drive
 
 	@Override
 	public void openAdvertiseScreen() {
-		Intent intent = new Intent(this, DriverTasksActivity.class);
-		intent.putExtra("access_token",Data.userData.accessToken);
-		intent.putExtra("in_side", true);
-		intent.putExtra("doc_required", 0);
-		intent.putExtra(Constants.BRANDING_IMAGES_ONLY, 1);
-		startActivity(intent);
-		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+		HomeActivity.openTasksActivity(this);
 	}
 
 	@Override

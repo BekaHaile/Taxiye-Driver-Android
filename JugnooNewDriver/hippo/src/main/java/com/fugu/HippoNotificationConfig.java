@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.LocalBroadcastManager;
 import android.view.View;
 
 import com.fugu.activity.FuguChatActivity;

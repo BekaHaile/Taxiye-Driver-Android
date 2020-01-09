@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters
 
 import android.app.Activity
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +13,14 @@ import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import java.io.File
 
-class DocImagesAdapter(val activity:Activity, var rv:RecyclerView, val callback:Callback) : RecyclerView.Adapter<DocImagesAdapter.DocImageViewHolder>(),ItemListener {
+class DocImagesAdapter(val activity:Activity, var rv: RecyclerView, val callback:Callback) : RecyclerView.Adapter<DocImagesAdapter.DocImageViewHolder>(),ItemListener {
 
     var editable:Boolean = false
     var docIndex = 0
 
     private var docImages:MutableList<DocImage>? = mutableListOf()
 
-    fun setList(docImages: MutableList<DocImage>?, rv:RecyclerView, editable:Boolean, docIndex:Int){
+    fun setList(docImages: MutableList<DocImage>?, rv: RecyclerView, editable:Boolean, docIndex:Int){
         this.rv = rv
         this.editable = editable
         this.docIndex = docIndex
@@ -81,7 +81,7 @@ class DocImagesAdapter(val activity:Activity, var rv:RecyclerView, val callback:
     }
 
     override fun onClickItem(parentView: View?, childView: View?) {
-        val pos:Int = rv.getChildLayoutPosition(parentView)
+        val pos:Int = rv.getChildLayoutPosition(parentView!!)
         if(pos != RecyclerView.NO_POSITION){
             when(childView!!.id){
                 R.id.ivDocImage1->{

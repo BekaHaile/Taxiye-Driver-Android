@@ -3,7 +3,7 @@ package product.clicklabs.jugnoo.driver.dialogs
 import android.app.Activity
 import android.app.Dialog
 import android.media.MediaPlayer
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Button

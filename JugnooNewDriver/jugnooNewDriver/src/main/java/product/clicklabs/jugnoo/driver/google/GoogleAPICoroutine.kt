@@ -1,5 +1,6 @@
-package product.clicklabs.jugnoo.driver.apis
+package product.clicklabs.jugnoo.driver.google
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
@@ -8,11 +9,13 @@ import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.MyApplication
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections
 import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.retrofit.model.PlaceDetailsResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.PlacesAutocompleteResponse
 import product.clicklabs.jugnoo.driver.retrofit.model.Prediction
-import product.clicklabs.jugnoo.driver.utils.GoogleRestApis
+import product.clicklabs.jugnoo.driver.utils.LocaleHelper
+import product.clicklabs.jugnoo.driver.utils.MapUtils
 import product.clicklabs.jugnoo.driver.utils.Prefs
 import retrofit.client.Response
 import retrofit.mime.TypedByteArray
@@ -24,9 +27,12 @@ object GoogleAPICoroutine {
     private fun isGoogleCachingEnabled():Boolean{
         return Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_DRIVER_GOOGLE_CACHING_ENABLED, 1) == 1
     }
+    private fun getUserId():String{
+        return if(Data.userData != null) Data.userData.userId else Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_USER_ID, "0")
+    }
 
     //Api for text input autocomplete Place search
-    fun getAutoCompletePredictions(input:String, sessiontoken:String, components:String, location:String, radius:String, callback:PlacesCallback): Job{
+    fun getAutoCompletePredictions(input:String, sessiontoken:String, components:String, location:String, radius:String, callback: PlacesCallback): Job{
         return GlobalScope.launch(Dispatchers.Main){
             var predictions: MutableList<Prediction>? = null
             val arr = location.split(",")
@@ -37,7 +43,7 @@ object GoogleAPICoroutine {
                     }
                     val response = withContext(Dispatchers.IO) {
                         try { RestClient.getMapsCachingService().getAutocompleteData(input, arr[0].toDouble(), arr[1].toDouble(),
-                                    JUNGOO_APP_PRODUCT_ID, Data.userData.userId) } catch (e: Exception) { null }
+                                JUNGOO_APP_PRODUCT_ID, Data.userData.userId) } catch (e: Exception) { null }
                     }
                     val responseStr = String((response!!.body as TypedByteArray).bytes)
                     val jsonObject = JSONObject(responseStr)
@@ -106,11 +112,68 @@ object GoogleAPICoroutine {
         }
     }
 
+    //api for address from LatLng
+    fun hitGeocode(latLng: LatLng, source:String, callback: GeocodeCachingCallback): Job {
+        return GlobalScope.launch(Dispatchers.Main) {
+            var address: GoogleGeocodeResponse? = null
+            var singleAddress: String? = null
+            try {
+                val jungleObj = JSONObject(Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_GEOCODE_OBJ, Constants.EMPTY_JSON_OBJECT))
+                if(GAPIDirections.checkIfJungleApiEnabled(jungleObj)){
+                    throw Exception()
+                }
+                if(!isGoogleCachingEnabled()){
+                    throw Exception()
+                }
+                val response = withContext(Dispatchers.IO) {
+                    try {RestClient.getMapsCachingService().getReverseGeocode(latLng.latitude, latLng.longitude,
+                            JUNGOO_APP_PRODUCT_ID, getUserId()) } catch (e: Exception) {null}
+                }
+                val responseStr = String((response!!.body as TypedByteArray).bytes)
+                val jsonObject = JSONObject(responseStr)
+
+                val responseCached = jsonObject.getJSONArray("data").getJSONObject(0).getString("json_data")
+                val googleGeocodeResponse = gson.fromJson(responseCached, GoogleGeocodeResponse::class.java)
+                address = googleGeocodeResponse
+            } catch (e: Exception) {
+                var language = ""
+                language = LocaleHelper.getLanguage(MyApplication.getInstance())
+                if (language.equals("hi", ignoreCase = true) || language.equals("hi_in", ignoreCase = true)) {
+                    language = "hi"
+                }
+                val geocodeResult = withContext(Dispatchers.IO) {
+                    try { GAPIDirections.getGeocodeAddress(latLng, language, source)} catch (e: Exception) {null}
+                }
+                if (geocodeResult != null) {
+                    if(geocodeResult.googleGeocodeResponse != null && geocodeResult.googleGeocodeResponse.results != null && geocodeResult.googleGeocodeResponse.results!!.isNotEmpty()){
+                        address = geocodeResult.googleGeocodeResponse
+
+                        if(isGoogleCachingEnabled()) {
+                            val gapiAddress = MapUtils.parseGAPIIAddress(geocodeResult.googleGeocodeResponse)
+                            val body = InsertGeocode(JUNGOO_APP_PRODUCT_ID, TYPE_REVERSE_GEOCODING, gapiAddress.searchableAddress, getUserId(),
+                                    latLng.latitude, latLng.longitude, geocodeResult.googleGeocodeResponse)
+                            insertGeocodeCache(body)
+                        }
+                    } else if(geocodeResult.singleAddress != null){
+                        singleAddress = geocodeResult.singleAddress
+                    }
+                }
+            }
+            callback.geocodeAddressFetched(address, singleAddress)
+        }
+    }
+
+
     private const val JUNGOO_APP_PRODUCT_ID = 2
+    private const val TYPE_REVERSE_GEOCODING = "reverse_geocoding"
     private const val TYPE_AUTO_COMPLETE = "auto_complete"
     private const val TYPE_GEOCODING = "geocoding"
 
-
+    private fun insertGeocodeCache(params: InsertGeocode){
+        GlobalScope.launch(Dispatchers.IO) {
+            try {RestClient.getMapsCachingService().insertGeocode(params)} catch (ignored: Exception) {}
+        }
+    }
     private fun insertPlaceAutocompleteCache(params: InsertAutocomplete){
         GlobalScope.launch(Dispatchers.IO) {
             try {RestClient.getMapsCachingService().insertAutoComplete(params)} catch (ignored: Exception) {}
@@ -130,6 +193,9 @@ interface PlacesCallback{
 interface PlaceDetailCallback{
     fun onPlaceDetailReceived(placeDetailsResponse: PlaceDetailsResponse)
     fun onPlaceDetailError()
+}
+interface GeocodeCachingCallback{
+    fun geocodeAddressFetched(address: GoogleGeocodeResponse?, singleAddress:String?)
 }
 
 class InsertAutocomplete(
@@ -161,4 +227,20 @@ class InsertPlaceDetail(
         val placeId:String,
         @SerializedName(Constants.KEY_JSONDATA)
         val jsonData:PlaceDetailsResponse
+)
+class InsertGeocode(
+        @SerializedName(Constants.KEY_PRODUCT_ID)
+        val productId:Int,
+        @SerializedName(Constants.KEY_TYPE)
+        val type:String,
+        @SerializedName(Constants.KEY_ADDRESS)
+        val address:String,
+        @SerializedName(Constants.KEY_USER_ID)
+        val userId:String,
+        @SerializedName(Constants.KEY_LAT)
+        val lat:Double,
+        @SerializedName(Constants.KEY_LNG)
+        val lng:Double,
+        @SerializedName(Constants.KEY_JSONDATA)
+        val jsonData:GoogleGeocodeResponse
 )

@@ -11,16 +11,15 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.LocalBroadcastManager
 import android.text.TextUtils
+import androidx.core.app.NotificationCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_ACCURACY
 import product.clicklabs.jugnoo.driver.GpsDistanceCalculator.MAX_SPEED_THRESHOLD
@@ -30,8 +29,13 @@ import product.clicklabs.jugnoo.driver.altmetering.model.*
 import product.clicklabs.jugnoo.driver.altmetering.utils.PolyUtil
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo
 import product.clicklabs.jugnoo.driver.datastructure.UserData
+import product.clicklabs.jugnoo.driver.directions.GAPIDirections
+import product.clicklabs.jugnoo.driver.google.GoogleRestApis
 import product.clicklabs.jugnoo.driver.ui.DriverSplashActivity
-import product.clicklabs.jugnoo.driver.utils.*
+import product.clicklabs.jugnoo.driver.utils.Log
+import product.clicklabs.jugnoo.driver.utils.MapUtils
+import product.clicklabs.jugnoo.driver.utils.Prefs
+import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.utils.Utils.getDecimalFormat
 import retrofit.mime.TypedByteArray
 
@@ -236,6 +240,7 @@ class AltMeteringService : Service() {
             super.onLocationResult(locationResult)
             if (locationResult != null) {
                 val location = locationResult.lastLocation
+                LocationFetcher.saveLatLngToSP(this@AltMeteringService, location)
                 if(location != null && !Utils.mockLocationEnabled(location)) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     val time = System.currentTimeMillis()
@@ -264,10 +269,14 @@ class AltMeteringService : Service() {
         }
     }
 
-    fun getNotificationMessage():String{
-        return getString(R.string.estimated_dis) + ": " +
-                getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this)) +" "+
-                Utils.getDistanceUnit(UserData.getDistanceUnit(this))
+    private fun getNotificationMessage():String{
+        return if(Prefs.with(this).getInt(Constants.KEY_DRIVER_FARE_MANDATORY, 0) == 0) {
+            getString(R.string.estimated_dis) + ": " +
+                    getDecimalFormat().format(Math.abs(globalPathDistance) * UserData.getDistanceUnitFactor(this, false)) + " " +
+                    Utils.getDistanceUnit(UserData.getDistanceUnit(this))
+        } else {
+            getString(R.string.metering_service_notif_label);
+        }
     }
 
 
@@ -298,20 +307,21 @@ class AltMeteringService : Service() {
                 val drWpList = mutableListOf<DirectionWaypointData>()
                 var sb:StringBuilder? = StringBuilder()
                 var sbPos = StringBuilder()
-                var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null)
+                var drwp:DirectionWaypointData? = DirectionWaypointData(null, null, null, null, null)
                 for (i in waypoints.indices) {
                     when {
                         i == 0 -> {
-                            drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null)
+                            drwp = DirectionWaypointData(waypoints[i].latitude.toString()+comma+waypoints[i].longitude, null, null, waypoints[i], null)
                             sbPos.append(i).append("-")
                         }
                         (i > 0 && i%10 == 0) || i == waypoints.size-1 -> {
                             drwp!!.destination = waypoints[i].latitude.toString()+comma+waypoints[i].longitude
+                            drwp.destLatLng = waypoints[i]
                             drwp.waypoints = sb.toString()
                             drWpList.add(drwp)
                             sbPos.append("-").append(i).append("\n")
 
-                            drwp = DirectionWaypointData(drwp.destination, null, null)
+                            drwp = DirectionWaypointData(drwp.destination, null, null, drwp.sourceLatLng, null)
                             sb = StringBuilder()
                             sbPos.append(i).append("-")
                         }
@@ -327,17 +337,18 @@ class AltMeteringService : Service() {
                 //latLngs, which we got from the api, in main list for concenated route
                 for(drwpObj in drWpList){
                     log("gapi hitting", "drwp=$drwpObj")
-                    val response = if (!TextUtils.isEmpty(drwpObj.waypoints)) {
-                        GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!)
+                    if (!TextUtils.isEmpty(drwpObj.waypoints)) {
+                        val response = GoogleRestApis.getDirectionsWaypoints(drwpObj.source!!, drwpObj.destination!!, drwpObj.waypoints!!, "alt_metering")
+                        val result = String((response.body as TypedByteArray).bytes)
+
+                        list.addAll(MapUtils.getLatLngListFromPath(result))
                     } else {
-                        GoogleRestApis.getDirections(drwpObj.source!!, drwpObj.destination!!, false, "driving", false)
+                        val directionsResult = GAPIDirections.getDirectionsPathSync(engagementId.toLong(), drwpObj.sourceLatLng!!, drwpObj.destLatLng!!, "alt_metering")
+
+                        list.addAll(directionsResult!!.latLngs)
                     }
-                    val result = String((response.body as TypedByteArray).bytes)
-                    val json = JSONObject(result)
 
-                    list.addAll(MapUtils.getLatLngListFromPath(result))
-
-                    log("gapi", "status="+json.getString("status")+", list="+list.size)
+                    log("gapi", "list="+list.size)
                 }
 
                 Log.d(TAG, "total google direction list size list="+list.size)
@@ -487,18 +498,21 @@ class AltMeteringService : Service() {
 
                     } else {
                         Utils.showToast(this@AltMeteringService, getString(R.string.waiting_for_location))
-                        try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
+                        try {
+                            LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(Intent(HomeActivity.INTENT_ACTION_ACTIVITY_END_RIDE_CALLBACK)) } catch (ignored: Exception) { }
                     }
                 }
             }
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).registerReceiver(activityBroadcastReceiver!!, IntentFilter(INTENT_ACTION_END_RIDE_TRIGGER)) } catch (ignored: Exception) { }
             log("service", "registerReceiver")
         }
     }
 
     private fun unregisterActivityBroadcast(){
         if(activityBroadcastReceiver != null) {
-            try {LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
+            try {
+                LocalBroadcastManager.getInstance(this@AltMeteringService).unregisterReceiver(activityBroadcastReceiver!!) } catch (ignored: Exception) { }
             activityBroadcastReceiver = null
             log("service", "unregisterReceiver")
         }
@@ -537,7 +551,8 @@ class AltMeteringService : Service() {
                     putExtra(Constants.KEY_ENGAGEMENT_ID, intentEngagementId)
                 }
                 Log.e(TAG, "InsertRideDataAndEndRide intent = "+intent.extras)
-                try {LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
+                try {
+                    LocalBroadcastManager.getInstance(this@AltMeteringService).sendBroadcast(intent) } catch (ignored: Exception) { }
                 stopForeground(true)
                 stopSelf()
             }
@@ -601,7 +616,7 @@ class AltMeteringService : Service() {
         }
     }
 
-    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?){
+    class DirectionWaypointData(var source: String?, var destination:String?, var waypoints:String?, var sourceLatLng: LatLng?, var destLatLng: LatLng?){
         override fun toString(): String {
             return "$source<>$destination<>$waypoints"
         }

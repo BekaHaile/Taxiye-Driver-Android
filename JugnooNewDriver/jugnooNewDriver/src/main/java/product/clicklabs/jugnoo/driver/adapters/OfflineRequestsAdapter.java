@@ -1,7 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +13,12 @@ import android.widget.TextView;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -30,6 +32,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private DecimalFormat decimalFormatOneDecimal = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
     private static final int TYPE_FOOTER = 2;
     private static final int TYPE_ITEM = 1;
     private Activity activity;
@@ -38,13 +41,15 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private ArrayList<CustomerInfo> requestsList = new ArrayList<>();
     private Callback callback;
     private int totalRequests;
-    HomeActivity homeActivity;
+    private boolean dontFade;
+    Activity homeActivity;
 
-    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, Callback callback, HomeActivity homeActivity) {
+    public OfflineRequestsAdapter(ArrayList<CustomerInfo> requestsList, Activity activity, int rowLayout, int totalRequests, boolean dontFade, Callback callback, Activity homeActivity) {
         this.requestsList = requestsList;
         this.activity = activity;
         this.rowLayout = rowLayout;
         this.totalRequests = totalRequests;
+        this.dontFade = dontFade;
         this.callback = callback;
         this.homeActivity = homeActivity;
     }
@@ -113,7 +118,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             holder.tvPickup.setText(customerInfo.getPickupAddressEng() == null || customerInfo.getPickupAddressEng().trim().isEmpty() ? "----- -----" : customerInfo.getPickupAddressEng().trim());
             holder.tvDrop.setText(customerInfo.getDropAddress() == null || customerInfo.getDropAddress().trim().isEmpty() ? "----- -----" : customerInfo.getDropAddress().trim());
             holder.tvTime.setText(customerInfo.getTimeDiff() == null || customerInfo.getTimeDiff().trim().isEmpty() ? "-- --" : customerInfo.getTimeDiff());
-            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()));
+            holder.tvPrice.setText(customerInfo.getEstimatedDriverFare() == null || customerInfo.getEstimatedDriverFare().isEmpty() || customerInfo.getEstimatedDriverFare().equalsIgnoreCase("0") ? "---" : Data.userData!= null ? Utils.formatCurrencyValue(Data.userData.getCurrency(), customerInfo.getEstimatedDriverFare()):  customerInfo.getEstimatedDriverFare());
 
 
             float scale = activity.getResources().getDisplayMetrics().density;
@@ -130,7 +135,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             distance = customerInfo.getDistance();
 
             holder.tvDistance.setText(
-                    (distance > 0) ? "" + homeActivity.decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity))
+                    (distance > 0) ? "" + decimalFormatOneDecimal.format(distance * UserData.getDistanceUnitFactor(homeActivity, true))
                             + " " + Utils.getDistanceUnit(UserData.getDistanceUnit(homeActivity)) : "- --");
 
             holder.relative.setTag(position);
@@ -169,7 +174,7 @@ public class OfflineRequestsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 holder.relative.setEnabled(true);
             } else {
                 holder.rlAcceptView.setVisibility(View.GONE);
-                holder.ivFaded.setVisibility(View.VISIBLE);
+                holder.ivFaded.setVisibility(dontFade ? View.GONE : View.VISIBLE);
                 holder.relative.setEnabled(false);
             }
 

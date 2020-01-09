@@ -148,7 +148,7 @@
         android:textColor="@color/text_color"
         android:text="@string/offer_you_fare_for_trip"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBidValues"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
