@@ -1310,6 +1310,13 @@
     <string name="dest_trip_disabled">Destination Ride Disabled</string>
     <string name="add_destination">Add Destination</string>
     <string name="destination_ride_end">Destination Rides feature has been disabled. Rides will be sent to you in normal mode.</string>
+    <string name="tap_on_pin">Tap on pin</string>
+    <string name="set_location_on_map">Set Location On Map</string>
+    <string name="unnamed">Unnamed</string>
+    <string name="tap_marker">Tap the marker to set location</string>
+    <string name="please_select_an_address">Please select an address</string>
+    <string name="please_select_an_address_type">Please select an address Type</string>
+    <string name="please_enter_add_type_name">Please specify the address type</string>
 
 
 

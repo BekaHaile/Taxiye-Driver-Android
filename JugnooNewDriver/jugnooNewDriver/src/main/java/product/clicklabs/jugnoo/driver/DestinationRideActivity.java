@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     Dialog addtypeDialog;
     ImageView radioSelected;
     SearchResultNew searchResult;
-    String selectedAddType;
+    String selectedAddType="home";
     RelativeLayout relative;
     LinearLayout destRideEnabledView;
     int addressSelected = -1;
@@ -70,7 +71,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         } else {
             hideDestRideEnabledView();
         }
-        if(Data.userData.getSavedAddressList().isEmpty()){
+        if (Data.userData.getSavedAddressList().isEmpty()) {
             tvSetDestRide.setText(R.string.add_destination);
         }
     }
@@ -102,6 +103,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
     @Override
     public void onPlaceSearchPost(SearchResultNew searchResult) {
+        ivAddDestRide.setVisibility(View.VISIBLE);
         tvSetDestRide.setText(getString(R.string.set_destination));
         this.searchResult = searchResult;
         createDestTypeDialog();
@@ -142,10 +144,8 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     private void setListeners() {
         backBtn.setOnClickListener(view -> DestinationRideActivity.this.onBackPressed());
 
-        ivAddDestRide.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
-                .add(R.id.relativeLayoutContainer, PlaceSearchListFragment.newInstance(), PlaceSearchListFragment.class.getName())
-                .addToBackStack(PlaceSearchListFragment.class.getName())
-                .commit());
+        ivAddDestRide.setOnClickListener(view -> openPlaceSearchFrag()
+        );
 
         tvSetDestRide.setOnClickListener(view -> {
             if (Data.userData.getSavedAddressList().isEmpty()) {
@@ -160,6 +160,13 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
     }
 
+    public void openPlaceSearchFrag() {
+        ivAddDestRide.setVisibility(View.GONE);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.relativeLayoutContainer, PlaceSearchListFragment.newInstance(), PlaceSearchListFragment.class.getName())
+                .addToBackStack(PlaceSearchListFragment.class.getName())
+                .commit();
+    }
 
     public void createDestTypeDialog() {
         addtypeDialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
@@ -193,11 +200,14 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         addtypeDialog.findViewById(R.id.btnCancel).setOnClickListener(view -> addtypeDialog.dismiss());
         addtypeDialog.findViewById(R.id.btnOk).setOnClickListener(view -> {
             if (searchResult != null) {
-
+                if(selectedAddType.isEmpty()){
+                    Utils.showToast(DestinationRideActivity.this, getString(R.string.please_select_an_address_type));
+                    return;
+                }
                 String othr = ((EditText) addtypeDialog.findViewById(R.id.etOther)).getText().toString();
                 if (selectedAddType.equalsIgnoreCase("Other")) {
                     if (othr.equalsIgnoreCase("")) {
-                        ((EditText) addtypeDialog.findViewById(R.id.etOther)).setError("Please enter a name");
+                        ((EditText) addtypeDialog.findViewById(R.id.etOther)).setError(getString(R.string.please_enter_add_type_name));
                         return;
                     }
                     selectedAddType = othr;
@@ -216,12 +226,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     }
 
     public void addressSaved() {
-//        Fragment fragment = getSupportFragmentManager().findFragmentByTag(PlaceSearchListFragment.class.getName());
-//        if (fragment != null) {
-//            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-//        }
         getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
         rvSavedDest.getAdapter().notifyDataSetChanged();
 
     }
@@ -239,6 +244,20 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (getTopFragment()==null) {
+            ivAddDestRide.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public Fragment getTopFragment() {
+        try {
+            androidx.fragment.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+            return fragmentManager.findFragmentByTag(fragmentTag);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void startDestinationRide(int status) {
@@ -301,7 +320,10 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     }
 
     public void hideDestRideEnabledView() {
-        tvSetDestRide.setText(R.string.set_destination);
+        if (Data.userData.getSavedAddressList().isEmpty())
+            tvSetDestRide.setText(R.string.add_destination);
+        else
+            tvSetDestRide.setText(R.string.set_destination);
         destRideEnabledView.setVisibility(View.GONE);
         rvSavedDest.setVisibility(View.VISIBLE);
     }
@@ -324,7 +346,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
 
             public void onFinish() {
                 DialogPopup.alertPopup(DestinationRideActivity.this, "", DestinationRideActivity.this.getString(R.string.dest_trip_disabled));
-                Data.userData.currDestRideObj=null;
+                Data.userData.currDestRideObj = null;
                 hideDestRideEnabledView();
             }
         };
@@ -361,12 +383,12 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
             return savedAddlist == null ? 0 : savedAddlist.size();
         }
 
-        public class Viewholder extends RecyclerView.ViewHolder {
+        class Viewholder extends RecyclerView.ViewHolder {
             View root;
             ImageView imageViewType, ivDeleteAddress;
             TextView textViewSearchName, textViewSearchAddress;
 
-            public Viewholder(View itemView) {
+            Viewholder(View itemView) {
                 super(itemView);
                 root = itemView;
                 relative = root.findViewById(R.id.relative);
@@ -378,9 +400,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                     addressSelected = getAdapterPosition();
                     selectRadio(imageViewType);
                 });
-                ivDeleteAddress.setOnClickListener(view -> {
-                    HomeUtil.saveAddress(activity, Data.userData.getSavedAddressList().get(getAdapterPosition()), true);
-                });
+                ivDeleteAddress.setOnClickListener(view -> HomeUtil.saveAddress(activity, Data.userData.getSavedAddressList().get(getAdapterPosition()), true));
             }
         }
     }
