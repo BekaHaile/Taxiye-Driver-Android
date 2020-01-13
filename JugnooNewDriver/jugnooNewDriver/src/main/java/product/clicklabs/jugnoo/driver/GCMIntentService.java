@@ -677,24 +677,40 @@ public class GCMIntentService extends FirebaseMessagingService {
 											dropPoints, estimatedDist,currency, reverseBid, bidPlaced, bidValue, initialBidValue, estimatedTripDistance,
 											pickupTime, strRentalInfo, incrementPercent, stepSize,pickupAdress,dropAddress,startTimeLocal, bidCreatedAt);
 									Data.addCustomerInfo(customerInfo);
+									if(!HomeActivity.activity.isFinishing()) {
+										if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
+											if (!isOffline) {
+												startRing(this, engagementId, changeRing);
+												notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+														referenceId, userId, perfectRide,
+														isPooled, isDelivery, isDeliveryPool, reverseBid);
+											}
+											flurryEventForRequestPush(engagementId, driverScreenMode);
 
-									if(!isOffline) {
-										startRing(this, engagementId, changeRing);
-										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
-												referenceId, userId, perfectRide,
-												isPooled, isDelivery, isDeliveryPool, reverseBid);
-									}
-									flurryEventForRequestPush(engagementId, driverScreenMode);
+											if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+												startTimeoutAlarm(this);
+											}
+											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 
-									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-										startTimeoutAlarm(this);
-									}
-									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+											Log.e("referenceId", "=" + referenceId);
+										} else {
+											if (!isOffline) {
+												notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
+														referenceId, userId, perfectRide,
+														isPooled, isDelivery, isDeliveryPool, reverseBid);
+												startRing(this, engagementId, changeRing);
+											}
+											flurryEventForRequestPush(engagementId, driverScreenMode);
 
-									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
-										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
-										Log.e("referenceId", "=" + referenceId);
+											if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+												startTimeoutAlarm(this);
+											}
+
+											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+										}
 									}
 								}
 
@@ -708,16 +724,16 @@ public class GCMIntentService extends FirebaseMessagingService {
 										}
 									} else if (jObj.optInt("wake_up_lock_enabled", 0) == 1) {
 										if (HomeActivity.activity != null) {
-											if (!HomeActivity.activity.hasWindowFocus()) {
-												Intent newIntent = new Intent(this, HomeActivity.class);
-												newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-												newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-												startActivity(newIntent);
-											}
+//											if (!HomeActivity.activity.hasWindowFocus()) {
+//												Intent newIntent = new Intent(this, HomeActivity.class);
+//												newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//												newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//												startActivity(newIntent);
+//											}
 										} else {
-											Intent homeScreen = new Intent(this, DriverSplashActivity.class);
-											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-											startActivity(homeScreen);
+//											Intent homeScreen = new Intent(this, DriverSplashActivity.class);
+//											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//											startActivity(homeScreen);
 										}
 
 									}
