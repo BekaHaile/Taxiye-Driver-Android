@@ -26,7 +26,7 @@
     <string name="fugu_app_key_test">kenwfdhwoiujGSDIUUHU82E8HD98</string>
     <string name="images_path">Taxiye Driver/Taxiye Pictures</string>
     <string name="file_provider">production.taxiye.driver.provider</string>
-    <string name="google_maps_api_key">AIzaSyC-72Si8uztpPY5euBHru2VoBgwzfPi4IE</string> <!--IMP-->
+    <string name="google_maps_api_key">AIzaSyCjFxlk0I6oi8-FbP3VlMGPVufW4Fu-n2o</string> <!--IMP-->
 
 
     <!--App Level Constants-->
@@ -48,8 +48,10 @@
     <!--Login sign-up -->
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
-    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-
+    <drawable name="ic_splash_logo_drawable">#00FFFFFF</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">#00FFFFFF</drawable>
+    <drawable name="bg_splash">@drawable/taxiye_background</drawable>
+    <drawable name="bg_login">@drawable/taxiye_background</drawable>
 
 
     <!--Side Menu Properties-->
