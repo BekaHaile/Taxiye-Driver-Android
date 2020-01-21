@@ -48,10 +48,10 @@
     <!--Login sign-up -->
     <drawable name="bg_on_boarding_drawable">@color/instataxi_yellow</drawable>
     <drawable name="buttons_on_boarding_drawable">@drawable/button_bg_gradient</drawable>
-    <drawable name="ic_splash_logo_drawable">#00FFFFFF</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
-    <drawable name="ic_login_logo_drawable">#00FFFFFF</drawable>
+    <drawable name="ic_splash_logo_drawable">@drawable/ic_splash_logo</drawable> <!--400 * 400 px MAX--> <!--* IMP-->
+    <drawable name="ic_login_logo_drawable">@drawable/ic_splash_logo_main</drawable>
     <drawable name="bg_splash">@drawable/taxiye_background</drawable>
-    <drawable name="bg_login">@drawable/taxiye_background</drawable>
+    <drawable name="bg_login">@color/white</drawable>
 
 
     <!--Side Menu Properties-->
