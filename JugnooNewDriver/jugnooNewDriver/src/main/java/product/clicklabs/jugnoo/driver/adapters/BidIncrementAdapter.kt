@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.utils.Utils
 
@@ -13,7 +14,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils
 class BidIncrementAdapter(var rv: RecyclerView, val callback:Callback) : RecyclerView.Adapter<BidIncrementAdapter.BidValViewHolder>(),ItemListener {
 
     private var bidVals:MutableList<BidIncrementVal>? = mutableListOf()
-    private var currency:String? = "INR"
+    private var currency:String? = MyApplication.getInstance().getResources().getString(R.string.currency_fallback)
     private var parentId:Int = 0
 
     fun setList(parentId:Int, currency:String?, initialBidVal:Double, increment:Double, selectedVal:Double,

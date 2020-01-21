@@ -162,10 +162,13 @@ class ReferalsFragment : Fragment() {
         item.nextTarget?.let {
             if (item.userNumRides < item.nextTarget?.numOfRidesNextTarget!!) {
                 if (item.nextTarget?.moneyNextTarget!! > 0 && item.nextTarget?.creditsNextTarget!! > 0) {
-                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).
+                            getString(Constants.KEY_CURRENCY, 
+                                    MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),
                             item.nextTarget?.moneyNextTarget.toString())} and ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
                 } else if (item.nextTarget?.moneyNextTarget!! > 0) {
-                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, "INR"),
+                    item.taskMessage = "Earn ${Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY, 
+                            MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),
                             item.nextTarget?.moneyNextTarget.toString())} by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"
                 } else if (item.nextTarget?.creditsNextTarget!! > 0) {
                     item.taskMessage = "Earn ${item.nextTarget?.creditsNextTarget} credits by completing ${item.nextTarget?.numOfRidesNextTarget!! - item.userNumRides} rides"

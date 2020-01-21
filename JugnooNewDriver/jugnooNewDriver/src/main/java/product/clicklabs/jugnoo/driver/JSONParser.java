@@ -369,7 +369,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.AVERAGE_DRIVER_EARNING, userData.optInt("average_driver_earning", 0));
 		Prefs.with(context).save(Constants.AVERAGE_EARNING_DAYS, userData.optInt("average_earning_days", 0));
 
-		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, "INR"));
+		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback)));
 		Prefs.with(context).save(Constants.DIFF_MAX_EARNING, userData.optInt("diff_max_earning", 0));
 		Prefs.with(context).save(Constants.UPDATE_LOCATION_OFFLINE, userData.optInt("update_location_offline", 0));
 		Prefs.with(context).save(Constants.OFFLINE_UPDATE_TIME_PERIOD, userData.optLong("offline_update_time_period", 180000));
@@ -409,7 +409,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
-		String currency = userData.optString(KEY_CURRENCY, "INR");
+		String currency = userData.optString(KEY_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback));
 		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));

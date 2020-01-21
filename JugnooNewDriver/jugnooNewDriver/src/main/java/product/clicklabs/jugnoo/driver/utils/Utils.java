@@ -938,7 +938,7 @@ public class Utils {
 
     public static String getCurrencySymbol(String currencyCode) {
         if (TextUtils.isEmpty(currencyCode)) {
-            currencyCode = "INR";
+            currencyCode = MyApplication.getInstance().getResources().getString(R.string.currency_fallback);
         } else if(currencyCode.equalsIgnoreCase("BMD") || currencyCode.equalsIgnoreCase("TTD")){
             return "$";
         }

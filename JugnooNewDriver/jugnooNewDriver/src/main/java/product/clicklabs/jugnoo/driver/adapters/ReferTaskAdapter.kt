@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_refer_task.view.*
 import product.clicklabs.jugnoo.driver.Constants
+import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.retrofit.model.ReferInfo
 import product.clicklabs.jugnoo.driver.utils.*
@@ -37,7 +38,8 @@ class ReferTaskAdapter(var list: List<ReferInfo>): RecyclerView.Adapter<ReferTas
             holder.groupTotalMoney.gone()
         } else {
             holder.groupTotalMoney.visible()
-            holder.tvTotalMoneyValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),list[position].totalMoney.toString())
+            holder.tvTotalMoneyValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,
+                    MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),list[position].totalMoney.toString())
         }
 
         if(list[position].totalCredits == 0) {
@@ -51,7 +53,8 @@ class ReferTaskAdapter(var list: List<ReferInfo>): RecyclerView.Adapter<ReferTas
             holder.groupMoneyProcessed.gone()
         } else {
             holder.groupMoneyProcessed.visible()
-            holder.tvMoneyProcessedValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,"INR"),list[position].processedMoney.toString())
+            holder.tvMoneyProcessedValue.text = Utils.formatCurrencyValue(Prefs.with(context).getString(Constants.KEY_CURRENCY,
+                    MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),list[position].processedMoney.toString())
         }
 
         if(list[position].processedCredits == 0) {
