@@ -50,7 +50,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     Dialog addtypeDialog;
     ImageView radioSelected;
     SearchResultNew searchResult;
-    String selectedAddType="home";
+    String selectedAddType="";
     RelativeLayout relative;
     LinearLayout destRideEnabledView;
     int addressSelected = -1;
@@ -218,7 +218,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                 addtypeDialog.dismiss();
                 Data.userData.getSavedAddressList().add(searchResult);
                 rvSavedDest.getAdapter().notifyDataSetChanged();
-                HomeUtil.saveAddress(DestinationRideActivity.this, searchResult, false);
+                HomeUtil.saveDelAddress(DestinationRideActivity.this, searchResult, false);
 
             }
         });
@@ -244,7 +244,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (getTopFragment()==null) {
+        if (getTopFragment()==null&&destRideEnabledView.getVisibility()==View.GONE) {
             ivAddDestRide.setVisibility(View.VISIBLE);
         }
     }
@@ -288,7 +288,8 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                         if (jObj.has("time")) {
                             if (addressSelected > -1) {
                                 SearchResultNew searchResultSelected = Data.userData.getSavedAddressList().get(addressSelected);
-                                Data.userData.currDestRideObj = Data.userData.new CurrDestRide(searchResultSelected.getAddress(), searchResultSelected.getLatitude(), searchResultSelected.getLongitude(), jObj.getInt("time"), System.currentTimeMillis(), searchResultSelected.getName());
+                                Data.userData.currDestRideObj = Data.userData.new CurrDestRide(searchResultSelected.getAddress(), searchResultSelected.getLatitude(), searchResultSelected.getLongitude(), jObj.getInt("time"),System.currentTimeMillis(), searchResultSelected.getName());
+                                Data.userData.currDestRideObj.setCreatedAt(System.currentTimeMillis());
                                 showDestRideEnabledView();
                             }
 
@@ -320,16 +321,19 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
     }
 
     public void hideDestRideEnabledView() {
+        HomeActivity.updateHandler.removeCallbacksAndMessages(null);
         if (Data.userData.getSavedAddressList().isEmpty())
             tvSetDestRide.setText(R.string.add_destination);
         else
             tvSetDestRide.setText(R.string.set_destination);
         destRideEnabledView.setVisibility(View.GONE);
         rvSavedDest.setVisibility(View.VISIBLE);
+        ivAddDestRide.setVisibility(View.VISIBLE);
     }
 
     public void showDestRideEnabledView() {
         destRideEnabledView.setVisibility(View.VISIBLE);
+        ivAddDestRide.setVisibility(View.GONE);
         rvSavedDest.setVisibility(View.GONE);
         tvAddressType.setText(Data.userData.currDestRideObj.getType());
         tvAddress.setText(Data.userData.currDestRideObj.getAddress());
@@ -353,6 +357,12 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
         countDownTimer.start();
     }
 
+    @Override
+    protected void onDestroy() {
+        if(countDownTimer!=null)
+            countDownTimer.cancel();
+        super.onDestroy();
+    }
 
     public class SavedAddressAdapter extends RecyclerView.Adapter<SavedAddressAdapter.Viewholder> {
         Activity activity;
@@ -400,7 +410,7 @@ public class DestinationRideActivity extends AppCompatActivity implements Search
                     addressSelected = getAdapterPosition();
                     selectRadio(imageViewType);
                 });
-                ivDeleteAddress.setOnClickListener(view -> HomeUtil.saveAddress(activity, Data.userData.getSavedAddressList().get(getAdapterPosition()), true));
+                ivDeleteAddress.setOnClickListener(view -> HomeUtil.saveDelAddress(activity, Data.userData.getSavedAddressList().get(getAdapterPosition()), true));
             }
         }
     }

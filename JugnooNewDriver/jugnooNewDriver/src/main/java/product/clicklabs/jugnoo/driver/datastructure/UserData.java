@@ -298,8 +298,8 @@ public class UserData {
 			this.destinationRideTimeRem=destinationRideTimeRem;
 			this.latitude=latitude;
 			this.longitude=longitude;
-			this.createdAt=createdAt;
 			this.type=type;
+			this.createdAt=createdAt;
 		}
 
 		public Double getLatitude() {
@@ -312,11 +312,15 @@ public class UserData {
 
 		public int getDestinationRideTimeRem() {
 			//returns time in seconds
-			int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
-			if(timeRemaining>0)
-			return timeRemaining;
+			if(createdAt>0){
+				int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
+				if(timeRemaining>0)
+				return timeRemaining;
+				else
+					return 0;
+			}
 			else
-				return 0;
+				return destinationRideTimeRem;
 		}
 
 		public String getAddress() {
@@ -325,6 +329,10 @@ public class UserData {
 
 		public String getType() {
 			return type;
+		}
+
+		public void setCreatedAt(long createdAt) {
+			this.createdAt = createdAt;
 		}
 	}
 }

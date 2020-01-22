@@ -1028,6 +1028,11 @@ public class JSONParser implements Constants {
 
     public void parseDestRide(JSONObject jsonObject, Context context) {
         //todo Ankur
+		JSONObject destObj=jsonObject.optJSONObject(Constants.KEY_DRIVER_DESTINATION);
+		if(destObj!=null) {
+			Data.userData.currDestRideObj = Data.userData.new CurrDestRide(destObj.optString("address", ""), destObj.optDouble("destination_latitude"),destObj.optDouble("destination_longitude"), destObj.optInt("destination_ride_time_remaining"),System.currentTimeMillis(), destObj.optString("type"));
+		}
+
     }
 
 	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {

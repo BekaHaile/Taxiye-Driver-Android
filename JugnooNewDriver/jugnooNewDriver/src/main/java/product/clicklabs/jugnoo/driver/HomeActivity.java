@@ -292,6 +292,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
     TextView inviteFriendText;
+    TextView destRideStatus;
 
     RelativeLayout rlNotificationCenter, etaTimerRLayout;
     TextView etaTimerText;
@@ -574,7 +575,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TabLayout tabDots;
     private ViewPager vpRequests;
     private ConstraintLayout containerRequestBidNew;
-
+    public static Handler updateHandler=new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -667,6 +668,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             driverRatingRl = findViewById(R.id.driverRatingRl);
             walletRl = (RelativeLayout) findViewById(R.id.walletRl);
             inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
+            destRideStatus = (TextView) findViewById(R.id.destRideStatus);
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             inviteFriendText.setText(getStringText(R.string.invite_earn));
 
@@ -3712,8 +3714,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private void toggleDestinationRide(){
         if(Data.userData.currDestRideObj!=null){
             ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+            destRideStatus.setText("ON");
         } else {
             ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
+            destRideStatus.setText("OFF");
         }
     }
     public void changeJugnooONUIAndInitService(final boolean fromApi) {
@@ -5338,20 +5342,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
 
         try {
-            if(Data.userData.currDestRideObj!=null){
-                final Handler updateHandler = new Handler();
 
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        if(Data.userData.currDestRideObj!=null) {
-                            Data.userData.currDestRideObj = null;
-                            toggleDestinationRide();
-                            DialogPopup.alertPopup(HomeActivity.this, "Attention !!", getString(R.string.destination_ride_end));
-                        }
-                    }
-                };
-                updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
-            }
+            startDestinationRideTimer();
             if (driverRequestListAdapter.customerInfos.size() > 0) {
                 setPannelVisibility(false);
             } else {
@@ -12402,4 +12394,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
+	public void startDestinationRideTimer(){
+        if(Data.userData.currDestRideObj!=null){
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    if(Data.userData.currDestRideObj!=null) {
+                        Data.userData.currDestRideObj = null;
+                        toggleDestinationRide();
+                        DialogPopup.alertPopup(HomeActivity.this, "Attention !!", getString(R.string.destination_ride_end));
+                    }
+                }
+            };
+            if(updateHandler==null)
+                updateHandler=new Handler();
+            updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
+        }
+    }
 }

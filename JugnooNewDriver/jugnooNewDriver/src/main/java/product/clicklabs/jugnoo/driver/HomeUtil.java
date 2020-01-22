@@ -124,7 +124,7 @@ public class HomeUtil {
 		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
 	}
 
-	public static void saveAddress(Activity context, SearchResultNew searchResult, boolean deleteFlag){
+	public static void saveDelAddress(Activity context, SearchResultNew searchResult, boolean deleteFlag){
 		HashMap<String,String> params=new HashMap<>();
 		params.put(Constants.LOGIN_TYPE,"1");
 		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
