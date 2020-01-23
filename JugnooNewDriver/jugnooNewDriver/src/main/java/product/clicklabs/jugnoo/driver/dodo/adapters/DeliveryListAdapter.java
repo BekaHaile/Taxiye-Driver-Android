@@ -246,7 +246,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
 			textViewCashCollected.setVisibility(View.GONE);
-			//textViewCashCollected.setVisibility(View.VISIBLE);
+//			textViewCashCollected.setVisibility(View.VISIBLE);
 			textViewListCount.setVisibility(View.GONE);
 			call.setVisibility(View.GONE);
 			buttonMarkFailed.setVisibility(View.GONE);
@@ -587,6 +587,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 	private void showCustomerNotes(TextView tvCustomerNotes) {
 		CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+		String prevStringOnTv = "";
 		try {
 			String notes = "";
 			String instructions = "";
@@ -599,7 +600,10 @@ public class DeliveryListAdapter extends PagerAdapter {
 				instructions = activity.getStringText(R.string.instructions_colon) + " " + customerInfo.getVendorMessage();
 				msgLen = msgLen + customerInfo.getVendorMessage().length();
 			}
-			String msgToShow =  notes + instructions;
+			if(!tvCustomerNotes.getText().toString().isEmpty()) {
+				prevStringOnTv = tvCustomerNotes.getText().toString() + "\n";
+			}
+			String msgToShow = prevStringOnTv + notes + instructions;
 			if(!TextUtils.isEmpty(msgToShow)){
 				tvCustomerNotes.setVisibility(View.VISIBLE);
 				if(msgLen > 20) {

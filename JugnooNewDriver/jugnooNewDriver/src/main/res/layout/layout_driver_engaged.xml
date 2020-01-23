@@ -434,6 +434,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="18px"
                                 android:maxLines="4"
+                                android:visibility="gone"
                                 android:drawablePadding="15px"
                                 android:drawableStart="@drawable/ic_circle_red"
                                 android:textSize="28px"

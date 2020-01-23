@@ -309,11 +309,11 @@ public class CustomerSwitcher {
 
 					updateDistanceOnLocationChanged(customerInfo);
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
-						if (customerInfo.getDeliveryInfos().size() > 1) {
+						if (customerInfo.getDeliveryInfos().size() > 0) {
 							textViewDeliveryCount.setVisibility(View.VISIBLE);
 							textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 									+ " " + customerInfo.getTotalDeliveries());
-							textViewCustomerCashRequired.setVisibility(View.GONE);
+							textViewCustomerCashRequired.setVisibility(View.VISIBLE);
 							textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
 									+ ": " + activity.getResources().getString(R.string.rupee)
 									+ "" + customerInfo.getCashOnDelivery());
