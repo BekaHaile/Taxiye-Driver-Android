@@ -363,7 +363,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
                     .transform(new CircleTransform())
                     .into(customerVh.profileImg);
         if (selectVehicleView) {
-            customerVh.ivDelete.setVisibility(View.GONE);
+            customerVh.rlRemoveVehicle.setVisibility(View.GONE);
         }
         customerVh.tvVehicleType.setText(vehicle.getVehicleType());
 
@@ -377,7 +377,7 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
 
     class CustomerVh extends RecyclerView.ViewHolder {
         TextView tvVehicleDetails, tvVehicleStatus, tvVehicleName,tvVehicleRejectReason,tvVehicleType;
-        ImageView profileImg, ivDelete;
+        ImageView profileImg;
         View border,rlRemoveVehicle;
 
         private CustomerVh(@NonNull View itemView) {
@@ -389,7 +389,6 @@ class VehicleDetailsAdapter extends RecyclerView.Adapter<VehicleDetailsAdapter.C
             tvVehicleName = itemView.findViewById(R.id.tvVehicleName);
             tvVehicleRejectReason = itemView.findViewById(R.id.tvVehicleRejectReason);
             profileImg = itemView.findViewById(R.id.profileImg);
-            ivDelete = itemView.findViewById(R.id.ivDelete);
             border = itemView.findViewById(R.id.border);
             rlRemoveVehicle.setOnClickListener(new View.OnClickListener() {
                 @Override
