@@ -74,7 +74,12 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setAddBtnVisibility(View.VISIBLE);
 
+    }
 
     private void initViews() {
         ((AppCompatTextView) findViewById(R.id.title)).setText(R.string.your_vehicles);
@@ -104,8 +109,9 @@ public class VehicleDetailsActivity extends AppCompatActivity implements Toolbar
     }
 
     private void setAddBtnVisibility(int visibility) {
-        if(Data.userData.autosAvailable==0&&!openSelectVehicle)
-        ivAddDestRide.setVisibility(visibility);
+        if(Data.userData.autosAvailable==0&&!openSelectVehicle&&getSupportFragmentManager().getFragments().size()==0) {
+            ivAddDestRide.setVisibility(visibility);
+        }
         else
             ivAddDestRide.setVisibility(View.GONE);
     }
