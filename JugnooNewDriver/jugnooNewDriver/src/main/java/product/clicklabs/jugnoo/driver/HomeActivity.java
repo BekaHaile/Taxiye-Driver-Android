@@ -9352,7 +9352,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         zoomToCurrentLocationAtFirstLocationFix(location);
                     }
                 }
-                customerSwitcher.updateDistanceOnLocationChanged(Data.getCurrentCustomerInfo());
+                try {
+                    customerSwitcher.updateDistanceOnLocationChanged(Data.getCurrentCustomerInfo());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 reconnectLocationFetchers();
             }

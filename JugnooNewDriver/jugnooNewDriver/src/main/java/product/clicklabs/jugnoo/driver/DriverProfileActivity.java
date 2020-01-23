@@ -147,13 +147,16 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         switchNavigation = (SwitchCompat) findViewById(R.id.switchNavigation);
         enableDelivery = (SwitchCompat)findViewById(R.id.deliveryEnable);
         if(Data.userData.getDeliveryEnabled()==1){
-            enableDelivery.setVisibility(View.GONE);
-            ivDeliveryEnable.setVisibility(View.GONE);
+            enableDelivery.setVisibility(View.VISIBLE);
+            ivDeliveryEnable.setVisibility(View.VISIBLE);
             if(Data.userData.getDeliveryAvailable()==1){
                 enableDelivery.setChecked(true);
             }else{
                 enableDelivery.setChecked(false);
             }
+        } else {
+            enableDelivery.setVisibility(View.GONE);
+            ivDeliveryEnable.setVisibility(View.GONE);
         }
         switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
