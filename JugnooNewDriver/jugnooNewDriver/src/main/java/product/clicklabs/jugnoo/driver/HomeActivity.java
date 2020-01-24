@@ -4101,6 +4101,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public void switchDriverScreen(DriverScreenMode mode) {
         if (userMode == UserMode.DRIVER) {
+            driverScreenMode = Data.getCurrentState();
+            mode = driverScreenMode;
 			final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
             try {
                 if (map != null &&
@@ -4135,8 +4137,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 e.printStackTrace();
             }
 
-            driverScreenMode = Data.getCurrentState();
-            mode = driverScreenMode;
+
 
 
             initializeFusedLocationFetchers();
