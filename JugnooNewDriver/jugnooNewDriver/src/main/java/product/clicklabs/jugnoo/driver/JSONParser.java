@@ -896,7 +896,7 @@ public class JSONParser implements Constants {
 								Prefs.with(context).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObjCustomer.optLong("eta", 0));
 							}
 							Prefs.with(context).save(Constants.KEY_EMERGENCY_NO, jObjCustomer.optString(KEY_EMERGENCY_NO, context.getString(R.string.police_number)));
-							Prefs.with(context).save(SPLabels.CHAT_ENABLED,jObjCustomer.optInt("chat_enabled",0));
+							Prefs.with(context).save(SPLabels.CHAT_ENABLED,jObjCustomer.optInt("chat_enabled",1));
 							int meterFareApplicable = jObjCustomer.optInt("meter_fare_applicable", 0);
 							int getJugnooFareEnabled = jObjCustomer.optInt("get_jugnoo_fare_enabled", 1);
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);

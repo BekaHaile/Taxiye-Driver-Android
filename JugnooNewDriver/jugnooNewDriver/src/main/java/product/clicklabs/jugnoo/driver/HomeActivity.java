@@ -5081,7 +5081,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     try {
                         if ((driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE ||
                                 (driverScreenMode == DriverScreenMode.D_IN_RIDE && customerInfoCheck.getIsDelivery() == 1))
-                                && Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 0) == 1
+                                && Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 1) == 1
                                 && customerInfoCheck.getIsPooled() != 1) {
                             rlChatDriver.setVisibility(View.VISIBLE);
                             if (Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 0) > 0) {
@@ -6514,7 +6514,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
                     Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
                     int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
-                    Prefs.with(activity).save(SPLabels.CHAT_ENABLED, jObj.optInt("chat_enabled", 0));
+                    Prefs.with(activity).save(SPLabels.CHAT_ENABLED, jObj.optInt("chat_enabled", 1));
                     int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
                     String currency = jObj.optString(Constants.KEY_CURRENCY);
                     double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
