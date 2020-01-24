@@ -1161,7 +1161,7 @@
     <string name="please_enter_email">Please enter email</string>
     <string name="error_empty_mandatory_field">%s is a mandatory field.</string>
     <string name="please_enter_less_value_for_bid">Please enter less value for offer</string>
-    <string name="note">Note</string>
+    <string name="note"><b>Note :</b></string>
 
     <!--Rental-->
     <string name="rate_card_title_rental_packages">Rental Packages</string>
@@ -1256,6 +1256,8 @@
     <string name="save_notes">Save notes</string>
     <string name="alert_provide_some_notes">Please add some notes</string>
     <string name="click_to_view_notes">Click to View Notes</string>
+    <string name="click_to_view_message">Click to View Message for Vendor</string>
+
     <string name="income_details">Income Details</string>
     <string name="online_caps">ONLINE</string>
     <string name="offline_caps">OFFLINE</string>

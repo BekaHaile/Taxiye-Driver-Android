@@ -2,8 +2,13 @@ package product.clicklabs.jugnoo.driver.dodo.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.cardview.widget.CardView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +27,13 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.DialogReviewImagesFragment;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.HomeUtil;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
+import product.clicklabs.jugnoo.driver.adapters.ImageWithTextAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -39,6 +46,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.NotesDialog;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -55,7 +63,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 	int engagemnetId, falseDeliveries, orderId;
 	boolean currentStatus = true;
 
-    public DeliveryListAdapter(HomeActivity activity, ArrayList<DeliveryInfo> tasks, int engagemnetId, int falseDeliveries, int orderId) {
+
+	public DeliveryListAdapter(HomeActivity activity, ArrayList<DeliveryInfo> tasks, int engagemnetId, int falseDeliveries, int orderId) {
 
         this.activity = activity;
         this.tasksList = tasks;
@@ -80,6 +89,12 @@ public class DeliveryListAdapter extends PagerAdapter {
 
         View taskItemView = layoutInflater.inflate(R.layout.layout_task_item, container, false);
 
+        RecyclerView rvPickupFeedImages;
+		rvPickupFeedImages = taskItemView.findViewById(R.id.rvPickupFeedImages);
+		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
+		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
+
+
 		LinearLayout linearLayoutDeliveryItem = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItem);
 		final LinearLayout linearLayoutProgress = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutProgress);
 		LinearLayout linearLayoutDeliveryData = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryData);
@@ -91,6 +106,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
+        textViewListCount.setVisibility(View.INVISIBLE);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
 		textViewCashCollected.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
@@ -152,7 +168,25 @@ public class DeliveryListAdapter extends PagerAdapter {
 			}
 		}
 
-		textViewListCount.setText(ordinal(position+1)+" "+ activity.getResources().getString(R.string.delivery)+":");
+		CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+
+		if (customerInfo.getCustomerOrderImagesList() != null && customerInfo.getCustomerOrderImagesList().size() > 0) {
+			rvPickupFeedImages.setAdapter(new ImageWithTextAdapter(customerInfo.getCustomerOrderImagesList(), new ImageWithTextAdapter.OnItemClickListener() {
+				@Override
+				public void onItemClick(String image, int pos) {
+					ArrayList<String> imagesCustomer = new ArrayList<>();
+					imagesCustomer.addAll(customerInfo.getCustomerOrderImagesList());
+					DialogReviewImagesFragment dialog = DialogReviewImagesFragment.newInstance(pos,imagesCustomer);
+					dialog.show(activity.getFragmentManager(),DialogReviewImagesFragment.class.getSimpleName());
+				}
+			}));
+			rvPickupFeedImages.setVisibility(View.VISIBLE);
+		} else {
+			rvPickupFeedImages.setVisibility(View.GONE);
+		}
+		if(position!=0) {
+			textViewListCount.setText(ordinal(position + 1) + " " + activity.getResources().getString(R.string.delivery) + ":");
+		}
 
 		if(task.getAmount() > 0 ){
 			textViewCashCollected.setVisibility(View.VISIBLE);
@@ -211,7 +245,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 		buttonMarkFailed.setLayoutParams(params);
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
-			textViewCashCollected.setVisibility(View.VISIBLE);
+			textViewCashCollected.setVisibility(View.GONE);
+			//textViewCashCollected.setVisibility(View.VISIBLE);
 			textViewListCount.setVisibility(View.GONE);
 			call.setVisibility(View.GONE);
 			buttonMarkFailed.setVisibility(View.GONE);
@@ -219,6 +254,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 			buttonMarkReturn.setVisibility(View.VISIBLE);
 			textViewCashCollected.setText(Utils.formatCurrencyValue(totalCashCollectedCurrency,totalCashCollected));
 		}
+
+		showCustomerNotes(textViewCashCollected);
 
 
 
@@ -545,6 +582,49 @@ public class DeliveryListAdapter extends PagerAdapter {
 			default:
 				return i + sufixes[i % 10];
 
+		}
+	}
+
+	private void showCustomerNotes(TextView tvCustomerNotes) {
+		CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+		try {
+			String notes = "";
+			String instructions = "";
+			int msgLen = 0;
+			if(customerInfo.getCustomerNotes()!=null && !customerInfo.getCustomerNotes().isEmpty()) {
+				notes = activity.getStringText(R.string.note) + " " + customerInfo.getCustomerNotes()  + "\n";
+				msgLen = customerInfo.getCustomerNotes().length();
+			}
+			if(customerInfo.getVendorMessage()!=null && !customerInfo.getVendorMessage().isEmpty()) {
+				instructions = activity.getStringText(R.string.instructions_colon) + " " + customerInfo.getVendorMessage();
+				msgLen = msgLen + customerInfo.getVendorMessage().length();
+			}
+			String msgToShow =  notes + instructions;
+			if(!TextUtils.isEmpty(msgToShow)){
+				tvCustomerNotes.setVisibility(View.VISIBLE);
+				if(msgLen > 20) {
+					tvCustomerNotes.setText(R.string.click_to_view_notes);
+					tvCustomerNotes.setEnabled(true);
+				} else {
+					tvCustomerNotes.setText(msgToShow);
+					tvCustomerNotes.setEnabled(false);
+				}
+			} else {
+				tvCustomerNotes.setVisibility(View.GONE);
+			}
+			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(!msgToShow.isEmpty()?msgToShow:""));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void openNotesDialog(final String customerNotes) {
+		try {
+			NotesDialog notesDialog = new NotesDialog(activity, customerNotes, notes -> {
+			});
+			notesDialog.show(false);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

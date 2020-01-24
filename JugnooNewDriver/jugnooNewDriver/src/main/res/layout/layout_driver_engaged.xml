@@ -489,13 +489,16 @@
                             android:id="@+id/tvFeedInstructions"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="35px"
+                            android:textSize="13sp"
                             android:layout_marginBottom="10dp"
                             android:layout_below="@id/linearLayoutContent"
                             android:padding="5dp"
                             android:textColor="@color/black_text_v2"
                             android:text="@string/Message_from_vendor"
-                            android:layout_marginStart="15dp"
+                            android:drawableStart="@drawable/ic_notes_grey"
+                            android:drawablePadding="5dp"
+                            android:layout_marginStart="8dp"
+                            style="@style/TextMedium"
                             android:layout_toStartOf="@id/textViewShowDistance"/>
 
                         <TextView
