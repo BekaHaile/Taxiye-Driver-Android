@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -331,7 +332,7 @@ public class Utils {
     private static DecimalFormat decimalFormat;
     public static DecimalFormat getDecimalFormat() {
         if (decimalFormat == null) {
-            decimalFormat = new DecimalFormat("#.##");
+            decimalFormat = new DecimalFormat("0.00");
         }
         return decimalFormat;
     }
@@ -937,7 +938,7 @@ public class Utils {
 
     public static String getCurrencySymbol(String currencyCode) {
         if (TextUtils.isEmpty(currencyCode)) {
-            currencyCode = "INR";
+            currencyCode = MyApplication.getInstance().getResources().getString(R.string.currency_fallback);
         } else if(currencyCode.equalsIgnoreCase("BMD") || currencyCode.equalsIgnoreCase("TTD")){
             return "$";
         }
@@ -946,14 +947,14 @@ public class Utils {
     }
 
     public static String formatCurrencyValue(String currency, double value) {
-        return formatCurrencyValue(currency, value, "INR");
+        return formatCurrencyValue(currency, value, MyApplication.getInstance().getResources().getString(R.string.currency_fallback));
     }
 
     public static String formatCurrencyValue(String currency, double value, String fallbackCurrency){
         return formatCurrencyValue(currency, value, fallbackCurrency, true);
     }
     public static String formatCurrencyValue(String currency, double value, boolean setPrecision) {
-        return formatCurrencyValue(currency, value, "INR", setPrecision);
+        return formatCurrencyValue(currency, value, MyApplication.getInstance().getResources().getString(R.string.currency_fallback), setPrecision);
     }
 
     private static NumberFormat currencyNumberFormat = null;
@@ -963,10 +964,12 @@ public class Utils {
                 currencyNumberFormat = NumberFormat.getCurrencyInstance(MyApplication.getInstance().getCurrentLocale());
                 currencyNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
                 currencyNumberFormat.setGroupingUsed(false);
+                currencyNumberFormat.setMinimumFractionDigits(2);
+                currencyNumberFormat.setMaximumFractionDigits(2);
             }
             int precision = Prefs.with(MyApplication.getInstance()).getInt(Constants.KEY_CURRENCY_PRECISION, 0);
-            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
-            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
+//            currencyNumberFormat.setMinimumFractionDigits(setPrecision ? precision : 0);
+//            currencyNumberFormat.setMaximumFractionDigits(setPrecision ? precision : Math.max(2, precision));
             if (TextUtils.isEmpty(currency)) {
                 currency = fallbackCurrency;
             }

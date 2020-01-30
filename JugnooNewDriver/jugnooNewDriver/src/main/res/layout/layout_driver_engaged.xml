@@ -80,8 +80,16 @@
                 android:visibility="visible"
                 android:background="@color/white_translucent">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCustomersLinked"
+                    android:layout_width="720px"
+                    android:layout_height="80px"
+                    android:visibility="gone">
+                </androidx.recyclerview.widget.RecyclerView>
 
-                <include layout="@layout/layout_customer_info"/>
+                <include
+                    android:visibility="gone"
+                    layout="@layout/layout_customer_info"/>
 
             </LinearLayout>
 
@@ -317,19 +325,19 @@
 
                         <TextView
                             android:id="@+id/textViewCustomerName"
-                            android:layout_width="430px"
-                            android:layout_alignParentStart="true"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30px"
-                            android:ellipsize="end"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
+                            android:layout_marginStart="30px"
+                            android:layout_marginEnd="49dp"
+                            android:layout_toStartOf="@+id/rvPickupFeedImages"
+                            android:ellipsize="end"
                             android:singleLine="true"
                             android:text="@string/NA"
-                            android:textSize="40px"
-                            android:visibility="visible"
                             android:textColor="@color/black_text_v2"
-                            android:layout_toStartOf="@+id/rvPickupFeedImages"
-                            />
+                            android:textSize="15sp"
+                            android:visibility="visible" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvPickupFeedImages"
@@ -390,6 +398,8 @@
                         android:layout_marginStart="30px"
                         android:layout_marginEnd="30px"/>
 
+
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -424,6 +434,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="18px"
                                 android:maxLines="4"
+                                android:visibility="gone"
                                 android:drawablePadding="15px"
                                 android:drawableStart="@drawable/ic_circle_red"
                                 android:textSize="28px"
@@ -445,7 +456,7 @@
                                 android:id="@+id/textViewCustomerCashRequired"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 android:layout_marginTop="10px"
                                 android:layout_marginBottom="10px"
                                 android:textSize="28px"
@@ -462,6 +473,8 @@
                                 android:paddingBottom="4dp"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
+                                android:maxLines="3"
+                                android:scrollbars="vertical"
                                 android:background="?attr/selectableItemBackground"
                                 android:theme="@style/GreyHighlight"
                                 android:drawableStart="@drawable/ic_notes_grey"
@@ -472,6 +485,22 @@
                             />
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvFeedInstructions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@id/linearLayoutContent"
+                            android:padding="5dp"
+                            android:textColor="@color/black_text_v2"
+                            android:text="@string/Message_from_vendor"
+                            android:drawableStart="@drawable/ic_notes_grey"
+                            android:drawablePadding="5dp"
+                            android:layout_marginStart="8dp"
+                            style="@style/TextMedium"
+                            android:layout_toStartOf="@id/textViewShowDistance"/>
 
                         <TextView
                             android:id="@+id/textViewShowDistance"

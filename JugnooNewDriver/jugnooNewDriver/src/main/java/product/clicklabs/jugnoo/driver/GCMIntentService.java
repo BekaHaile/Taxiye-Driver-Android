@@ -384,9 +384,9 @@ public class GCMIntentService extends FirebaseMessagingService {
 
 			Intent notificationIntent = new Intent(context, PushClickActivity.class);
 			notificationIntent.putExtra(Constants.KEY_PAYLOAD, payload);
+			notificationIntent.putExtra(Constants.KEY_FROM_CHAT_PUSH,Data.getCurrentEngagementId());
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constants.NOTIF_CHANNEL_DEFAULT);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(context.getResources().getString(R.string.app_name));
@@ -400,6 +400,8 @@ public class GCMIntentService extends FirebaseMessagingService {
 			builder.setContentIntent(intent);
 			builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 			builder.setChannelId(Constants.NOTIF_CHANNEL_DEFAULT);
+			SoundMediaPlayer.startSound(context, R.raw.whats_app_shat_sound, 1, false);
+
 
 
 
@@ -690,7 +692,7 @@ public class GCMIntentService extends FirebaseMessagingService {
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 
-									if (HomeActivity.appInterruptHandler != null && Data.userData != null) {
+									if (!HomeActivity.activity.isFinishing() && HomeActivity.appInterruptHandler != null && Data.userData != null) {
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 										Log.e("referenceId", "=" + referenceId);
 									}

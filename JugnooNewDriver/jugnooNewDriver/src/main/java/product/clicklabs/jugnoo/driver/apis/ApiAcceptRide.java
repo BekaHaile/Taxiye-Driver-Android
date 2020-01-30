@@ -95,7 +95,7 @@ public class ApiAcceptRide {
 									Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, System.currentTimeMillis());
 									Prefs.with(activity).save(Constants.DRIVER_RIDE_EARNING, "");
 									Prefs.with(activity).save(Constants.DRIVER_RIDE_DATE, "");
-									Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",0));
+									Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",1));
 									callback.onSuccess(pickupLatLng, customerName);
 								}
 

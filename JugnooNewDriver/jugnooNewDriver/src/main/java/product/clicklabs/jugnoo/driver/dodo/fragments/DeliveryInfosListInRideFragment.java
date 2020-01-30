@@ -3,10 +3,6 @@ package product.clicklabs.jugnoo.driver.dodo.fragments;
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +11,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -36,7 +36,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 	private TextView textViewTitle, textViewMerchantName, textViewCashReq;
 	private RecyclerView recyclerViewDeliveryInfoInRide;
 	private DeliveryInfoInRideAdapter deliveryInfoInRideAdapter;
-	private RelativeLayout relativeLayoutCall, relativeLayoutLoading;
+	private RelativeLayout relativeLayoutCall, relativeLayoutLoading,relativeLayoutMerchantDetails;
 	private DeliveryInfoInRideDetails deliveryInfos = new DeliveryInfoInRideDetails();
 
 	private View rootView;
@@ -68,6 +68,7 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
 		relativeLayoutLoading = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutLoading);
+		relativeLayoutMerchantDetails = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutMerchantDetails);
 
 		helpBtn = (Button) rootView.findViewById(R.id.helpBtn);
 		driverStartRideBtn = (Button) rootView.findViewById(R.id.driverStartRideBtn);
@@ -126,6 +127,12 @@ public class DeliveryInfosListInRideFragment extends Fragment {
 			}
 		});
 
+		relativeLayoutMerchantDetails.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+			}
+		});
 //		updateList(deliveryStatusOpened);
 		return rootView;
 	}

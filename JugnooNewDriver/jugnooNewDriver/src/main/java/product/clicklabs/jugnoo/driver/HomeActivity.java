@@ -1329,10 +1329,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             changeJugnooON(0, false, false);
                             resetSharedPrefs();
                             MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
+                            drawerLayout.closeDrawer(GravityCompat.START);
                         } else {
                             changeJugnooON(1, false, false);
                             MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_on", null);
-                        }
+                            drawerLayout.closeDrawer(GravityCompat.START);                        }
                         FlurryEventLogger.event(JUGNOO_ON_OFF);
                     }
                 }
@@ -2395,7 +2396,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         String heading = getResources().getString(R.string.max_earning);
                         DialogPopup.driverEarningPopup(HomeActivity.this, heading, "",
                                 getResources().getString(R.string.max_earning_ins,
-                                        String.valueOf(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(KEY_CURRENCY, "INR"),
+                                        String.valueOf(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(KEY_CURRENCY,MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),
                                                 maxDriverEarning))), false, true);
                     }
                 }
@@ -2618,7 +2619,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (intent.getAction().equalsIgnoreCase(Constants.UPDATE_MPESA_PRICE)) {
                 endRideData.toPay = Double.parseDouble(intent.getStringExtra("to_pay"));
                 takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
-                ;
+
             }
             HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
@@ -2877,7 +2878,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
-                textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING_CURRENCY, "INR"), Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
+                textViewDriverEarningOnScreenValue.setText(Utils.formatCurrencyValue(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback))
+                        , Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, "")));
 
                 textViewDriverEarningOnScreenDate.setText(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_DATE, ""));
             } else {
@@ -4099,11 +4101,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     public void switchDriverScreen(DriverScreenMode mode) {
         if (userMode == UserMode.DRIVER) {
-
-			driverScreenMode = Data.getCurrentState();
-			mode = driverScreenMode;
-
-			final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+            driverScreenMode = Data.getCurrentState();
+            mode = driverScreenMode;
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
             try {
                 if (map != null &&
                         (mode == DriverScreenMode.D_ARRIVED
@@ -4122,6 +4122,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if (customerInfosList.size() > 0 && sortCustomerState) {
                         Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
+
+						customerInfo = Data.getCurrentCustomerInfo();
+
+						driverScreenMode = Data.getCurrentState();
+						mode = driverScreenMode;
                     }
                 } else {
                     clearCustomerMarkers();
@@ -4136,6 +4141,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
 
 
 
@@ -4196,6 +4202,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     if (customerInfo.getIsDelivery() == 1) {
                         jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
+                        if(getResources().getBoolean(R.bool.show_feedback_total_fare_text)){
+                            jugnooRideOverText.setVisibility(View.VISIBLE);
+                        } else {
+                            jugnooRideOverText.setVisibility(View.GONE);
+                        }
                         relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
                         linearLayoutEndDelivery.setVisibility(View.VISIBLE);
                         textViewEndRideCustomerName.setVisibility(View.GONE);
@@ -4214,6 +4225,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         textViewOrdersReturnedValue.setText(String.valueOf(totalUndelivered));
                         textViewRateYourCustomer.setText(getResources().getString(R.string.rate_your_vendor));
                     } else if (customerInfo.getIsPooled() == 1) {
+                        jugnooRideOverText.setVisibility(View.VISIBLE);
                         jugnooRideOverText.setText(getResources().getString(R.string.collect_cash));
                         relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
                         linearLayoutEndDelivery.setVisibility(View.GONE);
@@ -4223,6 +4235,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                         textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
                     } else {
+                        jugnooRideOverText.setVisibility(View.VISIBLE);
                         jugnooRideOverText.setText(getString(R.string.jugnoo_ride_over, getString(R.string.appname)));
                         relativeLayoutDeliveryOver.setVisibility(View.GONE);
                         linearLayoutEndDelivery.setVisibility(View.GONE);
@@ -4235,7 +4248,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                                 + Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.fare));
                     } else {
                         takeFareText.setText(getString(R.string.take_cash) + " "
-                                + Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
+                                + Utils.formatCurrencyValue(endRideData.getCurrency(),
+                                endRideData.getCustomerFare() != null && endRideData.getCustomerFare() > 0 ? endRideData.getCustomerFare() : endRideData.toPay));
                     }
 
                     endRideInfoRl.setVisibility(View.VISIBLE);
@@ -4278,8 +4292,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 endRideInfoRl.setVisibility(View.GONE);
                 reviewReachedDistanceRl.setVisibility(View.GONE);
                 linearLayoutMeterFare.setVisibility(View.VISIBLE);
-                relativeLayoutRateCustomer.setVisibility(View.GONE);
-                ratingBarFeedback.setVisibility(View.GONE);
+                relativeLayoutRateCustomer.setVisibility(View.VISIBLE);
+                ratingBarFeedback.setVisibility(View.VISIBLE);
                 reviewSkipBtn.setVisibility(View.GONE);
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
@@ -5071,9 +5085,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void run() {
                     try {
-                        if ((driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE)
-                                && Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 0) == 1
-                                && customerInfoCheck.getIsDelivery() != 1 && customerInfoCheck.getIsPooled() != 1) {
+                        if ((driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE ||
+                                (driverScreenMode == DriverScreenMode.D_IN_RIDE && customerInfoCheck.getIsDelivery() == 1))
+                                && Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 1) == 1) {
                             rlChatDriver.setVisibility(View.VISIBLE);
                             if (Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 0) > 0) {
                                 tvChatCount.setVisibility(View.VISIBLE);
@@ -6505,7 +6519,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
                     Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
                     int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
-                    Prefs.with(activity).save(SPLabels.CHAT_ENABLED, jObj.optInt("chat_enabled", 0));
+                    Prefs.with(activity).save(SPLabels.CHAT_ENABLED, jObj.optInt("chat_enabled", 1));
                     int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
                     String currency = jObj.optString(Constants.KEY_CURRENCY);
                     double tipAmount = jObj.optDouble(Constants.KEY_TIP_AMOUNT, 0D);
@@ -7383,7 +7397,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                     try {
                         Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING, jObj.optString("driver_ride_earning", ""));
-                        Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING_CURRENCY, jObj.optString(Constants.KEY_CURRENCY, "INR"));
+                        Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_EARNING_CURRENCY, jObj.optString(Constants.KEY_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback)));
                         Prefs.with(HomeActivity.this).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
 
                         if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, ""))) {
@@ -7705,7 +7719,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             endRideData = new EndRideData(String.valueOf(customerInfo.getEngagementId()), actualFare,
                     finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode, customerInfo.getCurrencyUnit(),
-                    fareDetails, Data.fareStructure);
+                    fareDetails, Data.fareStructure, finalToPay);
 
             try {
                 Log.writePathLogToFile(HomeActivity.this, customerInfo.getEngagementId() + "endRide", "endRideData = " + endRideData);
@@ -9344,7 +9358,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         zoomToCurrentLocationAtFirstLocationFix(location);
                     }
                 }
-                customerSwitcher.updateDistanceOnLocationChanged(Data.getCurrentCustomerInfo());
+                try {
+                    customerSwitcher.updateDistanceOnLocationChanged(Data.getCurrentCustomerInfo());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 reconnectLocationFetchers();
             }
@@ -10552,13 +10570,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             if (deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal() && customerInfo.getFalseDeliveries() != 1) {
 
                                 if (deliveryInfo.getIndex() == Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, 0)) {
-                                    addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 2));
+                                    addDeliveryMarker(addDropPinMarker(map, latLng,"D", 2));
                                 } else {
-                                    addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 1));
+                                    addDeliveryMarker(addDropPinMarker(map, latLng,"D", 1));
                                 }
                             } else if ((deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal() ||
                                     deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) && customerInfo.getFalseDeliveries() != 1) {
-                                addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1), 3));
+                                addDeliveryMarker(addDropPinMarker(map, latLng,"D", 3));
                             }
                         }
                     }

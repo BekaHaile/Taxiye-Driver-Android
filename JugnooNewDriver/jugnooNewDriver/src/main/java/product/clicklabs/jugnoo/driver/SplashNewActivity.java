@@ -189,7 +189,6 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 //		if(Prefs.with(this).getInt(Constants.SP_FIRST_TIME_OPEN, 0) == 0){
 //			JSONParser.saveAccessToken(this, "");
 //		}

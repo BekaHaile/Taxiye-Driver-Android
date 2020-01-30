@@ -1,3 +1,4 @@
+
 <RelativeLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,12 +12,18 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <include layout="@layout/layout_top_bar"/>
+        <include layout="@layout/layout_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toStartOf="@+id/textViewEdit"/>
 
         <TextView
             android:id="@+id/textViewEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10px"
@@ -28,6 +35,13 @@
             />
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="@color/grey_light_boarder"
+        android:layout_alignBottom="@id/topBar"
+        />
 
 
     <LinearLayout

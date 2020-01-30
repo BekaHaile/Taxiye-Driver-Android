@@ -369,7 +369,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.AVERAGE_DRIVER_EARNING, userData.optInt("average_driver_earning", 0));
 		Prefs.with(context).save(Constants.AVERAGE_EARNING_DAYS, userData.optInt("average_earning_days", 0));
 
-		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, "INR"));
+		Prefs.with(context).save(Constants.KEY_CURRENCY, userData.optString(Constants.KEY_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback)));
 		Prefs.with(context).save(Constants.DIFF_MAX_EARNING, userData.optInt("diff_max_earning", 0));
 		Prefs.with(context).save(Constants.UPDATE_LOCATION_OFFLINE, userData.optInt("update_location_offline", 0));
 		Prefs.with(context).save(Constants.OFFLINE_UPDATE_TIME_PERIOD, userData.optLong("offline_update_time_period", 180000));
@@ -409,7 +409,7 @@ public class JSONParser implements Constants {
 		String userEmail = userData.optString("user_email", "");
 		String phoneNo = userData.getString("phone_no");
 		String userId = userData.optString(KEY_USER_ID, phoneNo);
-		String currency = userData.optString(KEY_CURRENCY, "INR");
+		String currency = userData.optString(KEY_CURRENCY, MyApplication.getInstance().getResources().getString(R.string.currency_fallback));
 		String userIdentifier = userData.optString(KEY_USER_IDENTIFIER, "");
 		String countryCode = "+"+userData.optString(Constants.KEY_COUNTRY_CODE, "91");
 		Prefs.with(context).save(Constants.KEY_DISTANCE_UNIT, userData.optString(Constants.KEY_DISTANCE_UNIT, context.getString(R.string.km)));
@@ -460,6 +460,9 @@ public class JSONParser implements Constants {
 		int onlyCashRides = userData.optInt(KEY_ONLY_CASH_RIDES, 0);
 		int onlyLongRides = userData.optInt(KEY_ONLY_LONG_RIDES, 0);
 
+		int gender = userData.optInt(Constants.KEY_GENDER, 0);
+		String dateOfBirth = userData.optString(Constants.KEY_DATE_OF_BIRTH, "");
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -471,7 +474,8 @@ public class JSONParser implements Constants {
 				isCaptiveDriver, countryCode,userIdentifier,
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
-				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides);
+				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
+                gender, dateOfBirth);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
@@ -673,6 +677,11 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Prefs.with(context).save(KEY_DRIVER_DOB_INPUT, userData.optInt(KEY_DRIVER_DOB_INPUT,
+				context.getResources().getInteger(R.integer.driver_dob_input)));
+		Prefs.with(context).save(KEY_DRIVER_GENDER_FILTER, userData.optInt(KEY_DRIVER_GENDER_FILTER,
+				context.getResources().getInteger(R.integer.driver_gender_filter)));
+
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -887,7 +896,7 @@ public class JSONParser implements Constants {
 								Prefs.with(context).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObjCustomer.optLong("eta", 0));
 							}
 							Prefs.with(context).save(Constants.KEY_EMERGENCY_NO, jObjCustomer.optString(KEY_EMERGENCY_NO, context.getString(R.string.police_number)));
-							Prefs.with(context).save(SPLabels.CHAT_ENABLED,jObjCustomer.optInt("chat_enabled",0));
+							Prefs.with(context).save(SPLabels.CHAT_ENABLED,jObjCustomer.optInt("chat_enabled",1));
 							int meterFareApplicable = jObjCustomer.optInt("meter_fare_applicable", 0);
 							int getJugnooFareEnabled = jObjCustomer.optInt("get_jugnoo_fare_enabled", 1);
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);
@@ -1176,11 +1185,12 @@ public class JSONParser implements Constants {
 				}
 			}
 			return new EndRideData(engagementId,
-					jObj.getDouble("fare"),
-					jObj.getDouble("discount"),
-					jObj.getDouble("paid_using_wallet"),
-					jObj.getDouble("to_pay"),
-					jObj.getInt("payment_mode"),jObj.optString(KEY_CURRENCY), fareDetailsArr, fareStructure);
+					jObj.optDouble("fare", 0),
+					jObj.optDouble("discount", 0),
+					jObj.optDouble("paid_using_wallet", 0),
+					jObj.optDouble("to_pay", 0),
+					jObj.optInt("payment_mode",0),jObj.optString(KEY_CURRENCY), fareDetailsArr, fareStructure,
+					jObj.optDouble("customer_fare", 0.0));
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -1189,7 +1199,7 @@ public class JSONParser implements Constants {
 					0,
 					0,
 					totalFare,
-					PaymentMode.CASH.getOrdinal(),"", null, fareStructure);
+					PaymentMode.CASH.getOrdinal(),"", null, fareStructure, 0.0);
 		}
 	}
 

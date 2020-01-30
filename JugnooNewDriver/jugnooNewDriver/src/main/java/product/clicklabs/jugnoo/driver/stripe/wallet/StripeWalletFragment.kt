@@ -16,6 +16,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
 import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
@@ -182,7 +183,7 @@ class StripeWalletFragment: Fragment(){
     private fun addStripeCash(amount:String){
 
         val params = hashMapOf("amount" to amount,
-                                "currency" to (currencyUnit?:"INR"),
+                                "currency" to (currencyUnit?: MyApplication.getInstance().getResources().getString(R.string.currency_fallback)),
                                 "card_id" to   (stripeCardData?.cardId?:""))
 
         ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true,checkForActionComplete = true).

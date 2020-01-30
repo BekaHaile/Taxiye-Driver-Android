@@ -1,9 +1,6 @@
 package product.clicklabs.jugnoo.driver.home;
 
 import android.graphics.Typeface;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,6 +14,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.DialogReviewImagesFragment;
@@ -29,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.google.GAPIAddress;
 import product.clicklabs.jugnoo.driver.google.GoogleAPICoroutine;
+import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -40,6 +41,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_DROP_LOCATION_BELOW_PICKUP;
 import static product.clicklabs.jugnoo.driver.Constants.KEY_SHOW_FARE_BEFORE_RIDE_START;
+
 
 /**
  * Created by aneeshbansal on 28/05/16.
@@ -54,6 +56,11 @@ public class CustomerSwitcher {
 
 	private LinearLayout llRentalRequest;
 	private RecyclerView rvPickupFeedImages;
+	private CustomerInfoAdapter customerInfoAdapter;
+	private TextView tvFeedInstructions;
+	private RecyclerView recyclerViewCustomersLinked;
+
+
 	double distanceRefreshTime = 0;
 	String dropAddress;
 
@@ -89,14 +96,35 @@ public class CustomerSwitcher {
 		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		relativeLayoutCustomerInfo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCustomerInfo);
 
+		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
+		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+		recyclerViewCustomersLinked.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewCustomersLinked.setHasFixedSize(false);
 		rvPickupFeedImages = rootView.findViewById(R.id.rvPickupFeedImages);
 		rvPickupFeedImages.setItemAnimator(new DefaultItemAnimator());
 		rvPickupFeedImages.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
+        tvFeedInstructions = rootView.findViewById(R.id.tvFeedInstructions);
+        tvFeedInstructions.setTypeface(Fonts.mavenRegular(activity));
 
 
 
+		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
+			@Override
+			public void onClick(int position, CustomerInfo customerInfo) {
+				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
+				activity.switchDriverScreen(HomeActivity.driverScreenMode);
+			}
+
+			@Override
+			public void onCancelClick(int position, CustomerInfo customerInfo) {
+
+			}
+
+		});
 
 
+
+		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
@@ -193,6 +221,37 @@ public class CustomerSwitcher {
 				} else {
 					rvPickupFeedImages.setVisibility(View.GONE);
 				}
+
+
+                if (customerInfo.getVendorMessage() != null && !TextUtils.isEmpty(customerInfo.getVendorMessage())) {
+					tvFeedInstructions.setVisibility(View.VISIBLE);
+					if(customerInfo.getVendorMessage().length() > 20) {
+						tvFeedInstructions.setText(R.string.click_to_view_message);
+						tvFeedInstructions.setEnabled(true);
+					} else {
+						tvFeedInstructions.setText(activity.getString(R.string.instructions_colon) + customerInfo.getVendorMessage());
+						tvFeedInstructions.setEnabled(false);
+					}
+                }
+                else {
+                    tvFeedInstructions.setVisibility(View.GONE);
+                }
+				if(!TextUtils.isEmpty(customerInfo.getCustomerNotes())){
+					tvCustomerNotes.setVisibility(View.VISIBLE);
+					if(customerInfo.getCustomerNotes().length() > 20) {
+						tvCustomerNotes.setText(R.string.click_to_view_notes);
+						tvCustomerNotes.setEnabled(true);
+					} else {
+						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
+						tvCustomerNotes.setEnabled(false);
+					}
+				} else {
+					tvCustomerNotes.setVisibility(View.GONE);
+				}
+				tvCustomerNotes.setOnClickListener(view -> openNotesDialog(!TextUtils.isEmpty(customerInfo.getCustomerNotes())?customerInfo.getCustomerNotes():""));
+				tvFeedInstructions.setOnClickListener(view -> openNotesDialog(!TextUtils.isEmpty(customerInfo.getVendorMessage())?customerInfo.getVendorMessage():""));
+
+
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
@@ -230,30 +289,11 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
 					}
+					updateDistanceOnLocationChanged(customerInfo);
 					textViewDeliveryCount.setVisibility(View.GONE);
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					if(!TextUtils.isEmpty(customerInfo.getCustomerNotes())){
-						tvCustomerNotes.setVisibility(View.VISIBLE);
-						if(customerInfo.getCustomerNotes().length() > 20) {
-							tvCustomerNotes.setText(R.string.click_to_view_notes);
-							tvCustomerNotes.setEnabled(true);
-						} else {
-							tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getCustomerNotes());
-							tvCustomerNotes.setEnabled(false);
-						}
-					} else {
-						tvCustomerNotes.setVisibility(View.GONE);
-						tvCustomerNotes.setText("");
-
-					}
-					if(!TextUtils.isEmpty(customerInfo.getVendorMessage())) {
-						tvCustomerNotes.setVisibility(View.VISIBLE);
-						tvCustomerNotes.setText(activity.getString(R.string.note)+": "+customerInfo.getVendorMessage());
-					} else {
-						tvCustomerNotes.setVisibility(View.GONE);
-					}
 					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					}
@@ -266,14 +306,20 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 
+					updateDistanceOnLocationChanged(customerInfo);
 					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
-						textViewDeliveryCount.setVisibility(View.VISIBLE);
-						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
-								+ " " + customerInfo.getTotalDeliveries());
-						textViewCustomerCashRequired.setVisibility(View.VISIBLE);
-						textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
-								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ "" + customerInfo.getCashOnDelivery());
+						if (customerInfo.getDeliveryInfos().size() > 0) {
+							textViewDeliveryCount.setVisibility(View.VISIBLE);
+							textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
+									+ " " + customerInfo.getTotalDeliveries());
+							textViewCustomerCashRequired.setVisibility(View.VISIBLE);
+							textViewCustomerCashRequired.setText(activity.getResources().getString(R.string.cash_to_collected)
+									+ ": " + activity.getResources().getString(R.string.rupee)
+									+ "" + customerInfo.getCashOnDelivery());
+						} else {
+							textViewDeliveryCount.setVisibility(View.GONE);
+							textViewCustomerCashRequired.setVisibility(View.GONE);
+						}
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						textViewCustomerCashRequired.setVisibility(View.GONE);
@@ -321,11 +367,20 @@ public class CustomerSwitcher {
 					}
 				}
 			}
-			textViewCustomerName1.setVisibility(View.VISIBLE);
-			textViewCustomerName.setVisibility(View.VISIBLE);
-			updateDistanceOnLocationChanged(customerInfo);
+			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
+			} else {
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName1.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
+			}
+			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
+				textViewShowDistance.setText("");
+			}
 
-			tvCustomerNotes.setOnClickListener(view -> openNotesDialog(customerInfo.getCustomerNotes()));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -405,17 +460,25 @@ public class CustomerSwitcher {
 	}
 
 
+	public void setCallButton() {
+		if (Data.getCurrentCustomerInfo() != null) {
+			if ((Data.getCurrentCustomerInfo().getIsDelivery() == 1)
+					&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
+					&& activity.getResources().getBoolean(R.bool.show_customer_info_in_inride)) {
+				if (Data.getCurrentCustomerInfo().getName().equals(Data.getCurrentCustomerInfo().getDeliveryInfos().get(0).getCustomerName())
+						&& Data.getCurrentCustomerInfo().getPhoneNumber().equals(Data.getCurrentCustomerInfo().getDeliveryInfos().get(0).getCustomerNo())) {
+					relativeLayoutCustomerInfo.setVisibility(View.GONE);
+				} else {
+					relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
+				}
 
-	public void setCallButton(){
-		if(Data.getCurrentCustomerInfo() != null){
-			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
-				relativeLayoutCustomerInfo.setVisibility(View.VISIBLE);
-			}else {
+			} else {
 				relativeLayoutCustomerInfo.setVisibility(View.GONE);
 			}
 		}
 	}
 
 	public void updateList() {
+		customerInfoAdapter.notifyList();
 	}
 }

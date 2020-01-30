@@ -264,6 +264,10 @@ class LoginFragment : Fragment() {
                             requireActivity().resources.getInteger(R.integer.email_input_at_signup))
                         Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_EMAIL_OPTIONAL, t?.driverEmailOptional ?:
                             requireActivity().resources.getInteger(R.integer.driver_email_optional))
+                        Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_DOB_INPUT, t?.driverDobInput ?:
+                        requireActivity().resources.getInteger(R.integer.driver_dob_input))
+                        Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_GENDER_FILTER, t?.driverGenderFilter ?:
+                        requireActivity().resources.getInteger(R.integer.driver_gender_filter))
 
                         tvCountryCode.text = Utils.getCountryCode(requireActivity())
                         if (edtPhoneNo.text.isEmpty()) {

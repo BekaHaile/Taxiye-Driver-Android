@@ -7,11 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -30,6 +26,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsProfileAdapter;
@@ -49,6 +50,7 @@ import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -74,6 +76,7 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
     TextView textViewDriverName, textViewDriverId, textViewPhoneNumber, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
             textViewRidesCancelledValue, textViewRidesMissedValue, textViewTitleBarDEI, textViewmonthlyScore, textViewMonthlyText,
             textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms,tvServiceType;
+    TextView tvGender, tvDateOfBirth;
 
     ImageView profileImg, imageViewTitleBarDEI, ivEditIcon;
     CardView cvSwitchNavigation;
@@ -151,6 +154,9 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
             }else{
                 enableDelivery.setChecked(false);
             }
+        } else {
+            enableDelivery.setVisibility(View.GONE);
+            ivDeliveryEnable.setVisibility(View.GONE);
         }
         switchMaxSound = (SwitchCompat) findViewById(R.id.switchMaxSound);
         textViewDriverName = (TextView) findViewById(R.id.textViewDriverName);
@@ -165,6 +171,11 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
         textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue);
         textViewMonthlyValue.setTypeface(Fonts.mavenRegular(this));
 		tvSelectRingtone = findViewById(R.id.tvSelectRingtone);
+
+        tvGender = findViewById(R.id.tvGender);
+        tvGender.setVisibility(View.GONE);
+        tvDateOfBirth = findViewById(R.id.tvDateOfBirth);
+        tvDateOfBirth.setVisibility(View.GONE);
 
         textViewRidesTakenValue = (TextView) findViewById(R.id.textViewRidesTakenValue);
         textViewRidesTakenValue.setTypeface(Fonts.mavenRegular(this));
@@ -572,6 +583,12 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                                                     textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI, accNo, ifscCode,
                                                     bankName, bankLoc, currency);
 
+
+                                            if(Data.userData != null) {
+                                                Data.userData.setGender(jObj.optInt(Constants.KEY_GENDER, Data.userData.getGender()));
+                                                Data.userData.setDateOfBirth(jObj.optString(Constants.KEY_DATE_OF_BIRTH, Data.userData.getDateOfBirth()));
+                                            }
+
                                             setUserData();
 
                                         } catch (Exception e) {
@@ -644,6 +661,18 @@ public class DriverProfileActivity extends BaseFragmentActivity implements Vehic
                 textViewRidesTakenValue.setText("" + openedProfileInfo.textViewRidesTakenValue);
                 textViewRidesCancelledValue.setText("" + openedProfileInfo.textViewRidesCancelledValue);
                 textViewRidesMissedValue.setText("" + openedProfileInfo.textViewRidesMissedValue);
+
+                tvGender.setVisibility((Prefs.with(this).getInt(Constants.KEY_DRIVER_GENDER_FILTER, 0) == 0
+                        || Data.userData.getGender() == 0) ? View.GONE : View.VISIBLE);
+                tvGender.setText(getString(R.string.gender)+": "+Data.userData.getGenderName(this));
+                tvDateOfBirth.setVisibility((Prefs.with(this).getInt(Constants.KEY_DRIVER_DOB_INPUT, 0) == 0
+                        || TextUtils.isEmpty(Data.userData.getDateOfBirth())) ? View.GONE : View.VISIBLE);
+                if(!TextUtils.isEmpty(Data.userData.getDateOfBirth())) {
+                    tvDateOfBirth.setText(getString(R.string.hint_date_of_birth)+": "+DateOperations.utcToLocalWithTZFallback(Data.userData.getDateOfBirth()).split(" ")[0]);
+                } else {
+                    tvDateOfBirth.setText("");
+                }
+
             }
 
 
