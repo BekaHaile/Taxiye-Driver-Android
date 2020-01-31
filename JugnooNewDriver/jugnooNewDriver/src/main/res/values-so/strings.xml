@@ -23,7 +23,7 @@
     <string name="phone_number">Lakkoofsa Bilbilaa</string>
     <string name="confirm_password">Jecha darbii mirkaneessi</string>
     <string name="confirmation_code">Koodii mirkaneessituu</string>
-    <string name="check_your_registered_email_phone_number_for_otp">OTP\'dhaaf imeelii/lakkoofsa bilbilaa galmeessite sakatta'i</string>
+    <string name="check_your_registered_email_phone_number_for_otp">OTP\'dhaaf imeelii/lakkoofsa bilbilaa galmeessite sakatta\'i</string>
     <string name="enter_code">Koodii galchi</string>
     <string name="done">Xumureera</string>
     <string name="logout">Ba\'i</string>
@@ -383,7 +383,7 @@
     <string name="referral_rate">Eeruu</string>
     <string name="pickup_charges">Gatii fe\'uu</string>
     <string name="base_fare">Kaffaltii bu\'uuraa</string>
-    <string name="distance_per_km">Fageenya\n(KM'n)</string>
+    <string name="distance_per_km">Fageenya\n(KM\'n)</string>
     <string name="time_per_min">Yeroo(Daqiiqaan)</string>
     <string name="per_min">(Daqiiqaan)</string>
     <string name="driver_to_customer">Konkolaachisaa maamilatti</string>
@@ -446,7 +446,7 @@
     <string name="duration">Turtii</string>
     <string name="daily_earnings">Bu\'aa guyyaan</string>
     <string name="Invoices_cap">Nagahee gaaffii</string>
-    <string name="Today_earning">Bu\'aa Har'aa</string>
+    <string name="Today_earning">Bu\'aa Har\'aa</string>
     <string name="daily_breakup">Addaan ba\'insa guyyaan</string>
     <string name="trip_earning">Bu\'aawwan imalaa</string>
     <string name="earnings_caps">Bu\'aawwan</string>
@@ -521,7 +521,7 @@
     <string name="tutorial_tap_end_ride">Erga maamila buuftee booda qofa \'Imala Xumuri\' tuqi</string>
     <string name="tutorial_tap_ok_endride">Yoo maamilli bu\'e \'TOLE\' tuqi</string>
     <string name="tutorial_tap_done_finish">Xumuruuf \'XUMUREERA\' tuqi</string>
-    <string name="tutorial_tap_arrived_if_at_pickup">Yoo bakka ka\'umsaa jirta ta\'e \'Ga'eera\ tuqi</string>
+    <string name="tutorial_tap_arrived_if_at_pickup">Yoo bakka ka\'umsaa jirta ta\'e \'Ga\'eera tuqi</string>
     <string name="tutorial_driver_to_pickup_point">Gara iddoo ka\'umsaatti oofi</string>
     <string name="auto_detect_otp_failed">Argannoon ofiinii OTP kufeera.</string>
     <string name="auto_detect_otp_wait">OTP ofiin argachuuf yaalaa jira. Eegi…</string>
@@ -655,9 +655,9 @@
     <string name="please_enter_some_value">Gatii muraasa galchi</string>
     <string name="bid">Kennaa</string>
     <string name="bid_placed">dhiyaateera</string>
-    <string name="reduce_by_10">10% dhaan \n hir'isi</string>
+    <string name="reduce_by_10">10% dhaan \n hir\'isi</string>
     <string name="increase_by_10">10% dhaan \n dabali</string>
-    <string name="reduce_by_format">%s dhaan \n hir'isi</string>
+    <string name="reduce_by_format">%s dhaan \n hir\'isi</string>
     <string name="increase_by_format">%s dhaan \n dabali</string>
     <string name="documents_authentication">Sanadni karaa koo ol fe\'ame sirrii fi dhugaa ta\'uu nan fudhadha. Yaaliin odeeffannoo sobaa, dogoggora ykn sanada sobaa dhiyeessuu waltajjii %1$s irraa hatattamaan kan ana ariisisu ta\'uu nan amana. Dirreen %2$s sanada sobaa gara seera eegsistootaatti dhiyeessuuf mirga guutuu qaba.</string>
     <string name="i_agree">Itti waliigaleera</string>
@@ -673,7 +673,7 @@
     <string name="please_press_submit_button">Biinkoo galchuu tuqi</string>
     <string name="drop">Gad buusi</string>
     <string name="hide">Dhoksi</string>
-    <string name="drop_location">Bakka \n bu'amu</string>
+    <string name="drop_location">Bakka \n bu\'amu</string>
     <string name="branding_images">Suura mallattoo daldalaa</string>
     <string name="current_details">Ibsa yeroo ammaa</string>
     <string name="credit_history">Seenaa Galateeffanaa</string>
@@ -700,7 +700,7 @@
     <string name="enter_phone_number_hinglish">Phone no दर्ज करें</string>
     <string name="languages">Qooqa</string>
     <string name="stripe_connect_title">Mallattoo(Stripe)</string>
-    <string name="stripe_success_message">Mallattoon(Stripe) eenyummeessa keetii milkaa\'inaan qindaa'eera.</string>
+    <string name="stripe_success_message">Mallattoon(Stripe) eenyummeessa keetii milkaa\'inaan qindaa\'eera.</string>
     <string name="stripe_error_message">Aah! Eenyummeessa mallattoo(Stripe) keetii qindeessuu irratti rakkootu mudate.</string>
     <string name="account_details">Ibsa Eenyummeessaa</string>
     <string name="connect_with_stripe">Mallattoo(Stripe)tti quunnami</string>
@@ -901,7 +901,7 @@
     <string name="in_app_customer_support">Deeggarsa maamiltootaa hojmaataan</string>
     <string name="chat_with_us">Nu waliin haasa\'i</string>
     <string name="everything_is_alright_caps">HUNDUU GAARIIDHA</string>
-    <string name="you_have_disabled_jugnoo_emergency">Bifa yeroo hatattamaa%s\n akka hin hojjenne taasifteetta</string>
+    <string name="you_have_disabled_jugnoo_emergency">Bifa yeroo hatattamaa%s \n akka hin hojjenne taasifteetta</string>
     <string name="emergency_contacts_only">Quunnamtii yeroo hatattamaa</string>
     <string name="emergency_mode_enabled">Hatattama akka hojjetu ta\'eera</string>
     <string name="call_support">Bilbila deeggarsaa</string>
