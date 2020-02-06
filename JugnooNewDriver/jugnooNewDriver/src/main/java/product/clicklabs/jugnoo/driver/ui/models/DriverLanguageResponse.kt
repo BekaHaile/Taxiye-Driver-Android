@@ -16,7 +16,7 @@ data class DriverLanguageResponse(
 @Expose @SerializedName("show_terms") val showTerms:Int?,
 @Expose @SerializedName("email_input_at_signup") val emailInputAtSignup:Int?,
 @Expose @SerializedName("driver_email_optional") val driverEmailOptional:Int?
-):FeedCommonResponseKotlin()
+):FeedCommonResponse()
 
 class LocaleModel(@Expose @SerializedName("locale") val locale:String?,
                        @Expose @SerializedName("name") val name:String?){

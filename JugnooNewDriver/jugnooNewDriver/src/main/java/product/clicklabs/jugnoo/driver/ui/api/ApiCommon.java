@@ -264,6 +264,7 @@ public class ApiCommon<T extends FeedCommonResponse> {
             case PAYTM_REMOVE_WALLET:
                 RestClient.getApiServices().paytmDeletePaytm(params, callback);
                 break;
+
             case FETCH_WALLET:
                 RestClient.getApiServices().fetchWalletBalance(params, callback);
                 break;

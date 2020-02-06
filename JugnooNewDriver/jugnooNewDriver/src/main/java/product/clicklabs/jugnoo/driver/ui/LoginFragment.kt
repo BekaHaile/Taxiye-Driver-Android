@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
     private val permissionCommon by lazy { PermissionCommon(this) }
 
 
-    override fun onAttach(mActivity: Activity?) {
+    override fun onAttach(mActivity: Activity) {
         super.onAttach(mActivity)
         if(mActivity is SplashFragment.InteractionListener){
             mListener = mActivity;
@@ -248,8 +248,8 @@ class LoginFragment : Fragment() {
 
         setLanguageLoading(text = R.string.languages)
 
-        ApiCommonKt<DriverLanguageResponse>(parentActivity, showLoader = false, checkForActionComplete = true)
-                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallbackKotlin<DriverLanguageResponse>() {
+        ApiCommon<DriverLanguageResponse>(parentActivity).showLoader(false).checkForActionComplete(true)
+                .execute(params, ApiName.GET_LANGUAGES, object : APICommonCallback<DriverLanguageResponse>() {
                     override fun onSuccess(t: DriverLanguageResponse?, message: String?, flag: Int) {
                         val showTerms = if (requireActivity().resources.getInteger(R.integer.show_t_and_c)
                                 == requireActivity().resources.getInteger(R.integer.view_visible)) 1 else 0
