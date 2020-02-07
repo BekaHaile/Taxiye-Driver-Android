@@ -18,8 +18,10 @@ import kotlinx.android.synthetic.main.frag_wallet.*
 import kotlinx.android.synthetic.main.layout_top_bar.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
+import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.R.id.*
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
 import product.clicklabs.jugnoo.driver.stripe.StripeUtils
 import product.clicklabs.jugnoo.driver.stripe.model.StripeCardData
 import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse
@@ -28,6 +30,7 @@ import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Utils
 import product.clicklabs.jugnoo.driver.widgets.PrefixedEditText
+import java.util.HashMap
 import kotlin.math.roundToInt
 
 
@@ -108,10 +111,11 @@ class StripeWalletFragment: Fragment(){
     }
 
     fun fetchWalletData(){
-        ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true).
-        execute(params = null,apiName = ApiName.FETCH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
+        val params = HashMap<String, String>()
+        params[Constants.KEY_ACCESS_TOKEN] = Data.userData.accessToken;
+        HomeUtil.putDefaultParams(params)
+        ApiCommon<WalletModelResponse>(requireActivity()).execute(params,ApiName.FETCH_WALLET,object : APICommonCallback<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
-                    //    walletModelResponse = t
                         tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance());
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;
@@ -188,9 +192,8 @@ class StripeWalletFragment: Fragment(){
                                 "currency" to (currencyUnit?:"INR"),
                                 "card_id" to   (stripeCardData?.cardId?:""),
                 Constants.KEY_ACCESS_TOKEN to Data.userData.accessToken)
-
-        ApiCommonKt<WalletModelResponse>(requireActivity(),putAccessToken = true,checkForActionComplete = true).
-        execute(params,apiName = ApiName.ADD_CASH_WALLET,apiCommonCallback = object : APICommonCallbackKotlin<WalletModelResponse>() {
+        ApiCommon<WalletModelResponse>(requireActivity()).checkForActionComplete(true).
+        execute(params,ApiName.ADD_CASH_WALLET, object : APICommonCallback<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
                         DialogPopup.alertPopup(requireActivity(),"",message);
                         tvCurrentBalance.text = Utils.formatCurrencyValue(currencyUnit,t.getBalance());

@@ -174,7 +174,7 @@ class ApiCommonKt <T : FeedCommonResponseKotlin> @JvmOverloads constructor(
 //            ApiName.REGISTER_DRIVER ->  RestClient.getApiServices().updateDriverInfo(params, callback as Callback<RegisterScreenResponse> )
             ApiName.APPLY_PROMO ->  RestClient.getApiServices().applyPromo(params, callback as Callback<FeedCommonResponseKotlin> )
             ApiName.ADD_CARD_API ->  RestClient.getApiServices().addCardToDriver(params, callback as Callback<StripeCardResponse> )
-            ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
+           // ApiName.FETCH_WALLET ->  RestClient.getApiServices().fetchWalletBalance(params, callback as Callback<WalletModelResponse> )
 //            ApiName.ADD_CASH_WALLET ->  RestClient.getApiServices().addMoneyViaStripe(params, callback as Callback<WalletModelResponse> )
 //            ApiName.VEHICLE_MAKE_DATA ->  RestClient.getApiServices().getVehicleMakeDetails(params, callback as Callback<VehicleDetailsResponse> )
 //            ApiName.VEHICLE_MODEL_DATA ->  RestClient.getApiServices().getVehicleModelDetails(params, callback as

@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.stripe.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin
 
 /**
@@ -13,7 +14,7 @@ class WalletModelResponse(
     @Expose @SerializedName("user_debt") val userDebt: Double,
     @Expose @SerializedName("currency") val currencyUnit: String,
     @Expose @SerializedName("stripe_cards") val stripeCards:List<StripeCardData>?,
-    @Expose @SerializedName("quick_add_amounts") val quickAddAmounts:List<Double>?): FeedCommonResponseKotlin(){
+    @Expose @SerializedName("quick_add_amounts") val quickAddAmounts:List<Double>?): FeedCommonResponse(){
 
         fun getBalance()=walletBalance-userDebt;
 }
