@@ -348,22 +348,6 @@ public class SplashNewActivity extends BaseFragmentActivity implements LocationU
 			}
 		});
 
-		Intent intent = new Intent();
-		String packageName = SplashNewActivity.this.getPackageName();
-		PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		try {
-			if(currentapiVersion >= Build.VERSION_CODES.M) {
-				if (!pm.isIgnoringBatteryOptimizations(packageName)){
-					intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-					intent.setData(Uri.parse("package:" + packageName));
-					SplashNewActivity.this.startActivity(intent);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 
 
 		batteryOptimizer(SplashNewActivity.this);

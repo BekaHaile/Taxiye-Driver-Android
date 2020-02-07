@@ -112,7 +112,6 @@ class SplashFragment : Fragment() {
 
 
     private fun start() {
-        checkForBatteryOptimisation()
         compositeDisposable.add(deviceTokenObservable.timeout(DEVICE_TOKEN_WAIT_TIME, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({},
                 { showBlockerDialog(getString(R.string.device_token_not_found_message))},
@@ -139,26 +138,6 @@ class SplashFragment : Fragment() {
 
 
 
-    private fun checkForBatteryOptimisation() {
-        try {
-            if(!Prefs.with(requireActivity()).getBoolean(Constants.SP_BATTERY_OPTIMIZATIONS_ASKED, false)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val packageName = (this.requireActivity().packageName)
-                    val pm = this.requireActivity().getSystemService(Context.POWER_SERVICE) as PowerManager
-                    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                        val intent = Intent()
-                        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-                        intent.data = Uri.parse("package:$packageName")
-                        startActivity(intent)
-                    }
-                }
-                Prefs.with(requireActivity()).save(Constants.SP_BATTERY_OPTIMIZATIONS_ASKED, true)
-            }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
 
     private fun subscribeSubjectForAccessTokenLogin(){
