@@ -11,15 +11,17 @@ import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.activity_manual_ride.*
 import kotlinx.android.synthetic.main.activity_toolbar.*
 import kotlinx.android.synthetic.main.activity_toolbar.view.*
+import kotlinx.android.synthetic.main.frag_login.*
+import kotlinx.android.synthetic.main.frag_login.edtPhoneNo
+import kotlinx.android.synthetic.main.frag_login.tvCountryCode
+import kotlinx.android.synthetic.main.frag_login.tvLabel
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.HomeUtil
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
-import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
-import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
-import product.clicklabs.jugnoo.driver.ui.api.ApiName
-import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse
+import product.clicklabs.jugnoo.driver.ui.api.*
+import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity
 import product.clicklabs.jugnoo.driver.utils.DialogPopup
 import product.clicklabs.jugnoo.driver.utils.Fonts
@@ -85,25 +87,24 @@ class ManualRideActivity: BaseFragmentActivity() {
         HomeUtil.putDefaultParams(params)
         params[Constants.KEY_PHONE_NO] = countryCode + phoneNo
         params[Constants.KEY_COUNTRY_CODE] = countryCode
-        ApiCommonKt<ManualRideResponse>(this,showLoader = true,checkForActionComplete = false)
-                .execute(params,ApiName.MANUAL_RIDE,object: APICommonCallbackKotlin<ManualRideResponse>(){
-                    override fun onSuccess(t: ManualRideResponse?, message: String?, flag: Int) {
-                        if(flag==ApiResponseFlags.ASSIGNING_DRIVERS.getOrdinal()){
-                            DialogPopup.alertPopupWithListener(this@ManualRideActivity, getString(R.string.ride_assigned_success), message)
-                            { this@ManualRideActivity.finish() }
-                        }else{
-                            DialogPopup.alertPopup(this@ManualRideActivity,"",message)
-                        }
 
+        ApiCommon<FeedCommonResponse>(this).execute(params,ApiName.MANUAL_RIDE
+                ,object: APICommonCallback<FeedCommonResponse>(){
+            override fun onSuccess(t: FeedCommonResponse?, message: String?, flag: Int) {
+                if(flag==ApiResponseFlags.ASSIGNING_DRIVERS.getOrdinal()){
+                    DialogPopup.alertPopupWithListener(this@ManualRideActivity, getString(R.string.ride_assigned_success), message)
+                    { this@ManualRideActivity.finish() }
+                }else{
+                    DialogPopup.alertPopup(this@ManualRideActivity,"",message)
+                }
+            }
 
+            override fun onError(t: FeedCommonResponse?, message: String?, flag: Int): Boolean {
+                return false
+            }
 
-                    }
+        })
 
-                    override fun onError(t: ManualRideResponse?, message: String?, flag: Int): Boolean {
-                        return false;
-                    }
-
-                })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

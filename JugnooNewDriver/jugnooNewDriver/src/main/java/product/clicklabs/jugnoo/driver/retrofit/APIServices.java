@@ -421,7 +421,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/driver/self_assign")
 	void requestManualRide(@FieldMap Map<String, String> params,
-					 Callback<ManualRideResponse> callback);
+					 Callback<FeedCommonResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/set_locale_preference")

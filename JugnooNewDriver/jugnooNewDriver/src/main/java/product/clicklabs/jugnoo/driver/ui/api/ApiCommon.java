@@ -286,6 +286,9 @@ public class ApiCommon<T extends FeedCommonResponse> {
             case VEHICLE_MODEL_DATA:
                 RestClient.getApiServices().getVehicleModelDetails(params, callback);
                 break;
+            case MANUAL_RIDE:
+                RestClient.getApiServices().requestManualRide(params, callback );
+                break;
             default:
                 throw new IllegalArgumentException("API Type not declared");
 
