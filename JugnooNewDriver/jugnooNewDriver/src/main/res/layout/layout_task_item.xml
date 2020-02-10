@@ -70,7 +70,7 @@
                     android:id="@+id/rvPickupFeedImages"
                     android:layout_toStartOf="@id/relativeLayoutCall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="72px"
                     android:layout_marginEnd="10dp"
                     android:overScrollMode="never"
                     android:layout_centerVertical="true"
