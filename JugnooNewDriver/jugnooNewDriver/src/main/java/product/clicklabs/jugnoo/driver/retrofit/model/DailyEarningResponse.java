@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.retrofit.CurrencyModel;
@@ -297,6 +296,9 @@ public class DailyEarningResponse extends CurrencyModel {
 		@SerializedName("earning")
 		@Expose
 		private Double earning;
+		@SerializedName("collect_cash")
+		@Expose
+		private Double collectCash;
 		@SerializedName("type")
 		@Expose
 		private Integer type;
@@ -402,6 +404,10 @@ public class DailyEarningResponse extends CurrencyModel {
 
 		public void getDistance(){
 
+		}
+
+		public Double getCollectCash() {
+			return collectCash;
 		}
 	}
 

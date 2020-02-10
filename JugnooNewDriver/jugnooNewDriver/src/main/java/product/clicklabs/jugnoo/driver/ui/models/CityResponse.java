@@ -158,6 +158,9 @@ public class CityResponse extends FeedCommonResponse {
 		@SerializedName("region_id")
 		@Expose
 		private int regionId;
+		@SerializedName("applicable_gender")
+		@Expose
+		private int applicableGender;
 		@SerializedName("driver_icon")
 		@Expose
 		private String driverIcon;
@@ -229,6 +232,14 @@ public class CityResponse extends FeedCommonResponse {
 
 		public void setRegionId(int regionId) {
 			this.regionId = regionId;
+		}
+
+		public int getApplicableGender() {
+			return applicableGender;
+		}
+
+		public void setApplicableGender(int applicableGender) {
+			this.applicableGender = applicableGender;
 		}
 	}
 

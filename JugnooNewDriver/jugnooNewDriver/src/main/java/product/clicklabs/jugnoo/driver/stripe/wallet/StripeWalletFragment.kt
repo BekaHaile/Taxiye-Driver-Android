@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.layout_top_bar.*
 import product.clicklabs.jugnoo.driver.Constants
 import product.clicklabs.jugnoo.driver.Data
 import product.clicklabs.jugnoo.driver.HomeUtil
+import product.clicklabs.jugnoo.driver.MyApplication
 import product.clicklabs.jugnoo.driver.R
 import product.clicklabs.jugnoo.driver.R.id.*
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags

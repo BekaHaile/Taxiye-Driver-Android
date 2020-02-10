@@ -6,11 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
@@ -44,6 +39,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.DailyEarningActivity;
 import product.clicklabs.jugnoo.driver.Data;
@@ -386,20 +386,45 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 
 			} else{
+				boolean earningIsNull = true;
+				for(DriverEarningsResponse.Earning earning : driverEarningsResponse.getEarnings()) {
+					if(earning.getEarnings()!=null) {
+						earningIsNull = false;
+					}
+					if(earning.getDeliveryEarnings()==null) {
+						earning.setDeliveryEarnings(0.0);
+					}
+//					if(earning.getEarnings()==null) {
+//						earning.setEarnings(0.0);
+//					}
+				}
+
+
+
+
 				//Graph set up Only required for nonCaptive Users
 				layoutCaptivePlanDetails.setVisibility(View.GONE);
 				if(driverEarningsResponse.getCurrentInvoiceId() == 0){
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 					if(Data.userData.getDeliveryEnabled()==1) {
-//						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
-						textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
-						relativeLayoutDeliveryEarnings.setVisibility(View.VISIBLE);
+						if(!earningIsNull) {
+							textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings() - driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+							textViewDeliveryEarningsValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getDeliveryEarnings()));
+							relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						}
+//
 					}
 					else {
-						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
-						relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						if(!earningIsNull) {
+							textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+							relativeLayoutDeliveryEarnings.setVisibility(View.GONE);
+						}
+
 					}
-					textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+					if(!earningIsNull) {
+						textViewPayOutValue.setText(Utils.formatCurrencyValue(driverEarningsResponse.getEarnings().get(0).getCurrencyUnit(), driverEarningsResponse.getEarnings().get(0).getEarnings()));
+
+					}
 				} else {
 					relativeLayoutPayout.setVisibility(View.VISIBLE);
 				}
@@ -495,7 +520,7 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				setWalletData(walletClick, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getJugnooBalance()),textViewWalletBalance,textViewWalletBalanceAmount,relativeLayoutWallet);
 
 				if(driverEarningsResponse.getNeftPending() != null && driverEarningsResponse.getNeftPending()>0) {
-					relativeLayoutNefy.setVisibility(View.VISIBLE);
+					relativeLayoutNefy.setVisibility(View.GONE);
 					textViewNefyAmount.setText(getString(R.string.rupees_value_format, Utils.getDecimalFormatForMoney().format(driverEarningsResponse.getNeftPending())));
 
 				} else {
@@ -556,9 +581,9 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 				String invoiceId = "0";
 				if(invoice == 0){
 					invoiceId = "0";
-				} else if(invoice == 1 && res != null){
+				} else if(invoice == 1 && res != null && res.getPreviousInvoiceId() != null){
 					invoiceId = String.valueOf(res.getPreviousInvoiceId());
-				}else if(invoice == 2 && res != null) {
+				}else if(invoice == 2 && res != null && res.getNextInvoiceId()!=null) {
 					invoiceId = String.valueOf(res.getNextInvoiceId());
 				}
 
@@ -606,6 +631,30 @@ public class DriverEarningsFragment extends BaseFragment implements CustomMarker
 
 					} else {
 						DialogPopup.dismissLoadingDialog();
+
+						if(driverEarningsResponse.getRechargeOptions()!=null && !driverEarningsResponse.getRechargeOptions().isEmpty()) {
+							List<DriverEarningsResponse.RechargeOption> rechargeOption= driverEarningsResponse.getRechargeOptions();
+
+							if(rechargeOption.size()>0) {
+								for (DriverEarningsResponse.RechargeOption thisRechargeOption : rechargeOption) {
+									List<DriverEarningsResponse.Address> newEmptyAddressList = new ArrayList<>();
+
+									if(thisRechargeOption.getAddresses()!=null && !thisRechargeOption.getAddresses().isEmpty()) {
+										if(thisRechargeOption.getAddresses().size()>0){
+											android.util.Log.d("yyyyyy", "success: " + thisRechargeOption.getAddresses().size());
+											thisRechargeOption.setAddresses(newEmptyAddressList);
+											continue;
+										}
+									}
+									thisRechargeOption.setAddresses(newEmptyAddressList);
+								}
+
+							}
+						}
+
+
+
+
 						res = driverEarningsResponse;
 						updateData(driverEarningsResponse, walletClick);
 					}

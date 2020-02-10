@@ -52,7 +52,7 @@ public class DriverLocationUpdateService extends Service implements GPSLocationU
 			}
 
 			if(isOffline == 0){
-                startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,getString(R.string.update_location_notif_label),DRIVER_UPDATE_SERVICE_NOTFI_ID));
+                startForeground(DRIVER_UPDATE_SERVICE_NOTFI_ID,MeteringService.generateNotification(this,MyApplication.getInstance().getmActivity().getResources().getString(R.string.update_location_notif_label),DRIVER_UPDATE_SERVICE_NOTFI_ID));
 
 
 				String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();

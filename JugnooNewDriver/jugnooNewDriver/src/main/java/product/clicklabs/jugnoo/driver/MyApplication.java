@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import androidx.multidex.MultiDexApplication;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -26,6 +25,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.multidex.MultiDexApplication;
 import io.paperdb.Paper;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
@@ -50,7 +50,7 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
     private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    public Activity mActivity;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -81,6 +81,14 @@ public class MyApplication extends MultiDexApplication implements Application.Ac
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         }
         return mFirebaseAnalytics;
+    }
+
+    public Activity getmActivity() {
+        return mActivity;
+    }
+
+    public void setmActivity(Activity mActivity) {
+        this.mActivity = mActivity;
     }
 
     public void logEvent(String eventText, Bundle bundle) {

@@ -111,6 +111,87 @@
             />
 
         <TextView
+            android:id="@+id/tvGender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_select_gender"
+            android:textColor="@color/textColorMedium"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            android:textSize="18sp"
+            />
+
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textDirection="locale"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapCharacters"
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            android:paddingTop="13sp"
+            android:paddingBottom="13sp"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/hint_gender"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tvArrow"
+            android:layout_width="12dp"
+            app:layout_constraintEnd_toEndOf="@id/spinnerGender"
+            app:layout_constraintTop_toTopOf="@+id/spinnerGender"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/arrow_down"
+            app:layout_constraintBottom_toBottomOf="@id/spinnerGender"
+            android:layout_height="20dp" />
+
+        <TextView
+            android:id="@+id/tvDob"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_enter_date_of_birth"
+            android:textColor="@color/textColorMedium"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGender"
+            android:textSize="18sp"
+            />
+        <EditText
+            android:id="@+id/edtDob"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textDirection="locale"
+            android:layout_marginTop="8dp"
+            android:focusable="false"
+            android:longClickable="false"
+            android:background="@drawable/background_white_rounded_grey_alpha_bordered"
+            android:hint="@string/hint_date_of_birth"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName|textCapCharacters"
+            android:padding="13sp"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColorLight"
+            app:layout_constraintTop_toBottomOf="@+id/tvDob"
+            />
+
+        <TextView
             android:id="@+id/tvPromo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,7 +200,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/please_enter_promo_code"
             android:textColor="@color/textColorMedium"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            app:layout_constraintTop_toBottomOf="@+id/edtDob"
             android:textSize="18sp"
             />
 

@@ -52,11 +52,9 @@
         <EditText
             android:id="@+id/etNotes"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="200dp"
             android:gravity="top|start"
             android:padding="10dp"
-            android:maxLines="4"
-            android:maxLength="160"
             android:textColor="@color/text_color"
             android:background="@color/transparent"
             android:tag="@string/dont_touch_me"

@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Shader;
 import android.os.Bundle;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.google.gson.Gson;
 
@@ -21,6 +17,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideHistoryItem;
@@ -231,7 +230,8 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 											rideHistoryItems.add(new RideHistoryItem(dailyEarningResponse.getTrips().get(i).getDate(),
 													dailyEarningResponse.getTrips().get(i).getTime(), dailyEarningResponse.getTrips().get(i).getEarning(),
 													dailyEarningResponse.getTrips().get(i).getType(), dailyEarningResponse.getTrips().get(i).getStatus(),
-													dailyEarningResponse.getTrips().get(i).getExtras(),dailyEarningResponse.getTrips().get(i).getCurrencyUnit()));
+													dailyEarningResponse.getTrips().get(i).getExtras(),dailyEarningResponse.getTrips().get(i).getCurrencyUnit(),
+													dailyEarningResponse.getTrips().get(i).getCollectCash()));
 
 										}
 

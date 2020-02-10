@@ -263,9 +263,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
                 params.put("login_type", "1");
                 params.put("engagement_id", String.valueOf(engagementId));
+				params.put("is_delivery",String.valueOf(Data.getCurrentCustomerInfo().getIsDelivery()));
 
 
-                RestClient.getChatAckApiServices().fetchChat(params, new Callback<FetchChatResponse>() {
+
+				RestClient.getChatAckApiServices().fetchChat(params, new Callback<FetchChatResponse>() {
 					@Override
 					public void success(FetchChatResponse fetchChat, Response response) {
 						try {
@@ -329,6 +331,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 params.put("engagement_id", String.valueOf(engagementId));
                 params.put("message", message);
 				params.put("suggestion_id", ""+id);
+				params.put("is_delivery",String.valueOf(Data.getCurrentCustomerInfo().getIsDelivery()));
 
                 RestClient.getChatAckApiServices().postChat(params, new Callback<FetchChatResponse>() {
 					@Override
