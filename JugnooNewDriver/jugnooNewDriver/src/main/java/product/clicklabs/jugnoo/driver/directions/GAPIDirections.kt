@@ -67,6 +67,7 @@ object GAPIDirections {
     fun putJungleOptionsParams(params:HashMap<String, String>, jungleObj:JSONObject){
         val option = jungleObj.optInt(Constants.KEY_JUNGLE_OPTIONS, 0)
         params[Constants.KEY_JUNGLE_OPTIONS] = option.toString()
+        params[Constants.KEY_JUNGLE_FM_TOKEN] = Prefs.with(MyApplication.getInstance()).getString(Constants.KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, "")
 
         when(option){
             1 -> { //here map

@@ -666,6 +666,7 @@ public class JSONParser implements Constants {
 			if(jungleObj != null){
 				jungleObjStr = jungleObj.toString();
 			}
+			Prefs.with(context).save(KEY_JUNGLE_FM_API_KEY_ANDROID_DRIVER, context.getString(R.string.jungle_map_fm_token));
 
 			Prefs.with(context).save(KEY_JUNGLE_DIRECTIONS_OBJ, jungleObjStr);
 
