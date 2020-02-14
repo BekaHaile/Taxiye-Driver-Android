@@ -195,6 +195,7 @@ public interface Constants {
     String DRIVER_RIDE_EARNING_CURRENCY = "driver_ride_earning_currency";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
+    String ACTION_ALERT_FOR_MINIMUM_BALANCE= "action_alert_for_minimum_balance";
     String ACTION_REFRESH_USL = "action_refresh_usl";
     String ALERT_BATTERY_LOW = "alert_battery_low";
 	String INTENT_ACTION_CHAT_REFRESH = "INTENT_ACTION_CHAT_REFRESH";

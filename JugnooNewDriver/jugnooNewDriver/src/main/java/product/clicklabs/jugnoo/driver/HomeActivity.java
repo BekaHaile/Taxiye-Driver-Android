@@ -213,6 +213,7 @@ import product.clicklabs.jugnoo.driver.room.model.AcceptLatLng;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
+import product.clicklabs.jugnoo.driver.stripe.model.WalletModelResponse;
 import product.clicklabs.jugnoo.driver.stripe.wallet.StripeCardsActivity;
 import product.clicklabs.jugnoo.driver.support.SupportMailActivity;
 import product.clicklabs.jugnoo.driver.support.SupportOptionsActivity;
@@ -2362,6 +2363,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Constants.ACTION_UPDATE_RIDE_EARNING);
             intentFilter.addAction(Constants.UPDATE_MPESA_PRICE);
+            intentFilter.addAction(Constants.ACTION_ALERT_FOR_MINIMUM_BALANCE);
             HomeActivity.this.registerReceiver(broadcastReceiver, intentFilter);
             HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
             HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
@@ -2622,7 +2624,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 endRideData.toPay = Double.parseDouble(intent.getStringExtra("to_pay"));
                 takeFareText.setText(Utils.formatCurrencyValue(endRideData.getCurrency(), endRideData.toPay));
 
+            }else if (intent.getAction().equalsIgnoreCase(Constants.ACTION_ALERT_FOR_MINIMUM_BALANCE)){
+                Log.e("alert for wallet balance", "called");
+               fetchWalletBance();
             }
+
             HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -2631,6 +2637,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             });
         }
     };
+
+    private void fetchWalletBance() {
+        HashMap params =new HashMap<String, String>();
+        params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+        HomeUtil.putDefaultParams(params);
+        new ApiCommon<WalletModelResponse>(this).putDefaultParams(true).showLoader(true).execute(params, ApiName.FETCH_WALLET,
+                new APICommonCallback<WalletModelResponse>() {
+                    @Override
+                    public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
+                    if(walletModelResponse.getBalance()<Data.userData.getMinDriverBalance()){
+                        Log.e("minimum balance called","wallet balance is smaller than minimum");
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                GCMIntentService.notificationManager(HomeActivity.this, "Your wallet balance has dipped below the minimum balance, please connect with the Administrator.", true);
+                            }
+                        },2000);
+                    }else {
+                        Log.e("minimum balance called","wallet balance is greater than minimum");
+                    }
+                    }
+
+                    @Override
+                    public boolean onError(WalletModelResponse walletModelResponse, String message, int flag) {
+                    return true;
+                    }
+                });
+    }
 
     BroadcastReceiver broadcastReceiverUSL = new BroadcastReceiver() {
         @Override
@@ -5005,6 +5040,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
+//todo wallet balence check
+   /* private void checkForLowWalletBalance() {
+        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
+                && Data.userData != null && Data.userData.getMinDriverBalance() != null) {
+            if (Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
+                rlLowWalletBalance.setVisibility(View.GONE);
+            } else {
+                rlLowWalletBalance.setVisibility(View.VISIBLE);
+            }
+        } else {
+            rlLowWalletBalance.setVisibility(View.GONE);
+        }
+    }*/
 
 	private void setPickupTime(CustomerInfo customerInfo, TextView tvPickupTime) {
         if (!TextUtils.isEmpty(customerInfo.getPickupTime())) {

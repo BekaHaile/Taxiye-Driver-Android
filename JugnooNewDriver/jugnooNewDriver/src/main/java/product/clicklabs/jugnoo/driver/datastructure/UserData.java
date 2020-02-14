@@ -40,6 +40,8 @@ public class UserData {
 	private String driverTag;
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
+	private double walletBalance;
+	private Double minDriverBalance;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -54,7 +56,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, Double minDriverBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -112,6 +114,7 @@ public class UserData {
 		this.subscriptionEnabled = subscriptionEnabled;
 		this.onlyCashRides = onlyCashRides;
 		this.onlyLongRides = onlyLongRides;
+		this.minDriverBalance = minDriverBalance;
 	}
 
 	public String getUserId() {
@@ -314,5 +317,29 @@ public class UserData {
 
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	/**
+	 * driver's current balance
+	 * @return double
+	 */
+	public double getWalletBalance() {
+		return walletBalance;
+	}
+
+	public void setWalletBalance(double walletBalance) {
+		this.walletBalance = walletBalance;
+	}
+
+	/**
+	 * driver's minimum balance that is required to receive a ride request
+	 * @return double
+	 */
+	public double getMinDriverBalance() {
+		return minDriverBalance;
+	}
+
+	public void setMinDriverBalance(double minDriverBalance) {
+		this.minDriverBalance = minDriverBalance;
 	}
 }
