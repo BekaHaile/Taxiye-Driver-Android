@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import android.util.TypedValue
+
 import android.view.WindowManager
 import android.widget.*
 import kotlinx.android.synthetic.main.dialog_toll.*
@@ -65,7 +67,20 @@ class EnterTollDialog(var activity: Activity, val customerInfo: CustomerInfo) {
                     return@setOnClickListener
                 }
                 if(tollToEdit == null){
-                    tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
+                    if(activity.resources.getBoolean(R.bool.is_check_toll_amount)) {
+                        val typedValue = TypedValue()
+                        activity.resources.getValue(R.dimen.max_toll_amount, typedValue, true)
+                        val maxTollAmount : Float = typedValue.float
+                        if(fare.toFloat() <= maxTollAmount) {
+                            tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
+                        } else {
+                            Utils.showToast(activity, activity.getString(R.string.enter_amount_less_than, Utils.formatCurrencyValue(customerInfo.currencyUnit,
+                                    maxTollAmount.toDouble(), activity.getString(R.string.currency_fallback))))
+                            return@setOnClickListener
+                        }
+                    } else {
+                        tollDatas.add(TollData(-1, fare.toDouble(), "extra"))
+                    }
                 } else {
                     if(tollToEdit.toll < fare.toDouble()){
                         Utils.showToast(activity, activity.getString(R.string.enter_less_amount))

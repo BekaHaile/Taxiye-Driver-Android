@@ -40,7 +40,7 @@ public class UserData {
 	private String driverTag;
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
-	private double walletBalance;
+	private Double walletBalance;
 	private Double minDriverBalance;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
@@ -56,7 +56,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, Double minDriverBalance) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, Double minDriverBalance,Double mActualWalletBalance) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -109,6 +109,8 @@ public class UserData {
 		this.sendCreditsEnabled = sendCreditsEnabled;
 		this.vehicleDetailsLogin = vehicleDetailsLogin;
 		this.resendEmailInvoiceEnabled = resendEmailInvoiceEnabled;
+		this.minDriverBalance = minDriverBalance;
+		this.walletBalance=mActualWalletBalance;
 		setVehicleServicesModel(vehicleServicesModel);
 		this.driverTag = driverTag;
 		this.subscriptionEnabled = subscriptionEnabled;
@@ -323,11 +325,11 @@ public class UserData {
 	 * driver's current balance
 	 * @return double
 	 */
-	public double getWalletBalance() {
+	public Double getWalletBalance() {
 		return walletBalance;
 	}
 
-	public void setWalletBalance(double walletBalance) {
+	public void setWalletBalance(Double walletBalance) {
 		this.walletBalance = walletBalance;
 	}
 
@@ -335,7 +337,7 @@ public class UserData {
 	 * driver's minimum balance that is required to receive a ride request
 	 * @return double
 	 */
-	public double getMinDriverBalance() {
+	public Double getMinDriverBalance() {
 		return minDriverBalance;
 	}
 

@@ -117,7 +117,10 @@ class StripeWalletFragment: Fragment(){
         HomeUtil.putDefaultParams(params)
         ApiCommon<WalletModelResponse>(requireActivity()).execute(params,ApiName.FETCH_WALLET,object : APICommonCallback<WalletModelResponse>() {
                     override fun onSuccess(t: WalletModelResponse, message: String?, flag: Int) {
-                        tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance());
+                        /*if (Data.userData != null) {
+                            Data.userData.walletBalance = t.getBalance()
+                        }*/
+                        tvCurrentBalance.text = Utils.formatCurrencyValue(t.currencyUnit,t.getBalance())
                         currencyUnit = t.currencyUnit;
                         quickAddAmounts = t.quickAddAmounts;
                         edtAmount.addTextChangedListener(UpdateCurrencyDrawableWatcher(edtAmount,currencyUnit));

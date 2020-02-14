@@ -1323,4 +1323,10 @@
     <string name="hint_date_of_birth">Date of birth</string>
     <string name="gender">Gender</string>
     <string name="please_install_whatsapp">Please install Whatsapp</string>
+
+    <!--low wallet balance-->
+    <string name="alert_low_wallet_balance">Wallet Balance is low. Credit your Wallet to receive requests.</string>
+
+    <!--alert msg for max toll amount-->
+    <string name="enter_amount_less_than">Please enter amount less than or equal to %s</string>
 </resources>

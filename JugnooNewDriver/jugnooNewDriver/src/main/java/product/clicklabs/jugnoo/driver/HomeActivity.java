@@ -421,7 +421,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
     RelativeLayout relativeLayoutLastRideEarning, linearLayoutSlidingBottom,
-            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow;
+            relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutBatteryLow, rlLowWalletBalance;
     View viewRefreshUSLBar;
     ProgressBar progressBarUSL;
     TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
@@ -1083,6 +1083,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
             relativeLayoutBatteryLow = (RelativeLayout) findViewById(R.id.relativeLayoutBatteryLow);
+            rlLowWalletBalance = (RelativeLayout) findViewById(R.id.rlLowWalletBalance);
 
             textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
             progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
@@ -2546,6 +2547,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
             if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1) {
                 walletRl.setVisibility(View.VISIBLE);
+                fetchWalletData();
             } else {
                 walletRl.setVisibility(View.GONE);
             }
@@ -2605,6 +2607,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }
         }, HomeActivity.this);
         rvOfflineRequests.setAdapter(offlineRequestsAdapter);
+    }
+
+
+    private void fetchWalletData(){
+        HashMap params =new HashMap<String, String>();
+        params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+        HomeUtil.putDefaultParams(params);
+        new ApiCommon<WalletModelResponse>(this).putDefaultParams(true).showLoader(true).execute(params, ApiName.FETCH_WALLET,
+                new APICommonCallback<WalletModelResponse>() {
+                    @Override
+                    public void onSuccess(WalletModelResponse walletModelResponse, String message, int flag) {
+                        if(Data.userData != null) {
+                            //Data.userData.setWalletBalance(walletModelResponse.getBalance());
+                            checkForLowWalletBalance();
+                        }
+                    }
+
+                    @Override
+                    public boolean onError(WalletModelResponse walletModelResponse, String message, int flag) {
+                        return true;
+                    }
+                });
+
     }
 
     private AddLuggageInteractor addLuggageInteractor;
@@ -4482,6 +4507,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     showDriverEarning();
                     showRefreshUSLBar();
                     showLowBatteryAlert(true);
+                    checkForLowWalletBalance();
 
                     try {
                         if (timer != null) {
@@ -5041,10 +5067,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-//todo wallet balence check
-   /* private void checkForLowWalletBalance() {
-        if (Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
-                && Data.userData != null && Data.userData.getMinDriverBalance() != null) {
+    private void checkForLowWalletBalance() {
+        if(Prefs.with(HomeActivity.this).getInt(Constants.WALLET, 0) == 1
+                && Data.userData != null
+                && Data.userData.getMinDriverBalance() != null
+                && Data.userData.getWalletBalance()!=null){
             if (Data.userData.getWalletBalance() >= Data.userData.getMinDriverBalance()) {
                 rlLowWalletBalance.setVisibility(View.GONE);
             } else {
@@ -5053,7 +5080,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         } else {
             rlLowWalletBalance.setVisibility(View.GONE);
         }
-    }*/
+    }
 
 	private void setPickupTime(CustomerInfo customerInfo, TextView tvPickupTime) {
         if (!TextUtils.isEmpty(customerInfo.getPickupTime())) {
