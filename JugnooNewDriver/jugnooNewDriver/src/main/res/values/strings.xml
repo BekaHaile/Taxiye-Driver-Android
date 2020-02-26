@@ -763,26 +763,26 @@
     <string name="current_details">Current Details</string>
     <string name="credit_history">Credit History</string>
     <string name="title_credits_activity">CREDITS &amp; REWARDS</string>
-    <string name="earn_more_credits">और Credits कमाऐं</string>
-    <string name="title_earn_more_credits">और Credits कमाऐं</string>
-    <string name="share_your_credits">Credits शेयर करें</string>
-    <string name="total_credits_earned">कुल Credits कमाए</string>
-    <string name="commission_saved">Commission बचाया</string>
+    <string name="earn_more_credits">Send Credits to Driver</string>
+    <string name="title_earn_more_credits">Request Credits</string>
+    <string name="share_your_credits">Share Credits</string>
+    <string name="total_credits_earned">Total Credits earned</string>
+    <string name="commission_saved">Commission saved</string>
     <string name="refer_a_driver">Refer a Driver</string>
     <string name="refer_a_customer">Refer a Customer</string>
     <string name="advertise_for_us">Advertise for us</string>
     <string name="menu_label_credits">Driver Credits</string>
-    <string name="send_to_a_friend">Driver को credits भेजें</string>
+    <string name="send_to_a_friend">Send credits to driver</string>
     <string name="credits">Credits</string>
-    <string name="enter_credits">Credits दर्ज करें</string>
+    <string name="enter_credits">Credit Amount</string>
     <string name="please_enter_valid_phone">Please enter valid phone number</string>
     <string name="get_credits">Receive credits from a friend</string>
-    <string name="get_credits_from_drivers">साथी Driver से credits लें</string>
+    <string name="get_credits_from_drivers">Get Credits from Driver</string>
     <string name="earn_credits_format">(%s credits कमाऐं)</string>
     <string name="hash_format">#%s</string>
-    <string name="credits_left_format">खाते में कुल credits %s</string>
+    <string name="credits_left_format">Total Credits in Account %s</string>
     <string name="please_enter_less_value">Please enter less value</string>
-    <string name="enter_phone_number_hinglish">Phone no दर्ज करें</string>
+    <string name="enter_phone_number_hinglish">Enter Mobile Number</string>
 
     <string name="languages">Languages</string>
 
