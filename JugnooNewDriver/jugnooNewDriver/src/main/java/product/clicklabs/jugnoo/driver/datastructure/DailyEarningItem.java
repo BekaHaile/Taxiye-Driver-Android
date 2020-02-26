@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.Tile;
 
@@ -106,6 +107,6 @@ public class DailyEarningItem {
 	}
 
 	public String getCurrencyUnit() {
-		return currencyUnit;
+		return Data.getCurrencyNullSafety(currencyUnit);
 	}
 }

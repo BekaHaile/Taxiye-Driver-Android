@@ -525,4 +525,11 @@ public class Data {
 
 	private static ArrayList<SupportOption> supportOptions, creditOptions;
 
+	public static String getCurrencyNullSafety(String currencyUnit){
+		return currencyUnit != null && !currencyUnit.isEmpty() ? currencyUnit
+				: userData != null && userData.getCurrency() != null && !userData.getCurrency().isEmpty()
+				? userData.getCurrency()
+				: null;
+	}
+
 }

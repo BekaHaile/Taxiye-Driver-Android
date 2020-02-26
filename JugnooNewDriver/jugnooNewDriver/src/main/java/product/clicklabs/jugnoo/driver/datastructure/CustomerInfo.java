@@ -767,7 +767,7 @@ public class CustomerInfo {
 	}
 
 	public String getCurrencyUnit() {
-		return currencyUnit;
+		return Data.getCurrencyNullSafety(currencyUnit);
 	}
 
 	public void setCurrencyUnit(String currencyUnit) {
