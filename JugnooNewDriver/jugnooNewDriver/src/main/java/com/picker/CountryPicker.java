@@ -247,7 +247,7 @@ public class CountryPicker implements CountryPickerDialog.CountryPickerDialogInt
       new Country("TN", "Tunisia", "+216", R.drawable.flag_tn, "TND"),
       new Country("TO", "Tonga", "+676", R.drawable.flag_to, "TOP"),
       new Country("TR", "Turkey", "+90", R.drawable.flag_tr, "TRY"),
-      new Country("TT", "Trinidad and Tobago", "+1", R.drawable.flag_tt, "TTD"),
+      new Country("TT", "Trinidad and Tobago", "+1868", R.drawable.flag_tt, "TTD"),
       new Country("TV", "Tuvalu", "+688", R.drawable.flag_tv, "AUD"),
       new Country("TW", "Taiwan", "+886", R.drawable.flag_tw, "TWD"),
       new Country("TZ", "Tanzania, United Republic of", "+255", R.drawable.flag_tz, "TZS"),
