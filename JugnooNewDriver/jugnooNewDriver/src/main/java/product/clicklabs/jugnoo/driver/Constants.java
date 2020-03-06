@@ -278,6 +278,7 @@ public interface Constants {
 	String CHAT_SUPPORT = "chat_support";
 	String TICKET_SUPPORT = "ticket_support";
 	String MAIL_SUPPORT = "mail_support";
+	String INCENTIVE = "incentive";
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
 	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";

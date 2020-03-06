@@ -355,7 +355,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     // Driver Engaged layout
     RelativeLayout driverEngagedLayout;
 
-    RelativeLayout perfectRidePassengerCallRl;
+    RelativeLayout perfectRidePassengerCallRl, incentivesRL;
     LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl, linearLayoutJugnooOff;
     TextView driverPerfectRidePassengerName, textViewRideInstructions;
     Button driverEngagedMyLocationBtn;
@@ -762,6 +762,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             languagePrefrencesText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
             logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
+            incentivesRL = (RelativeLayout) findViewById(R.id.incentivesRL);
             logoutText = (TextView) findViewById(R.id.logoutText);
             logoutText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			rlHereMaps = findViewById(R.id.rlHereMaps);
@@ -1556,6 +1557,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            });
+            incentivesRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, IncentiveActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
                 }
             });
             relativeLayoutPlans.setOnClickListener(new OnClickListener() {
@@ -2544,6 +2553,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 walletRl.setVisibility(View.VISIBLE);
             } else {
                 walletRl.setVisibility(View.GONE);
+            }
+
+            if (Prefs.with(HomeActivity.this).getInt(Constants.INCENTIVE, 1) == 1) {
+                incentivesRL.setVisibility(View.VISIBLE);
+            } else {
+                //incentivesRL.setVisibility(View.GONE);
+                incentivesRL.setVisibility(View.VISIBLE);
             }
 
 			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_HERE_MAPS_FEEDBACK, 0) == 1) {

@@ -45,6 +45,7 @@ import product.clicklabs.jugnoo.driver.ui.models.DriverLanguageResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponse;
 import product.clicklabs.jugnoo.driver.ui.models.FeedCommonResponseKotlin;
 import product.clicklabs.jugnoo.driver.ui.models.ManualRideResponse;
+import product.clicklabs.jugnoo.driver.ui.models.ProgramModel;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleDetailsResponse;
 import product.clicklabs.jugnoo.driver.ui.models.VehicleModelCustomisationsResponse;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
@@ -748,6 +749,11 @@ public interface APIServices {
 	@POST("/emergency/alert")
 	void emergencyAlert(@FieldMap Map<String, String> params,
 						Callback<SettleUserDebt> callback);
+	@FormUrlEncoded
+	@POST("/fetch_incentive_data")
+	void fetchPrograms(@FieldMap Map<String, String> params,
+							   Callback<ProgramModel> callback);
+
 
 	@FormUrlEncoded
 	@POST("/emergency/disable")

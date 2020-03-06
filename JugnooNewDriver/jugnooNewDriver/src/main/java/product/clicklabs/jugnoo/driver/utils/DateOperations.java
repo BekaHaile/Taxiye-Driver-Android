@@ -482,4 +482,10 @@ public class DateOperations {
 			return "";
 		}
 	}
+
+	public static String getTodayDate(){
+		Date c = Calendar.getInstance().getTime();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		return "Today, " + df.format(c);
+	}
 }

@@ -1218,6 +1218,13 @@
     <string name="choose_image_from">Choose Image from</string>
     <string name="send_invoice">Send Invoice</string>
     <string name="delivery_earnings">DELIVERY EARNINGS</string>
+    <string name="expired">Expired</string>
+    <string name="threshold">Threshold</string>
+    <string name="price">Price</string>
+    <string name="program_dur">PROGRAM DURATION: </string>
+    <string name="current_program">Current Programs</string>
+    <string name="expired_programs">Expired Programs</string>
+    <string name="incentive">Incentives</string>
 
     <!--Branding-->
     <string name="branding_msg">Earn money upto %s by Self branding</string>

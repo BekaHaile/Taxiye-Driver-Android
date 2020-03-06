@@ -540,7 +540,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         startActivity(intent)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         parentActivity = context as DriverSplashActivity
         toolbarChangeListener = context as ToolbarChangeListener
