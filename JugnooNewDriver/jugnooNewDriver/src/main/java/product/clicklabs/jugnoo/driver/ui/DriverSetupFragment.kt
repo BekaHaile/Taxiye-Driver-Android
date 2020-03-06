@@ -69,7 +69,7 @@ class DriverSetupFragment : Fragment(), AdapterView.OnItemSelectedListener {
         setCityData(citySelected)
     }
 
-    private var parentActivity: DriverSplashActivity? = null
+    private var parentActivity: Activity? = null
 
     private lateinit var accessToken: String
     private var cityId: String? = null
