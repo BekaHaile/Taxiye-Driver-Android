@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.ReverseBidFare;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -211,6 +213,19 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseSavedAddresses(JSONArray jsonArray) {
+        Data.userData.getSavedAddressList().clear();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject add = null;
+            try {
+                add = jsonArray.getJSONObject(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (add != null)
+                Data.userData.getSavedAddressList().add(new SearchResultNew(add.optString("type"), add.optString("address"), "" + add.optInt("id"), add.optDouble("latitude"), add.optDouble("longitude")));
+        }
+    }
 
 	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
 
@@ -696,6 +711,9 @@ public class JSONParser implements Constants {
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 		Prefs.with(context).save(Constants.KEY_DRIVER_SHOW_ARRIVE_UI_DISTANCE, jObj.optInt("driver_show_arrive_ui_distance", 600));
 		Data.userData = parseUserData(context, jLoginObject);
+        if (jLoginObject.has("user_saved_addresses") && Data.userData != null) {
+            parseSavedAddresses(jLoginObject.getJSONArray("user_saved_addresses"));
+        }
 		saveAccessToken(context, Data.userData.accessToken);
 		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
@@ -781,7 +799,7 @@ public class JSONParser implements Constants {
 
 				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
-
+                parseDestRide(jObject1, context);
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
@@ -1018,6 +1036,14 @@ public class JSONParser implements Constants {
 		}
 	}
 
+    public void parseDestRide(JSONObject jsonObject, Context context) {
+        //todo Ankur
+		JSONObject destObj=jsonObject.optJSONObject(Constants.KEY_DRIVER_DESTINATION);
+		if(destObj!=null) {
+			Data.userData.currDestRideObj = Data.userData.new CurrDestRide(destObj.optString("address", ""), destObj.optDouble("destination_latitude"),destObj.optDouble("destination_longitude"), destObj.optInt("destination_ride_time_remaining"),System.currentTimeMillis(), destObj.optString("type"));
+		}
+
+    }
 
 	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {
 
@@ -1393,8 +1419,9 @@ public class JSONParser implements Constants {
 				Constants.KEY_SHOW_LUGGAGE_CHARGE,
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
-				Constants.DRIVER_PLANS_COMMISSION
-		);
+				Constants.DRIVER_PLANS_COMMISSION,
+                Constants.KEY_DRIVER_DESTINATION
+        );
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);
 		}

@@ -119,6 +119,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -286,11 +287,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
-    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
+    ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle,ivDestRideToggle;
 
-    RelativeLayout inviteFriendRl, driverCreditsRl, manaulRequestRl, walletRl;
+    RelativeLayout inviteFriendRl, notificationCenterRl, driverCreditsRl, manaulRequestRl, walletRl,destRidesRl;
     LinearLayout driverRatingRl;
     TextView inviteFriendText;
+    TextView destRideStatus;
 
     RelativeLayout rlNotificationCenter, etaTimerRLayout;
     TextView etaTimerText;
@@ -573,7 +575,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     private TabLayout tabDots;
     private ViewPager vpRequests;
     private ConstraintLayout containerRequestBidNew;
-
+    public static Handler updateHandler=new Handler();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -656,14 +658,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
             textViewDeliveryOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
+            ivDestRideToggle = (ImageView) findViewById(R.id.ivDestRideToggle);
 
 
             inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+            destRidesRl = (RelativeLayout) findViewById(R.id.destRidesRl);
             driverCreditsRl = (RelativeLayout) findViewById(R.id.driverCreditsRl);
             manaulRequestRl = (RelativeLayout) findViewById(R.id.manaulRequestRl);
             driverRatingRl = findViewById(R.id.driverRatingRl);
             walletRl = (RelativeLayout) findViewById(R.id.walletRl);
             inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
+            destRideStatus = (TextView) findViewById(R.id.destRideStatus);
             inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             inviteFriendText.setText(getStringText(R.string.invite_earn));
 
@@ -1382,6 +1387,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                     overridePendingTransition(R.anim.right_in, R.anim.right_out);
                     FlurryEventLogger.event(INVITE_OPENED);
 
+                }
+            });
+            destRidesRl.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(HomeActivity.this,DestinationRideActivity.class));
+                    overridePendingTransition(R.anim.right_in,R.anim.right_out);
                 }
             });
 
@@ -2566,6 +2579,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				rlHereMaps.setVisibility(View.GONE);
 			}
+            if (Prefs.with(HomeActivity.this).getInt(Constants.KEY_DRIVER_DESTINATION, 1) == 1) {
+                destRidesRl.setVisibility(View.VISIBLE);
+            } else {
+                destRidesRl.setVisibility(View.GONE);
+            }
 
             if(BuildConfig.FLAVOR.equalsIgnoreCase("urcab")){
                 textViewSuperDrivers.setText(R.string.leaderboard);
@@ -3710,6 +3728,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
     }
 
 
+    private void toggleDestinationRide(){
+        if(Data.userData.currDestRideObj!=null){
+            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+            destRideStatus.setText("ON");
+        } else {
+            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
+            destRideStatus.setText("OFF");
+        }
+    }
     public void changeJugnooONUIAndInitService(final boolean fromApi) {
 
         runOnUiThread(new Runnable() {
@@ -3760,6 +3787,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             imageViewDeliveryOnToggle.setImageResource(R.drawable.toggle_off_v2);
                             textViewDeliveryOn.setText(getResources().getString(R.string.delivery_off));
 
+                        }
+                        if(Data.userData.currDestRideObj!=null){
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_on_v2);
+                        } else {
+                            ivDestRideToggle.setImageResource(R.drawable.toggle_off_v2);
                         }
 
                         if (!checkIfDriverOnline()) {
@@ -5341,6 +5373,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
 
         try {
+
+            startDestinationRideTimer();
             if (driverRequestListAdapter.customerInfos.size() > 0) {
                 setPannelVisibility(false);
             } else {
@@ -5400,8 +5434,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             //todo
 //            setInRideZoom();
         }
-
-		PushClickAction.INSTANCE.performAction(this);
+        toggleDestinationRide();
+        PushClickAction.INSTANCE.performAction(this);
     }
 
 
@@ -12395,4 +12429,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
+	public void startDestinationRideTimer(){
+        if(Data.userData.currDestRideObj!=null){
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    if(Data.userData.currDestRideObj!=null) {
+                        Data.userData.currDestRideObj = null;
+                        toggleDestinationRide();
+                        DialogPopup.alertPopup(HomeActivity.this, "Attention !!", getString(R.string.destination_ride_end));
+                    }
+                }
+            };
+            if(updateHandler==null)
+                updateHandler=new Handler();
+            updateHandler.postDelayed(runnable,Data.userData.currDestRideObj.getDestinationRideTimeRem()*1000);
+        }
+    }
 }

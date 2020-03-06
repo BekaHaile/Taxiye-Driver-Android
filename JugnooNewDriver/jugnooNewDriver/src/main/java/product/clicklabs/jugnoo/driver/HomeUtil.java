@@ -5,14 +5,18 @@ import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -20,6 +24,8 @@ import retrofit.client.Response;
 import retrofit.mime.MultipartTypedOutput;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedString;
+
+import static com.crashlytics.android.beta.Beta.TAG;
 
 /**
  * Created by shankar on 16/11/17.
@@ -116,6 +122,62 @@ public class HomeUtil {
 		params.addPart(Constants.KEY_DEVICE_TYPE, new TypedString(Data.DEVICE_TYPE));
 		params.addPart(Constants.KEY_APP_VERSION, new TypedString(String.valueOf(Data.appVersion)));
 		params.addPart(Constants.KEY_LOCALE, new TypedString(Prefs.with(MyApplication.getInstance()).getString(SPLabels.SELECTED_LANGUAGE,MyApplication.getInstance().getString(R.string.default_lang))));
+	}
+
+	public static void saveDelAddress(Activity context, SearchResultNew searchResult, boolean deleteFlag){
+		HashMap<String,String> params=new HashMap<>();
+		params.put(Constants.LOGIN_TYPE,"1");
+		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		params.put(Constants.KEY_ADDRESS,searchResult.getAddress());
+		params.put(Constants.KEY_TYPE,searchResult.getName());
+		params.put(Constants.KEY_LATITUDE,""+ searchResult.getLatitude());
+		params.put(Constants.KEY_LONGITUDE,"" + searchResult.getLongitude());
+		params.put(Constants.KEY_IS_CONFIRMED,"1");
+		params.put(Constants.KEY_KEEP_DUPLICATE,"0");
+		if(deleteFlag) {
+			params.put(Constants.KEY_DELETE_FLAG, "1");
+			params.put(Constants.KEY_ADDRESS_ID,"" + searchResult.getPlaceId());
+		}
+
+		RestClient.getApiServices().addHomeAndWorkAddress(params, new Callback<Object>() {
+			@Override
+			public void success(Object o, Response response) {
+				String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+				Log.i(TAG, "addHomeAndWorkAddress response = " + responseStr);
+				DialogPopup.dismissLoadingDialog();
+				try {
+					JSONObject jObj = new JSONObject(responseStr);
+					int flag = jObj.optInt("flag");
+					String message = JSONParser.getServerMessage(jObj);
+					if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+						Data.userData.getSavedAddressList().clear();
+						JSONArray jsonArray=jObj.optJSONArray("addresses");
+						for (int i=0;i<jsonArray.length();i++){
+							JSONObject add=jsonArray.getJSONObject(i);
+							Data.userData.getSavedAddressList().add(new SearchResultNew(add.optString("type"),add.optString("addr"),""+ add.optInt("id"),add.optDouble("lat"),add.optDouble("lng")));
+						}
+						if(context instanceof DestinationRideActivity){
+							((DestinationRideActivity)context).addressSaved();
+						}
+					}
+					else{
+						DialogPopup.alertPopup(context, "", message);
+					}
+				}catch (Exception e){}
+
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				try {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(context, "", context.getString(R.string.error_occured_tap_to_retry));
+				} catch (Exception e) {
+					DialogPopup.dismissLoadingDialog();
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public static class DefaultParams{

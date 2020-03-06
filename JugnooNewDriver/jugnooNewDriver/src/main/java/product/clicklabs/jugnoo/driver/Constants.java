@@ -53,6 +53,10 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+	String KEY_IS_CONFIRMED = "is_confirmed";
+	String KEY_KEEP_DUPLICATE = "keep_duplicate";
+	String KEY_DELETE_FLAG = "delete_flag";
+	String KEY_ADDRESS_ID = "address_id";
 
     String KEY_CURRENT_LATITUDE= "current_latitude";
     String KEY_CURRENT_LONGITUDE= "current_longitude";
@@ -505,6 +509,7 @@ public interface Constants {
 	String KEY_LOCATIONS_COORDINATES = "locations_coordinates";
 	String KEY_LOGIN = "login";
 	String KEY_DRIVER_INRIDE_DROP_EDITABLE = "driver_inride_drop_editable";
+	String KEY_DRIVER_DESTINATION="driver_destination";
 	String KEY_DRIVER_DIRECTIONS_CACHING = "driver_directions_caching";
 
 	long SECOND_MILLIS = 1000l;

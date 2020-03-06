@@ -126,16 +126,18 @@ public class SearchListAdapter extends BaseAdapter {
                 @Override
                 public void afterTextChanged(Editable s) {
 					try {
-						SearchListAdapter.this.searchListActionsHandler.onTextChange(s.toString());
-						if (s.length() > 0) {
-							last_text_edit = System.currentTimeMillis();
-                            handler.removeCallbacks(input_finish_checker);
-							handler.postDelayed(input_finish_checker.setTextToSearch(s.toString().trim()), delay);
-						}
-						else{
-							searchResultsForSearch.clear();
-							setResults(searchResultsForSearch);
-						}
+					    if(editTextForSearch.getTag()==null){
+						    SearchListAdapter.this.searchListActionsHandler.onTextChange(s.toString());
+						    if (s.length() > 0) {
+							    last_text_edit = System.currentTimeMillis();
+                                handler.removeCallbacks(input_finish_checker);
+							    handler.postDelayed(input_finish_checker.setTextToSearch(s.toString().trim()), delay);
+					    	}
+					    	else{
+						    	searchResultsForSearch.clear();
+							    setResults(searchResultsForSearch);
+						    }
+					    }
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

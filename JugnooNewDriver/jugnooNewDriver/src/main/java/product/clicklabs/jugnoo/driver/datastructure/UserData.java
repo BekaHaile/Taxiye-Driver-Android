@@ -16,7 +16,8 @@ public class UserData {
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled, destinationOptionEnable;
-	public double showDriverRating;
+    public CurrDestRide currDestRideObj;
+    public double showDriverRating;
 	public String deiValue, driverSupportNumber, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
@@ -38,6 +39,7 @@ public class UserData {
 	private String dateOfBirth;
 	private ArrayList<EmergencyContact> emergencyContactsList = new ArrayList<>();
 	private String driverTag;
+	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
 
@@ -314,5 +316,57 @@ public class UserData {
 
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public ArrayList<SearchResultNew> getSavedAddressList(){
+		return savedAddressList;
+	}
+
+	public class CurrDestRide{
+		String address,type;
+		Double latitude,longitude;
+		int destinationRideTimeRem;
+		long createdAt;
+		public CurrDestRide(String address,double latitude,double longitude,int destinationRideTimeRem,long createdAt,String type){
+			this.address=address;
+			this.destinationRideTimeRem=destinationRideTimeRem;
+			this.latitude=latitude;
+			this.longitude=longitude;
+			this.type=type;
+			this.createdAt=createdAt;
+		}
+
+		public Double getLatitude() {
+			return latitude;
+		}
+
+		public Double getLongitude() {
+			return longitude;
+		}
+
+		public int getDestinationRideTimeRem() {
+			//returns time in seconds
+			if(createdAt>0){
+				int timeRemaining=destinationRideTimeRem-(int)(System.currentTimeMillis()-createdAt)/1000;
+				if(timeRemaining>0)
+				return timeRemaining;
+				else
+					return 0;
+			}
+			else
+				return destinationRideTimeRem;
+		}
+
+		public String getAddress() {
+			return address;
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public void setCreatedAt(long createdAt) {
+			this.createdAt = createdAt;
+		}
 	}
 }
