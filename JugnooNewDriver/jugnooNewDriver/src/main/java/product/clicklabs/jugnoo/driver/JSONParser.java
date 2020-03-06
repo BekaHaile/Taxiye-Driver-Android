@@ -237,6 +237,8 @@ public class JSONParser implements Constants {
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
 		DriverVehicleDetails activeVehicle=null;
+        Double minDriverBalance = null;
+        Double mActualCreditBalance=null;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
@@ -246,6 +248,12 @@ public class JSONParser implements Constants {
 		}
 		if (userData.has("resend_email_invoice_enabled")) {
 			resendEmailInvoiceEnabled = userData.getInt("resend_email_invoice_enabled");
+		}
+		if (userData.has("min_driver_balance")) {
+			minDriverBalance = userData.getDouble("min_driver_balance");
+		}
+		if (userData.has("actual_credit_balance")) {
+			mActualCreditBalance = userData.getDouble("actual_credit_balance");
 		}
 		if(userData.has("fare_caching_limit")){
 			fareCachingLimit = userData.getInt("fare_caching_limit");
@@ -500,7 +508,7 @@ public class JSONParser implements Constants {
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
 				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
-                gender, dateOfBirth,activeVehicle);
+                gender, dateOfBirth,activeVehicle,minDriverBalance,mActualCreditBalance);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
