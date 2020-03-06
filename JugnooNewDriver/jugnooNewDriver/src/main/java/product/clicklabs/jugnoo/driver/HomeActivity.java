@@ -2558,8 +2558,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             if (Prefs.with(HomeActivity.this).getInt(Constants.INCENTIVE, 1) == 1) {
                 incentivesRL.setVisibility(View.VISIBLE);
             } else {
-                //incentivesRL.setVisibility(View.GONE);
-                incentivesRL.setVisibility(View.VISIBLE);
+                incentivesRL.setVisibility(View.GONE);
             }
 
 			if (Prefs.with(this).getInt(Constants.KEY_DRIVER_HERE_MAPS_FEEDBACK, 0) == 1) {
