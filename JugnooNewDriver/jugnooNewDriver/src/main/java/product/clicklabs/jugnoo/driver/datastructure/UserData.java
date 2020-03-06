@@ -391,14 +391,6 @@ public class UserData {
 		return activeVehicle;
 	}
 
-	public String getDriverTag() {
-		return driverTag;
-	}
-
-	public void setDriverTag(String driverTag) {
-		this.driverTag = driverTag;
-	}
-
 	/**
 	 * driver's current balance
 	 * @return double
