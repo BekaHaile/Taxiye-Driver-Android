@@ -339,21 +339,24 @@ class OTPConfirmFragment : Fragment(){
                                 requireActivity().startService(Intent(requireActivity().applicationContext, DriverLocationUpdateService::class.java))
                                 mListener?.goToHomeScreen()
                             }
+                            if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
+                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
+
+                                Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
+                            }
                         }
     //                            else if () {
     //                                (parentActivity as DriverSplashActivity)
     //                                        .openDriverSetupFragment(jObj.getJSONObject("login").getString("access_token"), countryCode, phoneNumber)
     //                            }
                         else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-                            Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
-                                    if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
-                            if(jObj.has(Constants.KEY_LOGIN)) {
-                                Prefs.with(requireActivity()).save(Constants.KEY_DRIVER_DOB_INPUT, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_DOB_INPUT,
-                                        getResources().getInteger(R.integer.driver_dob_input)))
-                                Prefs.with(context).save(Constants.KEY_DRIVER_GENDER_FILTER, jObj.getJSONObject(Constants.KEY_LOGIN).optInt(Constants.KEY_DRIVER_GENDER_FILTER,
-                                        getResources().getInteger(R.integer.driver_gender_filter)))
-                            }
+                            if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), requireActivity())){
+                                Prefs.with(requireActivity()).save(Constants.KEY_VEHICLE_MODEL_ENABLED, jObj.getJSONObject("login").optInt(Constants.KEY_VEHICLE_MODEL_ENABLED,
+                                        if (resources.getBoolean(R.bool.vehicle_model_enabled)) 1 else 0))
 
+                                Data.setMultipleVehiclesEnabled(jObj.getJSONObject("login").optInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0))
+                            }
                             val accessToken = jObj.getString("access_token")
                             val reqInactiveDrivers = jObj.optJSONObject(Constants.KEY_LOGIN)?.optInt(Constants.KEY_REQ_INACTIVE_DRIVER, 0)
                             JSONParser.saveAccessToken(requireActivity(), accessToken)

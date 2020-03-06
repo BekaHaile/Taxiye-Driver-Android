@@ -43,6 +43,7 @@ import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback;
 import com.kbeanie.multipicker.api.entity.ChosenImage;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -55,6 +56,7 @@ import product.clicklabs.jugnoo.driver.adapters.DocImagesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTaskTypes;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.fragments.DocumentDetailsFragment;
 import product.clicklabs.jugnoo.driver.heremaps.activity.HereMapsFeedbackActivity;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -74,6 +76,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
 
+import static com.crashlytics.android.beta.Beta.TAG;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_CAMERA;
 import static product.clicklabs.jugnoo.driver.utils.PermissionCommon.REQUEST_CODE_WRITE_EXTERNAL_STORAGE;
 
@@ -90,6 +93,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	String accessToken;
 	int requirement, brandingImagesOnly, taskType;
 	int imgPixel;
+	int driverVehicleMappingId=-1;
 
 	private PermissionCommon mPermissionCommon;
 	private ImagePicker mImagePicker;
@@ -108,6 +112,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	int index = 0;
 	int coloum = 0;
 	double latitude, longitude;
+	private boolean showSubmitButton=false;
 
 
 	public DocumentListFragment() {
@@ -125,9 +130,8 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if(!hidden){
-			activity.setSubmitButtonVisibility(brandingImagesOnly == 1 ? View.GONE : View.VISIBLE);
-		}
+		activity.setSubmitButtonVisibility(showSubmitButton? View.VISIBLE : View.GONE);
+
 	}
 
 	@Override
@@ -155,7 +159,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		requirement = getArguments().getInt("doc_required");
 		brandingImagesOnly = getArguments().getInt(Constants.BRANDING_IMAGES_ONLY, 0);
 		taskType = getArguments().getInt(Constants.KEY_TASK_TYPE, DriverTaskTypes.SELF_BRANDING.getType());
-
+		driverVehicleMappingId= getArguments().getInt(Constants.DRIVER_VEHICLE_MAPPING_ID, -1);
 		latitude  = getArguments().getDouble(Constants.KEY_LATITUDE, 0);
 		longitude  = getArguments().getDouble(Constants.KEY_LONGITUDE, 0);
 
@@ -526,6 +530,44 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 		}
 	};
 
+	public void hitFetchDriverVehicleDocument(HashMap<String,String> params) {
+		DialogPopup.showLoadingDialog(getActivity(), getString(R.string.loading));
+		params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		RestClient.getApiServices().fetchDriverVehicleDocuments(params, new Callback<DocRequirementResponse>() {
+			@Override
+			public void success(DocRequirementResponse o, Response response) {
+				String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+				Log.i(TAG, "fetchDriverVehicle response = " + responseStr);
+				DialogPopup.dismissLoadingDialog();
+				try {
+					JSONObject jObj = new JSONObject(responseStr);
+					int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+					String message = JSONParser.getServerMessage(jObj);
+					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+						parseDocumentResponse(o,response);
+					}
+//					DialogPopup.alertPopup(getActivity(), "", message);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				try {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(getActivity(), "", getActivity().getString(R.string.error_occured_tap_to_retry));
+				} catch (Exception e) {
+					DialogPopup.dismissLoadingDialog();
+					e.printStackTrace();
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+		});
+	}
+
 
 	public void getDocsAsync(final Activity activity) {
 		try {
@@ -538,80 +580,15 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			params.put(Constants.BRANDING_IMAGE, String.valueOf(brandingImagesOnly));
 			params.put(Constants.KEY_TASK_TYPE, String.valueOf(taskType));
 			HomeUtil.putDefaultParams(params);
-
+			if(driverVehicleMappingId!=-1){
+				params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
+				hitFetchDriverVehicleDocument(params);
+			}
+			else
 			RestClient.getApiServices().docRequest(params, new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
-					try {
-						DialogPopup.dismissLoadingDialog();
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity, null);
-							}
-						} else {
-							imgPixel = docRequirementResponse.getImgPixel();
-							docs.clear();
-							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
-								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
-								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
-										data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
-										data.getIsDocInfoEditable());
-								if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
-									if(taskType == DriverTaskTypes.OTHER_BRANDING.getType()
-											&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
-										docs.add(docInfo);
-									} else if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()
-											&& docInfo.docRequirement == DOC_REQUIREMENT_HERE_MAP){
-										docs.add(docInfo);
-									} else if(taskType == DriverTaskTypes.SELF_BRANDING.getType()
-											&& docInfo.docRequirement != DOC_REQUIREMENT_OTHER_BRANDING
-											&& docInfo.docRequirement != DOC_REQUIREMENT_HERE_MAP){
-										docs.add(docInfo);
-									}
-								} else if(brandingImagesOnly == 0 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
-									docs.add(docInfo);
-								}
-							}
-							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
-							userPhoneNo = docRequirementResponse.getuserPhoneNo();
-							checkForDocumentsSubmit();
-
-							if(brandingImagesOnly == 1) {
-								int pendingC = 0, failedC = 0, completedC = 0;
-								for(DocInfo docInfo : docs){
-									if (docInfo.status.equalsIgnoreCase(DocStatus.REJECTED.getI())) {
-										failedC++;
-									} else if (docInfo.status.equalsIgnoreCase(DocStatus.VERIFIED.getI())) {
-										completedC++;
-									} else {
-										pendingC++;
-									}
-								}
-								tvDocsPending.setText(R.string.pending);
-								tvDocsPending.append("\n");
-								tvDocsPending.append(getCountSpannable(pendingC, R.color.yellow_jugnoo));
-
-								tvDocsFailed.setText(R.string.failed);
-								tvDocsFailed.append("\n");
-								tvDocsFailed.append(getCountSpannable(failedC, R.color.red_status_v2));
-
-								tvDocsCompleted.setText(R.string.completed);
-								tvDocsCompleted.append("\n");
-								tvDocsCompleted.append(getCountSpannable(completedC, R.color.green_doc_status));
-							}
-
-
-
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-					}
+					parseDocumentResponse(docRequirementResponse,response);
 				}
 
 				@Override
@@ -623,6 +600,86 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void parseDocumentResponse(DocRequirementResponse docRequirementResponse,Response response){
+		try {
+			DialogPopup.dismissLoadingDialog();
+			String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+			JSONObject jObj;
+			jObj = new JSONObject(jsonString);
+			if (!jObj.isNull("error")) {
+				String errorMessage = jObj.getString("error");
+				if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+					HomeActivity.logoutUser(activity, null);
+				}
+			} else {
+				imgPixel = docRequirementResponse.getImgPixel();
+				docs.clear();
+				for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
+					DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
+					DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
+							data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable(),
+							data.getInstructions(), data.getGalleryRestricted(),data.getListDocInfo(),
+							data.getIsDocInfoEditable(),data.getDocCategory());
+					if(brandingImagesOnly == 1 && data.getDocType() == DOC_TYPE_BRANDING_IMAGE){
+						if(taskType == DriverTaskTypes.OTHER_BRANDING.getType()
+								&& docInfo.docRequirement == DOC_REQUIREMENT_OTHER_BRANDING){
+							docs.add(docInfo);
+						} else if(taskType == DriverTaskTypes.HERE_MAPS_FEEDBACK.getType()
+								&& docInfo.docRequirement == DOC_REQUIREMENT_HERE_MAP){
+							docs.add(docInfo);
+						} else if(taskType == DriverTaskTypes.SELF_BRANDING.getType()
+								&& docInfo.docRequirement != DOC_REQUIREMENT_OTHER_BRANDING
+								&& docInfo.docRequirement != DOC_REQUIREMENT_HERE_MAP){
+							docs.add(docInfo);
+						}
+					} else if(brandingImagesOnly == 0 && data.getDocType() != DOC_TYPE_BRANDING_IMAGE){
+						docs.add(docInfo);
+					}
+					if (data.getDocStatus().equals("0")||data.getIsDocInfoEditable()){
+						showSubmitButton=true;
+						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.VISIBLE);
+					}
+					else
+						((DriverDocumentActivity)activity).setSubmitButtonVisibility(View.GONE);
+				}
+
+				updateListData(activity.getResources().getString(R.string.no_doc_available), false);
+				userPhoneNo = docRequirementResponse.getuserPhoneNo();
+				checkForDocumentsSubmit();
+
+				if(brandingImagesOnly == 1) {
+					int pendingC = 0, failedC = 0, completedC = 0;
+					for(DocInfo docInfo : docs){
+						if (docInfo.status.equalsIgnoreCase(DocStatus.REJECTED.getI())) {
+							failedC++;
+						} else if (docInfo.status.equalsIgnoreCase(DocStatus.VERIFIED.getI())) {
+							completedC++;
+						} else {
+							pendingC++;
+						}
+					}
+					tvDocsPending.setText(R.string.pending);
+					tvDocsPending.append("\n");
+					tvDocsPending.append(getCountSpannable(pendingC, R.color.yellow_jugnoo));
+
+					tvDocsFailed.setText(R.string.failed);
+					tvDocsFailed.append("\n");
+					tvDocsFailed.append(getCountSpannable(failedC, R.color.red_status_v2));
+
+					tvDocsCompleted.setText(R.string.completed);
+					tvDocsCompleted.append("\n");
+					tvDocsCompleted.append(getCountSpannable(completedC, R.color.green_doc_status));
+				}
+
+
+
+			}
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 		}
 	}
 
@@ -841,6 +898,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 				params.put(Constants.KEY_IMG_POSITION, String.valueOf(column));
 				params.put(Constants.KEY_DOC_TYPE_NUM, String.valueOf(docInfo.docTypeNum));
+
 				HomeUtil.putDefaultParams(params);
 
 				if(placeType != -1){
@@ -849,6 +907,13 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 							",\"properties\":{\"appId\":\""+appId+"\",\"error\": 30,\"v\":\"2.7\",\"type\":\""+placeType+"\"}}";
 
 					params.put(Constants.KEY_FEEDBACK, feedback);
+				}
+				if (docInfo.docCategory == 1&&Data.getMultipleVehiclesEnabled() == 1) {
+					if(driverVehicleMappingId!=-1)
+					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,driverVehicleMappingId+"");
+					if(Data.getDriverMappingIdOnBoarding()!=-1){
+					params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+					}
 				}
 
 				TypedFile typedFile;
@@ -1034,7 +1099,7 @@ public class DocumentListFragment extends Fragment implements ImagePickerCallbac
 				break;
 			}
 		}
-		if(mandatoryDocsSubmitted){
+		if(mandatoryDocsSubmitted&&showSubmitButton){
 			DialogPopup.dialogBanner(activity,
 					activity.getString(R.string.please_press_submit_button), null, 5000,
 					R.color.white, R.color.themeColor);

@@ -7,6 +7,8 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
+import product.clicklabs.jugnoo.driver.adapters.VehicleDetail;
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin;
 import product.clicklabs.jugnoo.driver.ui.popups.DriverVehicleServiceTypePopup;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -42,6 +44,8 @@ public class UserData {
 	private ArrayList<SearchResultNew> savedAddressList=new ArrayList<>();
 	private int subscriptionEnabled;
 	private int onlyCashRides, onlyLongRides;
+    private ArrayList<DriverVehicleDetails> driverVehicleDetailsList = new ArrayList<>();
+    private DriverVehicleDetails activeVehicle=null;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -56,7 +60,7 @@ public class UserData {
 					Double creditsEarned, Double commissionSaved,
 					String getCreditsInfo, String getCreditsImage,
 					int sendCreditsEnabled, VehicleDetailsLogin vehicleDetailsLogin, List<DriverVehicleServiceTypePopup.VehicleServiceDetail> vehicleServicesModel,
-					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth) {
+					int resendEmailInvoiceEnabled, String driverTag, int subscriptionEnabled, int onlyCashRides, int onlyLongRides,int gender, String dateOfBirth, DriverVehicleDetails activeVehicle) {
 
 		this.userIdentifier = userIdentifier;
 		this.accessToken = accessToken;
@@ -114,7 +118,8 @@ public class UserData {
 		this.subscriptionEnabled = subscriptionEnabled;
 		this.onlyCashRides = onlyCashRides;
 		this.onlyLongRides = onlyLongRides;
-	}
+        this.activeVehicle=activeVehicle;
+    }
 
 	public String getUserId() {
 		return userId;
@@ -368,5 +373,16 @@ public class UserData {
 		public void setCreatedAt(long createdAt) {
 			this.createdAt = createdAt;
 		}
+	}
+    public ArrayList<DriverVehicleDetails> getDriverVehicleDetailsList() {
+        return driverVehicleDetailsList;
+    }
+
+    public void setActiveVehicle(DriverVehicleDetails activeVehicle) {
+        this.activeVehicle = activeVehicle;
+    }
+
+	public DriverVehicleDetails getActiveVehicle() {
+		return activeVehicle;
 	}
 }

@@ -11,20 +11,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.crashlytics.android.beta.Beta
 import com.picker.CountryPickerDialog
 import com.picker.OnCountryPickerListener
 import kotlinx.android.synthetic.main.fragment_vehicle_model.*
+import okhttp3.Response
 import org.json.JSONObject
 import product.clicklabs.jugnoo.driver.*
 import product.clicklabs.jugnoo.driver.adapters.VehicleDetailsLogin
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails
+import product.clicklabs.jugnoo.driver.datastructure.UserData
+import product.clicklabs.jugnoo.driver.retrofit.RestClient
 import product.clicklabs.jugnoo.driver.ui.api.APICommonCallbackKotlin
 import product.clicklabs.jugnoo.driver.ui.api.ApiCommonKt
 import product.clicklabs.jugnoo.driver.ui.api.ApiName
 import product.clicklabs.jugnoo.driver.ui.models.*
 import product.clicklabs.jugnoo.driver.utils.*
+import retrofit.Callback
 import retrofit.RetrofitError
+import retrofit.mime.TypedByteArray
 import java.util.*
+import kotlin.collections.HashMap
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 /**
  * Created by Parminder Saini on 09/07/18.
@@ -36,6 +45,7 @@ class VehicleDetailsFragment : Fragment() {
     private val  ARGS_USER_NAME = "user_name"
     private val  ARGS_VEHICLE_DETAIL = "vehicle_detail"
     private val  ARGS_EDIT_MODE = "edit_mode"
+    private val ARGS_DRIVER_DETAIL = "driver_detail"
 
     private var isEditMode = false
     private lateinit var toolbarChangeListener: ToolbarChangeListener
@@ -44,6 +54,7 @@ class VehicleDetailsFragment : Fragment() {
     private lateinit var userName:String
     private lateinit var vehicleType:String
     private lateinit var accessToken:String
+    private var driverDetails: HashMap<String, String>? = null
     private val  VEHICLE_MAKE_DIALOG_FRAGMENT_TAG = "vehicle_make_dialog"
     private val  VEHICLE_MODEL_DIALOG_FRAGMENT_TAG = "vehicle_model_dialog"
     private val  VEHICLE_COLOR_DIALOG_FRAGMENT_TAG = "vehicle_color_dialog"
@@ -61,7 +72,7 @@ class VehicleDetailsFragment : Fragment() {
     private var currentColorSelected:VehicleModelCustomisationDetails? = null
     private var currentSeatBeltSelected:VehicleModelCustomisationDetails? = null
     private var currentDoorSelected:VehicleModelCustomisationDetails? = null
-
+    private var fromVehicleDetailScreen: Boolean = false
 
     private val calendar = Calendar.getInstance()
     private val minYear = 1885
@@ -73,9 +84,10 @@ class VehicleDetailsFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic @JvmOverloads
-        fun newInstance(accessToken: String, cityId:String, vehicleType:String, userName:String,
-                        vehicleDetails: VehicleDetailsLogin?=null,editMode:Boolean = false)=
+        @JvmStatic
+        @JvmOverloads
+        fun newInstance(accessToken: String, cityId: String, vehicleType: String, userName: String,
+                        vehicleDetails: VehicleDetailsLogin? = null, editMode: Boolean = false, driverDetails: HashMap<String, String>? = null) =
                 VehicleDetailsFragment().apply {
                     arguments = Bundle().apply {
                         putString(Constants.KEY_ACCESS_TOKEN, accessToken)
@@ -83,8 +95,11 @@ class VehicleDetailsFragment : Fragment() {
                         putString(ARGS_VEHICLE_TYPE, vehicleType)
                         putString(ARGS_USER_NAME, userName)
                         putBoolean(ARGS_EDIT_MODE, editMode)
-                        if(vehicleDetails!=null){
+                        if (vehicleDetails != null) {
                             putParcelable(ARGS_VEHICLE_DETAIL, vehicleDetails)
+                        }
+                        if (driverDetails != null) {
+                            putSerializable(ARGS_DRIVER_DETAIL, driverDetails)
                         }
 
                     }
@@ -93,12 +108,12 @@ class VehicleDetailsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is ToolbarChangeListener){
-            toolbarChangeListener  = context
+        if (context is ToolbarChangeListener) {
+            toolbarChangeListener = context
             toolbarChangeListener.setToolbarText(getString(R.string.title_vehicle_details))
             toolbarChangeListener.setToolbarVisibility(true)
         }
-        if(context is VehicleDetailsInteractor){
+        if (context is VehicleDetailsInteractor) {
             vehicleDetailsInteractor = context
         }
 
@@ -108,12 +123,27 @@ class VehicleDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             accessToken = it.getString(Constants.KEY_ACCESS_TOKEN)!!
-            cityId = it.getString(ARGS_CITY_ID)!!
-            vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
+            cityId = it.getString(ARGS_CITY_ID)!!.toString()
             userName = it.getString(ARGS_USER_NAME)!!
             isEditMode = it.getBoolean(ARGS_EDIT_MODE)
+            /*
+            * Get Args based on Key
+            * */
             if(it.containsKey(ARGS_VEHICLE_DETAIL)){
                 vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+            }
+            if (it.containsKey(ARGS_VEHICLE_TYPE)) {
+                vehicleType = it.getString(ARGS_VEHICLE_TYPE)!!
+            }
+
+            if (it.containsKey(ARGS_VEHICLE_DETAIL)) {
+                vehicleDetails = it.getParcelable(ARGS_VEHICLE_DETAIL) as VehicleDetailsLogin
+            }
+            if (it.containsKey(ARGS_DRIVER_DETAIL)) {
+                driverDetails = it.getSerializable(ARGS_DRIVER_DETAIL) as HashMap<String, String>
+            }
+            if (it.containsKey(Constants.FROM_VEHICLE_DETAILS_SCREEN)) {
+                fromVehicleDetailScreen = it.getBoolean(Constants.FROM_VEHICLE_DETAILS_SCREEN)
             }
         }
 
@@ -128,66 +158,73 @@ class VehicleDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edtMake.setOnClickListener{if (::vehiceMakeModelData.isInitialized){
-            showSelectionDialog(vehicleMakeInteractionListener,makeSelectionListener,VEHICLE_MAKE_DIALOG_FRAGMENT_TAG,getString(R.string.select_make))
-        }}
-        edtModel.setOnClickListener{ showModelDialogIfPossible() }
-        edtColor.setOnClickListener{if (currentModelSelected!=null){
-            showSelectionDialog(vehicleColorInteractionListener,colorSelectionListener,VEHICLE_COLOR_DIALOG_FRAGMENT_TAG,getString(R.string.select_color))
-        }else{
-            Toast.makeText(requireContext(),getString(R.string.invalid_model),Toast.LENGTH_SHORT).show();
-        }}
-        edtDoor.setOnClickListener{if (currentModelSelected!=null){
-            showSelectionDialog(doorsInteractionListener,doorSelectionListener,VEHICLE_COLOR_DIALOG_FRAGMENT_TAG,getString(R.string.select_doors))
-        }else{
-            Toast.makeText(requireContext(),getString(R.string.invalid_model),Toast.LENGTH_SHORT).show();
-        }}
-        edtSeatBelt.setOnClickListener{if (currentModelSelected!=null){
-            showSelectionDialog(seatBeltInteractionListener,seatBeltSelectionListener,VEHICLE_COLOR_DIALOG_FRAGMENT_TAG,getString(R.string.select_seatbelts))
-        }else{
-            Toast.makeText(requireContext(),getString(R.string.invalid_model),Toast.LENGTH_SHORT).show();
-        }}
+        edtMake.setOnClickListener {
+            if (::vehiceMakeModelData.isInitialized) {
+                showSelectionDialog(vehicleMakeInteractionListener, makeSelectionListener, VEHICLE_MAKE_DIALOG_FRAGMENT_TAG, getString(R.string.select_make))
+            }
+        }
+        edtModel.setOnClickListener { showModelDialogIfPossible() }
+        edtColor.setOnClickListener {
+            if (currentModelSelected != null) {
+                showSelectionDialog(vehicleColorInteractionListener, colorSelectionListener, VEHICLE_COLOR_DIALOG_FRAGMENT_TAG, getString(R.string.select_color))
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_model), Toast.LENGTH_SHORT).show();
+            }
+        }
+        edtDoor.setOnClickListener {
+            if (currentModelSelected != null) {
+                showSelectionDialog(doorsInteractionListener, doorSelectionListener, VEHICLE_COLOR_DIALOG_FRAGMENT_TAG, getString(R.string.select_doors))
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_model), Toast.LENGTH_SHORT).show();
+            }
+        }
+        edtSeatBelt.setOnClickListener {
+            if (currentModelSelected != null) {
+                showSelectionDialog(seatBeltInteractionListener, seatBeltSelectionListener, VEHICLE_COLOR_DIALOG_FRAGMENT_TAG, getString(R.string.select_seatbelts))
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.invalid_model), Toast.LENGTH_SHORT).show();
+            }
+        }
         edtYear.addTextChangedListener(yearWatcher);
-        btn_continue.setOnClickListener{
+        btn_continue.setOnClickListener {
             submitVehicleDetails()
         }
 
-       //if prefilled details this will set data
+        //if prefilled details this will set data
         vehicleDetails?.run {
-            if(modelId!=null && !vehicleMake.isNullOrEmpty()  && !vehicleModel.isNullOrEmpty() ){
-                currentModelSelected = VehicleModelDetails(this.vehicleMake!!,this.vehicleModel!!,this.modelId!!)
+            if (modelId != null && !vehicleMake.isNullOrEmpty() && !vehicleModel.isNullOrEmpty()) {
+                currentModelSelected = VehicleModelDetails(this.vehicleMake!!, this.vehicleModel!!, this.modelId!!)
                 edtMake.isEnabled = false //don't allow to redit fills if already prefilled
                 edtModel.isEnabled = false //don't allow to redit fills if already prefilled ..
             }
-            if(!color.isNullOrEmpty() && colorID!=null){
-                currentColorSelected = VehicleModelCustomisationDetails(color!!,colorID!!)
+            if (!color.isNullOrEmpty() && colorID != null) {
+                currentColorSelected = VehicleModelCustomisationDetails(color!!, colorID!!)
                 edtColor.isEnabled = false
             }
-            if(!doors.isNullOrEmpty() && doorId!=null){
-                currentDoorSelected = VehicleModelCustomisationDetails(doors!!,doorId!!)
+            if (!doors.isNullOrEmpty() && doorId != null) {
+                currentDoorSelected = VehicleModelCustomisationDetails(doors!!, doorId!!)
                 edtDoor.isEnabled = false
 
             }
-            if(!seatbelts.isNullOrEmpty() && seatBeltId!=null){
-                currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!,seatBeltId!!)
+            if (!seatbelts.isNullOrEmpty() && seatBeltId != null) {
+                currentSeatBeltSelected = VehicleModelCustomisationDetails(seatbelts!!, seatBeltId!!)
                 edtSeatBelt.isEnabled = false
 
             }
 
-            if(!year.isNullOrEmpty()){
+            if (!year.isNullOrEmpty()) {
                 edtYear.setText(year)
                 edtYear.isEnabled = false
             }
 
-            if(!vehicleNumber.isNullOrEmpty()){
+            if (!vehicleNumber.isNullOrEmpty()) {
                 edtVehicleNumber.setText(vehicleNumber)
                 edtVehicleNumber.isEnabled = false
             }
 
         }
-
-
-        getVehicleDetails();
+                viewVehicleNo()
+                getVehicleDetails();
     }
 
     private fun showModelDialogIfPossible() {
@@ -202,11 +239,13 @@ class VehicleDetailsFragment : Fragment() {
 
         val params = hashMapOf(
                 Constants.KEY_ACCESS_TOKEN to accessToken,
-                "city_id" to cityId,
-                "vehicle_type" to vehicleType)
+                "city_id" to cityId
+//                "vehicle_type" to vehicleType
+        )
+
 
         ApiCommonKt<VehicleDetailsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MAKE_DATA,
-                object: APICommonCallbackKotlin<VehicleDetailsResponse>(){
+                object : APICommonCallbackKotlin<VehicleDetailsResponse>() {
                     override fun onSuccess(t: VehicleDetailsResponse?, message: String?, flag: Int) {
                         vehiceMakeModelData = t?.models!!;
                         prepareMakeList()
@@ -242,14 +281,25 @@ class VehicleDetailsFragment : Fragment() {
 
 
     }
+    fun viewVehicleNo(){
+        if(driverDetails!!.containsKey("vehicle_no")){
+            edtVehicleNumber.setText(driverDetails!!.get("vehicle_no"))
+            edtVehicleNumber.visibility=View.GONE
+            labelVehicleNumber.visibility=View.GONE
+        }
+        else {
+            edtVehicleNumber.visibility = View.VISIBLE
+            labelVehicleNumber.visibility = View.VISIBLE
+        }
+    }
 
     fun getModelDetails(modelRequested: VehicleModelDetails) {
 
         val params = hashMapOf(
                 Constants.KEY_ACCESS_TOKEN to accessToken,
                 "city_id" to cityId,
-                "vehicle_type" to vehicleType,
-                "model_id" to "" +modelRequested.id)
+//                "vehicle_type" to vehicleType,
+                "model_id" to "" + modelRequested.id)
 
         ApiCommonKt<VehicleModelCustomisationsResponse>(requireActivity()).execute(params, ApiName.VEHICLE_MODEL_DATA,
                 object: APICommonCallbackKotlin<VehicleModelCustomisationsResponse>(){
@@ -261,8 +311,8 @@ class VehicleDetailsFragment : Fragment() {
                         edtModel.setText(modelRequested.modelName)
 
                         colorCustomisationList = t!!.customisationList.colorCustomisationList
-                        doorsCustomisationList =  t.customisationList.doorCustomisationList
-                        seatBeltCustomisationList =  t.customisationList.seatBeltsCustomisationList
+                        doorsCustomisationList = t.customisationList.doorCustomisationList
+                        seatBeltCustomisationList = t.customisationList.seatBeltsCustomisationList
 
                         vehicleColorInteractionListener.list = colorCustomisationList
                         doorsInteractionListener.list = doorsCustomisationList
@@ -305,13 +355,11 @@ class VehicleDetailsFragment : Fragment() {
                             edtSeatBelt.setText(value)
                         }
 
-
-
                         vehicleDetailsGroup.visible()
-                        btn_continue.isEnabled=true
+                        viewVehicleNo()
+                        btn_continue.isEnabled = true
 
                         edtYear.requestFocus();
-
 
 
                     }
@@ -323,19 +371,19 @@ class VehicleDetailsFragment : Fragment() {
                 })
     }
 
-    private fun prepareMakeList(){
-       vehicleMakeList = mutableListOf()
-        for(make in vehiceMakeModelData.keys){
+    private fun prepareMakeList() {
+        vehicleMakeList = mutableListOf()
+        for (make in vehiceMakeModelData.keys) {
             vehicleMakeList?.add(VehicleMakeInfo(make));
         }
     }
 
-    fun <T:SearchDataModel> showSelectionDialog(
-            interactionListener:CountryPickerDialog.CountryPickerDialogInteractionListener<T>
-            ,pickerListener: OnCountryPickerListener<T>
-            ,tag:String,title:String) {
+    fun <T : SearchDataModel> showSelectionDialog(
+            interactionListener: CountryPickerDialog.CountryPickerDialogInteractionListener<T>
+            , pickerListener: OnCountryPickerListener<T>
+            , tag: String, title: String) {
         if (interactionListener.allCountries == null || interactionListener.allCountries!!.isEmpty()) {
-            Toast.makeText(requireActivity(),getString(R.string.no_results_found),Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(), getString(R.string.no_results_found), Toast.LENGTH_SHORT).show()
         } else {
             val countryPickerDialog = CountryPickerDialog.newInstance(title, false)
             countryPickerDialog.setCountryPickerListener(pickerListener)
@@ -344,9 +392,9 @@ class VehicleDetailsFragment : Fragment() {
         }
     }
 
-    val vehicleMakeInteractionListener  = object : CountryPickerDialog.CountryPickerDialogInteractionListener<VehicleMakeInfo>{
+    val vehicleMakeInteractionListener = object : CountryPickerDialog.CountryPickerDialogInteractionListener<VehicleMakeInfo> {
         override fun getAllCountries(): MutableList<VehicleMakeInfo>? {
-                return vehicleMakeList
+            return vehicleMakeList
         }
 
         override fun sortCountries(searchResults: MutableList<VehicleMakeInfo>?) {
@@ -354,29 +402,29 @@ class VehicleDetailsFragment : Fragment() {
         }
 
         override fun canSearch(): Boolean {
-            return  vehicleMakeList!=null && vehicleMakeList!!.size>7;
+            return vehicleMakeList != null && vehicleMakeList!!.size > 7;
         }
 
     }
-    val makeSelectionListener = object : OnCountryPickerListener<VehicleMakeInfo>{
+    val makeSelectionListener = object : OnCountryPickerListener<VehicleMakeInfo> {
         override fun onSelectCountry(country: VehicleMakeInfo) {
-            if(currentMakeSelected==null || !currentMakeSelected!!.makeName.equals(country.makeName)){
+            if (currentMakeSelected == null || !currentMakeSelected!!.makeName.equals(country.makeName)) {
                 currentMakeSelected = country
                 edtMake.setText(country.makeName)
-                if(currentModelSelected!=null){
-                    currentModelSelected=null;
+                if (currentModelSelected != null) {
+                    currentModelSelected = null;
                     edtModel.setText(null)
-                    currentColorSelected=null
-                    currentDoorSelected=null
-                    currentSeatBeltSelected=null
+                    currentColorSelected = null
+                    currentDoorSelected = null
+                    currentSeatBeltSelected = null
                     edtColor.setText(null)
                     edtDoor.setText(null)
                     edtSeatBelt.setText(null)
                     edtYear.setText(null)
                     vehicleDetailsGroup.gone()
-                    btn_continue.isEnabled=true
+                    btn_continue.isEnabled = true
                 }
-                 showModelDialogIfPossible();
+                showModelDialogIfPossible();
             }
 
         }
@@ -433,6 +481,53 @@ class VehicleDetailsFragment : Fragment() {
         }
     }
 
+    fun hitAddVehicle(params: HashMap<String, String>? = null) {
+
+        RestClient.getApiServices().addNewVehicle(params, object : Callback<Any> {
+            override fun success(o: Any, response: retrofit.client.Response) {
+                val responseStr = String((response.body as TypedByteArray).bytes)
+                Log.i(Beta.TAG, "AddNewVehicle response = $responseStr")
+                DialogPopup.dismissLoadingDialog()
+                try {
+                    val jObj = JSONObject(responseStr)
+                    val flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal())
+                    val message = JSONParser.getServerMessage(jObj)
+                    if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                        if (jObj.has(Constants.KEY_DATA)) {
+                            val dataObj = jObj.getJSONObject(Constants.KEY_DATA)
+                            if (dataObj!= null) {
+                                var driverVehicleDetail: DriverVehicleDetails?=null
+
+                                    driverVehicleDetail= DriverVehicleDetails.parseDocumentVehicleDetails(dataObj)
+                                    Data.userData.driverVehicleDetailsList.add(driverVehicleDetail)
+                                    (activity as VehicleDetailsActivity).vehicleAdded(driverVehicleDetail)
+                            }
+
+                        }
+                        else
+                            activity!!.supportFragmentManager.popBackStackImmediate()
+                    }
+                    DialogPopup.alertPopup(activity, "", message)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                DialogPopup.dismissLoadingDialog()
+            }
+
+            override fun failure(error: RetrofitError) {
+                try {
+                    DialogPopup.dismissLoadingDialog()
+                    DialogPopup.alertPopup(activity, "", activity!!.getString(R.string.error_occured_tap_to_retry))
+                } catch (e: Exception) {
+                    DialogPopup.dismissLoadingDialog()
+                    e.printStackTrace()
+                }
+
+                DialogPopup.dismissLoadingDialog()
+            }
+        })
+    }
 
     fun submitVehicleDetails(){
 
@@ -511,54 +606,61 @@ class VehicleDetailsFragment : Fragment() {
                 //vehicle model specific details
                 "vehicle_no" to vehicleNumber,
                 "vehicle_details" to customisationData.toString(),
-                "vehicle_type" to vehicleType,
-                "vehicle_year" to ""+year)
+//                "vehicle_type" to vehicleType,
+                "vehicle_year" to "" + year)
+
+        driverDetails?.let { params.putAll(it) }
 
 
+        if (fromVehicleDetailScreen) {
+            hitAddVehicle(params)
+        } else
+            ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(params, ApiName.REGISTER_DRIVER, object : APICommonCallbackKotlin<FeedCommonResponseKotlin>() {
+                override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
 
-        ApiCommonKt<FeedCommonResponseKotlin>(requireActivity()).execute(params,ApiName.REGISTER_DRIVER,object : APICommonCallbackKotlin<FeedCommonResponseKotlin>(){
-            override fun onSuccess(t: FeedCommonResponseKotlin?, message: String?, flag: Int) {
+                    if (t != null) {
+                        when (t.flag) {
+                            ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
+                                if(t.driverVehicleMappinId!=-1){
+                                    Data.setDriverMappingIdOnBoarding(t.driverVehicleMappinId)
+                                }
+                                if (isEditMode) {
+                                    val vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber, year,
+                                            currentModelSelected!!.make, currentModelSelected!!.modelName, currentModelSelected!!.id,
+                                            currentColorSelected!!.value, currentColorSelected!!.id,
+                                            currentDoorSelected!!.value, currentDoorSelected!!.id,
+                                            currentSeatBeltSelected!!.value, currentSeatBeltSelected!!.id)
 
-                if(t!=null){
-                    when (t.flag) {
-                        ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal(), ApiResponseFlags.ACTION_COMPLETE.getOrdinal() -> {
-                            if(isEditMode){
-                                val  vehicleDetailsLogin = VehicleDetailsLogin(vehicleNumber,year,
-                                        currentModelSelected!!.make ,currentModelSelected!!.modelName,currentModelSelected!!.id,
-                                        currentColorSelected!!.value,currentColorSelected!!.id,
-                                        currentDoorSelected!!.value,currentDoorSelected!!.id,
-                                        currentSeatBeltSelected!!.value,currentSeatBeltSelected!!.id)
+                                    vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
 
-                                vehicleDetailsInteractor?.onDetailsUpdated(vehicleDetailsLogin)
-
-                            }else{
-                                openDocumentUploadActivity()
+                                } else {
+                                    openDocumentUploadActivity()
+                                }
                             }
-                        }
 
 
-                       ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
-                            DialogPopup.alertPopupWithListener(activity, "", message) {
+                            ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal(), ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() -> {
+                                DialogPopup.alertPopupWithListener(activity, "", message) {
 
-                                if(requireActivity() is DriverSplashActivity){
-                                    (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
-                                    (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
+                                    if (requireActivity() is DriverSplashActivity) {
+                                        (requireActivity() as DriverSplashActivity).openPhoneLoginScreen()
+                                        (requireActivity() as DriverSplashActivity).setToolbarVisibility(false)
+                                    }
+
                                 }
 
                             }
-
+                            else -> DialogPopup.alertPopup(requireActivity(), "", message)
                         }
-                        else -> DialogPopup.alertPopup(requireActivity(), "", message)
                     }
+
                 }
 
-            }
+                override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
+                    return false;
+                }
 
-            override fun onError(t: FeedCommonResponseKotlin?, message: String?, flag: Int): Boolean {
-                return false;
-            }
-
-        })
+            })
     }
 
     private fun isYearValid(yearString: String): Boolean {

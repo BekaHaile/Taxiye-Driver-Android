@@ -283,6 +283,7 @@ public interface Constants {
 	String TICKET_SUPPORT = "ticket_support";
 	String MAIL_SUPPORT = "mail_support";
 	String INCENTIVE = "incentive";
+	String VEHICLE_DETAILS = "vehicle_details";
 	String WALLET_BALANCE_IN_EARNING = "wallet_balance_in_earning";
 
 	String FUGU_CHAT_BUNDLE = "fugu_chat_bundle";
@@ -539,6 +540,19 @@ public interface Constants {
 	String KEY_SHOW_DROP_LOCATION_BELOW_PICKUP = "show_drop_location_below_pickup";
 	String KEY_SHOW_FARE_BEFORE_RIDE_START = "show_fare_before_ride_start";
 	String KEY_FROM_CHAT_PUSH = "from_chat_push";
+	String KEY_DATA = "data";
+	String DRIVER_VEHICLE_MAPPING_ID = "driver_vehicle_mapping_id";
+	String DRIVER_VEHICLE_MAPPING_ID_ONBOARDING = "driver_vehicle_mapping_id_onboarding";
+
+	String DRIVER_VEHICLE_MAPPING_STATUS = "driver_vehicle_mapping_status";
+	String VEHICLE_NO = "vehicle_no";
+	String BRAND = "brand";
+	String MODEL_NAME = "model_name";
+	String FROM_VEHICLE_DETAILS_SCREEN="from_vehicle_details_screen";
+	String MULTIPLE_VEHICLES_ENABLED="multiple_vehicles_enabled";
+	String OPEN_ACTIVITY_TO_SELECT_VEHICLE="open_activity_to_select_vehicle";
+	String ACTIVE_VEHICLE = "active_vehicle";
+	String REJECT_REASON = "reason";
 
 	String KEY_DRIVER_PLANS_URL = "driver_plans_url";
 

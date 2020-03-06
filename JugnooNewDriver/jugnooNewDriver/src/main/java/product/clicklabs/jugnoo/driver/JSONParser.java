@@ -37,6 +37,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EmergencyContact;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -233,9 +234,9 @@ public class JSONParser implements Constants {
 		int freeRideIconDisable = 1;
 
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
-		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
+		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0,multipleVehiclesEnabled=0;
 		Integer fareCachingLimit= 0,isCaptiveDriver = 0, resendEmailInvoiceEnabled = 0;
-
+		DriverVehicleDetails activeVehicle=null;
 		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
@@ -268,6 +269,15 @@ public class JSONParser implements Constants {
 		}
 		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
+		}
+		if (userData.has("multiple_vehicles_enabled")) {
+			Data.setMultipleVehiclesEnabled(userData.getInt(Constants.MULTIPLE_VEHICLES_ENABLED));
+        }
+		if(userData.has(Constants.ACTIVE_VEHICLE)){
+			JSONObject vehObj=userData.getJSONObject(Constants.ACTIVE_VEHICLE);
+			if(vehObj.length()>0) {
+				activeVehicle=DriverVehicleDetails.parseDocumentVehicleDetails(vehObj);
+			}
 		}
 
 		if (1 != autosEnabled) {
@@ -490,7 +500,7 @@ public class JSONParser implements Constants {
 				hippoTicketFAQ, currency,creditsEarned,commissionSaved,
 				getCreditsInfo, getCreditsImage, sendCreditsEnabled,vehicleMake,
 				serviceDetailList, resendEmailInvoiceEnabled, driverTag, subscriptionEnabled, onlyCashRides, onlyLongRides,
-                gender, dateOfBirth);
+                gender, dateOfBirth,activeVehicle);
 	}
 
 	private void parseConfigVariables(Context context, JSONObject userData, int cityId) {
@@ -1420,7 +1430,8 @@ public class JSONParser implements Constants {
 				Constants.KEY_DRIVER_TASKS,
 				Constants.KEY_HTML_RATE_CARD,
 				Constants.DRIVER_PLANS_COMMISSION,
-                Constants.KEY_DRIVER_DESTINATION
+                Constants.KEY_DRIVER_DESTINATION,
+                Constants.MULTIPLE_VEHICLES_ENABLED
         );
 		for(String key : keysArr){
 			Prefs.with(context).save(key, 0);

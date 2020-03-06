@@ -132,6 +132,19 @@
                             android:textColor="@color/white"
                             android:textSize="28px"/>
 
+                        <TextView
+                            android:id="@+id/tvVehicleName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="INNOVA PB02 HO3224"
+                            android:visibility="gone"
+                            android:singleLine="true"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/white"
+                            android:ellipsize="marquee"
+                            android:textSize="28px"
+                            />
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -375,6 +388,37 @@
                     android:text="@string/menu_label_credits"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/vehiclesDetailRL"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:visibility="@integer/show_refer_earn"
+                android:background="@drawable/background_tranparend_red_v2_selector"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewVehicles"
+                    android:layout_width="56px"
+                    android:layout_height="38px"
+                    android:layout_marginStart="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_auto_request"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/tvVehicles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/imageViewVehicles"
+                    android:layout_marginStart="8px"
+                    android:text="@string/your_vehicles"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
 
             </RelativeLayout>
             <RelativeLayout

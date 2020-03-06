@@ -154,6 +154,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.DriverTagValues;
+import product.clicklabs.jugnoo.driver.datastructure.DriverVehicleDetails;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareDetail;
@@ -283,7 +284,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
     ImageView profileImg;
-    TextView userName, ratingValue, textViewAutosOn, tvCredits;
+    TextView userName, ratingValue, textViewAutosOn, tvCredits,tvVehicleName;
     LinearLayout linearLayoutDEI, linearLayout_DEI;
     RelativeLayout driverImageRL;
     RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
@@ -304,7 +305,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
     RelativeLayout callUsRl, relativeLayoutRateCard, relativeLayoutRateCardNew, auditRL, earningsRL, homeRl,
             relativeLayoutSupport, relativeLayoutChatSupport, relativeLayoutPlans, rlSupportMain, rlPlansNew,
-            rlSupportTicket, rlMailSupport;
+            rlSupportTicket, rlMailSupport,vehiclesDetailRL;
     TextView callUsText, tvGetSupport, textViewRateCard, auditText, earningsText, homeText;
     LinearLayout rlGetSupport;
 
@@ -629,10 +630,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             profileImg = (ImageView) findViewById(R.id.profileImg);
             userName = (TextView) findViewById(R.id.userName);
             tvCredits = (TextView) findViewById(R.id.tvCredits);
+            tvVehicleName=findViewById(R.id.tvVehicleName);
             ratingValue = (TextView) findViewById(R.id.ratingValue);
             userName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             tvCredits.setTypeface(Fonts.mavenRegular(getApplicationContext()));
-
+            tvVehicleName.setTypeface(Fonts.mavenRegular(getApplicationContext()));
             linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
             linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 
@@ -708,6 +710,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             relativeLayoutSupport = (RelativeLayout) findViewById(R.id.relativeLayoutSupport);
             relativeLayoutChatSupport = (RelativeLayout) findViewById(R.id.relativeLayoutChatSupport);
             rlMailSupport = (RelativeLayout) findViewById(R.id.rlMailSupport);
+            vehiclesDetailRL = (RelativeLayout) findViewById(R.id.vehiclesDetailRL);
+
             rlSupportMain = (RelativeLayout) findViewById(R.id.rlSupportMain);
             rlSupportTicket = (RelativeLayout) findViewById(R.id.rlSupportTicket);
             relativeLayoutPlans = (RelativeLayout) findViewById(R.id.relativeLayoutPlans);
@@ -1144,6 +1148,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             tabDots = findViewById(R.id.tabDots);
             containerRequestBidNew = findViewById(R.id.containerRequestBidNew);
 
+            if(Data.userData.getActiveVehicle()!=null){
+                updateActiveVehicleSideMenu();
+            }
+
             if(Prefs.with(this).getInt(Constants.KEY_SLIDER_ONLINE_VISIBILITY, getResources().getInteger(R.integer.fallback_visibility_slider_on_off)) == 1) {
                 containerSwitch.setVisibility(View.VISIBLE);
                 tvTitle.setVisibility(View.GONE);
@@ -1551,6 +1559,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(HomeActivity.this, SupportMailActivity.class));
+                }
+            });
+            vehiclesDetailRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(HomeActivity.this,VehicleDetailsActivity.class));
+
                 }
             });
             rlSupportTicket.setOnClickListener(new OnClickListener() {
@@ -2481,6 +2496,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                 rlMailSupport.setVisibility(View.GONE);
             }
 
+            if (Prefs.with(HomeActivity.this).getInt(Constants.MULTIPLE_VEHICLES_ENABLED, 0) == 1&&Data.getMultipleVehiclesEnabled()==1) {
+                vehiclesDetailRL.setVisibility(View.VISIBLE);
+            } else {
+                vehiclesDetailRL.setVisibility(View.GONE);
+            }
+
             if (Prefs.with(HomeActivity.this).getInt(Constants.SHOW_PLANS_IN_MENU, 0) == 1) {
                 relativeLayoutPlans.setVisibility(View.VISIBLE);
             } else {
@@ -3368,12 +3389,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
         }
     }
 
+    private void updateActiveVehicleSideMenu(){
+        if(Data.userData.getActiveVehicle()!=null&&Data.getMultipleVehiclesEnabled()==1){
+        tvVehicleName.setVisibility(View.VISIBLE);
+        String vehicleName=Data.userData.getActiveVehicle().getModelName().isEmpty()?Data.userData.getActiveVehicle().getVehicleNo():Data.userData.getActiveVehicle().getModelName()+" "+Data.userData.getActiveVehicle().getVehicleNo();
+        tvVehicleName.setText(vehicleName);
+        } else{
+            tvVehicleName.setVisibility(View.GONE);
+            tvVehicleName.setText("");
+        }
+
+    }
 
     public void switchJugnooOnThroughServer(final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing,
                                             final boolean toggleDelivery,CustomerInfo customerInfo) {
         if (isTourBtnClicked) {
             isTourBtnClicked = false;
             isTourFlag = true;
+        }
+        if(Data.getMultipleVehiclesEnabled() == 1&&(Data.userData.getActiveVehicle()==null||Data.userData.getActiveVehicle().getDriverVehicleMappingId()==-1)&&1==jugnooOnFlag){
+            Intent intent =new Intent(HomeActivity.this,VehicleDetailsActivity.class);
+            intent.putExtra(Constants.OPEN_ACTIVITY_TO_SELECT_VEHICLE,true);
+            startActivityForResult(intent,20);
+            return;
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -3438,6 +3476,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             params.put(KEY_LONGITUDE, "" + latLng.longitude);
                         }
 
+                        if (Data.getMultipleVehiclesEnabled() == 1) {
+                            if(Data.userData.getActiveVehicle()!=null&&Data.userData.getActiveVehicle().getDriverVehicleMappingId()!=-1)
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.userData.getActiveVehicle().getDriverVehicleMappingId()+"");
+                            if(Data.getDriverMappingIdOnBoarding()!=-1){
+                                params.put(Constants.DRIVER_VEHICLE_MAPPING_ID,Data.getDriverMappingIdOnBoarding()+"");
+                            }
+                        }
+
                         Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
                         String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
@@ -3445,6 +3491,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                         final String message = JSONParser.getServerMessage(jObj);
                         if (jObj.has(KEY_FLAG)) {
                             int flag = jObj.getInt(KEY_FLAG);
+                            if(Data.getMultipleVehiclesEnabled()==1){
+                                Data.userData.setActiveVehicle(DriverVehicleDetails.parseDocumentVehicleDetails(jObj.optJSONObject(Constants.ACTIVE_VEHICLE)));
+                            }
                             if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
                                 int menuOptionVisibility = Prefs.with(HomeActivity.this).getInt(SPLabels.MENU_OPTION_VISIBILITY, 0);
@@ -3526,6 +3575,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
                             showDialogFromBackground(message,true);
                         }
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateActiveVehicleSideMenu();
+                        }
+                    });
                     } catch (Exception e) {
                         e.printStackTrace();
                         runOnUiThread(new Runnable() {
@@ -8866,7 +8921,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
                 return;
             }
-
+            if(resultCode==Activity.RESULT_OK) {
+                if(requestCode==20){
+                    relativeLayoutAutosOn.performClick();
+                }
+            }
 
             if (requestCode == 12) {
                 boolean state = data.getBooleanExtra("result", true);

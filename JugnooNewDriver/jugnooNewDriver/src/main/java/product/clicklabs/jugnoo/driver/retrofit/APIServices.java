@@ -784,6 +784,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	Response fetchTutorialData(@FieldMap Map<String, String> params);
+
 	@FormUrlEncoded
 	@POST("/v2/add_home_and_work_address")
 	void addHomeAndWorkAddress(@FieldMap Map<String, String> params,
@@ -792,6 +793,20 @@ public interface APIServices {
 	@POST("/toggle_driver_destination")
 	void toggleDriverDest(@FieldMap Map<String, String> params,
 							   Callback<Object> callback);
+
+    @GET("/driver/fetch_driver_vehicles")
+    void fetchDriverVehicles(@QueryMap Map<String, String> params, Callback<Object> callback);
+
+    @FormUrlEncoded
+    @POST("/driver/add_new_vehicle")
+    void addNewVehicle(@FieldMap Map<String, String> params, Callback<Object> callback);
+
+    @FormUrlEncoded
+    @POST("/driver/remove_vehicle")
+    void removeVehicle(@FieldMap Map<String, String> params, Callback<Object> callback);
+
+    @GET("/driver/fetch_driver_vehicle_document")
+    void fetchDriverVehicleDocuments(@QueryMap Map<String, String> params, Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/update_driver_property")
